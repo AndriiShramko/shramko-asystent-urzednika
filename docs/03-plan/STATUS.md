@@ -28,12 +28,17 @@ Last update: 2026-11-20 23:10 CET, preparation session (before the event).
 | Orchestration playbook, brief template, git workflow, resume | done | `docs/04-orchestration/` |
 | Onsite intake procedure | done | `docs/05-hackathon/ONSITE-INTAKE.md` |
 | Roadmap with event clock | done (work-package files: to do) | `docs/03-plan/roadmap.md` |
-| Architecture documents, API contract | **to do** (after R3b, R5, R6) | `docs/02-architecture/` |
+| Architecture decisions (dense notes) | done | `docs/02-architecture/design-notes.md` |
+| Architecture documents expanded, API contract | **to do** (after R3b, R5, R6) | `docs/02-architecture/` |
 | Work-package files | **to do** | `docs/03-plan/work-packages/` |
 | Audit of the earlier research | **to do** (verdicts already inside R1 and R2) | `docs/06-audit/` |
 | Jury questions, demo script, pitch, Polish README | **to do** | `docs/05-hackathon/`, `README.pl.md` |
 
 How to run a research job: start one web-research sub-agent with the whole text of the job file as its prompt. Each job writes its own files and returns a short summary. Three at a time at most. A job whose output file already exists continues it instead of starting over.
+
+## Budget
+
+The build runs on the owner's subscription; on 2026-11-20 about one third of the weekly allowance was left until the reset on 26 November. Check the remaining allowance at every milestone and narrow the scope before it runs out. Prefer middle-tier builders.
 
 ## Running now
 
