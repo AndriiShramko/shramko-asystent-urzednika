@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Shramko Asystent Urzędnika: open brief and reference design for an AI assistant for Polish public offices (access-to-public-information requests and pre-filled official forms)"
+abstract: "Research, requirements, architecture, work packages and a multi-agent build playbook for an assistant that helps clerks of a Polish city office analyse access-to-public-information requests (UDIP) and draft answers, and that pre-fills official forms from data a visitor enters once. Prepared for the HackNation 2026 challenge 'Inteligentny asystent urzędnika' by Miasto Bydgoszcz. Includes a machine-readable catalogue of forms of Urząd Miasta Bydgoszczy."
+authors:
+  - family-names: Shramko
+    given-names: Andrii
+    email: zmei116@gmail.com
+    website: "https://www.linkedin.com/in/andrii-shramko/"
+repository-code: "https://github.com/AndriiShramko/shramko-asystent-urzednika"
+url: "https://github.com/AndriiShramko/shramko-asystent-urzednika"
+license: MIT
+version: 0.1.0
+date-released: 2026-11-21
+keywords:
+  - asystent urzędnika
+  - informacja publiczna
+  - UDIP
+  - public administration
+  - govtech
+  - HackNation 2026
+  - Bydgoszcz
+  - form prefill
+  - mObywatel
+  - RODO
+  - multi-agent
+  - Claude Code

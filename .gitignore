@@ -1,0 +1,63 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+secrets/
+
+# Vendor SDKs and licences (device-bound licence files, proprietary installers) never enter the repository
+vendor-sdk/
+*.lic
+
+# Downloaded form templates and other binaries: the catalogue stores URLs and hashes, not the files
+data/forms-cache/
+*.pdf
+*.doc
+*.docx
+*.rtf
+*.odt
+*.xls
+*.xlsx
+!docs/assets/**
+
+# Anything that may contain personal data
+data/private/
+data/real/
+uploads/
+exports/
+*.sqlite
+*.sqlite3
+*.db
+
+# Build and tooling
+node_modules/
+dist/
+build/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
+playwright-report/
+test-results/
+.turbo/
+.next/
+
+# Agent work areas
+.worktrees/
+.claude/worktrees/
+.claude/settings.local.json
+tmp/
+*.log
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,28 @@
+Shramko Asystent Urzędnika
+Copyright (c) 2026 Andrii Shramko — https://github.com/AndriiShramko
+
+Code and tools (tools/, contracts/, .claude/, and any application code): MIT License, see LICENSE.
+Documentation and research (docs/, research/, README files): Creative Commons Attribution 4.0
+International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ — reuse with attribution
+to "Andrii Shramko, Shramko Asystent Urzędnika".
+
+Provenance: the specification, research and catalogues in this repository were prepared before the
+HackNation 2026 event (tag `pre-event`). Application code, if present, was written during the event
+and is identifiable by commits after that tag.
+
+Third-party material:
+- data/forms-catalog.* lists public URLs of forms and service cards published by Urząd Miasta
+  Bydgoszczy (um.bydgoszcz.pl, bip.um.bydgoszcz.pl). The catalogue contains links and metadata only;
+  the forms themselves are not redistributed here and remain the property of their publishers.
+- Quotations from Polish and EU legal acts are public legal texts.
+- Names of products and institutions (mObywatel, EZD RP, HackNation, Adaptive Recognition, Osmond,
+  Claude and others) belong to their owners.
+
+Independence: this is an independent project. It is not affiliated with, endorsed by or commissioned
+by Miasto Bydgoszcz, Ministerstwo Cyfryzacji, Centralny Ośrodek Informatyki or any other institution
+named in the documents. Descriptions of integrations with state systems are proposals unless stated
+otherwise.
+
+Not legal advice: legal analysis in this repository is research prepared with AI assistance and
+checked against primary sources on the dates stated in each file. It does not replace the opinion of
+the office's lawyers and data protection officer.
