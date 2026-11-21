@@ -38,6 +38,20 @@ _YES_NO = {"tak", "nie"}
 # A name asked of a third person (the candidate, the ward) is a field of the matter, never the applicant's own name
 # (set judged-09 ODS/XLSX: "Imię i nazwisko kandydata" under the heading "Wnioskodawca").
 _THIRD_PERSON = re.compile(r"(kandydat|podopieczn|zawodnik|sportowc|trener|dzieck|uczestnik)\w*")
+# "A/B* lub C D/E F*" with "niepotrzebne skreślić": two starred alternatives joined by "lub" are one choice of two
+# phrases (set judged-07 PDF); each side keeps its own words.
+_ALT_OR = re.compile(r"(\w[\w-]*(?:\s*/\s*\w[\w-]*)+)\s*\*+\s+lub\s+((?:[\w-]+\s+){0,3}\w[\w-]*(?:\s*/\s*\w[\w-]*)+(?:\s+[\w-]+){0,2})\s*\*+")
+_DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
+# Attachments named in running text (audit T2): a list under "Załączniki ...:", "należy / można dołączyć X",
+# "w załączeniu X", "X załączyć do wniosku"; a row "N. X  TAK  NIE" of an attachments table.
+_ATT_LIST = re.compile(r"^(?:\d{1,2}\.\s*)?(?:załączniki\b[^:]{0,40}|do wniosku\s+(?:należy|można)\s+(?:dołączyć|załączyć))\s*:$", re.IGNORECASE)
+_ATT_ITEM = re.compile(r"^\s*(?:[-–•]|\d{1,2}[.)]|[a-z]\))\s*(?=\w)")
+_ATT_SAY = re.compile(r"\b(?:należy|można|trzeba)\s+(?:dołączyć|załączyć)\s+(?!:)(.+)|\bw\s+załączeniu\s+(.+)", re.IGNORECASE)
+_ATT_BEFORE = re.compile(r"(?:^|[(,;:–-]\s*)([^(),;:–-]{6,80}?)\s+(?:należy\s+)?załączyć\s+do\s+wniosku", re.IGNORECASE)
+_ATT_IF = re.compile(r",?\s+(?:jeżeli|jeśli|w\s+przypadku|gdy)\b", re.IGNORECASE)
+_ATT_MAY = re.compile(r"\bmożna\b|\bewentualn|opcjonaln|w\s+przypadku|\bjeżeli\b|\bjeśli\b", re.IGNORECASE)
+_YES_NO_ROW = re.compile(r"^\s*(?:\d{1,2}[.)]\s*)?(.+?)\s+TAK\s+NIE\s*$")
+_SENTENCE_END = (".", "!", "?")
 
 
 @dataclass
@@ -87,6 +101,7 @@ class _Reader:
                 continue
             self._one(c, rows, blank_of, prev)
             prev = c
+        self._attachments_in_text()
         self._declarations()
         self._text_roles()
         for role, labels in self.standard.items():
@@ -146,6 +161,12 @@ class _Reader:
                     in_section, sec_role = True, sec_role or row.get("role")
         if not (before or in_section):
             return False
+        if c.kind == "choice_group" and c.label is not None and not all(any(rx.search(o.text) for rx, _ in lexicon.compiled("applicants", table="wording"))
+                                                for o in c.options):
+            # Boxes under the applicant heading whose options are not kinds of applicant the standard pages ask
+            # ("Prezydent Miasta" / "Klub sportowy", set judged-09): the paper's own question, a field of the matter.
+            # Only a group with a label of its own: an unlabelled group would be asked under the bare heading.
+            return False
         for rx, row in lexicon.compiled("applicants", table="label"):
             if rx.search(low):
                 if row.get("role") == "standard/twoje_dane" and not row.get("concept") and _THIRD_PERSON.search(low):
@@ -193,9 +214,21 @@ class _Reader:
         doc = self.doc
         named = [(clean_option(o.text), list(o.runs)) for o in c.options] if c.kind == "choice_group" else \
             [(label, list(c.label.runs) if c.label else [])] if c.kind == "box" and label else []
+        answers = c.kind == "choice_group" and bool(c.options) and all(t.strip(" .:").casefold() in _YES_NO for t, _ in named)
+        if answers:
+            # "1. Załącznik A  TAK  NIE" (set judged-08): each row of the table names an attachment the filer may add;
+            # a row the finder merged into the group is read from its own printed line.
+            rids = list(dict.fromkeys([*(c.label.runs if c.label else []), *(r for o in c.options for r in [*o.runs, *(s.run for s in o.spans)])]))
+            named = [(label, list(c.label.runs) if c.label else [])] if label else []
+            for rid in rids:
+                m = _YES_NO_ROW.match(doc.text(rid)) if rid in doc.runs else None
+                if m:
+                    named.append((clean_label(m.group(1))[0], [rid]))
         made: list[tuple[str, str | None]] = []
         for text, runs in named:
             if not text or text.strip(" .:").casefold() in _YES_NO:   # a column of answers, not a named item
+                continue
+            if any(a.label.casefold() == text.casefold() for a in self.out.attachments):
                 continue
             cover = next((row["role"] for rx, row in lexicon.compiled("habits", habit="attachment_cover") if rx.search(text)), None)
             key = self.keys.unique(key_of(text, "zalacznik"))
@@ -216,6 +249,88 @@ class _Reader:
             return self._set(c, "FIELD", key=key)
         return self._set(c, "MERGED", into=self.open_attachment, why="LINE_BLOCK")
 
+    def _attachments_in_text(self) -> None:
+        """Audit T2: attachments the paper names in running text become uploads of the matter, each labelled with
+        its item. Optional when the paper says "można", "ewentualnie", "jeżeli", "w przypadku"; an item whose
+        condition is the absence of another item ("..., jeżeli nie jest wymagany <the other>") makes an either-or
+        pair: one choice and two uploads shown by it. Standard pages (proxy, fee) cover theirs."""
+        doc = self.doc
+        lines = self._lines()
+        found: list[tuple[str, list[str], bool]] = []          # (item text, runs, optional by wording)
+        i = 0
+        while i < len(lines):
+            rids, text = lines[i]
+            if _ATT_LIST.match(text):
+                may = bool(_ATT_MAY.search(text))
+                i += 1
+                while i < len(lines) and _ATT_ITEM.match(lines[i][1]):
+                    item, used = _ATT_ITEM.sub("", lines[i][1]), list(lines[i][0])
+                    x0 = self._x0(lines[i][0])
+                    i += 1
+                    while i < len(lines) and not _ATT_ITEM.match(lines[i][1]) and x0 is not None \
+                            and (self._x0(lines[i][0]) or 0) > x0 + 4 and doc.page(lines[i][0][0]) == doc.page(used[0]):
+                        item, used = item + " " + lines[i][1], used + list(lines[i][0])
+                        i += 1
+                    found.append((item, used, may))
+                continue
+            window, used = text, list(rids)
+            for k in (1, 2):                                   # the sentence may wrap over two more lines
+                if window.rstrip().endswith((".", ")")) or i + k >= len(lines) or not lines[i + k][1][:1].islower():
+                    break
+                window, used = window + " " + lines[i + k][1], used + list(lines[i + k][0])
+            m = _ATT_SAY.search(window)
+            if m and m.start() < len(text):
+                k = 1 if m.group(1) else 2
+                found.append((m.group(k).split(". ")[0], used, bool(_ATT_MAY.search(window[: m.start(k)]))))
+            else:
+                b = _ATT_BEFORE.search(window)
+                if b and b.start(1) < len(text):
+                    found.append((b.group(1), used, bool(_ATT_MAY.search(window))))
+            i += 1
+        made: list[tuple[Attachment, str]] = []                # (upload, its condition)
+        for item, used, may in found:
+            item = re.sub(r"\s+", " ", item).strip(" .;,)")
+            cut = _ATT_IF.search(item)
+            cond = item[cut.end():].strip() if cut else ""
+            label = item[: cut.start()] if cut else item
+            if len(label) > 90:
+                stop = re.search(r",\s|\s\(", label[20:])
+                label = label[: 20 + stop.start()] if stop else label
+            label = sentence_case(label.strip(" ,.;:–-"))
+            if len(label) < 4 or any(a.label.casefold() == label.casefold() for a in self.out.attachments):
+                continue
+            cover = next((row["role"] for rx, row in lexicon.compiled("habits", habit="attachment_cover") if rx.search(item)), None)
+            a = Attachment(**some(label=label, covered_by=cover, key=self.keys.unique(key_of(label, "zalacznik")),
+                                  required=not (may or cut) and cover is None,
+                                  evidence=[doc.evidence(used, " ".join(doc.text(r) for r in used)[:400])]))
+            self.out.attachments.append(a)
+            if cover is None:
+                made.append((a, cond))
+        self._either_or(made)
+
+    def _either_or(self, made: list[tuple[Attachment, str]]) -> None:
+        """"B, jeżeli nie jest wymagany A": the filer gives A or B. One RADIO of the two labels, each upload shown by
+        its option and required there."""
+        stem = lambda t: {w[:5] for w in re.findall(r"\w{4,}", t.casefold())}   # noqa: E731
+        for b, cond in made:
+            if not re.search(r"\bnie\b", cond):
+                continue
+            a = next((x for x, _ in made if x is not b and x.show_if is None and len(stem(x.label) & stem(cond)) >= 2), None)
+            if a is None or b.show_if is not None:
+                continue
+            key = self.keys.unique(key_of(f"{a.label} lub {b.label}", "wybor_zalacznika"))
+            f = BriefField(key=key, label="Który z dokumentów załączasz?", type="RADIO", options=[a.label, b.label], required=True,
+                           required_basis="paper", evidence=[*a.evidence, *b.evidence])
+            sec = self.secs.setdefault("matter/wybor_zalacznika", {"title": "Załączniki", "role": "matter/wybor_zalacznika",
+                                                                    "fields": [], "repeating": False, "variant": None})
+            sec["fields"].append(f)
+            for x in (a, b):
+                x.show_if, x.required = Cond(field=key, is_=x.label), True
+
+    def _x0(self, rids: list[str]) -> float | None:
+        box = self.doc.runs[rids[0]][1].box if rids and rids[0] in self.doc.runs else None
+        return box[0] if box is not None else None
+
     def _option_blank(self, c: Candidate, gid: str, option: ChoiceOption) -> bool:
         """Design 6.4.3 "an option followed by a blank": a text field shown when the option is chosen."""
         group, text = self.field_of[gid], clean_option(option.text)
@@ -228,11 +343,23 @@ class _Reader:
 
     # -- a field of the matter ----------------------------------------------------------------------------------------
 
-    def _field(self, c: Candidate, raw: str, label: str, hint: str | None, optional: bool) -> None:
+    def _field(self, c: Candidate, raw: str, label: str, hint: str | None, optional: bool, opts: list[ChoiceOption] | None = None) -> None:
         doc, low = self.doc, label.casefold()
+        if c.kind == "choice_group" and opts is None:
+            parts = self._split_group(c)
+            if len(parts) > 1:
+                for i, (sub, part) in enumerate(parts):
+                    self._field(c, raw if i == 0 else sub, label if i == 0 else sub, hint if i == 0 else None, optional, part)
+                    if i == 0:
+                        first = self.disp.get(c.id)
+                if first is not None:
+                    self.disp[c.id] = first
+                return None
         options: list[str] = []
         concept = length = None
         shown = sentence_case(label)
+        if c.kind == "box" and _DECLARE.match(label):
+            return self._declared_box(c, label, optional)
         if c.kind == "box":
             # One box outside any group: an option of a question the finder could not group, or a yes-or-no
             # question. Reading it as a field would look right and may be wrong; the official decides.
@@ -241,7 +368,7 @@ class _Reader:
                                              detail=f"a single box outside any group: {label[:80]!r}; an option or a yes-or-no question"))
             return None
         if c.kind == "choice_group":
-            for o in c.options:
+            for o in (c.options if opts is None else opts):
                 text = clean_option(o.text)
                 if text and text not in options:
                     options.append(text)
@@ -268,6 +395,61 @@ class _Reader:
             self.out.dropped.append(Dropped(what=f"{label}: printed arithmetic, the value is typed", reason="COMPUTED_VALUE", page=c.page))
         self._add(c, f, self._section(c)["role"])
         return None
+
+    def _split_group(self, c: Candidate) -> list[tuple[str, list[ChoiceOption]]]:
+        """A free line ending in ":" printed between the options of one group ("Rodzaje ...:" boxes, "Dyscypliny:"
+        boxes; set judged-09 PDF) heads a second group: each part keeps at least two options. No such line: one part."""
+        doc = self.doc
+        where = [[doc.pos[r] for r in [*o.runs, *(s.run for s in o.spans)] if r in doc.pos] for o in c.options]
+        if not all(where):
+            return [("", list(c.options))]
+        parts: list[tuple[str, list[ChoiceOption]]] = [("", [c.options[0]])]
+        for i in range(1, len(c.options)):
+            head = next((doc.text(doc.order[p]) for p in range(max(where[i - 1]) + 1, min(where[i]))
+                         if doc.role(doc.order[p]) == "body" and doc.text(doc.order[p]).endswith(":")
+                         and 1 <= len(doc.text(doc.order[p]).split()) <= 6), None)
+            if head and len(parts[-1][1]) >= 2 and len(c.options) - i >= 2:
+                parts.append((head.rstrip(" :"), []))
+            parts[-1][1].append(c.options[i])
+        return parts
+
+    def _declared_box(self, c: Candidate, label: str, optional: bool) -> None:
+        """One box beside "Oświadczam, że ..." (set judged-08 PDF, the composter): the applicant ticks it to declare.
+        A CHECKBOX of the matter whose label is the whole sentence; never required, the paper asks it only of some."""
+        doc = self.doc
+        runs = list(c.label.runs) if c.label else []
+        text = label
+        for rid in self._below(runs, 3) if not text.endswith(_SENTENCE_END) else []:
+            text += " " + doc.text(rid)
+            runs.append(rid)
+            if text.endswith(_SENTENCE_END):
+                break
+        text = text.rstrip(" .")
+        f = BriefField(key=self.keys.unique(key_of(text)), label=text, type="CHECKBOX", required=False, candidate=c.id,
+                       conf=self._conf(c), evidence=[doc.evidence(runs, text, c.id)])
+        self._add(c, f, self._section(c)["role"])
+
+    def _below(self, runs: list[str], limit: int) -> list[str]:
+        """Free body lines printed right under the last of these runs, starting near its left edge: the rest of a
+        wrapped sentence. Geometry only; a flow document gives none."""
+        doc = self.doc
+        boxed = [(doc.runs[r][0], doc.runs[r][1].box) for r in runs if r in doc.runs and doc.runs[r][1].box is not None]
+        if not boxed:
+            return []
+        page, first = boxed[0]
+        out: list[str] = []
+        last = boxed[-1][1]
+        for _ in range(limit):
+            h = max(4.0, last[3] - last[1])
+            near = [r for r in doc.order if doc.page(r) == page and doc.role(r) == "body" and r not in runs and r not in out
+                    and doc.runs[r][1].box is not None and 0 <= doc.runs[r][1].box[1] - last[1] <= 2.2 * h
+                    and doc.runs[r][1].box[1] > last[1] + 0.5 * h and abs(doc.runs[r][1].box[0] - first[0]) <= 30]
+            if not near:
+                break
+            r = min(near, key=lambda x: doc.runs[x][1].box[1])
+            out.append(r)
+            last = doc.runs[r][1].box
+        return out
 
     def _typing(self, c: Candidate, label: str, low: str, shown: str) -> tuple[str, str | None, int | None, str]:
         """Type, concept, length and wording of a plain place (design 6.4.3 rows 1 and 2, the label rules)."""
@@ -350,22 +532,58 @@ class _Reader:
             return
         seen: list[list[str]] = []
         grammar: set[str] = set()
-        for rid in doc.order:
-            if doc.fo.roles.get(rid) in ("clause", "page_furniture"):
-                continue
-            for m in ALT.finditer(doc.text(rid)):
+        lines = self._lines()
+        skip = 0                      # offset in this line up to which a pair that began on the line above reaches
+        for i, (rids, text) in enumerate(lines):
+            nxt = lines[i + 1] if i + 1 < len(lines) and doc.page(lines[i + 1][0][0]) == doc.page(rids[0]) else None
+            window = text + " " + nxt[1] if nxt else text
+            taken: list[tuple[int, int]] = [(0, skip)] if skip else []
+            skip = 0
+            for m in _ALT_OR.finditer(window):
+                if m.start() >= len(text) or any(a <= m.start() < b for a, b in taken):
+                    continue
+                taken.append(m.span())
+                skip = max(skip, m.end() - len(text) - 1)
+                words = [re.sub(r"\s*/\s*", "/", m.group(k)).strip() for k in (1, 2)]
+                if not any(same_choice(words, s) for s in seen):
+                    seen.append(words)
+                    self._alt_field(words, rids + (nxt[0] if nxt and m.end() > len(text) else []), m.group(0))
+            for m in ALT.finditer(text):
+                if any(a <= m.start() < b for a, b in taken):
+                    continue
                 words = alt_words(m)
                 if is_grammar(words):
                     if m.group(1).casefold() not in grammar:
                         grammar.add(m.group(1).casefold())
-                        self.out.dropped.append(Dropped(what=m.group(1), reason="GRAMMAR_VARIANT", page=doc.page(rid), runs=[rid]))
+                        self.out.dropped.append(Dropped(what=m.group(1), reason="GRAMMAR_VARIANT", page=doc.page(rids[0]), runs=rids))
                     continue
                 if any(same_choice(words, s) for s in seen):
                     continue
                 seen.append(words)
-                f = BriefField(key=self.keys.unique(key_of("_".join(words))), label=sentence_case(" lub ".join(words)), type="RADIO",
-                               options=words, required=True, required_basis="paper", evidence=[doc.evidence([rid], doc.text(rid))])
-                self._section(None)["fields"].append(f)
+                self._alt_field(words, rids, text)
+
+    def _alt_field(self, words: list[str], rids: list[str], quote: str) -> None:
+        f = BriefField(key=self.keys.unique(key_of("_".join(words))), label=sentence_case(" lub ".join(words)), type="RADIO",
+                       options=words, required=True, required_basis="paper", evidence=[self.doc.evidence(rids, quote)])
+        self._section(None)["fields"].append(f)
+
+    def _lines(self) -> list[tuple[list[str], str]]:
+        """Runs of one printed line joined in reading order (a PDF splits "utrzymywanie" and its "*" into two runs);
+        a run without a box (a flow document) is a line of its own. Clauses and page furniture are left out."""
+        doc = self.doc
+        out: list[tuple[list[str], str]] = []
+        for rid in doc.order:
+            if doc.fo.roles.get(rid) in ("clause", "page_furniture"):
+                continue
+            page, run = doc.runs[rid]
+            if out and run.box is not None:
+                prev = doc.runs[out[-1][0][-1]]
+                pb, b = prev[1].box, run.box
+                if prev[0] == page and pb is not None and abs(pb[1] - b[1]) <= 3 and b[0] >= pb[2] - 2:
+                    out[-1] = (out[-1][0] + [rid], out[-1][1] + (" " if b[0] - pb[2] > 1.5 else "") + run.text)
+                    continue
+            out.append(([rid], run.text))
+        return [(r, re.sub(r"\s+", " ", t).strip()) for r, t in out]
 
     def _table_rows(self) -> dict[str, str]:
         """A table of equal rows (design 6.4.3): the same run of labels three or more times in one section. The

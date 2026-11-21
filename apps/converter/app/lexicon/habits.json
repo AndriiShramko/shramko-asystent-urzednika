@@ -14,6 +14,7 @@
     {"habit": "attachments_section", "pattern": "^załączniki?\\b|informacja o załącznikach", "source": "design 6.4.3 row 'Załączniki'; sets judged-02, judged-08", "date": "2026-11-21"},
     {"habit": "attachment_cover", "pattern": "opłat\\w+ skarbow\\w+ za pełnomocnictw", "role": "standard/oplata_skarbowa", "source": "design 5.3 example; set judged-02", "date": "2026-11-21"},
     {"habit": "attachment_cover", "pattern": "pełnomocnictw", "role": "standard/pelnomocnictwo", "source": "design 5.3 example; set judged-02", "date": "2026-11-21"},
+    {"habit": "attachment_cover", "pattern": "dokument\\w* upoważniając", "role": "standard/pelnomocnictwo", "source": "audit round 2 T2/T11; set judged-08 (G. attachments)", "date": "2026-11-21"},
     {"habit": "declaration", "pattern": "\\boświadczam\\b", "source": "design 6.4.3 row 'Oświadczam, że'; set judged-04", "date": "2026-11-21"},
     {"habit": "fee", "pattern": "opłat\\w*[^.;]{0,80}?(\\d[\\d ]*(?:[,.]\\d{2})?)\\s*zł", "source": "design 6.4.3 last row; set judged-03", "date": "2026-11-21"},
     {"habit": "furniture_title", "pattern": "^\\W*zał(ącznik|\\.)\\s*(nr|do)\\b", "source": "design 6.4.1; set judged-04", "date": "2026-11-21"},
