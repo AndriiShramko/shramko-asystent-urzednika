@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 — 2026-11-21 (pre-event, the owner's third brief)
+
+- Requirements R33–R43: "one visit, complete set" (data kept in advance, the whole package of forms from one stated need, check by exception, comparison with the document, intent known from the booking, first entry from saved browser data, mObywatel as the home of the profile, a reading presentation with a web page).
+- The idea as one flow with pains, rules and limits: `docs/01-product/one-visit-package.md`; the same for the owner in Russian: `docs/01-product/kak-eto-rabotaet.ru.md`.
+- Research R12: the partner's announcement of the forms task (open source, on-premise, LLM credits, PDF-DOCX-XLSX), the city's online booking, the seven-day rule for incomplete applications, browser pre-fill and the contact picker.
+- Work packages WP-B7 (need to set), WP-B8 (comparison with the document, check by exception), WP-B9 (profile start); change requests to WP-B1 and WP-B2.
+- Reading version of the presentation for the first judging stage: storyboard of ten pages, the page in Polish and a longer one in Russian for the owner, a PDF.
+- Questions for the partner's stand and for clerks in `docs/05-hackathon/ONSITE-INTAKE.md`.
+
 ## 0.1.0 — 2026-11-21 (pre-event brief, tag `pre-event`)
 
 - Owner requirements R1–R32, scope decision, gaps and additions.

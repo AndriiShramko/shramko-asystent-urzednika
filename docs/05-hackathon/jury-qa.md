@@ -41,6 +41,11 @@ Update the "State" column at each milestone gate. Allowed values: **live** (work
 | Clerk's view: waiting list, large-type check, provenance marks | planned | |
 | Checker: rules first, then a model | planned | State which model ran |
 | Bundles: one data entry, several forms and persons | planned | |
+| The complete set from one sentence or one chosen matter, with attachments to bring and fees; a clarifying answer changes the set | planned | Rules come from the service cards, each with its source; the model only picks among existing sets |
+| "Prepare your visit": the intent chosen at home arrives with the handoff | planned | The link from the city's booking system is a proposal: **never claim an integration** |
+| Comparison of the document reading with the declared data; check by exception in three groups | planned | Say "urzędnik potwierdza tożsamość zawsze"; the address and PESEL are not confirmed by the machine-readable zone |
+| First profile entry from saved browser data (`autocomplete`) | planned | The browser offers, the person accepts; the page does not read saved data |
+| Runs with no cloud: local open model, one start command | planned | The partner rewards open source that can be hosted on premise (research/12) |
 | Camera reading of the machine-readable zone on the device | planned | No image stored or sent |
 | Government wallet or mObywatel data sharing | simulated | The flow exists for selected partners; no agreement: never claim an integration |
 | Hardware document reader | simulated | The owner has a reader; licence and consent of the manufacturer are open |
@@ -63,9 +68,11 @@ Update the "State" column at each milestone gate. Allowed values: **live** (work
 | 81 % of officials expect automation of routine tasks; 67 % want natural-language search in documents; 6 % accept AI deciding about people | NASK survey, via research/07 | verified |
 | 95.9 % of surveyed organisations do not feel ready to deploy AI in line with data-protection law | the data-protection authority's expert team survey, via research/05 | verified |
 | A profile fills about 55–60 % of fields on simple resident forms, about 36 % across all analysed forms | own analysis of 32 forms, research/03b | estimate, say "our estimate" |
+| A call to complete an application gives a term of at least seven days | Kodeks postępowania administracyjnego art. 64 § 2, via research/12 | secondary; confirm in the Sejm ELI API before the final PDF |
+| Fields in the set, fields typed by the clerk, fields the clerk looked at, seconds from scan to print | counters of the demo run (WP-B7, WP-B8) | only after it is measured |
 | Accuracy, time per request, zero invented citations, zero leaks | the evaluation run of the build (`metrics.json`) | only after it is measured |
 
-Never say: a number for time or money saved in the real office (nobody measured it), that the city uses a specific document system (not established), that mObywatel is integrated, that the print is "legally identical" to a statutory template (no primary source; say "on the original template file, without re-typesetting").
+Never say: how often residents come twice or how many applications are incomplete (no data; say "zdarza się" and give the seven days), that the booking system of the city is connected, a number for time or money saved in the real office (nobody measured it), that the city uses a specific document system (not established), that mObywatel is integrated, that the print is "legally identical" to a statutory template (no primary source; say "on the original template file, without re-typesetting").
 
 ## If a question is not understood
 

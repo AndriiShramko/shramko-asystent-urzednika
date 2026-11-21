@@ -63,6 +63,32 @@ Each question is short on purpose; the answers change real decisions.
 8. Co musiałby umieć asystent, żeby urzędnicy chcieli go używać od pierwszego dnia? *(Adoption → acceptance criteria.)*
 9. Czy podobny problem powtarzalnych danych macie przy okienku w innych wydziałach? *(Opens the door for Module B without pushing it.)*
 
+## 3a. Questions to ask at the stand of Centralny Ośrodek Informatyki (forms task)
+
+The owner asks in Polish; the line in italics is the meaning in Russian for him; the arrow says what the answer decides.
+
+1. Czy pula kredytów na modele LLM dla zespołów jest dostępna i jak ją uzyskać? *(Есть ли обещанные кредиты на модели и как их получить?)* → the model provider of the build (STATUS, "Waiting for the owner" 2).
+2. Jakie pliki formularzy są dla Państwa najważniejsze: PDF, DOCX, XLSX? Czy dostaniemy przykładowe? *(Какие файлы бланков для вас главные и дадите ли примеры?)* → inputs of WP-B6, forms for the live demo.
+3. Co ma być wynikiem: formularz dla Generatora Formularzy ePUC, opis w konkretnym formacie, czy działająca usługa? *(Что должно быть результатом: форма для вашего генератора, описание в формате или работающая услуга?)* → export target; answer card 4.
+4. Kto będzie użytkownikiem narzędzia: urzędnik publikujący formularze, analityk w COI, mieszkaniec? *(Кто пользователь инструмента?)* → the first screen of the demo.
+5. Co znaczy „on-prem” w Państwa ocenie: bez żadnej chmury, z lokalnym modelem? Jaki sprzęt zakładamy? *(Что вы понимаете под on-prem: совсем без облака, локальная модель, какое железо?)* → default provider in the demo, the "what works" page.
+6. Jak będzie oceniana poprawność: na Państwa formularzach testowych? *(Как будете проверять точность: на своих бланках?)* → the golden test and the numbers on the slides.
+7. Czy w funkcji „Przekaż instytucji” w mObywatelu instytucja może poprosić o listę pól zależną od sprawy? Jakie atrybuty są dostępne? *(Может ли учреждение в mObywatel запросить набор полей под конкретное дело и какие поля доступны?)* → `docs/01-product/one-visit-package.md` §5; whether that slide may be said as more than a proposal.
+8. Czy pokaz „od potrzeby do podpisu” w urzędzie (komplet wniosków, dane raz, kontrola wyjątków) jest dla Państwa w zakresie zadania, czy tylko dodatkiem? *(Наш показ «от потребности до подписи» входит в задание или это только дополнение?)* → the split of the five minutes between part one and part two.
+
+## 3b. Questions to ask clerks about the counter (city's stand, or any official present)
+
+The owner said he does not know yet what hurts clerks most. These answers decide which pains the pitch may state as facts ([`../01-product/one-visit-package.md`](../01-product/one-visit-package.md) §2). Write down the answer and who said it; no names of residents, no real cases.
+
+1. Co zajmuje najwięcej czasu przy okienku: pomoc w wypełnianiu, przepisywanie danych, sprawdzanie z dokumentem, czy wprowadzanie do systemu? *(Что отнимает больше всего времени у окошка?)* → which stage the demo dwells on.
+2. Jak często mieszkaniec musi przyjść drugi raz, bo zabrakło wniosku albo załącznika? *(Как часто человек приходит второй раз из-за забытого бланка или приложения?)* → whether "complete set" may be said with a number.
+3. Jak często wzywacie do uzupełnienia braków formalnych? *(Как часто приходится требовать дополнить заявление?)* → the same.
+4. Jakie błędy w wypełnionych wnioskach powtarzają się najczęściej? *(Какие ошибки в заявлениях повторяются чаще всего?)* → seeded mistakes of the checker (WP-B5) and of the comparison (WP-B8).
+5. Czy przy rezerwacji wizyty przez internet widzicie, w jakiej sprawie przychodzi mieszkaniec, zanim podejdzie do okienka? Co jeszcze chcielibyście wiedzieć wcześniej? *(Видите ли вы заранее, по какому делу человек записался? Что ещё хотели бы знать до визита?)* → WP-B7 items 4–5.
+6. Po wydrukowaniu i podpisaniu wniosku: czy dane trzeba jeszcze raz wpisać do systemu dziedzinowego? Do jakiego? *(После подписи данные ещё раз вводят в рабочую систему? В какую?)* → the honest limit "printing does not remove typing into the domain system" and the next step (bridge to desktop applications).
+7. Czy macie przy stanowisku czytnik dokumentów albo skaner? Czy wolno Wam sprawdzać mDowód kodem QR? *(Есть ли у вас сканер документов? Проверяете ли mDowód по QR?)* → identity sources worth showing.
+8. Co musiałoby działać, żebyście chcieli tego używać od pierwszego dnia? *(Что должно работать, чтобы вы захотели пользоваться этим с первого дня?)* → acceptance of the clerk's screens.
+
 ## 4. Decisions taken during the event
 
 | Time | Decision | Why | Who decided |

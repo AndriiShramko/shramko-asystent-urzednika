@@ -1,6 +1,6 @@
-# Owner requirements (R1–R32)
+# Owner requirements (R1–R43)
 
-This is the complete list of what the project owner asked for, extracted from his spoken brief (two messages, 20 November 2026, originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
+This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026 and a third of 21 November, section F; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
 
 Vocabulary used by the owner: *wniosek* = application form or request filed in a Polish office; *urzędnik* = clerk, the office worker at the counter; *urząd* = public office (here: Urząd Miasta Bydgoszczy, the city hall); *UDIP* = the Polish Act on Access to Public Information; *mObywatel* = the Polish government's mobile app with digital documents.
 
@@ -56,6 +56,24 @@ English gloss: an intelligent and secure assistant that supports office staff in
 | R30 | Everything needed to build the system must be in git: the next agent starts from the repository alone. | whole repository |
 | R31 | If a usage limit interrupts the preparation, the work continues by itself after the limit resets. | handled outside this repository; the same protocol for the build phase is in [`docs/04-orchestration/resume-after-limit.md`](../04-orchestration/resume-after-limit.md) |
 | R32 | Everything not yet pushed on the preparing computer is pushed to the owner's private notes repository. | done outside this repository |
+
+## F. Third brief: one visit, complete set (21 November 2026, morning)
+
+The owner's words in short: "the data about me are stored in advance; I tell the clerk what I need, the clerk tells the assistant, the assistant picks the whole package of forms; I hand over my data and the forms are filled; the clerk fills in nothing and only checks, and the system shows only what must be re-checked, re-checks itself and looks for errors; if all is fine, print." The idea as one flow: [`docs/01-product/one-visit-package.md`](../01-product/one-visit-package.md).
+
+| Id | Requirement | Where |
+|---|---|---|
+| R33 | The resident's data are entered and kept in advance; at the counter they are handed over and every form is filled automatically. The clerk types nothing. (Sharpens R4, R5.) | one-visit-package §1; WP-B2 |
+| R34 | The resident says what they need; the assistant proposes at once the complete package of forms for that need, so that a forgotten form never forces the resident to fill everything in again. (Sharpens R16.) | [`WP-B7`](../03-plan/work-packages/WP-B7-B9-one-visit.md) |
+| R35 | The clerk only verifies, quickly: the screen shows only the data that must be re-checked; the system re-checks itself and searches for possible errors; if all is fine the set is printed. | one-visit-package §4; WP-B8, WP-B5 |
+| R36 | If the resident books a visit in the electronic queue and states the matter, the clerk who opens that request is offered the package at once; the clerk can still clarify what the resident wants, and the package changes. | one-visit-package §6; WP-B7; [`research/12`](../../research/12-one-visit-package-addendum.md) item 4 |
+| R37 | No manual comparison: a document scanner (the owner's reader) or a phone reads the document, the system compares it with what the resident provided and removes the clerk's mechanical error; the result goes to print, to the office's system, or both. | WP-B8, WP-B4 |
+| R38 | When the resident enters their data for the first time, fields already known to the browser (name, surname, address, e-mail) are pulled in so that nobody starts from zero. | WP-B9; research/12 items 8–9 |
+| R39 | The application that keeps the resident's data should ideally be mObywatel. | one-visit-package §5; [`research/04`](../../research/04-mobywatel-identity-once-only.md); adapter simulated in WP-B4 |
+| R40 | The most important thing is an effective presentation. First a document for the jury (PDF if that is all they accept) that shows by infographics and short text which pains are solved, how convenient it is and what the scale can be; with a link to a richer web page with infographics and animation for those who want more. | [`storyboard-pakiet.md`](../05-hackathon/presentation/storyboard-pakiet.md); `site-formularze/pakiet/` |
+| R41 | All of this is in git so that a new chat can hand the work to the next agent quickly and clearly. | [`START_HERE.md`](../../START_HERE.md), [`STATUS.md`](../03-plan/STATUS.md), this section |
+| R42 | Whatever was left unresearched or unfinished because of usage limits is finished now; the limits are no longer a constraint (owner, 21 November, 09:56). | research/12; STATUS "Budget" |
+| R43 | The owner does not know yet what hurts clerks most ("mostly helping to fill in and writing the forms in"); find out and close as many of those pains as possible. | one-visit-package §2; [`ONSITE-INTAKE.md`](../05-hackathon/ONSITE-INTAKE.md) §3a–3b |
 
 ## E. Constraints stated or implied
 

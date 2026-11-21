@@ -48,6 +48,23 @@ If recognition fails live: say so, open the form digitised earlier in the same s
 | 9 | Clerk | prints or saves the PDF | the paper with a dotted signature line; on screen: "dane usunięte" and the session countdown gone |
 | 10 | Both | the phone shows "Dziękujemy" and "Usuń moje dane z telefonu" | nothing personal remains on the office side |
 
+### Part two, extended: from need to signature (owner's brief of 21 November)
+
+When WP-B7 and WP-B8 pass their acceptance lists, part two is played in this order (same people, same forms; about 90 seconds; numbers on screen are whatever the run measured):
+
+| Step | Who | Action | What the audience sees |
+|---|---|---|---|
+| 0 | Visitor, before the counter | "Przygotuj wizytę" → "Chcę zameldować siebie i dziecko" | the set: two forms, "co zabrać", the fee; the saved profile is unlocked with a PIN (it was created earlier from saved browser data in one tap: show that tap only if there is time) |
+| 1 | Clerk | "Nowy interesant" | QR code and comparison code |
+| 2 | Visitor | scans; "Pokaż, co wyślę"; "Wyślij" | exactly the fields this set needs |
+| 3 | Clerk | opens the session | the set marked "wybrane przez mieszkańca"; the clerk asks one question and changes one answer: the set changes on screen |
+| 4 | Clerk | reads the identity document (camera on a synthetic specimen, or the reader simulator) | "zgodne z dokumentem" collapsed with its count; "do sprawdzenia" open: the address (not on the document) and one seeded slip found by the checker |
+| 5 | Clerk | confirms, corrects, "Tożsamość potwierdzona" | the print button becomes active |
+| 6 | Clerk | "Drukuj komplet" | the forms on the original templates, one per person, the name in large type before each; "dane usunięte" |
+| 7 | Both | | the counters: fields in the set, typed by the clerk (0), looked at by the clerk, seconds |
+
+If WP-B7 or WP-B8 is not ready, play the table above this section as written and say nothing about the missing step. Rules of the check and what must never be claimed: [`../01-product/one-visit-package.md`](../01-product/one-visit-package.md) §4 and §8.
+
 The strongest version: a juror scans the code with their own phone and types invented data. Offer it. If the venue network blocks phones, use the narrow window and say why.
 
 What to say about speed: only what the screen measured (seconds from scan to print). Do not quote a multiple from memory.

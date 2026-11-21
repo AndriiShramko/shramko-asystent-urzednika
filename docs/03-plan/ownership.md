@@ -17,10 +17,13 @@ An agent edits only the paths of its own package. Everything not listed is lead-
 | `apps/api/app/modules/public_demo/**`, `apps/clerk-web/src/features/public/**` | WP-A10 |
 | `apps/api/app/modules/forms/**`, `data/forms/**` (descriptors, bundles), `data/canonical-profile.schema.json` | WP-B1 |
 | `apps/api/app/modules/sessions/**`, `apps/relay/**`, `apps/visitor-pwa/**` | WP-B2 |
-| `apps/clerk-web/src/features/counter/**` | WP-B3 |
+| `apps/clerk-web/src/features/counter/**` except `set/**` and `verify/**` | WP-B3 |
 | `apps/api/app/modules/identity/**`, `apps/visitor-pwa/src/features/scan/**`, `apps/bridge/**` | WP-B4 |
 | `apps/api/app/modules/checker/**`, `prompts/form-check*.md` | WP-B5 |
 | `apps/api/app/modules/onboarding/**`, `prompts/form-onboarding*.md` | WP-B6 |
+| `apps/api/app/modules/bundles/**`, `apps/visitor-pwa/src/features/prepare/**`, `apps/clerk-web/src/features/counter/set/**` | WP-B7 |
+| `apps/api/app/modules/crosscheck/**`, `apps/clerk-web/src/features/counter/verify/**` | WP-B8 |
+| `apps/visitor-pwa/src/features/profile-start/**` | WP-B9 |
 | `README*`, `AGENTS.md`, `START_HERE.md`, `docs/**` except each package's own status file, `research/**` | lead |
 | `docs/03-plan/wip/WP-<id>.status.md` | the builder of that package |
 

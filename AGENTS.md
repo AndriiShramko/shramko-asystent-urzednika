@@ -13,6 +13,7 @@ An assistant for clerks of a Polish city office. Module A handles access-to-publ
 | Where the project stands, what is running | [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) |
 | What the owner asked for | [`docs/00-brief/requirements.md`](docs/00-brief/requirements.md) |
 | What to build first and why | [`docs/01-product/scope-decision.md`](docs/01-product/scope-decision.md), [`docs/03-plan/roadmap.md`](docs/03-plan/roadmap.md) |
+| What the demo must show (owner's latest brief: one visit, complete set) | [`docs/01-product/one-visit-package.md`](docs/01-product/one-visit-package.md) |
 | Your task | `docs/03-plan/work-packages/WP-<id>-*.md` |
 | Architecture, API, data, security, AI layer, forms engine | `docs/02-architecture/` |
 | Facts with sources | [`research/`](research/) (each file starts with a summary for builders) |

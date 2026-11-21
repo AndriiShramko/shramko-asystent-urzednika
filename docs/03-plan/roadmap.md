@@ -10,6 +10,8 @@ Since the owner's decision of 21 November the **primary track is B** (the forms 
 
 The goal is a working two-sided product: a form is digitised with AI in front of the jury, a visitor fills it once on a phone, the clerk sees the data, the checker flags a mistake, the form prints on the original template. Slides are secondary.
 
+Since the owner's third brief (21 November, R33–R43) the second half of the demo is told as **"from need to signature: one visit, complete set"**: the need yields the whole set of forms, the data are handed over once, the clerk sees only what needs a look. The idea and its rules: [`../01-product/one-visit-package.md`](../01-product/one-visit-package.md). It adds WP-B7, WP-B8 and WP-B9 to M3 and two change requests to M1 (the `autocomplete` tokens in WP-B2 and the richer bundle fields in WP-B1); it moves no gate.
+
 | Time | Milestone | Gate |
 |---|---|---|
 | Sat 11:00–12:00 | **G0. Intake**: read both full task cards, fill `docs/05-hackathon/ONSITE-INTAKE.md`, map the criteria to features, confirm the track with the owner | criteria table in the intake file; model provider decided |
@@ -17,12 +19,12 @@ The goal is a working two-sided product: a form is digitised with AI in front of
 | Sat 13:00–17:30 | **M1. The loop without AI**: WP-B1 (profile schema, forms engine, two forms from ready descriptors, visual regression), WP-B2 (visitor page, QR handoff, relay, deletion), WP-B3 first cut (waiting list, large-print check, print) | a synthetic visitor fills the form on a phone, the clerk prints it on the original template; nothing personal on disk or in logs |
 | by Sat 18:00 | **HackTribe draft** (deadline 20:00) | owner confirms it is submitted |
 | Sat 17:30–23:30 | **M2. The AI parts**: WP-B6 (form onboarding: blank PDF to a reviewed descriptor and an online form), WP-B5 (checker), WP-A2 reduced to what B needs (model gateway with mock, local and cloud providers; blank forms are public data, personal data only local or pseudonymised) | a form never seen before is digitised live and passes the print test; the checker catches the seeded mistakes; canary test passes |
-| Sat 23:30–Sun 04:00 | **M3. Depth and trust**: bundles for two life situations (one data entry, several forms and persons), WP-B4 (camera reading of the machine-readable zone on the device; simulators for the document reader and the government wallet), security tests of the relay, accessibility check, Polish, Ukrainian and English on the visitor page | demo script of `docs/05-hackathon/demo-script-formularze.md` runs end to end twice in a row, also with the network cable unplugged |
+| Sat 23:30–Sun 04:00 | **M3. Depth and trust**: bundles for two life situations (one data entry, several forms and persons) with attachments, fees and one clarifying question (WP-B7 items 1–3), WP-B4 (camera reading of the machine-readable zone on the device; simulators for the document reader and the government wallet), the comparison with the document and the three-group check (WP-B8), then the "prepare your visit" page (WP-B7 items 4–5) and the profile start (WP-B9), security tests of the relay, accessibility check, Polish, Ukrainian and English on the visitor page | demo script of `docs/05-hackathon/demo-script-formularze.md` runs end to end twice in a row, also with the network cable unplugged |
 | Sun 04:00–08:00 | **M4. The bridge and the numbers**: WP-AB1 as the showcase (the city's request template digitised with the same flow), measurements for the deck (`site-formularze/deck/metrics.json`), static demo build | measured numbers on slides; static demo at formularze.flyreelstudio.eu/app/ |
 | Sun 08:00–10:00 | **M5. Submission**: two demo videos (each under a minute, or one under two minutes), PDF from the deck print mode, README for jurors, links checked from a clean browser | owner submits in HackTribe by 10:00 (deadline 11:00) |
 | Sun 11:00–15:00 | **Pitch rehearsal**: live demo first, slides second; one timed run with a second phone | |
 
-Order inside M1 if the allowance is short: WP-B1 and WP-B2 first (they are independent), then WP-B3. If WP-B6 does not reach its gate, the demo uses forms with hand-made descriptors and says so; the two-sided flow is still the product.
+Order inside M1 if time is short: WP-B1 and WP-B2 first (they are independent), then WP-B3. Order inside M3: WP-B7 items 1–3, WP-B8, WP-B7 items 4–5, WP-B9 item 3; drop from the end. If WP-B6 does not reach its gate, the demo uses forms with hand-made descriptors and says so; the two-sided flow is still the product.
 
 ## Timeline for Track A (alternative: the city's task)
 
@@ -70,6 +72,9 @@ Module B (Track B, or optional slice in M4):
 | WP-B4 | Identity sources: camera reading of the machine-readable zone on the device; adapter interface for a hardware reader and for a government wallet (simulated) | WP-B2 | by spec |
 | WP-B5 | Form checker: deterministic rules first, model check on pseudonymised or local data, findings with severity | WP-B1, WP-A2 | think |
 | WP-B6 | Form onboarding assistant: from a blank PDF to a draft descriptor and a web form (the "digitise a form" pipeline; centre of Track B) | WP-B1 | think |
+| WP-B7 | From need to set: bundles with attachments, fees and questions; deterministic resolver; recommender; "prepare your visit" page whose intent travels with the handoff | WP-B1, WP-B3 | by spec |
+| WP-B8 | Comparison of the document reading with the declared data; verification screen in three groups (check by exception) | WP-B3, WP-B4 | think |
+| WP-B9 | Profile start without typing: `autocomplete` tokens (also a change request to WP-B2), contact-card shortcut, document read | WP-B2 | by spec |
 
 Rules: three packages at once at most; "think" packages go to the top model tier and always get an independent review; "by spec" packages go to the middle tier at medium effort. Each package has one owner branch and one status file. See [`../04-orchestration/`](../04-orchestration/).
 

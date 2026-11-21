@@ -1,0 +1,60 @@
+# R12 - Addendum of 21 November (morning): facts behind the "one visit, complete set" brief
+
+Research date: 2026-11-21, 10:00–10:40 CET, one hour before the event. It closes gaps that the earlier jobs left open for lack of budget (R11 "social-media posts: not read"; R07 "queue and e-service systems: not verified"; R06 "PESEL in MRZ: not verified") and adds what the owner's third brief needs ([`docs/00-brief/requirements.md`](../docs/00-brief/requirements.md), section F).
+
+Labels: **VERIFIED** = the primary page was fetched and read in this session; **SECONDARY** = an excerpt of the primary page returned by a search engine, or a reliable secondary page; **UNVERIFIED** = general knowledge or inference, not checked today.
+
+## TL;DR for builders and for the pitch
+
+1. **The partner said more about the forms task on social media than on the task page.** The announcement of the challenge "Cyfryzacja formularzy" (HackNation PL, reposted by Ministerstwo Cyfryzacji) reads: „Pdf, docx, xlsx... Pod takimi przykładowymi skrótami kryją się formularze usług publicznych. A co, gdyby od razu taki dokument dało się szybciej przetwarzać za pomocą AI? … Zadaniem uczestników będzie stworzenie narzędzia AI, które zmieni formularze w zwinne cyfrowe usługi publiczne. Premiowane będą rozwiązania open-source, które da się hostować w infrastrukturze on-prem. Dla zespołów mamy też pulę kredytów na modele LLM. Efekt ma pomóc instytucjom szybciej cyfryzować usługi, które dziś wciąż opierają się na papierowych i plikowych formularzach." (SECONDARY: the same text appears in search excerpts of three LinkedIn activity pages; the post itself was not opened.)
+   - **Open source and on-premise hosting earn extra credit.** The repository is MIT and CC BY 4.0 already; the build must also *run* without any cloud: one start command, a local open Polish model as a first-class provider, no external service in the critical path. Say it on the "what works" slide.
+   - **LLM credits exist for teams.** This answers item 2 of "Waiting for the owner" in STATUS: the owner asks for them at the COI stand at 11:30. Keep the local model and the mock anyway.
+   - **The object is a file-based form: PDF, DOCX, XLSX.** The onboarding step (WP-B6) must accept word-processor files (convert, then a person checks) and must not fail on a spreadsheet form; the mirror of 676 files holds 341 word-processor files, and the catalogue lists one XLS and one XLSX attachment (`data/demo-forms.md`, `research/03`).
+2. **A comment attributed to a COI employee** under that post says that if the winning solution meets their standards they "w zasadzie gwarantują wdrożenie w rozwiązaniu, które trafi do urzędników". (UNVERIFIED: one search excerpt, authorship not confirmed.) Do not quote it. Use it only as a reason to show who the daily user is (an office worker who publishes forms, and the clerk at the counter) and to have the deployment answer ready.
+3. **The task page still shows only the teasers** for both matching tasks at 10:15 on 21 November: no criteria, no deliverables, no licence clause. (VERIFIED, https://hacknation.pl/zadania.) The 11:00 gate stays the first job.
+4. **Bydgoszcz already knows the matter before the visit.** The city hall has run an online booking calendar since 2 February 2022: the resident "selects the matter the visit concerns, then a specific day and time". Address of the booking form: `https://rezerwacje.um.bydgoszcz.pl/booking/booking-reservation/add` (linked from the BIP page "Umawianie wizyty", last updated 28.09.2026). Service cards of the vehicle department say the counter serves "po pobraniu biletu kolejkowego lub po umówieniu wizyty przez e-rezerwację". (VERIFIED: city news page of 2.02.2022 and the BIP page; card UMB202 as a search excerpt, SECONDARY.) Not established: the vendor, any API, which personal data the booking asks for, whether the confirmation message can carry a link. **Consequence:** the "prepare your visit" step (WP-B7) is designed as a page the booking confirmation could link to; in the demo it is a stand-alone page and the link with the booking system is shown as a proposal, never as an integration.
+5. **The same city portal already maps a matter to its forms.** The 2022 article describes the e-office portal as guiding the resident "by asking questions, indicating forms to complete". (VERIFIED, same article.) Our addition is the next step: the indicated forms arrive filled.
+6. **An incomplete application costs at least a week.** Kodeks postępowania administracyjnego art. 64 § 2: „Jeżeli podanie nie spełnia innych wymagań ustalonych w przepisach prawa, należy wezwać wnoszącego do usunięcia braków w wyznaczonym terminie, nie krótszym niż siedem dni, z pouczeniem, że nieusunięcie tych braków spowoduje pozostawienie podania bez rozpoznania." (SECONDARY: text as shown by a legal portal for the consolidated text Dz.U. 2025 poz. 1691, state of 24.06.2026; confirm through the Sejm ELI API before it goes on a slide.) No statistics were found on how often offices issue such calls or how often a resident has to come twice: **do not put a percentage on a slide**; ask the clerks (ONSITE-INTAKE §3b).
+7. **Facts for the demo bundle "parent registers with a child"** (SECONDARY: search excerpts of the official Warsaw contact-centre knowledge base and of gov.pl; the Bydgoszcz card UMB55 lists the same files but its text was not re-opened today): a separate form for every person who registers, the child included; the owner of the premises, or another holder of a legal title, confirms the stay on the form itself (point 6); the legal title to the premises is shown for inspection; registering is free of charge, a certificate of temporary registration costs 17 zł; the duty is to register by the 30th day of living at the address. Build the bundle from the text of card UMB55, not from this paragraph.
+8. **Pre-filling a profile from what the browser already holds is a standard mechanism, not a trick.** The HTML `autocomplete` attribute tells the browser which saved value fits which field. Tokens that exist for our profile: `given-name`, `additional-name`, `family-name`, `bday` (or `bday-day`, `bday-month`, `bday-year`), `sex`, `street-address` or `address-line1`…`3`, `address-level2` (town), `address-level1` (province), `postal-code`, `country`, `tel`, `email`. (SECONDARY: excerpt of the MDN reference page for the attribute.) The page cannot read the saved values by itself; the browser offers them and the person taps to accept. (UNVERIFIED today, standard platform behaviour.) The same tokens are what the accessibility criterion "Identify Input Purpose" (WCAG 2.1, 1.3.5, level AA) expects on fields that collect data about the user, so this is work the product owes anyway. (SECONDARY: the W3C conformance rule for valid `autocomplete` values appeared in results; the criterion text was not opened.) There are **no tokens for PESEL, identity-document numbers, parents' names or the place of birth**: those are typed or read from the document.
+9. **A phone can hand over the person's own contact card, on Android only.** Contact Picker API: `navigator.contacts.select(['name','email','tel','address'])`; Chrome on Android from version 80, `address` from version 84; marked experimental and "limited availability"; needs HTTPS, a user gesture and a top-level page; the person picks the entry and the fields. (SECONDARY: excerpts of the MDN page and of the Chrome developer page.) Treat it as an optional shortcut behind feature detection; never as the main path.
+10. **PESEL on the identity card:** the 2019 card prints it on the reverse and stores it in the electronic layer (SECONDARY: excerpts of the regulation of 2019, Dz.U. 2019 poz. 224, and of the 2021 amendment of the act). Whether the machine-readable zone carries it in the optional field is **still UNVERIFIED**. The cross-check (WP-B8) therefore treats PESEL as "not confirmed by the machine-readable zone" unless a reader returns it from the chip or the clerk confirms it.
+
+## 1. What these facts change
+
+| Fact | Change in the plan | Where |
+|---|---|---|
+| Open source and on-premise are rewarded | "Runs with no cloud" becomes an acceptance item of the demo: local model option tested, one start command, a line in the README for jurors, a row on the "what works" slide | WP-00, WP-A2 (reduced), demo script, deck slide 7 |
+| LLM credits from the partner | Owner asks at the stand; if granted, the cloud provider is used for blank public forms only (data class `PUBLIC`), personal data stay local or pseudonymised as before | STATUS "Waiting for the owner" |
+| PDF, DOCX, XLSX named | WP-B6 input list widened; one word-processor form in the demo spares | WP-B6, `data/demo-forms.md` |
+| The matter is known at booking | New step "prepare your visit": intent before the visit, package ready when the clerk opens the session | WP-B7 |
+| The portal already points to forms | Position: "the portal tells you which forms; we hand them over filled" | storyboard, answer cards |
+| art. 64 § 2 | The complete-set promise gets a legal anchor: an incomplete set means a call and at least seven days | storyboard page 2, answer card |
+| `autocomplete` tokens | A requirement of the visitor page from its first commit | WP-B2, WP-B9 |
+| Contact Picker | Optional shortcut | WP-B9 |
+| PESEL not confirmed by the zone | Cross-check groups: PESEL lands in "to check" unless read from the chip | WP-B8 |
+
+## 2. Still open after this addendum
+
+- Full task cards, criteria, deliverables, licence clause: 11:00.
+- The booking system of the city hall: vendor, interface, data collected, link in the confirmation. Ask at the city's stand.
+- How often residents come twice and how often calls to complete an application are issued in Bydgoszcz: no public data. Ask the clerks; until then the pitch says "zdarza się" and gives the legal consequence, not a number.
+- PESEL in the optional field of the machine-readable zone of the Polish identity card; behaviour of the owner's reader with the chip of the current card.
+- Whether the mObywatel function "Przekaż instytucji" accepts a per-case list of fields from the institution (the idea in `docs/01-product/one-visit-package.md` §6 depends on it). Ask at the COI stand.
+- The exact wording of the LinkedIn post and of the comment in item 2 (open them on site from a logged-in phone; correct this file if they differ).
+
+## Sources
+
+All accessed 2026-11-21.
+
+1. https://hacknation.pl/zadania (VERIFIED) - both tasks still teasers at 10:15.
+2. LinkedIn activity pages showing the HackNation PL post and its repost by Ministerstwo Cyfryzacji about "Cyfryzacja formularzy" (SECONDARY, search excerpts only; three separate pages returned the identical text).
+3. https://www.bydgoszcz.pl/aktualnosci/tresc/urzad-bez-kolejki-zaplanuj-wizyte-lub-zalatw-spr/ (VERIFIED) - online booking since 2.02.2022; the e-office portal.
+4. https://bip.um.bydgoszcz.pl/artykul/1323/828/umawianie-wizyty (VERIFIED) - link to the booking form; updated 28.09.2026.
+5. https://um.bydgoszcz.pl/sprawa/173/czasowa-rejestracja-pojazdu/ (SECONDARY, search excerpt) - ticket or e-booking.
+6. https://lexlege.pl/kpa/art-64/ (SECONDARY) - text of art. 64 KPA, state of 24.06.2026.
+7. https://warszawa19115.pl/-/zameldowanie-na-pobyt-staly-obywateli-rp- and https://www.gov.pl/web/gov/zamelduj-sie-na-pobyt-staly-lub-czasowy-dluzszy-niz-3-miesiace (SECONDARY, search excerpts) - residence registration: one form per person, owner's confirmation, no fee, 30 days.
+8. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete (SECONDARY, excerpt) - tokens.
+9. https://www.w3.org/WAI/standards-guidelines/act/rules/73f2c2/ (SECONDARY) - rule "autocomplete attribute has valid value".
+10. https://developer.mozilla.org/docs/Web/API/Contact_Picker_API and https://developer.chrome.com/docs/capabilities/web-apis/contact-picker (SECONDARY, excerpts) - Contact Picker API.
+11. https://eli.gov.pl/eli/DU/2019/224/ogl/pol/pdf and https://api.sejm.gov.pl/eli/acts/DU/2021/1000/text.html (SECONDARY, search excerpts) - data on the identity card and in its electronic layer.
