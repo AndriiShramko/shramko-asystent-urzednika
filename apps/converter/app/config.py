@@ -17,6 +17,10 @@ ASYMMETRIC = ("RS256", "ES256", "EdDSA")
 ALGORITHMS = SYMMETRIC + ASYMMETRIC
 MAX_LEEWAY_S = 120
 MIN_HMAC_SECRET_BYTES = 32
+# Scan preparation steps of the image path (audit 8 SL1). A token joins SCAN_PREP_ACCEPTED (what SCAN_PREP=on turns
+# on) only after the scan lab accepted it.
+SCAN_PREP_TOKENS = frozenset({"glyph", "leader", "thick", "deskew", "scale", "rules", "orient"})
+SCAN_PREP_ACCEPTED: frozenset[str] = frozenset()
 
 
 class ConfigError(Exception):
@@ -75,6 +79,9 @@ class Settings:
     model_name: str = ""
     model_api_key_file: str = field(default="", repr=False)
     model_api_key_set: bool = False
+    # scan preparation of the image path: "off" (the image path of before), "on" (= SCAN_PREP_ACCEPTED) or a comma
+    # list of SCAN_PREP_TOKENS
+    scan_prep: str = "off"
     ui_enabled: bool = True
     ui_dir: str = ""
     log_level: str = "info"
@@ -178,6 +185,10 @@ class Settings:
                 out.append("ID_NAMESPACE must be a UUID")
         if self.sign_output == "jws" and not self.signing_key_file:
             out.append("SIGN_OUTPUT=jws needs SIGNING_KEY_FILE")
+        if self.scan_prep not in ("off", "on"):
+            bad = [t for t in self.scan_prep.split(",") if t.strip() not in SCAN_PREP_TOKENS]
+            if bad:
+                out.append(f"SCAN_PREP must be off, on or a comma list of {', '.join(sorted(SCAN_PREP_TOKENS))}")
         return out
 
     def _has_key(self) -> bool:
@@ -189,12 +200,22 @@ class Settings:
         return self.auth_mode == "jwt" or (self.auth_mode == "auto" and self._has_key())
 
 
+def scan_prep_steps(value: str) -> frozenset[str]:
+    """SCAN_PREP -> the set of scan preparation steps: off = none, on = the accepted set, else the named tokens."""
+    if value == "off":
+        return frozenset()
+    if value == "on":
+        return SCAN_PREP_ACCEPTED
+    return frozenset(t.strip() for t in value.split(",") if t.strip() in SCAN_PREP_TOKENS)
+
+
 def read_options(s: Settings):
     """Settings -> the limits and thresholds of the readers."""
     from app.readers import ReadOptions
 
     return ReadOptions(ocr_min_chars=s.ocr_min_chars, max_pages=s.max_pages, max_cells=s.max_cells,
-                       max_pixels=s.max_pixels, ocr_lang=s.ocr_langs)  # no timeout setting exists: ocr_timeout keeps its default
+                       max_pixels=s.max_pixels, ocr_lang=s.ocr_langs,  # no timeout setting exists: ocr_timeout keeps its default
+                       scan_prep=scan_prep_steps(s.scan_prep))
 
 
 def compose_options(s: Settings):
