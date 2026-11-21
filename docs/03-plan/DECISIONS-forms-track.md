@@ -138,6 +138,18 @@ Noted by the owner at the meeting, in his own words; read from the questionnaire
 | P15 | "Dzień lub więcej" | slide 3 may say that one form takes a day or more by hand, with the note „wg zespołu COI, 21.11.2026" |
 | P16 | not known; anything may be corrected | the order of the checks on the review page stays ours |
 
+## 6c. After the independent audit (21 November, about 17:00; program lead and build lead)
+
+Source: tickets of an audit by hosted models of three vendors, kept in [`audit-tickets-2026-11-21.md`](audit-tickets-2026-11-21.md).
+
+| Id | Decision |
+|---|---|
+| D19 | **Failure contract in three states.** Nothing readable: `422` with a plain Polish reason. Text read but the matter partly or not understood: `200` with the best form and a warning that every client sees (the response header `X-Converter-Warnings` with the count and the codes, and the review page), not only the sidecar. `500` only for our own faults. **`GATE_FAILED` stays `500`** (a form we built that fails the import gate is our fault), but only the blocking checks G1 to G4 (schema, partner rules, ids and references, conditions that do not parse) can raise it; G5 to G12 become warnings of a `200`. A condition that does not parse quarantines its dependent group (the guard stays, the group is kept), never deletes it |
+| D20 | **The standard scaffold stays when the paper is silent.** A standard section or route (proxy, entity, fee) is pruned only on an explicit exclusion written on the paper (for example "Wniosek składa się wyłącznie osobiście"), with the quote in the sidecar |
+| D21 | **Binary Word keeps the hand-made reader.** LibreOffice only if a measured comparison against each `.docx` sibling shows it clearly better (label Jaccard below 0.7 and not fixable in an hour) |
+| D22 | **Front end: the review view first** (upload, fields of the matter first with page and snippet, warnings, standard sections collapsed, download byte-equal to REST); the e-service preview of a branch only if conditions ship |
+| D23 | **arm64: nothing** until the jury's hardware is known (question to COI pending) |
+
 ## 7. Changes to this file
 
 | Time | Change | Why |
