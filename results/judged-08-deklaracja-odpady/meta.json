@@ -7,7 +7,7 @@
   },
   "counts": {
     "pages": 8,
-    "fields": 85,
+    "fields": 91,
     "source_pages": 6
   },
   "warnings": [
@@ -20,7 +20,7 @@
         403.56,
         96.0
       ],
-      "candidate": "c61",
+      "candidate": "c60",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -33,7 +33,7 @@
         403.56,
         159.96
       ],
-      "candidate": "c63",
+      "candidate": "c62",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -46,7 +46,7 @@
         403.56,
         223.68
       ],
-      "candidate": "c65",
+      "candidate": "c64",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -59,7 +59,7 @@
         403.56,
         287.28
       ],
-      "candidate": "c67",
+      "candidate": "c66",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -72,7 +72,7 @@
         403.56,
         347.16
       ],
-      "candidate": "c69",
+      "candidate": "c68",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -85,7 +85,7 @@
         403.56,
         514.32
       ],
-      "candidate": "c72",
+      "candidate": "c71",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -98,7 +98,7 @@
         403.56,
         577.56
       ],
-      "candidate": "c74",
+      "candidate": "c73",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -111,7 +111,7 @@
         403.56,
         641.04
       ],
-      "candidate": "c77",
+      "candidate": "c76",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -124,7 +124,7 @@
         403.56,
         704.88
       ],
-      "candidate": "c78",
+      "candidate": "c77",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -137,7 +137,7 @@
         449.4,
         372.72
       ],
-      "candidate": "c89",
+      "candidate": "c88",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -210,12 +210,25 @@
       "code": "LABEL_NOT_FOUND",
       "page": 2,
       "box": [
+        105.96,
+        213.6,
+        188.28,
+        234.36
+      ],
+      "candidate": "c35",
+      "evidence": [],
+      "detail": "no text that this place belongs to"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 2,
+      "box": [
         204.72,
         213.6,
         270.48,
         234.36
       ],
-      "candidate": "c37",
+      "candidate": "c36",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -228,7 +241,7 @@
         270.48,
         327.6
       ],
-      "candidate": "c40",
+      "candidate": "c39",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -241,7 +254,7 @@
         530.52,
         327.6
       ],
-      "candidate": "c46",
+      "candidate": "c45",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -254,7 +267,7 @@
         403.56,
         74.76
       ],
-      "candidate": "c81",
+      "candidate": "c80",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -267,7 +280,7 @@
         498.6,
         372.72
       ],
-      "candidate": "c86",
+      "candidate": "c85",
       "evidence": [],
       "detail": "two texts are equally near; the label is the first of them"
     },
@@ -280,7 +293,7 @@
         79.44,
         493.32
       ],
-      "candidate": "c98",
+      "candidate": "c97",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -336,107 +349,18 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "AMBIGUOUS_GROUP",
-      "page": 2,
-      "candidate": "c35",
-      "evidence": [],
-      "detail": "a single box outside any group: 'pierwsza deklaracja - data zdarzenia powodującego'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "powstanie_obowiazku_oplaty",
-      "candidate": "c36",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c37",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "AMBIGUOUS_GROUP",
-      "page": 2,
-      "candidate": "c38",
-      "evidence": [],
-      "detail": "a single box outside any group: 'ustanie obowiązku uiszczania opłaty – data zdarzenia'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "powodujacego_ustanie_obowiazku_oplaty",
-      "candidate": "c39",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c40",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "AMBIGUOUS_GROUP",
-      "page": 2,
-      "candidate": "c41",
-      "evidence": [],
-      "detail": "a single box outside any group: 'nowa deklaracja składana ze względu na zmianę'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "komunalnymi_data_wystapienia_zmiany_danych",
-      "candidate": "c42",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "naleznej_oplaty_za_gospodarowanie_odpadami",
-      "candidate": "c43",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "AMBIGUOUS_GROUP",
-      "page": 2,
-      "candidate": "c44",
-      "evidence": [],
-      "detail": "a single box outside any group: 'korekta złożonej, obowiązującej deklaracji - data'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "wystapienia_zmiany_danych",
-      "candidate": "c45",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c46",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "numer_nieruchomosci_domu",
-      "candidate": "c47",
+      "candidate": "c27",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "REQUIRED_INFERRED",
       "page": 2,
-      "field": "kod_pocztowy",
-      "candidate": "c48",
+      "field": "wojewodztwo",
+      "candidate": "c28",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -444,7 +368,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "ulica",
-      "candidate": "c49",
+      "candidate": "c29",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -452,7 +376,130 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "numer_lokalu",
-      "candidate": "c50",
+      "candidate": "c30",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "gmina",
+      "candidate": "c31",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "kod_pocztowy",
+      "candidate": "c32",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "AMBIGUOUS_GROUP",
+      "page": 2,
+      "candidate": "c33",
+      "evidence": [],
+      "detail": "the paper does not say whether one or several options may be marked; several are allowed"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "okolicznosci",
+      "candidate": "c33",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 2,
+      "candidate": "c35",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 2,
+      "candidate": "c36",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "powodujacego_ustanie_obowiazku_oplaty",
+      "candidate": "c38",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 2,
+      "candidate": "c39",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "komunalnymi_data_wystapienia_zmiany_danych",
+      "candidate": "c41",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "naleznej_oplaty_za_gospodarowanie_odpadami",
+      "candidate": "c42",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "wystapienia_zmiany_danych",
+      "candidate": "c44",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 2,
+      "candidate": "c45",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "numer_nieruchomosci_domu_2",
+      "candidate": "c46",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "kod_pocztowy_2",
+      "candidate": "c47",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "ulica_2",
+      "candidate": "c48",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "numer_lokalu_2",
+      "candidate": "c49",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -460,7 +507,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "adres_lub_opis_miejsca_lokalizacji_pojemnikow",
-      "candidate": "c51",
+      "candidate": "c50",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -468,7 +515,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "rodzaj_nieruchomosci",
-      "candidate": "c52",
+      "candidate": "c51",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -476,14 +523,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja",
-      "candidate": "c55",
+      "candidate": "c54",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "AMBIGUOUS_GROUP",
       "page": 2,
-      "candidate": "c58",
+      "candidate": "c57",
       "evidence": [],
       "detail": "a single box outside any group: 'Oświadczam, że nieruchomość wyposażona jest w przydomowy kompostownik, w którym '; an option or a yes-or-no question"
     },
@@ -491,7 +538,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "oswiadczenie_o_wysokosci_oplaty_za_gospodarowanie_odpadami",
-      "candidate": "c59",
+      "candidate": "c58",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -499,14 +546,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "obliczenie_wysokosci_oplaty_dla_nieruchomosci",
-      "candidate": "c60",
+      "candidate": "c59",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c61",
+      "candidate": "c60",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -514,14 +561,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "nie_przekraczajacej_45_m2",
-      "candidate": "c62",
+      "candidate": "c61",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c63",
+      "candidate": "c62",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -529,14 +576,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "przekraczajacej_45_m2_jednak_nie_wiekszej",
-      "candidate": "c64",
+      "candidate": "c63",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c65",
+      "candidate": "c64",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -544,14 +591,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "przekraczajacej_60_m2_jednak_nie_wiekszej",
-      "candidate": "c66",
+      "candidate": "c65",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c67",
+      "candidate": "c66",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -559,14 +606,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "przekraczajacej_80_m2",
-      "candidate": "c68",
+      "candidate": "c67",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c69",
+      "candidate": "c68",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -574,7 +621,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "zwolnieniem_dochodowym",
-      "candidate": "c70",
+      "candidate": "c69",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -582,14 +629,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "pole_15_zl_00_gr",
-      "candidate": "c71",
+      "candidate": "c70",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c72",
+      "candidate": "c71",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -597,14 +644,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "nie_przekraczajacej_45_m2_2",
-      "candidate": "c73",
+      "candidate": "c72",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c74",
+      "candidate": "c73",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -612,7 +659,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "przekraczajacej_45_m2_jednak_nie_wiekszej_2",
-      "candidate": "c75",
+      "candidate": "c74",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -620,9 +667,16 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "przekraczajacej_60_m2_jednak_nie_wiekszej_2",
-      "candidate": "c76",
+      "candidate": "c75",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 3,
+      "candidate": "c76",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -632,17 +686,10 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "LABEL_NOT_FOUND",
-      "page": 3,
-      "candidate": "c78",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "przekraczajacej_80_m2_2",
-      "candidate": "c79",
+      "candidate": "c78",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -650,14 +697,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "zwolnieniem_dochodowym_2",
-      "candidate": "c80",
+      "candidate": "c79",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 4,
-      "candidate": "c81",
+      "candidate": "c80",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -665,7 +712,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 4,
       "field": "nr_tel_fax",
-      "candidate": "c82",
+      "candidate": "c81",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -673,14 +720,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 4,
       "field": "adres_e_mail",
-      "candidate": "c83",
+      "candidate": "c82",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "AMBIGUOUS_GROUP",
       "page": 4,
-      "candidate": "c84",
+      "candidate": "c83",
       "evidence": [],
       "detail": "a single box outside any group: 'Wyrażam zgodę na otrzymywanie korespondencji za pośrednictwem adresu poczty elek'; an option or a yes-or-no question"
     },
@@ -688,7 +735,7 @@
       "code": "REQUIRED_INFERRED",
       "page": 4,
       "field": "imie",
-      "candidate": "c96",
+      "candidate": "c95",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -696,14 +743,14 @@
       "code": "REQUIRED_INFERRED",
       "page": 4,
       "field": "nazwisko",
-      "candidate": "c97",
+      "candidate": "c96",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 4,
-      "candidate": "c98",
+      "candidate": "c97",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -711,13 +758,18 @@
       "code": "REQUIRED_INFERRED",
       "page": 4,
       "field": "data_wypelnienia",
-      "candidate": "c99",
+      "candidate": "c98",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
       "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "CHECKBOX: no export shows one",
+      "field": "3ac55d05-7c46-5efb-93c8-70daf15a00ec"
     },
     {
       "code": "INFERRED_SHAPE",
@@ -855,29 +907,37 @@
       "3c9aea42-e694-5a0f-a83b-322ab5f3f381": "paper",
       "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5": "paper",
       "c34aafe2-7373-5042-b6a9-1a1cc2432341": "paper",
+      "7899dbbd-f118-5d46-ad00-f0c1622608b9": "paper",
+      "dd28bcc6-eab2-565b-8dde-45b4f5be3cb3": "paper",
+      "aa61350f-c70e-55a8-80ac-9003b5bcd4da": "paper",
+      "52041a41-3c27-5804-a0f8-ea7a527f0a46": "paper",
+      "953674e3-9dcb-5848-89ac-16fab38f151e": "paper",
+      "deae63b7-33b6-5915-a8b5-8b69eb0025c2": "paper",
+      "2496de8c-5b5b-5e0d-ba06-466e9fae31a3": "paper",
       "348e0742-2d56-52f3-b79e-0282ff6ab5ae": "paper",
-      "c2b16bf9-456b-5cbe-a15a-6719a475ad55": "paper",
+      "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "paper",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "paper",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "paper",
       "a87bea2d-83ea-5502-b50b-1b39a32b7e8a": "paper",
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": "paper",
       "19e8af72-e472-56ef-a6bf-d3f4a6403647": "paper",
-      "a9c44b10-edfc-5ec5-b8c7-ebee424e23d8": "paper",
-      "013755bb-2947-5ac4-8fb9-f6c5471b2348": "paper",
-      "7ad87dcd-5d09-5b50-9bba-b20f3fbda133": "paper",
-      "1fd684b3-f0cf-5655-8d0a-ac3f51b91252": "paper",
+      "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": "paper",
+      "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f": "paper",
+      "b0a3f978-5325-5554-a934-f86c4829d9d6": "paper",
+      "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5": "paper",
       "38fecd9d-f3a0-5b76-aa60-63554d1ecf0d": "paper",
       "6640b303-c895-552b-a568-f1c4d8696107": "paper",
       "5ebe23cb-a76b-5a03-ad42-f70481121c19": "paper",
       "13a1d715-90ae-5bad-80b1-513800a49512": "paper",
       "02f267ad-5daf-529e-80a1-6e115345a279": "paper",
       "88a2f489-5973-5927-aab3-11d0ae3fce4d": "paper",
-      "86b45767-2f4e-5e7a-9b72-33700476f38e": "paper",
-      "80fc6bcf-1b2c-5e91-88d8-70c857477c15": "paper",
-      "3a66a8a4-85f7-54c6-8021-5bbafdb95467": "paper",
-      "21438928-ae15-52fb-9f4c-938a31856842": "paper",
-      "71c0b01c-7203-5c06-baca-6b52c2c1c859": "paper",
-      "19e12cf8-3474-5a2a-886b-ecd05943a8d1": "paper",
+      "a4afc1ef-f75b-5dee-93f8-aeb7a93a6c44": "paper",
+      "13622ef0-45b2-5399-a934-3b250617d916": "paper",
+      "92878255-6e2b-5999-a231-ea7d5b4785ad": "paper",
+      "fc048409-31d0-5426-bb1a-6e7901dd821d": "paper",
+      "894a5cc4-ff92-59c5-a1f6-6143d4b60b81": "paper",
+      "26e5de0b-9d94-5780-a06f-8c512d2874a2": "paper",
+      "b24f37d1-e372-5092-8973-4198f80e499c": "paper",
       "8acb409d-1e79-5253-9ac9-d3cb89f13ced": "paper",
       "9e0c2c31-4139-5116-906c-4a386cb8b1c8": "paper",
       "d7d26d71-a107-52ab-95cb-5f580ab10960": "paper",
@@ -909,24 +969,30 @@
       "3c9aea42-e694-5a0f-a83b-322ab5f3f381": "w_zarzadzie_lub_uzytkowaniu",
       "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5": "rodzaj_nieruchomosci",
       "c34aafe2-7373-5042-b6a9-1a1cc2432341": "mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja",
-      "c2b16bf9-456b-5cbe-a15a-6719a475ad55": "powstanie_obowiazku_oplaty",
+      "dd28bcc6-eab2-565b-8dde-45b4f5be3cb3": "numer_nieruchomosci_domu",
+      "aa61350f-c70e-55a8-80ac-9003b5bcd4da": "wojewodztwo",
+      "52041a41-3c27-5804-a0f8-ea7a527f0a46": "ulica",
+      "953674e3-9dcb-5848-89ac-16fab38f151e": "numer_lokalu",
+      "deae63b7-33b6-5915-a8b5-8b69eb0025c2": "gmina",
+      "2496de8c-5b5b-5e0d-ba06-466e9fae31a3": "kod_pocztowy",
+      "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "okolicznosci",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "powodujacego_ustanie_obowiazku_oplaty",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "komunalnymi_data_wystapienia_zmiany_danych",
       "a87bea2d-83ea-5502-b50b-1b39a32b7e8a": "naleznej_oplaty_za_gospodarowanie_odpadami",
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": "wystapienia_zmiany_danych",
-      "a9c44b10-edfc-5ec5-b8c7-ebee424e23d8": "numer_nieruchomosci_domu",
-      "013755bb-2947-5ac4-8fb9-f6c5471b2348": "kod_pocztowy",
-      "7ad87dcd-5d09-5b50-9bba-b20f3fbda133": "ulica",
-      "1fd684b3-f0cf-5655-8d0a-ac3f51b91252": "numer_lokalu",
+      "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": "numer_nieruchomosci_domu_2",
+      "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f": "kod_pocztowy_2",
+      "b0a3f978-5325-5554-a934-f86c4829d9d6": "ulica_2",
+      "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5": "numer_lokalu_2",
       "6640b303-c895-552b-a568-f1c4d8696107": "adres_lub_opis_miejsca_lokalizacji_pojemnikow",
       "13a1d715-90ae-5bad-80b1-513800a49512": "oswiadczenie_o_wysokosci_oplaty_za_gospodarowanie_odpadami",
       "88a2f489-5973-5927-aab3-11d0ae3fce4d": "obliczenie_wysokosci_oplaty_dla_nieruchomosci",
-      "86b45767-2f4e-5e7a-9b72-33700476f38e": "nie_przekraczajacej_45_m2",
-      "80fc6bcf-1b2c-5e91-88d8-70c857477c15": "przekraczajacej_45_m2_jednak_nie_wiekszej",
-      "3a66a8a4-85f7-54c6-8021-5bbafdb95467": "przekraczajacej_60_m2_jednak_nie_wiekszej",
-      "21438928-ae15-52fb-9f4c-938a31856842": "przekraczajacej_80_m2",
-      "71c0b01c-7203-5c06-baca-6b52c2c1c859": "zwolnieniem_dochodowym",
-      "19e12cf8-3474-5a2a-886b-ecd05943a8d1": "pole_15_zl_00_gr",
+      "13622ef0-45b2-5399-a934-3b250617d916": "nie_przekraczajacej_45_m2",
+      "92878255-6e2b-5999-a231-ea7d5b4785ad": "przekraczajacej_45_m2_jednak_nie_wiekszej",
+      "fc048409-31d0-5426-bb1a-6e7901dd821d": "przekraczajacej_60_m2_jednak_nie_wiekszej",
+      "894a5cc4-ff92-59c5-a1f6-6143d4b60b81": "przekraczajacej_80_m2",
+      "26e5de0b-9d94-5780-a06f-8c512d2874a2": "zwolnieniem_dochodowym",
+      "b24f37d1-e372-5092-8973-4198f80e499c": "pole_15_zl_00_gr",
       "9e0c2c31-4139-5116-906c-4a386cb8b1c8": "nie_przekraczajacej_45_m2_2",
       "d7d26d71-a107-52ab-95cb-5f580ab10960": "przekraczajacej_45_m2_jednak_nie_wiekszej_2",
       "7d1b1d4d-a189-578a-bf5a-60902245fbd1": "przekraczajacej_60_m2_jednak_nie_wiekszej_2",
@@ -936,15 +1002,16 @@
       "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf": "adres_e_mail",
       "c78c28da-3c2e-516f-ac11-17bfb907f225": "imie",
       "14989f43-1a7f-5ab7-a2e4-14e1da32ac26": "nazwisko",
-      "41773efb-68f3-5f90-abab-49cf916dc175": "data_wypelnienia"
+      "41773efb-68f3-5f90-abab-49cf916dc175": "data_wypelnienia",
+      "1e78af4c-0cbe-5e33-accf-dba4ae608005": "inne_zalaczniki"
     },
     "ledger": {
-      "blanks_found": 101,
-      "became_field": 33,
-      "merged": 17,
-      "covered_by_standard": 21,
+      "blanks_found": 100,
+      "became_field": 39,
+      "merged": 21,
+      "covered_by_standard": 13,
       "left_out": 3,
-      "awaiting_decision": 27,
+      "awaiting_decision": 24,
       "rows": [
         {
           "candidate": "c1",
@@ -1085,257 +1152,261 @@
         },
         {
           "candidate": "c27",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "dd28bcc6-eab2-565b-8dde-45b4f5be3cb3"
         },
         {
           "candidate": "c28",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "aa61350f-c70e-55a8-80ac-9003b5bcd4da"
         },
         {
           "candidate": "c29",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "52041a41-3c27-5804-a0f8-ea7a527f0a46"
         },
         {
           "candidate": "c30",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "953674e3-9dcb-5848-89ac-16fab38f151e"
         },
         {
           "candidate": "c31",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "deae63b7-33b6-5915-a8b5-8b69eb0025c2"
         },
         {
           "candidate": "c32",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "2496de8c-5b5b-5e0d-ba06-466e9fae31a3"
         },
         {
           "candidate": "c33",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "3ac55d05-7c46-5efb-93c8-70daf15a00ec"
         },
         {
           "candidate": "c34",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "MERGED",
+          "into": "c33",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c35",
           "fate": "AWAITING_DECISION",
-          "decision": "box_c35"
+          "decision": "label_c35"
         },
         {
           "candidate": "c36",
-          "fate": "FIELD",
-          "field": "c2b16bf9-456b-5cbe-a15a-6719a475ad55"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c36"
         },
         {
           "candidate": "c37",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c37"
+          "fate": "MERGED",
+          "into": "c33",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c38",
-          "fate": "AWAITING_DECISION",
-          "decision": "box_c38"
-        },
-        {
-          "candidate": "c39",
           "fate": "FIELD",
           "field": "2762978c-e3da-5b8d-a94e-114d28a5e641"
         },
         {
-          "candidate": "c40",
+          "candidate": "c39",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c40"
+          "decision": "label_c39"
+        },
+        {
+          "candidate": "c40",
+          "fate": "MERGED",
+          "into": "c33",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c41",
-          "fate": "AWAITING_DECISION",
-          "decision": "box_c41"
-        },
-        {
-          "candidate": "c42",
           "fate": "FIELD",
           "field": "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d"
         },
         {
-          "candidate": "c43",
+          "candidate": "c42",
           "fate": "FIELD",
           "field": "a87bea2d-83ea-5502-b50b-1b39a32b7e8a"
         },
         {
-          "candidate": "c44",
-          "fate": "AWAITING_DECISION",
-          "decision": "box_c44"
+          "candidate": "c43",
+          "fate": "MERGED",
+          "into": "c33",
+          "why": "GROUP_MEMBER"
         },
         {
-          "candidate": "c45",
+          "candidate": "c44",
           "fate": "FIELD",
           "field": "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c"
         },
         {
-          "candidate": "c46",
+          "candidate": "c45",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c46"
+          "decision": "label_c45"
+        },
+        {
+          "candidate": "c46",
+          "fate": "FIELD",
+          "field": "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3"
         },
         {
           "candidate": "c47",
           "fate": "FIELD",
-          "field": "a9c44b10-edfc-5ec5-b8c7-ebee424e23d8"
+          "field": "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f"
         },
         {
           "candidate": "c48",
           "fate": "FIELD",
-          "field": "013755bb-2947-5ac4-8fb9-f6c5471b2348"
+          "field": "b0a3f978-5325-5554-a934-f86c4829d9d6"
         },
         {
           "candidate": "c49",
           "fate": "FIELD",
-          "field": "7ad87dcd-5d09-5b50-9bba-b20f3fbda133"
+          "field": "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5"
         },
         {
           "candidate": "c50",
           "fate": "FIELD",
-          "field": "1fd684b3-f0cf-5655-8d0a-ac3f51b91252"
+          "field": "6640b303-c895-552b-a568-f1c4d8696107"
         },
         {
           "candidate": "c51",
           "fate": "FIELD",
-          "field": "6640b303-c895-552b-a568-f1c4d8696107"
+          "field": "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5"
         },
         {
           "candidate": "c52",
-          "fate": "FIELD",
-          "field": "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5"
+          "fate": "MERGED",
+          "into": "c51",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c53",
           "fate": "MERGED",
-          "into": "c52",
+          "into": "c51",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c54",
-          "fate": "MERGED",
-          "into": "c52",
-          "why": "GROUP_MEMBER"
-        },
-        {
-          "candidate": "c55",
           "fate": "FIELD",
           "field": "c34aafe2-7373-5042-b6a9-1a1cc2432341"
         },
         {
+          "candidate": "c55",
+          "fate": "MERGED",
+          "into": "c54",
+          "why": "GROUP_MEMBER"
+        },
+        {
           "candidate": "c56",
           "fate": "MERGED",
-          "into": "c55",
+          "into": "c54",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c57",
-          "fate": "MERGED",
-          "into": "c55",
-          "why": "GROUP_MEMBER"
+          "fate": "AWAITING_DECISION",
+          "decision": "box_c57"
         },
         {
           "candidate": "c58",
-          "fate": "AWAITING_DECISION",
-          "decision": "box_c58"
-        },
-        {
-          "candidate": "c59",
           "fate": "FIELD",
           "field": "13a1d715-90ae-5bad-80b1-513800a49512"
         },
         {
-          "candidate": "c60",
+          "candidate": "c59",
           "fate": "FIELD",
           "field": "88a2f489-5973-5927-aab3-11d0ae3fce4d"
         },
         {
-          "candidate": "c61",
+          "candidate": "c60",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c61"
+          "decision": "label_c60"
+        },
+        {
+          "candidate": "c61",
+          "fate": "FIELD",
+          "field": "13622ef0-45b2-5399-a934-3b250617d916"
         },
         {
           "candidate": "c62",
-          "fate": "FIELD",
-          "field": "86b45767-2f4e-5e7a-9b72-33700476f38e"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c62"
         },
         {
           "candidate": "c63",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c63"
+          "fate": "FIELD",
+          "field": "92878255-6e2b-5999-a231-ea7d5b4785ad"
         },
         {
           "candidate": "c64",
-          "fate": "FIELD",
-          "field": "80fc6bcf-1b2c-5e91-88d8-70c857477c15"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c64"
         },
         {
           "candidate": "c65",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c65"
+          "fate": "FIELD",
+          "field": "fc048409-31d0-5426-bb1a-6e7901dd821d"
         },
         {
           "candidate": "c66",
-          "fate": "FIELD",
-          "field": "3a66a8a4-85f7-54c6-8021-5bbafdb95467"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c66"
         },
         {
           "candidate": "c67",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c67"
+          "fate": "FIELD",
+          "field": "894a5cc4-ff92-59c5-a1f6-6143d4b60b81"
         },
         {
           "candidate": "c68",
-          "fate": "FIELD",
-          "field": "21438928-ae15-52fb-9f4c-938a31856842"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c68"
         },
         {
           "candidate": "c69",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c69"
+          "fate": "FIELD",
+          "field": "26e5de0b-9d94-5780-a06f-8c512d2874a2"
         },
         {
           "candidate": "c70",
           "fate": "FIELD",
-          "field": "71c0b01c-7203-5c06-baca-6b52c2c1c859"
+          "field": "b24f37d1-e372-5092-8973-4198f80e499c"
         },
         {
           "candidate": "c71",
-          "fate": "FIELD",
-          "field": "19e12cf8-3474-5a2a-886b-ecd05943a8d1"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c71"
         },
         {
           "candidate": "c72",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c72"
-        },
-        {
-          "candidate": "c73",
           "fate": "FIELD",
           "field": "9e0c2c31-4139-5116-906c-4a386cb8b1c8"
         },
         {
-          "candidate": "c74",
+          "candidate": "c73",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c74"
+          "decision": "label_c73"
         },
         {
-          "candidate": "c75",
+          "candidate": "c74",
           "fate": "FIELD",
           "field": "d7d26d71-a107-52ab-95cb-5f580ab10960"
         },
         {
-          "candidate": "c76",
+          "candidate": "c75",
           "fate": "FIELD",
           "field": "7d1b1d4d-a189-578a-bf5a-60902245fbd1"
+        },
+        {
+          "candidate": "c76",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c76"
         },
         {
           "candidate": "c77",
@@ -1344,127 +1415,122 @@
         },
         {
           "candidate": "c78",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c78"
-        },
-        {
-          "candidate": "c79",
           "fate": "FIELD",
           "field": "d3fbeb69-48a2-52fd-8cd8-29bf052dd3c6"
         },
         {
-          "candidate": "c80",
+          "candidate": "c79",
           "fate": "FIELD",
           "field": "dbc4cd36-4d69-58c9-a94d-de3b2d0cc043"
         },
         {
-          "candidate": "c81",
+          "candidate": "c80",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c81"
+          "decision": "label_c80"
         },
         {
-          "candidate": "c82",
+          "candidate": "c81",
           "fate": "FIELD",
           "field": "2335f793-aae3-5cff-b4a7-e123ec94c03f"
         },
         {
-          "candidate": "c83",
+          "candidate": "c82",
           "fate": "FIELD",
           "field": "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf"
         },
         {
-          "candidate": "c84",
+          "candidate": "c83",
           "fate": "AWAITING_DECISION",
-          "decision": "box_c84"
+          "decision": "box_c83"
         },
         {
-          "candidate": "c85",
+          "candidate": "c84",
           "fate": "FIELD",
           "field": "1e78af4c-0cbe-5e33-accf-dba4ae608005"
         },
         {
-          "candidate": "c86",
+          "candidate": "c85",
           "fate": "AWAITING_DECISION",
-          "decision": "attachment_c86"
+          "decision": "attachment_c85"
+        },
+        {
+          "candidate": "c86",
+          "fate": "MERGED",
+          "into": "c85",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c87",
           "fate": "MERGED",
-          "into": "c86",
+          "into": "c85",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c88",
-          "fate": "MERGED",
-          "into": "c86",
-          "why": "GROUP_MEMBER"
+          "fate": "AWAITING_DECISION",
+          "decision": "attachment_c88"
         },
         {
           "candidate": "c89",
-          "fate": "AWAITING_DECISION",
-          "decision": "attachment_c89"
-        },
-        {
-          "candidate": "c90",
           "fate": "MERGED",
-          "into": "c86",
+          "into": "c85",
           "why": "GROUP_MEMBER"
         },
         {
-          "candidate": "c91",
+          "candidate": "c90",
           "fate": "AWAITING_DECISION",
-          "decision": "attachment_c91"
+          "decision": "attachment_c90"
+        },
+        {
+          "candidate": "c91",
+          "fate": "MERGED",
+          "into": "c90",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c92",
           "fate": "MERGED",
-          "into": "c91",
+          "into": "c90",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c93",
           "fate": "MERGED",
-          "into": "c91",
-          "why": "GROUP_MEMBER"
-        },
-        {
-          "candidate": "c94",
-          "fate": "MERGED",
-          "into": "c85",
+          "into": "c84",
           "why": "LINE_BLOCK"
         },
         {
-          "candidate": "c95",
+          "candidate": "c94",
           "fate": "LEFT_OUT",
           "reason": "SIGNATURE_AND_DATE"
         },
         {
-          "candidate": "c96",
+          "candidate": "c95",
           "fate": "FIELD",
           "field": "c78c28da-3c2e-516f-ac11-17bfb907f225"
         },
         {
-          "candidate": "c97",
+          "candidate": "c96",
           "fate": "FIELD",
           "field": "14989f43-1a7f-5ab7-a2e4-14e1da32ac26"
         },
         {
-          "candidate": "c98",
+          "candidate": "c97",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c98"
+          "decision": "label_c97"
         },
         {
-          "candidate": "c99",
+          "candidate": "c98",
           "fate": "FIELD",
           "field": "41773efb-68f3-5f90-abab-49cf916dc175"
         },
         {
-          "candidate": "c100",
+          "candidate": "c99",
           "fate": "LEFT_OUT",
           "reason": "SIGNATURE_AND_DATE"
         },
         {
-          "candidate": "c101",
+          "candidate": "c100",
           "fate": "LEFT_OUT",
           "reason": "OFFICE_USE"
         }

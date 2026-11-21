@@ -7,7 +7,7 @@ The idea in one line: **a compiler with an accountant, not a scanner with AI.** 
 **Published image** (milestone (a), commit `920dbf1`, tag `track-f-a`): `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf`. Convert without a network (from [`apps/converter/README.md`](apps/converter/README.md), which also covers `serve`, the token and all settings):
 
 ```bash
-docker run --rm --network none --read-only --cap-drop ALL --user 10001 \
+docker run --rm --network none --read-only --tmpfs /tmp --cap-drop ALL --user 10001 \
   -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" \
   ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf \
   convert /in/form.pdf --out /out/form.json

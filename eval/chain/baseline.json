@@ -13,10 +13,10 @@
    "fields": 0
   },
   "hostile:pixel.png": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "hostile:repeated-rows.ods": {
    "outcome": "refused",
@@ -49,10 +49,10 @@
    "fields": 53
   },
   "sets:091151313018ca41": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:0a32774bbc471cd8": {
    "outcome": "converted",
@@ -67,10 +67,10 @@
    "fields": 37
   },
   "sets:117a903a918ddfff": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:1c8b2175f7d6e235": {
    "outcome": "converted",
@@ -85,22 +85,22 @@
    "fields": 47
   },
   "sets:2520eb24f40a4bb6": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:2c07718c062e8f4d": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:2d584a9a1d048054": {
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 77
+   "fields": 80
   },
   "sets:2e37ffaaf831dc1f": {
    "outcome": "converted",
@@ -109,10 +109,10 @@
    "fields": 28
   },
   "sets:340f304da52f1809": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:3552082dba95f108": {
    "outcome": "converted",
@@ -121,28 +121,28 @@
    "fields": 54
   },
   "sets:368b1e645a436639": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:3a6df4584b028793": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:3b52e99527a40512": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:3c7f6a8d3ccddac4": {
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 39
+   "fields": 40
   },
   "sets:3ec7b7aad2e472ae": {
    "outcome": "converted",
@@ -169,22 +169,22 @@
    "fields": 69
   },
   "sets:42af6393d6dc568d": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:5106de926173dadc": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:5992645abec43713": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:5c80f453ad5d69cb": {
    "outcome": "converted",
@@ -199,10 +199,10 @@
    "fields": 54
   },
   "sets:5da17ca6ce5a7587": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:5f0659b52d976404": {
    "outcome": "converted",
@@ -211,16 +211,16 @@
    "fields": 49
   },
   "sets:5f373c9b16c88d02": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:60971995a203fc51": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:6b76b513c0e8adb4": {
    "outcome": "converted",
@@ -259,16 +259,16 @@
    "fields": 60
   },
   "sets:895760a7117d4e23": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:8a81945e0a88474d": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:8ba4a8c133f08c9a": {
    "outcome": "converted",
@@ -283,16 +283,16 @@
    "fields": 54
   },
   "sets:8daaac3e579ccb46": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:8f8b6c8627cf9434": {
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 105
+   "fields": 72
   },
   "sets:901a80a61bf7f89e": {
    "outcome": "converted",
@@ -301,28 +301,28 @@
    "fields": 100
   },
   "sets:9ab799d09f705c87": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:9c6be43789a51e40": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:9e7e85be23deb68b": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:a215b1b268e7dae9": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:a2ef5d47b193b463": {
    "outcome": "converted",
@@ -343,16 +343,16 @@
    "fields": 67
   },
   "sets:ab6810c4fd4f2458": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:afd2fd2b46f93612": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:b0665d0f9621e531": {
    "outcome": "converted",
@@ -364,7 +364,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 85
+   "fields": 91
   },
   "sets:b251035b40bdd8a2": {
    "outcome": "converted",
@@ -391,10 +391,10 @@
    "fields": 39
   },
   "sets:b8b23d616d5bacc6": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:be4d196a6622490e": {
    "outcome": "converted",
@@ -403,16 +403,16 @@
    "fields": 54
   },
   "sets:c14d2fe1ec3b0349": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:c50af8c2699794c8": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:d26d86aea213ea09": {
    "outcome": "converted",
@@ -421,16 +421,16 @@
    "fields": 53
   },
   "sets:d826ff9fa386dee1": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "sets:d9ace125afc5c4af": {
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 133
+   "fields": 116
   },
   "sets:e4aef6daff830e86": {
    "outcome": "converted",
@@ -454,7 +454,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 105
+   "fields": 72
   },
   "sets:f551277f2e57b3e0": {
    "outcome": "converted",
@@ -757,10 +757,10 @@
    "fields": 69
   },
   "unseen:93be3909bb6342d7": {
-   "outcome": "refused",
-   "gate": "n/a",
+   "outcome": "converted",
+   "gate": "passed",
    "lint_errors": 0,
-   "fields": 0
+   "fields": 49
   },
   "unseen:95fe55afe96e496d": {
    "outcome": "converted",

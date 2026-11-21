@@ -268,17 +268,17 @@
     {
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
-      "field": "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6"
+      "field": "f7301aa1-c85b-54e0-859f-a54018bf59fc"
     },
     {
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
-      "field": "c4923fde-9cf0-5bfa-9a16-b41e580a8629"
+      "field": "e057d1ae-e4df-5dde-be2a-aa28325c803a"
     },
     {
       "code": "INFERRED_SHAPE",
       "detail": "REPEATING_SECTION: no export shows one",
-      "field": "d211bc9a-7392-5545-b725-81af49c397f2"
+      "field": "b4d404fb-81ea-5be6-bcab-9b47b76930d8"
     }
   ],
   "checks": [
@@ -347,115 +347,115 @@
   ],
   "meta": {
     "origins": {
-      "a9b7bccb-ee5a-570f-a574-12065e0328c3": "standard",
-      "84a6c0b2-310c-5d8e-a597-4b91598af60e": "standard",
-      "7a4c3a6c-d702-5c2e-b3d4-5998654ecbe4": "standard",
-      "b2186ed9-cea5-50e6-ab91-d8bb6f0bf91a": "standard",
-      "493a95f0-cb5e-5f02-bce0-d67896221516": "standard",
-      "b372ad12-bb78-5dbc-a2a0-1f790313e7a1": "standard",
-      "72e82d1f-18fe-5e99-9f4b-ed788ac07178": "standard",
-      "bd52ec98-d834-5c99-90e5-29ef22a2653d": "standard",
-      "8b747981-3728-5bdf-a596-9f1be36cd3ef": "standard",
-      "edf562ea-419f-55b0-8be0-39e9467d3ed4": "standard",
-      "721a4464-0214-5210-a333-8e002d51040f": "standard",
-      "5e8adf6b-4667-52e3-b7ee-a5157de5f9d0": "standard",
-      "30cc1709-8eb4-5358-a13f-20d8f1ec6d04": "standard",
-      "7b7dde69-9932-5e71-b6f0-6900b0f043ed": "standard",
-      "a9dd0b2a-7824-5404-aced-24de20809581": "standard",
-      "31abe14c-e39b-52bb-805d-2fe6248d951a": "standard",
-      "5a1160c1-ec34-5556-a450-888211475943": "standard",
-      "f5f13aba-a689-5629-a71d-1bab0475b99c": "standard",
-      "4ab8d338-3bd3-5c44-94b9-9f75bf0eb69e": "standard",
-      "0ce452af-118d-5e7e-b4af-61f5933637fa": "standard",
-      "d0aa905d-58c4-5c95-b34e-dcda4b1c4bb7": "standard",
-      "619d898b-547f-5a4b-bcf5-c10f734fdf0d": "standard",
-      "8341f509-d553-5f89-875f-addcc0e021df": "standard",
-      "0ec003ae-8022-5599-86d2-a4adf53cde38": "standard",
-      "fc15b2c3-d510-5e29-b6ae-6758987551ab": "standard",
-      "1466d3d7-73f0-5fab-bae3-40b8258e3dab": "standard",
-      "5d7c9373-dcce-58ad-81b4-8865b9332614": "standard",
-      "09458a01-6a40-571d-8ed9-91605b6ee1b6": "standard",
-      "ac61733d-8126-5966-8cee-570eb7b6b852": "standard",
-      "1c450dec-5d99-589d-8c8a-00e3f3991b40": "standard",
-      "3aa5be8c-8473-54ad-8bee-559e553b010a": "standard",
-      "d6079efa-7de5-5ba6-91da-dc960e8bbbf6": "standard",
-      "4594add4-c4ef-502c-81e2-4ab8bff9c6ae": "standard",
-      "b7d5c0ac-d0f8-5fcb-bba1-4dd3d6b49ec4": "standard",
-      "85717ff1-f5d1-531c-a507-6a22d4d1ee6f": "standard",
-      "fe895ba2-fad4-5a0d-bb40-91d0564e84d3": "standard",
-      "0c1cd7a9-6177-54ca-b62b-d27f791b0f32": "standard",
-      "8400ede5-bbc2-5172-adbe-5a403e3fe3ba": "standard",
-      "c84ebc44-8410-5dda-a805-529efcb5910f": "standard",
-      "8209b160-bed3-502e-849e-f8d7466c7b5e": "standard",
-      "ee4b414d-738c-5d68-a2c1-206ffdd3bad5": "standard",
-      "55121b09-b69f-51f2-b5a0-fdc25187a2f3": "standard",
-      "2efa5e34-d9ce-5c16-b995-31e9e438c32e": "standard",
-      "e5118e29-7c92-5337-842c-bbfbdf5b1551": "standard",
-      "9fb2b451-aad9-5736-bb93-7a89decbf4b9": "standard",
-      "2233ffa7-f34d-5559-8d38-687684593f61": "standard",
-      "68642f8b-8fc0-5256-954e-86ab663dcf23": "standard",
-      "22d5b753-081f-5104-a6b5-74fd74bbd428": "standard",
-      "0575f03d-f7ee-5f6e-aad3-4dca6e04f434": "standard",
-      "aae14615-6bad-598a-9c13-e9b57f8ad4a0": "standard",
-      "30fc8a4f-c7fd-5de0-ba38-c54790d4a753": "standard",
-      "37d75644-735a-5424-b8ed-9008ceaf5459": "standard",
-      "ec413f0e-7cc4-5478-ae1e-d1c31c1c582a": "standard",
-      "ac8bace4-e791-5b91-8c17-466c15e877f9": "standard",
-      "db6d060c-c6c6-59e9-8938-5ee5a6f5ac31": "standard",
-      "45be988e-6f29-5088-9be7-7d048f23fa01": "standard",
-      "ed694188-0be0-50ff-b885-15690450a480": "standard",
-      "9d5382f9-c18d-5cef-a507-5fa8af9d2e1a": "standard",
-      "9ac57ad6-35e8-5b78-b207-f488a7b89321": "paper",
-      "bb36404b-60fa-5632-b332-6350492b65fc": "paper",
-      "1040c98a-6510-58ba-a8db-fbd670532618": "paper",
-      "2b563011-7948-542c-987b-474bc38280fb": "paper",
-      "0ff4c31b-e1bb-5658-9b12-a54d740cf808": "paper",
-      "a8831cfc-9e4a-5d55-be5f-f0ab9244cd05": "paper",
-      "d27a0d32-b799-5a47-a2ac-4b35eb8321c8": "paper",
-      "1ff1e344-e8b0-503d-b27c-0733fd987e78": "paper",
-      "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6": "paper",
-      "c4923fde-9cf0-5bfa-9a16-b41e580a8629": "paper",
-      "dccd27eb-140d-5cf0-b278-4d1c1644c7ee": "paper",
-      "cc2f9172-d42c-5ec7-8455-78847dace0af": "paper",
-      "558c3fe0-2b45-55f0-8534-b3e128089a9a": "paper",
-      "876cda77-cf13-5a80-85b3-0a972297fa0e": "paper",
-      "daa199ee-7c28-5d8b-954a-8dcf92aac624": "paper",
-      "a29d20b4-1780-5c7f-9145-58cebfe1a2eb": "paper",
-      "963f187a-5a49-5a21-8e8a-9459f5ef1685": "paper",
-      "d211bc9a-7392-5545-b725-81af49c397f2": "paper",
-      "f03a9d42-09e3-537b-9179-630910774f71": "paper",
-      "1ed887cb-1d04-5bb3-8cd6-2510b97ebfb6": "paper",
-      "0eca5e14-b25d-56ff-aff4-fb1dbcacc264": "paper",
-      "5346f3e5-bfa2-5dee-b75a-69b28b1ed401": "paper",
-      "d470f458-1c61-55f2-8cb6-1a432cf657dd": "paper",
-      "488a538f-2f9e-5a9d-900e-77fe47b0d73c": "standard",
-      "eff14878-322a-5454-ba91-e0e70b72a0be": "standard",
-      "987428ca-3749-5e55-b8e0-266c04e41fb8": "standard",
-      "42b9a1ca-9263-5e09-8ba0-daeb484feb22": "standard",
-      "0f009ac3-277f-5d57-bec4-60ff050b0c48": "standard",
-      "cc68cfcf-51c9-552b-9d98-ba419ed6fd5e": "standard",
-      "09c1f205-e2a4-5682-86e8-baac74a5d746": "standard",
-      "d4073db7-8afb-544b-b005-0431a9fd6c13": "standard"
+      "f57142e2-caa5-51b1-9391-2602da4430ca": "standard",
+      "9db674d3-e343-53b7-8533-d79051f5914f": "standard",
+      "147d8e46-9fd3-5b7b-a04b-59a992444644": "standard",
+      "6207d9f1-cbbf-55c3-b87c-5b3584525730": "standard",
+      "86758222-2958-5d96-a97b-baccd6dffb8a": "standard",
+      "4e7bc80e-0f0f-53a0-a714-74f28891c5c4": "standard",
+      "fdb10e84-24a7-5988-bb69-98f62de8786d": "standard",
+      "9388732c-fa05-5d3a-8370-d330d37094ea": "standard",
+      "d3ab088d-0a6c-5fcb-b0e9-0d456ee8a17d": "standard",
+      "0c68efc3-8997-587c-af25-da7deebdedf8": "standard",
+      "297f7d7c-f441-5c27-837c-16cbb0d7c2ee": "standard",
+      "04b09f9c-815f-50c6-9aa5-ad423f00208d": "standard",
+      "fc657e74-e0c7-57c6-9158-af70c6aa5b4f": "standard",
+      "52f0a448-36e3-5bba-83ab-1e6ada6c453d": "standard",
+      "5bd6c791-911b-5cc5-8807-3f02e3876243": "standard",
+      "700d7ec6-d8d9-5f6a-ab74-0bdfe905b43a": "standard",
+      "2994311a-9bff-5ecb-8c3f-7e35df8fee33": "standard",
+      "d21dcd1d-0e24-5884-8941-1dc5054defa3": "standard",
+      "d0c12c0a-e1e4-51ca-a0f0-e66399d001e2": "standard",
+      "1f4272df-33d6-5da9-b69a-2a9bb41cd0a1": "standard",
+      "e9184c4f-4416-508d-99bd-3f76b82596ae": "standard",
+      "cb154d23-5931-5703-83d7-d201c5082495": "standard",
+      "3f31e52c-3f36-5199-a662-b361a67d371f": "standard",
+      "8fbc084f-709c-55ca-bdc9-cd8ee5fce9e1": "standard",
+      "03446f6b-341a-55f5-86a4-bffafd4fcb8d": "standard",
+      "35d86a90-232a-5811-b9cb-02e40bf772fc": "standard",
+      "18242d52-6a9a-5dbd-a432-e66cdffb4a6a": "standard",
+      "988f62a9-fbf4-5876-9e33-78f6debd5a57": "standard",
+      "d99bcaf2-6026-546d-aeee-4671fd47561b": "standard",
+      "41ea6581-a5b0-530e-9c28-c524a5cee20e": "standard",
+      "04db8cf9-6b81-5dbf-9c4c-ec581ad06028": "standard",
+      "1a35d621-a79f-58a3-a543-ae5c2bc0cfe5": "standard",
+      "0a911cf6-97da-5628-a645-68a106e2d25c": "standard",
+      "b7c66ddb-f2f7-54a5-8a88-256c55f402d2": "standard",
+      "4bc055cc-7627-5e7a-a0f5-9dedf8291dec": "standard",
+      "897dd5cb-82c9-56d7-ab00-1a48007b4a00": "standard",
+      "07984708-2a47-539b-a73d-0ea8a8cc0cf8": "standard",
+      "19be0c01-a0f8-572f-80a8-defe33eb6de0": "standard",
+      "732a5b48-694c-57b7-be07-c9c14fe168e3": "standard",
+      "feb771b9-6cb3-5de7-8506-b9a4b75f3afa": "standard",
+      "4de5bedd-9501-5af5-a1ae-c50f97e14fa9": "standard",
+      "c62e640e-f00f-5dcb-abd4-289655494ce0": "standard",
+      "3ad6ed3d-2de4-5c7b-b79d-d26075b0036e": "standard",
+      "28cb7ee0-f5b5-53ee-8845-f0ec82e69952": "standard",
+      "27f39f59-cf7f-5363-b88c-b21cee38142d": "standard",
+      "17b665ae-79ee-5531-baff-6e38720f9c7a": "standard",
+      "38e15d4a-b001-5466-ae35-b74b854cf0de": "standard",
+      "7bab0297-b938-5b0a-b7e0-7fb248bcd9f4": "standard",
+      "699635a5-e2f6-56f0-b42d-d55044f51a3d": "standard",
+      "f2641df5-12b7-5b8d-89b5-5780cc0186fe": "standard",
+      "d8263cc1-2178-55ae-a4f6-6642ca84ee63": "standard",
+      "828f997a-5bc7-57ee-b5d0-dc9b818b384f": "standard",
+      "6fc5b122-3a43-5a2b-b80a-5ad11d483c03": "standard",
+      "bcf00610-be58-5001-9739-45246b998f54": "standard",
+      "1d00fa5b-a94e-5422-9c46-a3a622681479": "standard",
+      "9759ee75-4ac4-5672-9519-2b38562719c2": "standard",
+      "841b7c86-c65f-5f1b-807d-ef9bbac0e857": "standard",
+      "599eed2b-17f0-52c6-b2e4-6f052b000c23": "standard",
+      "22a1cda6-467f-5a17-908d-798538a83018": "paper",
+      "3c02cf5b-1f11-57fc-97c9-3464e3907c3c": "paper",
+      "452bf516-5fa0-5720-8d15-a6eb53c11748": "paper",
+      "65d265df-7bb8-5c29-9766-56c74957b84e": "paper",
+      "e8c87bce-e907-5ba7-a1f4-df092b49183e": "paper",
+      "a1827e71-8013-5e16-9f09-0d2b2b79fe80": "paper",
+      "ed6c1679-1747-573c-a0c1-c59d1788c3fb": "paper",
+      "043309b7-3156-571d-aea1-a06242b1e109": "paper",
+      "f7301aa1-c85b-54e0-859f-a54018bf59fc": "paper",
+      "e057d1ae-e4df-5dde-be2a-aa28325c803a": "paper",
+      "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62": "paper",
+      "2cf4e768-b9c9-52cd-8e7b-0c3482de1e81": "paper",
+      "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c": "paper",
+      "4b6a657e-d78b-5256-954c-dee1ec08d867": "paper",
+      "fce9fe07-5cae-5e7c-a131-4164abd57fcf": "paper",
+      "e3b55051-2708-5a90-94cb-f05d36c3a7ae": "paper",
+      "7f728ec4-33cc-5c68-ad51-ebb330d3675f": "paper",
+      "b4d404fb-81ea-5be6-bcab-9b47b76930d8": "paper",
+      "6ee6ab37-38f4-55ba-9372-12d88ee6a7b6": "paper",
+      "5f42cf48-0a28-5501-82d6-4a4dc3498e27": "paper",
+      "4438b7f1-1c5b-59c7-ad28-22684ee49a6d": "paper",
+      "5ed80645-a57c-5361-9a79-5f6b7c2c257f": "paper",
+      "1b1ebe99-0b60-5046-b9b8-76d1b7594df0": "paper",
+      "fbc4d86e-a765-5994-adbe-ae0e5f156c98": "standard",
+      "351ef91b-8502-5149-9d95-8ca8ed6511cd": "standard",
+      "10673235-2d96-59cd-8e8c-928fcc2224e6": "standard",
+      "77c3d63d-9477-51a6-bbe1-64ed42d8c4f0": "standard",
+      "286c99e6-074c-5b71-834e-1aac79e22a1c": "standard",
+      "c1c0bbad-037b-5cca-b64a-4f1d12a9ce42": "standard",
+      "a549f81f-e81f-5b03-ba30-bf6e4579b722": "standard",
+      "4b7629dc-6274-52e3-b86e-0e0c69dfdfbc": "standard"
     },
     "brief_keys": {
-      "bb36404b-60fa-5632-b332-6350492b65fc": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
-      "1040c98a-6510-58ba-a8db-fbd670532618": "mui",
-      "2b563011-7948-542c-987b-474bc38280fb": "miejscowosc",
-      "0ff4c31b-e1bb-5658-9b12-a54d740cf808": "numer_ewidencyjny_dzialki",
-      "a8831cfc-9e4a-5d55-be5f-f0ab9244cd05": "w_celu_wykonania",
-      "d27a0d32-b799-5a47-a2ac-4b35eb8321c8": "rodzaj_robot_i_sposob_wykonania",
-      "1ff1e344-e8b0-503d-b27c-0733fd987e78": "calkowita_powierzchnia_zajecia",
-      "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6": "termin_od",
-      "c4923fde-9cf0-5bfa-9a16-b41e580a8629": "termin_do",
-      "dccd27eb-140d-5cf0-b278-4d1c1644c7ee": "tj",
-      "558c3fe0-2b45-55f0-8534-b3e128089a9a": "wykonawca_robot_bedzie",
-      "876cda77-cf13-5a80-85b3-0a972297fa0e": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
-      "daa199ee-7c28-5d8b-954a-8dcf92aac624": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
-      "a29d20b4-1780-5c7f-9145-58cebfe1a2eb": "zam",
-      "963f187a-5a49-5a21-8e8a-9459f5ef1685": "telefon",
-      "f03a9d42-09e3-537b-9179-630910774f71": "dlugosc",
-      "1ed887cb-1d04-5bb3-8cd6-2510b97ebfb6": "szerokosc",
-      "0eca5e14-b25d-56ff-aff4-fb1dbcacc264": "razem"
+      "3c02cf5b-1f11-57fc-97c9-3464e3907c3c": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
+      "452bf516-5fa0-5720-8d15-a6eb53c11748": "mui",
+      "65d265df-7bb8-5c29-9766-56c74957b84e": "miejscowosc",
+      "e8c87bce-e907-5ba7-a1f4-df092b49183e": "numer_ewidencyjny_dzialki",
+      "a1827e71-8013-5e16-9f09-0d2b2b79fe80": "w_celu_wykonania",
+      "ed6c1679-1747-573c-a0c1-c59d1788c3fb": "rodzaj_robot_i_sposob_wykonania",
+      "043309b7-3156-571d-aea1-a06242b1e109": "calkowita_powierzchnia_zajecia",
+      "f7301aa1-c85b-54e0-859f-a54018bf59fc": "termin_od",
+      "e057d1ae-e4df-5dde-be2a-aa28325c803a": "termin_do",
+      "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62": "tj",
+      "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c": "wykonawca_robot_bedzie",
+      "4b6a657e-d78b-5256-954c-dee1ec08d867": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
+      "fce9fe07-5cae-5e7c-a131-4164abd57fcf": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
+      "e3b55051-2708-5a90-94cb-f05d36c3a7ae": "zam",
+      "7f728ec4-33cc-5c68-ad51-ebb330d3675f": "telefon",
+      "6ee6ab37-38f4-55ba-9372-12d88ee6a7b6": "dlugosc",
+      "5f42cf48-0a28-5501-82d6-4a4dc3498e27": "szerokosc",
+      "4438b7f1-1c5b-59c7-ad28-22684ee49a6d": "razem"
     },
     "ledger": {
       "blanks_found": 45,
@@ -493,47 +493,47 @@
         {
           "candidate": "c6",
           "fate": "FIELD",
-          "field": "bb36404b-60fa-5632-b332-6350492b65fc"
+          "field": "3c02cf5b-1f11-57fc-97c9-3464e3907c3c"
         },
         {
           "candidate": "c7",
           "fate": "FIELD",
-          "field": "1040c98a-6510-58ba-a8db-fbd670532618"
+          "field": "452bf516-5fa0-5720-8d15-a6eb53c11748"
         },
         {
           "candidate": "c8",
           "fate": "FIELD",
-          "field": "2b563011-7948-542c-987b-474bc38280fb"
+          "field": "65d265df-7bb8-5c29-9766-56c74957b84e"
         },
         {
           "candidate": "c9",
           "fate": "FIELD",
-          "field": "0ff4c31b-e1bb-5658-9b12-a54d740cf808"
+          "field": "e8c87bce-e907-5ba7-a1f4-df092b49183e"
         },
         {
           "candidate": "c10",
           "fate": "FIELD",
-          "field": "a8831cfc-9e4a-5d55-be5f-f0ab9244cd05"
+          "field": "a1827e71-8013-5e16-9f09-0d2b2b79fe80"
         },
         {
           "candidate": "c11",
           "fate": "FIELD",
-          "field": "d27a0d32-b799-5a47-a2ac-4b35eb8321c8"
+          "field": "ed6c1679-1747-573c-a0c1-c59d1788c3fb"
         },
         {
           "candidate": "c12",
           "fate": "FIELD",
-          "field": "f03a9d42-09e3-537b-9179-630910774f71"
+          "field": "6ee6ab37-38f4-55ba-9372-12d88ee6a7b6"
         },
         {
           "candidate": "c13",
           "fate": "FIELD",
-          "field": "1ed887cb-1d04-5bb3-8cd6-2510b97ebfb6"
+          "field": "5f42cf48-0a28-5501-82d6-4a4dc3498e27"
         },
         {
           "candidate": "c14",
           "fate": "FIELD",
-          "field": "0eca5e14-b25d-56ff-aff4-fb1dbcacc264"
+          "field": "4438b7f1-1c5b-59c7-ad28-22684ee49a6d"
         },
         {
           "candidate": "c15",
@@ -664,47 +664,47 @@
         {
           "candidate": "c36",
           "fate": "FIELD",
-          "field": "1ff1e344-e8b0-503d-b27c-0733fd987e78"
+          "field": "043309b7-3156-571d-aea1-a06242b1e109"
         },
         {
           "candidate": "c37",
           "fate": "FIELD",
-          "field": "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6"
+          "field": "f7301aa1-c85b-54e0-859f-a54018bf59fc"
         },
         {
           "candidate": "c38",
           "fate": "FIELD",
-          "field": "c4923fde-9cf0-5bfa-9a16-b41e580a8629"
+          "field": "e057d1ae-e4df-5dde-be2a-aa28325c803a"
         },
         {
           "candidate": "c39",
           "fate": "FIELD",
-          "field": "dccd27eb-140d-5cf0-b278-4d1c1644c7ee"
+          "field": "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62"
         },
         {
           "candidate": "c40",
           "fate": "FIELD",
-          "field": "558c3fe0-2b45-55f0-8534-b3e128089a9a"
+          "field": "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c"
         },
         {
           "candidate": "c41",
           "fate": "FIELD",
-          "field": "876cda77-cf13-5a80-85b3-0a972297fa0e"
+          "field": "4b6a657e-d78b-5256-954c-dee1ec08d867"
         },
         {
           "candidate": "c42",
           "fate": "FIELD",
-          "field": "daa199ee-7c28-5d8b-954a-8dcf92aac624"
+          "field": "fce9fe07-5cae-5e7c-a131-4164abd57fcf"
         },
         {
           "candidate": "c43",
           "fate": "FIELD",
-          "field": "a29d20b4-1780-5c7f-9145-58cebfe1a2eb"
+          "field": "e3b55051-2708-5a90-94cb-f05d36c3a7ae"
         },
         {
           "candidate": "c44",
           "fate": "FIELD",
-          "field": "963f187a-5a49-5a21-8e8a-9459f5ef1685"
+          "field": "7f728ec4-33cc-5c68-ad51-ebb330d3675f"
         },
         {
           "candidate": "c45",
