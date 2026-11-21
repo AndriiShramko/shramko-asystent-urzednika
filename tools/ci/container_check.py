@@ -222,6 +222,36 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
                 "keys title/tabs/flow, lint strict clean, same bytes twice")
 
 
+GATE_PROBE = r"""
+import json, sys
+from app import pipeline
+from app.config import Settings
+r = pipeline.run(open(sys.argv[1], "rb").read(), "x", Settings.from_env({"AUTH_MODE": "off"}))
+print(json.dumps({c["id"]: c["status"] for c in r.sidecar["checks"]}))
+"""
+
+
+def problems_of_gate_checks(checks: dict) -> list[str]:
+    """G1 (schema) and G2 (partner rules) must have RUN and passed inside the image: failed means the linter or the
+    schema files are missing from it, not_applicable means the gate did not look."""
+    return [f"{cid}: {checks.get(cid, 'absent')}, expected passed" for cid in ("G1", "G2") if checks.get(cid) != "passed"]
+
+
+def check_gate_inside(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
+    pdfs = sorted(p for p in fixtures.iterdir() if p.suffix.lower() == ".pdf" and "pdf" in ready)
+    if not pdfs:
+        return
+    cp = docker("run", "--rm", *HARDENED, "-v", f"{fixtures.resolve()}:/in:ro", "--entrypoint", "python", image,
+                "-c", GATE_PROBE, f"/in/{pdfs[0].name}", timeout=180)
+    if cp.returncode != 0:
+        res.add("gate inside the image: G1 and G2 passed", [f"exit {cp.returncode}: {cp.stderr.decode(errors='replace')[-300:]}"])
+        return
+    checks = json.loads(cp.stdout.decode().strip().splitlines()[-1])
+    res.add("gate inside the image: G1 schema and G2 partner rules passed (not failed, not not_applicable)",
+            problems_of_gate_checks(checks),
+            ", ".join(f"{k} {v}" for k, v in checks.items()))
+
+
 OTHER_TITLE = "Wniosek o zmianę adresu zameldowania"
 
 
@@ -394,6 +424,7 @@ def main() -> int:
     ready = frozenset(e.strip().lower() for e in args.ready.split(",") if e.strip())
     check_conversions(args.image, args.fixtures, res, ready)
     check_different_forms(args.image, res, ready)
+    check_gate_inside(args.image, args.fixtures, res, ready)
     if not args.no_http:
         check_http(args.image, args.fixtures, res, ready)
     md = summary_markdown(args.image, res)

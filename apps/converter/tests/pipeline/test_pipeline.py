@@ -211,3 +211,60 @@ def test_the_reference_forms_carry_the_words_of_their_names(client):
         assert any(re.search(w, title) for w in words[key]), f"{key}{f.suffix}: title {title!r}"
         seen += 1
     assert seen >= 2
+
+
+# ---- the pre-import gate behind the pipeline (WP-F0q) -------------------------------------------------------------
+
+class _Broken:
+    """What the composer hands back when the form it built is wrong: one techName over the 60 characters of D7 (the schema and G3 both judge it; G1 comes first)."""
+
+    def __init__(self, real) -> None:
+        form = json.loads(real.form.to_json_bytes())
+        form["tabs"][0]["questions"][0]["field"]["techName"] = "x" * 61
+        self._bytes = json.dumps(form).encode()
+        self.origins, self.brief_keys, self.remarks = real.origins, real.brief_keys, real.remarks
+        self.form = self
+
+    def to_json_bytes(self) -> bytes:
+        return self._bytes
+
+
+@pytest.fixture
+def broken_composer(monkeypatch):
+    from app import pipeline
+
+    real = pipeline.compose
+    monkeypatch.setattr(pipeline, "compose", lambda brief, opts: _Broken(real(brief, opts)))
+
+
+def test_a_form_the_gate_refuses_is_500_gate_failed_with_the_check_and_without_a_form(client, broken_composer):
+    r = post(client, "a.pdf", pdf("WNIOSEK ZEPSUTY"))
+    assert r.status_code == 500
+    body = r.json()
+    assert body["code"] == "GATE_FAILED" and r.headers["content-type"].startswith("application/problem+json")
+    assert "G1" in body["detail"] and "schema" in body["detail"] and "/techName" in body["detail"]
+    assert "x" * 61 not in r.text
+    assert "tabs" not in body and "flow" not in body
+    side = client.post("/v1/forms/report", files={"file": ("a.pdf", pdf("WNIOSEK ZEPSUTY"), "application/pdf")})
+    assert side.status_code == 500 and "tabs" not in side.json()
+
+
+def test_the_command_line_refuses_a_form_the_gate_refuses_and_writes_no_file(broken_composer, tmp_path, monkeypatch, capsys):
+    src, out = tmp_path / "in.pdf", tmp_path / "out.json"
+    src.write_bytes(pdf("WNIOSEK ZEPSUTY"))
+    monkeypatch.setenv("AUTH_MODE", "off")
+    assert cli.main(["convert", str(src), "--out", str(out)]) != 0
+    assert not out.exists()
+    seen = capsys.readouterr()
+    assert seen.out == "" and "GATE_FAILED" in seen.err and "G1" in seen.err
+
+
+@pytest.mark.parametrize("name,data", [("a.pdf", pdf("WNIOSEK BRAMKA")), ("a.docx", docx("WNIOSEK BRAMKA"))])
+def test_a_good_file_passes_the_gate_and_the_sidecar_lists_every_check(client, name, data):
+    r = client.post("/v1/forms/report", files={"file": (name, data, "application/octet-stream")})
+    assert r.status_code == 200
+    checks = {c["id"]: c["status"] for c in r.json()["checks"]}
+    assert list(checks) == [f"G{i}" for i in range(1, 13)]
+    assert all(checks[f"G{i}"] == "passed" for i in range(1, 11))
+    assert checks["G11"] == checks["G12"] == "not_applicable"
+    assert post(client, name, data).status_code == 200

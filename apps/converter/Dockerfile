@@ -41,6 +41,10 @@ COPY apps/converter/requirements.lock ./requirements.lock
 RUN pip install --require-hashes --only-binary=:all: -r requirements.lock
 COPY apps/converter/app ./app
 COPY apps/converter/converter ./converter
+# The pre-import gate (app.gate) needs the partner's linter and the form schemas where coi_lint looks for them:
+# <root>/tools/coi_lint.py and <root>/contracts/coi/. Without them G1 and G2 fail closed.
+COPY tools/coi_lint.py ./tools/coi_lint.py
+COPY contracts/coi/form.schema.json contracts/coi/form.tolerant.schema.json ./contracts/coi/
 COPY --from=ui /out ./ui
 ENV PYTHONPATH=/srv/converter OCR_SECOND_ENGINE=on
 USER 10001:10001
@@ -60,6 +64,10 @@ COPY apps/converter/requirements.lock ./requirements.lock
 RUN pip install --require-hashes --only-binary=:all: -r requirements.lock
 COPY apps/converter/app ./app
 COPY apps/converter/converter ./converter
+# The pre-import gate (app.gate) needs the partner's linter and the form schemas where coi_lint looks for them:
+# <root>/tools/coi_lint.py and <root>/contracts/coi/. Without them G1 and G2 fail closed.
+COPY tools/coi_lint.py ./tools/coi_lint.py
+COPY contracts/coi/form.schema.json contracts/coi/form.tolerant.schema.json ./contracts/coi/
 COPY --from=ui /out ./ui
 ENV PYTHONPATH=/srv/converter
 # A dedicated user, one port, no secret in the image: keys come in as files (JWT_SECRET_FILE and the like).

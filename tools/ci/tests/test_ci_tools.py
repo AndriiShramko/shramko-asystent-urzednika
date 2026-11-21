@@ -151,6 +151,29 @@ def test_other_fixtures_are_refused_with_a_typed_refusal_and_no_traceback(fixtur
     assert refused == 6
 
 
+def test_gate_probe_reports_g1_and_g2_passed_for_a_converted_pdf(tmp_path):
+    """The program the container check runs inside the image, run natively on a synthetic PDF."""
+    (tmp_path / "a.pdf").write_bytes(make_fixtures.pdf(make_fixtures.TITLE))
+    cp = subprocess.run([sys.executable, "-c", container_check.GATE_PROBE, str(tmp_path / "a.pdf")],
+                        capture_output=True, env=env_with_paths(), timeout=120)
+    assert cp.returncode == 0, cp.stderr[-300:]
+    checks = json.loads(cp.stdout.decode().strip().splitlines()[-1])
+    assert list(checks) == [f"G{i}" for i in range(1, 13)]
+    assert container_check.problems_of_gate_checks(checks) == []
+
+
+@pytest.mark.parametrize("status", ["failed", "not_applicable", "absent"])
+def test_negative_control_gate_g1_or_g2_not_passed_inside_the_image_is_refused(status):
+    ok = {"G1": "passed", "G2": "passed"}
+    for cid in ("G1", "G2"):
+        bad = dict(ok)
+        if status == "absent":
+            del bad[cid]
+        else:
+            bad[cid] = status
+        assert container_check.problems_of_gate_checks(bad) == [f"{cid}: {status}, expected passed"]
+
+
 def test_two_different_pdfs_give_two_different_titles(tmp_path):
     outs = []
     for name, title in (("a.pdf", make_fixtures.TITLE), ("b.pdf", container_check.OTHER_TITLE)):

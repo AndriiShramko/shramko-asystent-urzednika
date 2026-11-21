@@ -9,9 +9,10 @@ trace, no content of the file. No endpoint, no command and no test of the shell 
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 
-from app import __version__, interim
+from app import __version__, gate, interim
 from app.compose import ComposeError, compose
 from app.config import Settings, compose_options, read_options
 from app.guard import ProblemError
@@ -47,6 +48,21 @@ def _count_fields(form: dict) -> int:
     return sum(len(q["field"]["repeatingSectionGrid"]) for t in form["tabs"] for q in t["questions"])
 
 
+_NO_QUOTES = re.compile(r"'[^']*'")   # a message may quote a value of the form; the place is enough
+
+
+def _gate_problem(failed: gate.CheckResult) -> ProblemError:
+    """500 GATE_FAILED: the id and name of the check and its first findings (a place and a rule, 1000 characters at most)."""
+    shown = "; ".join(f"{_NO_QUOTES.sub(chr(39) + '...' + chr(39), f.message)} at {f.path or '/'}" for f in failed.findings[:5])
+    more = f" (+{len(failed.findings) - 5} more)" if len(failed.findings) > 5 else ""
+    return ProblemError("GATE_FAILED", f"Bramka {failed.id} {failed.name} odrzuciła wynik: {shown}{more}"[:1000])
+
+
+def _checks_of(report: gate.GateReport) -> list[dict]:
+    return [{"id": c.id, "name": c.name, "status": c.status, **({"reason": c.reason} if c.reason else {})}
+            for c in report.checks]
+
+
 def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
     """`filename` is not used: the format comes from the content, and a name must never reach a log."""
     fmt = _format_of(data, settings)
@@ -63,6 +79,9 @@ def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
     except ComposeError as exc:
         raise ProblemError("GATE_FAILED", f"Kompozytor odrzucił wynik ({type(exc).__name__}).") from None
     form = json.loads(composed.form.to_json_bytes())
+    report = gate.check(form)
+    if not report.passed:
+        raise _gate_problem(report.failed[0])
     warnings = [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]
     warnings.append(dict(interim.NOT_READ_WARNING))
     warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
@@ -71,6 +90,7 @@ def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
         "converter": {"version": __version__, "pipeline": "interim", "reader": model.source.reader},
         "counts": {"pages": len(form["tabs"]), "fields": _count_fields(form), "source_pages": model.source.pages},
         "warnings": warnings,
+        "checks": _checks_of(report),
         "meta": {"origins": composed.origins, "brief_keys": composed.brief_keys},
     }
     return PipelineResult(form=form, sidecar=sidecar)
