@@ -64,3 +64,15 @@ A fresh agent with a lean tool set is the default for anything of ten replies or
 - Anything in the product that calls out of the container.
 - "Done" before you checked the result where the owner or the jury will see it.
 - A long command in the foreground, or a model turn spent on waiting.
+
+## Subscription limit cutoff
+
+The team shares one subscription. Near its weekly limit every agent must reach a clean point so a new lead on a new subscription loses nothing. Full protocol and checklist: [`docs/04-orchestration/subscription-cutoff.md`](../../../docs/04-orchestration/subscription-cutoff.md). It wins over the "Budget" section above from 94 %.
+
+- **Number:** `mcp ccd_session_mgmt get_usage`, row "Weekly all models". Read it at the start of every work block and before launching any agent or wave; write it with `date` time into STATUS. Above 80 % economy mode (no new wave without the program lead's word, sonnet, one package at a time).
+- **94 % and above:** no new agent, no wave, no Workflow, no merge that cannot finish in 10 minutes. SendMessage every running agent: "week at N %: reach a clean point within about 15 minutes, commit, update the status file".
+- **96 % and above:** wait at most 15 minutes for reports (silent agents are recovered from their branches, section 6 of the document). Abort any half merge (`git merge --abort`). Then write the HANDOFF block in `docs/03-plan/STATUS.md` (`tools/lead/status_block.py`): merged with commits and tags; what runs or stopped with package, stage, branch, worktree path, run id and script path; what waits for the owner with defaults; open questions; image digests (`tools/ci/image_digest.py`); budget state; "Not to redo"; next steps with commands. Add "Learned by the Nth build lead" to `docs/03-plan/LEAD-HANDOFF.md`. Commit both by name, `git push origin main`. Start no image wait, merge or wave after that: put the run id in the block.
+- **Tell the program lead in one line:** `СБОРКА ЧЧ:ММ | ПЕРЕДАЧА НА НОВУЮ ПОДПИСКУ | слито: ... | идёт/остановлено: ... | неделя A % / Fable F % | нужно: новая подписка, новый лид`. Tell the owner in Russian in three lines.
+- **98 % and above:** the reserve hook (`limit_reserve.py`, the owner's, not ours) stops sub-agents: they can only write files. Nothing but committing and the handoff. Do it before 98 % where you can: an agent cannot run git after that.
+- **Recovery of stopped work (new lead):** `git worktree list`; `git log main..wp/<id>-<slug> --oneline` for every `wp/` branch; status files in `docs/03-plan/wip/` and on the branches; `git -C <worktree> status --short` for loose edits (commit them first, `git branch -f wp/...`, never remove a worktree before looking). A Workflow of a dead session is not resumed: new wave with `from`.
+- **Never at the cutoff:** uncommitted work anywhere; starting something that cannot be finished or safely left; bypassing the publishing check; claiming "saved" before `git status --short` is empty and the push is clean.

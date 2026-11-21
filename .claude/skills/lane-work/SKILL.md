@@ -68,3 +68,18 @@ Branch: wp/<id>-<slug>   Stage now: core | integration | acceptance
 ## 6. Report
 
 At most 15 lines: status `ready`, `blocked` (what you need) or `out_of_budget` (what is left); the package branch and the commit it points at; commits; what is proven, with numbers; what is not verified and why; requests to lead; the next step; one cost note. Raw output stays in files.
+
+## 7. Subscription limit cutoff
+
+The team shares one subscription; near the weekly limit the lead tells you "week at N %: reach a clean point". Full protocol: [`docs/04-orchestration/subscription-cutoff.md`](../../../docs/04-orchestration/subscription-cutoff.md). At 98 % a hook of the owner's machine (`limit_reserve.py`) stops sub-agents: they can then only write files, not run git. So finish **before** that.
+
+- **On the lead's order, or when you yourself see the week at 94 % or more (`get_usage`, "Weekly all models"):** do not start a new step; finish the step in hand within about 15 minutes. Do not start a run longer than two minutes; if one is running that would take longer, stop it and write its exact command down.
+- **At 96 % or on the order "stop for the limit":**
+  1. `git status --short` must end empty: no uncommitted work in a worktree, ever.
+  2. Commit by file name (`WP-<id>: <what> (stopped for the subscription limit)`), then `git branch -f wp/<id>-<slug> HEAD`.
+  3. Push the package branch: `git push origin wp/<id>-<slug>` (the publishing check runs; never bypass it). This is the one case where you push. A branch `wp/F20-*` starts the image workflow: write in the status file "CI run started, run id N, not waited for" (or "not started") and do not wait.
+  4. In your status file write `## Left for the next stage`: the items still `[ ]` or `[~]` with what exactly is half done and where, the exact next commands, the checks that already passed with the commit they ran on, requests to lead. Commit and push that too.
+  5. Send the report (status `out_of_budget`, branch, commit hash, worktree path) and stop. No "one more thing".
+- **Reviewer:** commit and push nothing; put the findings so far in the report.
+- **If you find a half-dead worktree of a predecessor:** its loose edits are its unfinished work: read the diff, commit what is sound first, then continue.
+- **Never:** start a merge, a full-suite run, an image build or a batch that you cannot finish or safely leave; leave a half-done refactor uncommitted; skip the status file.

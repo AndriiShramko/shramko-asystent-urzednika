@@ -33,6 +33,8 @@ What continues by itself and what does not (research/08, official documentation 
 | Workflow in the same interactive terminal or the local Desktop Code tab | The run pauses and continues (at most 2 waits) | After a third hit: relaunch the wave (below) |
 | Workflow in `claude -p`, a background session, Remote Control, a scheduled-task session | Not paused; the agents fail | Relaunch after the reset |
 
+When the whole subscription runs out and the owner buys a new one, the protocol is [`subscription-cutoff.md`](subscription-cutoff.md): everything is committed, pushed and written down before 98 % of the week, and a new lead recovers from the repository.
+
 ## After the reset
 
 The lead, in the same chat or in a new one, does only this:
