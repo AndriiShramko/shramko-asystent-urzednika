@@ -221,6 +221,19 @@ def test_raise_for_failure_names_the_check(base):
     check(base).raise_for_failure()
 
 
+def test_build_without_the_rules_checker_fails_closed(base, monkeypatch):
+    """The image must carry tools/coi_lint.py and the schema files: without them G1 and G2 fail, nothing passes."""
+    from app.gate import structure
+    monkeypatch.setattr(structure, "coi_lint", None)
+    structure._validator.cache_clear()
+    try:
+        r = check(base)
+        assert {"G1", "G2"} <= {c.id for c in r.failed}
+        assert "not in this build" in r.get("G2").findings[0].message
+    finally:
+        structure._validator.cache_clear()
+
+
 def test_unknown_profile_is_refused(base):
     with pytest.raises(ValueError):
         check(base, profile="lenient")
