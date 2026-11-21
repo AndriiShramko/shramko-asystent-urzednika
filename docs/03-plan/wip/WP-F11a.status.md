@@ -21,6 +21,10 @@ Branch: wp/F11a-check-chain   Stage now: integration (core done)
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
 | Core tests | `bash tools/gate.sh py -m pytest eval/chain/tests -q -p no:cacheprovider` | 17 passed | see git log |
+| Acceptance: main merged | `git merge --no-edit main` | already up to date | 57283fa |
+| Acceptance: chain tests | same command | 18 passed | 57283fa |
+| Acceptance: fast gate | `bash tools/gate.sh fast` | 540 passed, 21 deselected; PASSED | 57283fa |
+| Acceptance: full chain run | not re-run: data/archive is absent in this worktree (git-ignored), code unchanged since the first full run above | numbers above stand | 68fb4da |
 
 ## First full run (native, `bash tools/gate.sh py -m eval.chain --archive data/archive/files`, 110 s; 0 failed, 0 gate failures, 0 strict-lint errors)
 | Corpus | Files | Converted | Refused | Failed |
@@ -36,9 +40,13 @@ Branch: wp/F11a-check-chain   Stage now: integration (core done)
 ## Negative control
 Forced exception inside the pipeline (`CHAIN_FAULT=raise`) is classed `failed` and `main` returns 1: `test_forced_exception_is_failed_and_exit_nonzero`. A baseline with one more field: `test_baseline_with_one_more_field_reports_a_regression`.
 
+Acceptance control (57283fa): in `eval/chain/worker.py` the GATE_FAILED branch disabled (`if False and ...`): `test_gate_failure_is_failed` FAILED (1 failed, 17 passed); restored: 18 passed.
+
 ## Requests to lead
+- Run `--image` in CI (Docker) to prove the 27 image files of the sets convert; unproven here.
 - Let the fast gate also collect `eval/chain/tests` (or tell me where else it should live).
 
 ## Cost notes
+- acceptance: fast gate (78 s) and one compound-command refusal took the most; keep git commands single.
 - integration: one reply set, only the owner page was left; nothing else needed.
 - core: the shell tool refuses commands containing the word eval or git inside compound commands; use Glob/Read and plain commands.
