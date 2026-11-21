@@ -50,47 +50,58 @@ def write_run(rows: list[dict], last_run: Path | None = None, summary: Path | No
     return s
 
 
-def compare(rows: list[dict], baseline: dict) -> tuple[list[str], list[str], list[str]]:
-    """(regressions, improvements, notes). Regressions decide the exit code."""
+def compare(rows: list[dict], baseline: dict) -> tuple[list[str], list[str], list[str], list[str]]:
+    """(worse, better, notes, fatal). Every drop is listed as worse; the exit code comes from fatal, a subset of worse:
+    a new failed, a new gate failure, a fall of over 20 % of fields on a file of the sets, converted -> refused."""
     base = baseline["files"]
-    bad: list[str] = []
+    worse: list[str] = []
     good: list[str] = []
     notes: list[str] = []
+    fatal: list[str] = []
+
+    def bad(msg: str, is_fatal: bool) -> None:
+        worse.append(msg)
+        if is_fatal:
+            fatal.append(msg)
+
     for r in rows:
         k = f"{r['corpus']}:{r['key']}"
         b = base.get(k)
         if b is None:
             notes.append(f"{k}: not in the baseline ({r['outcome']})")
             if r["outcome"] == "failed":
-                bad.append(f"{k}: new file failed ({r['error']})")
+                bad(f"{k}: new file failed ({r['error']})", True)
             if r["gate"] == "failed":
-                bad.append(f"{k}: new file fails the gate")
+                bad(f"{k}: new file fails the gate", True)
             continue
         if r["outcome"] == "failed" and b["outcome"] != "failed":
-            bad.append(f"{k}: was {b['outcome']}, now failed ({r['error']})")
+            bad(f"{k}: was {b['outcome']}, now failed ({r['error']})", True)
+        elif b["outcome"] == "converted" and r["outcome"] == "refused":
+            bad(f"{k}: was converted, now refused", True)
         elif b["outcome"] == "failed" and r["outcome"] != "failed":
             good.append(f"{k}: was failed, now {r['outcome']}")
         if r["gate"] == "failed" and b["gate"] != "failed":
-            bad.append(f"{k}: the gate now fails")
+            bad(f"{k}: the gate now fails", True)
         elif b["gate"] == "failed" and r["gate"] != "failed":
             good.append(f"{k}: the gate no longer fails")
         if r["lint_errors"] > b["lint_errors"]:
-            notes.append(f"{k}: strict-linter errors {b['lint_errors']} -> {r['lint_errors']}")
-        elif r["lint_errors"] < b["lint_errors"]:
+            bad(f"{k}: strict-linter errors {b['lint_errors']} -> {r['lint_errors']}", False)
+        elif r["lint_errors"] <b["lint_errors"]:
             good.append(f"{k}: strict-linter errors {b['lint_errors']} -> {r['lint_errors']}")
         bf, nf = b["fields"], r["fields"]
         if nf > bf:
             good.append(f"{k}: fields {bf} -> {nf}")
         elif nf < bf:
             fell = bf > 0 and nf < bf * (1 - FALL)
-            (bad if fell and r["corpus"] == "sets" else notes).append(f"{k}: fields {bf} -> {nf}" + (" (fall over 20 %)" if fell else ""))
+            bad(f"{k}: fields {bf} -> {nf}" + (" (fall over 20 %)" if fell else ""), fell and r["corpus"] == "sets")
     for k in sorted(set(base) - {f"{r['corpus']}:{r['key']}" for r in rows}):
         notes.append(f"{k}: in the baseline, not in this run")
-    return bad, good, notes
+    return worse, good, notes, fatal
 
 
-def print_compare(bad: list[str], good: list[str], notes: list[str]) -> None:
-    print(f"compare: {len(bad)} worse (decide the exit code), {len(good)} better, {len(notes)} notes")
-    for title, lines in (("WORSE", bad), ("BETTER", good), ("NOTE", notes)):
+def print_compare(worse: list[str], good: list[str], notes: list[str], fatal: list[str] | None = None) -> None:
+    fatal = fatal or []
+    print(f"compare: {len(worse)} worse ({len(fatal)} fatal, decide the exit code), {len(good)} better, {len(notes)} notes")
+    for title, lines in (("WORSE", worse), ("BETTER", good), ("NOTE", notes)):
         for ln in lines:
-            print(f"  {title}: {ln}")
+            print(f"  {title}{' (FATAL)' if title == 'WORSE' and ln in fatal else ''}: {ln}")

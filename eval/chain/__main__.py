@@ -61,10 +61,16 @@ def main(argv: list[str] | None = None) -> int:
         if not report.BASELINE.exists():
             print("compare: no baseline.json yet (run with --update-baseline)")
             return 1
-        bad, good, notes = report.compare(rows, json.loads(report.BASELINE.read_text(encoding="utf-8")))
-        report.print_compare(bad, good, notes)
-        code = code or (1 if bad else 0)
+        code = code or _exit_for(rows, show=True)
     return code
+
+
+def _exit_for(rows: list[dict], show: bool = False) -> int:
+    """1 when the compare with the baseline finds a fatal drop, else 0."""
+    worse, good, notes, fatal = report.compare(rows, json.loads(report.BASELINE.read_text(encoding="utf-8")))
+    if show:
+        report.print_compare(worse, good, notes, fatal)
+    return 1 if fatal else 0
 
 
 if __name__ == "__main__":

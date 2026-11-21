@@ -97,39 +97,68 @@ def test_worker_crash_is_failed(tmp_path):
 
 def test_compare_same_run_is_clean():
     rows = [_row(key="a"), _row(key="b", corpus="hostile", outcome="refused", fields=0)]
-    bad, good, _ = report.compare(rows, report.to_baseline(rows))
-    assert bad == [] and good == []
+    bad, good, _, fatal = report.compare(rows, report.to_baseline(rows))
+    assert bad == [] and good == [] and fatal == []
 
 
 def test_compare_flags_regressions():
     base = report.to_baseline([_row(key="a", fields=10), _row(key="b", fields=10), _row(key="c")])
-    bad, _, _ = report.compare([_row(key="a", fields=7), _row(key="b", outcome="failed", error="X"),
-                                _row(key="c", gate="failed")], base)
-    assert len(bad) == 3
+    worse, _, _, fatal = report.compare([_row(key="a", fields=7), _row(key="b", outcome="failed", error="X"),
+                                         _row(key="c", gate="failed")], base)
+    assert len(worse) == 3 and len(fatal) == 3
 
 
-def test_baseline_with_one_more_field_reports_a_regression():
-    """Negative control: the baseline says 11 fields, the run finds 10 (a fall of under 20 %): reported, not fatal;
-    a fall of over 20 % on a file of the sets is fatal."""
+def test_baseline_with_one_more_field_reports_worse_but_not_fatal():
+    """Negative control: the baseline says 11 fields, the run finds 10 (a fall of under 20 %): listed as worse,
+    not fatal; a fall of over 20 % on a file of the sets is fatal."""
     rows = [_row(key="a", fields=10)]
     base = report.to_baseline(rows)
     base["files"]["sets:a"]["fields"] = 11
-    bad, good, notes = report.compare(rows, base)
-    assert bad == [] and any("fields 11 -> 10" in n for n in notes)
+    worse, good, notes, fatal = report.compare(rows, base)
+    assert any("fields 11 -> 10" in w for w in worse) and fatal == []
     base["files"]["sets:a"]["fields"] = 13
-    bad, _, _ = report.compare(rows, base)
-    assert any("fall over 20 %" in b for b in bad)
+    worse, _, _, fatal = report.compare(rows, base)
+    assert any("fall over 20 %" in w for w in fatal)
 
 
-def test_compare_fall_on_unseen_is_only_a_note():
+def test_compare_fall_on_unseen_is_worse_not_fatal():
     rows = [_row(corpus="unseen", key="a", fields=2)]
     base = report.to_baseline([_row(corpus="unseen", key="a", fields=10)])
-    assert report.compare(rows, base)[0] == []
+    worse, _, _, fatal = report.compare(rows, base)
+    assert len(worse) == 1 and fatal == []
+
+
+def test_compare_converted_to_refused_is_fatal_on_any_file():
+    rows = [_row(corpus="unseen", key="a", outcome="refused", fields=0)]
+    base = report.to_baseline([_row(corpus="unseen", key="a", fields=9)])
+    worse, _, _, fatal = report.compare(rows, base)
+    assert len(fatal) == 1 and any("converted, now refused" in w for w in worse)
+
+
+def test_compare_lint_increase_is_worse_not_fatal():
+    base = report.to_baseline([_row(key="a")])
+    worse, _, _, fatal = report.compare([_row(key="a", lint=2)], base)
+    assert len(worse) == 1 and fatal == []
+
+
+def test_exit_code_follows_fatal_list(tmp_path, monkeypatch):
+    import json
+    from eval.chain import __main__ as cli
+    rows = [_row(key="a", fields=10)]
+    bl = report.to_baseline(rows)
+    bl["files"]["sets:a"]["fields"] = 11
+    f = tmp_path / "baseline.json"
+    f.write_text(json.dumps(bl), encoding="utf-8")
+    monkeypatch.setattr(report, "BASELINE", f)
+    assert cli._exit_for(rows) == 0
+    bl["files"]["sets:a"]["fields"] = 20
+    f.write_text(json.dumps(bl), encoding="utf-8")
+    assert cli._exit_for(rows) == 1
 
 
 def test_compare_improvement_and_new_failure():
     base = report.to_baseline([_row(key="a", fields=5), _row(key="b", outcome="failed", error="X")])
-    bad, good, _ = report.compare([_row(key="a", fields=9), _row(key="b"), _row(key="new", outcome="failed", error="Y")], base)
+    bad, good, _, _ = report.compare([_row(key="a", fields=9), _row(key="b"), _row(key="new", outcome="failed", error="Y")], base)
     assert len(good) == 2 and len(bad) == 1
 
 
