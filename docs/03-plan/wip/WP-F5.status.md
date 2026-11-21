@@ -12,6 +12,7 @@ Branch: wp/F5-composer   Stage now: core (done) -> integration
 - [ ] Integration: the lead wires `app/config.py` and `app/pipeline.py` to `ComposeOptions` and `compose` (request 4)
 - [ ] Integration: replace `CONCEPT_VALIDATORS` by the table of WP-F8 and `compose/query.py` by the writer of WP-F7 when they exist; conditions inside repeating sections are theirs
 - [x] Integration: `main` merged (already up to date), fast gate 329 passed, composer tests 63 passed, on f2f205b (own paths have nothing more to wire: app/config.py and app/pipeline.py are WP-F1's, request 4)
+- [x] Acceptance run on a093f2d: main merged (up to date), fast gate 329 passed, composer 63 passed, negative control recorded (acceptance section below)
 - [ ] Acceptance: the "cheapest test" on the seven judged outputs (needs the briefs of WP-F4); today it runs on reference 5 only
 - [ ] Acceptance: briefs from WP-F4 instead of the hand-written fixtures for the two reference sets
 
@@ -49,6 +50,8 @@ Branch: wp/F5-composer   Stage now: core (done) -> integration
 ## Negative control
 On 57b0de9, `Names.unique` was made to return the slug without the uniqueness check (working tree only, never committed). `pytest apps/converter/tests/compose/test_compose_core.py -k "same_title or gate"`: 7 failed of 28, among them `test_two_sections_with_the_same_title_give_unique_technames` and the gate test on the briefs whose labels collide with the library. Restored with `git checkout -- apps/converter/app/compose/names.py`; all 63 composer tests pass again.
 
+Acceptance stage, on a093f2d: `Names.unique` made to skip the collision check (working tree only): `pytest apps/converter/tests/compose -q` gave 19 failed, 44 passed (the sets tests and the uniqueness tests). Restored with `git checkout --`; 63 passed again. Fast gate `bash tools/gate.sh fast`: 329 passed, PASSED on a093f2d.
+
 ## Requests to lead
 1. Brief model: an optional page title (or heading level) on `MatterSection`. Today a matter page takes the title of its first section, so set 1 gives "Lokalizacja budynku" where the export says "Informacje o budynku".
 2. Brief model: `MatterSection.hint` (export 5 has a description on "Korekta deklaracji"; ours is empty) and `Attachment.key` (an attachment's id is made from the slug of its label, so there a changed label changes the id).
@@ -64,4 +67,5 @@ On 57b0de9, `Names.unique` was made to return the slug without the uniqueness ch
 
 ## Cost notes
 - core: reading the two exports in full (about 12k tokens) and writing the library took the most; a committed, id-free digest of the standard sections (text and conditions per techName) would let the next stage skip the exports.
+- acceptance: 5 replies; nothing new to build, the cost was the gate run and the control. Cheaper: a script that runs the control and restores.
 - integration: nothing to wire inside owned paths, the stage was a merge and a gate run; the remaining items wait for WP-F4, F7, F8 and the lead's wiring.
