@@ -11,10 +11,12 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 - [x] 3. R2 `job_timeout_s` 600; abandoned jobs count against the slots (BUSY, Retry-After 30) (e021b98); the
       time-limit test of item 7 was made robust here already, because a leaked job would now block later tests
 - [x] 4. R3 catch-all: unexpected exception and request validation as problem JSON; batch stream continues  (6349e8d)
-- [x] 5. J3 `GET /status`
-- [x] 6. J2 `convert --out` that cannot be written: one line, exit 4
-- [x] 7. R4 PDFium lock (test: four threads, one render at a time); the time-limit test was fixed in e021b98
-- [ ] 8. Optional: wait for a free slot up to `QUEUE_WAIT_S` (only if the review page sends files in parallel)
+- [x] 5. J3 `GET /status` (2fa9651)
+- [x] 6. J2 `convert --out` that cannot be written: one line, exit 4 (10b47ed)
+- [x] 7. R4 PDFium lock (test: four threads, one render at a time) (5b0d092); the time-limit test was fixed in e021b98
+- [x] 8. SKIPPED as the brief says: the review page does not send files in parallel. `apps/review-web/src/ui/app.ts`
+      lines 84-95 (`run`): of several dropped files only `files[0]` is sent, in one request, with the notice
+      `upload.multiple`. No `QUEUE_WAIT_S` was added; a full service still answers 429 BUSY at once.
 - [ ] Acceptance: shell and readers tests, fast gate, negative control, evidence table
 
 ## Decisions
@@ -38,6 +40,12 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 - R3: the code of an unexpected exception is `GATE_FAILED` (500), detail "Błąd wewnętrzny usługi." / the table of
   codes lives in `app/guard/problems.py`, not mine, and the reviewer's patch uses it / rules out a new code now.
 - R3: the 400 of a request validation error names the parameter and never its value.
+- J3: `/status` has exactly six keys (`service`, `version`, `engine`, `auth`, `formats`, `limits`) and reads the
+  formats from the readers registry / small, and H4 extends it / rules out paths, key names, environment dumps.
+- J2: `--report DIR` that cannot be written gets the same line and exit 4 as `--out` / same cause on a mounted
+  folder / rules out a traceback on the second output.
+- R4: the lock covers open, render and close of the PDF page, not the OCR of the rendered picture / OCR is the
+  long part and is a separate process / rules out serialising whole scanned documents.
 
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
