@@ -9,7 +9,7 @@ Branch: wp/F14-gate   Stage now: core
 - [x] Command `python -m app.gate FILE.json [--profile] [--json]` (exit 0/1/2), 3 tests, gate dir 62 passed (integration stage)
 - [ ] Integration (lead): wire `check()` into the pipeline (500 GATE_FAILED with the check name, no form; today pipeline.py line 64 raises GATE_FAILED only for a composer exception); copy `tools/coi_lint.py` and `contracts/coi/form*.schema.json` into the image (see Requests)
 - [ ] Not automated: compare the J5/J6 visible address fields of export 1 with the partner's visualisation document by eye (it is a picture/PDF, local only)
-- [ ] Acceptance stage: re-run the fast gate on the merged result; the review
+- [x] Acceptance stage: main merged (already up to date), fast gate 492 passed, 8 deselected on 9003e76; negative control below; the review is open
 
 ## Decisions
 - G2 runs `tools/coi_lint.py` and routes each ERROR to the check that owns the rule (table `ROUTES` in structure.py) / one broken rule fails one check / rules out double counting; a change of a lint message shows in the twelve controls.
@@ -38,6 +38,8 @@ Branch: wp/F14-gate   Stage now: core
 ## Negative control
 The twelve fixtures of `test_gate_core.py` (`CONTROLS` plus the ledger test) each break one rule of a passing synthetic form and assert that exactly that check fails.
 
+Acceptance control (on 9003e76): the G10 patterns in `app/gate/htmlcheck.py` (BAD_SCHEME, BAD_TEXT) were replaced by never-matching ones; `pytest apps/converter/tests/gate` gave 4 failed, 58 passed (javascript:, data:, expression() in the HTML test). File restored; 62 passed again. Fast gate: `bash tools/gate.sh fast` gave 492 passed, 8 deselected.
+
 ## Requests to lead
 - Image: copy `tools/coi_lint.py` to `/srv/converter/tools/coi_lint.py` and `contracts/coi/form.schema.json`, `form.tolerant.schema.json` to `/srv/converter/contracts/coi/` (both images). Without them G1 and G2 fail closed in the container. `coi_lint.PROFILES` then resolves unchanged.
 - Pipeline (after merge): `report = app.gate.check(form)`; `report.raise_for_failure()` raises `GateFailed` with `.check.id`, `.check.name` and the findings: map to 500 GATE_FAILED without the form. Pass `sidecar=` and `fill_values=` when WP-F15 and WP-F17 provide them, else G11 and G12 stay not_applicable.
@@ -45,4 +47,5 @@ The twelve fixtures of `test_gate_core.py` (`CONTROLS` plus the ledger test) eac
 
 ## Cost notes
 - core: most turns went into reading the shape of the exports' conditions and HTML (two scratch scripts) before deciding G6, G7 and G10; a measured digest of "conditions and HTML tags per export" in the forensics file would have saved three replies.
+- acceptance: five replies; the only slip was a log path outside the worktree.
 - integration: small stage; pipeline and image wiring belong to the lead, so only a command line was added.
