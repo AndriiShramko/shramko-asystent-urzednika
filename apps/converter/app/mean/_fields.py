@@ -70,7 +70,14 @@ def _says_required(text: str) -> bool:
     return any(not _NEGATION.search(low[max(0, m.start() - _NEGATION_REACH): m.start()]) for m in REQUIRED.finditer(low))
 
 
-_OPTIONAL_WORDING = _habit("optional_wording")
+_OPTIONAL_WORDING, _CONDITIONAL = _habit("optional_wording"), _habit("conditional")
+_BRACKET = re.compile(r"\(([^()]*)\)")      # an aside of a section title: "Dane do kontaktu (pola obowiązkowe)"
+
+
+def _aside_says_required(text: str) -> bool:
+    """A hint, or a bracket of a section title, marks required unless a condition stands beside the cue
+    ("wymagane w przypadku ..."): that is a condition of the paper, not its "required"."""
+    return _says_required(text) and not _CONDITIONAL.search(text.casefold())
 
 
 def _says_optional(text: str) -> bool:
@@ -582,8 +589,14 @@ class _Reader:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
         notes = [doc.footnote(m) for m in c.footnotes]
-        optional = optional or _says_optional(low) or any(_says_optional(n) for n in notes)
-        marked = _says_required(low) or any(_says_required(n) for n in notes)
+        said = hint or self._hint_after(c) or ""
+        optional = optional or _says_optional(low) or any(_says_optional(n) for n in notes) or _says_optional(said)
+        marked = _says_required(low) or any(_says_required(n) for n in notes) or _aside_says_required(said)
+        if not (optional or marked):        # the field's own words (label, hint, footnote) outrank the title of its section
+            head = doc.sections.get(c.section or "")
+            title = head.title if head is not None else ""
+            optional = _says_optional(title)
+            marked = any(_aside_says_required(aside) for aside in _BRACKET.findall(title))
         required = not optional
         basis = ("paper" if marked else "inferred") if required else None
         f = BriefField(**some(key=key, label=shown, type=kind, concept=concept, required=required, required_basis=basis,

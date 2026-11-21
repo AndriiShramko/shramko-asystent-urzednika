@@ -19,8 +19,11 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 - [x] (d) optional wording: `ewentualn`, "jeśli/jeżeli (są) różn", "w razie potrzeby", "niewymagan", "nie jest/są wymagan|obowiązkow"
       (habit row `optional_wording`, `_says_optional` in `_fields.py`), tests `tests/mean/test_mean_c1_optional.py`;
       with the mean tests and `tests/validators/test_required.py`: 104 passed
-- [~] (e) required and optional cues read from the field's hint and the title of its own section; the tests are WRITTEN
-      (`tests/mean/test_mean_c1_sources.py`, in git only with the code), the code is next
+- [x] (e) required and optional cues read from the field's hint and the title of its own section (`_aside_says_required`,
+      `_field` in `_fields.py`), tests `tests/mean/test_mean_c1_sources.py`;
+      `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` = 122 passed, 1 skipped
+- [ ] (e2) item 4 of the order: cues "należy wypełnić" (no word after it) and "musi zawierać" in a habit row `required_wording`,
+      read by `_says_required`; tests first (`tests/mean/test_mean_c1_wording.py`)
 - [ ] (f) counts after, list of changed fields here
 - [ ] (g) fast gate, chain compare, state `ready_to_merge`
 - [ ] (h) only if (c) to (e) are green: legend "pola oznaczone * / gwiazdką są obowiązkowe" makes starred labels required
@@ -49,12 +52,11 @@ basis was "paper"); the 9 that passed are the guards that must hold before and a
 `bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_c1_negation.py ... test_mean_core.py test_mean_f3b.py test_mean_f3c.py -q` = 79 passed.
 
 ## Left for the next stage
-Steps (e) to (h). Heartbeat of this section: 2026-11-22 00:55 (the earlier "01:10" was a wrong clock). The design of (e)
-is fixed in "## Decisions"; if `tests/mean/test_mean_c1_sources.py` is missing in your checkout, write it from the decisions
-(synthetic labels of a garden; `field_of(label, title=..., footnote=...)` of `test_mean_c1_negation.py` builds the paper).
-Step (e) in `_fields.py::_field`: read the hint (`hint or self._hint_after(c)`) with `_says_optional` / `_says_required`
-(required void when the habit `conditional` matches the hint); then, only when the own words say nothing, the title of
-`self.doc.sections.get(c.section or "")`: optional anywhere, required only inside a bracket of the title.
+Steps (f), (g), then (e2) and (h) if time is left. Heartbeat of this section: 2026-11-22 01:00. Steps (c), (d), (e) are
+committed and their tests pass (122 passed on the commit of step e). NEXT: (f) run the two measuring commands below (4 and the
+dump tool, once for sets 08 and 09 and once without set names for all sets), diff against the before files, write the changed
+fields into "## Evidence"; gate of the order: no field loses the basis "paper", items 20 and 29 of set 09 optional in doc, docx, pdf.
+`field_of(label, title=..., footnote=...)` of `test_mean_c1_negation.py` builds a synthetic one-field paper for new tests.
 Before-dump of ALL sets on main's code: `tmp/c1-brief-all-before.tsv` = 689 fields, 670 required, 10 with basis paper
 (local, not in git: re-make it from a checkout of `main` with the same tool if needed). Measuring tool of this package:
 `bash tools/gate.sh py apps/converter/tests/mean/dump_required.py tmp/c1-brief-after.tsv judged-08 judged-09`
