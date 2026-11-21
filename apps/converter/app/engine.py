@@ -40,8 +40,8 @@ _PRIVATE_SUFFIXES = (".local", ".internal", ".lan", ".home", ".localhost")
 def engine_of(sidecar: Any) -> str:
     """The engine one finished conversion ran on, from the warning codes of its sidecar. A fallback wins over a
     use: the stronger claim (`rules+model`) is never made for a conversion in which the step also failed."""
-    found = sidecar.get("warnings", []) if isinstance(sidecar, dict) else []
-    codes = {w.get("code") for w in found if isinstance(w, dict)}
+    found = sidecar.get("warnings") if isinstance(sidecar, dict) else None
+    codes = {w.get("code") for w in found if isinstance(w, dict)} if isinstance(found, list) else set()
     if "MODEL_FALLBACK" in codes:
         return RULES_FALLBACK
     if "MODEL_USED" in codes:
