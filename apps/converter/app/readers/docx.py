@@ -16,10 +16,16 @@ more underlined blanks are written as underscores (the paper shows a line), Wing
 an unknown symbol is U+FFFD, a legacy check box is written as a box, field codes and hidden or deleted text are
 not text. Content controls and legacy form fields become widgets; a content control showing its placeholder
 contributes no text.
+
+List markers: a paragraph with w:numPr (directly or through its paragraph style) starts with the marker Word shows
+for it ("1.", "a)", "2.1.", a bullet), computed from word/numbering.xml in document order (see _Numbering). A symbol
+box bullet becomes the box the finder knows, any other bullet becomes "•" or "-". Paragraphs without numbering are
+unchanged.
 """
 from __future__ import annotations
 
 import io
+import re
 import zipfile
 from dataclasses import dataclass, field
 from typing import Iterator
@@ -202,6 +208,213 @@ def _tab_stops(ppr: etree._Element | None) -> list[tuple[float, str]]:
     return sorted(stops)
 
 
+# ---------------------------------------------------------------- list numbering
+
+LIST_BOX = "□"            # the first of the finder's BOX_CHARS (app/find/_core.py)
+_BOXES = "□❑❒☐❏❐▢◻◽⬜■"
+_DASHES = "-–—‐"
+_MAX_LEVELS = 9
+
+
+def _roman(n: int) -> str:
+    if n <= 0 or n >= 4000:
+        return str(n)
+    out = []
+    for v, s in ((1000, "m"), (900, "cm"), (500, "d"), (400, "cd"), (100, "c"), (90, "xc"), (50, "l"), (40, "xl"),
+                 (10, "x"), (9, "ix"), (5, "v"), (4, "iv"), (1, "i")):
+        while n >= v:
+            out.append(s)
+            n -= v
+    return "".join(out)
+
+
+def _letters(n: int) -> str:
+    """Word's letter numbering: a..z, then aa..zz, then aaa..."""
+    if n <= 0:
+        return str(n)
+    return chr(ord("a") + (n - 1) % 26) * ((n - 1) // 26 + 1)
+
+
+def _format_number(n: int, fmt: str) -> str:
+    if fmt == "lowerLetter":
+        return _letters(n)
+    if fmt == "upperLetter":
+        return _letters(n).upper()
+    if fmt == "lowerRoman":
+        return _roman(n)
+    if fmt == "upperRoman":
+        return _roman(n).upper()
+    if fmt == "decimalZero":
+        return f"{n:02d}"
+    if fmt == "none":
+        return ""
+    return str(n)   # decimal and every format we do not draw
+
+
+def _bullet(text: str, font: str) -> str:
+    """The bullet as the later steps know it: a box stays a box (LIST_BOX), a dash stays "-", the rest is "•"."""
+    ch = text.strip()[:1]
+    if not ch:
+        return ""
+    code = ord(ch)
+    if 0xF000 <= code <= 0xF0FF or font.startswith(_SYMBOL_FONTS):
+        ch = _symbol(font, code)
+    if ch in _BOXES:
+        return LIST_BOX
+    if ch in "☑☒":
+        return ch
+    if ch in _DASHES:
+        return "-"
+    return "•"
+
+
+@dataclass
+class _Level:
+    fmt: str = "decimal"
+    text: str = "%1."
+    start: int = 1
+    font: str = ""
+
+
+class _Numbering:
+    """word/numbering.xml: w:num -> w:abstractNum -> w:lvl, and the markers of the paragraphs in document order.
+    Counters run per numId and level; a deeper level restarts when a shallower one advances; w:start and
+    w:lvlOverride/w:startOverride give the first value."""
+
+    def __init__(self, root: etree._Element | None, styles_root: etree._Element | None):
+        self.abstract: dict[str, dict[int, _Level]] = {}
+        self.abstract_link: dict[str, str] = {}          # abstractNumId -> numbering style it links to
+        self.nums: dict[str, tuple[str, dict[int, int], dict[int, _Level]]] = {}
+        self.style_num: dict[str, tuple[str | None, int | None, str | None]] = {}
+        if styles_root is not None:
+            for st in styles_root.findall("w:style", NS):
+                sid = st.get(W + "styleId")
+                if not sid:
+                    continue
+                b = st.find("w:basedOn", NS)
+                num_id, ilvl = self._num_pr(st.find("w:pPr/w:numPr", NS))
+                self.style_num[sid] = (num_id, ilvl, b.get(W + "val") if b is not None else None)
+        if root is None:
+            return
+        for an in root.findall("w:abstractNum", NS):
+            aid = an.get(W + "abstractNumId") or ""
+            self.abstract[aid] = {i: lv for i, lv in (self._level(el) for el in an.findall("w:lvl", NS))}
+            link = _val(an, "w:numStyleLink")
+            if link:
+                self.abstract_link[aid] = link
+        for num in root.findall("w:num", NS):
+            nid = num.get(W + "numId") or ""
+            aid = _val(num, "w:abstractNumId") or ""
+            starts: dict[int, int] = {}
+            levels: dict[int, _Level] = {}
+            for ov in num.findall("w:lvlOverride", NS):
+                try:
+                    i = int(ov.get(W + "ilvl") or 0)
+                except ValueError:
+                    continue
+                so = _val(ov, "w:startOverride")
+                if so and so.lstrip("-").isdigit():
+                    starts[i] = int(so)
+                lv = ov.find("w:lvl", NS)
+                if lv is not None:
+                    levels[i] = self._level(lv)[1]
+            self.nums[nid] = (aid, starts, levels)
+        self.counters: dict[str, list[int | None]] = {}
+
+    @staticmethod
+    def _num_pr(npr: etree._Element | None) -> tuple[str | None, int | None]:
+        if npr is None:
+            return None, None
+        nid = _val(npr, "w:numId")
+        il = _val(npr, "w:ilvl")
+        return nid, int(il) if il and il.isdigit() else None
+
+    @staticmethod
+    def _level(el: etree._Element) -> tuple[int, _Level]:
+        il = el.get(W + "ilvl") or "0"
+        lv = _Level()
+        lv.fmt = _val(el, "w:numFmt") or "decimal"
+        txt = el.find("w:lvlText", NS)
+        lv.text = txt.get(W + "val") or "" if txt is not None else ""
+        st = _val(el, "w:start")
+        lv.start = int(st) if st and st.lstrip("-").isdigit() else (0 if lv.fmt == "decimalZero" else 1)
+        fonts = el.find("w:rPr/w:rFonts", NS)
+        if fonts is not None:
+            lv.font = (fonts.get(W + "ascii") or fonts.get(W + "hAnsi") or "").lower()
+        return int(il) if il.isdigit() else 0, lv
+
+    def _levels(self, nid: str) -> tuple[dict[int, _Level], dict[int, int]] | None:
+        if nid not in self.nums:
+            return None
+        aid, starts, overrides = self.nums[nid]
+        levels = self.abstract.get(aid)
+        link = self.abstract_link.get(aid)
+        if link and link in self.style_num:          # a list style: its numId points to the real definition
+            target = self.style_num[link][0]
+            if target and target in self.nums and target != nid:
+                levels = self.abstract.get(self.nums[target][0], levels)
+        if levels is None:
+            return None
+        return {**levels, **overrides}, starts
+
+    def _paragraph_num(self, p: etree._Element) -> tuple[str | None, int | None]:
+        ppr = p.find("w:pPr", NS)
+        nid, ilvl = self._num_pr(ppr.find("w:numPr", NS) if ppr is not None else None)
+        sid = _val(ppr, "w:pStyle") if ppr is not None else None
+        seen: set[str] = set()
+        while (nid is None or ilvl is None) and sid and sid in self.style_num and sid not in seen:
+            seen.add(sid)
+            snid, silvl, based = self.style_num[sid]
+            nid = nid if nid is not None else snid
+            ilvl = ilvl if ilvl is not None else silvl
+            sid = based
+        return nid, ilvl
+
+    def marker(self, p: etree._Element) -> str:
+        """The marker of the next paragraph in document order ("" when it has none); advances the counters."""
+        nid, ilvl = self._paragraph_num(p)
+        if not nid or nid == "0":
+            return ""
+        ilvl = min(max(ilvl or 0, 0), _MAX_LEVELS - 1)
+        found = self._levels(nid)
+        if found is None:
+            return ""
+        levels, starts = found
+        lv = levels.get(ilvl)
+        if lv is None:
+            return ""
+
+        def start(i: int) -> int:
+            return starts.get(i, levels[i].start if i in levels else 1)
+
+        cnt = self.counters.setdefault(nid, [None] * _MAX_LEVELS)
+        cnt[ilvl] = start(ilvl) if cnt[ilvl] is None else cnt[ilvl] + 1
+        for i in range(ilvl + 1, _MAX_LEVELS):
+            cnt[i] = None
+        if lv.fmt == "bullet":
+            return _bullet(lv.text, lv.font)
+
+        def repl(m: re.Match) -> str:
+            i = int(m.group(1)) - 1
+            if not 0 <= i < _MAX_LEVELS or i > ilvl:
+                return ""
+            n = cnt[i] if cnt[i] is not None else start(i)
+            return _format_number(n, levels[i].fmt if i in levels else "decimal")
+
+        return re.sub(r"%([1-9])", repl, lv.text).strip()
+
+    def markers(self, body: etree._Element) -> dict[etree._Element, str]:
+        """Markers of every numbered paragraph of the body, text boxes and tables included, in document order."""
+        out: dict[etree._Element, str] = {}
+        for p in body.iter(W + "p"):
+            if any(_local(a) == "Fallback" for a in p.iterancestors()):   # the VML copy of a text box
+                continue
+            m = self.marker(p)
+            if m:
+                out[p] = m
+        return out
+
+
 # ---------------------------------------------------------------- paragraphs
 
 
@@ -230,6 +443,7 @@ class _Reader:
         self.styles = styles
         self.footnote_order = footnote_order
         self.current_note = ""
+        self.markers: dict[etree._Element, str] = {}   # list markers of numbered paragraphs (_Numbering.markers)
 
     # -- one paragraph ------------------------------------------------------------------------------------------
 
@@ -244,7 +458,8 @@ class _Reader:
         st = _State(pstyle=pstyle, tabs=tabs)
         self._walk(p, out, st)
         text = "".join(st.parts)
-        out.text = text
+        marker = self.markers.get(p)
+        out.text = f"{marker} {text}" if marker else text
         weights = [b for b, t in st.weights if t.strip()]
         out.bold = bool(weights) and all(weights)
         out.size = st.size or self.styles.size(pstyle) or self.styles.default_size
@@ -928,8 +1143,10 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
     z = _open(data, options)
     with z:
         doc = _part(z, "word/document.xml", options)
-        styles = _Styles(_part(z, "word/styles.xml", options))
+        styles_root = _part(z, "word/styles.xml", options)
+        styles = _Styles(styles_root)
         notes_root = _part(z, "word/footnotes.xml", options)
+        numbering_root = _part(z, "word/numbering.xml", options)
     body = doc.find("w:body", NS) if doc is not None else None
     if body is None:
         raise ReaderError("UNREADABLE", "word/document.xml has no body")
@@ -943,6 +1160,8 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
         order.setdefault(ref.get(W + "id") or "", len(order) + 1)
     notes = {k: notes[k] for k in sorted(notes, key=lambda k: order.get(k, 10**6))}
     rd = _Reader(styles, order)
+    if numbering_root is not None:
+        rd.markers = _Numbering(numbering_root, styles_root).markers(body)
     ids = Ids()
     boxed, other = _text_shares(body)
     if boxed and boxed >= NATIVE_SHARE * (boxed + other):
