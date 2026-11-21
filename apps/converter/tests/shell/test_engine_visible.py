@@ -2,10 +2,16 @@
 proof that nothing of the model's configuration but its name and host class ever leaves."""
 from __future__ import annotations
 
-import pytest
+import json
+import logging
 
-from app import engine
+import factory as fx
+import pytest
+from fastapi.testclient import TestClient
+
+from app import __version__, cli, engine, pipeline
 from app.config import ConfigError, Settings
+from app.main import create_app
 
 # A configured model with everything that must never be shown. All values are synthetic.
 URL_USER, URL_PASS, URL_HOST, URL_PORT, URL_QUERY = "apiuser", "FAKEPASSWORD-9x", "models.example.test", "8443", "FAKEQUERYTOKEN-7z"
@@ -130,3 +136,175 @@ def test_the_record_counts_conversions_by_engine_and_remembers_the_last():
     assert state.status()["engine"] == "rules-fallback"
     assert state.status()["engine_counts"] == {"rules": 1, "rules+model": 1, "rules-fallback": 1}
     assert engine.cli_line("rules") == "ENGINE: rules"
+
+
+# ---- the shell: header, batch line, /status, log ----------------------------------------------------------------
+
+def make(**over) -> TestClient:
+    env = {"AUTH_MODE": "off", "UI_ENABLED": "false", "RATE_LIMIT_PER_MIN": "100000", **over}
+    return TestClient(create_app(Settings.from_env(env)))
+
+
+def post(client: TestClient, path: str = "/v1/forms/convert"):
+    return client.post(path, files={"file": ("a.pdf", fx.pdf(), "application/pdf")})
+
+
+def batch(client: TestClient):
+    body, ctype = fx.multipart([("file", "a.pdf", fx.pdf(), "application/pdf"), ("file", "b.docx", fx.docx(), "application/zip"),
+                                ("file", "c.pdf", bytes(3) + b"junk", "application/pdf")])
+    return client.post("/v1/batches", content=body, headers={"Content-Type": ctype})
+
+
+def model_step_says(monkeypatch, code: str) -> None:
+    """What WP-H1 will do inside the pipeline: one warning in the sidecar. Nothing of the shell is touched."""
+    real = pipeline.run_limited
+
+    def run_limited(*a, **kw):
+        result = real(*a, **kw)
+        result.sidecar.setdefault("warnings", []).append({"code": code})
+        return result
+
+    monkeypatch.setattr(pipeline, "run_limited", run_limited)
+
+
+def test_every_conversion_answer_carries_the_engine_header():
+    client = make()
+    for path in ("/v1/forms/convert", "/v1/forms/convert?report=1", "/v1/forms/report"):
+        r = post(client, path)
+        assert r.status_code == 200 and r.headers["X-Converter-Engine"] == "rules", path
+
+
+def test_every_batch_line_of_a_converted_file_names_the_engine():
+    lines = [json.loads(x) for x in batch(make()).text.splitlines()]
+    assert [x["state"] for x in lines] == ["ok", "ok", "error"]
+    assert [x.get("engine") for x in lines] == ["rules", "rules", None]   # a refused file ran on no engine
+
+
+def test_a_refusal_carries_no_engine_header():
+    r = make().post("/v1/forms/convert", files={"file": ("a.pdf", bytes(3) + b"junk", "application/pdf")})
+    assert r.status_code == 415 and "X-Converter-Engine" not in r.headers
+
+
+@pytest.mark.parametrize("code, expected", [("MODEL_USED", "rules+model"), ("MODEL_FALLBACK", "rules-fallback"),
+                                            ("MODEL_SKIPPED", "rules")])
+def test_the_shell_follows_a_model_step_without_being_changed(monkeypatch, caplog, code, expected):
+    model_step_says(monkeypatch, code)
+    client = make()
+    with caplog.at_level(logging.INFO, logger="converter"):
+        r = post(client)
+    assert r.status_code == 200 and r.headers["X-Converter-Engine"] == expected
+    assert code in r.headers["X-Converter-Warnings"]
+    assert f"stage=convert result=ok job=" in caplog.text and f" engine={expected}" in caplog.text
+    assert [x.get("engine") for x in map(json.loads, batch(client).text.splitlines())] == [expected, expected, None]
+    status = client.get("/status").json()
+    assert status["engine"] == expected and status["engine_counts"][expected] == 3
+
+
+def test_status_shows_the_engine_and_says_no_model_is_configured():
+    client = make()
+    body = client.get("/status").json()
+    assert set(body) == {"service", "version", "engine", "engine_counts", "model", "auth", "formats", "limits"}
+    assert body["engine"] == "rules" and body["engine_counts"] == {"rules": 0, "rules+model": 0, "rules-fallback": 0}
+    assert body["model"] == {"configured": False, "state": "OFF", "reason": "not-configured"}
+    assert post(client).status_code == 200
+    assert client.get("/status").json()["engine_counts"]["rules"] == 1
+
+
+def test_healthz_is_unchanged_byte_for_byte(tmp_path):
+    expected = ('{"status":"ok","version":"' + __version__ + '"}').encode()
+    for client in (make(), make(**model_env(tmp_path)), make(MODEL_STEP="off")):
+        r = client.get("/healthz")
+        assert r.status_code == 200 and r.content == expected and r.headers["content-type"] == "application/json"
+        assert "X-Converter-Engine" not in r.headers
+
+
+def test_the_log_names_the_engine_at_start_and_for_every_conversion(caplog):
+    with caplog.at_level(logging.INFO, logger="converter"):
+        client = make()
+        assert post(client).status_code == 200
+    lines = caplog.text.splitlines()
+    assert sum("engine=rules state=OFF reason=not-configured" in x for x in lines) == 1
+    done = [x for x in lines if "stage=convert result=ok" in x]
+    assert len(done) == 1 and done[0].endswith(" engine=rules")
+
+
+# ---- a configured model: reported, unused, and nothing secret anywhere ------------------------------------------
+
+def test_a_configured_model_changes_no_byte_of_the_form_or_the_sidecar(tmp_path):
+    plain, configured = make(), make(**model_env(tmp_path))
+    for path in ("/v1/forms/convert", "/v1/forms/report"):
+        a, b = post(plain, path), post(configured, path)
+        assert a.status_code == b.status_code == 200 and a.content == b.content, path
+        assert a.headers["X-Form-SHA256"] == b.headers["X-Form-SHA256"]
+        assert a.headers["X-Converter-Engine"] == b.headers["X-Converter-Engine"] == "rules"
+
+
+def test_nothing_of_the_model_configuration_but_name_and_host_class_leaves_the_service(tmp_path, caplog, monkeypatch):
+    import socket
+
+    def no_network(*a, **kw):
+        raise AssertionError("a configured model must not make this build open a connection")
+
+    monkeypatch.setattr(socket, "create_connection", no_network)
+    monkeypatch.setattr(socket, "getaddrinfo", no_network)
+    with caplog.at_level(logging.DEBUG):
+        client = make(**model_env(tmp_path))
+        answers = {
+            "/status": client.get("/status"), "/healthz": client.get("/healthz"), "convert": post(client),
+            "convert+report": post(client, "/v1/forms/convert?report=1"), "report": post(client, "/v1/forms/report"),
+            "batch": batch(client), "refusal": client.post("/v1/forms/convert", files={"file": ("a.pdf", b"\0\0\0junk", "application/pdf")}),
+            "not found": client.get("/nope"),
+        }
+    for where, r in answers.items():
+        assert_nothing_secret(r.text, f"body of {where}")
+        assert_nothing_secret(repr(sorted(r.headers.items())), f"headers of {where}")
+    assert_nothing_secret(caplog.text, "the log")
+    status = answers["/status"].json()
+    assert status["engine"] == "rules" and status["model"] == {
+        "configured": True, "state": "UNAVAILABLE", "reason": "no-model-step", "name": MODEL_NAME, "host": "public", "key": "file"}
+    assert f"engine=rules state=UNAVAILABLE model={MODEL_NAME} host=public reason=no-model-step" in caplog.text
+
+
+# ---- the command line -------------------------------------------------------------------------------------------
+
+def test_the_command_line_names_the_engine_on_standard_error_and_never_on_standard_output(tmp_path, capsys, monkeypatch):
+    for name in ("MODEL_STEP", "MODEL_BASE_URL", "MODEL_NAME", "MODEL_API_KEY", "MODEL_API_KEY_FILE"):
+        monkeypatch.delenv(name, raising=False)
+    src = tmp_path / "a.docx"
+    src.write_bytes(fx.docx())
+    assert cli.main(["convert", str(src)]) == 0
+    plain = capsys.readouterr()
+    assert plain.err == "ENGINE: rules\n"
+    assert set(json.loads(plain.out)) == {"title", "tabs", "flow"} and "ENGINE" not in plain.out
+
+    assert cli.main(["convert", str(src), "--out", str(tmp_path / "form.json"), "--report", str(tmp_path / "rep")]) == 0
+    to_file = capsys.readouterr()
+    assert to_file.out == "" and to_file.err == "ENGINE: rules\n"
+    assert (tmp_path / "form.json").read_text(encoding="utf-8") + "\n" == plain.out
+
+    for name, value in model_env(tmp_path).items():   # a configured model: the same bytes, the same line, no secret
+        monkeypatch.setenv(name, value)
+    assert cli.main(["convert", str(src), "--report", str(tmp_path / "rep2")]) == 0
+    configured = capsys.readouterr()
+    assert configured.out == plain.out and configured.err == "ENGINE: rules\n"
+    assert (tmp_path / "rep2" / "a.meta.json").read_bytes() == (tmp_path / "rep" / "a.meta.json").read_bytes()
+    assert_nothing_secret(configured.out + configured.err + (tmp_path / "rep2" / "a.meta.json").read_text(encoding="utf-8"), "CLI")
+
+
+def test_a_refused_file_prints_no_engine_line(tmp_path, capsys):
+    src = tmp_path / "a.pdf"
+    src.write_bytes(bytes(3) + b"spoof")
+    assert cli.main(["convert", str(src)]) == 2
+    assert "ENGINE" not in capsys.readouterr().err
+
+
+# ---- the warning codes ------------------------------------------------------------------------------------------
+
+def test_the_three_model_codes_are_in_the_list_and_nothing_emits_them_yet():
+    from typing import get_args
+
+    from app.model.common import WarningCode
+
+    assert {"MODEL_USED", "MODEL_FALLBACK", "MODEL_SKIPPED"} <= set(get_args(WarningCode))
+    sidecar = pipeline.run(fx.pdf(), "a.pdf", Settings.from_env({"AUTH_MODE": "off"})).sidecar
+    assert not [w for w in sidecar.get("warnings", []) if str(w.get("code", "")).startswith("MODEL_")]
