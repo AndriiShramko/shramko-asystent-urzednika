@@ -16,8 +16,8 @@ A stage is one kind of work on named files, planned for about thirty replies. It
 
 ## 2. While working
 
-- Commit after every finished step: `git add <files by name>`, `git commit -m "WP-<id>: <what>"`, then **`git branch -f wp/<id>-<slug> HEAD`**. The status checklist changes in the same commit. Commit before any run longer than two minutes.
-- Never: `git add -A`, `git add .`, stash, rebase, `reset --hard`, push, checking the package branch out, renaming your branch to it.
+- Commit after every finished step: `git add <files by name>`, `git commit -m "WP-<id>: <what>"`, then **`git branch -f wp/<id>-<slug> HEAD`** and **`git push origin wp/<id>-<slug>`** (a limit kills an agent mid-step; another lead continues from origin; the section "## Left for the next stage" of the status file is kept current in every commit). The status checklist changes in the same commit. Commit before any run longer than two minutes.
+- Never: `git add -A`, `git add .`, stash, rebase, `reset --hard`, a push of `main` or of a branch that is not yours, checking the package branch out, renaming your branch to it.
 - Edit only the paths the package owns (`docs/03-plan/ownership.md`) and your status file. A change elsewhere, and every new dependency, is a line under "## Requests to lead"; continue against a stub.
 - The shared Python environment holds dependencies only. Run tests from your worktree so that imports resolve to your code; never install the project itself into the shared environment.
 - The partner's task sets are not in git: `from tools.coi_paths import coi_dir, sets`. Never build a path to them by hand, never copy them into the worktree, never commit them.
@@ -36,6 +36,7 @@ Create `docs/03-plan/wip/WP-<id>.status.md` in the core stage:
 # WP-<id> <title>: status
 
 Branch: wp/<id>-<slug>   Stage now: core | integration | acceptance
+Claimed by: <label of the lead>; heartbeat: <date> <HH:MM>; state: running | stopped | released | ready_to_merge
 
 ## Status
 - [x] <step> (commit <hash>)
@@ -51,6 +52,9 @@ Branch: wp/<id>-<slug>   Stage now: core | integration | acceptance
 
 ## Negative control
 <what was broken, which test failed, restored in commit>
+
+## Left for the next stage
+<kept current in EVERY commit: items left, the exact next commands, checks that passed and the commit they ran on>
 
 ## Requests to lead
 - <change outside my paths, or a dependency: name, licence, why>

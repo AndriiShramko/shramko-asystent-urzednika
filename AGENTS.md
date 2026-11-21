@@ -15,6 +15,7 @@ This is **Track F**. Tracks A (requests for public information) and B (the count
 | Need | Go to |
 |---|---|
 | Where the project stands, what is running | [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) |
+| Continue after a limit, join from another subscription, who merges, which lane is free | [`docs/03-plan/RESUME.md`](docs/03-plan/RESUME.md) |
 | Binding decisions of the track (D1…D14) and what the mentors were asked | [`docs/03-plan/DECISIONS-forms-track.md`](docs/03-plan/DECISIONS-forms-track.md) |
 | The task card (digest, ids `C-…`) | [`docs/05-hackathon/intake/coi-task-card.md`](docs/05-hackathon/intake/coi-task-card.md) |
 | The partner's JSON: format, rules, standard sections | [`docs/02-architecture/coi-json-format.md`](docs/02-architecture/coi-json-format.md); skill `coi-partner-json`; measured facts in [`docs/05-hackathon/mentor-questions/reference-json-forensics.txt`](docs/05-hackathon/mentor-questions/reference-json-forensics.txt) |

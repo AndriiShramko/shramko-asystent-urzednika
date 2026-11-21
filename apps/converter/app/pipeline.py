@@ -77,10 +77,20 @@ def _gate_warning(check: gate.CheckResult) -> dict:
             "detail": f"Kontrola {check.id} ({check.name}) zgłosiła uwagi w miejscach: {places}{more}."[:300]}
 
 
+_abandoned: list[threading.Thread] = []   # jobs whose caller got 504 and which are still running
+_abandoned_lock = threading.Lock()
+
+
 def run_limited(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] = ()) -> PipelineResult:
     """`run` under `settings.job_timeout_s`: the job runs in a daemon thread and the caller stops waiting when the
     time is up (504 TIMEOUT). A thread cannot be killed, so the abandoned job ends by itself; the normal path is
-    unchanged, so the bytes are too."""
+    unchanged, so the bytes are too. Abandoned jobs still use a processor, so they count against the slots: while
+    `settings.concurrency` or more of them are alive no new job starts (429 BUSY) and the pile cannot grow."""
+    with _abandoned_lock:
+        _abandoned[:] = [t for t in _abandoned if t.is_alive()]
+        if len(_abandoned) >= settings.concurrency:
+            raise ProblemError("BUSY", "Poprzednie zadania przekroczyły limit czasu i jeszcze się kończą.",
+                               headers={"Retry-After": "30"})
     box: dict = {}
     args = (data, filename, settings, notes) if notes else (data, filename, settings)
 
@@ -94,6 +104,8 @@ def run_limited(data: bytes, filename: str, settings: Settings, notes: tuple[str
     th.start()
     th.join(settings.job_timeout_s)
     if th.is_alive():
+        with _abandoned_lock:
+            _abandoned.append(th)
         raise ProblemError("TIMEOUT", f"Przetwarzanie pliku trwało dłużej niż {settings.job_timeout_s} s i zostało przerwane.")
     if "error" in box:
         raise box["error"]
