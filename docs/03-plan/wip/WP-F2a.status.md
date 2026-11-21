@@ -4,7 +4,8 @@ Branch: wp/F2a-readers-pdf-docx   Stage now: core
 
 ## Status
 - [x] Registry `app/readers/__init__.py` (self-registering modules, `read_document`, hooks), `_base.py`, `pdf.py`, `docx.py`
-- [ ] Unit tests on synthetic files (reportlab PDF; python-docx and raw-XML DOCX), tests on the sets (`@pytest.mark.sets`)
+- [x] Unit tests on synthetic files: 42 pass (reportlab PDF; python-docx and raw-XML DOCX)
+- [ ] Tests on the sets (`@pytest.mark.sets`)
 - [ ] `app/readers/survey.py` writing `eval/readers-sets.json`
 - [ ] Acceptance stage: survey over the nine sets, negative control, fast gate after merging main
 

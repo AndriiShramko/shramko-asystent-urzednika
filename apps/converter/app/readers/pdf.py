@@ -115,8 +115,8 @@ def _style(obj: dict[str, Any]) -> str:
     if not pattern or not any(float(v) > 0 for v in pattern):
         return "solid"
     on = float(pattern[0])
-    width = max(float(obj.get("linewidth") or 0), 0.5)
-    return "dotted" if on <= 1.5 * width else "dashed"
+    width = float(obj.get("linewidth") or 0)
+    return "dotted" if on <= max(1.5 * width, 1.0) else "dashed"
 
 
 def _visible(obj: dict[str, Any]) -> bool:
