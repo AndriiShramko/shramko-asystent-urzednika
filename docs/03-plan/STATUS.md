@@ -2,9 +2,42 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 13:45 CET. **Track F (the forms converter) is prepared and the build may start: read "Now" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 14:50 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
-## Now (21 November, 13:45)
+## Build log (the lead's handoff; newest state on top)
+
+**Milestones** (each is marked here with its commit when reached):
+
+| | Milestone | State |
+|---|---|---|
+| (a) | REST service with a token takes PDF and DOCX and answers with a valid partner JSON; image built and published by Actions | not reached |
+| (b) | all eight formats, validators, dictionaries and initial data, conditions, the review page | not reached |
+| (c) | JSON of the seven judged forms in `results/`, README, architecture document, metrics | not reached |
+| (d) | PDF of ten slides and the script of the three-minute film | not reached |
+
+**Running (14:50):**
+
+| What | Branch | How it runs |
+|---|---|---|
+| WP-F1 service shell | `wp/F1-service-shell` | wave run `wf_39a455e5-4cc` (saved workflow `wp-wave`, one package: the first run of the wave script on real agents) |
+| WP-F0a form schema profiles, linter, golden list, contradiction docket | `wp/F0a-profiles` | one builder agent (sonnet), started directly |
+| WP-F0b data contracts and shared models (`contracts/coi/*.schema.json`, `apps/converter/app/model/`) | `wp/F0b-models` | one thinker agent (opus), started directly |
+
+**Next wave when F0a and F0b are merged:** WP-F2a (PDF and DOCX readers) and WP-F5 (composer; core on the session's model); WP-F20 (image pipeline) as soon as the core stage of F1 is on its branch.
+
+**Done by the lead since 13:55:**
+
+- Machine check: no Docker, no WSL, no Tesseract, no LibreOffice, no GitHub CLI; Python 3.13 and 3.11, Node 22; all nine task sets present; the credits key is set (2.6 of 60 USD spent). The owner was asked once whether he installs Docker; the default without an answer is "no": the image is built and published by Actions.
+- **Actions and the registry are proven** (commit `d64c001`, workflow `probe`, branch `ci/probe`): the stored credential may push workflow files; the run was green; the image `ghcr.io/andriishramko/shramko-asystent-urzednika:probe` can be pulled without a login (anonymous manifest request answered 200). No click of the owner is needed.
+- The two research files entered git with example identifiers rewritten (commit `5cf44c2`).
+- Skeleton (commit `66e040c`): `apps/converter/pyproject.toml`, two lock files with hashes, the shared environment `.venv` in the main checkout (made by `bash tools/env_setup.sh`; PyPI is slow on the event's network, the script retries), `tools/gate.sh` (`py`, `fast`, `full`, `lock`), test markers, packages `app` and `converter`.
+- Facts that change the plan: (1) **nothing of the partner's sets is in git**, so the image workflow can convert only synthetic fixtures; every module needs tests on fixtures built from code, and tests on the sets carry the marker `sets`. (2) The publishing check refuses literal identifiers with valid check digits: tests build them from a stem and a computed check digit (`AGENTS.md`, section Commands).
+
+**Budget:** 13:55: week 55 %, top model 70 %. Rule of this session: builders on sonnet, reviews and most think cores on opus, the session's model only for the lead and the cores of the finder, the understanding step and the composer.
+
+**Waiting for the owner:** (1) Docker on the laptop: yes or no (not blocking). (2) **Register the task with the partner by 19:00.** (3) **Send the HackTribe draft by 20:00** (`docs/05-hackathon/hacktribe-draft-formularze.md`; the lead re-reads it against the build by 17:45). (4) The answers of the business meeting (`biz` in the questionnaire store): not there at 14:50.
+
+## Prepared before the build (21 November, 13:45)
 
 **The task is fixed: "Cyfryzacja formularzy" (COI), Track F.** One sentence: a compiler with an accountant, not a scanner with AI. No application code exists yet; the build starts with the next session of the lead.
 

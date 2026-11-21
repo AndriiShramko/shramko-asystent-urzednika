@@ -112,8 +112,36 @@ The owner met the author of the partner's JSON description and noted the answers
 
 Not said by the mentor but noted by the owner at J8: **by 19:00 today he must register that he takes this task.**
 
+## 6b. Answers of the business side (21 November, about 14:10)
+
+Noted by the owner at the meeting, in his own words; read from the questionnaire store (`biz`, version 41) at 14:50. The questions are in `docs/05-hackathon/mentor-questions/README.md` (ids `P…`). P17 was not answered.
+
+| Id | Answer as noted | What follows |
+|---|---|---|
+| P1 | skipped | two ink colours keep their place; no claim on a slide that the partner asked for them |
+| P2 | "Mile widziane" | the ledger of blanks stays feature 2; say "welcome", not "missing" |
+| P3 | it depends: for a fee, an amount may be given from an analysis of the rates, and a service may also be free | **D15.** The fee receipt stays `stated` / `not_found` / `ambiguous`; in addition a **proposed amount** from a statutory rate table (for example stamp duty) may be attached, marked as a proposal with its legal basis, never written as a fact of the paper |
+| P4 | "Urzędnik merytoryczny" | the review page speaks to the subject-matter official: plain words, no JSON terms in the decisions |
+| P18 | "Wolno rozszerzać": the same data as they have, and extending is allowed | the library reproduces the standard sections unchanged; extensions enter the form behind switches (P19, P20) |
+| P19 | "Tak, dodać" | **D16.** A path for the statutory representative (parent, guardian, curator): its own proof upload, no stamp duty; switch `STATUTORY_REPRESENTATIVE=on` (default on); a seventh journey in the fixtures |
+| P21 | the forms are made for the resident, not for entrepreneurs; where the address is collected it must be checked | no e-Delivery field is added to the contact block by default; where the paper asks for it, the field gets the validator `ADE`; for entities it stays a proposal in the sidecar |
+| P5 | it depends on the application | the six journeys stay, plus the seventh of P19; a journey that a form cannot take is reported as `not_applicable` |
+| P20 | "propose something interesting, in variants" | **D17.** The stamp-duty question of a power of attorney may be extended by the reason of exemption (spouse, parents, children, siblings); switch `POA_EXEMPTION=off` by default, shown in the viewer as a variant |
+| P6 | "Tak" | new initial-data sources for entities (KRS, CEIDG, REGON, e-Delivery address) fit their plans: they stay proposals in the sidecar and get a line on slide 10 |
+| P7 | treat it as an entity | **D18.** A sole trader takes the entity path (design 6.4 said: a natural person with NIP and REGON) |
+| P8, P9 | "our decision" | the redline and the form family stay last in the order of value |
+| P10 | by the rules of the materials they sent | the task card decides: no GPU and no model remain our choice and our claim (D12) |
+| P11 | identity document, street type, offices and authorities; "the rest probably too" | these three dictionary proposals are prepared first (feature 10) |
+| P12 | "Wolno upraszczać więcej" | hints and labels may be simplified further; declarations, consents and quoted law stay verbatim (our own rule, unchanged) |
+| P13 | does not apply, not known | the agent pack stays last; no claim about AI HUB |
+| P14 | "our decision" | `FILLED_FORM=warn` stays the default |
+| P15 | "Dzień lub więcej" | slide 3 may say that one form takes a day or more by hand, with the note „wg zespołu COI, 21.11.2026" |
+| P16 | not known; anything may be corrected | the order of the checks on the review page stays ours |
+
 ## 7. Changes to this file
 
 | Time | Change | Why |
 |---|---|---|
 | 21 Nov 13:50 | D9 relaxed (own dictionaries may be named), `META=inline` option added to D2, LibreOffice allowed, image publishing moved into the minimum, partner materials removed from the repository | answers J5, J6, J9, J8, J11 above |
+| 21 Nov 14:55 | Section 6b added. New decisions D15 (a fee amount only as a marked proposal), D16 (path of the statutory representative, on by default, seventh journey), D17 (reason of exemption from stamp duty, behind a switch), D18 (a sole trader takes the entity path). Three dictionary proposals come first: identity document, street type, offices and authorities | answers P3, P19, P20, P7, P11 of the business side |
+| 21 Nov 14:55 | Fact for every package: the image is published to `ghcr.io/andriishramko/shramko-asystent-urzednika` and is public (probe run on commit `d64c001`); nothing of the partner's sets is in git, so the image workflow proves itself on synthetic fixtures only | the probe workflow; `git ls-files data/coi` |
