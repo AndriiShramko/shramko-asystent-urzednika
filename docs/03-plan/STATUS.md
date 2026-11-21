@@ -26,7 +26,7 @@ Last update: 2026-11-21 09:00 CET, preparation session (before the event).
 | Orchestration playbook, brief template, git workflow, resume, publishing | done; corrected against official documentation (research/08) | `docs/04-orchestration/` |
 | Agent definitions, project settings, wave workflow | done; `wp-wave.js` is untested (no code existed to run it on): try it on WP-00 alone first | `.claude/` |
 | Runtime instructions for the product's AI steps (Polish), including form onboarding | starting versions | `prompts/` |
-| Deck and site for the forms task (8 slides, two live demo slides) | see "Running now" if still in progress; storyboard and demo script done | `site-formularze/`, `docs/05-hackathon/presentation/storyboard-formularze.md`, `docs/05-hackathon/demo-script-formularze.md` |
+| Deck and site for the forms task (8 slides, two live demo slides) | done; opened on the live site in a browser (slides change, no errors except the expected missing demo videos); texts corrected after research R11; numbers and status lists are placeholders until the build measures them | `site-formularze/`, `docs/05-hackathon/presentation/storyboard-formularze.md`, `docs/05-hackathon/demo-script-formularze.md` |
 | Deck and site for the city's task (11 slides) | done and checked on the live site | `site/`, `docs/05-hackathon/presentation/storyboard.md`, `docs/05-hackathon/demo-script.md` |
 | Jury truth tables for both products, guide to the event for the owner | done | `docs/05-hackathon/` |
 | Public sites | live: <https://formularze.flyreelstudio.eu> and <https://urzad.flyreelstudio.eu> (pull-based from `site-formularze/` and `site/`) | `docs/04-orchestration/deploy.md` |
@@ -45,7 +45,11 @@ The build runs on the owner's subscription; on 2026-11-21 09:00 about one fifth 
 
 ## Running now
 
-Nothing on the build machine. (On the preparing machine two sub-agents were finishing the second deck and research R11 at the time of this update; their results are committed when they pass the lead's check.)
+Nothing.
+
+Notes for the presenter's laptop: if the drawings on the slides do not move, press `M` (Windows may have animation effects switched off); do not keep both decks open in one browser at the same time (they share one sync channel and can drive each other).
+
+Points from research R11 to check at the partner's stand before building: the ministry plans a form generator for local governments on its e-services platform, and a central repository of electronic document templates already exists; present this product as the fast way from a paper form to an open description that can feed those, not as a new registry.
 
 ## Waiting for the owner
 
