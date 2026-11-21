@@ -1,0 +1,140 @@
+# WP-F20: the image pipeline (design 9.2). CI is the source of truth for the image: the build laptop has no Docker.
+#
+#   native  lint, pin check, the native test suite on Linux with Python 3.14 (skips counted with their reasons)
+#   image   both targets built (bases by digest, wheels with hashes only), each proved in a hardened container:
+#           not root, no capability, read-only root, no network; every synthetic fixture converted twice through
+#           the command line with --network none; the HTTP path with a token and its negative controls
+#   push    from main only: the commit hash and latest-main, signed by digest (keyless).
+#           From a wp/F20-* branch: a tag test-<short sha>, then pulled back by digest and run once.
+#
+# Nothing of the partner's task sets is in git: CI converts synthetic blank forms built by tools/ci/make_fixtures.py.
+# Every action is pinned by a full commit hash (tools/ci/check_pins.py refuses anything else).
+name: image
+
+on:
+  push:
+    branches: [main, "wp/F20-**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash   # bash -eo pipefail: a failure inside a pipe fails the step
+
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/andriishramko/shramko-asystent-urzednika
+  PYTHONUTF8: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.14"
+      - name: Pins of base images, pip installs and actions
+        run: python tools/ci/check_pins.py
+      - name: Install the test environment (hashes, wheels only)
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
+      - name: Native suite (gate full; tests marked sets, container are skipped here and counted below)
+        env:
+          GATE_PYTHON: python
+        run: bash tools/gate.sh full --junitxml="$RUNNER_TEMP/native.xml"
+      - name: Tests of the CI tools
+        env:
+          GATE_PYTHON: python
+        run: bash tools/gate.sh py -m pytest tools/ci/tests -q -p no:cacheprovider --junitxml="$RUNNER_TEMP/ci-tools.xml"
+      - name: Count passed, failed and skipped, with the reasons of the skips
+        if: always()
+        run: python tools/ci/junit_summary.py "$RUNNER_TEMP/native.xml" "$RUNNER_TEMP/ci-tools.xml"
+
+  image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      id-token: write   # keyless signing on main
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [core, plus]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.14"
+      - name: Pins of base images, pip installs and actions
+        run: python tools/ci/check_pins.py
+      - name: Build target ${{ matrix.target }} from a clean checkout (context = repository root)
+        run: |
+          docker build -f apps/converter/Dockerfile --target "${{ matrix.target }}" \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            -t "converter:${{ matrix.target }}" .
+          docker image ls "converter:${{ matrix.target }}" --format 'size {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Install the test environment for the fixture generator (hashes, wheels only)
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
+      - name: Synthetic blank forms, one per extension
+        run: python tools/ci/make_fixtures.py "$RUNNER_TEMP/fixtures"
+      - name: Prove the image (non-root, no capabilities, read-only, --network none conversion, HTTP path)
+        run: |
+          python tools/ci/container_check.py --image "converter:${{ matrix.target }}" \
+            --fixtures "$RUNNER_TEMP/fixtures" --report "$RUNNER_TEMP/reports/check-${{ matrix.target }}.json"
+      - name: Push (main - commit hash and latest-main; wp/F20 branch - test tag only)
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/wp/F20-'))
+        id: push
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET: ${{ matrix.target }}
+        run: |
+          echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          suffix=""; [ "$TARGET" = core ] || suffix="-$TARGET"
+          if [ "$GITHUB_REF" = refs/heads/main ]; then
+            tags="${GITHUB_SHA}${suffix} latest-main${suffix}"
+          else
+            tags="test-${GITHUB_SHA::7}${suffix}"
+          fi
+          for t in $tags; do
+            docker tag "converter:$TARGET" "$IMAGE:$t"
+            docker push --quiet "$IMAGE:$t"
+          done
+          digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "$IMAGE:${tags%% *}")"
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+          echo "pushed $TARGET as: $tags -> \`$digest\`" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Pull back by digest and convert once with no network
+        if: steps.push.outputs.digest != ''
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          docker image rm -f "converter:${{ matrix.target }}" >/dev/null
+          docker pull --quiet "$DIGEST"
+          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --tmpfs /tmp -v "$RUNNER_TEMP/fixtures:/in:ro" "$DIGEST" convert /in/wniosek.pdf > "$RUNNER_TEMP/pulled.json"
+          python tools/ci/formcheck.py "$RUNNER_TEMP/pulled.json" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+        if: github.ref == 'refs/heads/main' && steps.push.outputs.digest != ''
+      - name: Sign the image by digest (keyless, main only)
+        if: github.ref == 'refs/heads/main' && steps.push.outputs.digest != ''
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign sign --yes "$DIGEST"
+      - name: Keep the reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: container-check-${{ matrix.target }}
+          path: ${{ runner.temp }}/reports/
+          if-no-files-found: ignore
