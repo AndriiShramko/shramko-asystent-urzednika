@@ -44,6 +44,14 @@ Branch: wp/F20-image-pipeline   Stage now: integration (SBOM + licence gate, liv
 
 | SBOM + licence gate on both targets; live pin control | CI steps `sbom_gate.py`, "Live negative control" | all jobs success (native, core, plus); the SBOM step passed with 0 findings; the unpinned-base Dockerfile was refused in CI | run on 907b989 |
 
+## Acceptance stage (commit 7133d5c, main already merged: up to date)
+| Check | Result |
+|---|---|
+| `bash tools/gate.sh fast` | PASSED: 378 passed, 8 deselected |
+| `bash tools/gate.sh py -m pytest tools/ci/tests -q` | 26 passed |
+| Negative control: digests stripped from apps/converter/Dockerfile, `python tools/ci/check_pins.py` | 3 findings, exit 1; restored: 0 findings |
+| CI | green on 907b989 (native, core, plus) as recorded above; no code changed in this stage |
+
 ## Negative control
 Native, as tests: a base without digest, a pip install without `--only-binary=:all:`, an action by tag, a fourth top-level key, a form failing lint strict, two different outputs, and each probe weakness (uid 0, capability, writable root, extra interface, a connect) are refused. The live ones in CI are left (see Status).
 
@@ -63,3 +71,4 @@ Native, as tests: a base without digest, a pip install without `--only-binary=:a
 ## Cost notes
 - core: two CI runs (one YAML slip: `:all: -r` in a plain scalar); everything else passed on the first real run because the HTTP checks were first proved natively against the service. Checking YAML locally needs PyYAML, which the environment lacks: a block scalar for every `run:` line avoids the class of error.
 - integration: little to wire because WP-F16 and the licence tool are not on main; the stage added the SBOM/licence gate and one live control. Cheaper: land F16 before this stage.
+- acceptance: three commands, no CI run; the tool refuses compound git commands in a worktree, so split them.
