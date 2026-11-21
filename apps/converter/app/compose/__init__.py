@@ -41,6 +41,7 @@ from app.model.form import (
 )
 
 from . import library as lib
+from . import validators
 from .html import doc, p
 from .library import EXPORT_1, EXPORT_5, Standard, Who
 from .names import ID_NAMESPACE, ComposeError, Ids, Names, slug
@@ -51,10 +52,8 @@ __all__ = ["EXPORT_1", "EXPORT_5", "ComposeError", "ComposeOptions", "ComposeRes
            "pages_without_fixed_content"]
 
 TITLE_MISSING = "Formularz bez tytułu"
-# Concept of a brief field -> the partner's validator (D8). The validation package (WP-F8) owns the full table;
-# this is the part the composer writes into the form.
-CONCEPT_VALIDATORS = {"pesel": "PESEL", "nip": "NIP", "regon": "REGON", "zip_code": "ZIP_CODE", "email": "EMAIL",
-                      "epuap": "EPUAP", "ade": "ADE", "id_card": "SERIAL_NUMBER_ID_CARD"}
+# Concept of a brief field -> the partner's validator (D8): the table and the rule live in compose.validators.
+CONCEPT_VALIDATORS = validators.CONCEPT_VALIDATORS
 # Shapes that no export shows (skill rule 14): each use is a remark.
 INFERRED_SHAPES = ("DATEPICKER", "CHECKBOX", "INFO_SECTION")
 SINGLE_BOX_OPTION = "Tak"
@@ -192,13 +191,18 @@ def _contact(brief: Brief, std: Standard, remarks: list[Remark]) -> list[Sec]:
 
 # -- the matter: what the paper asks ------------------------------------------------------------------------------
 
-def _brief_comp(f: BriefField) -> Comp:
+def _brief_comp(f: BriefField, remarks: list[Remark]) -> Comp:
     common = {"key": f.key, "type": f.type, "show": from_brief(f.show_if), "ref": f"brief:{f.key}", "origin": "paper", "brief_key": f.key}
     if f.type in ("TEXT_BLOCK", "INFO_SECTION"):
         return Comp(title="", html=doc(p(f.label), *([p(f.hint)] if f.hint else [])), **common)
     if f.type == "CONSENT_SECTION":
         return Comp(title="", consents=((doc(p(f.label)), f.required),), **common)
-    validation = (("REQUIRED",) if f.required else ()) + ((CONCEPT_VALIDATORS[f.concept],) if f.concept in CONCEPT_VALIDATORS else ())
+    named, withheld = validators.identifier(f.type, f.concept, f.label)
+    if withheld:
+        # An honest gap (hard rule 9). The code is the nearest of the sidecar's list: we are not sure what value
+        # the field takes, so the official looks at it.
+        remarks.append(Remark("LOW_CONFIDENCE", f"field {f.key}: no validator of the value is written; {withheld}"))
+    validation = (("REQUIRED",) if f.required else ()) + ((named,) if named else ())
     options = tuple(f.options)
     if f.type == "CHECKBOX" and not options:
         # a single yes-or-no box (brief 1.1): the partner's grammar wants options, so the box is one option "Tak"
@@ -214,7 +218,7 @@ def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark]) -> lis
         native = m.repeating and o.repeating_style == "native"
         if m.repeating and not native:
             remarks.append(Remark("REPEATING_FLATTENED", f"{m.role}: written as one plain section (REPEATING_STYLE={o.repeating_style})"))
-        secs.append(Sec(m.role, m.title, None, [_brief_comp(f) for f in m.fields], show=from_brief(m.show_if), repeating=native, origin="paper"))
+        secs.append(Sec(m.role, m.title, None, [_brief_comp(f, remarks) for f in m.fields], show=from_brief(m.show_if), repeating=native, origin="paper"))
     uploads = [a for a in brief.attachments if a.covered_by is None]
     if uploads:
         secs.append(Sec("matter/zalaczniki", "Załączniki", None, [
