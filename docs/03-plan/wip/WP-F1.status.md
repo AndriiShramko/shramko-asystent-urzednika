@@ -1,6 +1,6 @@
 # WP-F1 Environment check and service shell: status
 
-Branch: wp/F1-service-shell   Stage now: integration (done) -> acceptance
+Branch: wp/F1-service-shell   Stage now: acceptance (done)
 
 ## Status
 - [x] Configuration (design 4), validated at start, inconsistent sets refused with every problem listed (app/config.py)
@@ -49,7 +49,10 @@ Branch: wp/F1-service-shell   Stage now: integration (done) -> acceptance
 - The rate limit answers 429 with code BUSY, as the design table says; a 61st request inside a minute is not a concurrency fault.
 
 ## Negative control
-Not yet recorded (acceptance stage).
+Broke the polyglot refusal (apps/converter/app/guard/checks.py line 259, `len(kinds) > 1` -> `> 99`). `bash tools/gate.sh py -m pytest apps/converter/tests -q -x` -> FAILED test_shell_guard.py::test_file_that_is_both_pdf_and_zip (1 failed, 135 passed). Restored with git checkout; 266 passed.
+
+## Acceptance evidence
+`git merge main`: already up to date. `bash tools/gate.sh fast`: 266 passed, gate fast PASSED on 12c3fb2 (lint now clean, so the earlier `eval` request is resolved). Container item stays open (needs CI, WP-F20).
 
 ## Requests to lead
 - `bash tools/gate.sh fast` fails in this worktree at lint: `ruff` is given the folder `eval`, which does not exist yet ("E902 ... eval:1:1"). The pytest half of the gate was run directly instead (121 passed). Either create `eval/` or make the lint skip missing folders.
@@ -60,3 +63,4 @@ Not yet recorded (acceptance stage).
 ## Cost notes
 - integration: the most turns went to the real-sets findings (the .doc polyglot, the .DOC holding DOCX, a rate limit mistaken for a slot leak); a first run of the sets test with per-file status output would have found all three at once.
 - core: the most turns went to reading the design and the lint rules to build a valid form and OLE/ZIP fixtures; a ready-made fixture module and a valid stub form in the skeleton would have saved about five replies.
+- acceptance: few turns; the gate and one control. Nothing slow.
