@@ -48,6 +48,14 @@ def survey_file(path: Path, fmt: str) -> dict[str, Any]:
     return row
 
 
+def _content_kind(path: Path, fmt: str) -> str:
+    """The format by content, as the service's guard decides it; the extension's format when that is unclear."""
+    from app.guard.checks import sniff_kinds
+
+    kinds = sniff_kinds(path.read_bytes())
+    return next(iter(kinds)) if len(kinds) == 1 and next(iter(kinds)) in formats() else fmt
+
+
 def main(argv: list[str]) -> int:
     from eval.golden import load
     from tools.coi_paths import coi_dir
@@ -61,7 +69,13 @@ def main(argv: list[str]) -> int:
                 path = base / item["path"]
                 fmt = KIND.get(item["format"], item["format"])
                 row = {"set": s["id"], "path": item["path"]}
-                row.update(survey_file(path, fmt) if path.exists() else {"format": fmt, "status": "missing"})
+                if path.exists():
+                    kind = _content_kind(path, fmt)
+                    if kind != fmt:  # e.g. a .doc whose content is a DOCX: the guard reroutes it, so do we
+                        row["named"] = fmt
+                    row.update(survey_file(path, kind))
+                else:
+                    row.update({"format": fmt, "status": "missing"})
                 files.append(row)
     counts: dict[str, int] = {}
     for f in files:
