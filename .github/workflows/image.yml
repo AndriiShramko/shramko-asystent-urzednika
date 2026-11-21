@@ -44,6 +44,13 @@ jobs:
           python-version: "3.14"
       - name: Pins of base images, pip installs and actions
         run: python tools/ci/check_pins.py
+      - name: Live negative control (a Dockerfile with an unpinned base must make check_pins fail)
+        run: |
+          sed -E 's#^(ARG [A-Z_]+=[^@ ]+)@sha256:[0-9a-f]{64}#\1#' apps/converter/Dockerfile > "$RUNNER_TEMP/Dockerfile.unpinned"
+          if python tools/ci/check_pins.py --dockerfile "$RUNNER_TEMP/Dockerfile.unpinned"; then
+            echo "negative control FAILED: an unpinned base passed"; exit 1
+          fi
+          echo "negative control ok: the unpinned base was refused"
       - name: Install the test environment (hashes, wheels only)
         run: |
           python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
@@ -93,6 +100,10 @@ jobs:
         run: |
           python tools/ci/container_check.py --image "converter:${{ matrix.target }}" \
             --fixtures "$RUNNER_TEMP/fixtures" --report "$RUNNER_TEMP/reports/check-${{ matrix.target }}.json"
+      - name: SBOM of the final image and licence gate (CycloneDX, no GPL/AGPL/LGPL, installed equals locked)
+        run: |
+          python tools/ci/sbom_gate.py --image "converter:${{ matrix.target }}" \
+            --lock apps/converter/requirements.lock --out "$RUNNER_TEMP/reports/sbom-${{ matrix.target }}.json"
       - name: Push (main - commit hash and latest-main; wp/F20 branch - test tag only)
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/wp/F20-'))
         id: push

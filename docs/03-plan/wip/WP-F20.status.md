@@ -1,6 +1,6 @@
 # WP-F20 Image pipeline in CI: status
 
-Branch: wp/F20-image-pipeline   Stage now: core (done; next: supply-chain gates and the live negative controls)
+Branch: wp/F20-image-pipeline   Stage now: integration (SBOM + licence gate, live pin control; CI run pending)
 
 ## Status
 - [x] tools/ci/wait_run.py: token from `git credential fill`, kept in memory, polls runs of a commit (<= 540 s), prints jobs, steps, the log lines up to the last error of a failed job; tried on the probe commit d64c001 (success, exit 0)
@@ -13,9 +13,11 @@ Branch: wp/F20-image-pipeline   Stage now: core (done; next: supply-chain gates 
 - [x] First CI run on the package branch green (run 44910300706 on b2fd0a1): both targets build, 18 of 18 container checks each, test tags pushed and pulled back by digest (the first run 44910179858 on 8b206b9 failed: a plain YAML scalar held `:all: -r`; fixed by a block scalar)
 - [x] No change to Dockerfile, docker-compose.yml or the README was needed: the digests of WP-F1 are the real index digests (checked against Docker Hub on 21 Nov) and every wheel of requirements.lock exists for Alpine on Python 3.14
 - [ ] Step 4 of design 9.2: hostile corpus against the image and `/v1/selftest` in both network modes (needs WP-F16)
-- [ ] Step 5: SBOM of the final image, vulnerability gate (Grype, pip-audit), licence gate (`tools/licence_check.py`, not yet in the repository) as artefacts
+- [x] Step 5 (part): tools/ci/sbom_gate.py: CycloneDX SBOM of the image's installed distributions, licence gate (copyleft refused, MPL needs lead, installed == locked), artefact per target; 4 native tests
+- [ ] Step 5 (rest): vulnerability gate (pip-audit or Grype: new build-time tool, see Requests to lead)
 - [ ] Signing and `latest-main` (run only on main; unverified until the merge); README digest (lead)
-- [ ] Live negative controls in CI (an unpinned base fails the run; an sdist-only dependency fails the build; a planted failing attack reddens the corpus step)
+- [x] Live negative control in CI native job: an unpinned-base Dockerfile must fail check_pins (3 findings locally, exit 1)
+- [ ] Other live controls ( an sdist-only dependency fails the build; a planted failing attack reddens the corpus step)
 - [ ] Delete probe.yml once image.yml is green on main
 
 ## Decisions
@@ -48,6 +50,9 @@ Native, as tests: a base without digest, a pip install without `--only-binary=:a
 - WP-F16: the hostile corpus (`python -m tests.evil`) and `GET /v1/selftest` are needed for design 9.2 step 4; `tests/` is excluded from the image by Dockerfile.dockerignore, so the corpus must run from the runner against the container (as container_check.py does) or the lead decides to ship it.
 - The licence gate needs `tools/licence_check.py` (named in the track rules, not in the repository yet): who writes it?
 
+- Vulnerability gate: needs a new build-time tool (pip-audit, Apache-2.0, or Grype, Apache-2.0, a binary download). Lead to pick and set the severity threshold.
+- Hostile corpus step waits for WP-F16 (not on main).
+
 ## Left for the next stage
 - Step 5: SBOM of the final image (anchore/sbom-action or syft), vulnerability gate (Grype, pip-audit), licence gate, reports as artefacts; decide the severity threshold with the lead.
 - Live negative controls in CI, recorded once: a branch commit with an unpinned base (check_pins red), a lock line for an sdist-only package (build red), a planted failing attack (after WP-F16).
@@ -55,3 +60,4 @@ Native, as tests: a base without digest, a pip install without `--only-binary=:a
 
 ## Cost notes
 - core: two CI runs (one YAML slip: `:all: -r` in a plain scalar); everything else passed on the first real run because the HTTP checks were first proved natively against the service. Checking YAML locally needs PyYAML, which the environment lacks: a block scalar for every `run:` line avoids the class of error.
+- integration: little to wire because WP-F16 and the licence tool are not on main; the stage added the SBOM/licence gate and one live control. Cheaper: land F16 before this stage.
