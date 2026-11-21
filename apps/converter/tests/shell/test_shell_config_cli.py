@@ -57,7 +57,45 @@ def test_inconsistent_sets_are_refused(tmp_path, over, fragment):
 
 def test_jwt_mode_without_any_key_is_refused():
     with pytest.raises(ConfigError, match="needs a key file"):
-        Settings.from_env({})
+        Settings.from_env({"AUTH_MODE": "jwt"})
+
+
+def test_the_default_auth_mode_is_auto_off_without_a_key_and_jwt_with_one(tmp_path):
+    bare = Settings.from_env({})
+    assert bare.auth_mode == "auto" and not bare.auth_enabled
+    keyed = Settings.from_env(env(tmp_path))
+    assert keyed.auth_mode == "auto" and keyed.auth_enabled
+    with pytest.raises(ConfigError, match="does not exist"):   # auto with a key that is not there fails closed
+        Settings.from_env({"JWT_SECRET_FILE": str(tmp_path / "none.key")})
+    with pytest.raises(ConfigError, match="AUTH_MODE must be one of"):
+        Settings.from_env({"AUTH_MODE": "maybe"})
+
+
+def test_serve_with_an_empty_environment_starts_and_healthz_answers(monkeypatch, caplog):
+    import logging
+
+    import uvicorn
+    from fastapi.testclient import TestClient
+
+    for name in ("AUTH_MODE", "JWT_SECRET_FILE", "JWT_PUBLIC_KEY_FILE", "JWT_JWKS_FILE"):
+        monkeypatch.delenv(name, raising=False)
+    seen: dict = {}
+    monkeypatch.setattr(uvicorn, "run", lambda app, **kw: seen.update(app=app))
+    with caplog.at_level(logging.WARNING, logger="converter"):
+        assert cli.main(["serve"]) == 0
+    assert "No JWT key configured" in caplog.text and "WITHOUT a token" in caplog.text
+    client = TestClient(seen["app"])
+    assert client.get("/healthz").status_code == 200
+    body, ctype = fx.multipart([("file", "a.pdf", fx.pdf(), "application/pdf")])
+    assert client.post("/v1/forms/convert", content=body, headers={"Content-Type": ctype}).status_code == 200
+
+
+def test_serve_with_explicit_jwt_and_no_key_exits_3(monkeypatch, capsys):
+    for name in ("JWT_SECRET_FILE", "JWT_PUBLIC_KEY_FILE", "JWT_JWKS_FILE"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("AUTH_MODE", "jwt")
+    assert cli.main(["serve"]) == 3
+    assert "AUTH_MODE=jwt needs a key file" in capsys.readouterr().err
 
 
 def test_auth_off_needs_no_key():

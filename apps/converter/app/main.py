@@ -108,8 +108,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     verifier = TokenVerifier(s) if s.auth_enabled else None
     limiter = RateLimiter(s.rate_limit_per_min)
     gate = asyncio.Semaphore(s.concurrency)
-    if not s.auth_enabled:
+    if s.auth_mode == "off":
         log.warning("AUTH_MODE=off: every request is accepted without a token. Local work only.")
+    elif not s.auth_enabled:   # AUTH_MODE=auto and no key file
+        log.warning("No JWT key configured: the API accepts requests WITHOUT a token. "
+                    "For shared networks set AUTH_MODE=jwt and JWT_SECRET_FILE.")
 
     app = FastAPI(title="Konwerter formularzy", version=__version__)
     app.state.settings = s
