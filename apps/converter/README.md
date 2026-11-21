@@ -73,7 +73,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `FORM_KEY` | empty | fixed key for ids; empty: the slug of the title |
 | `ID_NAMESPACE` | fixed UUID | namespace of the ids; must be a UUID |
 
-Until the finder and the understanding step exist (WP-F3, WP-F4) the form holds the title of the file and the standard sections; the sidecar carries the warning `BRIEF_NOT_READ`. Formats without a reader yet (XLSX, ODS, binary DOC, JPEG, PNG) answer `422 UNREADABLE`, never a made-up form.
+Until the understanding step is wired in (WP-F4; the finder WP-F3 is merged) the form holds the title of the file and the standard sections; the sidecar carries the warning `BRIEF_NOT_READ`. Formats without a reader yet (JPEG, PNG; images and OCR are WP-F2c) answer `422 UNREADABLE`, never a made-up form.
 | `UI_ENABLED`, `UI_DIR` | `true`, empty | serve the front end; folder of a build |
 | `LOG_LEVEL` | `info` | logs are content-free at every level |
 
