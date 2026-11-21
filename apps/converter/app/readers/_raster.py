@@ -447,6 +447,39 @@ def _leaders(ink: Image.Image, rows: list[bytes]) -> list[Box4]:
     return leaders
 
 
+def open_rules(hlines: list[Box4], vlines: list[Box4], boxes: list[Box4], words: list[Box4], k: float,
+               texts: list[str] | None = None) -> list[Box4]:
+    """Open solid rules that are places to write (SCAN_PREP token "rules"): at least 40 pt long (k = pixels per
+    point), not the top or bottom edge of a box, not closed by a vertical at either end, not inside a box (a table
+    cell), not the underline of the text right above it, not already read by the OCR as underscores or dots, and with
+    text left of it on its line or right above it. `words` are the OCR word boxes, `texts` their texts."""
+    texts = texts if texts is not None else [""] * len(words)
+    heights = sorted(w[3] - w[1] for w in words)
+    lh = 1.5 * (heights[len(heights) // 2] if heights else 20)
+    out: list[Box4] = []
+    for x0, y0, x1, y1 in hlines:
+        if x1 - x0 < 40 * k:
+            continue
+        if any(b[0] - 3 <= x0 and x1 <= b[2] + 3 and (abs(b[1] - y0) <= 3 or abs(b[3] - y1) <= 3) for b in boxes):
+            continue  # the edge of a box
+        if any(abs(v[0] - e) <= 4 * k and v[1] - 3 <= y0 <= v[3] + 3 for v in vlines for e in (x0, x1)):
+            continue  # closed by a vertical
+        if any(b[0] < x0 and x1 < b[2] and b[1] < y0 and y1 < b[3] for b in boxes):
+            continue  # inside a table cell
+        if any(set(t) <= set("_.…") and t and min(x1, w[2]) - max(x0, w[0]) > 0.5 * (x1 - x0)
+               and w[1] - lh <= y0 <= w[3] + lh / 2 for w, t in zip(words, texts)):
+            continue  # the OCR read it already
+        above = [w for w in words if w[3] <= y0 + 2 and y0 - w[3] <= lh and w[0] < x1 and w[2] > x0]
+        close = [w for w in above if y0 - w[3] <= lh / 3]
+        covered = sum(min(x1, w[2]) - max(x0, w[0]) for w in close)
+        if covered > 0.6 * (x1 - x0):
+            continue  # the underline of the text right above it
+        left = any(w[2] <= x0 + 5 and abs(w[3] - y1) <= lh for w in words)
+        if left or above:
+            out.append((x0, y0, x1, y1))
+    return out
+
+
 def detect(ink: Image.Image, *, min_line: int = 30, max_thick: int = 8) -> Shapes:
     """Lines, boxes, combs and leaders of one page strip (`ink` from `binarize`)."""
     w, h = ink.size

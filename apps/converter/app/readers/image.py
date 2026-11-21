@@ -98,6 +98,13 @@ def _thin(b: tuple[int, int, int, int], across: int, k: float) -> tuple[int, int
 def _prep_shapes(shapes: _raster.Shapes, words: list[_ocr.Word], prep: frozenset[str], s: float) -> list[dict[str, Any]]:
     """SCAN_PREP steps that need the OCR words (S1). Changes `shapes` in place; returns the runs to add."""
     k = 1.0 / s
+    extra: list[dict[str, Any]] = []
+    if "rules" in prep:  # first: on the shapes as detected (glyph and thick change boxes and lines)
+        for b in _raster.open_rules(shapes.hlines, shapes.vlines, shapes.boxes,
+                                    [(w.x0, w.y0, w.x1, w.y1) for w in words], k, [w.text for w in words]):
+            x0, _, x1, y1 = _pt(b, s)
+            extra.append(dict(text="_" * max(8, int((x1 - x0) / 2.2)), box=[x0, r2(max(0.0, y1 - 8)), x1, y1],
+                              size=8.0, conf=0.9))
     if "glyph" in prep:
         big = [w for w in words if len(w.text) >= 2]
         shapes.boxes = [b for b in shapes.boxes
@@ -106,7 +113,6 @@ def _prep_shapes(shapes: _raster.Shapes, words: list[_ocr.Word], prep: frozenset
     if "thick" in prep:
         shapes.hlines = [_thin(b, 1, k) for b in shapes.hlines]
         shapes.vlines = [_thin(b, 0, k) for b in shapes.vlines]
-    extra: list[dict[str, Any]] = []
     if "leader" in prep:
         for b in shapes.leaders:
             if any(set(w.text) <= DOTS and w.y0 - 10 <= b[3] and w.y1 + 10 >= b[1]
