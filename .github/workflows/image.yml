@@ -3,8 +3,12 @@
 #   native  lint, pin check, the native test suite on Linux with Python 3.14 (skips counted with their reasons)
 #   image   both targets built (bases by digest, wheels with hashes only), each proved in a hardened container:
 #           not root, no capability, read-only root, no network; every synthetic fixture converted twice through
-#           the command line with --network none; the HTTP path with a token and its negative controls
-#   push    from main only: the commit hash and latest-main, signed by digest (keyless).
+#           the command line with --network none; the HTTP path with a token and its negative controls;
+#           WP-F20i: thread, locale and zone pinned and asked inside, every sidecar checked, the same bytes with
+#           one and with two processors, hostile files refused within 10 s, and the jury's first run (no variable,
+#           no key: healthy in 30 s, two simultaneous first requests equal on three fresh containers; jwt without
+#           a key exits 3; --out that cannot be written exits 4; JOB_TIMEOUT_S=2 answers 504 TIMEOUT)
+#   push   from main only: the commit hash and latest-main, signed by digest (keyless).
 #           From a wp/F20-* branch: a tag test-<short sha>, then pulled back by digest and run once.
 #
 # Nothing of the partner's task sets is in git: CI converts synthetic blank forms built by tools/ci/make_fixtures.py.
@@ -112,7 +116,7 @@ jobs:
           heif-enc --version
       - name: Synthetic blank forms, one per extension
         run: python tools/ci/make_fixtures.py "$RUNNER_TEMP/fixtures" --require-heic
-      - name: Prove the image (non-root, no capabilities, read-only, --network none conversion, HTTP path)
+      - name: Prove the image (hardening, conversions and sidecars, determinism, hostile files, HTTP path, the first run)
         run: |
           python tools/ci/container_check.py --image "converter:${{ matrix.target }}" \
             --fixtures "$RUNNER_TEMP/fixtures" --ready "${READY_FORMATS// /,}" --report "$RUNNER_TEMP/reports/check-${{ matrix.target }}.json"
