@@ -146,3 +146,24 @@ def test_convert_refuses_a_missing_file_and_a_bad_configuration(tmp_path, monkey
     monkeypatch.setenv("MAX_UPLOAD_BYTES", "100")
     assert cli.main(["convert", str(src)]) == 2  # TOO_LARGE, judged from the size on disk
     assert json.loads(capsys.readouterr().err.splitlines()[-1])["code"] == "TOO_LARGE"
+
+
+def test_an_output_that_cannot_be_written_is_one_line_and_exit_4(tmp_path, monkeypatch, capsys):
+    src = tmp_path / "a.pdf"
+    src.write_bytes(fx.pdf())
+    out = tmp_path / "no-such-folder" / "form.json"   # a real OSError of the file system
+    assert cli.main(["convert", str(src), "--out", str(out)]) == 4
+    captured = capsys.readouterr()
+    lines = captured.err.splitlines()
+    assert captured.out == "" and len(lines) == 1 and "Traceback" not in captured.err
+    assert lines[0].startswith(f"Cannot write {out}: ") and lines[0].endswith('On Linux add --user "$(id -u):$(id -g)"')
+
+    def denied(self, *a, **kw):   # what a folder owned by another user answers inside the container
+        raise PermissionError(13, "Permission denied")
+
+    monkeypatch.setattr(Path, "write_text", denied)
+    assert cli.main(["convert", str(src), "--out", str(tmp_path / "form.json")]) == 4
+    assert capsys.readouterr().err.splitlines() == [
+        f'Cannot write {tmp_path / "form.json"}: Permission denied. On Linux add --user "$(id -u):$(id -g)"']
+    assert cli.main(["convert", str(src), "--report", str(tmp_path / "rep")]) == 4   # the sidecar file the same way
+    assert capsys.readouterr().err.count("Cannot write") == 1
