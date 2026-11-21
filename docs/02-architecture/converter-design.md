@@ -115,7 +115,7 @@ Errors are `application/problem+json` (RFC 9457) with a Polish `title` and a sta
 | 422 | `UNREADABLE`, `NOT_A_FORM`, `ACTIVE_CONTENT` | nothing could be read; no place to fill was found; macros with `ACTIVE_CONTENT=strict` |
 | 429 | `BUSY` | concurrency or rate limit, with `Retry-After` |
 | 500 | `GATE_FAILED` | our own gate refused the result; the body names the failed check; **a broken form is never sent** |
-| 504 | `TIMEOUT` | the worker was killed at `JOB_TIMEOUT_S` |
+| 504 | `TIMEOUT` | the job ran longer than `JOB_TIMEOUT_S`: no result is returned; the job is NOT killed, it ends in the background and counts against the slots until it does (at `CONCURRENCY` such jobs the next request is 429 `BUSY`) |
 
 A paper that is partly unreadable still gives `200` with a valid form and warnings in the sidecar. `422 UNREADABLE` only when no text at all was obtained.
 
@@ -128,7 +128,7 @@ Every value comes from the environment or from a file named by the environment; 
 | `MAX_UPLOAD_BYTES` | `20971520` | largest upload (C-TECH-SIZE). The largest file of the judged sets is 6.7 MB |
 | `MAX_PAGES` | `60` | pages per document |
 | `MAX_PIXELS` | `80000000` | pixels of one decoded image. **Not lower: the scan of set 9 is 1654 × 37424 = 61.9 million pixels** |
-| `JOB_TIMEOUT_S` | `120` | wall-clock limit of one worker |
+| `JOB_TIMEOUT_S` | `600` | wall-clock limit of one conversion; over it the request answers 504 and the job ends in the background |
 | `WORKER_MEMORY_MB` | `1024` | address-space limit of one worker |
 | `CONCURRENCY` | `2` | workers at once; more uploads wait or get `429` |
 | `RATE_LIMIT_PER_MIN` | `60` | per token subject |
@@ -493,7 +493,7 @@ A composition of independent parts, kept separately in the sidecar: geometry (ho
 
 | Threat | Control | Negative test in `tests/evil/` |
 |---|---|---|
-| a parser hangs or eats memory | **airlock**: one worker process per upload, started fresh with a scrubbed environment and resource limits, in its own process group, killed at `JOB_TIMEOUT_S`; the API process never touches file bytes | a job that spins is killed, answers 504, leaves no process; the next job succeeds |
+| a parser hangs or eats memory | **airlock**: one worker process per upload, started fresh with a scrubbed environment and resource limits, in its own process group, killed at `JOB_TIMEOUT_S`; the API process never touches file bytes. **As built today: the conversion runs in a thread of the service, not in a separate worker; at `JOB_TIMEOUT_S` the request answers 504 and the thread is abandoned, not killed (an OCR child is killed at its own limit of 90 s per page)** | as built: a job that spins answers 504, keeps its slot until it ends, and with `CONCURRENCY` such jobs the service answers 429 `BUSY`; a job that is killed and leaves no process needs the worker of WP-F16 |
 | the worker leaks the key | the worker receives no key and no environment beyond `PATH`, `TMPDIR`, `LANG`; its only output is one JSON document that the API process validates as untrusted | the worker's environment dump in a test contains no `JWT` name |
 | a file makes the service call out (remote template, linked image, external entity) | no HTTP client in the worker; an audit hook raises on name resolution, connect, bind and on any subprocess other than the allowed OCR and office programs | a DOCX whose template target is a local listener: the listener sees no connection, the guard counter is one |
 | claim "no network" is only words | the proof is a run, not an endpoint: `convert` in a container started with `--network none` (command 1 of the README) gives the form with no network at all; a REST server under `--network none` cannot be reached from the host, so the published port is the other mode and is not offered as the proof. (A self-test endpoint was planned here and never built.) | command 1 of the README passes on the image under `--network none` |
