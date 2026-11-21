@@ -78,3 +78,28 @@ def test_three_numbered_variants_give_one_selector() -> None:
     assert brief.title.value == "Wniosek o przyznanie stypendium sportowego Rady Miasta Przykładowa"
     selectors = [f for m in brief.matter for f in m.fields if f.key == "rodzaj_wniosku"]
     assert len(selectors) == 1 and len(selectors[0].options) == 3
+
+
+def test_numbered_single_boxes_in_two_columns_with_places_between_are_one_group() -> None:
+    n = Native()
+    n.text(70, 100, "C. OKOLICZNOŚCI", 300, bold=True)
+    n.text(70, 120, "25. Okoliczności", 150)
+    n.text(80, 150, "☐ 1. pierwsza deklaracja", 200)
+    n.text(80, 172, "data zdarzenia", 80)
+    n.text(170, 172, DOTS, 120)
+    n.text(80, 200, "☐ 3. ustanie obowiązku", 200)
+    n.text(330, 150, "☐ 2. nowa deklaracja", 200)
+    n.text(330, 200, "☐ 4. korekta deklaracji", 200)
+    fo = find(model(n.page()))
+    groups = [c for c in fo.candidates if c.kind == "choice_group"]
+    assert len(groups) == 1 and len(groups[0].options) == 4
+    assert [o.text.split()[0] for o in groups[0].options] == ["1.", "2.", "3.", "4."]
+
+
+def test_numbered_single_boxes_with_a_gap_in_the_numbers_stay_single() -> None:
+    n = Native()
+    n.text(70, 100, "C. OKOLICZNOŚCI", 300, bold=True)
+    n.text(80, 150, "☐ 1. pierwsza deklaracja", 200)
+    n.text(80, 200, "☐ 3. ustanie obowiązku", 200)
+    fo = find(model(n.page()))
+    assert not [c for c in fo.candidates if c.kind == "choice_group"]

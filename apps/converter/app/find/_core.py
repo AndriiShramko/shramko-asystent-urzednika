@@ -643,6 +643,42 @@ class Finder:
                     return True
         return False
 
+    _NUMBERED = re.compile(r"\s*(\d{1,2})\s*[.)]\s+\S")
+
+    def numbered_singles(self, chains: list[list[D]]) -> list[list[D]]:
+        """Single boxes whose words are numbered 1., 2., 3. in reading order, on one page under one heading, are the
+        options of one question even when other places sit between them (two columns of "1. first declaration",
+        "2. new declaration", ...). Fewer than two, or a gap in the numbers, leaves them single."""
+        out: list[list[D]] = []
+        run: list[D] = []
+        kept: list[list[D]] = []   # the chains of the run as they were, when it is not one question
+
+        def num(d: D) -> int | None:
+            m = self._NUMBERED.match(d.opt[0]) if d.opt and d.opt[0] else None
+            return int(m.group(1)) if m else None
+
+        def flush() -> None:
+            nums = sorted(num(r) or 0 for r in run)
+            if len(run) >= 2 and nums == list(range(1, len(run) + 1)):
+                out.append(sorted(run, key=lambda r: num(r) or 0))
+            else:
+                out.extend(kept)
+            run.clear()
+            kept.clear()
+
+        for ch in chains:
+            if any(num(m) is None for m in ch) or (len(ch) > 1 and len({m.page for m in ch}) > 1):
+                flush()
+                out.append(ch)
+                continue
+            if run and not (run[-1].page == ch[0].page and self.sec(run[-1].pos) is self.sec(ch[0].pos)
+                            and not {num(m) for m in ch} & {num(r) for r in run}):
+                flush()
+            run.extend(ch)
+            kept.append(ch)
+        flush()
+        return out
+
     def groups(self) -> None:
         by_page = {p.page.number: p for p in self.pages}
         chains: list[list[D]] = []
@@ -656,6 +692,7 @@ class Finder:
                 chains[-1].append(m)
             else:
                 chains.append([m])
+        chains = self.numbered_singles(chains)
         for ch in chains:
             first = ch[0]
             if len(ch) == 1:

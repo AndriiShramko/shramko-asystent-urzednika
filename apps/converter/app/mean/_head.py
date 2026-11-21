@@ -63,7 +63,7 @@ def _group(doc: Doc, top: str) -> list[str]:
     first, group = doc.runs[top][1], [top]
     for rid in doc.order[doc.pos[top] + 1: doc.pos[top] + 4]:
         run, t = doc.runs[rid][1], doc.text(rid)
-        same_look = run.bold == first.bold and abs(_weight(run) - _weight(first)) <= 0.7
+        same_look = run.bold == first.bold and abs(_weight(run) - _weight(first)) <= (1.6 if t[:1].islower() else 0.7)   # "WNIOSEK" over a smaller "o wydanie ..."
         same_heading = rid in doc.heading and doc.heading[rid] == doc.heading.get(top)   # the finder joined them
         wraps = t[:1].islower() or same_heading or (doc.text(top).isupper() and t.isupper())
         numbered = rid in doc.heading and not same_heading and doc.sections[doc.heading[rid]].number is not None   # "B ...": the next section

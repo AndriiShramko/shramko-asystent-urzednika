@@ -12,7 +12,8 @@ Measuring: `bash tools/gate.sh py eval/briefs/make_briefs.py <main checkout>/eva
 - [x] fast gate passed on fcf7ff4 (592 passed)
 - [x] item 5, composer: a CHECKBOX without options is written with one option "Tak" (strict linter 0 errors); `ComposeResult.brief_keys` carries `Attachment.key` of an upload (the upload's id is made from the key when the brief gives one)
 - [ ] item 3, set 3 DOCX: the list has no glyph in the text (Word numbering symbols); needs the reader to give the list marker (request 1) or a rule "question ending with ':' + list lines"; today 2 fields
-- [ ] item 2: single boxes on one line or one column not grouped on sets 8 and 9 (set 9 PDF: 16 awaiting decision, labels "Dane reprezentanta ..." / "Dane pełnomocnika ..." are section switches, not options)
+- [x] item 2 (part): single boxes numbered 1., 2., 3. ... on one page under one heading are one group even with other places between them (set 8 PDF: CHECKBOX "Okoliczności" of four options); set 9 "Dane pełnomocnika ..." are section switches, left awaiting on purpose
+- [x] item 7 (part): title continues into a smaller bold lower-case line (set 6 PDF and DOCX: "Wniosek o wydanie zezwolenia na zajęcie pasa drogowego w celu prowadzenia robót", was "Wniosek")
 - [ ] item 4: reference 1 addressee (PDF glued capital "W"; DOCX "Wnioskodawca: Adresat:" two-column line)
 - [ ] item 6: audit T1 fixtures (reservation PDFs "Numer sali" vs "Liczba uczestników"; vehicle sale notice with buyer PESEL, VIN, "Data zbycia")
 - [ ] item 7: audit T4 (titles sentence case without "*", "Wniosek składa się wyłącznie osobiście" prunes the proxy route with the quote, parent/child and buyer blocks keep their owner)
