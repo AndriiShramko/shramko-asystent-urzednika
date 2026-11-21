@@ -34,6 +34,25 @@ Branch: wp/F20-f-user-formats   Stage now: 1a and 1b done natively (items 1 to 8
 
 Table of the 8 refusals of the unseen baseline (ids are the sample hashes): 097a6c53 rtf refused -> converted (53 fields); 5cfc8acc rtf -> converted (59); 663c3b77 rtf -> converted (53); d2ca0d42 rtf -> converted (51); e652b3c0 rtf -> converted (62); 123b1988 xls -> converted (146); 93be3909 jpg -> converted (49; not a change of this stage: the image formats of F20e); 899c15a1 pdf -> still refused UNREADABLE (annotation crash, stage 1b). All converted: gate passed, 0 strict-lint errors.
 
+## Evidence stage 1b
+| Check | Command | Result | Commit |
+|---|---|---|---|
+| new tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_user_formats_1b.py -q` | 27 passed, 1 skipped (`linux`: real child process) | a114770 + next |
+| fast gate (after merging main) | `bash tools/gate.sh fast` | 743 passed, 3 skipped, 22 deselected | a114770 |
+| chain | `bash tools/gate.sh py -m eval.chain --compare --archive <archive>` | 158 files: 152 converted, 6 refused, 0 failed; gate failures 0; strict-lint errors 0. unseen 80 of 80 converted (before: 79 of 80, the one refusal 899c15a1 now 151 fields); sets 71 of 71; hostile 6 refused, 1 converted (`pixel.png`, F20e, unchanged) | next |
+| compare | same | 39 better; 3 worse, all in sets 9 (105 -> 72 twice, 133 -> 116): exactly the accepted F3b change (WP-F3b status, applicant fields dropped by D20; the baseline predates it), not this stage | next |
+
+Archive PDF 899c15a1: `UnicodeDecodeError` in `page.annots` before, 151 fields after (local check only, nothing of it committed).
+
+## Negative control 1b
+`raise_unicode_errors=True` in `readers/pdf.py` (annotation guard off): `test_legacy_bytes_in_an_annotation_do_not_sink_the_page` failed ("the form fields of the page were not read (UnicodeDecodeError)"); restored to False, 27 passed.
+
+## Requests to lead (1b)
+- Tests outside my paths edited for item 7 (a bad name is cleaned, not refused): `tests/shell/test_shell_guard.py` (percent, forbidden characters, 251 characters, missing name, `noextension`) and `tests/shell/test_shell_http.py` (two BAD_NAME lines now expect 200).
+- `pipeline.run` got `notes=`; `main.py` and `cli.py` pass it only when there are notes (other tests replace `pipeline.run` with a three-argument fake). The sidecar code of the notes is `INPUT_NOTE` (not in `WarningCode`: the sidecar is not typed by it; same as `LEDGER_NOT_CLOSED`).
+- Stage 2: install `heif-dec` in the images; the Linux test `test_heic_with_a_real_child_process` uses a stand-in script; a real HEIC (made on the CI runner) is the end-to-end proof. `BAD_NAME` stays in the problem table, now unused by the guard.
+- Not verified here: a real HEIC file (no `heif-dec` on this laptop); MPO/APNG only with Pillow-made files.
+
 ## Negative control
 `MAX_DEPTH` of `readers/rtf.py` set to 10**9: `test_rtf_deep_nesting_is_refused_not_a_crash` failed ("DID NOT RAISE ReaderError"); restored to 128, 47 passed.
 
@@ -45,3 +64,4 @@ Table of the 8 refusals of the unseen baseline (ids are the sample hashes): 097a
 
 ## Cost notes
 - Stage 1a: most turns went to the old tests that encoded the strict policy and to a tool quirk (a unicode escape such as backslash-u in a tool argument is decoded; test files use a `@u` placeholder).
+- Stage 1b: most turns went to the PDF password path (pdfplumber wraps pdfminer's exception) and to shell tests that encoded the old name policy; a tool argument decodes backslash escapes, so control characters in tests are written with chr().
