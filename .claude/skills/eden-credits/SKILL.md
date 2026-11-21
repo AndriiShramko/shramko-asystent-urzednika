@@ -21,7 +21,7 @@ python tools/eden/eden.py budget                        # what the ledger says w
 python tools/eden/eden.py chat --model <id> --prompt-file q.md --out research/eden/<name>.md --purpose research
 ```
 
-Options: `--system`, `--image <path>` (repeatable), `--max-tokens`, `--json`, `--extra '<JSON merged into the request>'`, `--raw <file>`, `--timeout`. Every call lands in `.eden/ledger.jsonl` (git-ignored). The tool refuses to call once the ledger reaches `EDEN_BUDGET_USD` (default 60); raising it is the owner's word only. Run long calls in the background with a log file; read the last line.
+Options: `--system`, `--image <path>` (repeatable), `--max-tokens`, `--json`, `--extra '<JSON merged into the request>'`, `--raw <file>`, `--timeout`. Every call lands in `.eden/ledger.jsonl` (git-ignored). The tool refuses to call once the ledger reaches `EDEN_BUDGET_USD` (default 115, the whole grant of 100 EUR; the owner lifted the earlier 60 USD cap on 21 November 16:45). Run long calls in the background with a log file; read the last line.
 
 ## What it costs (measured today)
 

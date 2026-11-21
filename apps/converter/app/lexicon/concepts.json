@@ -1,0 +1,20 @@
+{
+  "lexicon": "concepts",
+  "about": "From the label of a place to the component type and the concept of its value (design 6.4.3 rows 1-2, 6.8). Tried on the cleaned lower-case label, first match wins. `label` replaces the wording when the paper's words are a sentence fragment.",
+  "rows": [
+    {"pattern": "\\bpesel\\b", "type": "TEXT_FIELD", "concept": "pesel", "length": 11, "source": "design 6.4.3 row 1", "date": "2026-11-21"},
+    {"pattern": "\\bnip\\b", "type": "TEXT_FIELD", "concept": "nip", "length": 10, "source": "design 6.4.3 row 1", "date": "2026-11-21"},
+    {"pattern": "\\bregon\\b", "type": "TEXT_FIELD", "concept": "regon", "source": "design 6.4.3 row 1", "date": "2026-11-21"},
+    {"pattern": "kod pocztowy", "type": "TEXT_FIELD", "concept": "zip_code", "source": "design 6.4.3 row 1; set judged-02", "date": "2026-11-21"},
+    {"pattern": "e-?mail|poczt\\w* elektroniczn", "type": "TEXT_FIELD", "concept": "email", "source": "design 6.8", "date": "2026-11-21"},
+    {"pattern": "telefon|^tel\\.?$", "type": "TEXT_FIELD", "concept": "phone", "source": "design 6.8; set judged-06", "date": "2026-11-21"},
+    {"pattern": "rachunk|kont[oa] bankow", "type": "TEXT_FIELD", "concept": "nrb", "length": 26, "source": "design 5.3 example; WP-F3 acceptance (the account holds 26 digits by the label)", "date": "2026-11-21"},
+    {"pattern": "w terminie od( dnia)?$", "type": "DATEPICKER", "concept": "date", "label": "Termin od", "source": "design 6.4.3 row 2; sets judged-04, judged-06", "date": "2026-11-21"},
+    {"pattern": "^(data|termin)\\b|\\bdata (urodzenia|szczepienia|uiszczenia|wydania|zawarcia)", "type": "DATEPICKER", "concept": "date", "source": "design 6.4.3 row 2; sets judged-02, judged-07", "date": "2026-11-21"},
+    {"pattern": "kwot|wysokość opłaty", "type": "NUMBER", "concept": "amount_pln", "source": "design 5.3 example; set reference-05", "date": "2026-11-21"},
+    {"pattern": "\\b(ilość|liczba)\\b", "type": "NUMBER", "concept": "count", "source": "set judged-04", "date": "2026-11-21"},
+    {"pattern": "powierzchni", "type": "NUMBER", "concept": "area", "source": "set judged-06", "date": "2026-11-21"},
+    {"pattern": "^(długość|szerokość|razem|suma|łącznie|ogółem)$", "type": "NUMBER", "source": "design 6.4.3 printed arithmetic; set judged-06", "date": "2026-11-21"},
+    {"pattern": "^uzasadnienie|^opis\\b", "type": "TEXTAREA", "source": "design 5.3 example; sets judged-02, judged-07", "date": "2026-11-21"}
+  ]
+}

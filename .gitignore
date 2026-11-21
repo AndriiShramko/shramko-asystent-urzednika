@@ -81,3 +81,6 @@ eval/silver/
 # The partner's materials and reference sets: the mentor said they may not be public (21 November)
 data/coi/materials/
 data/coi/reference-*/
+
+# Briefs quote the partner's forms: local only, like eval/silver (lead, 21 November)
+eval/briefs/*.json

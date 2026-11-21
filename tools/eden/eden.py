@@ -10,7 +10,7 @@ Key handling (the partner asked: no key in repositories, front-end code or agent
   * agents call this tool; they never see or pass the key.
 
 Budget: every call is written to .eden/ledger.jsonl (git-ignored) and the tool refuses to call
-when the ledger total reaches EDEN_BUDGET_USD (default 60; the partner's key holds 100 EUR).
+when the ledger total reaches EDEN_BUDGET_USD (default 115: the whole grant of 100 EUR at about 1.15 USD per EUR, rate unverified; the owner lifted the 60 USD cap on 21 November 16:45; the gateway refuses by itself when the grant is spent).
 
 Examples:
   python tools/eden/eden.py models --grep gemini
@@ -66,9 +66,9 @@ def _spent() -> float:
 
 def _cap() -> float:
     try:
-        return float(os.environ.get("EDEN_BUDGET_USD", "60"))
+        return float(os.environ.get("EDEN_BUDGET_USD", "115"))
     except ValueError:
-        return 60.0
+        return 115.0
 
 
 def _models(refresh: bool = False) -> list[dict]:
