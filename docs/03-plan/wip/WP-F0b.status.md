@@ -6,9 +6,9 @@ Branch: wp/F0b-models   Stage now: acceptance (single stage)
 - [x] Models in apps/converter/app/model/: common, page, candidate, brief, form, meta, schemas, __init__
 - [x] Four schema files written from the models (`python -m app.model.schemas`; `--check` in a test)
 - [x] Four examples in contracts/coi/examples/, taken from design 5.1-5.4 and adapted to the decisions below
-- [x] Tests in apps/converter/tests/model/ (54 pass locally, sets present), negative controls as tests
-- [ ] Negative control recorded by breaking and restoring (next commit)
-- [ ] Fast gate after merging main
+- [x] Tests in apps/converter/tests/model/ (54 pass locally, sets present), negative controls as tests (commit fb4288c)
+- [x] Negative control recorded by breaking and restoring
+- [x] main merged (F0a profiles arrived); fast gate passed: 71 passed on 203b0e1
 
 ## Decisions
 - Our contracts never write null; absent means none, explicit null refused / one rule, non-nullable schemas / rules out `"group": null` of design 5.2 (left out instead).
@@ -34,14 +34,17 @@ Branch: wp/F0b-models   Stage now: acceptance (single stage)
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
-| Examples validate against schema and model; round trip lossless; schemas match models | `bash tools/gate.sh py -m pytest apps/converter/tests/model -q` | 54 passed | see Status |
-| Both exports load tolerant and dump with no component lost (types, techNames, full equality modulo 2 normalisations) | same, `@pytest.mark.sets` | 3 passed (sets present) | see Status |
+| Examples validate against schema and model; round trip lossless; schemas match models | `bash tools/gate.sh py -m pytest apps/converter/tests/model -q` | 54 passed | fb4288c |
+| Both exports load tolerant and dump with no component lost (types, techNames, full equality modulo 2 normalisations) | same, `@pytest.mark.sets` | 3 passed (sets present) | fb4288c |
+| Helper-built form passes F0a's strict profile contracts/coi/form.schema.json | same | passed | 203b0e1 |
+| Fast gate after merging main | `bash tools/gate.sh fast` | 71 passed, lint ok | 203b0e1 |
 
 ## Negative control
 Tests: run with neither box nor anchor refused; component with unknown key refused (strict and tolerant); meta whose ledger does not close refused; each example with an extra top-level key fails its schema and model; a fourth top-level key of the form refused.
+Recorded: `return self` inserted at the top of the ledger check in app/model/meta.py -> 2 failed (test_negative_ledger_that_does_not_close_is_refused, test_deleting_the_fate_of_one_candidate_is_refused), 52 passed; restored with `git checkout -- apps/converter/app/model/meta.py` -> 54 passed.
 
 ## Requests to lead
-- contracts/coi/form.schema.json (F0a) and this model must agree: the model refuses `minItemRows` in strict reading and accepts `multiLevelTree`, `searchEnabled` only on SELECT. If F0a's strict profile differs, tell me which one wins.
+- F0a's strict profile (form.schema.json) agrees with the model on minItemRows, multiLevelTree, searchEnabled. One difference: form.tolerant.schema.json accepts unknown keys, `Form.from_partner_export` refuses them (an unknown key would otherwise be lost on dump). Keep it so, or should the loader keep unknown keys aside?
 - The design's examples (5.1-5.4) differ from the contracts in the decisions above (no nulls, unified Stated, consistent ledger). Design section 5 could point to contracts/coi/examples/ as the binding shape.
 
 ## Cost notes
