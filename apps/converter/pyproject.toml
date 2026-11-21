@@ -1,0 +1,59 @@
+# Lead-owned (WP-F0). A builder never edits this file: a new dependency is a request to the lead with its licence.
+# Exact versions with hashes live in requirements.lock (image) and requirements-dev.lock (tests), made by
+#   bash tools/gate.sh lock
+# Licence of every runtime dependency is checked by tools/licence_check.py (no GPL, AGPL, LGPL, MPL).
+
+[project]
+name = "shramko-formularze-converter"
+version = "0.1.0"
+description = "Compiles a blank official form (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG) into the form JSON of the e-services generator. Rules only: no language model, no call out of the container."
+requires-python = ">=3.13"
+license = "MIT"
+dependencies = [
+  "fastapi>=0.115",            # MIT
+  "uvicorn>=0.34",             # BSD-3-Clause
+  "pydantic>=2.10",            # MIT
+  "python-multipart>=0.0.20",  # Apache-2.0
+  "PyJWT[crypto]>=2.10",       # MIT; cryptography is Apache-2.0 or BSD-3-Clause
+  "jsonschema>=4.23",          # MIT
+  "defusedxml>=0.7.1",         # PSF-2.0
+  "lxml>=5.3",                 # BSD-3-Clause
+  "filetype>=1.2",             # MIT
+  "pypdfium2>=4.30",           # Apache-2.0 or BSD-3-Clause (PDFium: BSD-3-Clause, Apache-2.0)
+  "pdfplumber>=0.11.4",        # MIT (pdfminer.six: MIT)
+  "pypdf>=5.1",                # BSD-3-Clause
+  "python-docx>=1.1.2",        # MIT
+  "openpyxl>=3.1.5",           # MIT
+  "olefile>=0.47",             # BSD-2-Clause
+  "nh3>=0.2.18",               # MIT
+  "rapidfuzz>=3.10",           # MIT
+  "simplemma>=1.1",            # MIT
+  "jsonata-python>=0.5",       # Apache-2.0 (a port of the reference JSONata)
+  "Pillow>=11",                # MIT-CMU (HPND)
+]
+
+[project.optional-dependencies]
+# Test and build tools. They are not in the image's run stage and are not part of the licence gate of the product.
+dev = [
+  "pytest>=8.3",       # MIT
+  "httpx>=0.28",       # BSD-3-Clause (its certifi is MPL-2.0: test client only, never shipped)
+  "ruff>=0.8",         # MIT
+  "reportlab>=4.2",    # BSD-3-Clause: draws synthetic blank forms as PDF fixtures
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# "." makes the packages `app` and `converter` importable; "../.." makes `tools` and `eval` importable.
+pythonpath = [".", "../.."]
+addopts = "-ra --strict-markers"
+markers = [
+  "linux: needs Linux; skipped elsewhere with the reason printed; runs in the image workflow",
+  "container: runs only inside the image (IN_CONTAINER=1)",
+  "tesseract: needs the Tesseract program with Polish data",
+  "sets: needs the partner's task sets, which are local only; skipped where they are absent (CI)",
+  "slow: longer than about five seconds; not part of the fast gate",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"

@@ -56,9 +56,16 @@ python tools/coi_paths.py                     # where the task sets are on this 
 python tools/coi_unpack.py "<folder>"         # unpack the task archives into data/coi/ (short paths)
 python tools/eden/eden.py budget              # spending of the partner's model credits (build-time only)
 python tools/check_links.py .                 # every relative link in the documents resolves
+bash tools/gate.sh py -m pytest apps/converter/tests/<module> -q   # the project's Python: see below
+bash tools/gate.sh fast                       # before every hand-over: lint for real bugs, tests without the slow ones
+bash tools/gate.sh full                       # at a milestone: every test, links
 ```
 
-The scaffold package adds `tools/gate.sh fast|full`, the licence check and the start command of the service; this section then names them. The image is built and tested by the GitHub Actions workflow on every push: the owner's laptop has no Docker ([`docs/04-orchestration/machine-notes.md`](docs/04-orchestration/machine-notes.md)).
+**The project's Python is `bash tools/gate.sh py …`**, in the main checkout and in every worktree. It runs the shared environment (`.venv` of the main checkout, made from `apps/converter/requirements-dev.lock`) with the code of *your* checkout importable: packages `app` and `converter` from `apps/converter/`, `tools` and `eval` from the root. The bare `python` of this machine lacks half of the libraries and must not be used for the product or its tests. Never run `pip install`: a missing library is a request to the lead.
+
+**Tests and the task sets.** The partner's sets are local only, so the image workflow cannot see them. A test that needs them carries `@pytest.mark.sets` and is skipped where they are absent; every module therefore also has tests on synthetic fixtures built from code (a PDF drawn with `reportlab`, a DOCX made with `python-docx`, a sheet made with `openpyxl`). Other markers: `linux`, `container`, `tesseract`, `slow` (`apps/converter/tests/conftest.py`). **No file holds a literal identifier with a valid check digit** (PESEL, NIP, REGON, identity card, account): the publishing check refuses the push. Tests build such a value from a stem and a check digit computed in the test.
+
+The image is built, tested and published by the GitHub Actions workflow on every push: the owner's laptop has no Docker ([`docs/04-orchestration/machine-notes.md`](docs/04-orchestration/machine-notes.md)). The licence check and the start command of the service come with WP-F1 and WP-F12; this section then names them.
 
 ## Report format
 

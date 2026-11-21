@@ -24,6 +24,8 @@ export const meta = {
 //   from       -> 'core' | 'integration' | 'acceptance': start here (earlier stages are already on the package branch)
 //   only       -> run this one stage and stop (for a package that needs four or more stages: the lead calls again)
 //   review     -> false to skip the review (never for a package that is about to be merged)
+//   model      -> model alias for the core stage of THIS 'think' package (wins over think_model), so that one wave
+//                 can hold a package on the session's model and another on 'opus'
 // think_model  -> model alias for the core stage of 'think' packages when the lead wants to spare its own tier
 //                 (for example 'opus'); omitted = the session's model.
 // A wave holds at most THREE packages and runs them side by side; more are refused, not queued.
@@ -181,7 +183,8 @@ function reviewBrief(p, last) {
 function route(p, stage) {
   if (p.kind === 'think' && stage.key === 'core') {
     const o = { agentType: 'wp-thinker', effort: 'high' }
-    if (thinkModel) o.model = thinkModel
+    const m = typeof p.model === 'string' && p.model ? p.model : thinkModel
+    if (m) o.model = m
     return o
   }
   return { agentType: 'wp-builder', model: 'sonnet', effort: 'medium' }
