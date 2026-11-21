@@ -119,6 +119,21 @@ Acceptance: for reference sets 1 and 5 the brief from every format has the same 
 
 Cheapest tests that would prove us wrong: (1) rename the file, replace the municipality and the title, run again: the fields of the matter must not change; (2) one form from the city archive that no author of the rules has seen: read its brief before reading its paper.
 
+## WP-F3b — Matter quality: finder, understanding and composer second pass (new, 21 November 17:45)
+
+WP-F4 is merged (`559d839`): the pipeline runs reader → finder → understanding → composer, and the judged sets give fields of the matter (PDF, DOCX): set 2: 5 (5); 3: 2 (2); 4: 7 (6); 6: 18 (16); 7: 10; 8: 32 (24); 9: 83 (42). Silver labels (two hosted models, `eval/silver/`, local) found more on sets 3 (3 vs 2, and ours do not match), 4 (7 vs 4 matched), 6 (24 vs 16 to 18). This package owns `apps/converter/app/find/**`, `app/mean/**`, `app/lexicon/**`, `app/compose/**` and their tests, for this pass only, so that no fix waits on a request between packages. Audit tickets T1 (field tests) and T4 apply ([`../audit-tickets-2026-11-21.md`](../audit-tickets-2026-11-21.md)); decision D20 (scaffold pruned only on an explicit exclusion).
+
+Fix, each with a test on a synthetic fixture and, where the sets show it, a `sets` test:
+1. **Set 9 PDF:** no section and no bold in the finder, so both alternatives flatten into one section of 83 fields; it must give one selector (`rodzaj_wniosku`) and sections like the DOCX.
+2. **Single boxes not grouped** on sets 8 and 9 (22 to 35 candidates per file wait for a decision): group options on one line or one column under one question.
+3. **Set 3:** the private-use character U+F0F0 marks options, not boxes; the certificate options (five, including "inne" with its text field) and the purpose field must come out.
+4. **Reference 1:** PDF capital "W" of the addressee sits in the previous run; DOCX two-column line "Wnioskodawca: Adresat:" needs an addressee rule. Reference 1 must give the same title, addressee and four property fields from PDF and DOCX.
+5. **Composer:** a yes-or-no CHECKBOX of the brief (no options) must compose into a shape the strict linter accepts (an option pair, or the partner's own form of a single box as measured in the exports); `ComposeResult.brief_keys` carries `Attachment.key` for FILE_UPLOADER.
+6. **Audit T1 fixtures:** two one-page PDFs "Wniosek o rezerwację" with "Numer sali ...." versus "Liczba uczestników ....": different outputs, a room field and a numeric count; "ZAWIADOMIENIE O ZBYCIU POJAZDU" with buyer PESEL, VIN, "Data zbycia" (DATEPICKER).
+7. **Audit T4:** titles in sentence case without "*"; "Wniosek składa się wyłącznie osobiście" removes the proxy route (D20, quote in the sidecar); a parent/child or buyer block keeps its own owner and is never prefilled from the logged-in user.
+
+Acceptance: on the judged sets, fields of the matter matched to the silver labels rise on sets 3, 4 and 6 (table before/after in the status file); no set loses a field it had; reference 1 gives the same brief from PDF and DOCX; set 9 PDF has one selector; every converted set passes the gate with 0 strict-linter errors; the check chain (`bash tools/gate.sh py -m eval.chain --compare`) shows no new failure. **Negative controls:** the RODO clause yields no field; "Załącznik nr 2 do Regulaminu" never becomes a title; a drawn example of a ticked box in an instruction is not a group.
+
 ## WP-F5 — Composer
 
 Design 6.5. Library of standard sections cut from both exports, with parameters where the exports differ; pages; alternative content as conditional sections on pages that never become empty; repeating sections (`REPEATING_STYLE`); grid; ids from meaning (D10); techNames (D7); HTML from templates only (D11); the last page (D5).
@@ -151,7 +166,7 @@ Acceptance: every rule has at least one valid and one invalid synthetic value, a
 
 One application with WP-F10 (design 2). Polish, keyboard-usable, WCAG 2.1 AA. Upload by drag or button; the paper's page beside the form tree, found places outlined, a click on either side selects the other; **two ink colours** with the switch "tylko to, co przyszło z papieru"; the ledger as five numbers that open their rows; omissions with their reasons; the three receipts; decisions as a few cards, each naming how many warnings it settles; lowest confidence first; the form as text to read, copy, download; the batch table fed by `/v1/batches`. No editor of forms.
 
-Acceptance: the film can be recorded on it without a cut; both exports' sets and two judged sets load; an automatic accessibility check of our own rules (labels, focus order, contrast tokens) has no critical finding; fifty files finish in the batch table and the table equals the stream. **Negative control:** with the sidecar missing, the view still shows the form and says what is absent.
+Acceptance: the film can be recorded on it without a cut; both exports' sets and two judged sets load; an automatic accessibility check of our own rules (labels, focus order, contrast tokens) has no critical finding; fifty files finish in the batch table and the table equals the stream. **Negative control:** with the sidecar missing, the view still shows the form and says what is absent. **Every device (owner, 21 November 16:45):** every page a person opens is checked at phone width (375 px), tablet (768 px) and desktop (1280 px and wider), in at least two engines (Chromium and Firefox or WebKit, through Playwright), with no horizontal scroll, no overlapping or cut text and every control reachable; one screenshot per width and engine is the evidence in the status file.
 
 Cheapest test that would prove us wrong: time someone who did not write it correcting one wrongly grouped choice. If that is impossible without the source code, the view is called inspection in every text, not review.
 
@@ -159,7 +174,7 @@ Cheapest test that would prove us wrong: time someone who did not write it corre
 
 Renders the e-service from a form alone: pages as steps, sections, fields with hints, known dictionaries as short sample lists marked as samples, conditions live with the bundled reference evaluator, validation messages in Polish, locks on read-only initial data (fictitious values, marked). Buttons for the six journeys and for the zero-answer state; a list "what this journey shows and hides".
 
-Acceptance: both exports render without an error and behave as hand-predicted on one route each; our outputs for the judged sets render; one condition and one validation are shown working in the film. **Negative control:** a form with a condition that does not parse shows the error at the field, not a blank page.
+Acceptance: both exports render without an error and behave as hand-predicted on one route each; our outputs for the judged sets render; one condition and one validation are shown working in the film. **Negative control:** a form with a condition that does not parse shows the error at the field, not a blank page. **Every device (owner, 21 November 16:45):** every page a person opens is checked at phone width (375 px), tablet (768 px) and desktop (1280 px and wider), in at least two engines (Chromium and Firefox or WebKit, through Playwright), with no horizontal scroll, no overlapping or cut text and every control reachable; one screenshot per width and engine is the evidence in the status file.
 
 Cheapest test that would prove us wrong: load both **untouched** exports and predict one route by hand from the JSON before clicking. If viewer and emitter only agree with each other, they share a bug.
 

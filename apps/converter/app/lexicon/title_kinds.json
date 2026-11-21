@@ -1,0 +1,14 @@
+{
+  "lexicon": "title_kinds",
+  "about": "What a Polish official paper calls itself: a heading that starts with one of these words may be the title (design 6.4.1).",
+  "rows": [
+    {"word": "wniosek", "source": "design 6.4.1; sets reference-01, reference-05, judged-02, 03, 04, 06, 07, 09", "date": "2026-11-21"},
+    {"word": "deklaracja", "source": "design 6.4.1; set judged-08", "date": "2026-11-21"},
+    {"word": "zgłoszenie", "source": "design 6.4.1", "date": "2026-11-21"},
+    {"word": "oświadczenie", "source": "design 6.4.1", "date": "2026-11-21"},
+    {"word": "zawiadomienie", "source": "app.interim (WP-F1 title rule)", "date": "2026-11-21"},
+    {"word": "podanie", "source": "app.interim (WP-F1 title rule)", "date": "2026-11-21"},
+    {"word": "skarga", "source": "app.interim (WP-F1 title rule)", "date": "2026-11-21"},
+    {"word": "odwołanie", "source": "app.interim (WP-F1 title rule)", "date": "2026-11-21"}
+  ]
+}

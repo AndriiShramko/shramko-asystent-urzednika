@@ -1,0 +1,18 @@
+{
+  "lexicon": "offices",
+  "about": "Names of bodies and offices an application is addressed to (design 6.4.1). `base` is the nominative written into the form; `forms` are the other cases seen on papers. A body gives 'Organ', an office gives 'Urząd'.",
+  "rows": [
+    {"kind": "body", "base": "Wójt Gminy", "forms": ["Wójta Gminy", "Wójtowi Gminy"], "source": "design 6.4.1; sets reference-01, judged-04", "date": "2026-11-21"},
+    {"kind": "body", "base": "Wójt", "forms": ["Wójta", "Wójtowi"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "body", "base": "Burmistrz Miasta i Gminy", "forms": ["Burmistrza Miasta i Gminy", "Burmistrzowi Miasta i Gminy"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "body", "base": "Burmistrz Miasta", "forms": ["Burmistrza Miasta", "Burmistrzowi Miasta"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "body", "base": "Burmistrz", "forms": ["Burmistrza", "Burmistrzowi"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "body", "base": "Prezydent Miasta", "forms": ["Prezydenta Miasta", "Prezydentowi Miasta"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "body", "base": "Starosta", "forms": ["Starosty", "Staroście"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "office", "base": "Urząd Miasta i Gminy", "forms": ["Urzędu Miasta i Gminy", "Urzędzie Miasta i Gminy", "Urzędowi Miasta i Gminy"], "source": "set judged-03", "date": "2026-11-21"},
+    {"kind": "office", "base": "Urząd Gminy", "forms": ["Urzędu Gminy", "Urzędzie Gminy", "Urzędowi Gminy"], "source": "design 5.3 example; sets reference-05, judged-02", "date": "2026-11-21"},
+    {"kind": "office", "base": "Urząd Miasta", "forms": ["Urzędu Miasta", "Urzędzie Miasta", "Urzędowi Miasta"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "office", "base": "Urząd Miejski", "forms": ["Urzędu Miejskiego", "Urzędzie Miejskim", "Urzędowi Miejskiemu"], "source": "design 6.4.1", "date": "2026-11-21"},
+    {"kind": "office", "base": "Starostwo Powiatowe", "forms": ["Starostwa Powiatowego", "Starostwie Powiatowym", "Starostwu Powiatowemu"], "source": "design 6.4.1", "date": "2026-11-21"}
+  ]
+}

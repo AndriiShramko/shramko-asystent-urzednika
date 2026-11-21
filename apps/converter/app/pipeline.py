@@ -2,7 +2,7 @@
 
 `run(data, filename, settings)` takes the bytes of a file the guard has already accepted and returns the form (the
 partner's object, decision D1) and the sidecar (decision D2). The steps: the format from the guard's proof of
-content, `read_document`, `app.interim.brief_from_pages` (a stand-in until WP-F3 and WP-F4), `compose`. A failure is
+content, `read_document`, `app.find` and `app.mean` (the brief; `app.interim` only when the finder yields no candidate), `compose`. A failure is
 a `ProblemError` of design section 3, which the HTTP shell and the command line already turn into an answer: no stack
 trace, no content of the file. No endpoint, no command and no test of the shell reaches past this function.
 """
@@ -13,6 +13,9 @@ import re
 from dataclasses import dataclass
 
 from app import __version__, gate, interim
+from app.find import find
+from app.mean import understand
+from app.model.ledger import LedgerError, assemble_ledger
 from app.compose import ComposeError, compose
 from app.config import Settings, compose_options, read_options
 from app.guard import ProblemError
@@ -63,6 +66,22 @@ def _checks_of(report: gate.GateReport) -> list[dict]:
             for c in report.checks]
 
 
+def _form_ids(form: dict, brief, brief_keys: dict[str, str]) -> dict[str, str]:
+    """Brief key -> form id: the inverse of `ComposeResult.brief_keys`. The composer does not carry the key of an
+    attachment (request to lead), so an upload is found by its title among the uploaders of the form."""
+    ids = {key: fid for fid, key in brief_keys.items()}
+    uploads: dict[str, str] = {}
+    for tab in form["tabs"]:
+        for q in tab["questions"]:
+            for cell in q["field"]["repeatingSectionGrid"]:
+                if cell["field"]["type"] == "FILE_UPLOADER":
+                    uploads.setdefault(cell["field"]["title"], cell["field"]["id"])
+    for a in brief.attachments:
+        if a.key and a.key not in ids and a.label in uploads:
+            ids[a.key] = uploads[a.label]
+    return ids
+
+
 def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
     """`filename` is not used: the format comes from the content, and a name must never reach a log."""
     fmt = _format_of(data, settings)
@@ -73,7 +92,12 @@ def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
         model = read_document(data, fmt, read_options(settings))
     except ReaderError as exc:
         raise _problem_of(exc) from None
-    brief = interim.brief_from_pages(model)
+    finder = find(model)
+    fallback = not finder.candidates
+    if fallback:
+        brief = interim.brief_from_pages(model)
+    else:
+        brief = understand(model, finder)
     try:
         composed = compose(brief, compose_options(settings))
     except ComposeError as exc:
@@ -83,14 +107,24 @@ def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
     if not report.passed:
         raise _gate_problem(report.failed[0])
     warnings = [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]
-    warnings.append(dict(interim.NOT_READ_WARNING))
+    if fallback:
+        warnings.append(dict(interim.NOT_READ_WARNING))
+    else:
+        warnings += [w.model_dump(mode="json", exclude_none=True) for w in (*finder.warnings, *brief.warnings)]
     warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
+    meta: dict = {"origins": composed.origins, "brief_keys": composed.brief_keys}
+    if not fallback:
+        try:
+            ledger = assemble_ledger(finder, brief.dispositions, _form_ids(form, brief, composed.brief_keys))
+            meta["ledger"] = ledger.model_dump(mode="json", exclude_none=True)
+        except LedgerError:
+            warnings.append({"code": "LEDGER_NOT_CLOSED", "detail": "the account of the blanks could not be closed"})
     sidecar = {
         "version": 1,
-        "converter": {"version": __version__, "pipeline": "interim", "reader": model.source.reader},
+        "converter": {"version": __version__, "pipeline": "interim" if fallback else "brief", "reader": model.source.reader},
         "counts": {"pages": len(form["tabs"]), "fields": _count_fields(form), "source_pages": model.source.pages},
         "warnings": warnings,
         "checks": _checks_of(report),
-        "meta": {"origins": composed.origins, "brief_keys": composed.brief_keys},
+        "meta": meta,
     }
     return PipelineResult(form=form, sidecar=sidecar)
