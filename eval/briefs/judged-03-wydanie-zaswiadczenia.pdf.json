@@ -1,0 +1,278 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "3c7f6a8d3ccddac4f0926b4b1450b0b1f89256f3d99bb0f5162e95dc7a923f10",
+  "format": "pdf"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o wydanie zaświadczenia",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     177.6,
+     243.29,
+     417.68,
+     255.29
+    ],
+    "runs": [
+     "r14"
+    ],
+    "quote": "WNIOSEK O WYDANIE ZAŚWIADCZENIA"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     357.7,
+     113.99,
+     520.23,
+     125.99
+    ],
+    "runs": [
+     "r1"
+    ],
+    "quote": "Urząd Miasta i Gminy Młynary"
+   }
+  ],
+  "kind": "office",
+  "name": "Urząd Miasta i Gminy Młynary"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     71.0,
+     53.09,
+     221.0,
+     65.09
+    ],
+    "runs": [
+     "r7"
+    ],
+    "quote": "imię i nazwisko",
+    "candidate": "c2"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": false,
+  "capacities": [
+   "pelnomocnik"
+  ]
+ },
+ "applicant_extras": [
+  {
+   "concept": "pesel",
+   "party": "self",
+   "required": false
+  }
+ ],
+ "matter": [
+  {
+   "title": "Szczegóły sprawy",
+   "role": "matter/szczegoly_sprawy",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "inne",
+     "label": "Inne",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c6",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        127.6,
+        395.69,
+        523.6,
+        407.69
+       ],
+       "runs": [
+        "r20"
+       ],
+       "quote": " inne",
+       "candidate": "c6"
+      }
+     ]
+    },
+    {
+     "key": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
+     "label": "Zaświadczenie potrzebne jest celem przedłożenia w",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c8",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        340.77,
+        458.29,
+        523.77,
+        470.29
+       ],
+       "runs": [
+        "r23"
+       ],
+       "quote": "Zaświadczenie potrzebne jest celem przedłożenia w",
+       "candidate": "c8"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [],
+  "clause": {
+   "status": "not_found",
+   "evidence": []
+  }
+ },
+ "fee": {
+  "status": "stated",
+  "value": "Opłata za wydanie zaświadczenia wynosi 17 zł (od każdego egzemplarza). Obowiązek uiszczenia opłaty skarbowej",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     107.0,
+     591.84,
+     522.09,
+     600.84
+    ],
+    "runs": [
+     "r30"
+    ],
+    "quote": "Opłata za wydanie zaświadczenia wynosi 17 zł (od każdego egzemplarza). Obowiązek uiszczenia opłaty skarbowej"
+   }
+  ]
+ },
+ "legal_basis": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dropped": [
+  {
+   "what": "Młynary, dnia",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "podpis",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "standard/twoje_dane: imię i nazwisko, PESEL",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 2
+  },
+  {
+   "what": "standard/adres: adres",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/dane_do_kontaktu: nr telefonu",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  }
+ ],
+ "warnings": [
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "inne",
+   "candidate": "c6",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
+   "candidate": "c8",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  },
+  {
+   "candidate": "c2",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c3",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c4",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c5",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c6",
+   "fate": "FIELD",
+   "key": "inne"
+  },
+  {
+   "candidate": "c7",
+   "fate": "MERGED",
+   "into": "c6",
+   "why": "LINE_BLOCK"
+  },
+  {
+   "candidate": "c8",
+   "fate": "FIELD",
+   "key": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
+  },
+  {
+   "candidate": "c9",
+   "fate": "MERGED",
+   "into": "c8",
+   "why": "LINE_BLOCK"
+  },
+  {
+   "candidate": "c10",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  }
+ ]
+}

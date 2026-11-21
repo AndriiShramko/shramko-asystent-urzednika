@@ -1,0 +1,3775 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "d9ace125afc5c4af18d1679eb63b85428a0391326bcb7bdf0022ec0fd4e77797",
+  "format": "pdf"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza ii",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     79.7,
+     183.14,
+     433.27,
+     211.94
+    ],
+    "runs": [
+     "r7",
+     "r8"
+    ],
+    "quote": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza II."
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     354.07,
+     106.94,
+     480.97,
+     118.94
+    ],
+    "runs": [
+     "r3"
+    ],
+    "quote": "Prezydenta Miasta Zgierza"
+   }
+  ],
+  "kind": "body",
+  "name": "Prezydent Miasta Zgierza"
+ },
+ "applicants": {
+  "status": "not_found",
+  "evidence": [],
+  "self": false,
+  "other_person": false,
+  "entity": false,
+  "capacities": []
+ },
+ "applicant_extras": [],
+ "matter": [
+  {
+   "title": "Szczegóły sprawy",
+   "role": "matter/szczegoly_sprawy",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "imie",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c2",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        94.93,
+        232.22,
+        517.43,
+        244.22
+       ],
+       "runs": [
+        "r19"
+       ],
+       "quote": "Imię",
+       "candidate": "c2"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c3",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        119.04,
+        261.05,
+        516.7,
+        273.05
+       ],
+       "runs": [
+        "r21"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c3"
+      }
+     ]
+    },
+    {
+     "key": "numer_telefonu",
+     "label": "Numer telefonu",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c4",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        217.61,
+        289.85,
+        518.98,
+        301.85
+       ],
+       "runs": [
+        "r23"
+       ],
+       "quote": "Numer telefonu (opcjonalnie)",
+       "candidate": "c4"
+      }
+     ]
+    },
+    {
+     "key": "imie_2",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c6",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        94.93,
+        336.53,
+        520.56,
+        348.53
+       ],
+       "runs": [
+        "r26"
+       ],
+       "quote": "Imię",
+       "candidate": "c6"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_2",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c7",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        119.04,
+        359.45,
+        522.82,
+        371.45
+       ],
+       "runs": [
+        "r28"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c7"
+      }
+     ]
+    },
+    {
+     "key": "seria_i_numer_dowodu_osobistego",
+     "label": "Seria i numer dowodu osobistego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c8",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        236.44,
+        384.29,
+        524.28,
+        396.29
+       ],
+       "runs": [
+        "r30"
+       ],
+       "quote": "Seria i numer dowodu osobistego",
+       "candidate": "c8"
+      }
+     ]
+    },
+    {
+     "key": "numer_telefonu_2",
+     "label": "Numer telefonu",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c9",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        217.61,
+        409.13,
+        524.08,
+        421.13
+       ],
+       "runs": [
+        "r32"
+       ],
+       "quote": "Numer telefonu (opcjonalnie)",
+       "candidate": "c9"
+      }
+     ]
+    },
+    {
+     "key": "nazwa_klubu_sportowego",
+     "label": "Nazwa klubu sportowego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c10",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        196.38,
+        500.35,
+        522.58,
+        512.35
+       ],
+       "runs": [
+        "r38"
+       ],
+       "quote": "Nazwa klubu sportowego",
+       "candidate": "c10"
+      }
+     ]
+    },
+    {
+     "key": "telefon_kontaktowy",
+     "label": "Telefon kontaktowy",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c11",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        235.26,
+        523.15,
+        523.1,
+        535.15
+       ],
+       "runs": [
+        "r40"
+       ],
+       "quote": "Telefon kontaktowy (opcjonalnie)",
+       "candidate": "c11"
+      }
+     ]
+    },
+    {
+     "key": "adres_siedziby",
+     "label": "Adres siedziby",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c12",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        143.14,
+        547.99,
+        524.12,
+        559.99
+       ],
+       "runs": [
+        "r42"
+       ],
+       "quote": "Adres siedziby",
+       "candidate": "c12"
+      }
+     ]
+    },
+    {
+     "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje",
+     "label": "Poczta tradycyjna - na który adres kierować korespondencję",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "adres siedziby klubu",
+      "inny adres korespondencyjny"
+     ],
+     "candidate": "c13",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        84.98,
+        607.18,
+        90.19,
+        635.98
+       ],
+       "runs": [
+        "r45"
+       ],
+       "quote": " Poczta tradycyjna - na który adres kierować korespondencję",
+       "candidate": "c13"
+      }
+     ]
+    },
+    {
+     "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_2",
+     "label": "Poczta tradycyjna - na który adres kierować korespondencję: inny adres korespondencyjny",
+     "type": "TEXTAREA",
+     "required": false,
+     "options": [],
+     "show_if": {
+      "field": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje",
+      "is": "inny adres korespondencyjny"
+     },
+     "candidate": "c16",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        238.97,
+        623.98,
+        523.7,
+        635.98
+       ],
+       "runs": [],
+       "quote": "inny adres korespondencyjny",
+       "candidate": "c16"
+      }
+     ]
+    },
+    {
+     "key": "skrzynka_epuap_adres_skrzynki",
+     "label": "Skrzynka ePUAP - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c18",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        252.41,
+        658.42,
+        520.56,
+        670.42
+       ],
+       "runs": [
+        "r50"
+       ],
+       "quote": " Skrzynka ePUAP - adres skrzynki",
+       "candidate": "c18"
+      }
+     ]
+    },
+    {
+     "key": "edoreczenia_adres_skrzynki",
+     "label": "EDoręczenia - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c19",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        234.53,
+        675.94,
+        522.26,
+        687.94
+       ],
+       "runs": [
+        "r52"
+       ],
+       "quote": " eDoręczenia - adres skrzynki",
+       "candidate": "c19"
+      }
+     ]
+    },
+    {
+     "key": "imie_3",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c20",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "box": [
+        94.93,
+        111.26,
+        523.59,
+        123.26
+       ],
+       "runs": [
+        "r59"
+       ],
+       "quote": "Imię",
+       "candidate": "c20"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_3",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c21",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "box": [
+        119.04,
+        132.14,
+        522.74,
+        144.14
+       ],
+       "runs": [
+        "r61"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c21"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia",
+     "label": "Data urodzenia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c22",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "box": [
+        147.07,
+        152.9,
+        523.08,
+        164.9
+       ],
+       "runs": [
+        "r63"
+       ],
+       "quote": "Data urodzenia",
+       "candidate": "c22"
+      }
+     ]
+    },
+    {
+     "key": "adres_zameldowania",
+     "label": "Adres zameldowania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "adres zameldowania może być inny niż adres zamieszkania",
+     "options": [],
+     "candidate": "c23",
+     "conf": 0.61,
+     "evidence": [
+      {
+       "page": 3,
+       "box": [
+        70.82,
+        194.66,
+        524.32,
+        206.66
+       ],
+       "runs": [
+        "r65"
+       ],
+       "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+       "candidate": "c23"
+      }
+     ]
+    },
+    {
+     "key": "adres_do_korespondencji",
+     "label": "Adres do korespondencji",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "jeśli różni się od adresu zameldowania",
+     "options": [],
+     "candidate": "c24",
+     "conf": 0.61,
+     "evidence": [
+      {
+       "page": 3,
+       "box": [
+        70.82,
+        236.3,
+        524.32,
+        248.3
+       ],
+       "runs": [
+        "r67"
+       ],
+       "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+       "candidate": "c24"
+      }
+     ]
+    },
+    {
+     "key": "dyscyplina",
+     "label": "Dyscyplina",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c25",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "box": [
+        121.55,
+        741.58,
+        514.06,
+        753.58
+       ],
+       "runs": [
+        "r97"
+       ],
+       "quote": "dyscyplina",
+       "candidate": "c25"
+      }
+     ]
+    },
+    {
+     "key": "ocenie_wniosku",
+     "label": "Ocenie wniosku",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c26",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 4,
+       "box": [
+        70.82,
+        124.1,
+        521.38,
+        304.61
+       ],
+       "runs": [
+        "r101"
+       ],
+       "quote": "ocenie wniosku",
+       "candidate": "c26"
+      }
+     ]
+    },
+    {
+     "key": "i_moralna_sportowca",
+     "label": "I moralną sportowca",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c27",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 4,
+       "box": [
+        70.82,
+        394.61,
+        524.38,
+        490.87
+       ],
+       "runs": [
+        "r117"
+       ],
+       "quote": "i moralną sportowca",
+       "candidate": "c27"
+      }
+     ]
+    },
+    {
+     "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do",
+     "label": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do stypendium",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c28",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 4,
+       "box": [
+        70.82,
+        620.26,
+        518.31,
+        734.5
+       ],
+       "runs": [
+        "r130"
+       ],
+       "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do stypendium",
+       "candidate": "c28"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_kandydata",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c32",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 6,
+       "box": [
+        200.22,
+        330.77,
+        517.99,
+        342.77
+       ],
+       "runs": [
+        "r162"
+       ],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c32"
+      }
+     ]
+    },
+    {
+     "key": "ja_nizej_podpisany",
+     "label": "Ja niżej podpisany",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "rodzic/opiekun prawny",
+     "options": [],
+     "candidate": "c33",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 6,
+       "box": [
+        173.38,
+        353.69,
+        400.03,
+        365.69
+       ],
+       "runs": [
+        "r164"
+       ],
+       "quote": "1) Ja niżej podpisany",
+       "candidate": "c33"
+      }
+     ]
+    },
+    {
+     "key": "imie_4",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c37",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        94.93,
+        205.1,
+        523.54,
+        217.1
+       ],
+       "runs": [
+        "r183"
+       ],
+       "quote": "Imię",
+       "candidate": "c37"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_4",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c38",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        119.04,
+        227.9,
+        522.82,
+        239.9
+       ],
+       "runs": [
+        "r185"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c38"
+      }
+     ]
+    },
+    {
+     "key": "numer_telefonu_3",
+     "label": "Numer telefonu",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c39",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        217.61,
+        252.77,
+        524.08,
+        264.77
+       ],
+       "runs": [
+        "r187"
+       ],
+       "quote": "Numer telefonu (opcjonalnie)",
+       "candidate": "c39"
+      }
+     ]
+    },
+    {
+     "key": "imie_5",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c41",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        94.93,
+        299.45,
+        523.48,
+        311.45
+       ],
+       "runs": [
+        "r190"
+       ],
+       "quote": "Imię",
+       "candidate": "c41"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_5",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c42",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        119.04,
+        322.37,
+        522.74,
+        334.37
+       ],
+       "runs": [
+        "r192"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c42"
+      }
+     ]
+    },
+    {
+     "key": "seria_i_numer_dowodu_osobistego_2",
+     "label": "Seria i numer dowodu osobistego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c43",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        236.44,
+        347.21,
+        524.27,
+        359.21
+       ],
+       "runs": [
+        "r194"
+       ],
+       "quote": "Seria i numer dowodu osobistego",
+       "candidate": "c43"
+      }
+     ]
+    },
+    {
+     "key": "numer_telefonu_4",
+     "label": "Numer telefonu",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c44",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        217.61,
+        372.05,
+        524.08,
+        384.05
+       ],
+       "runs": [
+        "r196"
+       ],
+       "quote": "Numer telefonu (opcjonalnie)",
+       "candidate": "c44"
+      }
+     ]
+    },
+    {
+     "key": "nazwa_klubu_sportowego_2",
+     "label": "Nazwa klubu sportowego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c45",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        196.38,
+        477.19,
+        522.43,
+        489.19
+       ],
+       "runs": [
+        "r202"
+       ],
+       "quote": "Nazwa klubu sportowego",
+       "candidate": "c45"
+      }
+     ]
+    },
+    {
+     "key": "telefon_kontaktowy_2",
+     "label": "Telefon kontaktowy",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c46",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        235.26,
+        500.11,
+        522.94,
+        512.11
+       ],
+       "runs": [
+        "r204"
+       ],
+       "quote": "Telefon kontaktowy (opcjonalnie)",
+       "candidate": "c46"
+      }
+     ]
+    },
+    {
+     "key": "adres_siedziby_2",
+     "label": "Adres siedziby",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c47",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        143.14,
+        524.95,
+        524.12,
+        536.95
+       ],
+       "runs": [
+        "r206"
+       ],
+       "quote": "Adres siedziby",
+       "candidate": "c47"
+      }
+     ]
+    },
+    {
+     "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_3",
+     "label": "Poczta tradycyjna - na który adres kierować korespondencję",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "adres siedziby klubu",
+      "inny adres korespondencyjny"
+     ],
+     "candidate": "c48",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        84.98,
+        584.11,
+        90.19,
+        612.94
+       ],
+       "runs": [
+        "r209"
+       ],
+       "quote": " Poczta tradycyjna - na który adres kierować korespondencję",
+       "candidate": "c48"
+      }
+     ]
+    },
+    {
+     "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_3_2",
+     "label": "Poczta tradycyjna - na który adres kierować korespondencję: inny adres korespondencyjny",
+     "type": "TEXTAREA",
+     "required": false,
+     "options": [],
+     "show_if": {
+      "field": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_3",
+      "is": "inny adres korespondencyjny"
+     },
+     "candidate": "c51",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        238.87,
+        600.94,
+        523.7,
+        612.94
+       ],
+       "runs": [],
+       "quote": "inny adres korespondencyjny",
+       "candidate": "c51"
+      }
+     ]
+    },
+    {
+     "key": "skrzynka_epuap_adres_skrzynki_2",
+     "label": "Skrzynka ePUAP - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c53",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        252.37,
+        635.38,
+        523.59,
+        647.38
+       ],
+       "runs": [
+        "r214"
+       ],
+       "quote": " Skrzynka ePUAP - adres skrzynki",
+       "candidate": "c53"
+      }
+     ]
+    },
+    {
+     "key": "edoreczenia_adres_skrzynki_2",
+     "label": "EDoręczenia - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c54",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 7,
+       "box": [
+        235.05,
+        652.9,
+        523.56,
+        664.9
+       ],
+       "runs": [
+        "r216"
+       ],
+       "quote": " eDoręczenia - adres skrzynki",
+       "candidate": "c54"
+      }
+     ]
+    },
+    {
+     "key": "imie_6",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c55",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        94.93,
+        107.3,
+        523.58,
+        119.3
+       ],
+       "runs": [
+        "r223"
+       ],
+       "quote": "Imię",
+       "candidate": "c55"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_6",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c56",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        119.04,
+        124.1,
+        522.79,
+        136.1
+       ],
+       "runs": [
+        "r225"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c56"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia_2",
+     "label": "Data urodzenia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c57",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        147.07,
+        140.9,
+        522.91,
+        152.9
+       ],
+       "runs": [
+        "r227"
+       ],
+       "quote": "Data urodzenia",
+       "candidate": "c57"
+      }
+     ]
+    },
+    {
+     "key": "adres_zameldowania_2",
+     "label": "Adres zameldowania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "adres zameldowania może być inny niż adres zamieszkania",
+     "options": [],
+     "candidate": "c58",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        70.82,
+        174.62,
+        524.32,
+        186.62
+       ],
+       "runs": [
+        "r229"
+       ],
+       "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+       "candidate": "c58"
+      }
+     ]
+    },
+    {
+     "key": "adres_do_korespondencji_2",
+     "label": "Adres do korespondencji",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "jeśli różni się od adresu zameldowania",
+     "options": [],
+     "candidate": "c59",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        70.82,
+        208.34,
+        524.32,
+        220.34
+       ],
+       "runs": [
+        "r231"
+       ],
+       "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+       "candidate": "c59"
+      }
+     ]
+    },
+    {
+     "key": "ocenie_wniosku_2",
+     "label": "Ocenie wniosku",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c60",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        70.82,
+        277.97,
+        521.27,
+        441.67
+       ],
+       "runs": [
+        "r235"
+       ],
+       "quote": "ocenie wniosku",
+       "candidate": "c60"
+      }
+     ]
+    },
+    {
+     "key": "i_moralna_sportowca_2",
+     "label": "I moralną sportowca",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c61",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 8,
+       "box": [
+        70.82,
+        531.67,
+        521.37,
+        627.94
+       ],
+       "runs": [
+        "r250"
+       ],
+       "quote": "i moralną sportowca",
+       "candidate": "c61"
+      }
+     ]
+    },
+    {
+     "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2",
+     "label": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do nagrody",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c62",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 9,
+       "box": [
+        70.82,
+        105.98,
+        524.38,
+        185.3
+       ],
+       "runs": [
+        "r263"
+       ],
+       "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do nagrody",
+       "candidate": "c62"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_kandydata_2",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c67",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 10,
+       "box": [
+        200.22,
+        295.97,
+        514.97,
+        307.97
+       ],
+       "runs": [
+        "r294"
+       ],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c67"
+      }
+     ]
+    },
+    {
+     "key": "ja_nizej_podpisany_2",
+     "label": "Ja niżej podpisany",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "rodzic/opiekun prawny",
+     "options": [],
+     "candidate": "c68",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 10,
+       "box": [
+        173.38,
+        318.77,
+        394.7,
+        330.77
+       ],
+       "runs": [
+        "r296"
+       ],
+       "quote": "1) Ja niżej podpisany",
+       "candidate": "c68"
+      }
+     ]
+    },
+    {
+     "key": "imie_7",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c72",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        94.93,
+        226.22,
+        523.54,
+        238.22
+       ],
+       "runs": [
+        "r315"
+       ],
+       "quote": "Imię",
+       "candidate": "c72"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_7",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c73",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        119.04,
+        249.05,
+        522.82,
+        261.05
+       ],
+       "runs": [
+        "r317"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c73"
+      }
+     ]
+    },
+    {
+     "key": "numer_telefonu_5",
+     "label": "Numer telefonu",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c74",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        217.61,
+        271.85,
+        524.08,
+        283.85
+       ],
+       "runs": [
+        "r319"
+       ],
+       "quote": "Numer telefonu (opcjonalnie)",
+       "candidate": "c74"
+      }
+     ]
+    },
+    {
+     "key": "imie_8",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c76",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        94.93,
+        316.49,
+        523.56,
+        328.49
+       ],
+       "runs": [
+        "r322"
+       ],
+       "quote": "Imię",
+       "candidate": "c76"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_8",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c77",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        119.04,
+        339.41,
+        522.82,
+        351.41
+       ],
+       "runs": [
+        "r324"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c77"
+      }
+     ]
+    },
+    {
+     "key": "seria_i_numer_dowodu_osobistego_3",
+     "label": "Seria i numer dowodu osobistego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c78",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        236.44,
+        362.21,
+        524.26,
+        374.21
+       ],
+       "runs": [
+        "r326"
+       ],
+       "quote": "Seria i numer dowodu osobistego",
+       "candidate": "c78"
+      }
+     ]
+    },
+    {
+     "key": "numer_telefonu_6",
+     "label": "Numer telefonu",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c79",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        217.61,
+        385.13,
+        524.08,
+        397.13
+       ],
+       "runs": [
+        "r328"
+       ],
+       "quote": "Numer telefonu (opcjonalnie)",
+       "candidate": "c79"
+      }
+     ]
+    },
+    {
+     "key": "nazwa_klubu_sportowego_3",
+     "label": "Nazwa klubu sportowego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c80",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        196.38,
+        482.35,
+        522.58,
+        494.35
+       ],
+       "runs": [
+        "r334"
+       ],
+       "quote": "Nazwa klubu sportowego",
+       "candidate": "c80"
+      }
+     ]
+    },
+    {
+     "key": "telefon_kontaktowy_3",
+     "label": "Telefon kontaktowy",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": false,
+     "options": [],
+     "candidate": "c81",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        235.26,
+        505.15,
+        523.1,
+        517.15
+       ],
+       "runs": [
+        "r336"
+       ],
+       "quote": "Telefon kontaktowy (opcjonalnie)",
+       "candidate": "c81"
+      }
+     ]
+    },
+    {
+     "key": "adres_siedziby_3",
+     "label": "Adres siedziby",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c82",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        143.14,
+        527.95,
+        524.12,
+        539.95
+       ],
+       "runs": [
+        "r338"
+       ],
+       "quote": "Adres siedziby",
+       "candidate": "c82"
+      }
+     ]
+    },
+    {
+     "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_4",
+     "label": "Poczta tradycyjna - na który adres kierować korespondencję",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "adres siedziby klubu",
+      "inny adres korespondencyjny"
+     ],
+     "candidate": "c83",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        84.98,
+        593.14,
+        90.19,
+        622.06
+       ],
+       "runs": [
+        "r341",
+        "r342",
+        "r343"
+       ],
+       "quote": " Poczta tradycyjna - na który adres kierować korespondencję",
+       "candidate": "c83"
+      }
+     ]
+    },
+    {
+     "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_4_2",
+     "label": "Poczta tradycyjna - na który adres kierować korespondencję: inny adres korespondencyjny",
+     "type": "TEXTAREA",
+     "required": false,
+     "options": [],
+     "show_if": {
+      "field": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_4",
+      "is": "inny adres korespondencyjny"
+     },
+     "candidate": "c86",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        238.87,
+        610.06,
+        523.7,
+        622.06
+       ],
+       "runs": [],
+       "quote": "inny adres korespondencyjny",
+       "candidate": "c86"
+      }
+     ]
+    },
+    {
+     "key": "skrzynka_epuap_adres_skrzynki_3",
+     "label": "Skrzynka ePUAP - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c88",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        245.79,
+        644.5,
+        522.24,
+        656.5
+       ],
+       "runs": [
+        "r348",
+        "r349",
+        "r350"
+       ],
+       "quote": " Skrzynka ePUAP - adres skrzynki",
+       "candidate": "c88"
+      }
+     ]
+    },
+    {
+     "key": "edoreczenia_adres_skrzynki_3",
+     "label": "EDoręczenia - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c89",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 11,
+       "box": [
+        229.9,
+        661.9,
+        523.7,
+        673.9
+       ],
+       "runs": [
+        "r352",
+        "r353",
+        "r354"
+       ],
+       "quote": " eDoręczenia - adres skrzynki",
+       "candidate": "c89"
+      }
+     ]
+    },
+    {
+     "key": "imie_9",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c90",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        94.93,
+        115.22,
+        517.43,
+        127.22
+       ],
+       "runs": [
+        "r361"
+       ],
+       "quote": "Imię",
+       "candidate": "c90"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_9",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c91",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        119.04,
+        140.06,
+        516.7,
+        152.06
+       ],
+       "runs": [
+        "r363"
+       ],
+       "quote": "Nazwisko",
+       "candidate": "c91"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia_3",
+     "label": "Data urodzenia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c92",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        147.07,
+        164.9,
+        519.89,
+        176.9
+       ],
+       "runs": [
+        "r365"
+       ],
+       "quote": "Data urodzenia",
+       "candidate": "c92"
+      }
+     ]
+    },
+    {
+     "key": "adres_zameldowania_3",
+     "label": "Adres zameldowania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "adres zameldowania może być inny niż adres zamieszkania",
+     "options": [],
+     "candidate": "c93",
+     "conf": 0.57,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        70.82,
+        214.58,
+        524.32,
+        226.58
+       ],
+       "runs": [
+        "r367"
+       ],
+       "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+       "candidate": "c93"
+      }
+     ]
+    },
+    {
+     "key": "adres_do_korespondencji_3",
+     "label": "Adres do korespondencji",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "jeśli różni się od adresu zameldowania",
+     "options": [],
+     "candidate": "c94",
+     "conf": 0.57,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        70.82,
+        264.29,
+        524.32,
+        276.29
+       ],
+       "runs": [
+        "r369"
+       ],
+       "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+       "candidate": "c94"
+      }
+     ]
+    },
+    {
+     "key": "i_moralna_opiekuna_sportowego",
+     "label": "I moralną opiekuna sportowego.",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c95",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        70.82,
+        338.69,
+        521.37,
+        451.75
+       ],
+       "runs": [
+        "r373"
+       ],
+       "quote": "i moralną opiekuna sportowego.",
+       "candidate": "c95"
+      }
+     ]
+    },
+    {
+     "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3",
+     "label": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do wyróżnienia",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c96",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 12,
+       "box": [
+        70.82,
+        508.15,
+        518.27,
+        587.47
+       ],
+       "runs": [
+        "r383"
+       ],
+       "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do wyróżnienia",
+       "candidate": "c96"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c97",
+     "conf": 0.57,
+     "evidence": [
+      {
+       "page": 13,
+       "box": [
+        70.82,
+        187.58,
+        518.34,
+        199.58
+       ],
+       "runs": [
+        "r394"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c97"
+      }
+     ]
+    },
+    {
+     "key": "osiagniecia_sportowe_podopiecznego",
+     "label": "Osiągnięcia sportowe podopiecznego",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c98",
+     "conf": 0.66,
+     "evidence": [
+      {
+       "page": 13,
+       "box": [
+        70.82,
+        228.26,
+        521.37,
+        324.53
+       ],
+       "runs": [
+        "r396"
+       ],
+       "quote": "Osiągnięcia sportowe podopiecznego",
+       "candidate": "c98"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika_2",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c99",
+     "conf": 0.57,
+     "evidence": [
+      {
+       "page": 13,
+       "box": [
+        70.82,
+        382.01,
+        518.38,
+        394.01
+       ],
+       "runs": [
+        "r404"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c99"
+      }
+     ]
+    },
+    {
+     "key": "osiagniecia_sportowe_podopiecznego_2",
+     "label": "Osiągnięcia sportowe podopiecznego",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c100",
+     "conf": 0.66,
+     "evidence": [
+      {
+       "page": 13,
+       "box": [
+        70.82,
+        422.71,
+        521.37,
+        518.95
+       ],
+       "runs": [
+        "r406"
+       ],
+       "quote": "Osiągnięcia sportowe podopiecznego",
+       "candidate": "c100"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika_3",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c101",
+     "conf": 0.57,
+     "evidence": [
+      {
+       "page": 13,
+       "box": [
+        70.82,
+        576.43,
+        518.34,
+        588.43
+       ],
+       "runs": [
+        "r414"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c101"
+      }
+     ]
+    },
+    {
+     "key": "wniosku",
+     "label": "Wniosku",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c102",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 13,
+       "box": [
+        70.82,
+        650.74,
+        521.37,
+        746.98
+       ],
+       "runs": [
+        "r418"
+       ],
+       "quote": "wniosku",
+       "candidate": "c102"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika_4",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c103",
+     "conf": 0.57,
+     "evidence": [
+      {
+       "page": 14,
+       "box": [
+        70.82,
+        113.9,
+        518.27,
+        125.9
+       ],
+       "runs": [
+        "r426"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c103"
+      }
+     ]
+    },
+    {
+     "key": "wniosku_2",
+     "label": "Wniosku",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c104",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 14,
+       "box": [
+        70.82,
+        188.3,
+        519.08,
+        284.57
+       ],
+       "runs": [
+        "r430"
+       ],
+       "quote": "wniosku",
+       "candidate": "c104"
+      }
+     ]
+    },
+    {
+     "key": "z_zawodow_ktore_potwierdzaja_osiagniecia_sportowe",
+     "label": "Z zawodów), które potwierdzają osiągnięcia sportowe zawodniczek/zawodników.",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c105",
+     "conf": 0.41,
+     "evidence": [
+      {
+       "page": 14,
+       "box": [
+        70.82,
+        381.77,
+        201.18,
+        393.77
+       ],
+       "runs": [
+        "r440"
+       ],
+       "quote": "z zawodów), które potwierdzają osiągnięcia sportowe zawodniczek/zawodników.",
+       "candidate": "c105"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_podopiecznego",
+     "label": "Imię i nazwisko podopiecznego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c109",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 16,
+       "box": [
+        224.21,
+        177.14,
+        522.28,
+        189.14
+       ],
+       "runs": [
+        "r469"
+       ],
+       "quote": "Imię i nazwisko podopiecznego",
+       "candidate": "c109"
+      }
+     ]
+    },
+    {
+     "key": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia",
+     "label": "Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c110",
+     "conf": 0.41,
+     "evidence": [
+      {
+       "page": 16,
+       "box": [
+        88.7,
+        291.41,
+        224.32,
+        303.41
+       ],
+       "runs": [
+        "r474"
+       ],
+       "quote": "Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+       "candidate": "c110"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_podopiecznego_2",
+     "label": "Imię i nazwisko podopiecznego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c112",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 16,
+       "box": [
+        224.21,
+        364.97,
+        522.28,
+        376.97
+       ],
+       "runs": [
+        "r480"
+       ],
+       "quote": "Imię i nazwisko podopiecznego",
+       "candidate": "c112"
+      }
+     ]
+    },
+    {
+     "key": "ja_nizej_podpisany_3",
+     "label": "Ja niżej podpisany",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "rodzic/opiekun prawny",
+     "options": [],
+     "candidate": "c113",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 16,
+       "box": [
+        173.38,
+        387.77,
+        394.7,
+        399.77
+       ],
+       "runs": [
+        "r482"
+       ],
+       "quote": "1) Ja niżej podpisany",
+       "candidate": "c113"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania stypendiów sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 6,
+      "box": [
+       70.82,
+       421.03,
+       499.93,
+       449.95
+      ],
+      "runs": [
+       "r170",
+       "r171"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania stypendiów sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia."
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania nagród sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 10,
+      "box": [
+       70.82,
+       369.29,
+       504.6,
+       398.21
+      ],
+      "runs": [
+       "r301",
+       "r302"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania nagród sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia."
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania wyróżnień sportowych Rady",
+    "required": true,
+    "evidence": [
+     {
+      "page": 16,
+      "box": [
+       70.82,
+       233.78,
+       520.64,
+       245.78
+      ],
+      "runs": [
+       "r473"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania wyróżnień sportowych Rady"
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania wyróżnień sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 16,
+      "box": [
+       70.82,
+       438.31,
+       520.64,
+       467.23
+      ],
+      "runs": [
+       "r487",
+       "r488"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania wyróżnień sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia."
+     }
+    ],
+    "kind": "declaration"
+   }
+  ],
+  "clause": {
+   "status": "stated",
+   "evidence": [
+    {
+     "page": 5,
+     "box": [
+      70.82,
+      73.58,
+      197.57,
+      86.54
+     ],
+     "runs": [
+      "r140"
+     ],
+     "quote": "4. Klauzula informacyjna"
+    }
+   ]
+  }
+ },
+ "fee": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "legal_basis": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dropped": [
+  {
+   "what": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 2,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 7,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 11,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Dokument należy wypełnić odrębnie dla każdego podopiecznego trenera, który został wskazany",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 16,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Załącznik Nr 3 do zarządzenia",
+   "reason": "PAGE_FURNITURE",
+   "page": 1,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "4. Klauzula informacyjna",
+   "reason": "CLAUSE_LINKED",
+   "page": 5,
+   "runs": [],
+   "count": 49
+  }
+ ],
+ "warnings": [
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 2,
+   "candidate": "c1",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "imie",
+   "candidate": "c2",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "nazwisko",
+   "candidate": "c3",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 2,
+   "candidate": "c5",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "imie_2",
+   "candidate": "c6",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "nazwisko_2",
+   "candidate": "c7",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "seria_i_numer_dowodu_osobistego",
+   "candidate": "c8",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "nazwa_klubu_sportowego",
+   "candidate": "c10",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "adres_siedziby",
+   "candidate": "c12",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje",
+   "candidate": "c13",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "skrzynka_epuap_adres_skrzynki",
+   "candidate": "c18",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "edoreczenia_adres_skrzynki",
+   "candidate": "c19",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "imie_3",
+   "candidate": "c20",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "nazwisko_3",
+   "candidate": "c21",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "data_urodzenia",
+   "candidate": "c22",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "adres_zameldowania",
+   "candidate": "c23",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "adres_do_korespondencji",
+   "candidate": "c24",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "dyscyplina",
+   "candidate": "c25",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 4,
+   "field": "ocenie_wniosku",
+   "candidate": "c26",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 4,
+   "candidate": "c27",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'i moralną sportowca'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 4,
+   "field": "i_moralna_sportowca",
+   "candidate": "c27",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 4,
+   "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do",
+   "candidate": "c28",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 4,
+   "candidate": "c29",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c30",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c31",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 6,
+   "field": "imie_i_nazwisko_kandydata",
+   "candidate": "c32",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 6,
+   "candidate": "c33",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 6,
+   "field": "ja_nizej_podpisany",
+   "candidate": "c33",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c34",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c35",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 7,
+   "candidate": "c36",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "imie_4",
+   "candidate": "c37",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "nazwisko_4",
+   "candidate": "c38",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 7,
+   "candidate": "c40",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "imie_5",
+   "candidate": "c41",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "nazwisko_5",
+   "candidate": "c42",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "seria_i_numer_dowodu_osobistego_2",
+   "candidate": "c43",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "nazwa_klubu_sportowego_2",
+   "candidate": "c45",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "adres_siedziby_2",
+   "candidate": "c47",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_3",
+   "candidate": "c48",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "skrzynka_epuap_adres_skrzynki_2",
+   "candidate": "c53",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 7,
+   "field": "edoreczenia_adres_skrzynki_2",
+   "candidate": "c54",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "imie_6",
+   "candidate": "c55",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "nazwisko_6",
+   "candidate": "c56",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "data_urodzenia_2",
+   "candidate": "c57",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "adres_zameldowania_2",
+   "candidate": "c58",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "adres_do_korespondencji_2",
+   "candidate": "c59",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "ocenie_wniosku_2",
+   "candidate": "c60",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 8,
+   "candidate": "c61",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'i moralną sportowca'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "i_moralna_sportowca_2",
+   "candidate": "c61",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 9,
+   "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2",
+   "candidate": "c62",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 9,
+   "candidate": "c64",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c65",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c66",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 10,
+   "field": "imie_i_nazwisko_kandydata_2",
+   "candidate": "c67",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 10,
+   "candidate": "c68",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 10,
+   "field": "ja_nizej_podpisany_2",
+   "candidate": "c68",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c69",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c70",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 11,
+   "candidate": "c71",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "imie_7",
+   "candidate": "c72",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "nazwisko_7",
+   "candidate": "c73",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 11,
+   "candidate": "c75",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "imie_8",
+   "candidate": "c76",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "nazwisko_8",
+   "candidate": "c77",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "seria_i_numer_dowodu_osobistego_3",
+   "candidate": "c78",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "nazwa_klubu_sportowego_3",
+   "candidate": "c80",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "adres_siedziby_3",
+   "candidate": "c82",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_4",
+   "candidate": "c83",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "skrzynka_epuap_adres_skrzynki_3",
+   "candidate": "c88",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 11,
+   "field": "edoreczenia_adres_skrzynki_3",
+   "candidate": "c89",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "imie_9",
+   "candidate": "c90",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "nazwisko_9",
+   "candidate": "c91",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "data_urodzenia_3",
+   "candidate": "c92",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "adres_zameldowania_3",
+   "candidate": "c93",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "adres_do_korespondencji_3",
+   "candidate": "c94",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 12,
+   "candidate": "c95",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'i moralną opiekuna sportowego.'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "i_moralna_opiekuna_sportowego",
+   "candidate": "c95",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3",
+   "candidate": "c96",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika",
+   "candidate": "c97",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "osiagniecia_sportowe_podopiecznego",
+   "candidate": "c98",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika_2",
+   "candidate": "c99",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "osiagniecia_sportowe_podopiecznego_2",
+   "candidate": "c100",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika_3",
+   "candidate": "c101",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "wniosku",
+   "candidate": "c102",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 14,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika_4",
+   "candidate": "c103",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 14,
+   "field": "wniosku_2",
+   "candidate": "c104",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 14,
+   "candidate": "c105",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'z zawodów), które potwierdzają osiągnięcia sportowe zawodniczek/zawodników.'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 14,
+   "field": "z_zawodow_ktore_potwierdzaja_osiagniecia_sportowe",
+   "candidate": "c105",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 14,
+   "candidate": "c106",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 15,
+   "candidate": "c107",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 15,
+   "candidate": "c108",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "imie_i_nazwisko_podopiecznego",
+   "candidate": "c109",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia",
+   "candidate": "c110",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c111",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "imie_i_nazwisko_podopiecznego_2",
+   "candidate": "c112",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 16,
+   "candidate": "c113",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "ja_nizej_podpisany_3",
+   "candidate": "c113",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c114",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c115",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c1"
+  },
+  {
+   "candidate": "c2",
+   "fate": "FIELD",
+   "key": "imie"
+  },
+  {
+   "candidate": "c3",
+   "fate": "FIELD",
+   "key": "nazwisko"
+  },
+  {
+   "candidate": "c4",
+   "fate": "FIELD",
+   "key": "numer_telefonu"
+  },
+  {
+   "candidate": "c5",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c5"
+  },
+  {
+   "candidate": "c6",
+   "fate": "FIELD",
+   "key": "imie_2"
+  },
+  {
+   "candidate": "c7",
+   "fate": "FIELD",
+   "key": "nazwisko_2"
+  },
+  {
+   "candidate": "c8",
+   "fate": "FIELD",
+   "key": "seria_i_numer_dowodu_osobistego"
+  },
+  {
+   "candidate": "c9",
+   "fate": "FIELD",
+   "key": "numer_telefonu_2"
+  },
+  {
+   "candidate": "c10",
+   "fate": "FIELD",
+   "key": "nazwa_klubu_sportowego"
+  },
+  {
+   "candidate": "c11",
+   "fate": "FIELD",
+   "key": "telefon_kontaktowy"
+  },
+  {
+   "candidate": "c12",
+   "fate": "FIELD",
+   "key": "adres_siedziby"
+  },
+  {
+   "candidate": "c13",
+   "fate": "FIELD",
+   "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje"
+  },
+  {
+   "candidate": "c14",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c15",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c16",
+   "fate": "FIELD",
+   "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_2"
+  },
+  {
+   "candidate": "c17",
+   "fate": "MERGED",
+   "into": "c16",
+   "why": "LINE_BLOCK"
+  },
+  {
+   "candidate": "c18",
+   "fate": "FIELD",
+   "key": "skrzynka_epuap_adres_skrzynki"
+  },
+  {
+   "candidate": "c19",
+   "fate": "FIELD",
+   "key": "edoreczenia_adres_skrzynki"
+  },
+  {
+   "candidate": "c20",
+   "fate": "FIELD",
+   "key": "imie_3"
+  },
+  {
+   "candidate": "c21",
+   "fate": "FIELD",
+   "key": "nazwisko_3"
+  },
+  {
+   "candidate": "c22",
+   "fate": "FIELD",
+   "key": "data_urodzenia"
+  },
+  {
+   "candidate": "c23",
+   "fate": "FIELD",
+   "key": "adres_zameldowania"
+  },
+  {
+   "candidate": "c24",
+   "fate": "FIELD",
+   "key": "adres_do_korespondencji"
+  },
+  {
+   "candidate": "c25",
+   "fate": "FIELD",
+   "key": "dyscyplina"
+  },
+  {
+   "candidate": "c26",
+   "fate": "FIELD",
+   "key": "ocenie_wniosku"
+  },
+  {
+   "candidate": "c27",
+   "fate": "FIELD",
+   "key": "i_moralna_sportowca"
+  },
+  {
+   "candidate": "c28",
+   "fate": "FIELD",
+   "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do"
+  },
+  {
+   "candidate": "c29",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c29"
+  },
+  {
+   "candidate": "c30",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c30"
+  },
+  {
+   "candidate": "c31",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c31"
+  },
+  {
+   "candidate": "c32",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata"
+  },
+  {
+   "candidate": "c33",
+   "fate": "FIELD",
+   "key": "ja_nizej_podpisany"
+  },
+  {
+   "candidate": "c34",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c34"
+  },
+  {
+   "candidate": "c35",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c35"
+  },
+  {
+   "candidate": "c36",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c36"
+  },
+  {
+   "candidate": "c37",
+   "fate": "FIELD",
+   "key": "imie_4"
+  },
+  {
+   "candidate": "c38",
+   "fate": "FIELD",
+   "key": "nazwisko_4"
+  },
+  {
+   "candidate": "c39",
+   "fate": "FIELD",
+   "key": "numer_telefonu_3"
+  },
+  {
+   "candidate": "c40",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c40"
+  },
+  {
+   "candidate": "c41",
+   "fate": "FIELD",
+   "key": "imie_5"
+  },
+  {
+   "candidate": "c42",
+   "fate": "FIELD",
+   "key": "nazwisko_5"
+  },
+  {
+   "candidate": "c43",
+   "fate": "FIELD",
+   "key": "seria_i_numer_dowodu_osobistego_2"
+  },
+  {
+   "candidate": "c44",
+   "fate": "FIELD",
+   "key": "numer_telefonu_4"
+  },
+  {
+   "candidate": "c45",
+   "fate": "FIELD",
+   "key": "nazwa_klubu_sportowego_2"
+  },
+  {
+   "candidate": "c46",
+   "fate": "FIELD",
+   "key": "telefon_kontaktowy_2"
+  },
+  {
+   "candidate": "c47",
+   "fate": "FIELD",
+   "key": "adres_siedziby_2"
+  },
+  {
+   "candidate": "c48",
+   "fate": "FIELD",
+   "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_3"
+  },
+  {
+   "candidate": "c49",
+   "fate": "MERGED",
+   "into": "c48",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c50",
+   "fate": "MERGED",
+   "into": "c48",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c51",
+   "fate": "FIELD",
+   "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_3_2"
+  },
+  {
+   "candidate": "c52",
+   "fate": "MERGED",
+   "into": "c51",
+   "why": "LINE_BLOCK"
+  },
+  {
+   "candidate": "c53",
+   "fate": "FIELD",
+   "key": "skrzynka_epuap_adres_skrzynki_2"
+  },
+  {
+   "candidate": "c54",
+   "fate": "FIELD",
+   "key": "edoreczenia_adres_skrzynki_2"
+  },
+  {
+   "candidate": "c55",
+   "fate": "FIELD",
+   "key": "imie_6"
+  },
+  {
+   "candidate": "c56",
+   "fate": "FIELD",
+   "key": "nazwisko_6"
+  },
+  {
+   "candidate": "c57",
+   "fate": "FIELD",
+   "key": "data_urodzenia_2"
+  },
+  {
+   "candidate": "c58",
+   "fate": "FIELD",
+   "key": "adres_zameldowania_2"
+  },
+  {
+   "candidate": "c59",
+   "fate": "FIELD",
+   "key": "adres_do_korespondencji_2"
+  },
+  {
+   "candidate": "c60",
+   "fate": "FIELD",
+   "key": "ocenie_wniosku_2"
+  },
+  {
+   "candidate": "c61",
+   "fate": "FIELD",
+   "key": "i_moralna_sportowca_2"
+  },
+  {
+   "candidate": "c62",
+   "fate": "FIELD",
+   "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2"
+  },
+  {
+   "candidate": "c63",
+   "fate": "MERGED",
+   "into": "c62",
+   "why": "LINE_BLOCK"
+  },
+  {
+   "candidate": "c64",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c64"
+  },
+  {
+   "candidate": "c65",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c65"
+  },
+  {
+   "candidate": "c66",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c66"
+  },
+  {
+   "candidate": "c67",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata_2"
+  },
+  {
+   "candidate": "c68",
+   "fate": "FIELD",
+   "key": "ja_nizej_podpisany_2"
+  },
+  {
+   "candidate": "c69",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c69"
+  },
+  {
+   "candidate": "c70",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c70"
+  },
+  {
+   "candidate": "c71",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c71"
+  },
+  {
+   "candidate": "c72",
+   "fate": "FIELD",
+   "key": "imie_7"
+  },
+  {
+   "candidate": "c73",
+   "fate": "FIELD",
+   "key": "nazwisko_7"
+  },
+  {
+   "candidate": "c74",
+   "fate": "FIELD",
+   "key": "numer_telefonu_5"
+  },
+  {
+   "candidate": "c75",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c75"
+  },
+  {
+   "candidate": "c76",
+   "fate": "FIELD",
+   "key": "imie_8"
+  },
+  {
+   "candidate": "c77",
+   "fate": "FIELD",
+   "key": "nazwisko_8"
+  },
+  {
+   "candidate": "c78",
+   "fate": "FIELD",
+   "key": "seria_i_numer_dowodu_osobistego_3"
+  },
+  {
+   "candidate": "c79",
+   "fate": "FIELD",
+   "key": "numer_telefonu_6"
+  },
+  {
+   "candidate": "c80",
+   "fate": "FIELD",
+   "key": "nazwa_klubu_sportowego_3"
+  },
+  {
+   "candidate": "c81",
+   "fate": "FIELD",
+   "key": "telefon_kontaktowy_3"
+  },
+  {
+   "candidate": "c82",
+   "fate": "FIELD",
+   "key": "adres_siedziby_3"
+  },
+  {
+   "candidate": "c83",
+   "fate": "FIELD",
+   "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_4"
+  },
+  {
+   "candidate": "c84",
+   "fate": "MERGED",
+   "into": "c83",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c85",
+   "fate": "MERGED",
+   "into": "c83",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c86",
+   "fate": "FIELD",
+   "key": "poczta_tradycyjna_na_ktory_adres_kierowac_korespondencje_4_2"
+  },
+  {
+   "candidate": "c87",
+   "fate": "MERGED",
+   "into": "c86",
+   "why": "LINE_BLOCK"
+  },
+  {
+   "candidate": "c88",
+   "fate": "FIELD",
+   "key": "skrzynka_epuap_adres_skrzynki_3"
+  },
+  {
+   "candidate": "c89",
+   "fate": "FIELD",
+   "key": "edoreczenia_adres_skrzynki_3"
+  },
+  {
+   "candidate": "c90",
+   "fate": "FIELD",
+   "key": "imie_9"
+  },
+  {
+   "candidate": "c91",
+   "fate": "FIELD",
+   "key": "nazwisko_9"
+  },
+  {
+   "candidate": "c92",
+   "fate": "FIELD",
+   "key": "data_urodzenia_3"
+  },
+  {
+   "candidate": "c93",
+   "fate": "FIELD",
+   "key": "adres_zameldowania_3"
+  },
+  {
+   "candidate": "c94",
+   "fate": "FIELD",
+   "key": "adres_do_korespondencji_3"
+  },
+  {
+   "candidate": "c95",
+   "fate": "FIELD",
+   "key": "i_moralna_opiekuna_sportowego"
+  },
+  {
+   "candidate": "c96",
+   "fate": "FIELD",
+   "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3"
+  },
+  {
+   "candidate": "c97",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika"
+  },
+  {
+   "candidate": "c98",
+   "fate": "FIELD",
+   "key": "osiagniecia_sportowe_podopiecznego"
+  },
+  {
+   "candidate": "c99",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika_2"
+  },
+  {
+   "candidate": "c100",
+   "fate": "FIELD",
+   "key": "osiagniecia_sportowe_podopiecznego_2"
+  },
+  {
+   "candidate": "c101",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika_3"
+  },
+  {
+   "candidate": "c102",
+   "fate": "FIELD",
+   "key": "wniosku"
+  },
+  {
+   "candidate": "c103",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika_4"
+  },
+  {
+   "candidate": "c104",
+   "fate": "FIELD",
+   "key": "wniosku_2"
+  },
+  {
+   "candidate": "c105",
+   "fate": "FIELD",
+   "key": "z_zawodow_ktore_potwierdzaja_osiagniecia_sportowe"
+  },
+  {
+   "candidate": "c106",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c106"
+  },
+  {
+   "candidate": "c107",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c107"
+  },
+  {
+   "candidate": "c108",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c108"
+  },
+  {
+   "candidate": "c109",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_podopiecznego"
+  },
+  {
+   "candidate": "c110",
+   "fate": "FIELD",
+   "key": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia"
+  },
+  {
+   "candidate": "c111",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c111"
+  },
+  {
+   "candidate": "c112",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_podopiecznego_2"
+  },
+  {
+   "candidate": "c113",
+   "fate": "FIELD",
+   "key": "ja_nizej_podpisany_3"
+  },
+  {
+   "candidate": "c114",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c114"
+  },
+  {
+   "candidate": "c115",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c115"
+  }
+ ]
+}

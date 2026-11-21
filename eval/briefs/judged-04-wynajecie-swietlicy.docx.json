@@ -1,0 +1,376 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "5c80f453ad5d69cb4f2541291ef435b4c6f4ab51404079a4126f5d3554f35e24",
+  "format": "docx"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o wynajęcie/użyczenie świetlicy wiejskiej",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[18]",
+    "runs": [
+     "r13",
+     "r14",
+     "r15"
+    ],
+    "quote": "WNIOSEK o wynajęcie/użyczenie* świetlicy wiejskiej"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[13]",
+    "runs": [
+     "r10"
+    ],
+    "quote": "WÓJT GMINY PŁOSKINIA"
+   }
+  ],
+  "kind": "body",
+  "name": "Wójt Gminy Płoskinia"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[5]",
+    "runs": [
+     "r5"
+    ],
+    "quote": "imię i nazwisko wnioskodawcy",
+    "candidate": "c2"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": false,
+  "capacities": [
+   "pelnomocnik"
+  ]
+ },
+ "applicant_extras": [],
+ "matter": [
+  {
+   "title": "Szczegóły sprawy",
+   "role": "matter/szczegoly_sprawy",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "prosze_o_wynajem_uzyczenie_swietlicy_wiejskiej_w",
+     "label": "Proszę o wynajem/użyczenie świetlicy wiejskiej w",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c5",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[23]",
+       "runs": [],
+       "quote": "Proszę o wynajem/użyczenie* świetlicy wiejskiej w",
+       "candidate": "c5"
+      }
+     ]
+    },
+    {
+     "key": "termin_od",
+     "label": "Termin od",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c6",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[23]",
+       "runs": [],
+       "quote": "wraz z wyposażeniem w terminie od",
+       "candidate": "c6"
+      }
+     ]
+    },
+    {
+     "key": "termin_do",
+     "label": "Termin do",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c7",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[23]",
+       "runs": [],
+       "quote": "do",
+       "candidate": "c7"
+      }
+     ]
+    },
+    {
+     "key": "cel_wynajecia_swietlicy",
+     "label": "Cel wynajęcia świetlicy",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c8",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[24]",
+       "runs": [],
+       "quote": "Cel wynajęcia świetlicy",
+       "candidate": "c8"
+      }
+     ]
+    },
+    {
+     "key": "przewidywana_ilosc_uczestnikow",
+     "label": "Przewidywana ilość uczestników",
+     "type": "NUMBER",
+     "concept": "count",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c9",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[27]",
+       "runs": [],
+       "quote": "Przewidywana ilość uczestników",
+       "candidate": "c9"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz",
+     "label": "Imię i nazwisko – wnioskodawca, w przypadku innej osoby niż wnioskodawca - zgoda osoby odpowiedzialnej",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c10",
+     "conf": 0.85,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[30]",
+       "runs": [
+        "r22"
+       ],
+       "quote": "imię i nazwisko – wnioskodawca, w przypadku innej osoby niż wnioskodawca - zgoda osoby odpowiedzialnej",
+       "candidate": "c10"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [
+   {
+    "text": "Jednocześnie oświadczam, że(w przypadku innej osoby niż wnioskodawca, zbiorcze oświadczenie tej osoby załączyć do wniosku)",
+    "required": true,
+    "evidence": [
+     {
+      "page": 1,
+      "anchor": "p[33]",
+      "runs": [
+       "r23"
+      ],
+      "quote": "Jednocześnie oświadczam, że(w przypadku innej osoby niż wnioskodawca, zbiorcze oświadczenie tej osoby załączyć do wniosku)"
+     }
+    ],
+    "kind": "declaration"
+   }
+  ],
+  "clause": {
+   "status": "not_found",
+   "evidence": []
+  }
+ },
+ "fee": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "legal_basis": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dropped": [
+  {
+   "what": "miejscowość i data",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "czytelny podpis wnioskodawcy",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "Załącznik nr 2 do Regulaminu korzystania ze świetlic wiejskich stanowiących własność Gminy Płoskinia",
+   "reason": "PAGE_FURNITURE",
+   "page": 1,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/twoje_dane: imię i nazwisko wnioskodawcy",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/adres: adres zamieszkania",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/dane_do_kontaktu: nr telefonu",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  }
+ ],
+ "warnings": [
+  {
+   "code": "LABEL_RAW",
+   "page": 1,
+   "candidate": "c5",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Proszę o wynajem/użyczenie świetlicy wiejskiej w'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "prosze_o_wynajem_uzyczenie_swietlicy_wiejskiej_w",
+   "candidate": "c5",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "termin_od",
+   "candidate": "c6",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "termin_do",
+   "candidate": "c7",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "cel_wynajecia_swietlicy",
+   "candidate": "c8",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "przewidywana_ilosc_uczestnikow",
+   "candidate": "c9",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz",
+   "candidate": "c10",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  },
+  {
+   "candidate": "c2",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c3",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c4",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c5",
+   "fate": "FIELD",
+   "key": "prosze_o_wynajem_uzyczenie_swietlicy_wiejskiej_w"
+  },
+  {
+   "candidate": "c6",
+   "fate": "FIELD",
+   "key": "termin_od"
+  },
+  {
+   "candidate": "c7",
+   "fate": "FIELD",
+   "key": "termin_do"
+  },
+  {
+   "candidate": "c8",
+   "fate": "FIELD",
+   "key": "cel_wynajecia_swietlicy"
+  },
+  {
+   "candidate": "c9",
+   "fate": "FIELD",
+   "key": "przewidywana_ilosc_uczestnikow"
+  },
+  {
+   "candidate": "c10",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz"
+  },
+  {
+   "candidate": "c11",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  }
+ ]
+}

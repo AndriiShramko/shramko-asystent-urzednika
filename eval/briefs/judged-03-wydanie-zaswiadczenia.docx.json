@@ -1,0 +1,246 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "e4aef6daff830e86b4d5d69c2ed98ab9496079b5542e831be286478aad84ebb1",
+  "format": "docx"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o wydanie zaświadczenia",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[14]",
+    "runs": [
+     "r13"
+    ],
+    "quote": "WNIOSEK O WYDANIE ZAŚWIADCZENIA"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[4]/txbx[0]/p[0]",
+    "runs": [
+     "r5"
+    ],
+    "quote": "Urząd Miasta i Gminy Młynary"
+   }
+  ],
+  "kind": "office",
+  "name": "Urząd Miasta i Gminy Młynary"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[1]",
+    "runs": [
+     "r3"
+    ],
+    "quote": "imię i nazwisko",
+    "candidate": "c2"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": false,
+  "capacities": [
+   "pelnomocnik"
+  ]
+ },
+ "applicant_extras": [
+  {
+   "concept": "pesel",
+   "party": "self",
+   "required": false
+  }
+ ],
+ "matter": [
+  {
+   "title": "Szczegóły sprawy",
+   "role": "matter/szczegoly_sprawy",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "inne",
+     "label": "Inne",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c6",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[22]",
+       "runs": [],
+       "quote": "inne",
+       "candidate": "c6"
+      }
+     ]
+    },
+    {
+     "key": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
+     "label": "Zaświadczenie potrzebne jest celem przedłożenia w",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c8",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "anchor": "p[25]",
+       "runs": [],
+       "quote": "Zaświadczenie potrzebne jest celem przedłożenia w",
+       "candidate": "c8"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [],
+  "clause": {
+   "status": "not_found",
+   "evidence": []
+  }
+ },
+ "fee": {
+  "status": "stated",
+  "value": "Opłata za wydanie zaświadczenia wynosi 17 zł (od każdego egzemplarza). Obowiązek uiszczenia opłaty skarbowej powstaje z chwilą złożenia wniosku o wydanie zaświadczenia.",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[31]",
+    "runs": [
+     "r25"
+    ],
+    "quote": "Opłata za wydanie zaświadczenia wynosi 17 zł (od każdego egzemplarza). Obowiązek uiszczenia opłaty skarbowej powstaje z chwilą złożenia wniosku o wydanie zaświadczenia."
+   }
+  ]
+ },
+ "legal_basis": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dropped": [
+  {
+   "what": "Młynary, dnia",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "standard/twoje_dane: imię i nazwisko, PESEL",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 2
+  },
+  {
+   "what": "standard/dane_do_kontaktu: nr telefonu",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  }
+ ],
+ "warnings": [
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 1,
+   "candidate": "c3",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "inne",
+   "candidate": "c6",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 1,
+   "candidate": "c7",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
+   "candidate": "c8",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 1,
+   "candidate": "c9",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  },
+  {
+   "candidate": "c2",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c3",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c3"
+  },
+  {
+   "candidate": "c4",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c5",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c6",
+   "fate": "FIELD",
+   "key": "inne"
+  },
+  {
+   "candidate": "c7",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c7"
+  },
+  {
+   "candidate": "c8",
+   "fate": "FIELD",
+   "key": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
+  },
+  {
+   "candidate": "c9",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c9"
+  }
+ ]
+}

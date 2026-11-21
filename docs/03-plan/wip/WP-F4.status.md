@@ -1,6 +1,6 @@
 # WP-F4 Understanding (the brief): status
 
-Branch: wp/F4-understanding   Stage now: integration (done); next: acceptance
+Branch: wp/F4-understanding   Stage now: acceptance (done, with open items below)
 
 Entry: `from app.mean import understand`; `understand(page_model, finder_output, options=None) -> Brief` (revision 1.1,
 one disposition per finder candidate). Files: `apps/converter/app/mean/__init__.py` (entry, safety net), `_doc.py`
@@ -19,7 +19,7 @@ Tests: `apps/converter/tests/mean/test_mean_core.py` (30, synthetic papers built
 - [x] composite papers: one selector `rodzaj_wniosku`, sections shown by it, equal sections written once (`SAME_ALTERNATIVE`)
 - [x] 30 unit tests pass; smoke on the nine local sets (PDF and DOCX, 17 files): no exception, gate passes, 0 strict-linter errors; one negative control recorded
 - [x] INTEGRATION (done, see Evidence): wire `find` + `understand` into `apps/converter/app/pipeline.py` in place of `interim.brief_from_pages` (interim stays the fallback when the finder yields no candidate, with a warning); `assemble_ledger` through the inverse of `ComposeResult.brief_keys`; meta `converter.pipeline` = `brief`; finder and brief warnings into the sidecar
-- [ ] ACCEPTANCE: `eval/briefs/<set>.json` per judged set and the differences from the silver labels (`tools/eden/silver_briefs.py --compare`) listed and explained; set tests with `@pytest.mark.sets`
+- [x] ACCEPTANCE (done, see Evidence): `eval/briefs/<set>.json` per judged set and the differences from the silver labels (`tools/eden/silver_briefs.py --compare`) listed and explained; set tests with `@pytest.mark.sets`
 - [ ] ACCEPTANCE: reference 1 and 5 give the same brief from every format. Today: reference 1 has 4 fields of the matter from PDF and from DOCX but the addressee is `not_found` in both (PDF: the capital "W" of "Wójt" is glued to the run before it; DOCX: not looked at); reference 5 has 6 fields from DOCX and 5 from PDF. Formats other than PDF and DOCX were not run
 - [ ] ACCEPTANCE: set 9 from the PDF gives no selector (the finder reports no section and no bold there; the DOCX gives the selector); set 3 has 2 fields only (the finder does not see the list printed with the glyph U+F0F0 as boxes)
 - [ ] not built: `applicants.options` items; the row "in person only"; a condition stated by a footnote ("wypełnić tylko w przypadku ...") as `show_if`; explanations keyed to positions as hints; the lemmatiser step for labels (phrase table, then raw words with `LABEL_RAW`); `mandatory_attachments` is always `not_found`
@@ -58,7 +58,20 @@ The smoke is a measurement, not yet a test in git: the acceptance stage turns it
 
 Integration findings: (1) set 8 listed the TAK / NIE answer columns as attachments, so the ledger did not close; fixed in `app/mean/_fields.py` (yes/no words are not named items). (2) the composer does not carry the key of an attachment, so `pipeline._form_ids` finds the upload by its title (request 2 stays open for a durable fix). A ledger that cannot close gives the warning `LEDGER_NOT_CLOSED` and no 500.
 
+### Acceptance stage (ran on d4a3521 plus the new files of this commit)
+| Item | Command | Result |
+|---|---|---|
+| briefs stored, fields of the matter, strict linter, silver diff | `bash tools/gate.sh py eval/briefs/make_briefs.py <silver dir>` | 14 files in `eval/briefs/`, 0 strict-linter errors on all 14. Fields PDF (DOCX): set 2: 5 (5); 3: 2 (2); 4: 7 (6); 6: 18 (16); 7: 10 (none); 8: 32 (24); 9: 83 (42). Silver (sets 2, 3, 4, 6, 7 only; two models each): set 2 7 fields, ours match 3 to 5; set 3 3 fields, 0; set 4 7, 4; set 6 24, 16 to 18; set 7 12, 7 to 8. Sets 8, 9: no silver on this machine. Counts equal the pre-fix counts: the TAK/NIE fix changed none |
+| sets tests | `bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_sets.py -q` (new, `@pytest.mark.sets`) | 10 passed: floor of fields per set, set 6 `ADDRESSEE_CONFLICT` with two quotes, set 9 DOCX one selector, stored briefs cover the seven sets |
+| fast gate | `bash tools/gate.sh fast` | 584 passed, 21 deselected; PASSED |
+
+Differences from silver, explained: silver models list fields the paper prints as running text or as options of a group (set 2 and 4 payment and contact lines, set 3 the certificate kinds that the finder does not see as boxes, set 6 table cells); ours are blanks the finder found, each accounted in the ledger. The missing silver fields on set 3 follow request 3a. The match is a loose label overlap (first five letters of words, Jaccard at least 0.4), a measure, not a judgement.
+
+Reference sets 1 and 5 across formats (measured, NOT met): title is the same in every format of both. Addressee: ref 1 is `not_found` from PDF, DOC and DOCX (DOCX: "Wnioskodawca: Adresat:" is a two-column line, the name follows a bracketed label; PDF: finder glues the capital W), found from ODS and XLSX, which hold 1 field only (the sheet reader gives one run). Fields: ref 1 DOC, DOCX, PDF 4 equal; ODS and XLSX 1. Ref 5 fields: DOCX 6, PDF 5, ODS 3; the `.DOC` of ref 5 raises ReaderError (request 6). So the acceptance "same brief from every format" holds for ref 1 across PDF, DOC, DOCX except the addressee, and does not hold for ref 5 or for sheets.
+
 ## Negative control
+Acceptance: `app.mean._head.find_addressee` forced to answer not_found (`if hit is None:` replaced by `if True:`) -> `test_set_6_names_two_offices_and_warns_with_both_quotes` failed (1 failed, 9 passed); restored with git checkout -> 10 passed.
+
 Integration: the attachment lookup in `_form_ids` switched off -> the sets test fails on set 8 (ledger not closed, no `meta.ledger`); restored -> passes.
 
 Earlier (core):
@@ -75,6 +88,9 @@ rule of `app.interim` each refuse that header too: that control is redundant by 
 4. Ownership: `apps/converter/tests/mean/**` is used by convention (as `tests/find/` is); please add it to the WP-F4 row.
 5. Integration needs the edit of `apps/converter/app/pipeline.py` the brief of this stage grants; nothing outside the owned paths was edited in the core stage.
 
+6. WP-F2/F3: reference 5 `.DOC` raises ReaderError; sheets (ODS, XLSX) give one run for reference 1; the addressee of reference 1 in a two-column DOCX line ("Wnioskodawca: Adresat:" then label and "Wójt Gminy ...") needs a rule in app.mean (a new feature, not added at the acceptance stage) and the PDF glue is request 3d.
+
 ## Cost notes
+- acceptance: the reference-set comparison across formats (two scratch dumps) took the most turns. Cheaper: a committed `--view` dump of the brief per format.
 - integration: finding why the ledger did not close on set 8 (three scratch scripts) took the most turns. Cheaper: a committed ledger-diagnosis command that prints the LedgerError per set.
 - core: reading the finder's output on the nine sets (four dump views) and writing the rules in one pass took the most context; the fixes were three small rounds. Cheaper: a committed dump tool of the finder (`python -m app.find.survey --view <set>`) so the next stage does not write its own.

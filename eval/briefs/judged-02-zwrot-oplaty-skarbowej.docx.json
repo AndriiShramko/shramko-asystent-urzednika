@@ -1,0 +1,570 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "3552082dba95f10824cbe113d0238bdc8281ac37316f557b99da43d0fcda0d48",
+  "format": "docx"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o zwrot opłaty skarbowej",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     209.2,
+     227.15,
+     446.65,
+     241.8
+    ],
+    "runs": [
+     "r3"
+    ],
+    "quote": "Wniosek o zwrot opłaty skarbowej"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     426.55,
+     106.2,
+     570.9,
+     116.05
+    ],
+    "runs": [
+     "r2"
+    ],
+    "quote": "Urząd Gminy Stawiguda"
+   }
+  ],
+  "kind": "office",
+  "name": "Urząd Gminy Stawiguda"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     228.53,
+     396.9,
+     581.02,
+     417.55
+    ],
+    "runs": [
+     "r15"
+    ],
+    "quote": "Nazwa /Imię i nazwisko",
+    "candidate": "c1"
+   },
+   {
+    "page": 1,
+    "runs": [],
+    "quote": "Dane pełnomocnika"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": true,
+  "capacities": [
+   "pelnomocnik",
+   "reprezentant"
+  ]
+ },
+ "applicant_extras": [
+  {
+   "concept": "nip",
+   "party": "entity",
+   "required": false
+  }
+ ],
+ "matter": [
+  {
+   "title": "Informacje o opłacie skarbowej",
+   "role": "matter/informacje_o_oplacie_skarbowej",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "data_uiszczenia_oplaty",
+     "label": "Data uiszczenia opłaty",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c16",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        228.53,
+        111.75,
+        404.83,
+        132.4
+       ],
+       "runs": [
+        "r38"
+       ],
+       "quote": "Data uiszczenia opłaty",
+       "candidate": "c16"
+      }
+     ]
+    },
+    {
+     "key": "wysokosc_oplaty",
+     "label": "Wysokość opłaty",
+     "type": "NUMBER",
+     "concept": "amount_pln",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c18",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        228.53,
+        160.0,
+        581.02,
+        180.6
+       ],
+       "runs": [
+        "r42"
+       ],
+       "quote": "Wysokość opłaty",
+       "candidate": "c18"
+      }
+     ]
+    },
+    {
+     "key": "informacje_o_oplacie_skarbowej",
+     "label": "Informacje o opłacie skarbowej",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "Gotówką w kasie organu",
+      "Przelewem na rachunek w banku"
+     ],
+     "candidate": "c20",
+     "conf": 0.5,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        228.53,
+        309.65,
+        246.18,
+        357.05
+       ],
+       "runs": [],
+       "candidate": "c20"
+      }
+     ]
+    },
+    {
+     "key": "nr_rachunku",
+     "label": "Nr rachunku",
+     "type": "TEXT_FIELD",
+     "concept": "nrb",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "length": 26,
+     "candidate": "c24",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        228.53,
+        384.65,
+        581.02,
+        405.3
+       ],
+       "runs": [
+        "r51"
+       ],
+       "quote": "Nr rachunku",
+       "candidate": "c24"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Podstawa prawna",
+   "role": "matter/podstawa_prawna",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "podstawa_prawna",
+     "label": "Podstawa prawna",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "Dokument stwierdzający udzielenie pełnomocnictwa",
+      "Dowód uiszczenia opłaty skarbowej za pełnomocnictwo"
+     ],
+     "candidate": "c25",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        196.7,
+        487.75,
+        212.55,
+        535.15
+       ],
+       "runs": [
+        "r55"
+       ],
+       "quote": "1.",
+       "candidate": "c25"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [],
+  "clause": {
+   "status": "not_found",
+   "evidence": []
+  }
+ },
+ "fee": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "legal_basis": {
+  "status": "stated",
+  "value": "Art. 9 ustawy z dnia 16 listopada 2006 r. o opłacie skarbowej",
+  "evidence": [
+   {
+    "page": 2,
+    "box": [
+     76.35,
+     446.55,
+     327.25,
+     456.4
+    ],
+    "runs": [
+     "r53"
+    ],
+    "quote": "Art. 9 ustawy z dnia 16 listopada 2006 r. o opłacie skarbowej"
+   }
+  ]
+ },
+ "dropped": [
+  {
+   "what": "Data",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 2,
+   "runs": []
+  },
+  {
+   "what": "Podpis",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 2,
+   "runs": []
+  },
+  {
+   "what": "1.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 1,
+   "runs": [],
+   "count": 8
+  },
+  {
+   "what": "5. Informacje dotyczące sposobu zwrotu opłaty skarbowej (postaw „x” w wybranym polu)",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 2,
+   "runs": [],
+   "count": 2
+  },
+  {
+   "what": "strona 1/2",
+   "reason": "PAGE_FURNITURE",
+   "page": 1,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "strona 2/2",
+   "reason": "PAGE_FURNITURE",
+   "page": 2,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/twoje_dane: Nazwa /Imię i nazwisko",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/dane_podmiotu: NIP",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/adres: Miejscowość, Ulica, Nr domu, Nr lokalu, Kod pocztowy",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 5
+  },
+  {
+   "what": "standard/dane_do_kontaktu: Numer telefonu, Adres poczty elektronicznej",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 2
+  },
+  {
+   "what": "standard/pelnomocnictwo: Imię i nazwisko, Miejscowość, Ulica, Nr domu, Nr lokalu, Kod pocztowy",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 6
+  }
+ ],
+ "warnings": [
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "data_uiszczenia_oplaty",
+   "candidate": "c16",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 2,
+   "candidate": "c17",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "wysokosc_oplaty",
+   "candidate": "c18",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 2,
+   "candidate": "c19",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "informacje_o_oplacie_skarbowej",
+   "candidate": "c20",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 2,
+   "candidate": "c23",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Jeśli wybierzesz tę formę, wpisz poniżej nr rachunku i dane jego właściciela'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "nr_rachunku",
+   "candidate": "c24",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "podstawa_prawna",
+   "candidate": "c25",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 2,
+   "candidate": "c29",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c2",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c3",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c4",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c5",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c6",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c7",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c8",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c9",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c10",
+   "fate": "STANDARD",
+   "role": "standard/pelnomocnictwo"
+  },
+  {
+   "candidate": "c11",
+   "fate": "STANDARD",
+   "role": "standard/pelnomocnictwo"
+  },
+  {
+   "candidate": "c12",
+   "fate": "STANDARD",
+   "role": "standard/pelnomocnictwo"
+  },
+  {
+   "candidate": "c13",
+   "fate": "STANDARD",
+   "role": "standard/pelnomocnictwo"
+  },
+  {
+   "candidate": "c14",
+   "fate": "STANDARD",
+   "role": "standard/pelnomocnictwo"
+  },
+  {
+   "candidate": "c15",
+   "fate": "STANDARD",
+   "role": "standard/pelnomocnictwo"
+  },
+  {
+   "candidate": "c16",
+   "fate": "FIELD",
+   "key": "data_uiszczenia_oplaty"
+  },
+  {
+   "candidate": "c17",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c17"
+  },
+  {
+   "candidate": "c18",
+   "fate": "FIELD",
+   "key": "wysokosc_oplaty"
+  },
+  {
+   "candidate": "c19",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c19"
+  },
+  {
+   "candidate": "c20",
+   "fate": "FIELD",
+   "key": "informacje_o_oplacie_skarbowej"
+  },
+  {
+   "candidate": "c21",
+   "fate": "MERGED",
+   "into": "c20",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c22",
+   "fate": "MERGED",
+   "into": "c20",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c23",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c23"
+  },
+  {
+   "candidate": "c24",
+   "fate": "FIELD",
+   "key": "nr_rachunku"
+  },
+  {
+   "candidate": "c25",
+   "fate": "FIELD",
+   "key": "podstawa_prawna"
+  },
+  {
+   "candidate": "c26",
+   "fate": "MERGED",
+   "into": "c25",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c27",
+   "fate": "MERGED",
+   "into": "c25",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c28",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  },
+  {
+   "candidate": "c29",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c29"
+  },
+  {
+   "candidate": "c30",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  }
+ ]
+}

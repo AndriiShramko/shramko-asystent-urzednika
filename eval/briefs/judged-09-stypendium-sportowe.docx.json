@@ -1,0 +1,2382 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "b0665d0f9621e53118fcac0662b2230981c5e0258e3e122e37929b94a76f159f",
+  "format": "docx"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza",
+  "evidence": [
+   {
+    "page": 2,
+    "anchor": "p[9]",
+    "runs": [
+     "r9"
+    ],
+    "quote": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "anchor": "p[2]",
+    "runs": [
+     "r3"
+    ],
+    "quote": "Prezydenta Miasta Zgierza"
+   }
+  ],
+  "kind": "body",
+  "name": "Prezydent Miasta Zgierza"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 2,
+    "anchor": "p[14]",
+    "runs": [],
+    "quote": "Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru",
+    "candidate": "c1"
+   },
+   {
+    "page": 2,
+    "anchor": "p[15]",
+    "runs": [],
+    "quote": "Imię",
+    "candidate": "c2"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": true,
+  "capacities": [
+   "pelnomocnik",
+   "reprezentant"
+  ]
+ },
+ "applicant_extras": [
+  {
+   "concept": "krs",
+   "party": "entity",
+   "required": false
+  }
+ ],
+ "matter": [
+  {
+   "title": "Rodzaj wniosku",
+   "role": "matter/rodzaj_wniosku",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "rodzaj_wniosku",
+     "label": "Wybierz rodzaj wniosku",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "substance",
+     "options": [
+      "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza",
+      "Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza",
+      "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+     ],
+     "evidence": [
+      {
+       "page": 2,
+       "anchor": "p[9]",
+       "runs": [
+        "r9"
+       ],
+       "quote": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+      },
+      {
+       "page": 7,
+       "anchor": "p[109]",
+       "runs": [
+        "r104"
+       ],
+       "quote": "Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza"
+      },
+      {
+       "page": 11,
+       "anchor": "p[181]",
+       "runs": [
+        "r172"
+       ],
+       "quote": "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Wnioskodawca",
+   "role": "matter/w1/wnioskodawca",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "seria_i_numer_dowodu_osobistego",
+     "label": "Seria i numer dowodu osobistego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c8",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "anchor": "p[21]",
+       "runs": [],
+       "quote": "Seria i numer dowodu osobistego",
+       "candidate": "c8"
+      }
+     ]
+    },
+    {
+     "key": "inny_adres_korespondencyjny",
+     "label": "Inny adres korespondencyjny",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c16",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "anchor": "p[29]",
+       "runs": [],
+       "quote": "inny adres korespondencyjny",
+       "candidate": "c16"
+      }
+     ]
+    },
+    {
+     "key": "skrzynka_epuap_adres_skrzynki",
+     "label": "Skrzynka ePUAP - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c18",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "anchor": "p[31]",
+       "runs": [],
+       "quote": "Skrzynka ePUAP - adres skrzynki",
+       "candidate": "c18"
+      }
+     ]
+    },
+    {
+     "key": "edoreczenia_adres_skrzynki",
+     "label": "EDoręczenia - adres skrzynki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c19",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "anchor": "p[32]",
+       "runs": [],
+       "quote": "eDoręczenia - adres skrzynki",
+       "candidate": "c19"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Dane sportowca",
+   "role": "matter/w1/dane_sportowca",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c20",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "anchor": "p[38]",
+       "runs": [],
+       "quote": "Imię",
+       "candidate": "c20"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c21",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "anchor": "p[39]",
+       "runs": [],
+       "quote": "Nazwisko",
+       "candidate": "c21"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia",
+     "label": "Data urodzenia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c22",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "anchor": "p[40]",
+       "runs": [],
+       "quote": "Data urodzenia",
+       "candidate": "c22"
+      }
+     ]
+    },
+    {
+     "key": "adres_zameldowania",
+     "label": "Adres zameldowania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "adres zameldowania może być inny niż adres zamieszkania",
+     "options": [],
+     "candidate": "c23",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 3,
+       "anchor": "p[42]",
+       "runs": [
+        "r40"
+       ],
+       "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+       "candidate": "c23"
+      }
+     ]
+    },
+    {
+     "key": "adres_do_korespondencji",
+     "label": "Adres do korespondencji",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "jeśli różni się od adresu zameldowania",
+     "options": [],
+     "candidate": "c24",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 3,
+       "anchor": "p[44]",
+       "runs": [
+        "r42"
+       ],
+       "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+       "candidate": "c24"
+      }
+     ]
+    },
+    {
+     "key": "inna_dyscyplina",
+     "label": "Inna dyscyplina",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c25",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 3,
+       "anchor": "p[71]",
+       "runs": [],
+       "quote": "Inna dyscyplina",
+       "candidate": "c25"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Osiągnięcia sportowe",
+   "role": "matter/w1/osiagniecia_sportowe",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "osiagniecia_sportowe",
+     "label": "Osiągnięcia sportowe",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c26",
+     "conf": 0.5,
+     "evidence": [
+      {
+       "page": 4,
+       "anchor": "p[75]",
+       "runs": [],
+       "quote": "Osiągnięcia sportowe",
+       "candidate": "c26"
+      }
+     ]
+    },
+    {
+     "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do",
+     "label": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do stypendium",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c28",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 4,
+       "anchor": "p[85]",
+       "runs": [
+        "r82"
+       ],
+       "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do stypendium",
+       "candidate": "c28"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda kandydata pełnoletniego do stypendium",
+   "role": "matter/w1/zgoda_kandydata_pelnoletniego_do_stypendium",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_kandydata",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c30",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 6,
+       "anchor": "p[96]",
+       "runs": [],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c30"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda w imieniu kandydata nieletniego do stypendium",
+   "role": "matter/w1/zgoda_w_imieniu_kandydata_nieletniego_do_stypendium",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_kandydata_2",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c33",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 6,
+       "anchor": "p[102]",
+       "runs": [],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c33"
+      }
+     ]
+    },
+    {
+     "key": "ja_nizej_podpisany",
+     "label": "Ja niżej podpisany",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c34",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 6,
+       "anchor": "p[103]",
+       "runs": [],
+       "quote": "1) Ja niżej podpisany",
+       "candidate": "c34"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Dane sportowca",
+   "role": "matter/w2/dane_sportowca",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_2",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c56",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 8,
+       "anchor": "p[138]",
+       "runs": [],
+       "quote": "Imię",
+       "candidate": "c56"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_2",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c57",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 8,
+       "anchor": "p[139]",
+       "runs": [],
+       "quote": "Nazwisko",
+       "candidate": "c57"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia_2",
+     "label": "Data urodzenia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c58",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 8,
+       "anchor": "p[140]",
+       "runs": [],
+       "quote": "Data urodzenia",
+       "candidate": "c58"
+      }
+     ]
+    },
+    {
+     "key": "adres_zameldowania_2",
+     "label": "Adres zameldowania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "adres zameldowania może być inny niż adres zamieszkania",
+     "options": [],
+     "candidate": "c59",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 8,
+       "anchor": "p[142]",
+       "runs": [
+        "r135"
+       ],
+       "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+       "candidate": "c59"
+      }
+     ]
+    },
+    {
+     "key": "adres_do_korespondencji_2",
+     "label": "Adres do korespondencji",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "jeśli różni się od adresu zameldowania",
+     "options": [],
+     "candidate": "c60",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 8,
+       "anchor": "p[144]",
+       "runs": [
+        "r137"
+       ],
+       "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+       "candidate": "c60"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Osiągnięcia sportowe",
+   "role": "matter/w2/osiagniecia_sportowe",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "osiagniecia_sportowe_2",
+     "label": "Osiągnięcia sportowe",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c61",
+     "conf": 0.5,
+     "evidence": [
+      {
+       "page": 8,
+       "anchor": "p[147]",
+       "runs": [],
+       "quote": "Osiągnięcia sportowe",
+       "candidate": "c61"
+      }
+     ]
+    },
+    {
+     "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2",
+     "label": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do nagrody",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c63",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 9,
+       "anchor": "p[158]",
+       "runs": [
+        "r150"
+       ],
+       "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do nagrody",
+       "candidate": "c63"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda kandydata pełnoletniego do nagrody",
+   "role": "matter/w2/zgoda_kandydata_pelnoletniego_do_nagrody",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_kandydata_3",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c65",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 10,
+       "anchor": "p[168]",
+       "runs": [],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c65"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda w imieniu kandydata nieletniego do nagrody",
+   "role": "matter/w2/zgoda_w_imieniu_kandydata_nieletniego_do_nagrody",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_kandydata_4",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c68",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 10,
+       "anchor": "p[174]",
+       "runs": [],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c68"
+      }
+     ]
+    },
+    {
+     "key": "ja_nizej_podpisany_2",
+     "label": "Ja niżej podpisany",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c69",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 10,
+       "anchor": "p[175]",
+       "runs": [],
+       "quote": "1) Ja niżej podpisany",
+       "candidate": "c69"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Dane trenera",
+   "role": "matter/w3/dane_trenera",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_3",
+     "label": "Imię",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c91",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 12,
+       "anchor": "p[210]",
+       "runs": [],
+       "quote": "Imię",
+       "candidate": "c91"
+      }
+     ]
+    },
+    {
+     "key": "nazwisko_3",
+     "label": "Nazwisko",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c92",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 12,
+       "anchor": "p[211]",
+       "runs": [],
+       "quote": "Nazwisko",
+       "candidate": "c92"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia_3",
+     "label": "Data urodzenia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c93",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 12,
+       "anchor": "p[212]",
+       "runs": [],
+       "quote": "Data urodzenia",
+       "candidate": "c93"
+      }
+     ]
+    },
+    {
+     "key": "adres_zameldowania_3",
+     "label": "Adres zameldowania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "adres zameldowania może być inny niż adres zamieszkania",
+     "options": [],
+     "candidate": "c94",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 12,
+       "anchor": "p[214]",
+       "runs": [
+        "r203"
+       ],
+       "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+       "candidate": "c94"
+      }
+     ]
+    },
+    {
+     "key": "adres_do_korespondencji_3",
+     "label": "Adres do korespondencji",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "jeśli różni się od adresu zameldowania",
+     "options": [],
+     "candidate": "c95",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 12,
+       "anchor": "p[216]",
+       "runs": [
+        "r205"
+       ],
+       "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+       "candidate": "c95"
+      }
+     ]
+    },
+    {
+     "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3",
+     "label": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do wyróżnienia",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c97",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 12,
+       "anchor": "p[223]",
+       "runs": [
+        "r212"
+       ],
+       "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do wyróżnienia",
+       "candidate": "c97"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Dane osobowe podopiecznego trenera",
+   "role": "matter/w3/dane_osobowe_podopiecznego_trenera",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c98",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 13,
+       "anchor": "p[229]",
+       "runs": [
+        "r217"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c98"
+      }
+     ]
+    },
+    {
+     "key": "osiagniecia_sportowe_podopiecznego",
+     "label": "Osiągnięcia sportowe podopiecznego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c99",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 13,
+       "anchor": "p[231]",
+       "runs": [
+        "r219"
+       ],
+       "quote": "Osiągnięcia sportowe podopiecznego",
+       "candidate": "c99"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika_2",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c100",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 13,
+       "anchor": "p[234]",
+       "runs": [
+        "r222"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c100"
+      }
+     ]
+    },
+    {
+     "key": "osiagniecia_sportowe_podopiecznego_2",
+     "label": "Osiągnięcia sportowe podopiecznego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c101",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 13,
+       "anchor": "p[236]",
+       "runs": [
+        "r224"
+       ],
+       "quote": "Osiągnięcia sportowe podopiecznego",
+       "candidate": "c101"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika_3",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c102",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 13,
+       "anchor": "p[239]",
+       "runs": [
+        "r227"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c102"
+      }
+     ]
+    },
+    {
+     "key": "imie_i_nazwisko_zawodniczki_zawodnika_4",
+     "label": "Imię i nazwisko zawodniczki/zawodnika",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c104",
+     "conf": 0.6,
+     "evidence": [
+      {
+       "page": 14,
+       "anchor": "p[246]",
+       "runs": [
+        "r233"
+       ],
+       "quote": "Imię i nazwisko zawodniczki/zawodnika",
+       "candidate": "c104"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda kandydata do wyróżnienia",
+   "role": "matter/w3/zgoda_kandydata_do_wyroznienia",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_kandydata_5",
+     "label": "Imię i nazwisko kandydata",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c108",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 15,
+       "anchor": "p[261]",
+       "runs": [],
+       "quote": "Imię i nazwisko kandydata",
+       "candidate": "c108"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda podopiecznego pełnoletniego",
+   "role": "matter/w3/zgoda_podopiecznego_pelnoletniego",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_podopiecznego",
+     "label": "Imię i nazwisko podopiecznego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c111",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 16,
+       "anchor": "p[270]",
+       "runs": [],
+       "quote": "Imię i nazwisko podopiecznego",
+       "candidate": "c111"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Zgoda w imieniu podopiecznego nieletniego",
+   "role": "matter/w3/zgoda_w_imieniu_podopiecznego_nieletniego",
+   "repeating": false,
+   "show_if": {
+    "field": "rodzaj_wniosku",
+    "is": "Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+   },
+   "fields": [
+    {
+     "key": "imie_i_nazwisko_podopiecznego_2",
+     "label": "Imię i nazwisko podopiecznego",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c114",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 16,
+       "anchor": "p[276]",
+       "runs": [],
+       "quote": "Imię i nazwisko podopiecznego",
+       "candidate": "c114"
+      }
+     ]
+    },
+    {
+     "key": "ja_nizej_podpisany_3",
+     "label": "Ja niżej podpisany",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c115",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 16,
+       "anchor": "p[277]",
+       "runs": [],
+       "quote": "1) Ja niżej podpisany",
+       "candidate": "c115"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania stypendiów sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 6,
+      "anchor": "p[98]",
+      "runs": [
+       "r94"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania stypendiów sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia."
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania nagród sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 10,
+      "anchor": "p[170]",
+      "runs": [
+       "r162"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania nagród sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia."
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zapoznałem się z regulaminem przyznawania wyróżnień sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 15,
+      "anchor": "p[263]",
+      "runs": [
+       "r250"
+      ],
+      "quote": "Oświadczam, że zapoznałem się z regulaminem przyznawania wyróżnień sportowych Rady Miasta Zgierza i akceptuję wszystkie jego postanowienia."
+     }
+    ],
+    "kind": "declaration"
+   }
+  ],
+  "clause": {
+   "status": "stated",
+   "evidence": [
+    {
+     "page": 5,
+     "anchor": "p[89]",
+     "runs": [
+      "r86"
+     ],
+     "quote": "4. Klauzula informacyjna"
+    }
+   ]
+  }
+ },
+ "fee": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "legal_basis": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dropped": [
+  {
+   "what": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 2,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 7,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 11,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Dokument należy wypełnić odrębnie dla każdego podopiecznego trenera, który został wskazany w pkt. 3 wniosku.",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 16,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Załącznik Nr 3 do zarządzenia",
+   "reason": "PAGE_FURNITURE",
+   "page": 1,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/dane_podmiotu: Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru, Nazwa klubu sportowego, Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru, Nazwa klubu sportowego, Dane reprezentanta klubu sportowego z KRS lub innego właściwego rejestru, Nazwa ",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 6
+  },
+  {
+   "what": "standard/twoje_dane: Imię, Nazwisko, Imię, Nazwisko, Imię, Nazwisko, Imię, Nazwisko, Imię, Nazwisko, Imię, Nazwisko",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 12
+  },
+  {
+   "what": "standard/dane_do_kontaktu: Numer telefonu, Numer telefonu, Telefon kontaktowy, Numer telefonu, Numer telefonu, Telefon kontaktowy, Numer telefonu, Numer telefonu, Telefon kontaktowy",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 9
+  },
+  {
+   "what": "standard/adres: Adres siedziby, Poczta tradycyjna - na który adres kierować korespondencję, Adres siedziby, Poczta tradycyjna - na który adres kierować korespondencję, Adres siedziby, Poczta tradycyjna - na który adres kierować korespondencję",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 6
+  },
+  {
+   "what": "4. Klauzula informacyjna",
+   "reason": "CLAUSE_LINKED",
+   "page": 5,
+   "runs": [],
+   "count": 12
+  }
+ ],
+ "warnings": [
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 2,
+   "candidate": "c5",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "seria_i_numer_dowodu_osobistego",
+   "candidate": "c8",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "inny_adres_korespondencyjny",
+   "candidate": "c16",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 2,
+   "candidate": "c17",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "skrzynka_epuap_adres_skrzynki",
+   "candidate": "c18",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "edoreczenia_adres_skrzynki",
+   "candidate": "c19",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "imie",
+   "candidate": "c20",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "nazwisko",
+   "candidate": "c21",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "data_urodzenia",
+   "candidate": "c22",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "adres_zameldowania",
+   "candidate": "c23",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "adres_do_korespondencji",
+   "candidate": "c24",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 3,
+   "field": "inna_dyscyplina",
+   "candidate": "c25",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 4,
+   "field": "osiagniecia_sportowe",
+   "candidate": "c26",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 4,
+   "candidate": "c27",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 4,
+   "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do",
+   "candidate": "c28",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 4,
+   "candidate": "c29",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 6,
+   "field": "imie_i_nazwisko_kandydata",
+   "candidate": "c30",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c31",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c32",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 6,
+   "field": "imie_i_nazwisko_kandydata_2",
+   "candidate": "c33",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 6,
+   "candidate": "c34",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 6,
+   "field": "ja_nizej_podpisany",
+   "candidate": "c34",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c35",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 6,
+   "candidate": "c36",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 7,
+   "candidate": "c41",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 7,
+   "candidate": "c53",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "imie_2",
+   "candidate": "c56",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "nazwisko_2",
+   "candidate": "c57",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "data_urodzenia_2",
+   "candidate": "c58",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "adres_zameldowania_2",
+   "candidate": "c59",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "adres_do_korespondencji_2",
+   "candidate": "c60",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 8,
+   "field": "osiagniecia_sportowe_2",
+   "candidate": "c61",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 8,
+   "candidate": "c62",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 9,
+   "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2",
+   "candidate": "c63",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 9,
+   "candidate": "c64",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 10,
+   "field": "imie_i_nazwisko_kandydata_3",
+   "candidate": "c65",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c66",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c67",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 10,
+   "field": "imie_i_nazwisko_kandydata_4",
+   "candidate": "c68",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 10,
+   "candidate": "c69",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 10,
+   "field": "ja_nizej_podpisany_2",
+   "candidate": "c69",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c70",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 10,
+   "candidate": "c71",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "AMBIGUOUS_GROUP",
+   "page": 11,
+   "candidate": "c76",
+   "evidence": [],
+   "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 11,
+   "candidate": "c88",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "imie_3",
+   "candidate": "c91",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "nazwisko_3",
+   "candidate": "c92",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "data_urodzenia_3",
+   "candidate": "c93",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "adres_zameldowania_3",
+   "candidate": "c94",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "adres_do_korespondencji_3",
+   "candidate": "c95",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 12,
+   "candidate": "c96",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 12,
+   "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3",
+   "candidate": "c97",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika",
+   "candidate": "c98",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "osiagniecia_sportowe_podopiecznego",
+   "candidate": "c99",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika_2",
+   "candidate": "c100",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "osiagniecia_sportowe_podopiecznego_2",
+   "candidate": "c101",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 13,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika_3",
+   "candidate": "c102",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 13,
+   "candidate": "c103",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 14,
+   "field": "imie_i_nazwisko_zawodniczki_zawodnika_4",
+   "candidate": "c104",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 14,
+   "candidate": "c105",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 14,
+   "candidate": "c106",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 14,
+   "candidate": "c107",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 15,
+   "field": "imie_i_nazwisko_kandydata_5",
+   "candidate": "c108",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 15,
+   "candidate": "c109",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 15,
+   "candidate": "c110",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "imie_i_nazwisko_podopiecznego",
+   "candidate": "c111",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c112",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c113",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "imie_i_nazwisko_podopiecznego_2",
+   "candidate": "c114",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 16,
+   "candidate": "c115",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 16,
+   "field": "ja_nizej_podpisany_3",
+   "candidate": "c115",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c116",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 16,
+   "candidate": "c117",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c2",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c3",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c4",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c5",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c5"
+  },
+  {
+   "candidate": "c6",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c7",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c8",
+   "fate": "FIELD",
+   "key": "seria_i_numer_dowodu_osobistego"
+  },
+  {
+   "candidate": "c9",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c10",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c11",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c12",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c13",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c14",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c15",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c16",
+   "fate": "FIELD",
+   "key": "inny_adres_korespondencyjny"
+  },
+  {
+   "candidate": "c17",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c17"
+  },
+  {
+   "candidate": "c18",
+   "fate": "FIELD",
+   "key": "skrzynka_epuap_adres_skrzynki"
+  },
+  {
+   "candidate": "c19",
+   "fate": "FIELD",
+   "key": "edoreczenia_adres_skrzynki"
+  },
+  {
+   "candidate": "c20",
+   "fate": "FIELD",
+   "key": "imie"
+  },
+  {
+   "candidate": "c21",
+   "fate": "FIELD",
+   "key": "nazwisko"
+  },
+  {
+   "candidate": "c22",
+   "fate": "FIELD",
+   "key": "data_urodzenia"
+  },
+  {
+   "candidate": "c23",
+   "fate": "FIELD",
+   "key": "adres_zameldowania"
+  },
+  {
+   "candidate": "c24",
+   "fate": "FIELD",
+   "key": "adres_do_korespondencji"
+  },
+  {
+   "candidate": "c25",
+   "fate": "FIELD",
+   "key": "inna_dyscyplina"
+  },
+  {
+   "candidate": "c26",
+   "fate": "FIELD",
+   "key": "osiagniecia_sportowe"
+  },
+  {
+   "candidate": "c27",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c27"
+  },
+  {
+   "candidate": "c28",
+   "fate": "FIELD",
+   "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do"
+  },
+  {
+   "candidate": "c29",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c29"
+  },
+  {
+   "candidate": "c30",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata"
+  },
+  {
+   "candidate": "c31",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c31"
+  },
+  {
+   "candidate": "c32",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c32"
+  },
+  {
+   "candidate": "c33",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata_2"
+  },
+  {
+   "candidate": "c34",
+   "fate": "FIELD",
+   "key": "ja_nizej_podpisany"
+  },
+  {
+   "candidate": "c35",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c35"
+  },
+  {
+   "candidate": "c36",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c36"
+  },
+  {
+   "candidate": "c37",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c38",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c39",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c40",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c41",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c41"
+  },
+  {
+   "candidate": "c42",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c43",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c44",
+   "fate": "MERGED",
+   "into": "c8",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c45",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c46",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c47",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c48",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c49",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c50",
+   "fate": "MERGED",
+   "into": "c49",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c51",
+   "fate": "MERGED",
+   "into": "c49",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c52",
+   "fate": "MERGED",
+   "into": "c16",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c53",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c53"
+  },
+  {
+   "candidate": "c54",
+   "fate": "MERGED",
+   "into": "c18",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c55",
+   "fate": "MERGED",
+   "into": "c19",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c56",
+   "fate": "FIELD",
+   "key": "imie_2"
+  },
+  {
+   "candidate": "c57",
+   "fate": "FIELD",
+   "key": "nazwisko_2"
+  },
+  {
+   "candidate": "c58",
+   "fate": "FIELD",
+   "key": "data_urodzenia_2"
+  },
+  {
+   "candidate": "c59",
+   "fate": "FIELD",
+   "key": "adres_zameldowania_2"
+  },
+  {
+   "candidate": "c60",
+   "fate": "FIELD",
+   "key": "adres_do_korespondencji_2"
+  },
+  {
+   "candidate": "c61",
+   "fate": "FIELD",
+   "key": "osiagniecia_sportowe_2"
+  },
+  {
+   "candidate": "c62",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c62"
+  },
+  {
+   "candidate": "c63",
+   "fate": "FIELD",
+   "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2"
+  },
+  {
+   "candidate": "c64",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c64"
+  },
+  {
+   "candidate": "c65",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata_3"
+  },
+  {
+   "candidate": "c66",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c66"
+  },
+  {
+   "candidate": "c67",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c67"
+  },
+  {
+   "candidate": "c68",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata_4"
+  },
+  {
+   "candidate": "c69",
+   "fate": "FIELD",
+   "key": "ja_nizej_podpisany_2"
+  },
+  {
+   "candidate": "c70",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c70"
+  },
+  {
+   "candidate": "c71",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c71"
+  },
+  {
+   "candidate": "c72",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c73",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c74",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c75",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c76",
+   "fate": "AWAITING_DECISION",
+   "decision": "box_c76"
+  },
+  {
+   "candidate": "c77",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c78",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c79",
+   "fate": "MERGED",
+   "into": "c8",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c80",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c81",
+   "fate": "STANDARD",
+   "role": "standard/dane_podmiotu"
+  },
+  {
+   "candidate": "c82",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c83",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c84",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c85",
+   "fate": "MERGED",
+   "into": "c84",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c86",
+   "fate": "MERGED",
+   "into": "c84",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c87",
+   "fate": "MERGED",
+   "into": "c16",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c88",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c88"
+  },
+  {
+   "candidate": "c89",
+   "fate": "MERGED",
+   "into": "c18",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c90",
+   "fate": "MERGED",
+   "into": "c19",
+   "why": "SAME_ALTERNATIVE"
+  },
+  {
+   "candidate": "c91",
+   "fate": "FIELD",
+   "key": "imie_3"
+  },
+  {
+   "candidate": "c92",
+   "fate": "FIELD",
+   "key": "nazwisko_3"
+  },
+  {
+   "candidate": "c93",
+   "fate": "FIELD",
+   "key": "data_urodzenia_3"
+  },
+  {
+   "candidate": "c94",
+   "fate": "FIELD",
+   "key": "adres_zameldowania_3"
+  },
+  {
+   "candidate": "c95",
+   "fate": "FIELD",
+   "key": "adres_do_korespondencji_3"
+  },
+  {
+   "candidate": "c96",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c96"
+  },
+  {
+   "candidate": "c97",
+   "fate": "FIELD",
+   "key": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3"
+  },
+  {
+   "candidate": "c98",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika"
+  },
+  {
+   "candidate": "c99",
+   "fate": "FIELD",
+   "key": "osiagniecia_sportowe_podopiecznego"
+  },
+  {
+   "candidate": "c100",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika_2"
+  },
+  {
+   "candidate": "c101",
+   "fate": "FIELD",
+   "key": "osiagniecia_sportowe_podopiecznego_2"
+  },
+  {
+   "candidate": "c102",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika_3"
+  },
+  {
+   "candidate": "c103",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c103"
+  },
+  {
+   "candidate": "c104",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_zawodniczki_zawodnika_4"
+  },
+  {
+   "candidate": "c105",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c105"
+  },
+  {
+   "candidate": "c106",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c106"
+  },
+  {
+   "candidate": "c107",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c107"
+  },
+  {
+   "candidate": "c108",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_kandydata_5"
+  },
+  {
+   "candidate": "c109",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c109"
+  },
+  {
+   "candidate": "c110",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c110"
+  },
+  {
+   "candidate": "c111",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_podopiecznego"
+  },
+  {
+   "candidate": "c112",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c112"
+  },
+  {
+   "candidate": "c113",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c113"
+  },
+  {
+   "candidate": "c114",
+   "fate": "FIELD",
+   "key": "imie_i_nazwisko_podopiecznego_2"
+  },
+  {
+   "candidate": "c115",
+   "fate": "FIELD",
+   "key": "ja_nizej_podpisany_3"
+  },
+  {
+   "candidate": "c116",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c116"
+  },
+  {
+   "candidate": "c117",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c117"
+  }
+ ]
+}

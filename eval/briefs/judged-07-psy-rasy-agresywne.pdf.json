@@ -1,0 +1,742 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "22d99255ad6b8d93501dd6f0303a819dd8c37a671de49fd5c43c3c9565f682cc",
+  "format": "pdf"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanych za agresywne",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     53.28,
+     152.08,
+     542.04,
+     174.16
+    ],
+    "runs": [
+     "r12",
+     "r13"
+    ],
+    "quote": "Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanych za agresywne"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     405.94,
+     96.16,
+     544.13,
+     106.12
+    ],
+    "runs": [
+     "r10"
+    ],
+    "quote": "Urząd Miejski Wrocławia"
+   }
+  ],
+  "kind": "office",
+  "name": "Urząd Miejski Wrocławia"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     55.22,
+     197.78,
+     539.28,
+     223.82
+    ],
+    "runs": [
+     "r64"
+    ],
+    "quote": "Imię i nazwisko",
+    "candidate": "c4"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": false,
+  "capacities": [
+   "pelnomocnik"
+  ]
+ },
+ "applicant_extras": [],
+ "matter": [
+  {
+   "title": "Informacja o posiadanym psie",
+   "role": "matter/informacja_o_posiadanym_psie",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "pochodzenie_psa",
+     "label": "Pochodzenie psa",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "metryka, numer rodowodu, imię, nazwisko i adres poprzedniego właściciela",
+     "options": [],
+     "candidate": "c11",
+     "conf": 0.56,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        60.98,
+        408.29,
+        485.54,
+        416.33
+       ],
+       "runs": [
+        "r26"
+       ],
+       "quote": "Pochodzenie psa (metryka**, numer rodowodu**, imię, nazwisko i adres poprzedniego właściciela)",
+       "candidate": "c11"
+      }
+     ]
+    },
+    {
+     "key": "rasa_psa",
+     "label": "Rasa psa",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c12",
+     "conf": 0.65,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        257.81,
+        429.65,
+        365.32,
+        437.69
+       ],
+       "runs": [
+        "r28"
+       ],
+       "quote": "Rasa psa",
+       "candidate": "c12"
+      }
+     ]
+    },
+    {
+     "key": "data_urodzenia_psa",
+     "label": "Data urodzenia psa",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c13",
+     "conf": 0.71,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        257.81,
+        450.65,
+        365.32,
+        458.69
+       ],
+       "runs": [
+        "r30"
+       ],
+       "quote": "Data urodzenia psa",
+       "candidate": "c13"
+      }
+     ]
+    },
+    {
+     "key": "data_szczepienia",
+     "label": "Data szczepienia",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "hint": "w przypadku jego braku",
+     "options": [],
+     "candidate": "c14",
+     "conf": 0.78,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        254.93,
+        469.97,
+        362.38,
+        478.01
+       ],
+       "runs": [
+        "r32"
+       ],
+       "quote": "Data szczepienia (w przypadku jego braku)",
+       "candidate": "c14"
+      }
+     ]
+    },
+    {
+     "key": "plec",
+     "label": "Płeć",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "pies",
+      "suka"
+     ],
+     "candidate": "c15",
+     "conf": 0.63,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        254.93,
+        489.19,
+        409.22,
+        499.15
+       ],
+       "runs": [
+        "r34"
+       ],
+       "quote": "Płeć",
+       "candidate": "c15"
+      }
+     ]
+    },
+    {
+     "key": "sposob_oznakowania_psa_nr_ident",
+     "label": "Sposób oznakowania psa / nr ident.",
+     "type": "RADIO",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [
+      "mikroprocesor",
+      "tatuaż",
+      "brak"
+     ],
+     "candidate": "c18",
+     "conf": 0.79,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        254.93,
+        511.87,
+        261.46,
+        567.19
+       ],
+       "runs": [
+        "r39"
+       ],
+       "quote": "Sposób oznakowania psa / nr ident.",
+       "candidate": "c18"
+      }
+     ]
+    },
+    {
+     "key": "sposob_oznakowania_psa_nr_ident_mikroprocesor",
+     "label": "Sposób oznakowania psa / nr ident.: mikroprocesor",
+     "type": "TEXT_FIELD",
+     "required": false,
+     "options": [],
+     "show_if": {
+      "field": "sposob_oznakowania_psa_nr_ident",
+      "is": "mikroprocesor"
+     },
+     "candidate": "c20",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        327.14,
+        513.41,
+        487.12,
+        521.45
+       ],
+       "runs": [],
+       "quote": "mikroprocesor",
+       "candidate": "c20"
+      }
+     ]
+    },
+    {
+     "key": "sposob_oznakowania_psa_nr_ident_tatuaz",
+     "label": "Sposób oznakowania psa / nr ident.: tatuaż",
+     "type": "TEXT_FIELD",
+     "required": false,
+     "options": [],
+     "show_if": {
+      "field": "sposob_oznakowania_psa_nr_ident",
+      "is": "tatuaż"
+     },
+     "candidate": "c22",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        294.65,
+        536.09,
+        486.46,
+        544.13
+       ],
+       "runs": [],
+       "quote": "tatuaż",
+       "candidate": "c22"
+      }
+     ]
+    },
+    {
+     "key": "adres_miejsca_utrzymywania_psa_psow",
+     "label": "Adres miejsca utrzymywania psa/psów",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c24",
+     "conf": 0.68,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        51.0,
+        604.16,
+        519.64,
+        626.72
+       ],
+       "runs": [
+        "r48"
+       ],
+       "quote": "Adres miejsca utrzymywania psa/psów",
+       "candidate": "c24"
+      }
+     ]
+    },
+    {
+     "key": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza",
+     "label": "Opis miejsca i warunków w jakich wnioskodawca zamierza utrzymywać psa/psy",
+     "type": "TEXTAREA",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c25",
+     "conf": 0.69,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        51.0,
+        647.84,
+        519.69,
+        685.04
+       ],
+       "runs": [
+        "r51"
+       ],
+       "quote": "Opis miejsca i warunków w jakich wnioskodawca zamierza utrzymywać psa/psy",
+       "candidate": "c25"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [
+   {
+    "text": "Oświadczam, że psy nie będą wykorzystywane do polowań.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 1,
+      "box": [
+       58.1,
+       736.74,
+       345.65,
+       745.74
+      ],
+      "runs": [
+       "r58"
+      ],
+      "quote": "Oświadczam, że psy nie będą wykorzystywane do polowań."
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zaszczepiono psa/psy przeciwko wściekliźnie – w załączeniu kopia dla każdego psa.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 1,
+      "box": [
+       58.1,
+       747.66,
+       533.32,
+       756.66
+      ],
+      "runs": [
+       "r59"
+      ],
+      "quote": "Oświadczam, że zaszczepiono psa/psy przeciwko wściekliźnie – w załączeniu kopia dla każdego psa."
+     }
+    ],
+    "kind": "declaration"
+   },
+   {
+    "text": "Oświadczam, że zapewniam warunki utrzymywania psa, zgodnie z rozporządzeniem Ministra Rolnictwa i Rozwoju Wsi z dnia 5 lipca 2010r.",
+    "required": true,
+    "evidence": [
+     {
+      "page": 1,
+      "box": [
+       58.1,
+       758.58,
+       498.78,
+       778.5
+      ],
+      "runs": [
+       "r60",
+       "r61"
+      ],
+      "quote": "Oświadczam, że zapewniam warunki utrzymywania psa, zgodnie z rozporządzeniem Ministra Rolnictwa i Rozwoju Wsi z dnia 5 lipca 2010r."
+     }
+    ],
+    "kind": "declaration"
+   }
+  ],
+  "clause": {
+   "status": "stated",
+   "evidence": [
+    {
+     "page": 2,
+     "box": [
+      105.74,
+      74.0,
+      489.28,
+      83.0
+     ],
+     "runs": [
+      "r74"
+     ],
+     "quote": "INFORMACJE DOTYCZĄCE PRZETWARZANIA TWOICH DANYCH OSOBOWYCH"
+    }
+   ]
+  }
+ },
+ "fee": {
+  "status": "stated",
+  "value": "Opłata skarbowa – 82 zł.",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     51.0,
+     795.94,
+     151.73,
+     803.98
+    ],
+    "runs": [
+     "r1"
+    ],
+    "quote": "Opłata skarbowa – 82 zł."
+   }
+  ]
+ },
+ "legal_basis": {
+  "status": "stated",
+  "value": "Zgodnie z ustawą z dnia 13 października 1995 r. Prawo Łowieckie oraz Rozporządzeniem Ministra Rolnictwa",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     51.0,
+     305.63,
+     542.66,
+     314.63
+    ],
+    "runs": [
+     "r14"
+    ],
+    "quote": "Zgodnie z ustawą z dnia 13 października 1995 r. Prawo Łowieckie oraz Rozporządzeniem Ministra Rolnictwa"
+   }
+  ]
+ },
+ "dropped": [
+  {
+   "what": "Nr sprawy",
+   "reason": "OFFICE_USE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "Miejsce na pieczęć Urzędu",
+   "reason": "OFFICE_USE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "Wrocław, dnia",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "podpis wnioskodawcy",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 2,
+   "runs": []
+  },
+  {
+   "what": "Wersja styczeń 2026 r. | Strona 1 z 2",
+   "reason": "PAGE_FURNITURE",
+   "page": 1,
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/twoje_dane: Imię i nazwisko",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/adres: Ulica, Miejscowość, Nr domu, Kod pocztowy, Nr lokalu",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 5
+  },
+  {
+   "what": "standard/dane_do_kontaktu: Telefon",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "INFORMACJE DOTYCZĄCE PRZETWARZANIA TWOICH DANYCH OSOBOWYCH",
+   "reason": "CLAUSE_LINKED",
+   "page": 2,
+   "runs": [],
+   "count": 66
+  }
+ ],
+ "warnings": [
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "pochodzenie_psa",
+   "candidate": "c11",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "rasa_psa",
+   "candidate": "c12",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "data_urodzenia_psa",
+   "candidate": "c13",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "data_szczepienia",
+   "candidate": "c14",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "plec",
+   "candidate": "c15",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "sposob_oznakowania_psa_nr_ident",
+   "candidate": "c18",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "adres_miejsca_utrzymywania_psa_psow",
+   "candidate": "c24",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza",
+   "candidate": "c25",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "LEFT_OUT",
+   "reason": "OFFICE_USE"
+  },
+  {
+   "candidate": "c2",
+   "fate": "LEFT_OUT",
+   "reason": "OFFICE_USE"
+  },
+  {
+   "candidate": "c3",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  },
+  {
+   "candidate": "c4",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c5",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c6",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c7",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c8",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c9",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c10",
+   "fate": "STANDARD",
+   "role": "standard/dane_do_kontaktu"
+  },
+  {
+   "candidate": "c11",
+   "fate": "FIELD",
+   "key": "pochodzenie_psa"
+  },
+  {
+   "candidate": "c12",
+   "fate": "FIELD",
+   "key": "rasa_psa"
+  },
+  {
+   "candidate": "c13",
+   "fate": "FIELD",
+   "key": "data_urodzenia_psa"
+  },
+  {
+   "candidate": "c14",
+   "fate": "FIELD",
+   "key": "data_szczepienia"
+  },
+  {
+   "candidate": "c15",
+   "fate": "FIELD",
+   "key": "plec"
+  },
+  {
+   "candidate": "c16",
+   "fate": "MERGED",
+   "into": "c15",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c17",
+   "fate": "MERGED",
+   "into": "c15",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c18",
+   "fate": "FIELD",
+   "key": "sposob_oznakowania_psa_nr_ident"
+  },
+  {
+   "candidate": "c19",
+   "fate": "MERGED",
+   "into": "c18",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c20",
+   "fate": "FIELD",
+   "key": "sposob_oznakowania_psa_nr_ident_mikroprocesor"
+  },
+  {
+   "candidate": "c21",
+   "fate": "MERGED",
+   "into": "c18",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c22",
+   "fate": "FIELD",
+   "key": "sposob_oznakowania_psa_nr_ident_tatuaz"
+  },
+  {
+   "candidate": "c23",
+   "fate": "MERGED",
+   "into": "c18",
+   "why": "GROUP_MEMBER"
+  },
+  {
+   "candidate": "c24",
+   "fate": "FIELD",
+   "key": "adres_miejsca_utrzymywania_psa_psow"
+  },
+  {
+   "candidate": "c25",
+   "fate": "FIELD",
+   "key": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza"
+  },
+  {
+   "candidate": "c26",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  }
+ ]
+}

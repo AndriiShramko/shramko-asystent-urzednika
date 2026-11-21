@@ -1,0 +1,1117 @@
+{
+ "brief_version": 1.1,
+ "input": {
+  "sha256": "b251035b40bdd8a264b9c1035f466c57760b15db73d84a3ceebf9716c62ce14a",
+  "format": "pdf"
+ },
+ "title": {
+  "status": "stated",
+  "value": "Wniosek",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     277.01,
+     224.3,
+     334.37,
+     236.3
+    ],
+    "runs": [
+     "r13"
+    ],
+    "quote": "WNIOSEK"
+   }
+  ]
+ },
+ "addressee": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     383.11,
+     171.74,
+     504.52,
+     197.42
+    ],
+    "runs": [
+     "r11",
+     "r12"
+    ],
+    "quote": "Urząd Miasta i Gminy Miasteczko"
+   }
+  ],
+  "kind": "office",
+  "name": "Urząd Miasta i Gminy Miasteczko"
+ },
+ "applicants": {
+  "status": "stated",
+  "evidence": [
+   {
+    "page": 1,
+    "box": [
+     75.14,
+     124.11,
+     189.46,
+     132.15
+    ],
+    "runs": [
+     "r6"
+    ],
+    "quote": "Imię i nazwisko lub nazwa firmy",
+    "candidate": "c2"
+   }
+  ],
+  "self": true,
+  "other_person": true,
+  "entity": true,
+  "capacities": [
+   "pelnomocnik",
+   "reprezentant"
+  ]
+ },
+ "applicant_extras": [],
+ "matter": [
+  {
+   "title": "Szczegóły sprawy",
+   "role": "matter/szczegoly_sprawy",
+   "repeating": false,
+   "fields": [
+    {
+     "key": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
+     "label": "Proszę o wydanie zezwolenia na zajęcie terenu pasa drogowego drogi gminnej",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c6",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        463.06,
+        287.25,
+        535.13,
+        298.29
+       ],
+       "runs": [
+        "r16"
+       ],
+       "quote": "Proszę o wydanie zezwolenia na zajęcie terenu pasa drogowego drogi gminnej",
+       "candidate": "c6"
+      }
+     ]
+    },
+    {
+     "key": "mui",
+     "label": "Mui",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c7",
+     "conf": 0.62,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        75.14,
+        318.81,
+        535.28,
+        329.85
+       ],
+       "runs": [
+        "r18"
+       ],
+       "quote": "Mui",
+       "candidate": "c7"
+      }
+     ]
+    },
+    {
+     "key": "miejscowosc",
+     "label": "Miejscowość",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c8",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        157.1,
+        349.05,
+        366.13,
+        360.09
+       ],
+       "runs": [
+        "r21"
+       ],
+       "quote": "w miejscowości",
+       "candidate": "c8"
+      }
+     ]
+    },
+    {
+     "key": "numer_ewidencyjny_dzialki",
+     "label": "Numer ewidencyjny działki",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c9",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        440.18,
+        349.05,
+        533.57,
+        360.09
+       ],
+       "runs": [],
+       "quote": "działka nr ewid",
+       "candidate": "c9"
+      }
+     ]
+    },
+    {
+     "key": "w_celu_wykonania",
+     "label": "W celu wykonania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c10",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        162.26,
+        369.57,
+        533.57,
+        380.61
+       ],
+       "runs": [
+        "r25"
+       ],
+       "quote": "w celu wykonania",
+       "candidate": "c10"
+      }
+     ]
+    },
+    {
+     "key": "rodzaj_robot_i_sposob_wykonania",
+     "label": "Rodzaj robót i sposób wykonania",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c11",
+     "conf": 0.81,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        75.14,
+        394.17,
+        535.37,
+        405.21
+       ],
+       "runs": [
+        "r28"
+       ],
+       "quote": "rodzaj robót i sposób wykonania",
+       "candidate": "c11"
+      }
+     ]
+    },
+    {
+     "key": "calkowita_powierzchnia_zajecia",
+     "label": "Całkowita powierzchnia zajęcia",
+     "type": "NUMBER",
+     "concept": "area",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c36",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        233.51,
+        692.3,
+        332.51,
+        703.34
+       ],
+       "runs": [
+        "r98"
+       ],
+       "quote": "Całkowita powierzchnia zajęcia",
+       "candidate": "c36"
+      }
+     ]
+    },
+    {
+     "key": "termin_od",
+     "label": "Termin od",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c37",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        305.83,
+        82.5,
+        402.5,
+        93.54
+       ],
+       "runs": [
+        "r102"
+       ],
+       "quote": "2. Roboty będą realizowane w terminie od dnia",
+       "candidate": "c37"
+      }
+     ]
+    },
+    {
+     "key": "termin_do",
+     "label": "Termin do",
+     "type": "DATEPICKER",
+     "concept": "date",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c38",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        443.14,
+        82.5,
+        524.21,
+        93.54
+       ],
+       "runs": [
+        "r104"
+       ],
+       "quote": "do dnia",
+       "candidate": "c38"
+      }
+     ]
+    },
+    {
+     "key": "tj",
+     "label": "Tj",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c39",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        96.7,
+        101.7,
+        146.65,
+        112.74
+       ],
+       "runs": [],
+       "quote": "tj",
+       "candidate": "c39"
+      }
+     ]
+    },
+    {
+     "key": "wykonawca_robot_bedzie",
+     "label": "Wykonawcą Robót będzie",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c40",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        212.81,
+        123.06,
+        524.51,
+        134.1
+       ],
+       "runs": [],
+       "quote": "3. Wykonawcą Robót będzie",
+       "candidate": "c40"
+      }
+     ]
+    },
+    {
+     "key": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
+     "label": "Drogowego zgodnie z warunkami określonymi w wydanej decyzji będzie",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c41",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        412.54,
+        161.42,
+        471.49,
+        172.94
+       ],
+       "runs": [
+        "r113"
+       ],
+       "quote": "drogowego zgodnie z warunkami określonymi w wydanej decyzji będzie",
+       "candidate": "c41"
+      }
+     ]
+    },
+    {
+     "key": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
+     "label": "A osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c42",
+     "conf": 0.54,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        75.14,
+        174.78,
+        268.29,
+        185.82
+       ],
+       "runs": [
+        "r112"
+       ],
+       "quote": "a osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa",
+       "candidate": "c42"
+      }
+     ]
+    },
+    {
+     "key": "zam",
+     "label": "Zam",
+     "type": "TEXT_FIELD",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c43",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        286.19,
+        174.78,
+        521.2,
+        185.82
+       ],
+       "runs": [],
+       "quote": "zam",
+       "candidate": "c43"
+      }
+     ]
+    },
+    {
+     "key": "telefon",
+     "label": "Telefon",
+     "type": "TEXT_FIELD",
+     "concept": "phone",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c44",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 2,
+       "box": [
+        86.17,
+        187.38,
+        338.0,
+        198.42
+       ],
+       "runs": [],
+       "quote": "tel",
+       "candidate": "c44"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Szczegóły sprawy – pozycje",
+   "role": "matter/szczegoly_sprawy_pozycje",
+   "repeating": true,
+   "fields": [
+    {
+     "key": "dlugosc",
+     "label": "Długość",
+     "type": "NUMBER",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c12",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        165.62,
+        474.48,
+        248.43,
+        484.44
+       ],
+       "runs": [
+        "r31"
+       ],
+       "quote": "długość",
+       "candidate": "c12"
+      }
+     ]
+    },
+    {
+     "key": "szerokosc",
+     "label": "Szerokość",
+     "type": "NUMBER",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c13",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        298.15,
+        474.48,
+        383.72,
+        484.44
+       ],
+       "runs": [
+        "r33"
+       ],
+       "quote": "szerokość",
+       "candidate": "c13"
+      }
+     ]
+    },
+    {
+     "key": "razem",
+     "label": "Razem",
+     "type": "NUMBER",
+     "required": true,
+     "required_basis": "inferred",
+     "options": [],
+     "candidate": "c14",
+     "conf": 0.9,
+     "evidence": [
+      {
+       "page": 1,
+       "box": [
+        414.07,
+        474.48,
+        507.95,
+        484.44
+       ],
+       "runs": [
+        "r35"
+       ],
+       "quote": "razem",
+       "candidate": "c14"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "attachments": [],
+ "declarations": {
+  "consents": [],
+  "clause": {
+   "status": "stated",
+   "evidence": [
+    {
+     "page": 2,
+     "box": [
+      75.14,
+      405.58,
+      535.79,
+      415.54
+     ],
+     "runs": [
+      "r133"
+     ],
+     "quote": "Zgodnie z art. 13 ust. 1 i 2 rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27"
+    }
+   ]
+  }
+ },
+ "fee": {
+  "status": "stated",
+  "value": "ustawy Kodeks postępowania administracyjnego wraz z opłatą skarbową w wysokości 17 zł",
+  "evidence": [
+   {
+    "page": 2,
+    "box": [
+     96.5,
+     345.82,
+     535.89,
+     355.78
+    ],
+    "runs": [
+     "r131"
+    ],
+    "quote": "ustawy Kodeks postępowania administracyjnego wraz z opłatą skarbową w wysokości 17 zł"
+   }
+  ]
+ },
+ "legal_basis": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dropped": [
+  {
+   "what": "dnia",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "razem: printed arithmetic, the value is typed",
+   "reason": "COMPUTED_VALUE",
+   "page": 1,
+   "runs": []
+  },
+  {
+   "what": "podpis Wnioskodawcy",
+   "reason": "SIGNATURE_AND_DATE",
+   "page": 2,
+   "runs": []
+  },
+  {
+   "what": "- Ogólny plan orientacyjny w skali 1:10 000 lub 1:25 000 z zaznaczeniem zajmowanego odcinka",
+   "reason": "PAPER_INSTRUCTION",
+   "page": 2,
+   "runs": [],
+   "count": 2
+  },
+  {
+   "what": "standard/twoje_dane: Imię i nazwisko lub nazwa firmy",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "standard/adres: Adres zamieszkania/siedziby",
+   "reason": "COVERED_BY_STANDARD",
+   "runs": [],
+   "count": 1
+  },
+  {
+   "what": "Zgodnie z art. 13 ust. 1 i 2 rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27",
+   "reason": "CLAUSE_LINKED",
+   "page": 2,
+   "runs": [],
+   "count": 15
+  }
+ ],
+ "warnings": [
+  {
+   "code": "ADDRESSEE_CONFLICT",
+   "page": 1,
+   "evidence": [
+    {
+     "page": 1,
+     "box": [
+      383.11,
+      171.74,
+      504.52,
+      197.42
+     ],
+     "runs": [
+      "r11",
+      "r12"
+     ],
+     "quote": "Urząd Miasta i Gminy Miasteczko"
+    },
+    {
+     "page": 2,
+     "box": [
+      75.14,
+      451.56,
+      535.64,
+      461.52
+     ],
+     "runs": [
+      "r137"
+     ],
+     "quote": "Urząd Miasta i Gminy w Daleszycach"
+    }
+   ],
+   "detail": "the paper names two different offices; the addressee block wins"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 1,
+   "candidate": "c1",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "LABEL_NOT_FOUND",
+   "page": 1,
+   "candidate": "c4",
+   "evidence": [],
+   "detail": "a place to fill without a label: the official decides what it asks"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
+   "candidate": "c6",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "mui",
+   "candidate": "c7",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "miejscowosc",
+   "candidate": "c8",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "numer_ewidencyjny_dzialki",
+   "candidate": "c9",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 1,
+   "candidate": "c10",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'w celu wykonania'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "w_celu_wykonania",
+   "candidate": "c10",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "rodzaj_robot_i_sposob_wykonania",
+   "candidate": "c11",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "dlugosc",
+   "candidate": "c12",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "szerokosc",
+   "candidate": "c13",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "razem",
+   "candidate": "c14",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 1,
+   "field": "calkowita_powierzchnia_zajecia",
+   "candidate": "c36",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "termin_od",
+   "candidate": "c37",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "termin_do",
+   "candidate": "c38",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 2,
+   "candidate": "c39",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'tj'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "tj",
+   "candidate": "c39",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "wykonawca_robot_bedzie",
+   "candidate": "c40",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
+   "candidate": "c41",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 2,
+   "candidate": "c42",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'a osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
+   "candidate": "c42",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "LABEL_RAW",
+   "page": 2,
+   "candidate": "c43",
+   "evidence": [],
+   "detail": "label kept as the paper's words: 'zam'"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "zam",
+   "candidate": "c43",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  },
+  {
+   "code": "REQUIRED_INFERRED",
+   "page": 2,
+   "field": "telefon",
+   "candidate": "c44",
+   "evidence": [],
+   "detail": "the paper does not say whether this is required; marked required by our rule"
+  }
+ ],
+ "mandatory_attachments": {
+  "status": "not_found",
+  "evidence": []
+ },
+ "dispositions": [
+  {
+   "candidate": "c1",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c1"
+  },
+  {
+   "candidate": "c2",
+   "fate": "STANDARD",
+   "role": "standard/twoje_dane"
+  },
+  {
+   "candidate": "c3",
+   "fate": "STANDARD",
+   "role": "standard/adres"
+  },
+  {
+   "candidate": "c4",
+   "fate": "AWAITING_DECISION",
+   "decision": "label_c4"
+  },
+  {
+   "candidate": "c5",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  },
+  {
+   "candidate": "c6",
+   "fate": "FIELD",
+   "key": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego"
+  },
+  {
+   "candidate": "c7",
+   "fate": "FIELD",
+   "key": "mui"
+  },
+  {
+   "candidate": "c8",
+   "fate": "FIELD",
+   "key": "miejscowosc"
+  },
+  {
+   "candidate": "c9",
+   "fate": "FIELD",
+   "key": "numer_ewidencyjny_dzialki"
+  },
+  {
+   "candidate": "c10",
+   "fate": "FIELD",
+   "key": "w_celu_wykonania"
+  },
+  {
+   "candidate": "c11",
+   "fate": "FIELD",
+   "key": "rodzaj_robot_i_sposob_wykonania"
+  },
+  {
+   "candidate": "c12",
+   "fate": "FIELD",
+   "key": "dlugosc"
+  },
+  {
+   "candidate": "c13",
+   "fate": "FIELD",
+   "key": "szerokosc"
+  },
+  {
+   "candidate": "c14",
+   "fate": "FIELD",
+   "key": "razem"
+  },
+  {
+   "candidate": "c15",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c16",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c17",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c18",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c19",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c20",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c21",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c22",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c23",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c24",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c25",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c26",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c27",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c28",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c29",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c30",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c31",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c32",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c33",
+   "fate": "MERGED",
+   "into": "c12",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c34",
+   "fate": "MERGED",
+   "into": "c13",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c35",
+   "fate": "MERGED",
+   "into": "c14",
+   "why": "TABLE_ROW"
+  },
+  {
+   "candidate": "c36",
+   "fate": "FIELD",
+   "key": "calkowita_powierzchnia_zajecia"
+  },
+  {
+   "candidate": "c37",
+   "fate": "FIELD",
+   "key": "termin_od"
+  },
+  {
+   "candidate": "c38",
+   "fate": "FIELD",
+   "key": "termin_do"
+  },
+  {
+   "candidate": "c39",
+   "fate": "FIELD",
+   "key": "tj"
+  },
+  {
+   "candidate": "c40",
+   "fate": "FIELD",
+   "key": "wykonawca_robot_bedzie"
+  },
+  {
+   "candidate": "c41",
+   "fate": "FIELD",
+   "key": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji"
+  },
+  {
+   "candidate": "c42",
+   "fate": "FIELD",
+   "key": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z"
+  },
+  {
+   "candidate": "c43",
+   "fate": "FIELD",
+   "key": "zam"
+  },
+  {
+   "candidate": "c44",
+   "fate": "FIELD",
+   "key": "telefon"
+  },
+  {
+   "candidate": "c45",
+   "fate": "LEFT_OUT",
+   "reason": "SIGNATURE_AND_DATE"
+  }
+ ]
+}
