@@ -120,10 +120,14 @@ def _prep_shapes(shapes: _raster.Shapes, words: list[_ocr.Word], prep: frozenset
 
 def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s: float = S) -> tuple[Page, list[Warning]]:
     """One page strip (mode L) -> page of origin "ocr" and its warnings."""
+    warns: list[Warning] = []
+    if "deskew" in options.scan_prep:
+        grey, angle = _raster.deskew(grey)
+        if angle:
+            warns.append(Warning(code="UNREADABLE_PART", page=number, detail=f"page straightened by {angle} degrees"))
     w, h = grey.size
     ink = _raster.binarize(grey)
     has_ink = ink.getbbox() is not None
-    warns: list[Warning] = []
     runs: list[Run] = []
     words: list[_ocr.Word] = []
     if has_ink:

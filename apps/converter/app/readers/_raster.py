@@ -182,6 +182,34 @@ def a4_dpi(size: tuple[int, int]) -> float:
     return 200.0 * w / (A4_W_PX if w <= h else A4_W_PX * SQRT2)
 
 
+# ---------------------------------------------------------------- deskew (SCAN_PREP token "deskew")
+
+
+DESKEW_MAX = 5.0     # degrees searched either way
+DESKEW_FLOOR = 0.3   # a smaller angle is left alone: the page comes back as the same object
+
+
+def deskew(grey: Image.Image) -> tuple[Image.Image, float]:
+    """A page strip tilted by up to DESKEW_MAX degrees -> the strip turned level, and the angle it was turned by
+    (counter-clockwise, degrees). The angle maximises the sharpness of the row profile of the ink (level lines of
+    text and rules give tall narrow peaks): a coarse search in 0.25 degree steps, then 0.05 around the best."""
+    ink = binarize(grey)
+    if ink.getbbox() is None:
+        return grey, 0.0
+    sm = ink.resize((800, max(1, grey.size[1] * 800 // max(1, grey.size[0]))), Image.Resampling.BOX)
+
+    def score(a: float) -> tuple[int, float]:
+        p = sm.rotate(a, Image.Resampling.NEAREST, fillcolor=0).resize((1, sm.size[1]), Image.Resampling.BOX)
+        return sum(v * v for v in p.tobytes()), -abs(a)
+
+    steps = int(DESKEW_MAX * 4)
+    a = max((i / 4 for i in range(-steps, steps + 1)), key=score)
+    a = max((a + i / 20 for i in range(-5, 6)), key=score)
+    if abs(a) < DESKEW_FLOOR:
+        return grey, 0.0
+    return grey.rotate(a, Image.Resampling.BICUBIC, fillcolor=255), round(a, 2)
+
+
 # ---------------------------------------------------------------- cutting a tall scan
 
 
