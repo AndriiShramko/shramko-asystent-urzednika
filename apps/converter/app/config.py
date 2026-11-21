@@ -48,6 +48,9 @@ class Settings:
     jwt_leeway_s: int = 30
     finish_style: str = "export"
     validators: str = "on"
+    # "paper": REQUIRED only where the paper or the standard says so (completeness decision R-1, the partner's exports
+    # carry none); "inferred": also where our rule calls a field the substance of the request (design 6.4.3).
+    required_policy: str = "paper"
     repeating_style: str = "native"
     statutory_representative: bool = True
     poa_exemption: bool = False
@@ -89,6 +92,7 @@ class Settings:
             "jwt_alg": ALGORITHMS,
             "finish_style": ("export", "info_section"),
             "validators": ("on", "off"),
+            "required_policy": ("paper", "inferred"),
             "repeating_style": ("native", "flat"),
             "doc_reader": ("native", "libreoffice", "off"),
             "ocr_second_engine": ("on", "off"),
@@ -201,6 +205,7 @@ def compose_options(s: Settings):
     return ComposeOptions(
         finish_style=s.finish_style,
         validators=s.validators == "on",
+        required_policy=s.required_policy,
         repeating_style="section" if s.repeating_style == "flat" else "native",
         statutory_representative=s.statutory_representative,
         poa_exemption=s.poa_exemption,

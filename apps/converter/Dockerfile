@@ -32,6 +32,9 @@ RUN mkdir -p /out && \
 # ---- plus: Debian base (second OCR engine, OpenCV and Morfeusz have no wheel for Alpine) ---------------------
 FROM ${PY_SLIM} AS plus
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONUTF8=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+# Determinism (WP-F20i): one OCR thread whatever the host has, one locale, one time zone. C.UTF-8 is built into
+# glibc and is the only locale of musl; tools/ci/container_check.py asks the C library inside each image.
+ENV OMP_THREAD_LIMIT=1 OMP_NUM_THREADS=1 LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC
 RUN apt-get update && \
     apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-pol tesseract-ocr-eng \
         libheif-examples libheif-plugin-libde265 && \
@@ -65,6 +68,8 @@ CMD ["serve", "--host", "0.0.0.0", "--port", "8080"]
 # ---- core: Alpine base, the image of the submission (LAST stage: the default target) --------------------------
 FROM ${PY_ALPINE} AS core
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONUTF8=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+# Determinism (WP-F20i), the same line as in plus: one OCR thread, one locale, one time zone.
+ENV OMP_THREAD_LIMIT=1 OMP_NUM_THREADS=1 LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC
 RUN apk add --no-cache tesseract-ocr tesseract-ocr-data-pol tesseract-ocr-data-eng libheif-tools && \
     adduser -S -D -H -u 10001 -s /sbin/nologin converter
 # HEIC (WP-F20f, D24): the narrowest package that gives heif-dec, never libheif-plugins-all. No x265 (GPL-2.0+).

@@ -27,7 +27,10 @@ If work exists you are continuing it: never redo committed steps, never re-run c
 
 CHECKPOINTS. Commit after every finished step as `WP-<id>: <what>`, with the Status checklist updated in the same
 commit; commit before any run longer than 2 minutes. Add files by name. Never `git add -A`, `git add .`,
-`git stash`, `git rebase`, `git reset --hard`, `git push`. Catch up with `git merge --no-edit main`.
+`git stash`, `git rebase`, `git reset --hard`, a push of `main` or of another branch. Catch up with `git merge --no-edit main`.
+PUSH YOUR PACKAGE BRANCH after every commit: `git push origin wp/<id>-<slug>` (a limit kills an agent in the middle of a
+step; another lead on another subscription continues from origin). Keep "## Left for the next stage" of the status
+file current in every commit: the items left, the exact next commands, the checks that passed and on which commit.
 
 BOUNDARIES. Edit only the paths your package owns (docs/03-plan/ownership.md) and your status file. Never edit
 contracts/, AGENTS.md, CLAUDE.md, .claude/, docs/03-plan/STATUS.md, another package's files. Nothing you write for

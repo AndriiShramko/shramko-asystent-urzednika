@@ -9,7 +9,7 @@ PAGE MAIN Dane
   SECTION twoje_dane | Twoje dane | y=6 rows=4
     TEXT_FIELD imie | Imię | ro def=PESEL.name
     TEXT_FIELD nazwisko | Nazwisko | ro def=PESEL.surname
-    TEXT_FIELD numer_pesel | Numer PESEL | ro def=PESEL.pesel
+    TEXT_FIELD numer_pesel | Numer PESEL | ro def=PESEL.pesel val=PESEL
   SECTION adres_zamieszkania | Adres zamieszkania | y=10 rows=10
     SELECT kraj | Kraj | def=['Polska'] dict=Kraje
     TEXT_FIELD miejscowosc_zagranica | Miejscowość | cond
@@ -79,4 +79,4 @@ PAGE MAIN Kontakt i zgody
 PAGE FINISH Strona końcowa
   SECTION podglad_uzupelnionego_wniosku | Podgląd uzupełnionego wniosku | y=0 rows=2
     TEXT_BLOCK podglad_1 |  | html
-sha256 4b75b5f5c92b64d0144538788fa144ce2b9a465dedfff4fbb0342263b1eadcb4
+sha256 e5d5cbe8bd7d034c6e929447001058b8b543b880f2c248528ddb6dc109c4bbb8

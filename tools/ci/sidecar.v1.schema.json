@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sidecar as the converter emits it today (version 1)",
+  "description": "Written for the container check (WP-F20i) from app/pipeline.py: the shape the service answers with on /v1/forms/report and writes with `convert --report`. It is NOT contracts/coi/meta.schema.json: that contract describes the full sidecar of the design and the product does not emit it yet. The one part both share, meta.ledger, is validated against the contract's Ledger by tools/ci/sidecarcheck.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "converter", "counts", "warnings", "checks", "meta"],
+  "properties": {
+    "version": {"const": 1},
+    "converter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "pipeline", "reader"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "pipeline": {"enum": ["brief", "interim"]},
+        "reader": {"type": "string", "minLength": 1}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pages", "fields", "source_pages"],
+      "properties": {
+        "pages": {"type": "integer", "minimum": 1},
+        "fields": {"type": "integer", "minimum": 0},
+        "source_pages": {"type": "integer", "minimum": 1}
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "detail": {"type": "string"},
+          "page": {"type": "integer", "minimum": 1},
+          "field": {"type": "string"},
+          "candidate": {"type": "string"},
+          "evidence": {"type": "array"}
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "status"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^G([1-9]|1[0-2])$"},
+          "name": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "not_applicable"]},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origins", "brief_keys"],
+      "properties": {
+        "origins": {"type": "object"},
+        "brief_keys": {"type": "object", "additionalProperties": {"type": "string"}},
+        "ledger": {"type": "object"}
+      }
+    },
+    "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "form_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
