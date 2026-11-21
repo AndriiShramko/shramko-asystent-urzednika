@@ -260,6 +260,15 @@ def test_negative_control_hostile_http_answer_is_refused(args, expect):
     assert any(expect in f for f in found), found
 
 
+def test_job_log_keeps_the_rows_of_the_check_and_drops_the_time_stamps():
+    import job_log
+
+    log = ("2026-11-21T10:00:00.1234567Z PASS  a  (x)\n2026-11-21T10:00:01.0000000Z noise PASS  \n"
+           "2026-11-21T10:00:02.0Z FAIL  b  (y)\n2026-11-21T10:00:03.0Z 56 passed, 1 failed\n")
+    assert job_log.matching(log, r"^(PASS|FAIL)  |^\d+ passed, \d+ failed") == [
+        "PASS  a  (x)", "FAIL  b  (y)", "56 passed, 1 failed"]
+
+
 # ---- the HTTP half, against the service started natively ----------------------------------------------------------
 def _free_port() -> int:
     with socket.socket() as s:

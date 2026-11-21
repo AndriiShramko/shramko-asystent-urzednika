@@ -267,7 +267,7 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
         second, form2, sidecar = convert_with_sidecar(image, mount, path.name)
         problems = conversion_problems(cp.stdout, cp.stderr, second.returncode, form2, sidecar)
         res.add(f"convert {path.name} with --network none", problems,
-                f"{len(cp.stdout)} bytes, sha256 {hashlib.sha256(cp.stdout).hexdigest()[:12]}, {secs:.1f} s, "
+                f"{len(form2)} bytes, sha256 {hashlib.sha256(form2).hexdigest()[:12]}, {secs:.1f} s, "
                 f"keys title/tabs/flow, lint strict clean, same bytes twice; sidecar {len(sidecar)} bytes valid "
                 f"({differences_from_contract(sidecar)} rules of the full contract not met yet)")
 
