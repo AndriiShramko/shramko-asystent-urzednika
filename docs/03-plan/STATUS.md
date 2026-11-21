@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 15:08 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 15:13 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -10,7 +10,7 @@ Last update: 2026-11-21 15:08 CET. **Track F (the forms converter) is being buil
 
 | | Milestone | State |
 |---|---|---|
-| (a) | REST service with a token takes PDF and DOCX and answers with a valid partner JSON; image built and published by Actions | not reached |
+| (a) | REST service with a token takes PDF and DOCX and answers with a valid partner JSON; image built and published by Actions | **reached 15:13, commit `920dbf1`, tag `track-f-a`**: 430 tests; the PDF and DOCX of all nine sets answer 200 with 0 strict-linter errors; run on `main` green in three jobs; image `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf` published, signed, pulled back without a login and converting with no network. **Caveat: the form holds the title and the standard pages only; the fields of the matter come with F3 and F4** |
 | (b) | all eight formats, validators, dictionaries and initial data, conditions, the review page | not reached |
 | (c) | JSON of the seven judged forms in `results/`, README, architecture document, metrics | not reached |
 | (d) | PDF of ten slides and the script of the three-minute film | not reached |
