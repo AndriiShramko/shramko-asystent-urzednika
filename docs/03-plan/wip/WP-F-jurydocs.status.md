@@ -6,8 +6,8 @@ Branch: wp/F-jury-docs   Stage now: core (documents only)
 - [x] J2: jury section in `README.md`, `README.pl.md` (Polish), pointer in `README.ru.md`, matching part of `apps/converter/README.md`; stale digest `de661b01...` removed from all READMEs
 - [x] Item 2: commands 1, 2, loop and 3 run in Git Bash and Windows PowerShell 5.1 against the current core image (see Evidence)
 - [x] Item 4: configuration table (`AUTH_MODE` auto with three values, `JOB_TIMEOUT_S` 600, honest note on the open default); stale rows and the misplaced paragraph inside the table removed
-- [ ] J3: every `v1/selftest` mention replaced
-- [ ] Item 5: link check
+- [x] J3: every mention of the never-built self-test endpoint in owned files replaced by `GET /status` or command 1 (Polish texts in Polish); two left in files this package may not edit (Evidence)
+- [x] Item 5: link check green
 
 ## Decisions
 - Every bash command starts with `MSYS_NO_PATHCONV=1` (except the Linux `--user` line) / measured: without it Git Bash rewrites `/in/form.pdf` into a Windows path and `convert` exits 4 "Cannot read the file" / harmless env variable on Linux and macOS, so one line serves all three bash hosts.
@@ -41,12 +41,20 @@ Scratch folder `C:\Users\andri\AppData\Local\Temp\jurydocs` (outside the reposit
 - The final digest: the lead replaces `REPLACE_WITH_FINAL_DIGEST` after the CI build.
 
 ## Placeholder `REPLACE_WITH_FINAL_DIGEST`
-Listed by `git grep -n REPLACE_WITH_FINAL_DIGEST` (filled in below at the end of the stage).
+`git grep -n REPLACE_WITH_FINAL_DIGEST` (product documents; this status file also names it): `README.md` lines 13, 22, 28, 34, 40, 46, 54, 58, 64; `README.pl.md` lines 15, 24, 30, 36, 42, 48, 56, 60, 66; `README.ru.md` lines 5, 8; `apps/converter/README.md` line 39. One `sed -i 's/REPLACE_WITH_FINAL_DIGEST/<hex>/g' README.md README.pl.md README.ru.md apps/converter/README.md` replaces all 21.
+
+## J3 evidence
+- Replaced: `apps/converter/README.md` (not-in-service line), `docs/02-architecture/converter-design.md` (endpoint table, `AUTH_MODE` row, threat row "no network", container row, test step 4), `docs/03-plan/DECISIONS-forms-track.md` D13 (keeps "planned here and never built" as history), `docs/03-plan/work-packages/WP-F-forms-to-json.md` WP-F16 line (same history note), `docs/05-hackathon/jury-qa-formularze.md` answer 12 (Polish and Russian, plus its "True only if"), `docs/05-hackathon/presentation/storyboard-coi-v2.md` slide tick box (Polish).
+- `git grep -c "v1/selftest"` after the change: `docs/03-plan/NEXT-WAVE.md:1`, `docs/03-plan/wip/WP-F20.status.md:2`, both excluded from this package by the brief (lead's file, another package's status).
+- Left as dated history or proposal, without `v1/`: `/selftest` in `research/16-security-for-a-government-converter.md` (a research proposal list) and in `docs/05-hackathon/mentor-questions/answers-v2.md` (the record of what mentors were asked). Not promises of the product; the lead may want a "never built" note there.
+- `bash tools/gate.sh py tools/check_links.py .`: `checked; broken links: 0`.
 
 ## Negative control
 Documents only. The control is the Git Bash run without `MSYS_NO_PATHCONV=1` (exit 4) and the PowerShell `>` run (UTF-16 BOM): each breaks what the README promises, both are recorded above, the README lines avoid both.
 
 ## Requests to lead
+- `docs/03-plan/NEXT-WAVE.md:21` and `docs/03-plan/wip/WP-F20.status.md:15,60` still name the self-test endpoint: lead's and WP-F20's files.
+- The fast gate was not run: this package changes Markdown only; the link check is its gate.
 - After CI builds `wp/F-service-fixes`: replace the placeholder in the files listed above, then run on the new image the PowerShell command 3 without `-e AUTH_MODE=off`, `curl.exe http://127.0.0.1:8080/status`, and command 2 into a read-only folder (expect exit 4, one line).
 
 ## Cost notes

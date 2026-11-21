@@ -29,7 +29,7 @@ Slide line (Polish): „Kompilator z księgowym, nie skaner z AI. Urzędnik zatw
 | # | Decision |
 |---|---|
 | D12 | Default path: readers, geometry, rules, lexicons. It must produce a valid, useful form alone. A model step exists only as an interface that picks from an enumeration, switched off; no weights are shipped |
-| D13 | Nothing leaves the container at run time. An audit hook blocks name resolution and connects inside the worker; `GET /v1/selftest` reports the mode and proves it |
+| D13 | Nothing leaves the container at run time. An audit hook blocks name resolution and connects inside the worker; the proof is a conversion in a container started with `--network none` (command 1 of the README), and `GET /status` reports `engine: "rules"` (a self-test endpoint was planned here and never built) |
 | D14 | Hosted models (the partner's credits) are used only while building: silver labels, lexicon mining, reviews by a second model family, research. Tool: `tools/eden/eden.py`. Nothing they produce is trusted without a rule or a test that keeps it |
 
 ## 4. Stack (verified in research/14)
