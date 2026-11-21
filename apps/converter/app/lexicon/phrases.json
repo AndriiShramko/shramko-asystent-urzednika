@@ -6,6 +6,8 @@
     {"phrase": "przy ulicy", "label": "Ulica", "source": "set reference-01", "date": "2026-11-21"},
     {"phrase": "w obrębie", "label": "Obręb", "source": "set reference-01", "date": "2026-11-21"},
     {"phrase": "nr ewidencyjny działki", "label": "Numer ewidencyjny działki", "source": "set reference-01", "date": "2026-11-21"},
+    {"phrase": "zam", "label": "Adres zamieszkania", "source": "set judged-06 (\"zam.\", resident at)", "date": "2026-11-21"},
+    {"phrase": "zam.", "label": "Adres zamieszkania", "source": "set judged-06 (\"zam.\", resident at)", "date": "2026-11-21"},
     {"phrase": "działka nr ewid", "label": "Numer ewidencyjny działki", "source": "set judged-06", "date": "2026-11-21"},
     {"phrase": "w kwocie", "label": "Kwota", "source": "set reference-05", "date": "2026-11-21"},
     {"phrase": "tel", "label": "Telefon", "source": "set judged-06", "date": "2026-11-21"}

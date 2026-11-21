@@ -11,6 +11,8 @@
     {"pattern": "rachunk|kont[oa] bankow", "type": "TEXT_FIELD", "concept": "nrb", "length": 26, "source": "design 5.3 example; WP-F3 acceptance (the account holds 26 digits by the label)", "date": "2026-11-21"},
     {"pattern": "w terminie od( dnia)?$", "type": "DATEPICKER", "concept": "date", "label": "Termin od", "source": "design 6.4.3 row 2; sets judged-04, judged-06", "date": "2026-11-21"},
     {"pattern": "^(data|termin)\\b|\\bdata (urodzenia|szczepienia|uiszczenia|wydania|zawarcia)", "type": "DATEPICKER", "concept": "date", "source": "design 6.4.3 row 2; sets judged-02, judged-07", "date": "2026-11-21"},
+    {"pattern": "\\bdd[-./ ]?mm[-./ ]?(rrrr|yyyy)|\\bdnia$", "type": "DATEPICKER", "concept": "date", "source": "audit T9, sets judged-06, judged-09 (the paper's own format hint, 'dnia')", "date": "2026-11-21"},
+    {"pattern": "\\bdni$", "type": "NUMBER", "concept": "count", "source": "audit T9, set judged-06 (a count of days)", "date": "2026-11-21"},
     {"pattern": "kwot|wysokość opłaty", "type": "NUMBER", "concept": "amount_pln", "source": "design 5.3 example; set reference-05", "date": "2026-11-21"},
     {"pattern": "\\b(ilość|liczba)\\b", "type": "NUMBER", "concept": "count", "source": "set judged-04", "date": "2026-11-21"},
     {"pattern": "powierzchni", "type": "NUMBER", "concept": "area", "source": "set judged-06", "date": "2026-11-21"},
