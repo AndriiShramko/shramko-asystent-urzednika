@@ -5,7 +5,7 @@ import { dictionaryKeys, initialLang, translate, hasKey, LANGS } from '../src/li
 import { boundaryOf, parseMultipart } from '../src/lib/multipart'
 import { buildView } from '../src/lib/model'
 import { groupWarnings, parseWarningsHeader } from '../src/lib/warnings'
-import { interpretResponse, convertFile, problemFrom } from '../src/lib/api'
+import { interpretResponse, convertFile, parseEngine, problemFrom } from '../src/lib/api'
 import { canonical, multipartBody, sha256, syntheticForm, syntheticSidecar } from './helpers'
 
 const headersOf = (o: Record<string, string>) => new Headers(o)
@@ -122,6 +122,19 @@ describe('talking to the service', () => {
     expect(res.sidecar).not.toBeNull()
     expect(res.sidecarMissing).toBeNull()
     expect(res.header).toMatchObject({ count: 3 })
+  })
+
+  it('reads the engine of the conversion from X-Converter-Engine and never guesses one', async () => {
+    const body = multipartBody(formBytes, metaBytes)
+    const ct = 'multipart/mixed; boundary=formularze-abc123'
+    for (const engine of ['rules', 'rules+model', 'rules-fallback']) {
+      const res = await interpretResponse(200, headersOf({ 'content-type': ct, 'x-converter-engine': engine }), body)
+      expect(res.kind === 'ok' && res.engine).toBe(engine)
+    }
+    expect(parseEngine(' Rules ')).toBe('rules')
+    for (const odd of [null, '', 'model', 'rules+model; extra', 'gpt', '<b>rules</b>']) expect(parseEngine(odd)).toBeNull()
+    const none = await interpretResponse(200, headersOf({ 'content-type': ct }), body)
+    expect(none.kind === 'ok' && none.engine).toBeNull()
   })
 
   it('flags a wrong sum and an absent sum', async () => {

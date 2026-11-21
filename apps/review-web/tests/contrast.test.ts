@@ -20,9 +20,13 @@ export function ratio(a: string, b: string): number {
 const TEXT_PAIRS: [string, string][] = [
   ['text', 'bg'], ['text', 'surface'], ['muted', 'bg'], ['muted', 'surface'], ['accent', 'bg'], ['on-accent', 'accent'],
   ['chip-text', 'chip-bg'], ['req-text', 'req-bg'], ['bad', 'bg'], ['notice-text', 'notice-bg'], ['error-text', 'error-bg'],
-  ['text', 'chip-bg'], ['accent', 'chip-bg']
+  ['text', 'chip-bg'], ['accent', 'chip-bg'],
+  // the engine band (WP-H4): grey rules, green rules+model, amber rules-fallback
+  ['engine-rules-text', 'engine-rules-bg'], ['engine-model-text', 'engine-model-bg'], ['engine-fallback-text', 'engine-fallback-bg']
 ]
-const UI_PAIRS: [string, string][] = [['border', 'bg'], ['border', 'surface'], ['focus', 'bg'], ['accent', 'surface'], ['bad', 'error-bg']]
+const UI_PAIRS: [string, string][] = [['border', 'bg'], ['border', 'surface'], ['focus', 'bg'], ['accent', 'surface'], ['bad', 'error-bg'],
+  ['engine-rules-edge', 'engine-rules-bg'], ['engine-model-edge', 'engine-model-bg'], ['engine-fallback-edge', 'engine-fallback-bg'],
+  ['engine-rules-edge', 'bg'], ['engine-model-edge', 'bg'], ['engine-fallback-edge', 'bg']]
 
 describe('contrast tokens', () => {
   it('finds the tokens', () => expect(Object.keys(tokens).length).toBeGreaterThanOrEqual(17))

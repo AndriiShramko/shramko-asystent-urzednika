@@ -75,6 +75,12 @@ export const pl = {
   'json.hash.unchecked': 'Sumy SHA-256 nie sprawdzono (przeglądarka nie udostępnia tej funkcji lub brak nagłówka).',
   'json.bytes': 'Rozmiar: {n} B',
 
+  'engine.label': 'Silnik konwersji:',
+  'engine.rules': 'same reguły, bez modelu językowego.',
+  'engine.model': 'reguły oraz krok modelu językowego.',
+  'engine.fallback': 'reguły w trybie awaryjnym: model nie odpowiedział, wynik jest taki sam jak bez modelu.',
+  'engine.unknown': 'usługa nie podała silnika (brak nagłówka X-Converter-Engine).',
+
   'sidecar.missing.heading': 'Brakuje raportu towarzyszącego',
   'sidecar.missing.body': 'Usługa nie przysłała raportu (meta.json). Formularz jest pokazany w całości, ale brakuje: pochodzenia pól (papier czy standard), stron i fragmentów papieru oraz listy ostrzeżeń z raportu.',
 
@@ -137,6 +143,9 @@ export const pl = {
   'warn.CLAUSE_LINK_MISSING': 'Zgoda lub klauzula na papierze nie ma wskazanego odnośnika.',
   'warn.NO_MATTER': 'Nie znaleziono żadnych pól sprawy; formularz zawiera tylko sekcje standardowe.',
   'warn.EXTRA_NOT_PLACED': 'Dodatkowa treść z papieru nie została nigdzie umieszczona.',
+  'warn.MODEL_USED': 'W tej konwersji wykonano krok modelu językowego; raport wymienia, co zmienił.',
+  'warn.MODEL_FALLBACK': 'Model językowy nie odpowiedział poprawnie; wynik pochodzi z samych reguł i jest taki sam jak bez modelu.',
+  'warn.MODEL_SKIPPED': 'Model językowy jest skonfigurowany, ale w tej konwersji nie był potrzebny; wynik pochodzi z samych reguł.',
   'warn.BRIEF_NOT_READ': 'Sprawa z papieru nie została jeszcze odczytana; wynik zawiera tylko tytuł i sekcje standardowe.',
   'warn.LEDGER_NOT_CLOSED': 'Rozliczenie wszystkich miejsc papieru nie zamknęło się. Liczby w raporcie mogą być niepełne.',
   'warn.PIPELINE_STUB': 'To wynik zastępczy: czytnik papieru nie jest jeszcze podłączony.'

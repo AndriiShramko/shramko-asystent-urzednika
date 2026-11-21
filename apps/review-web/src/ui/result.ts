@@ -4,7 +4,7 @@
 import { t } from '../lib/i18n'
 import { buildView, type FieldRow, type ViewModel } from '../lib/model'
 import { groupWarnings, placeOf, type HeaderWarnings, type RawWarning } from '../lib/warnings'
-import type { Converted, Problem } from '../lib/api'
+import type { Converted, Engine, Problem } from '../lib/api'
 import { h } from './dom'
 
 const PL = { lang: 'pl' }
@@ -120,11 +120,22 @@ function jsonSection(res: Converted): HTMLElement {
     area)
 }
 
+/** The engine of this conversion as a band with words: the label, the token of the header, what it means. The
+ * colour (grey, green, amber) only repeats what the text already says. */
+export function engineBadge(engine: Engine | null): HTMLElement {
+  const kind = engine === 'rules+model' ? 'model' : engine === 'rules-fallback' ? 'fallback' : engine === 'rules' ? 'rules' : 'unknown'
+  return h('p', { id: 'engine', class: `engine engine-${kind}`, 'data-engine': engine ?? 'unknown' },
+    h('span', { class: 'engine-label' }, t('engine.label')), ' ',
+    engine ? h('code', { class: 'engine-token' }, engine) : null, engine ? ' — ' : null,
+    h('span', { class: 'engine-meaning' }, t(`engine.${kind}`)))
+}
+
 export function renderConverted(res: Converted): HTMLElement {
   const view = buildView(res.form, res.sidecar)
   const root = h('div', { class: 'result' })
   root.append(h('h2', { id: 'h-done', tabindex: -1, class: 'result-title' }, t('status.done', { title: view.title })))
   root.querySelector('#h-done')?.setAttribute('lang', 'pl')
+  root.append(engineBadge(res.engine))
   if (!view.hasSidecar) {
     root.append(h('section', { class: 'notice', role: 'note', 'aria-labelledby': 'h-nosidecar' },
       h('h2', { id: 'h-nosidecar' }, t('sidecar.missing.heading')),

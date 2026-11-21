@@ -25,6 +25,17 @@ export interface Converted {
   header: HeaderWarnings | null
   formSha256: string | null
   hash: HashCheck
+  /** The engine this conversion ran on, from `X-Converter-Engine`; null when the service did not state it. */
+  engine: Engine | null
+}
+
+export type Engine = 'rules' | 'rules+model' | 'rules-fallback'
+const ENGINES: readonly string[] = ['rules', 'rules+model', 'rules-fallback']
+
+/** `X-Converter-Engine` names one of three engines. No header, or any other value, is "not stated": never a guess. */
+export function parseEngine(raw: string | null): Engine | null {
+  const value = (raw ?? '').trim().toLowerCase()
+  return ENGINES.includes(value) ? (value as Engine) : null
 }
 
 export type Outcome = Converted | Problem
@@ -113,7 +124,8 @@ export async function interpretResponse(
     sidecarMissing,
     header: parseWarningsHeader(headers.get('x-converter-warnings')),
     formSha256,
-    hash
+    hash,
+    engine: parseEngine(headers.get('x-converter-engine'))
   }
 }
 

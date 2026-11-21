@@ -18,6 +18,15 @@
   --c-notice-text: #3d2f00;
   --c-error-bg: #fdecec;
   --c-error-text: #5c0f0f;
+  --c-engine-rules-bg: #e8e8e8;
+  --c-engine-rules-text: #1b1b1b;
+  --c-engine-rules-edge: #595959;
+  --c-engine-model-bg: #dff3e3;
+  --c-engine-model-text: #0b3d17;
+  --c-engine-model-edge: #1a6b2d;
+  --c-engine-fallback-bg: #ffe8b3;
+  --c-engine-fallback-text: #3d2f00;
+  --c-engine-fallback-edge: #8a5a00;
   --space: 1rem;
 }
 
@@ -98,6 +107,15 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 
 .notice { background: var(--c-notice-bg); color: var(--c-notice-text); border: 2px solid var(--c-notice-text); border-radius: 6px; padding: 0.5rem 1rem; margin-top: 1.5rem; }
 .notice h2 { margin-top: 0.5rem; }
+
+/* The engine of the last conversion. The words carry the meaning; the colour repeats it (WCAG 1.4.1). */
+.engine { margin: 0.5rem 0 0; padding: 0.4rem 0.75rem; border: 1px solid var(--c-border); border-left-width: 0.5rem; border-radius: 4px; }
+.engine-label, .engine-token { font-weight: 600; }
+.engine-token { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1rem; }
+.engine-rules { background: var(--c-engine-rules-bg); color: var(--c-engine-rules-text); border-color: var(--c-engine-rules-edge); }
+.engine-model { background: var(--c-engine-model-bg); color: var(--c-engine-model-text); border-color: var(--c-engine-model-edge); }
+.engine-fallback { background: var(--c-engine-fallback-bg); color: var(--c-engine-fallback-text); border-color: var(--c-engine-fallback-edge); }
+.engine-unknown { border-style: dashed; }
 .error { background: var(--c-error-bg); color: var(--c-error-text); border: 2px solid var(--c-bad); border-radius: 6px; padding: 0.5rem 1rem; margin-top: 1.5rem; }
 .error h2 { margin-top: 0.5rem; }
 .error .muted { color: var(--c-error-text); }

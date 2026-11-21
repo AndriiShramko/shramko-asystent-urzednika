@@ -73,6 +73,12 @@ export const en: Dict = {
   'json.hash.unchecked': 'The SHA-256 sum was not checked (the browser does not offer it, or the header is missing).',
   'json.bytes': 'Size: {n} B',
 
+  'engine.label': 'Conversion engine:',
+  'engine.rules': 'rules only, no language model.',
+  'engine.model': 'rules and the language model step.',
+  'engine.fallback': 'rules in fallback mode: the model did not answer, the result is the same as without the model.',
+  'engine.unknown': 'the service did not state the engine (no X-Converter-Engine header).',
+
   'sidecar.missing.heading': 'The accompanying report is missing',
   'sidecar.missing.body': 'The service did not send a report (meta.json). The form is shown in full, but these are absent: the origin of fields (paper or standard), pages and snippets of the paper, and the warnings list of the report.',
 
@@ -135,6 +141,9 @@ export const en: Dict = {
   'warn.CLAUSE_LINK_MISSING': 'A consent or clause on the paper has no link pointing to it.',
   'warn.NO_MATTER': 'No fields of the matter were found; the form holds only standard sections.',
   'warn.EXTRA_NOT_PLACED': 'Extra content from the paper was not placed anywhere.',
+  'warn.MODEL_USED': 'The language model step ran in this conversion; the report lists what it changed.',
+  'warn.MODEL_FALLBACK': 'The language model did not answer properly; the result comes from the rules alone and is the same as without the model.',
+  'warn.MODEL_SKIPPED': 'A language model is configured but was not needed in this conversion; the result comes from the rules alone.',
   'warn.BRIEF_NOT_READ': 'The matter of the paper has not been read yet; the result holds only the title and standard sections.',
   'warn.LEDGER_NOT_CLOSED': 'The account of all places of the paper did not close. Numbers in the report may be incomplete.',
   'warn.PIPELINE_STUB': 'This is a placeholder result: the paper reader is not connected yet.'
