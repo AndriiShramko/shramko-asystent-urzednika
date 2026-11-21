@@ -1,0 +1,35 @@
+{
+  "meta_version": 1.1,
+  "converter": {"version": "0.5.0", "image": "core", "profile": "FINISH_STYLE=export;VALIDATORS=on;REPEATING_STYLE=native"},
+  "hashes": {"input_sha256": "9f2c000000000000000000000000000000000000000000000000000000000011",
+             "form_sha256": "41aa000000000000000000000000000000000000000000000000000000000012",
+             "brief_sha256": "77b0000000000000000000000000000000000000000000000000000000000013"},
+  "origins": {"00000000-0000-5000-8000-0000000000a1": "paper", "00000000-0000-5000-8000-0000000000a2": "paper"},
+  "evidence": {
+    "00000000-0000-5000-8000-0000000000a1": [
+      {"page": 1, "anchor": "p[4]", "quote": "Gatunek", "candidate": "c40", "runs": ["r4"]},
+      {"page": 1, "anchor": "p[4]", "candidate": "c41"}
+    ],
+    "00000000-0000-5000-8000-0000000000a2": {"page": 1, "box": [300.0, 414.0, 540.0, 414.0], "anchor": "p[6]", "candidate": "c50"}
+  },
+  "ledger": {
+    "blanks_found": 5,
+    "became_field": 2, "merged": 2, "covered_by_standard": 1, "left_out": 0, "awaiting_decision": 0,
+    "rows": [{"candidate": "c40", "fate": "FIELD", "field": "00000000-0000-5000-8000-0000000000a1"},
+             {"candidate": "c41", "fate": "MERGED", "into": "c40", "why": "GROUP_MEMBER"},
+             {"candidate": "c42", "fate": "MERGED", "into": "c40", "why": "GROUP_MEMBER"},
+             {"candidate": "c50", "fate": "FIELD", "field": "00000000-0000-5000-8000-0000000000a2"},
+             {"candidate": "c51", "fate": "STANDARD", "section": "standard/twoje_dane"}]
+  },
+  "receipts": {
+    "fee": {"status": "not_found"},
+    "who_may_apply": {"status": "stated", "evidence": [{"quote": "Imię i nazwisko"}]},
+    "mandatory_attachments": {"status": "not_found"}
+  },
+  "coverage": {"runs_total": 7, "assigned": 7, "unassigned": []},
+  "warnings": [{"id": "warning-1", "code": "SECTION_SPLIT", "detail": "remark of the composer, carried as it is"}],
+  "proposals": {
+    "fee": {"value": "17 zł", "why": "przykład syntetyczny: kwota z taryfy, do sprawdzenia przez urzędnika"}
+  },
+  "legal_basis": {"status": "not_found"}
+}

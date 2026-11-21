@@ -75,16 +75,17 @@ def test_explicit_null_is_refused() -> None:
 def test_negative_run_with_neither_box_nor_anchor_is_refused() -> None:
     data = _example("page-model")
     del data["pages"][0]["runs"][0]["box"]
-    with pytest.raises(ValidationError, match="exactly one of box or anchor"):
+    with pytest.raises(ValidationError, match="box or an anchor"):
         PageModel.model_validate(data)
     assert list(_schema("page-model").iter_errors(data))
 
 
-def test_run_with_both_box_and_anchor_is_refused() -> None:
+def test_run_with_both_box_and_anchor_is_taken_since_1_1() -> None:
+    """Revision 1.1 (placement per element): a native run may carry an anchor beside its box."""
     data = _example("page-model")
     data["pages"][0]["runs"][0]["anchor"] = "p[1]"
-    with pytest.raises(ValidationError, match="exactly one of box or anchor"):
-        PageModel.model_validate(data)
+    PageModel.model_validate(data)
+    assert list(_schema("page-model").iter_errors(data)) == []
 
 
 def _flow_doc() -> dict:

@@ -187,6 +187,14 @@
           },
           "title": "Silent Pages",
           "type": "array"
+        },
+        "gaps": {
+          "description": "1.1: characters of partly covered runs that no span covers (such runs are unassigned).",
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Gaps",
+          "type": "array"
         }
       },
       "required": [
@@ -291,7 +299,7 @@
     },
     "Evidence": {
       "additionalProperties": false,
-      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.\n\nRevision 1.1: a record may carry box and anchor together (an anchored text box), and may leave out the quote\nwhen it locates a drawn blank with a box or an anchor. A Stated value still needs a quote (see Stated).",
       "properties": {
         "page": {
           "minimum": 1,
@@ -340,11 +348,15 @@
         "candidate": {
           "title": "Candidate",
           "type": "string"
+        },
+        "spans": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Spans",
+          "type": "array"
         }
       },
-      "required": [
-        "quote"
-      ],
       "title": "Evidence",
       "type": "object"
     },
@@ -403,6 +415,7 @@
           "type": "string"
         },
         "quote": {
+          "description": "1.1: may be left out when box or anchor locate a drawn blank.",
           "minLength": 1,
           "title": "Quote",
           "type": "string"
@@ -410,11 +423,16 @@
         "candidate": {
           "title": "Candidate",
           "type": "string"
+        },
+        "runs": {
+          "description": "1.1: run ids of the quote or of the blank.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
         }
       },
-      "required": [
-        "quote"
-      ],
       "title": "FieldEvidence",
       "type": "object"
     },
@@ -669,6 +687,10 @@
           },
           "title": "Other",
           "type": "array"
+        },
+        "fee": {
+          "$ref": "#/$defs/ProposedFee",
+          "description": "1.1: a proposed fee; receipts.fee stays what the paper states."
         }
       },
       "title": "Proposals",
@@ -716,6 +738,36 @@
         "name"
       ],
       "title": "ProposedDictionary",
+      "type": "object"
+    },
+    "ProposedFee": {
+      "additionalProperties": false,
+      "description": "1.1: a fee we propose (from a statute or a guide), kept apart from the paper's fee: it never turns a\n`not_found` fee into `stated` (brief.proposed_fee, meta proposals.fee).",
+      "properties": {
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "value",
+        "why"
+      ],
+      "title": "ProposedFee",
       "type": "object"
     },
     "ProposedOther": {
@@ -857,6 +909,34 @@
       "title": "Resources",
       "type": "object"
     },
+    "Span": {
+      "additionalProperties": false,
+      "description": "Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an\noption that shares its run with others (\"❑ pies ❑ suka\"). Revision 1.1. A whole run is still named by its id\nalone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans).",
+      "properties": {
+        "run": {
+          "minLength": 1,
+          "title": "Run",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run",
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
     "Stated": {
       "additionalProperties": false,
       "description": "A value the paper states, does not state, or states in competing ways (design 5.3).\n\nstated: evidence with at least one quote; not_found: no value and no evidence; ambiguous: the competing quotes.\nA value is never filled in without one of the three.",
@@ -949,7 +1029,20 @@
             "ADDRESSEE_CONFLICT",
             "COMPOSITE_UNRESOLVED",
             "INFERRED_SHAPE",
-            "LOW_CONFIDENCE"
+            "LOW_CONFIDENCE",
+            "REQUIRED_WITHOUT_EVIDENCE",
+            "CONDITION_NOT_WRITTEN",
+            "SECTION_SPLIT",
+            "REPEATING_FLATTENED",
+            "STEP_NOTE_ADDED",
+            "MARKUP_IN_LABEL",
+            "TITLE_MISSING",
+            "ADDRESSEE_MISSING",
+            "APPLICANTS_ASSUMED",
+            "SOLE_TRADER_AS_ENTITY",
+            "CLAUSE_LINK_MISSING",
+            "NO_MATTER",
+            "EXTRA_NOT_PLACED"
           ],
           "title": "Code",
           "type": "string"
@@ -1016,10 +1109,13 @@
   "additionalProperties": false,
   "properties": {
     "meta_version": {
-      "const": 1,
-      "default": 1,
-      "title": "Meta Version",
-      "type": "integer"
+      "default": 1.1,
+      "description": "Revision of this contract; 1 (1.0) still validates.",
+      "enum": [
+        1,
+        1.1
+      ],
+      "title": "Meta Version"
     },
     "converter": {
       "$ref": "#/$defs/Converter"
@@ -1042,9 +1138,20 @@
     },
     "evidence": {
       "additionalProperties": {
-        "$ref": "#/$defs/FieldEvidence"
+        "anyOf": [
+          {
+            "$ref": "#/$defs/FieldEvidence"
+          },
+          {
+            "items": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "type": "array"
+          }
+        ]
       },
       "default": {},
+      "description": "Form id -> one evidence record (1.0) or a non-empty list of them (1.1).",
       "title": "Evidence",
       "type": "object"
     },
@@ -1134,5 +1241,5 @@
   ],
   "title": "Meta",
   "type": "object",
-  "description": "Sidecar meta keyed by form ids (design 5.4). Also checked by app.model.meta: the ledger closes (blanks_found equals the sum of the five fates, one row per blank, counts equal rows by fate), coverage adds up, decisions resolve existing warnings."
+  "description": "Sidecar meta keyed by form ids (design 5.4). Also checked by app.model.meta: the ledger closes (blanks_found equals the sum of the five fates, one row per blank, counts equal rows by fate), coverage adds up, decisions resolve existing warnings; app.model.ledger assembles the ledger from the finder's candidates and the brief's dispositions. Revision 1.1, additive."
 }
