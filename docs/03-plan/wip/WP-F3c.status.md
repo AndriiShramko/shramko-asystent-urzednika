@@ -52,12 +52,39 @@ Ticket keys of T3 to T5 still present in the seven PDF forms: 12 of 12.
 - Either-or pair: an item whose condition holds "nie" and shares two word stems with another item's label / set 6 traffic project vs safety information / rules out pairing items that merely both have conditions.
 - Lead additions (17:50): "właściwe zaznaczyć" is already exclusive wording, ☐ □ and drawn rectangles are already marks of the finder; ■ (filled) is not added: it reads as a ticked example (negative control of the card). "kopia" ("w załączeniu kopia ...") is taken in item 2. Sets 4 and 7: before/after rows are reported explicitly.
 
+After item 2 (PDF; DOCX unchanged by item 2 except set 4 upl 0 -> 1 and set 9 upl 0 -> 4):
+
+| set | fmt | fields | RADIO | CHECKBOX | upl | req | low | <4 | lint |
+|---|---|---|---|---|---|---|---|---|---|
+| 02 | pdf | 5 | 1 [2] | 0 | 0 | 5 | 0 | 0 | 0 |
+| 03 | pdf | 3 | 0 | 1 [5] | 0 | 2 | 1 | 0 | 0 |
+| 04 | pdf | 7 | 1 [2] | 0 | 1 | 7 | 4 | 0 | 0 |
+| 06 | pdf | 19 | 1 [2] | 0 | 5 | 24 | 13 | 3 | 0 |
+| 07 | pdf | 12 | 4 [2, 2, 2, 3] | 0 | 1 | 11 | 4 | 0 | 0 |
+| 08 | pdf | 39 | 2 [2, 2] | 2 [4, 0] | 3 | 38 | 17 | 0 | 0 |
+| 09 | pdf | 61 | 4 [3, 2, 2, 2] | 1 [3] | 4 | 62 | 15 | 0 | 0 |
+
+Ticket keys of T3 to T5 still present: 12 of 12 (items 3 to 5 not started). Sets 4 and 7: label diff shows only additions
+(set 4: one optional upload; set 7: two RADIO and one upload); no field of the matter and no label lost.
+
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
+| synthetic tests items 1, 2 | `bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_f3c.py -q` | 12 passed (6 negative cases) | 31e2011 |
+| find/mean/compose/pipeline incl. `sets` | `bash tools/gate.sh py -m pytest apps/converter/tests/find apps/converter/tests/mean apps/converter/tests/compose apps/converter/tests/pipeline -q -m "not slow"` | 180 passed, 1 skipped (local briefs absent) | 31e2011 |
+| probe, 13 files | `bash tools/gate.sh py eval/probe/matter.py` | tables above; strict-lint errors 0 on all 13 | 31e2011 |
+| fast gate | `bash tools/gate.sh fast` | 682 passed, 2 skipped, 22 deselected; chain tests 21 passed; "gate: fast PASSED on 31e2011" | 31e2011 |
 
 ## Negative control
+The group split disabled (`if head and ...` -> `if False and head and ...` in `_split_group`): `test_a_line_ending_in_a_colon_between_options_splits_the_group_in_two` failed (1 failed, 11 passed); file restored with `git checkout --` -> 12 passed. Nothing committed in the broken state.
+
+## Left for the next core stage (cases located on the PDFs with `dump` of reading order; no form text here)
+- item 3 (T3): set 6 two short tails ("Mui", "Tj") are words after a blank inside a sentence; set 8 two section headings became fields of their own (a `cell` candidate whose label is the section heading: c58, c59 kind) and a printed rate cell became a field; set 9 a consent sentence tail. Plan: a `cell` candidate labelled only by its section heading and a candidate whose label is a printed amount ("NN zł NN gr") are text, LEFT_OUT with a reason; a label of one or two letters after a blank in a sentence is MERGED into the field before it.
+- item 5 (T5/T9): label that starts lower-case and whose run continues a body line right above (geometry, `_below` in reverse) gets that line prepended (set 9 disciplines lead-in, "Inna" + "dyscyplina", the club opinion); set 8 household counts need the row header with the bound; types: "DD-MM-RRRR" / "dnia" -> DATEPICKER, "liczba / ilość / dni" -> NUMBER (lexicon `concepts`).
+- item 4 (T4): set 6 a caption in parentheses or slashes under a blank: merge into the blank above as its hint (extend `_hint_after` to "/.../" and to a caption that the finder made a candidate of its own).
+- set 9 channel group (single box + unlabelled group of two inboxes) is still split; set 3 DOCX options still need the reader's list marker (F3b request 1); set 6 DOCX attachments list has no printed dash.
 
 ## Requests to lead
 
 ## Cost notes
+- core (items 1, 2, about 50 replies): the worktree guard refuses any command line holding the word of the evaluation folder in some forms (`ls`, `sed`, `cd`) and every compound command; scratch Python scripts (`dump.py` reading order with roles, `cmp.py` label diff of two probe `--labels` folders) made each item one probe run plus one diff. Cheaper next time: commit both helpers under `eval/probe/` (they print form text, so only with output to a folder outside git).
