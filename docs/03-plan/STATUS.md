@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 14:32 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 14:58 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -22,16 +22,21 @@ Last update: 2026-11-21 14:32 CET. **Track F (the forms converter) is being buil
 | 14:21 | WP-F0a form schema profiles, tolerant linter, golden list, contradiction docket (13 rows) | `1430f0a` | both exports pass the tolerant profile with zero errors and fail the strict one for the listed reasons; six negative controls |
 | 14:28 | WP-F0b data contracts and shared models (`apps/converter/app/model/`, four generated schema files, examples) | `4bb8854` | 54 model tests; both exports load and dump back with nothing lost; fast gate 71 passed. No independent agent review: a second opinion of a hosted model was asked instead (`research/eden/e7-…`) |
 
-**Running (14:32):**
+| 14:40 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
+| 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
+| 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
+
+**Running (14:58):**
 
 | What | Branch | How it runs |
 |---|---|---|
-| WP-F1 service shell (core stage done: 121 tests; integration stage writes the Dockerfile, README, environment check) | `wp/F1-service-shell` | wave run `wf_39a455e5-4cc` (saved workflow `wp-wave`; the stage hand-over of the wave script works on real agents) |
-| WP-F2a readers for PDF and DOCX (core on opus) | `wp/F2a-readers-pdf-docx` | second wave, run `wf_b4e50fbd-788`, started 14:30 |
-| WP-F5 composer (core on the session's model) | `wp/F5-composer` | the same wave |
-| Audit of the plan by three hosted models (coverage of every card requirement, failure modes on new files, proof for a non-programmer) | files `research/eden/e6-coverage-audit.*.md` | a background command on the partner's credits; raw reports, unverified by design |
+| WP-F20 image pipeline in CI (core on opus; may push only its own branch to trigger runs) | `wp/F20-image-pipeline` | wave run `wf_7788c448-6fd`, started 14:42 |
+| WP-F0c revision 1.1 of the shared models (additive; `verification-plan.md` section 5, plus the composer's requests) | `wp/F0c-models11` | one thinker agent (opus), started 14:55 |
+| WP-F0p pipeline wiring: readers and composer behind the service instead of the stub; an interim brief with the title only | `wp/F0p-pipeline` | one builder agent (sonnet), started 14:55 |
 
-**Next:** WP-F20 (image pipeline) the moment F1 is merged or its Dockerfile is on its branch; then WP-F3 (finder) on top of F2a, WP-F14 (gate).
+**Next:** WP-F3 (finder, core on the session's model) as soon as F0c is merged; WP-F14 (gate) when a slot is free; then F4 on top of F3. The wave script is proven: three waves, four packages, every stage hand-over and review worked; a package takes 15 to 21 minutes.
+
+**For the owner's next report:** D16 changes two standard conditions against the exports (docket row 18); the seven results will be delivered with the path of the statutory representative, and a second variant with `STATUTORY_REPRESENTATIVE=off` beside them.
 
 **Standing instructions of the owner (21 November, 14:22):**
 
