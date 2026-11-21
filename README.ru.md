@@ -2,17 +2,13 @@
 
 Состояние на субботу 21.11, около 13:40. Строим одно: **конвертер бланка в JSON под задание COI «Cyfryzacja formularzy»**. На входе один пустой бланк (PDF, DOC, DOCX, ODS, XLSX, JPG, PNG), на выходе JSON в формате их генератора форм, как сервис в Docker. Идея одной фразой: **компилятор с бухгалтером, а не сканер с ИИ**. Правила и библиотека стандартных секций COI собирают форму, а сервис отчитывается за каждое поле: откуда оно взялось, что стало с каждым пустым местом на бумаге, что пропущено и почему, что он отказался угадывать. Модель внутри продукта не работает: это запрещено условиями задания.
 
-Сервис уже собран и опубликован как Docker-образ (веха (a), коммит `920dbf1`, тег `track-f-a`): `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf`. Запуск и команды: [`apps/converter/README.md`](apps/converter/README.md), например конвертация без сети:
+Образ: `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:REPLACE_WITH_FINAL_DIGEST`. Три команды для жюри (bash и PowerShell, каждая в одну строку, проверены): в разделе «For the jury» файла [`README.md`](README.md) и «Dla jury» файла [`README.pl.md`](README.pl.md). Например, конвертация без сети в PowerShell:
 
-```bash
-docker run --rm --network none --read-only --tmpfs /tmp --cap-drop ALL --user 10001 \
-  -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" \
-  ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf \
-  convert /in/form.pdf --out /out/form.json
+```powershell
+mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:REPLACE_WITH_FINAL_DIGEST convert /in/form.pdf --out /out/form.json
 ```
 
-- Конвертируются сегодня: PDF, DOCX, XLSX, ODS, бинарный Word (.doc). В работе: JPG, JPEG, PNG (картинки и OCR).
-- Ещё не сделано: сейчас форма содержит заголовок и стандартные секции COI; поля по существу каждого бланка появятся с шагом понимания (WP-F4) и его подключением, он в работе. Также пока нет валидаторов, справочников, условий, страницы проверки и просмотрщика.
+- Читает: PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (картинки и сканы через локальный OCR).
 - Состояние сборки: [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md); проект: [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md); раскрытие материалов до события: [`NOTICE`](NOTICE).
 
 ## Одна просьба до запуска чата сборки: Docker (около 20 минут и одна перезагрузка)

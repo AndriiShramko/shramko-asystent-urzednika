@@ -1,6 +1,6 @@
 # Converter service
 
-A blank official form (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG) in, the JSON configuration of an electronic form out. This folder is the service shell (work package WP-F1): configuration, guard, token check, HTTP endpoints, command line, image. The reading pipeline is behind one function, `app/pipeline.py: run(data, filename, settings)`; until the reader packages land it returns a fixed valid form and one warning `PIPELINE_STUB` in the sidecar. Design: [`docs/02-architecture/converter-design.md`](../../docs/02-architecture/converter-design.md).
+A blank official form (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG) in, the JSON configuration of an electronic form out. This folder holds the service: configuration, guard, token check, HTTP endpoints, command line, image, and the reading pipeline behind `app/pipeline.py` (readers, local OCR, layout analysis and rules, composer, gate). No language model, no API key, no GPU. Design: [`docs/02-architecture/converter-design.md`](../../docs/02-architecture/converter-design.md).
 
 Nothing here calls out of the container: no external API, no key fetching, no download at start.
 
@@ -24,7 +24,7 @@ printf '%s' "a long random string of at least 32 characters" > secret.key     # 
 JWT_SECRET_FILE=secret.key bash tools/gate.sh py -m converter serve --port 8080
 ```
 
-For local work the check of the bearer can be switched off with `AUTH_MODE=off` (logged as a warning at start).
+Without a key file the default `AUTH_MODE=auto` runs open and logs a warning at start; `AUTH_MODE=off` does the same on purpose; `AUTH_MODE=jwt` without a key refuses to start (exit 3).
 
 ## Run in a container
 
@@ -36,12 +36,19 @@ docker build -f apps/converter/Dockerfile --target plus -t converter:plus .   # 
 docker compose up --build                                                     # needs secrets/jwt_secret, see docker-compose.yml
 ```
 
-Both images run as a dedicated user (uid 10001), expose port 8080, hold no secret, pin their bases by digest and install Python packages with `--require-hashes --only-binary=:all:`. Conversion without a network, as CI does it:
+Both images run as a dedicated user (uid 10001), expose port 8080, hold no secret, pin their bases by digest and install Python packages with `--require-hashes --only-binary=:all:`. The commands for the published image, tested in bash and in Windows PowerShell 5.1, are in the jury section of the root [`README.md`](../../README.md) (Polish: [`README.pl.md`](../../README.pl.md)). The published image: `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:REPLACE_WITH_FINAL_DIGEST`. With a local build, conversion without a network on Linux (on macOS drop `--user`; in Git Bash drop `--user` and put `MSYS_NO_PATHCONV=1` in front, otherwise Git Bash rewrites `/in/...` into a Windows path):
 
 ```bash
-docker run --rm --network none --read-only --cap-drop ALL --user 10001 \
-  -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" converter:core convert /in/form.pdf --out /out/form.json
+mkdir -p out && docker run --rm --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" converter:core convert /in/form.pdf --out /out/form.json
 ```
+
+The same in Windows PowerShell 5.1 (`--out` keeps the file UTF-8 without a BOM; PowerShell's own `>` would write UTF-16):
+
+```powershell
+mkdir -Force out | Out-Null; docker run --rm --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" converter:core convert /in/form.pdf --out /out/form.json
+```
+
+Started with no command the image serves REST on port 8080. Publish it on loopback (`-p 127.0.0.1:8080:8080`) unless a key file is configured: without one it is open. A REST server under `--network none` cannot be reached from the host, so the offline proof is the `convert` command above, not the server.
 
 The front end (`apps/review-web`) is built in a Node stage if that folder exists, and served at `/ui/`; without it the image is built and the API works the same.
 
@@ -51,7 +58,8 @@ Everything comes from the environment; the service refuses to start on an incons
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `AUTH_MODE` | `jwt` | `off` only for local work |
+| `AUTH_MODE` | `auto` | `auto`: JWT when a key file is configured, otherwise open with a warning in the log; `jwt`: a token is required and the service refuses to start without a key file (exit 3); `off`: open, with the warning |
+| `JOB_TIMEOUT_S` | `600` | seconds one conversion may take; over it `504 TIMEOUT` |
 | `JWT_ALG` | `HS256` | `HS256`, `HS384`, `HS512`, `RS256`, `ES256`, `EdDSA`; never read from the token, `none` is refused |
 | `JWT_SECRET_FILE` / `JWT_PUBLIC_KEY_FILE` / `JWT_JWKS_FILE` | none | the key, by file (no key fetching) |
 | `JWT_ISSUER`, `JWT_AUDIENCE` | none | required equal when set |
@@ -72,19 +80,22 @@ Everything comes from the environment; the service refuses to start on an incons
 | `POA_EXEMPTION` | `false` | reason of exemption from stamp duty for a power of attorney (D17) |
 | `FORM_KEY` | empty | fixed key for ids; empty: the slug of the title |
 | `ID_NAMESPACE` | fixed UUID | namespace of the ids; must be a UUID |
-
-Until the understanding step is wired in (WP-F4; the finder WP-F3 is merged) the form holds the title of the file and the standard sections; the sidecar carries the warning `BRIEF_NOT_READ`. Formats without a reader yet (JPEG, PNG; images and OCR are WP-F2c) answer `422 UNREADABLE`, never a made-up form.
 | `UI_ENABLED`, `UI_DIR` | `true`, empty | serve the front end; folder of a build |
 | `LOG_LEVEL` | `info` | logs are content-free at every level |
+
+**The open default, honestly.** `AUTH_MODE=auto` makes the image start with no flags, so a juror can run it at once; without a key file anyone who reaches the port can convert. Publish the port on loopback only (`-p 127.0.0.1:8080:8080`). On a shared network use [`docker-compose.yml`](../../docker-compose.yml), which mounts a key file and runs with JWT, or set `AUTH_MODE=jwt` so that a missing key stops the start instead of opening the service.
+
+What the service cannot read is never a made-up form: a file with nothing readable answers `422 UNREADABLE`, a place it could not read is a warning in the sidecar with the page and the place.
 
 Guard facts worth knowing: the file kind is judged by content, never by extension alone; a name is refused when longer than 250 characters or holding `; : > < / \ | ' * % $`; a `.doc` holding a DOCX package is read as DOCX (two forms of the partner's sets are named so); a legacy Word file that merely contains a zip package in a stream is still a Word file, a zip appended at its end is refused.
 
 ## API
 
-Token in `Authorization: Bearer ...`, scope `convert`. Errors are `application/problem+json` with a stable `code` (design section 3).
+Token in `Authorization: Bearer ...`, scope `convert`, when the service runs with JWT; in the open mode leave the header out. Errors are `application/problem+json` with a stable `code` (design section 3). In Windows PowerShell write `curl.exe`: plain `curl` there is `Invoke-WebRequest`.
 
 ```bash
 curl -s http://127.0.0.1:8080/healthz
+curl -s http://127.0.0.1:8080/status       # no token: name, version, engine "rules", auth mode, readable formats, limits
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" "http://127.0.0.1:8080/v1/forms/convert?report=1"   # multipart/mixed: form.json and meta.json
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/report              # the sidecar alone
@@ -104,4 +115,4 @@ The answer of `convert` is the partner's object (`title`, `tabs`, `flow`) and no
 | 429 | `BUSY` | all slots busy, or the rate limit; with `Retry-After` |
 | 500 / 504 | `GATE_FAILED` / `TIMEOUT` | the result failed our own gate and is never sent |
 
-Not yet in the shell (later packages): `/v1/forms/diff`, `/v1/forms/export`, `/v1/selftest`, `/about/*`, the worker airlock.
+Not in the service: `/v1/forms/diff`, `/v1/forms/export`, `/about/*`. The proof of working without a network is the `convert` command under `--network none`; the state of the service is `GET /status`.
