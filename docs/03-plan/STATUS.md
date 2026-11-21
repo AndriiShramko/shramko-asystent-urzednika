@@ -46,11 +46,11 @@ Last update: 2026-11-21 10:39 CET, preparation session (before the event); the o
 1. Submission texts for HackTribe in Polish: **drafted for the forms task** in `docs/05-hackathon/hacktribe-draft-formularze.md` (with the plan of the two-minute video); re-read them against the real task card after 11:00. For the city's task the templates are still in `research/10-pitch-and-presentation.md` §3.
 2. After WP-00: add the gate hook described in `docs/04-orchestration/lead-agent-playbook.md`.
 3. ~~Pages 2–3 of the residence-registration form descriptor~~ done on 21 November (see "What exists"). Still open: the descriptor of the temporary-residence form (same family, 115 cells) and the bundle's second form.
-4. Work-package files of Track B are grouped in two files (`work-packages/WP-B1-B6-counter.md`, `work-packages/WP-B7-B9-one-visit.md`); each has its goal, method and acceptance list. Split a package into its own status file when it starts.
+4. Work-package files of Track B are grouped in three files (`work-packages/WP-B1-B6-counter.md`, `work-packages/WP-B7-B9-one-visit.md`, `work-packages/WP-B10-agent-door.md`); each has its goal, method and acceptance list. Split a package into its own status file when it starts.
 5. Apply the two change requests at the top of `WP-B7-B9-one-visit.md` when WP-B1 and WP-B2 are briefed (bundle fields; `autocomplete` tokens and the optional `intent` in the payload).
 6. Build the two demo bundles from the text of the service cards (UMB55 and one of the vehicle department); `research/12` item 7 is a pointer, not a source.
-8. **At the 11:00 gate, before the first product commit:** set the tag on the last preparation commit: `git tag -a pre-event-2 $(git rev-list -1 --before="2026-11-21 11:00 +0100" main) -m "end of pre-event material" && git push origin pre-event-2` (the preparing session was not allowed to push tags).
-7. Rewrite the live deck's slide 4 and its demo around "od potrzeby do podpisu" (wording in `storyboard-pakiet.md`, section "Changes to the live deck"), and keep the reading version's page 10 equal to `status.json`.
+7. **At the 11:00 gate, before the first product commit:** set the tag on the last preparation commit: `git tag -a pre-event-2 $(git rev-list -1 --before="2026-11-21 11:00 +0100" main) -m "end of pre-event material" && git push origin pre-event-2` (the preparing session was not allowed to push tags).
+8. Rewrite the live deck's slide 4 and its demo around "od potrzeby do podpisu" (wording in `storyboard-pakiet.md`, section "Changes to the live deck"), and keep the reading version's page 10 equal to `status.json`.
 
 ## Budget
 
