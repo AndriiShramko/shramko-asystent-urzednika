@@ -1,6 +1,6 @@
 # WP-F4 Understanding (the brief): status
 
-Branch: wp/F4-understanding   Stage now: core (done); next: integration, then acceptance
+Branch: wp/F4-understanding   Stage now: integration (done); next: acceptance
 
 Entry: `from app.mean import understand`; `understand(page_model, finder_output, options=None) -> Brief` (revision 1.1,
 one disposition per finder candidate). Files: `apps/converter/app/mean/__init__.py` (entry, safety net), `_doc.py`
@@ -18,7 +18,7 @@ Tests: `apps/converter/tests/mean/test_mean_core.py` (30, synthetic papers built
 - [x] required: optional only when the paper says so; every other field required with basis `inferred` and the warning `REQUIRED_INFERRED`
 - [x] composite papers: one selector `rodzaj_wniosku`, sections shown by it, equal sections written once (`SAME_ALTERNATIVE`)
 - [x] 30 unit tests pass; smoke on the nine local sets (PDF and DOCX, 17 files): no exception, gate passes, 0 strict-linter errors; one negative control recorded
-- [ ] INTEGRATION: wire `find` + `understand` into `apps/converter/app/pipeline.py` in place of `interim.brief_from_pages` (interim stays the fallback when the finder yields no candidate, with a warning); `assemble_ledger` through the inverse of `ComposeResult.brief_keys`; meta `converter.pipeline` = `brief`; finder and brief warnings into the sidecar
+- [x] INTEGRATION (done, see Evidence): wire `find` + `understand` into `apps/converter/app/pipeline.py` in place of `interim.brief_from_pages` (interim stays the fallback when the finder yields no candidate, with a warning); `assemble_ledger` through the inverse of `ComposeResult.brief_keys`; meta `converter.pipeline` = `brief`; finder and brief warnings into the sidecar
 - [ ] ACCEPTANCE: `eval/briefs/<set>.json` per judged set and the differences from the silver labels (`tools/eden/silver_briefs.py --compare`) listed and explained; set tests with `@pytest.mark.sets`
 - [ ] ACCEPTANCE: reference 1 and 5 give the same brief from every format. Today: reference 1 has 4 fields of the matter from PDF and from DOCX but the addressee is `not_found` in both (PDF: the capital "W" of "Wójt" is glued to the run before it; DOCX: not looked at); reference 5 has 6 fields from DOCX and 5 from PDF. Formats other than PDF and DOCX were not run
 - [ ] ACCEPTANCE: set 9 from the PDF gives no selector (the finder reports no section and no bold there; the DOCX gives the selector); set 3 has 2 fields only (the finder does not see the list printed with the glyph U+F0F0 as boxes)
@@ -53,7 +53,15 @@ Tests: `apps/converter/tests/mean/test_mean_core.py` (30, synthetic papers built
 
 The smoke is a measurement, not yet a test in git: the acceptance stage turns it into `@pytest.mark.sets` tests and `eval/briefs/`.
 
+| integration: `pipeline.run` uses find + understand; interim only when the finder has no candidate (warning BRIEF_NOT_READ); `converter.pipeline` = `brief`; ledger in `meta.ledger` through the inverse of `brief_keys` | `bash tools/gate.sh py -m pytest apps/converter/tests/pipeline -q` (new `test_pipeline_brief.py`: 3 synthetic + 1 `@pytest.mark.sets`) | 55 passed with `mean`; sets test: every judged PDF/DOCX gives pipeline `brief`, 0 strict-linter errors, closed ledger with blanks > 0 | this commit |
+| fast gate after integration | `bash tools/gate.sh fast` | 574 passed, 21 deselected; PASSED | this commit |
+
+Integration findings: (1) set 8 listed the TAK / NIE answer columns as attachments, so the ledger did not close; fixed in `app/mean/_fields.py` (yes/no words are not named items). (2) the composer does not carry the key of an attachment, so `pipeline._form_ids` finds the upload by its title (request 2 stays open for a durable fix). A ledger that cannot close gives the warning `LEDGER_NOT_CLOSED` and no 500.
+
 ## Negative control
+Integration: the attachment lookup in `_form_ids` switched off -> the sets test fails on set 8 (ledger not closed, no `meta.ledger`); restored -> passes.
+
+Earlier (core):
 The requirement "the paper says niepotrzebne skreślić" was switched off (`app.mean._doc._STRIKE` replaced by a pattern
 that always matches): `test_without_the_strike_out_note_a_star_is_only_a_footnote_mark` failed (a RADIO appeared for
 "Imię/nazwa*"); with the pattern restored it passes. Run in the smoke script, nothing committed in the broken state.
@@ -68,4 +76,5 @@ rule of `app.interim` each refuse that header too: that control is redundant by 
 5. Integration needs the edit of `apps/converter/app/pipeline.py` the brief of this stage grants; nothing outside the owned paths was edited in the core stage.
 
 ## Cost notes
+- integration: finding why the ledger did not close on set 8 (three scratch scripts) took the most turns. Cheaper: a committed ledger-diagnosis command that prints the LedgerError per set.
 - core: reading the finder's output on the nine sets (four dump views) and writing the rules in one pass took the most context; the fixes were three small rounds. Cheaper: a committed dump tool of the finder (`python -m app.find.survey --view <set>`) so the next stage does not write its own.

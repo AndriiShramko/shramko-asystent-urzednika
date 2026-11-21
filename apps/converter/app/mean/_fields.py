@@ -34,6 +34,9 @@ _ENUM = re.compile(r"^\s*(?:\d+[.)]|[a-z]\)|[-–•])\s*")
 _LINE_KINDS = ("leader", "line_block", "blank_in_sentence")
 
 
+_YES_NO = {"tak", "nie"}
+
+
 @dataclass
 class Fields:
     matter: list[MatterSection] = field(default_factory=list)
@@ -187,7 +190,7 @@ class _Reader:
             [(label, list(c.label.runs) if c.label else [])] if c.kind == "box" and label else []
         made: list[tuple[str, str | None]] = []
         for text, runs in named:
-            if not text:
+            if not text or text.strip(" .:").casefold() in _YES_NO:   # a column of answers, not a named item
                 continue
             cover = next((row["role"] for rx, row in lexicon.compiled("habits", habit="attachment_cover") if rx.search(text)), None)
             key = self.keys.unique(key_of(text, "zalacznik"))
