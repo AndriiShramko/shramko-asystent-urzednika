@@ -49,6 +49,7 @@ Last update: 2026-11-21 10:39 CET, preparation session (before the event); the o
 4. Work-package files of Track B are grouped in two files (`work-packages/WP-B1-B6-counter.md`, `work-packages/WP-B7-B9-one-visit.md`); each has its goal, method and acceptance list. Split a package into its own status file when it starts.
 5. Apply the two change requests at the top of `WP-B7-B9-one-visit.md` when WP-B1 and WP-B2 are briefed (bundle fields; `autocomplete` tokens and the optional `intent` in the payload).
 6. Build the two demo bundles from the text of the service cards (UMB55 and one of the vehicle department); `research/12` item 7 is a pointer, not a source.
+8. **At the 11:00 gate, before the first product commit:** set the tag on the last preparation commit: `git tag -a pre-event-2 $(git rev-list -1 --before="2026-11-21 11:00 +0100" main) -m "end of pre-event material" && git push origin pre-event-2` (the preparing session was not allowed to push tags).
 7. Rewrite the live deck's slide 4 and its demo around "od potrzeby do podpisu" (wording in `storyboard-pakiet.md`, section "Changes to the live deck"), and keep the reading version's page 10 equal to `status.json`.
 
 ## Budget
@@ -84,6 +85,6 @@ Points from research R11 to check at the partner's stand before building: the mi
 | 2026-11-21 | Stack: Python and FastAPI backend, React and TypeScript front ends, SQLite by default; no copyleft libraries in the core (the Polish spaCy model and PyMuPDF are excluded) | design-notes §2, research/06, research/07 |
 | 2026-11-21 | **Primary track B (forms task); demo-first pitch; second site and deck** | scope-decision §0, roadmap |
 | 2026-11-21 | Agents of residents get an official door; public tools carry no personal data; personal data pass only inside a one-matter permission approved on the person's phone; the agent never submits, signs or proves identity | agent-door §3, WP-B10 |
-| 2026-11-21 | Everything committed before 11:00 on 21 November is pre-event material: tag `pre-event-2` marks its end (the first tag `pre-event` is older than several preparation commits) | NOTICE, CHANGELOG |
+| 2026-11-21 | Everything committed before 11:00 on 21 November is pre-event material (the first tag `pre-event` is older than several preparation commits); the tag `pre-event-2` is to mark its end | NOTICE, CHANGELOG |
 | 2026-11-21 | Jury texts use the partner's product name „Generator Formularzy e-Usług"; online pre-filling is never presented as new | research/12 item 11, one-visit-package §5 and §8 |
 | 2026-11-21 | Second half of the demo is "one visit, complete set"; check by exception with a mandatory identity confirmation; intent before the visit without touching the city's booking system; open source and on-premise operation stated as product properties | one-visit-package, WP-B7…B9, research/12 |

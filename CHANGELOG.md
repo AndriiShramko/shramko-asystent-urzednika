@@ -11,7 +11,7 @@
 - The descriptor of the residence-registration form covers all three pages (31 fields); `tools/descriptor_overlay_check.py` verifies a descriptor against its template (hash, no change outside the field boxes, ink in every filled field).
 - HackTribe texts for the forms task and the plan of the two-minute video: `docs/05-hackathon/hacktribe-draft-formularze.md`.
 - Requirements R44–R50 (fourth brief): an official door for residents' AI agents. Design `docs/01-product/agent-door.md`, package WP-B10, research items on official agent interfaces and on the protocol, page 7 of the reading version.
-- Tag `pre-event-2`: end of the material prepared before the coding start.
+- End of the material prepared before the coding start: the last commit dated before 11:00 on 21 November 2026; the lead marks it with the tag `pre-event-2` (the preparing session could not push tags).
 
 ## 0.1.0 — 2026-11-21 (pre-event brief, tag `pre-event`)
 
