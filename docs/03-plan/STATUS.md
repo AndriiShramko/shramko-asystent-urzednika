@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 15:02 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 15:08 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -26,19 +26,28 @@ Last update: 2026-11-21 15:02 CET. **Track F (the forms converter) is being buil
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
 
-**Running (15:02):**
+**Running (15:08):**
 
 | What | Branch | How it runs |
 |---|---|---|
-| WP-F0c revision 1.1 of the shared models (additive; `verification-plan.md` section 5, plus the composer's requests) | `wp/F0c-models11` | one thinker agent (opus), started 14:53 |
-| WP-F20b the image checks meet the real pipeline; publishing and signing of the first run on `main` verified; Grype gate; `probe.yml` deleted | `wp/F20-b-real-pipeline` (merges `wp/F0p-pipeline` first; may push only its own branch) | one builder agent (sonnet), started 15:02 |
+| WP-F20b the image checks meet the real pipeline; publishing and signing of the first run on `main` verified; Grype gate; `probe.yml` deleted; no image build for pushes that change only documents | `wp/F20-b-real-pipeline` (merges `wp/F0p-pipeline` first; may push only its own branch) | one builder agent (sonnet), started 15:02 |
 | WP-F14 pre-import gate, seven journeys, zero-answer canary (core on opus) | `wp/F14-gate` | wave run `wf_49caecbe-7ca`, started 15:02 |
+| WP-F3 finder (core on the session's model) | `wp/F3-finder` | wave run `wf_c0e21e37-085`, started 15:08 |
 
-**Ready but NOT merged on purpose:** `wp/F0p-pipeline` (head `a915319`, 392 tests): readers and composer behind the service instead of the stub, an interim brief that reads the title only (`app/interim.py`, warning `BRIEF_NOT_READ`), formats without a reader answer 422. It goes into `main` together with `wp/F20-b-real-pipeline`, because today's container checks on `main` demand that all eight fixtures convert and would turn red.
+**Ready but NOT merged on purpose:** `wp/F0p-pipeline` (head `a915319`, 392 tests): readers and composer behind the service instead of the stub, an interim brief that reads the title only (`app/interim.py`, warning `BRIEF_NOT_READ`), formats without a reader answer 422. It goes into `main` together with `wp/F20-b-real-pipeline`, because today's container checks on `main` demand that all eight fixtures convert and would turn red. Known weak spots of the interim title: set 6 gives only "WNIOSEK"; the PDF of set 9 may join two headings.
 
-**Merged since the table above:** WP-F20 image pipeline (`d576408`, 15:01): on its branch the run was green in three jobs; `core` is 274 MB, `plus` 363 MB, both on Python 3.14 with bases pinned by digest and wheels checked by hash; not root, no capability, read-only root, no network; SBOM gate with 0 findings. The first run on `main` (publishing, signing) is being verified by F20b.
+**Merged since the table above:** WP-F20 image pipeline (`d576408`, 15:01): on its branch the run was green in three jobs; `core` is 274 MB, `plus` 363 MB, both on Python 3.14 with bases pinned by digest and wheels checked by hash; not root, no capability, read-only root, no network; SBOM gate with 0 findings. The first run on `main` (publishing, signing) is being verified by F20b. WP-F0c revision 1.1 of the models (`8611a0d`, 15:06): additive, 416 tests; its paragraph "For a finder author" is in `wip/WP-F0c.status.md`.
 
-**Next:** WP-F3 (finder, core on the session's model) as soon as F0c is merged; then F4 on top of F3; F2b (sheets and binary Word) and F8 (validators) when a slot is free. Lead decisions taken at 15:02: the hostile corpus runs from the CI runner against the container (the tests are not in the image); the vulnerability gate is Grype on the SBOM and fails only on a critical finding that has a fix; `tools/licence_check.py` stays with WP-F12 and may reuse `tools/ci/sbom_gate.py`.
+**Open follow-ups for packages that are merged** (each is a small stage, to be given to a builder when a slot is free):
+
+- Composer (F5): make the attachment id from `Attachment.key`; use `page_title` and `hint` of a matter section; a yes-or-no CHECKBOX without options; the `applicant` selector in conditions (requests of F0c).
+- Readers (F2a): switch to the `safe` builders of revision 1.1; fill `leader`, `region`, `footnote`, widget values.
+- Shell (F1): every forbidden character of a file name as a parameter of one test; two starts with two size limits; rotated key, issuer and audience; a plain Polish action in every problem answer (`verification-plan.md`, sections 1 and 6).
+- Wiring (lead files): the finder and the understanding step replace `app/interim.py`; the gate behind `pipeline.run`; `assemble_ledger` gets the inverse of `ComposeResult.brief_keys`; `UploadInfo` reaches the pipeline for the sidecar.
+
+**Next:** F4 (understanding, core on the session's model while the top-model week is under 85 %) on top of F3; F2b (sheets and binary Word) and F8 (validators) when a slot is free. Lead decisions taken at 15:02: the hostile corpus runs from the CI runner against the container (the tests are not in the image); the vulnerability gate is Grype on the SBOM and fails only on a critical finding that has a fix; `tools/licence_check.py` stays with WP-F12 and may reuse `tools/ci/sbom_gate.py`.
+
+**Budget, measured 15:06:** week 63 %, top model 75 %. In the first 72 minutes of the build the week grew by 8 points and the top model by 5. Nine packages cost about half a point each; **the lead's own conversation is the larger half** (468 thousand tokens at 15:06, re-read on every step). At this pace both numbers reach 100 % at about 21:00. Therefore: **the lead role moves to a fresh session at the next quiet point** (nothing running, everything merged); that session starts from this file. The same quiet point is the window for the owner's Docker installation, if he is at the laptop.
 
 **For the owner's next report:** D16 changes two standard conditions against the exports (docket row 18); the seven results will be delivered with the path of the statutory representative, and a second variant with `STATUTORY_REPRESENTATIVE=off` beside them.
 
@@ -58,7 +67,7 @@ Last update: 2026-11-21 15:02 CET. **Track F (the forms converter) is being buil
 - Skeleton (commit `66e040c`): `apps/converter/pyproject.toml`, two lock files with hashes, the shared environment `.venv` in the main checkout (made by `bash tools/env_setup.sh`; PyPI is slow on the event's network, the script retries), `tools/gate.sh` (`py`, `fast`, `full`, `lock`), test markers, packages `app` and `converter`.
 - Facts that change the plan: (1) **nothing of the partner's sets is in git**, so the image workflow can convert only synthetic fixtures; every module needs tests on fixtures built from code, and tests on the sets carry the marker `sets`. (2) The publishing check refuses literal identifiers with valid check digits: tests build them from a stem and a computed check digit (`AGENTS.md`, section Commands).
 
-**Budget:** 13:55: week 55 %, top model 70 %. 14:31: 59 % and 73 % (the first 37 minutes of the build cost 4 and 3 points, with three agents running and the lead very active). Rule of this session: builders on sonnet, reviews and most think cores on opus, the session's model only for the lead and the cores of the finder, the understanding step and the composer.
+**Budget history:** 13:55: week 55 %, top model 70 %. 14:31: 59 % and 73 % (the first 37 minutes of the build cost 4 and 3 points, with three agents running and the lead very active). Rule of this session: builders on sonnet, reviews and most think cores on opus, the session's model only for the lead and the cores of the finder, the understanding step and the composer.
 
 **Waiting for the owner:** (1) Docker on the laptop: yes or no (not blocking). (2) **Register the task with the partner by 19:00.** (3) **Send the HackTribe draft by 20:00** (`docs/05-hackathon/hacktribe-draft-formularze.md`; the lead re-reads it against the build by 17:45). (4) Nothing else: the answers of the business side arrived at 14:10 and are in section 6b of the decisions.
 
