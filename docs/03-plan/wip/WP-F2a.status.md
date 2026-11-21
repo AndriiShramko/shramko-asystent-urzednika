@@ -5,9 +5,11 @@ Branch: wp/F2a-readers-pdf-docx   Stage now: core
 ## Status
 - [x] Registry `app/readers/__init__.py` (self-registering modules, `read_document`, hooks), `_base.py`, `pdf.py`, `docx.py`
 - [x] Unit tests on synthetic files: 42 pass (reportlab PDF; python-docx and raw-XML DOCX)
-- [ ] Tests on the sets (`@pytest.mark.sets`)
-- [ ] `app/readers/survey.py` writing `eval/readers-sets.json`
-- [ ] Acceptance stage: survey over the nine sets, negative control, fast gate after merging main
+- [x] Tests on the sets (`@pytest.mark.sets`, also `slow`): 7 pass, 49 reader tests in all
+- [x] `app/readers/survey.py` writing `eval/readers-sets.json`: 69 files, 17 read (9 PDF, 8 DOCX), 0 refused, 0 unhandled, 52 no_reader (F2b, F2c formats)
+- [ ] Acceptance stage: `git merge --no-edit main`, fast gate, negative control (e.g. drop the Fallback skip in `_text_shares` and see set 2 / synthetic native test fail), Evidence table
+- [ ] Integration (lead): wire `read_document` into app/pipeline.py; map ReaderError.code to the 422 problem answer; map WP-F1 configuration (OCR_MIN_CHARS ...) onto ReadOptions
+- [ ] Not done in F2a, honest gaps: DOCX headers and footers, endnotes, automatic list numbers ("1.", "a)") are not read; PDF page rotation not normalised; text boxes in old VML-only form get text in flow mode but no position in native mode
 
 ## Decisions
 - One registry: every non-underscore module of `app/readers/` is imported on first use and registers `@register(fmt)`; F2b/F2c add a file, no edit / testable by `formats()` / rules out a central format table.
@@ -24,6 +26,10 @@ Branch: wp/F2a-readers-pdf-docx   Stage now: core
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
+| Unit tests, synthetic (CI-visible) and sets | `bash tools/gate.sh py -m pytest apps/converter/tests/readers -q` | 49 passed (42 synthetic, 7 sets) | commit "WP-F2a: survey ..." (reader code as in d000b64) |
+| Every PDF and DOCX of the nine sets, no unhandled exception | `bash tools/gate.sh py -m app.readers.survey --check` | 69 files: read 17, refused 0, unhandled 0, no_reader 52 | same |
+| DOCX of sets 2 and 8 give runs with boxes | `test_text_box_docx_gives_runs_with_boxes` | set 2: 65 runs with boxes (65 text boxes), 506 lines; set 8: 651 runs, 6 pages, 1048 lines | same |
+| Broken file gives an error, not a stack trace | `test_broken_pdf_is_a_reader_error`, `test_broken_docx_is_a_reader_error` | text, empty, ZIP-as-PDF, XLSX-as-DOCX, bad XML, DOCTYPE with entity, zip bomb ratio: all ReaderError | same |
 
 ## Negative control
 (acceptance stage)
@@ -32,3 +38,4 @@ Branch: wp/F2a-readers-pdf-docx   Stage now: core
 - Acceptance "the DOCX of sets 2 and 8 give more than 100 runs each with boxes": set 2 holds 65 text boxes, not 130 (each is written twice, `mc:Choice` and its VML `mc:Fallback`); the reader gives 65 runs with boxes for set 2 (its PDF gives 70) and 651 for set 8. Proposed wording: "set 2 at least 60, set 8 more than 600 runs with boxes".
 
 ## Cost notes
+- core: most turns went into learning the structure of the text-box DOCX (Choice/Fallback doubling, anchors relative to paragraph or page, lines drawn as filled custom shapes); three scratch probes. A one-paragraph note per set on "what the DOCX is made of" in design 6.2 would have saved them.
