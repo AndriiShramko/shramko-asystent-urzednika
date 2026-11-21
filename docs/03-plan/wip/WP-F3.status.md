@@ -13,8 +13,8 @@ labels), `survey.py` (-> `eval/finder-sets.json`). Tests: `apps/converter/tests/
 - [x] roles: page furniture, notes, clause (mode), headings -> sections with numbers and parents, instructions, legal basis
 - [x] places: leader, line_block, blank_in_sentence, box (character and drawn), choice_group, comb, cell (drawn, labelled, table), widget, signature, office_use
 - [x] labels by score (same line, left, caption under, above, header, question) with margin; honest gaps as warnings
-- [x] synthetic tests (23) and tests on the sets (7); drills 3, 4, 7, 8, 10 each have a test
-- [x] survey module and `eval/finder-sets.json`
+- [x] synthetic tests (23) and tests on the sets (7); drills 3, 4, 7, 8, 10 each have a test (commit c591299)
+- [x] survey module and `eval/finder-sets.json`; `main` merged, fast gate 519 passed (merge 7e54a49)
 - [x] one negative control recorded
 - [ ] integration: the lead wires `find` into `app/pipeline.py`; run the fast gate after merging `main` again
 - [ ] set 2: the account is a `cell`, not a comb (see Evidence): needs the lead's word or a raster reader
@@ -49,7 +49,8 @@ labels), `survey.py` (-> `eval/finder-sets.json`). Tests: `apps/converter/tests/
 | set 2: the account one comb | scratch dump of the page model | NOT MET: the PDF draws the account as one box of 352 x 21 pt from four segments, no dividers in vectors; reported as `cell` "Nr rachunku" | core commit |
 | set 7: groups, blanks, section A first | `test_set_7_groups_blanks_and_the_applicant_section_first` | pass: [pies, suka]; [mikroprocesor, tatuaż, brak] with blanks on the first two; sections A then B | core commit |
 | set 9: the square character is a box | `test_set_9_the_square_character_counts_as_a_box` | pass, PDF and DOCX: 12 boxes, 3 groups | core commit |
-| candidates per kind for the nine sets | `bash tools/gate.sh py -m app.find.survey --check` | see below | survey commit |
+| candidates per kind for the nine sets | `bash tools/gate.sh py -m app.find.survey --check` | exit 0: 17 files (9 PDF, 8 DOCX; set 7 has no DOCX), found 17, unhandled 0, unassigned runs 0 in every file; top-level places 9 to 89 per file, 0.01 to 1.05 s per file; `LABEL_NOT_FOUND` 0 in 6 files, 2 to 4 in 7 files, 20 to 31 in the four files of sets 8 and 9 | c591299 |
+| fast gate after merging `main` | `bash tools/gate.sh fast` | 519 passed, 15 deselected | 7e54a49 |
 | negative: information sheet | `test_an_information_sheet_has_no_candidates_and_says_not_a_form` | pass | core commit |
 | negative: instruction with a ticked example | `test_an_instruction_with_ticked_example_boxes_is_not_a_group`; on set 2 `...instruction_example_boxes_are_not_candidates` | pass | core commit |
 | negative: clause | `test_the_data_protection_clause_yields_no_candidate...`; on reference 1 and set 7 page 2 | pass | core commit |
@@ -57,7 +58,11 @@ labels), `survey.py` (-> `eval/finder-sets.json`). Tests: `apps/converter/tests/
 | drills 3, 4, 7, 8, 10 | `test_drill_3...`, `test_drill_4...`, `test_drill_7...`, `test_eleven_boxes...`, `test_drill_10...` | pass | core commit |
 
 ## Negative control
-(recorded in the survey commit)
+Break-and-restore on c591299: the comb rule in `_shapes.combs` was changed to need 300 boxes in a row instead of 3.
+`bash tools/gate.sh py -m pytest apps/converter/tests/find/test_find_core.py -q` then gave 4 failed, 19 passed
+(`test_eleven_boxes_are_one_value...`, `test_a_date_comb_takes_the_pattern...`, `test_empty_box_bullet_crossed_box...`,
+`test_drill_3_two_columns...`). The line was restored (`git diff -- apps/converter/app/find` empty) and the fast gate
+passed. The negative controls of the acceptance list are tests of their own (see Evidence).
 
 ## Requests to lead
 1. Model (WP-F0): a role for a part of a run. Today a run shared by a place and plain words is named in `roles` as a whole and also carries spans; `FinderOutput.roles` could accept spans, or the rule "exactly one owner" could say "per character".
