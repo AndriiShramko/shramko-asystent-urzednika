@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Od druku do usługi online: formularze bez przepisywania</title>
+<meta name="description" content="AI zamienia urzędowy druk w usługę online: rozpoznaje pola, tworzy formularz na telefon, drukuje wniosek na oryginalnym wzorze i sprawdza błędy. Projekt na HackNation 2026, zadanie Cyfryzacja formularzy.">
+<style>
+  :root { --bg:#0b1020; --panel:#141b33; --ink:#eef2ff; --muted:#a9b4d6; --accent:#6ee7b7; --line:#2a3560; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) { --bg:#f6f8ff; --panel:#ffffff; --ink:#0b1020; --muted:#44506f; --accent:#047857; --line:#d5dcf0; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background:var(--bg); color:var(--ink); font: 18px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.1; margin: 0 0 12px; }
+  p.lead { font-size: 22px; color: var(--muted); margin: 0 0 32px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:16px; }
+  a.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; color:var(--ink); text-decoration:none; }
+  a.card:hover, a.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  a.card strong { display:block; font-size: 22px; margin-bottom: 6px; }
+  a.card span { color: var(--muted); }
+  ul { padding-left: 20px; }
+  .facts { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:16px; margin: 24px 0; }
+  .fact { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px; }
+  .fact b { display:block; font-size: 34px; line-height:1.1; }
+  .fact span { color: var(--muted); font-size: 16px; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 15px; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Od druku do usługi online</h1>
+  <p class="lead">AI rozpoznaje pola urzędowego druku. Mieszkaniec podaje dane raz. Wniosek drukuje się na oryginalnym wzorze.</p>
+
+  <div class="grid">
+    <a class="card" href="deck/"><strong>Prezentacja</strong><span>Osiem slajdów, w tym dwa pokazy na żywo.</span></a>
+    <a class="card" href="https://github.com/AndriiShramko/shramko-asystent-urzednika"><strong>Repozytorium</strong><span>Otwarty kod, katalog formularzy, badania i plan budowy.</span></a>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><b>275</b><span>kart usług w jednym urzędzie miasta</span></div>
+    <div class="fact"><b>710</b><span>plików formularzy: PDF, DOC, RTF</span></div>
+    <div class="fact"><b>1 z 32</b><span>zbadanych formularzy ma pola do wypełnienia</span></div>
+  </div>
+
+  <h2>Jak to działa</h2>
+  <ul>
+    <li><strong>Druk staje się usługą.</strong> AI rozpoznaje pola na urzędowym wzorze i proponuje ich znaczenie, człowiek zatwierdza.</li>
+    <li><strong>Dane raz.</strong> Mieszkaniec skanuje kod i podaje dane na swoim telefonie; do urzędu trafiają tylko pola potrzebne w danej sprawie, zaszyfrowane.</li>
+    <li><strong>Urzędnik widzi i sprawdza.</strong> Dane pojawiają się na stanowisku dużą czcionką, a AI wskazuje błędy przed wydrukiem.</li>
+    <li><strong>Wydruk na oryginalnym wzorze.</strong> Wniosek jest gotowy do podpisu, bez przepisywania.</li>
+    <li><strong>Wspólny rejestr wzorów.</strong> Formularz opisany raz może służyć każdemu urzędowi; dane osobowe nie trafiają do żadnej wspólnej bazy.</li>
+  </ul>
+
+  <h2>Skąd to wiemy</h2>
+  <p>W 2022 roku w punkcie pomocy uchodźcom w Opolu interesanci wpisywali dane na telefonach, stojąc w kolejce, a wolontariusze drukowali gotowe wnioski. Reguły tego projektu pochodzą z tamtej praktyki.</p>
+
+  <footer>
+    Projekt na HackNation 2026, zadanie „Cyfryzacja formularzy”. Projekt niezależny; w pokazie używamy wyłącznie danych syntetycznych. Liczby pochodzą z katalogu formularzy Urzędu Miasta Bydgoszczy opublikowanego w repozytorium.
+    Autor: Andrii Shramko · <a href="https://www.linkedin.com/in/andrii-shramko/">LinkedIn</a> · Drugi moduł projektu: <a href="https://urzad.flyreelstudio.eu/">Asystent Urzędnika</a>
+  </footer>
+</main>
+</body>
+</html>
