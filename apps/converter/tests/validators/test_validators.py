@@ -30,7 +30,7 @@ STATED = {
     "EMAIL": ("email", ["Adres e-mail", "E-mail", "Adres poczty elektronicznej", "Email"]),
     "EPUAP": ("epuap", ["Skrzynka ePUAP - adres skrzynki", "Adres skrytki ePUAP"]),
     "ADE": ("ade", ["Adres do doręczeń elektronicznych", "e-Doręczenia - adres skrzynki", "Adres ADE", "Adres do e-Doreczen"]),
-    "SERIAL_NUMBER_ID_CARD": ("id_card", ["Seria i numer dowodu osobistego", "Nr dowodu osobistego", "Dowód osobisty: seria i numer"]),
+    "SERIAL_NUMBER_ID_CARD": ("id_card", ["Seria i numer dowodu osobistego", "Nr dowodu osobistego", "Dowód osobisty seria i numer"]),
 }
 
 
@@ -132,16 +132,19 @@ def test_the_service_switch_reaches_the_composer() -> None:
 
 TWO_KINDS = ["NIP / PESEL", "PESEL lub data urodzenia", "Telefon, e-mail", "Kod pocztowy, miejscowość", "Kod pocztowy i poczta",
              "Seria i numer dowodu osobistego lub paszportu", "Adres skrytki ePUAP lub adres do doręczeń elektronicznych",
-             "NIP, REGON", "Numer rachunku bankowego i NIP"]
+             "NIP, REGON", "Numer rachunku bankowego i NIP",
+             # shapes measured on the archive of forms: a list, an alternative, a name beside the number
+             "Imię i nazwisko członka rodziny, PESEL", "Adres www, email", "Nazwa firmy i NIP", "E-mail oraz strona internetowa",
+             "Numer PESEL lub nazwa i numer dokumentu potwierdzającego tożsamość"]
 NO_SUCH_VALUE = ["Adres do doręczeń", "Adres do korespondencji", "Organ wydający dowód osobisty", "Imię i nazwisko",
                  "Numer telefonu", "Numer KRS", "Poczta", "Nazwa banku"]
 
 
-def test_a_label_that_names_two_kinds_of_value_gets_none_and_a_remark() -> None:
+def test_a_label_that_asks_for_more_than_one_value_gets_none_and_a_remark() -> None:
     got, remarks = _matter(_brief([_field(n, label, required=True, required_basis="paper") for n, label in enumerate(TWO_KINDS)]))
     assert got == [(label, ["REQUIRED"]) for label in TWO_KINDS]
     low = [d for code, d in remarks if code == "LOW_CONFIDENCE"]
-    assert len(low) == len(TWO_KINDS) and all(f"field pole_{n}:" in d and "more than one kind" in d for n, d in enumerate(low))
+    assert len(low) == len(TWO_KINDS) and all(f"field pole_{n}:" in d and "more than one value" in d for n, d in enumerate(low))
     # the concept of the brief does not overrule the label: the understanding step takes the first pattern that matches
     got, remarks = _matter(_brief([_field(0, "NIP / PESEL", concept="pesel")]))
     assert got == [("NIP / PESEL", [])] and [c for c, _ in remarks if c == "LOW_CONFIDENCE"] == ["LOW_CONFIDENCE"]
@@ -182,6 +185,7 @@ def test_the_new_lexicon_rows_do_not_take_dates_or_postal_addresses() -> None:
     assert _typed("Organ wydający dowód osobisty") == (None, None)
     assert _typed("Adres do doręczeń") == (None, None)                              # a postal address, not e-Doręczenia
     assert _typed("Adres do korespondencji") == (None, None)
+    assert _typed("Legitymujący się dowodem osobistym: Seria") == (None, None)       # the series alone; the number has its own blank
 
 
 # -- one synthetic paper through the whole service pipeline -------------------------------------------------------------

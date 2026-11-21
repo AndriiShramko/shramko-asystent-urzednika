@@ -5,9 +5,9 @@ the label, read with the rows of the lexicon `concepts`: one table of patterns f
 the composer. The rule is narrow on purpose, because a validator on the wrong field refuses honest answers:
 
 - only a typed text field takes one (never a date, a choice, an upload, a long text);
-- a label that names two kinds of value ("NIP / PESEL", "telefon, e-mail", "kod pocztowy i miejscowość", "seria
-  i numer dowodu osobistego lub paszportu") takes none: the validator of one kind would refuse the other. The
-  composer says so in a remark; it never picks one.
+- a label that asks for more than one value ("NIP / PESEL", "telefon, e-mail", "kod pocztowy i miejscowość",
+  "imię i nazwisko członka rodziny, PESEL", "seria i numer dowodu osobistego lub paszportu") takes none: the
+  validator of one kind would refuse the rest. The composer says so in a remark; it never picks one.
 """
 from __future__ import annotations
 
@@ -23,9 +23,12 @@ TYPES = ("TEXT_FIELD",)
 # Kinds of value that exclude each other inside one field: the eight above and the other numbers and contacts the
 # lexicon knows. Two of them in one label: either of them, or both, is asked.
 _KINDS = (*CONCEPT_VALIDATORS, "phone", "nrb", "krs", "date")
-# Words of a second value the lexicon has no concept for: another document beside the identity card, the town
-# beside the postal code.
-_SECOND_VALUE = re.compile(r"paszport|dokument\w* (to[żz]samo[śs]ci|podr[óo][żz]y)|praw\w* jazdy|miejscowo[śs][ćc]|\bpoczta\b", re.IGNORECASE)
+# A label that lists or offers values asks for more than the one number: a list ("imię i nazwisko członka rodziny,
+# PESEL", "adres www, email"), an alternative ("numer PESEL lub nazwa i numer dokumentu ..."), a name, another
+# document, the town beside the postal code. Measured on the archive of forms (21 November): these are the labels
+# on which the validator of the first pattern would refuse an honest answer.
+_SECOND_VALUE = re.compile(r"[,;/]|\b(lub|albo|oraz|b[ąa]d[źz])\b|\bimi[ęe]\b|\bnazwisk|\bnazw[aęy]\b|paszport|miejscowo[śs][ćc]|\bpoczta\b",
+                           re.IGNORECASE)
 
 
 def kinds(label: str) -> tuple[str, ...]:
@@ -51,6 +54,6 @@ def identifier(type_: str, concept: str | None, label: str) -> tuple[str | None,
         return None, None              # the type already says it is not a typed number or address
     second = _SECOND_VALUE.search(label)
     if len(found) > 1 or second:
-        named = ", ".join([*found, *([second.group(0).casefold()] if second else [])])
-        return None, f"the label names more than one kind of value ({named}): the validator of one would refuse the other"
+        named = ", ".join([*found, *([repr(second.group(0).casefold())] if second else [])])
+        return None, f"the label asks for more than one value ({named}): the validator of one would refuse the other"
     return CONCEPT_VALIDATORS[wanted[0]], None
