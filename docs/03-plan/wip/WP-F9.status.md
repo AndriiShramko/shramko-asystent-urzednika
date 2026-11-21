@@ -1,6 +1,6 @@
 # WP-F9 Front end, view "Przegląd": status
 
-Branch: wp/F9-review-web   Stage now: core (done) -> integration / acceptance next
+Branch: wp/F9-review-web   Stage now: acceptance (done)
 
 Scope of the first build (lead, 21 Nov 17:25; D22, D25): review view first, three languages, every-device check. Later, not now: paper page with outlined places and two ink colours, decision cards, batch table.
 
@@ -16,7 +16,7 @@ Scope of the first build (lead, 21 Nov 17:25; D22, D25): review view first, thre
 - [x] Served by `app/main.py`: the mount `/ui` already existed and finds `apps/review-web/dist`; no change under `apps/converter/app` was needed (real run: `GET /ui/` 200, assets relative)
 - [x] Every-device check: Playwright 1.x with Chromium and Firefox, 375 / 768 / 1280 px, `scripts/devices.mjs`; screenshots in `apps/review-web/evidence/`
 - [x] Real upload through the running native service (`AUTH_MODE=off`, synthetic PDF of `tools/ci/make_fixtures.py`): form shown, SHA-256 matches `X-Form-SHA256`
-- [ ] WebKit not run (no browser downloaded; Chromium + Firefox satisfy "at least two engines")
+- [x] WebKit ran in the integration check (21 pass); the 54-state device check ran on Chromium and Firefox only
 - [x] Token path against a real service with `AUTH_MODE=jwt` (HS256, synthetic key): no token, wrong key, expired -> plain refusal, no form; token with `scope: convert` -> form
 - [x] Judged sets 8 and 9 and both reference sets (1, 5) loaded through the page, 3 engines: form shown, SHA-256 agrees, matter section present (12 of 12)
 - [ ] Later (not in the first build): paper page with outlined places, two inks, decision cards, batch table
@@ -41,6 +41,12 @@ Scope of the first build (lead, 21 Nov 17:25; D22, D25): review view first, thre
 
 - Integration check: `apps/review-web/scripts/integration.mjs` (files read in place via the paths of `tools/coi_paths.py`, nothing copied). Result: 21 PASS lines, `all passing` (3 engines x [3 refusals + 4 forms]). Fast gate: 670 passed, 2 skipped, links 21 passed.
 
+## Acceptance run (beebab6, main already merged: "Already up to date")
+- `npm test`: 43 passed. `npm run build`: tsc clean, 42.2 kB js. `npm run licences`: 61 packages, 0 outside the list, 0 runtime.
+- `bash tools/gate.sh fast`: 670 passed, 2 skipped; links 21 passed; "gate: fast PASSED on beebab6".
+- Negative control run now: the heading of the missing-sidecar notice in `src/ui/result.ts` blanked -> `ui.test.ts` "negative control: sidecar missing..." FAILED (1 failed, 42 passed); file restored -> 43 passed.
+- Not in the first build (per scope): paper page, decision cards, batch table.
+
 ## Negative control
 With the sidecar missing (or invalid) the form is still listed and downloadable and the page says what is absent: `tests/lib.test.ts` "negative control: with the sidecar missing or broken" and `tests/ui.test.ts` "negative control: sidecar missing, the form is still shown". A wrong hash is flagged ("bad"), and a colour pair below 4.5:1 is measured as failing (`contrast.test.ts`).
 
@@ -56,3 +62,4 @@ With the sidecar missing (or invalid) the form is still listed and downloadable 
 ## Cost notes
 - core: the most turns went to reading the sidecar shape (the REST sidecar nests `meta.origins`, the contract keeps them at the top level; both are read). Cheaper next time if the lead fixes one shape in the brief.
 - integration: the most turns went to path forms (Git Bash `/c/...` vs Windows `C:/...` for Playwright) and the missing `scope` claim. Cheaper: pass Windows paths and say in the brief that the token needs `scope: convert`.
+- acceptance: few turns; one batch of checks, one break/restore. Cheaper: none needed.
