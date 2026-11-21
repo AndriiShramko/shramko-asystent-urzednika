@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 14:58 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 14:54 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -22,17 +22,17 @@ Last update: 2026-11-21 14:58 CET. **Track F (the forms converter) is being buil
 | 14:21 | WP-F0a form schema profiles, tolerant linter, golden list, contradiction docket (13 rows) | `1430f0a` | both exports pass the tolerant profile with zero errors and fail the strict one for the listed reasons; six negative controls |
 | 14:28 | WP-F0b data contracts and shared models (`apps/converter/app/model/`, four generated schema files, examples) | `4bb8854` | 54 model tests; both exports load and dump back with nothing lost; fast gate 71 passed. No independent agent review: a second opinion of a hosted model was asked instead (`research/eden/e7-…`) |
 
-| 14:40 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
+| 14:32 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
 
-**Running (14:58):**
+**Running (14:54):**
 
 | What | Branch | How it runs |
 |---|---|---|
-| WP-F20 image pipeline in CI (core on opus; may push only its own branch to trigger runs) | `wp/F20-image-pipeline` | wave run `wf_7788c448-6fd`, started 14:42 |
-| WP-F0c revision 1.1 of the shared models (additive; `verification-plan.md` section 5, plus the composer's requests) | `wp/F0c-models11` | one thinker agent (opus), started 14:55 |
-| WP-F0p pipeline wiring: readers and composer behind the service instead of the stub; an interim brief with the title only | `wp/F0p-pipeline` | one builder agent (sonnet), started 14:55 |
+| WP-F20 image pipeline in CI (core on opus; may push only its own branch to trigger runs) | `wp/F20-image-pipeline` | wave run `wf_7788c448-6fd`, started 14:34 |
+| WP-F0c revision 1.1 of the shared models (additive; `verification-plan.md` section 5, plus the composer's requests) | `wp/F0c-models11` | one thinker agent (opus), started 14:53 |
+| WP-F0p pipeline wiring: readers and composer behind the service instead of the stub; an interim brief with the title only | `wp/F0p-pipeline` | one builder agent (sonnet), started 14:53 |
 
 **Next:** WP-F3 (finder, core on the session's model) as soon as F0c is merged; WP-F14 (gate) when a slot is free; then F4 on top of F3. The wave script is proven: three waves, four packages, every stage hand-over and review worked; a package takes 15 to 21 minutes.
 
