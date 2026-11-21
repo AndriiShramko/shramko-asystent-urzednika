@@ -1,5 +1,5 @@
 # WP-C3 the DOCX reader gives the list numbers and bullets the paper shows: status
-Claimed by: build7 (agent c3-docx); heartbeat: 2026-11-22 01:10; state: running
+Claimed by: build7 (agent c3-docx); heartbeat: 2026-11-22 01:20; state: running
 
 Branch: wp/C3-docx-numbering   Stage now: core
 
@@ -16,7 +16,7 @@ Branch: wp/C3-docx-numbering   Stage now: core
   - 04 DOCX: unchanged (markers "1)".."4)" and "1.","2." are produced, but the finder/mean do not make consents of them: see Requests to lead)
   - 06 DOCX: **FILE_UPLOADER 6 -> 11, RADIO 4 -> 5**, MAIN 4 -> 5, SECTION 19 -> 21, SHOW 31 -> 33 (the six "-" bulleted attachments)
   - markers found (tmp/c3_markers.py): 03: 5 bullets + 3 numbers; 04: 6 numbers; 06: 6 dashes
-- [ ] (e) readers tests + fast gate
+- [~] (e) readers tests 240 passed on 28199e2; fast gate running (tmp/fast.log)
 - [ ] (f) eval.chain --compare, WORSE lines explained, state ready_to_merge
 
 ## Decisions
@@ -28,6 +28,7 @@ Branch: wp/C3-docx-numbering   Stage now: core
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
 | unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_docx_numbering.py -q` | 8 passed | step (c) commit |
+| readers tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers -q` | 240 passed, 2 skipped (tesseract, linux) | 28199e2 |
 
 ## Negative control
 Replaced `out.text = f"{marker} {text}" if marker else text` by `out.text = text` in `_Reader.para`: test_docx_numbering.py 7 failed, 1 passed (the no-numbering test); restored: 8 passed.
