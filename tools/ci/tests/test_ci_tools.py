@@ -93,8 +93,14 @@ def test_one_fixture_per_extension_each_accepted_by_the_guard_as_its_own_kind(fi
 
     s = Settings.from_env({"AUTH_MODE": "off"})
     names = sorted(p.name for p in fixtures.iterdir())
-    assert names == sorted(f"wniosek.{e}" for e in make_fixtures.EXTENSIONS)
-    kinds = {p.suffix[1:]: inspect_upload(p.name, p.read_bytes(), s).kind for p in fixtures.iterdir()}
+    plain = [e for e in make_fixtures.EXTENSIONS if e not in make_fixtures.NEEDS_HEIF_ENC]   # heif-enc is not here
+    assert names == sorted([f"wniosek.{e}" for e in plain] + list(make_fixtures.EXTRA_BUILDERS))
+    kinds = {p.suffix[1:]: inspect_upload(p.name, p.read_bytes(), s).kind
+             for p in fixtures.iterdir() if p.name.startswith("wniosek.")}
+    assert kinds["rtf"] == "rtf" and kinds["xls"] == "xls" and kinds["txt"] == "txt"
+    extra = {n: inspect_upload(n, (fixtures / n).read_bytes(), s) for n in make_fixtures.EXTRA_BUILDERS}
+    assert extra["wniosek-owner.pdf"].kind == "pdf" and extra["wniosek-anim.png"].kind == "png"
+    assert extra["wniosek-rtf.doc"].kind == "rtf" and extra["wniosek-rtf.doc"].warnings
     assert kinds["doc"] == "doc" and kinds["docx"] == "docx" and kinds["ods"] == "ods" and kinds["xlsx"] == "xlsx"
     assert kinds["pdf"] == "pdf" and kinds["png"] == "png" and kinds["jpg"] == kinds["jpeg"]
     assert kinds["odt"] == "odt" and kinds["tiff"] == "tiff" and kinds["bmp"] == "bmp"

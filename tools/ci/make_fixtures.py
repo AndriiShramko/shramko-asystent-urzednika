@@ -5,8 +5,10 @@
 
 Nothing of the partner's task sets is in git, so CI converts these. Each file is a blank application with a
 title, labelled places to fill (dotted leaders, empty cells, comb boxes) and no value filled in. The words are
-generic and invented; no person, office or number is real. Writes wniosek.{pdf,docx,xlsx,ods,doc,png,jpg,jpeg,odt,tiff,bmp,gif,webp}
-and prints one line per file.
+generic and invented; no person, office or number is real. Writes wniosek.{pdf,docx,xlsx,ods,doc,png,jpg,jpeg,odt,tiff,bmp,gif,webp,rtf,xls,txt,heic,heif} and (WP-F20f)
+wniosek-owner.pdf, wniosek-anim.png, wniosek-rtf.doc; prints one line per file. The HEIC files need heif-enc with
+an encoder plugin on the machine that runs this (CI installs it on the runner, never in the image);
+--require-heic makes its absence an error.
 
 Needs the test environment (reportlab, python-docx, openpyxl, Pillow from requirements-dev.lock). The .doc is a
 minimal Word 97 binary built by hand: an OLE container with WordDocument and 1Table streams, a FIB and a piece
@@ -26,16 +28,18 @@ FIELDS = ["Imię", "Nazwisko", "Numer PESEL", "Adres zamieszkania", "Kod pocztow
           "Numer telefonu", "Adres e-mail", "Cel wydania zaświadczenia"]
 CLOSING = ["Data", "Podpis wnioskodawcy"]
 ASCII = str.maketrans("ąćęłńóśźżĄĆĘŁŃÓŚŹŻ", "acelnoszzACELNOSZZ")
-EXTENSIONS = ("pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp")
+EXTENSIONS = ("pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp",
+              "rtf", "xls", "txt", "heic", "heif")
+NEEDS_HEIF_ENC = ("heic", "heif")
 
 
-def pdf(title: str = TITLE) -> bytes:
+def pdf(title: str = TITLE, encrypt: object = None) -> bytes:
     """reportlab's built-in fonts have no Polish letters: the PDF carries the same words without diacritics."""
     from reportlab.lib.pagesizes import A4
     from reportlab.pdfgen import canvas
 
     buf = io.BytesIO()
-    c = canvas.Canvas(buf, pagesize=A4, invariant=1)
+    c = canvas.Canvas(buf, pagesize=A4, invariant=1, encrypt=encrypt)
     c.setTitle(title.translate(ASCII))
     c.setFont("Helvetica-Bold", 14)
     c.drawString(72, 780, title.translate(ASCII))
@@ -316,25 +320,136 @@ def odt() -> bytes:
     return buf.getvalue()
 
 
+# ---- WP-F20f: rtf, xls, txt, heic, owner-password pdf, apng, a .doc that holds RTF ---------------------------------
+BS = chr(92)   # one backslash: RTF control words are written as BS + word
+
+
+def rtf() -> bytes:
+    """cp1250 RTF (the diacritics are raw cp1250 bytes), a two-column table, two checkbox form fields."""
+    def w(text: str) -> str:
+        return text.replace("@", BS)   # "@par" stands for the RTF word par
+
+    def cell(text: str) -> str:
+        return w(f"@pard@intbl {text}@cell")
+
+    rows = "".join(w("@trowd@cellx3600@cellx9000") + cell(label + ":") + cell("") + w("@row") + "\n"
+                   for label in FIELDS)
+    box = w("{@field{@*@fldinst FORMCHECKBOX {@*@formfield{@fftype1@ffres0}}}{@fldrslt}}")
+    body = (w(f"@pard@b {TITLE}@b0@par") + "\n" + w(f"@pard {NOTE}@par") + "\n" + rows +
+            w(f"@pard {box} Odbiór osobisty    {box} Wysyłka na adres@par") + "\n" +
+            "".join(w(f"@pard {label}: ........................................@par") + "\n" for label in CLOSING))
+    head = w("{@rtf1@ansi@ansicpg1250@deff0{@fonttbl{@f0@fnil Arial;}}{@colortbl;@red0@green0@blue0;}")
+    return (head + body + "}").encode("cp1250")
+
+
+def _rec(rid: int, body: bytes) -> bytes:
+    return struct.pack("<HH", rid, len(body)) + body
+
+
+def xls() -> bytes:
+    """A BIFF8 workbook of one sheet inside a compound file (no writer library is installed): labels, a bold title,
+    boxed empty cells next to the labels. XF 15 plain, 16 bold, 17 boxed; the first 15 XFs are style XFs."""
+    def font(weight: int) -> bytes:
+        return _rec(0x0031, struct.pack("<HHHHHBBBB", 200, 0, 0x7FFF, weight, 0, 0, 0, 0, 0) + bytes([5, 0]) + b"Arial")
+
+    def xf(font_i: int, style: bool, borders: int = 0) -> bytes:
+        return _rec(0x00E0, struct.pack("<HHHBBBBIIH", font_i, 0, 0xFFF5 if style else 0x0001, 0, 0, 0,
+                                        0xFC if style else 0, borders, 0, 0))
+    version = 0x0600
+    glob = _rec(0x0809, struct.pack("<HHHHII", version, 0x0005, 0x0DBB, 0x07CC, 0, 6))
+    glob += _rec(0x0042, struct.pack("<H", 1200)) + font(400) + font(700)
+    glob += b"".join(xf(0, True) for _ in range(15)) + xf(0, False) + xf(1, False) + xf(0, False, borders=0x1111)
+    name = b"Wniosek"
+    eof = _rec(0x000A, b"")
+    sheet_at = len(glob) + 4 + 4 + 2 + 2 + len(name) + len(eof)
+    glob += _rec(0x0085, struct.pack("<IBB", sheet_at, 0, 0) + bytes([len(name), 0]) + name) + eof
+    labels = [TITLE, NOTE, ""] + FIELDS + CLOSING
+    sh = _rec(0x0809, struct.pack("<HHHHII", version, 0x0010, 0x0DBB, 0x07CC, 0, 6))
+    sh += _rec(0x0200, struct.pack("<IIHHH", 0, len(labels), 0, 2, 0))
+    for r, text in enumerate(labels):
+        if not text:
+            continue
+        text = text.translate(ASCII)
+        sh += _rec(0x0204, struct.pack("<HHHHB", r, 0, 16 if r == 0 else 15, len(text), 0) + text.encode("latin-1"))
+        if r >= 3:
+            sh += _rec(0x0201, struct.pack("<HHH", r, 1, 17))   # a blank cell with a box
+    sh += _rec(0x000A, b"")
+    return ole([("Workbook", glob + sh)])
+
+
+def txt() -> bytes:
+    lines = [TITLE, NOTE, ""] + [f"{label}: ........................................" for label in FIELDS + CLOSING]
+    return ("\n".join(lines) + "\n").encode("utf-8")
+
+
+def heic() -> bytes:
+    """Made by heif-enc on the CI runner only (an x265 plugin installed THERE, never in the image)."""
+    import shutil
+    import subprocess
+    import tempfile
+
+    if not shutil.which("heif-enc"):
+        raise FileNotFoundError("heif-enc is not installed")
+    with tempfile.TemporaryDirectory() as tmp:
+        src, dst = Path(tmp, "form.png"), Path(tmp, "form.heic")
+        _page().convert("RGB").save(src, "PNG")
+        subprocess.run(["heif-enc", "-q", "70", str(src), "-o", str(dst)], check=True, capture_output=True, timeout=120)
+        return dst.read_bytes()
+
+
+def pdf_owner_password() -> bytes:
+    """Encrypted with an owner password only: it opens with the empty user password."""
+    from reportlab.lib.pdfencrypt import StandardEncryption
+
+    return pdf(encrypt=StandardEncryption(userPassword="", ownerPassword="owner-synthetic", canPrint=0, canModify=0))
+
+
+def apng() -> bytes:
+    """An animated PNG of two frames: the form, then a blank page. The first frame is the form."""
+    from PIL import Image
+
+    buf = io.BytesIO()
+    _page().save(buf, "PNG", save_all=True, append_images=[Image.new("L", (1240, 1754), 255)], duration=500, loop=0)
+    return buf.getvalue()
+
+
 BUILDERS = {"pdf": pdf, "docx": docx, "xlsx": xlsx, "ods": ods, "doc": doc, "png": png, "jpg": jpeg, "jpeg": jpeg,
-            "odt": odt, "tiff": tiff, "bmp": bmp, "gif": gif, "webp": webp}
+            "odt": odt, "tiff": tiff, "bmp": bmp, "gif": gif, "webp": webp, "rtf": rtf, "xls": xls, "txt": txt}
+# More files of kinds that already have an extension above (WP-F20f). Each converts like the plain ones.
+EXTRA_BUILDERS = {"wniosek-owner.pdf": pdf_owner_password, "wniosek-anim.png": apng, "wniosek-rtf.doc": rtf}
 
 
-def write_all(out: Path) -> list[Path]:
+def write_all(out: Path, require_heic: bool = False) -> list[Path]:
+    """Without heif-enc the two HEIC files are left out (a laptop); require_heic=True makes that an error (CI)."""
     out.mkdir(parents=True, exist_ok=True)
     written = []
+    heic_bytes = None
     for ext in EXTENSIONS:
         path = out / f"wniosek.{ext}"
-        path.write_bytes(BUILDERS[ext]())
+        if ext in NEEDS_HEIF_ENC:
+            try:
+                heic_bytes = heic_bytes or heic()
+            except FileNotFoundError:
+                if require_heic:
+                    raise
+                continue
+            path.write_bytes(heic_bytes)
+        else:
+            path.write_bytes(BUILDERS[ext]())
         written.append(path)
+    for name, build in EXTRA_BUILDERS.items():
+        (out / name).write_bytes(build())
+        written.append(out / name)
     return written
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 1:
-        print(__doc__.split("\n\n")[1], file=sys.stderr)
+    flags = [a for a in argv if a.startswith("--")]
+    argv = [a for a in argv if not a.startswith("--")]
+    if len(argv) != 1 or set(flags) - {"--require-heic"}:
+        print(__doc__.split("\n\n")[1] + " [--require-heic]", file=sys.stderr)
         return 2
-    for path in write_all(Path(argv[0])):
+    for path in write_all(Path(argv[0]), require_heic="--require-heic" in flags):
         print(f"{path.name}\t{path.stat().st_size} bytes")
     return 0
 

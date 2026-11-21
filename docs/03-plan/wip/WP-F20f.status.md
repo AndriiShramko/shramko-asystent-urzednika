@@ -13,7 +13,7 @@ Branch: wp/F20-f-user-formats   Stage now: 1a and 1b done natively (items 1 to 8
 - [x] 7. File names cleaned by `clean_name` (forbidden, control, bidi characters removed; cut to 250 keeping the extension; empty becomes `plik`; a name with no extension is read by its content); Polish note in `UploadInfo.warnings`
 - [x] 8. HEIC reader `readers/heic.py` (`heif-dec` child process, no shell, 30 s, own temp folder, PNG through the image reader); without the program: code NO_DECODER, "Ta instalacja nie ma dekodera HEIC."
 - [x] Granted: `Format` has rtf, xls, txt, heic (schemas regenerated with `python -m app.model.schemas`), `MODEL_FORMAT` cut to the F20e entries; `UploadInfo.warnings` reach the sidecar as `{"code": "INPUT_NOTE", "detail": ...}` through `pipeline.run(..., notes=)` from `main.py` and `cli.py`
-- [ ] Stage 2: image, fixtures, NOTICE (not mine now)
+- [ ] Stage 2 (in progress, round 1 pushed): Dockerfile (libheif, x265 check, VOLUME /tmp), fixtures (rtf xls txt heic heif, owner pdf, apng, .doc holding RTF), container check (PNG without --tmpfs, .exe control), READY_FORMATS, NOTICE; evidence below when the run is green
 
 ## Decisions
 - Plain text is the weakest proof and a fallback: it counts only when no other proof matches (a tiny ASCII PDF is not a polyglot of pdf and txt), and a disagreeing extension is accepted for text only under txt, doc, rtf, xls (`TEXT_OK_EXT`). A text file named .pdf, .docx, .xlsx, .ods, .odt or an image extension stays refused (TYPE_MISMATCH, "plik tekstowy"): this keeps the hostile corpus file `text-named-pdf.pdf` refused (7 of 7). This is a deliberate narrowing of the plan text ("exactly one known kind is never refused"); the lead may widen `TEXT_OK_EXT`.
