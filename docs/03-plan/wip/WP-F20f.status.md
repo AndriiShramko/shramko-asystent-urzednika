@@ -22,10 +22,16 @@ Branch: wp/F20-f-user-formats   Stage now: 1a done natively (items 1 to 4); next
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
-| new tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_user_formats.py -q` | see below | (filled at commit) |
+| new tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_user_formats.py -q` | 47 passed | 6ac4aa0 |
+| readers + shell tests | `pytest apps/converter/tests/readers apps/converter/tests/shell -q` | 393 passed, 1 skipped | 6ac4aa0 |
+| unseen sample | `bash tools/gate.sh py -m eval.chain --corpus unseen --archive <archive> --compare` | 80 files: 79 converted, 1 refused, 0 failed; gate failures 0; strict-lint errors 0; 0 worse, 7 better | 6ac4aa0 |
+| sets | same, `--corpus sets` | 71 of 71 converted, 0 worse, 27 better (their baseline predates later work), strict-lint 0 | 6ac4aa0 |
+| hostile | same, `--corpus hostile` | 6 refused, 1 converted: `pixel.png` (a 1x1 PNG, the baseline predates the F20e image formats and is not changed by this stage); the other 6 incl. `text-named-pdf.pdf` still refused; 0 worse | 6ac4aa0 |
+
+Table of the 8 refusals of the unseen baseline (ids are the sample hashes): 097a6c53 rtf refused -> converted (53 fields); 5cfc8acc rtf -> converted (59); 663c3b77 rtf -> converted (53); d2ca0d42 rtf -> converted (51); e652b3c0 rtf -> converted (62); 123b1988 xls -> converted (146); 93be3909 jpg -> converted (49; not a change of this stage: the image formats of F20e); 899c15a1 pdf -> still refused UNREADABLE (annotation crash, stage 1b). All converted: gate passed, 0 strict-lint errors.
 
 ## Negative control
-(to fill)
+`MAX_DEPTH` of `readers/rtf.py` set to 10**9: `test_rtf_deep_nesting_is_refused_not_a_crash` failed ("DID NOT RAISE ReaderError"); restored to 128, 47 passed.
 
 ## Requests to lead
 - `app/model/common.py` `Format` and `contracts/coi/page-model.schema.json`: add rtf, xls, txt, heic (additive), then drop the four entries from `readers.MODEL_FORMAT`. Add warning codes if wanted (extension disagreed; styles not read).
