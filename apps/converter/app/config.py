@@ -33,11 +33,11 @@ class Settings:
     max_pages: int = 60
     max_cells: int = 200_000
     max_pixels: int = 80000000
-    job_timeout_s: int = 120
+    job_timeout_s: int = 600   # fits the page budget: 60 scanned pages at about 6 s each (review D19, B2)
     worker_memory_mb: int = 1024
     concurrency: int = 2
     rate_limit_per_min: int = 60
-    auth_mode: str = "jwt"
+    auth_mode: str = "auto"   # auto: jwt when a key file is named, otherwise off (with a warning in the log)
     jwt_alg: str = "HS256"
     jwt_secret_file: str = ""
     jwt_public_key_file: str = ""
@@ -77,7 +77,7 @@ class Settings:
         defaults = cls()
 
         choices = {
-            "auth_mode": ("jwt", "off"),
+            "auth_mode": ("auto", "jwt", "off"),
             "jwt_alg": ALGORITHMS,
             "finish_style": ("export", "info_section"),
             "validators": ("on", "off"),
@@ -136,8 +136,8 @@ class Settings:
             out.append(f"JWT_LEEWAY_S is at most {MAX_LEEWAY_S}")
         if "exp" not in self.jwt_required_claims:
             out.append("JWT_REQUIRED_CLAIMS must contain exp: it cannot be removed")
-        if self.auth_mode == "jwt":
-            keys = [k for k in (self.jwt_secret_file, self.jwt_public_key_file, self.jwt_jwks_file) if k]
+        if self.auth_enabled:   # explicit jwt with no key is refused here (fail closed); auto with no key is off
+            keys =[k for k in (self.jwt_secret_file, self.jwt_public_key_file, self.jwt_jwks_file) if k]
             if not keys:
                 out.append("AUTH_MODE=jwt needs a key file: JWT_SECRET_FILE, JWT_PUBLIC_KEY_FILE or JWT_JWKS_FILE")
             if self.jwt_alg in SYMMETRIC:
@@ -165,9 +165,13 @@ class Settings:
             out.append("SIGN_OUTPUT=jws needs SIGNING_KEY_FILE")
         return out
 
+    def _has_key(self) -> bool:
+        return any((self.jwt_secret_file, self.jwt_public_key_file, self.jwt_jwks_file))
+
     @property
     def auth_enabled(self) -> bool:
-        return self.auth_mode == "jwt"
+        """Tokens are checked: AUTH_MODE=jwt, or AUTH_MODE=auto (the default) with a key file named."""
+        return self.auth_mode == "jwt" or (self.auth_mode == "auto" and self._has_key())
 
 
 def read_options(s: Settings):

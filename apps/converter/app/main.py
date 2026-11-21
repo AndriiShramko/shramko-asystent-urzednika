@@ -17,6 +17,7 @@ from typing import AsyncIterator
 import asyncio
 from fastapi import FastAPI, Request
 from fastapi.concurrency import run_in_threadpool
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from starlette.datastructures import UploadFile
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -28,6 +29,7 @@ from app.auth import RateLimiter, TokenVerifier, scopes_of
 from app.config import Settings
 from app.guard import ProblemError, UploadInfo, inspect_upload
 from app.guard.checks import EXTENSIONS, check_archive, too_large
+from app.readers import formats as reader_formats
 
 log = logging.getLogger("converter")
 
@@ -102,22 +104,71 @@ class BodyLimit:
                 await problem_response(too_large(self.s))(scope, receive, send)
 
 
+def internal_problem(exc: BaseException) -> ProblemError:
+    """An exception nobody expected: one log line with the type of the exception and nothing of its text (a message
+    may quote the file), and the 500 of the contract. `GATE_FAILED` is the code for "our fault" (D19)."""
+    log.error("stage=internal result=%s", type(exc).__name__)
+    return ProblemError("GATE_FAILED", "Błąd wewnętrzny usługi.")
+
+
+class CatchAll:
+    """Pure ASGI middleware, the outermost of ours: an unexpected exception becomes the problem answer here, so it
+    never reaches the server, which would answer plain text and log a stack trace with the text of the exception."""
+
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        started = False
+
+        async def tracking_send(msg: Message) -> None:
+            nonlocal started
+            started = started or msg["type"] == "http.response.start"
+            await send(msg)
+
+        try:
+            await self.app(scope, receive, tracking_send)
+        except Exception as exc:  # noqa: BLE001 - the last line of defence: every error is application/problem+json
+            problem = internal_problem(exc)
+            if not started:   # a stream that has begun cannot change its status; it just ends
+                await problem_response(problem)(scope, receive, send)
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     s = settings or Settings.from_env()
     logging.getLogger("converter").setLevel(s.log_level.upper())
     verifier = TokenVerifier(s) if s.auth_enabled else None
     limiter = RateLimiter(s.rate_limit_per_min)
     gate = asyncio.Semaphore(s.concurrency)
-    if not s.auth_enabled:
+    if s.auth_mode == "off":
         log.warning("AUTH_MODE=off: every request is accepted without a token. Local work only.")
+    elif not s.auth_enabled:   # AUTH_MODE=auto and no key file
+        log.warning("No JWT key configured: the API accepts requests WITHOUT a token. "
+                    "For shared networks set AUTH_MODE=jwt and JWT_SECRET_FILE.")
 
     app = FastAPI(title="Konwerter formularzy", version=__version__)
     app.state.settings = s
     app.add_middleware(BodyLimit, settings=s)
+    app.add_middleware(CatchAll)   # added last, so it wraps everything of ours
 
     @app.exception_handler(ProblemError)
     async def _problem(_: Request, exc: ProblemError) -> JSONResponse:
         return problem_response(exc)
+
+    @app.exception_handler(RequestValidationError)
+    async def _invalid(_: Request, exc: RequestValidationError) -> JSONResponse:
+        """A parameter of ours with a value of the wrong type (`?report=true`): 400 in the contract's shape, with the
+        names of the parameters and never their values."""
+        names = sorted({str(e["loc"][-1]) for e in exc.errors() if e.get("loc") and re.fullmatch(r"[a-z_]{1,30}", str(e["loc"][-1]))})
+        where = f" ({', '.join(names)})" if names else ""
+        return problem_response(ProblemError("BAD_REQUEST", f"Nieprawidłowa wartość parametru żądania{where}."))
+
+    @app.exception_handler(Exception)
+    async def _unexpected(_: Request, exc: Exception) -> JSONResponse:   # behind CatchAll: only if that is bypassed
+        return problem_response(internal_problem(exc))
 
     @app.exception_handler(StarletteHTTPException)
     async def _http(_: Request, exc: StarletteHTTPException) -> JSONResponse:
@@ -218,6 +269,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def healthz() -> dict:
         return {"status": "ok", "version": __version__}
 
+    @app.get("/status")
+    async def status() -> dict:
+        """What runs here, for a person or a script before the first upload. No token, like `/healthz`, and so
+        nothing that needs one: no secret, no path, no key material; the name, the version and the limits in force."""
+        return {
+            "service": app.title,
+            "version": __version__,
+            "engine": "rules",
+            "auth": "jwt" if s.auth_enabled else "off",
+            "formats": reader_formats(),
+            "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
+                       "max_upload_bytes": s.max_upload_bytes},
+        }
+
     @app.post("/v1/forms/convert")
     async def convert(request: Request, report: int = 0) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
@@ -283,6 +348,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                                     warnings=result.sidecar.get("warnings", []), form=result.form)
                     except ProblemError as exc:
                         line.update(state="error", code=exc.code, status=exc.status, counts={}, warnings=[], form=None)
+                    except Exception as exc:  # noqa: BLE001 - one file must not cut the stream of the others
+                        bad = internal_problem(exc)
+                        line.update(state="error", code=bad.code, status=bad.status, counts={}, warnings=[], form=None)
                     line["seconds"] = round(time.perf_counter() - t0, 3)
                     yield canonical(line) + b"\n"
 
@@ -296,6 +364,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if cand and Path(cand).is_dir():
                 app.mount("/ui", StaticFiles(directory=cand, html=True), name="ui")
                 break
+    # Warm the readers registry before the first request: /healthz does not touch it, and two simultaneous first
+    # conversions must not meet a half-filled list.
+    reader_formats()
     return app
 
 

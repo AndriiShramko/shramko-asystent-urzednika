@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 18:18 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 22:35 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -25,6 +25,28 @@ Last update: 2026-11-21 18:18 CET. **Track F (the forms converter) is being buil
 | 14:32 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
+
+**SEVENTH BUILD LEAD (new subscription), live block. Updated 21 November 22:35. Reports to program lead 8 (session `local_a05c83e2-7861-49fd-a663-a05adf82ca29`).** The old economy rules below (economy mode, 85 to 91 percent stops, "sonnet only", "no Workflow", pool of three) were about the spent subscription and are void; binding on the new week: stop at 98 percent, steps at 94 and 96 ([`subscription-cutoff.md`](../04-orchestration/subscription-cutoff.md)), freeze Sunday 08:30, merges by 06:30.
+
+- **Budget 22:27:** week all models 1 %, week Fable 2 %, 5-hour window 6 %.
+- **Writer check 22:27:** no commit of others since `c940d03` (20:52:58); the sixth lead and its two dev servers (ports 8099, 8123) are stopped; `eval/chain/summary.json` is left modified by the sixth lead's last rerun (not committed; the next chain run on `main` rewrites it). Docker Desktop 29.9.3 runs on this laptop now.
+- **ORDER 1 of program lead 8 (test build V1: rules only, starts with no flags, no cold-start race, F3c review blockers fixed; target digest by about 00:30):**
+
+| Branch | What | Agent | State |
+|---|---|---|---|
+| `wp/F3c-review-fix` (worktree `.claude/worktrees/f3c-fix`) | F1: patch of the independent Fable review of F3c (bracketed caption stacks, judged-06 sheet regression), commit `4c6cbaf` | the lead, shell | tests of `mean` 79 passed; fast gate and `eval.chain --compare` running since 22:30 (logs `tmp/gate-f1.log`, `tmp/chain-f1.log` in the worktree) |
+| `wp/F-service-fixes`, status `wip/WP-F-svc.status.md` | J1 `AUTH_MODE=auto`, R1 cold-start race, R2 timeout 600 and abandoned jobs counted, R3 catch-all problem JSON, J3 minimal `GET /status`, J2 CLI exit 4, R4 PDFium lock | `wp-thinker` (fable), started 22:28 | running |
+| `wp/F-jury-docs`, status `wip/WP-F-jurydocs.status.md` | J2 README jury commands for bash and PowerShell 5.1, J3 mentions of `/v1/selftest` replaced; carries the token `REPLACE_WITH_FINAL_DIGEST` that the lead replaces after the CI build | `wp-builder` (opus), started 22:28 | running |
+
+- **ORDER 2 lanes started beside it:**
+
+| Branch | What | Agent | State |
+|---|---|---|---|
+| `wp/F-val-validators`, status `wip/WP-F-val.status.md` | B8 validators (PESEL empty in sets 03, 08), then B9 REQUIRED only where the paper says it | `wp-thinker` (fable), started 22:28 | running |
+| `wp/F20-image-checks`, status `wip/WP-F20i.status.md` | S3 thread and locale environment, sidecar schema check, small hostile inputs, the jury's first run as a CI check; pushes start the image workflow as `test-<sha>`; merges AFTER V1 | `wp-thinker` (fable), started 22:30 | running |
+
+- **Merge order:** F1, then service fixes (fast gate and `eval.chain --compare` each time, one merge at a time, `tools/lead/merge.sh`), push, wait for the image run, digest to the program lead; then jury docs with that digest; then image checks, F-val; H4 (`/status` extended, engine header) starts after the service fixes merge (shared `main.py`); H0 after F-val (shared `lexicon`).
+- **Recovery if this lead stops:** `git worktree list`; `git log main..<branch> --oneline` for the five branches above; each status file; nothing of these agents is merged until this block says so.
 
 **HANDOFF-BUILD (21 November, about 20:55): the sixth build lead stops (order of program lead 7: the owner changes the subscription). A SEVENTH build lead starts fresh on the new subscription from `lead-2026-11-21/PROMPT-new-build-lead.md` (leads' folder, outside git); only one build lead writes to this repository, and the sixth writes nothing after 21:15. Report to the program lead that started you.**
 

@@ -1,6 +1,7 @@
 """D19: only G1 to G4 stop a form (500); G5 to G12 are warnings of a 200; the warnings header; the job time limit."""
 from __future__ import annotations
 
+import threading
 import time
 
 import factory as fx
@@ -71,12 +72,53 @@ def test_the_header_is_ascii_deduplicated_and_capped(monkeypatch):
     assert h.count("CODE_0,") == 1
 
 
+JOB_S = 30   # how long a held job would run if nothing stopped the wait
+
+
+def hold_jobs(monkeypatch) -> threading.Event:
+    """Every job blocks until the event is set (or JOB_S seconds): a document that takes far longer than the limit."""
+    release = threading.Event()
+    monkeypatch.setattr(pipeline, "run", lambda d, n, s: release.wait(JOB_S))
+    return release
+
+
+def let_go(release: threading.Event) -> None:
+    """End the held jobs and wait for their threads, so no abandoned job leaks into the next test."""
+    release.set()
+    for t in list(pipeline._abandoned):
+        t.join(10)
+
+
 def test_the_job_time_limit_answers_504_timeout(monkeypatch):
-    monkeypatch.setattr(pipeline, "run", lambda d, n, s: time.sleep(1.5))
-    started = time.perf_counter()
-    r = post(make(JOB_TIMEOUT_S="1"))
-    assert r.status_code == 504 and r.json()["code"] == "TIMEOUT"
-    assert "1 s" in r.json()["detail"] and time.perf_counter() - started < 1.4
+    release = hold_jobs(monkeypatch)
+    try:
+        started = time.perf_counter()
+        r = post(make(JOB_TIMEOUT_S="1"))
+        took = time.perf_counter() - started
+        assert r.status_code == 504 and r.json()["code"] == "TIMEOUT" and "1 s" in r.json()["detail"]
+        # the answer comes at the limit and not when the job ends: 1 s against 30 s, so a slow runner cannot blur it
+        assert 0.9 <= took < JOB_S / 2
+    finally:
+        let_go(release)
+
+
+def test_abandoned_jobs_count_against_the_slots(monkeypatch):
+    release = hold_jobs(monkeypatch)
+    client = make(JOB_TIMEOUT_S="1", CONCURRENCY="2")
+    try:
+        assert post(client).status_code == 504
+        assert post(client).status_code == 504            # one abandoned job is fewer than the two slots
+        started = time.perf_counter()
+        r = post(client)                                  # two abandoned jobs: no third one is started
+        assert r.status_code == 429 and r.json()["code"] == "BUSY" and r.headers["Retry-After"] == "30"
+        assert r.headers["content-type"] == "application/problem+json"
+        assert time.perf_counter() - started < 0.9        # refused at once, not after another time limit
+        assert sum(t.is_alive() for t in pipeline._abandoned) == 2
+    finally:
+        let_go(release)
+    done = pipeline.PipelineResult(form={"title": "Z", "tabs": [], "flow": {"links": []}}, sidecar={"warnings": []})
+    monkeypatch.setattr(pipeline, "run", lambda d, n, s: done)
+    assert post(client).status_code == 200                # the abandoned jobs ended: the slots are back
 
 
 def test_a_job_inside_the_limit_is_unchanged():

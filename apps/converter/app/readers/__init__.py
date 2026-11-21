@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import importlib
 import pkgutil
+import threading
 from typing import Any, Callable, Mapping
 
 from pydantic import ValidationError
@@ -42,6 +43,7 @@ ReaderFn = Callable[[bytes, ReadOptions], ReadResult]
 _READERS: dict[str, ReaderFn] = {}
 _HOOKS: dict[str, Callable[..., Any]] = {}
 _discovered = False
+_discover_lock = threading.RLock()
 
 
 def register(fmt: str) -> Callable[[ReaderFn], ReaderFn]:
@@ -66,13 +68,19 @@ def hook(name: str) -> Callable[..., Any] | None:
 
 
 def _discover() -> None:
+    """Import every reader module once. Under a lock, and the flag is set only AFTER the imports: a second thread
+    that arrives during the first import waits for the full list instead of seeing a partial one (a false 422 on
+    the second of two simultaneous first requests), and a failed import is tried again, never left half done."""
     global _discovered
     if _discovered:
         return
-    _discovered = True
-    for m in sorted(pkgutil.iter_modules(__path__), key=lambda m: m.name):
-        if not m.name.startswith("_"):
-            importlib.import_module(f"{__name__}.{m.name}")
+    with _discover_lock:   # re-entrant: a reader module may call `hook` or `formats` while it is being imported
+        if _discovered:
+            return
+        for m in sorted(pkgutil.iter_modules(__path__), key=lambda m: m.name):
+            if not m.name.startswith("_"):
+                importlib.import_module(f"{__name__}.{m.name}")
+        _discovered = True
 
 
 def formats() -> list[str]:

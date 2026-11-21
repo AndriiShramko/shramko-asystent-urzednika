@@ -2,7 +2,7 @@
 
 `convert` runs the same guard and the same pipeline as the HTTP endpoint, without HTTP and without a token. It
 works in a container with no network. Exit codes: 0 done, 2 the file was refused (problem JSON on stderr),
-3 the configuration is inconsistent, 4 the file cannot be read from disk.
+3 the configuration is inconsistent, 4 the file cannot be read from disk or the output cannot be written.
 """
 from __future__ import annotations
 
@@ -51,17 +51,31 @@ def cmd_convert(args: argparse.Namespace) -> int:
         return 2
     form_text = json.dumps(result.form, ensure_ascii=False, separators=(",", ":"))
     if args.out:
-        Path(args.out).write_text(form_text, encoding="utf-8")
+        try:
+            Path(args.out).write_text(form_text, encoding="utf-8")
+        except OSError as exc:
+            return _cannot_write(args.out, exc)
     else:
         sys.stdout.write(form_text + "\n")
     if args.report:
         folder = Path(args.report)
-        folder.mkdir(parents=True, exist_ok=True)
         meta = dict(result.sidecar)
         meta["input_sha256"] = info.sha256
         meta["form_sha256"] = hashlib.sha256(form_text.encode("utf-8")).hexdigest()
-        (folder / f"{path.stem}.meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        try:
+            folder.mkdir(parents=True, exist_ok=True)
+            (folder / f"{path.stem}.meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        except OSError as exc:
+            return _cannot_write(args.report, exc)
     return 0
+
+
+def _cannot_write(target: str, exc: OSError) -> int:
+    """One line and exit code 4, no stack trace. The usual cause is a folder mounted into the container that the
+    container's user may not write (review D19, B3), hence the hint."""
+    print(f'Cannot write {target}: {exc.strerror or type(exc).__name__}. On Linux add --user "$(id -u):$(id -g)"',
+          file=sys.stderr)
+    return 4
 
 
 def cmd_serve(args: argparse.Namespace) -> int:
