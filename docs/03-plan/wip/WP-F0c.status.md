@@ -36,7 +36,7 @@ Branch: wp/F0c-models11   Stage now: acceptance (single stage, lead-owned contra
 | model tests | `bash tools/gate.sh py -m pytest apps/converter/tests/model -q` | 92 passed | this branch |
 | schemas match models | test_schema_files_match_the_models | pass | this branch |
 | 1.0 bytes unchanged | scratch script: 1.0 models of main vs 1.1 models on 4 old examples + 2 composer brief fixtures; readers' DOCX and PDF output | 6/6 identical; reader output identical except `model_version` 1 -> 1.1 | this branch |
-| fast gate, zero edits in readers/compose/guard/auth | `bash tools/gate.sh fast` | 416 passed (378 before), 8 deselected | this branch |
+| fast gate, zero edits in readers/compose/guard/auth | `bash tools/gate.sh fast` | 416 passed (378 before), 8 deselected | 3ad80fb (main 457e681 merged) |
 
 ## Negative control
 Tests: element with neither box nor anchor refused; span past the text of its run refused; ledger from dispositions missing c51 refused; old 1.0 examples validate against the 1.1 schema and model. Break-and-restore on 3f2bbf3: the missing-candidate check of
