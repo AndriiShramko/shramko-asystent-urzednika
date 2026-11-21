@@ -54,7 +54,7 @@ COPY --from=ui /out ./ui
 ENV PYTHONPATH=/srv/converter OCR_SECOND_ENGINE=on
 # OCR writes temporary files to /tmp. A declared volume makes /tmp writable under `docker run --read-only` with no
 # --tmpfs (an anonymous volume copies the 1777 mode of the folder); the user stays non-root.
-VOLUME /tmp
+#NEGCTL VOLUME /tmp
 USER 10001:10001
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
@@ -83,7 +83,7 @@ COPY contracts/coi/form.schema.json contracts/coi/form.tolerant.schema.json ./co
 COPY --from=ui /out ./ui
 ENV PYTHONPATH=/srv/converter
 # Same as in plus: /tmp is a declared volume, so OCR works under --read-only without a --tmpfs run flag.
-VOLUME /tmp
+#NEGCTL VOLUME /tmp
 # A dedicated user, one port, no secret in the image: keys come in as files (JWT_SECRET_FILE and the like).
 USER 10001:10001
 EXPOSE 8080
