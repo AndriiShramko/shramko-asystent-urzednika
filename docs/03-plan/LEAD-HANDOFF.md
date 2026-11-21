@@ -56,6 +56,15 @@ Written by the first lead session of the build on 21 November 2026. [`STATUS.md`
 - **The wave workflow failed twice on F3b** (opus stages commit but return no structured report). Direct agents per stage work: `wp-thinker` on opus for a core, `wp-builder` on sonnet for acceptance and fixes, `wp-reviewer` for the review.
 - **Context:** this lead started at 129 thousand tokens and reached the limit in 30 minutes: two reviews, four agent launches, a dozen peer messages and notices. Answer peer messages in one line and read no report twice.
 
+### Learned by the fifth build lead (21 November, 18:02 to 18:18)
+
+- **Parallel opus stages plus two lead sessions burn about 9 points of the week an hour.** At 18:10 the week rose 3 points in 20 minutes (an opus core, a wave review, a sonnet builder, the old and the new lead). A core continuation can run on sonnet when the previous stage wrote its cases and rules into "Left for the next core stage".
+- **A cancelled main run is not a red main.** A newer push to `main` cancels the running image run; the newer commit's image carries the code (`de4acbe` cancelled, `4ab9689` published). `wait_run.py` then shows `cancelled` on a build step. Only `docs/**` and `research/**` start no run: `README.md` and `eval/chain/baseline.json` do.
+- **A model runtime fits only the `plus` target.** onnxruntime 1.32.0 (MIT) ships cp314 x86_64 wheels for glibc only (checked 18:05), none for musl: Alpine `core` cannot carry it.
+- **Every sidecar reports G11 and G12 `not_applicable`.** Say "10 of 12 checks passed, 2 not applicable" until the wiring hands the ledger and the fill-area values to the gate.
+- **`rm -rf` outside the repository is refused** by the permission settings: `tools/lead/pitch_run.py` names its folders by the second and never cleans up.
+- **Context:** this lead started at about 95 thousand tokens and reached start plus 115 thousand in 15 minutes (three peer reports, two agent launches, one merge, the model answer). The program lead wants the model answer in five lines.
+
 ## 4. What comes next, in order
 
 1. (Second lead, 17:04) Merge WP-F3b and WP-F20e when they report; the rest of the order is in the STATUS handoff block, which wins over this list.
