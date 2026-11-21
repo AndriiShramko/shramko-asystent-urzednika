@@ -123,3 +123,59 @@ def test_boxes_under_the_applicant_heading_that_are_not_kinds_of_applicant_are_a
 def test_boxes_that_name_kinds_of_applicant_stay_with_the_standard_pages() -> None:
     got = _fields(_applicant_group(["Klub sportowy", "Spółdzielnia mieszkaniowa"]))
     assert "Wnioskodawca" not in got
+
+
+# -- item 2 (T2): attachments named in running text ---------------------------------------------------------------
+
+def _attach_list() -> Native:
+    n = Native()
+    n.text(50, 40, "Załącznik nr 2 do Regulaminu korzystania z sal", 300)
+    n.text(70, 70, "WNIOSEK O ZAJECIE TERENU", 300, bold=True)
+    n.text(50, 100, "Nazwa ulicy", 80)
+    n.text(140, 100, DOTS, 200)
+    n.text(50, 130, "4. Załączniki do wniosku:", 150)
+    items = [("- Plan sytuacyjny w skali 1:500 z zaznaczeniem granic i podaniem", "wymiarow zajecia."),
+             ("- Harmonogram robot.", None),
+             ("- Projekt organizacji ruchu, jeżeli zajecie terenu wplywa na ruch.", None),
+             ("- Informacja o zabezpieczeniu robot, jeżeli nie jest wymagany projekt organizacji ruchu.", None),
+             ("- Pełnomocnictwo, gdy wystepuje pelnomocnik.", None)]
+    y = 145
+    for first, more in items:
+        n.text(55, y, first, 450)
+        y += 12
+        if more:
+            n.text(70, y, more, 200)
+            y += 12
+    n.text(50, y + 20, "Do wniosku można dołączyć dyplomy sportowe.", 300)
+    n.text(50, y + 40, "Oswiadczam, ze zwierze jest zaszczepione – w załączeniu kopia zaswiadczenia.", 400)
+    return n
+
+
+def test_every_item_of_an_attachments_list_and_of_a_sentence_is_an_upload_with_its_own_label() -> None:
+    b = _run(_attach_list())
+    own = {a.label: a for a in b.attachments if a.covered_by is None}
+    assert own["Plan sytuacyjny w skali 1:500 z zaznaczeniem granic i podaniem wymiarow zajecia"].required is True
+    assert own["Harmonogram robot"].required is True
+    assert own["Dyplomy sportowe"].required is False
+    assert own["Kopia zaswiadczenia"].required is True
+    assert [a.covered_by for a in b.attachments if a.label.startswith("Pełnomocnictwo")] == ["standard/pelnomocnictwo"]
+
+
+def test_an_item_wanted_only_without_the_other_makes_an_either_or_pair() -> None:
+    b = _run(_attach_list())
+    choice = [f for f in _fields(b).values() if f.type == "RADIO"]
+    assert len(choice) == 1 and choice[0].options == ["Projekt organizacji ruchu", "Informacja o zabezpieczeniu robot"]
+    shown = {a.label: a.show_if for a in b.attachments if a.show_if is not None}
+    assert {c.is_ for c in shown.values()} == set(choice[0].options) and {c.field for c in shown.values()} == {choice[0].key}
+
+
+def test_a_regulation_annex_line_and_a_bare_attachments_heading_give_no_upload() -> None:
+    n = Native()
+    n.text(50, 40, "Załącznik nr 2 do Regulaminu korzystania z sal", 300)
+    n.text(70, 70, "WNIOSEK O WYNAJEM", 300, bold=True)
+    n.text(50, 100, "Nazwa sali", 80)
+    n.text(140, 100, DOTS, 200)
+    n.text(50, 130, "Załączniki", 80)
+    n.text(50, 150, "Wniosek nalezy zlozyc w sekretariacie.", 300)
+    b = _run(n)
+    assert b.attachments == [] and "Regulaminu" not in (b.title.value or "")

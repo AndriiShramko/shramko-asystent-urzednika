@@ -9,7 +9,7 @@ labels go to a folder outside the repository for a before/after diff).
 ## Status
 - [x] step 0: probe `eval/probe/matter.py`; before table below
 - [x] item 1 (T1 choice groups): strike-out alternatives over runs of one printed line; "A/B* lub C/D*" pair; one box beside "Oświadczam" = optional CHECKBOX; a "Xxx:" line between options splits a group; a labelled group under the applicant heading whose options are not applicant kinds is matter. 9 synthetic tests (5 negative) in `tests/mean/test_mean_f3c.py`; find/mean/compose/pipeline 177 passed
-- [ ] item 2 (T2 attachments)
+- [x] item 2 (T2 attachments): list under "Załączniki ...:" (dash or numbered items, wrapped lines joined by indent), sentences "należy / można dołączyć | załączyć X", "w załączeniu X", "X załączyć do wniosku"; rows "N. X TAK NIE"; either-or pair = RADIO + two SHOW; covers by the standard pages (new lexicon row "dokumenty upoważniające"). 3 synthetic tests (1 negative: annex line of a regulation, bare heading); find/mean/compose/pipeline 180 passed. Uploaders of the matter, PDF: set 4 0 -> 1, set 6 0 -> 5 (+1 RADIO of the pair), set 7 0 -> 1, set 8 1 -> 3, set 9 0 -> 4. Not done: set 6 DOCX (list items carry no printed dash: Word numbering), attachments of set 9 are asked once, not per variant
 - [ ] item 3 (T3 no field without an input cue)
 - [ ] item 5 (T5 labels, T9 types)
 - [ ] item 4 (T4 caption under a blank)
@@ -48,6 +48,8 @@ Ticket keys of T3 to T5 still present in the seven PDF forms: 12 of 12.
 - One box beside a sentence that starts "Oświadczam" is an optional CHECKBOX labelled with the whole sentence (lines printed right under it joined until "."); any other single box still waits / the paper asks it of some filers only / rules out a REQUIRED tick and a guessed yes-or-no label.
 - A free body line of at most six words ending in ":" between options of one group splits it, each part with at least two options / set 9 prints kinds and disciplines as one column of boxes / rules out a split on a sentence or a one-option part.
 - A labelled choice group under the applicant heading stays in the matter unless every option is an applicant kind of the lexicon ("wording" table); an unlabelled group keeps the old route / rules out "Prezydent / Klub" being swallowed by the standard pages, and a matter group titled only by the bare heading.
+- Attachments in running text: label = the item up to its condition (", jeżeli / jeśli / w przypadku / gdy"), cut at the first ", " or " (" past 90 characters; optional on "można", "ewentualn", "opcjonaln" or a condition; a sentence continues only into lines that start lower-case / the paper names items in prose / rules out an upload from a heading alone or from "Załącznik nr N do ..." (needs "Załączniki ...:" with a colon or a verb of attaching).
+- Either-or pair: an item whose condition holds "nie" and shares two word stems with another item's label / set 6 traffic project vs safety information / rules out pairing items that merely both have conditions.
 - Lead additions (17:50): "właściwe zaznaczyć" is already exclusive wording, ☐ □ and drawn rectangles are already marks of the finder; ■ (filled) is not added: it reads as a ticked example (negative control of the card). "kopia" ("w załączeniu kopia ...") is taken in item 2. Sets 4 and 7: before/after rows are reported explicitly.
 
 ## Evidence
