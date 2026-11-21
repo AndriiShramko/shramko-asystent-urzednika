@@ -64,6 +64,13 @@ Break-and-restore on c591299: the comb rule in `_shapes.combs` was changed to ne
 `test_drill_3_two_columns...`). The line was restored (`git diff -- apps/converter/app/find` empty) and the fast gate
 passed. The negative controls of the acceptance list are tests of their own (see Evidence).
 
+## Acceptance stage (commit e9ea955, main already merged)
+- `bash tools/gate.sh fast`: 519 passed, 15 deselected, 69 s, "gate: fast PASSED on e9ea955".
+- `bash tools/gate.sh py -m pytest apps/converter/tests/find -q`: 30 passed.
+- `bash tools/gate.sh py -m app.find.survey --check`: 17 files, found 17.
+- Negative control repeated: `_shapes.py` line 134 `>= 3` -> `>= 300`: 4 failed, 19 passed (test_find_core.py); restored, 30 passed.
+- Open items of Status stay open (set 2 account, set 9 PDF headings, label gaps on sets 8/9, radio grouping); see Requests.
+
 ## Requests to lead
 1. Model (WP-F0): a role for a part of a run. Today a run shared by a place and plain words is named in `roles` as a whole and also carries spans; `FinderOutput.roles` could accept spans, or the rule "exactly one owner" could say "per character".
 2. Model (WP-F0): `LabelHow` value `"below"` for a caption under a line ("(imię i nazwisko)" under dots); reported as `"leader"` until then.
@@ -76,4 +83,5 @@ passed. The negative controls of the acceptance list are tests of their own (see
 
 ## Cost notes
 - core: most turns went to reading the page models of the sets before designing (one dump script, read once) and to two rounds of fixes after the first run on the sets; a ready dump of the nine page models as text, made by the readers' survey, would save three turns.
+- acceptance: 6 replies, nothing failed; the survey rewrites eval/finder-sets.json with new timings on each run and dirties the tree (a non-writing --check would save a step).
 - integration: 3 replies; the wiring is outside owned paths, so only the merge and gate were done.
