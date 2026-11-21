@@ -15,15 +15,31 @@ Last update: 2026-11-21 14:50 CET. **Track F (the forms converter) is being buil
 | (c) | JSON of the seven judged forms in `results/`, README, architecture document, metrics | not reached |
 | (d) | PDF of ten slides and the script of the three-minute film | not reached |
 
-**Running (14:50):**
+**Merged into `main`:**
+
+| When | Package | Merge commit | What it proves |
+|---|---|---|---|
+| 15:05 | WP-F0a form schema profiles, tolerant linter, golden list, contradiction docket (13 rows) | `1430f0a` | both exports pass the tolerant profile with zero errors and fail the strict one for the listed reasons; six negative controls |
+| 15:22 | WP-F0b data contracts and shared models (`apps/converter/app/model/`, four generated schema files, examples) | `4bb8854` | 54 model tests; both exports load and dump back with nothing lost; fast gate 71 passed. No independent agent review: a second opinion of a hosted model was asked instead (`research/eden/e7-…`) |
+
+**Running (15:25):**
 
 | What | Branch | How it runs |
 |---|---|---|
-| WP-F1 service shell | `wp/F1-service-shell` | wave run `wf_39a455e5-4cc` (saved workflow `wp-wave`, one package: the first run of the wave script on real agents) |
-| WP-F0a form schema profiles, linter, golden list, contradiction docket | `wp/F0a-profiles` | one builder agent (sonnet), started directly |
-| WP-F0b data contracts and shared models (`contracts/coi/*.schema.json`, `apps/converter/app/model/`) | `wp/F0b-models` | one thinker agent (opus), started directly |
+| WP-F1 service shell (core stage done: 121 tests; integration stage writes the Dockerfile, README, environment check) | `wp/F1-service-shell` | wave run `wf_39a455e5-4cc` (saved workflow `wp-wave`; the stage hand-over of the wave script works on real agents) |
+| WP-F2a readers for PDF and DOCX (core on opus) | `wp/F2a-readers-pdf-docx` | second wave, started 15:25; its run id is in the lead's conversation and in `.claude/worktrees/` names |
+| WP-F5 composer (core on the session's model) | `wp/F5-composer` | the same wave |
+| Audit of the plan by three hosted models (coverage of every card requirement, failure modes on new files, proof for a non-programmer) | files `research/eden/e6-coverage-audit.*.md` | a background command on the partner's credits; raw reports, unverified by design |
 
-**Next wave when F0a and F0b are merged:** WP-F2a (PDF and DOCX readers) and WP-F5 (composer; core on the session's model); WP-F20 (image pipeline) as soon as the core stage of F1 is on its branch.
+**Next:** WP-F20 (image pipeline) the moment F1 is merged or its Dockerfile is on its branch; then WP-F3 (finder) on top of F2a, WP-F14 (gate).
+
+**Standing instructions of the owner (21 November, 15:05):**
+
+1. Involve him only in extreme cases; when something truly cannot be done by an agent, say exactly what he has to download or click.
+2. He does not test anything himself. The lead finds the right tests, covers everything the card asks and what the partner did not think of, and at every milestone walks him through plain-language proof (a page "requirement of the card, proof, how to see it").
+3. Re-think and improve the planned structure at every stage.
+4. **Docker:** do not interrupt running agents. When a quiet window comes (nothing running, work committed), tell him; the lead starts the installation itself (`winget`, WSL), he confirms the administrator prompt and reboots.
+5. **The partner's credits are limited (100 EUR; the tool stops at 60 USD):** use them, and only with the strongest models (`anthropic/claude-fable-5-2`, `openai/gpt-6.2-astra`, `google/gemini-4-neon`), for research, second opinions and the jury-style critique of the seven outputs. Never at run time of the product.
 
 **Done by the lead since 13:55:**
 
