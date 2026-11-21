@@ -10,6 +10,7 @@ A row of three or more leader characters (dots, underscores) is its own run: it 
 from __future__ import annotations
 
 import io
+import warnings as warnings_mod
 from typing import Any
 
 from app.model.common import Warning
@@ -261,6 +262,7 @@ def _widgets(page: Any, ids: Ids) -> list[Widget]:
 def read(data: bytes, options: ReadOptions) -> ReadResult:
     import pdfplumber
     from pdfminer.pdfdocument import PDFPasswordIncorrect
+    from pdfplumber.utils.exceptions import PdfminerException
 
     if not data.lstrip()[:5].startswith(b"%PDF-") and b"%PDF-" not in data[:1024]:
         raise ReaderError("UNREADABLE", "no PDF header in the first kilobyte")
@@ -268,9 +270,17 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
     pages: list[Page] = []
     warnings: list[Warning] = []
     try:
-        pdf = pdfplumber.open(io.BytesIO(data))
+        # An owner password only restricts printing and copying: the empty user password opens the file. A legacy 8-bit
+        # annotation string (title, contents) must never sink the page: it is not used here, so a bad one is dropped.
+        with warnings_mod.catch_warnings():
+            warnings_mod.simplefilter("ignore")
+            pdf = pdfplumber.open(io.BytesIO(data), password="", raise_unicode_errors=False)
     except PDFPasswordIncorrect:
-        raise ReaderError("ENCRYPTED", "the PDF needs a password") from None
+        raise ReaderError("ENCRYPTED", "the PDF needs a user password") from None
+    except PdfminerException as e:   # pdfplumber wraps what pdfminer raises; the password case is told apart here
+        if e.args and isinstance(e.args[0], PDFPasswordIncorrect):
+            raise ReaderError("ENCRYPTED", "the PDF needs a user password") from None
+        raise
     with pdf:
         if len(pdf.pages) > options.max_pages:
             raise ReaderError("TOO_LARGE", f"{len(pdf.pages)} pages, the limit is {options.max_pages}")
@@ -300,8 +310,16 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
                     code="UNREADABLE_PART", page=number,
                     detail=f"{ink} characters of text, fewer than {options.ocr_min_chars}: the page needs the image "
                            "way (OCR), which this build does not have; text drawn as pixels is not read"))
+            try:
+                with warnings_mod.catch_warnings():
+                    warnings_mod.simplefilter("ignore")
+                    widgets = _widgets(page, ids)
+            except Exception as e:  # noqa: BLE001 - one broken annotation never sinks a page
+                widgets = []
+                warnings.append(Warning(code="UNREADABLE_PART", page=number,
+                                        detail=f"the form fields of the page were not read ({type(e).__name__})"))
             pages.append(Page(
                 number=number, width=r2(page.width), height=r2(page.height), origin="native",
-                runs=runs, lines=lines, rects=rects, widgets=_widgets(page, ids),
+                runs=runs, lines=lines, rects=rects, widgets=widgets,
             ))
     return ReadResult(reader="pdf.native", pages=pages, warnings=warnings)

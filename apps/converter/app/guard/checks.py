@@ -66,6 +66,8 @@ ZIP_MAX_TOTAL_BYTES = 200 * 1024 * 1024
 ZIP_MAX_RATIO = 100
 ZIP_RATIO_FLOOR = 1024 * 1024  # the ratio applies to members above 1 MB: tiny XML parts may legitimately compress 100:1
 
+JPEG_DRAFT_FACTOR = 2   # a JPEG up to this many times the pixel budget is decoded reduced (same value as in readers/_raster.py)
+
 OLE_MAGIC = bytes.fromhex("d0cf11e0a1b11ae1")
 
 
@@ -86,19 +88,41 @@ class UploadInfo:
         return hashlib.sha256(self.name.encode("utf-8")).hexdigest()[:16]
 
 
-def check_name(raw: str | None) -> str:
-    """Normalise to NFC and refuse what a name must never hold. The name is never a path and never logged."""
-    if not raw:
-        raise ProblemError("BAD_NAME", "Brak nazwy pliku.")
-    name = unicodedata.normalize("NFC", raw)
-    if len(name) > NAME_MAX:
-        raise ProblemError("BAD_NAME", f"Nazwa ma więcej niż {NAME_MAX} znaków.")
+def clean_name(raw: str | None) -> tuple[str, tuple[str, ...]]:
+    """Normalise to NFC and clean what a name must never hold (WP-F20f, D25: the user is never asked to rename a file).
+    Returns the cleaned name (fallback "plik") and the Polish sentences that say what was changed. The name is never a
+    path and never logged: only its extension and its hash are kept by the caller."""
+    changes: list[str] = []
+    name = unicodedata.normalize("NFC", raw or "")
+    kept = []
+    removed_bad = removed_ctl = False
     for ch in name:
         if ch in NAME_FORBIDDEN:
-            raise ProblemError("BAD_NAME", "Nazwa zawiera niedozwolony znak.")
-        if unicodedata.category(ch) == "Cc" or ch in NAME_BIDI:
-            raise ProblemError("BAD_NAME", "Nazwa zawiera znak sterujący.")
-    return name
+            removed_bad = True
+        elif unicodedata.category(ch) in ("Cc", "Cf") or ch in NAME_BIDI or ch in "\u2028\u2029":
+            removed_ctl = True
+        else:
+            kept.append(ch)
+    name = "".join(kept).strip()
+    if removed_bad:
+        changes.append("usunięto niedozwolone znaki")
+    if removed_ctl:
+        changes.append("usunięto znaki sterujące")
+    if len(name) > NAME_MAX:
+        ext = name.rsplit(".", 1)[1] if "." in name else ""
+        keep = ("." + ext) if 0 < len(ext) <= 10 else ""
+        name = name[: NAME_MAX - len(keep)] + keep
+        changes.append(f"skrócono do {NAME_MAX} znaków")
+    if not name or name == "." or not name.strip("."):
+        name = "plik"
+        changes.append("nazwa była pusta, przyjęto „plik”")
+    notes = (f"Nazwa pliku została oczyszczona ({'; '.join(changes)}); usługa nie używa jej do niczego poza rozszerzeniem.",) if changes else ()
+    return name, notes
+
+
+def check_name(raw: str | None) -> str:
+    """The cleaned name (see `clean_name`); kept for callers that need only the name."""
+    return clean_name(raw)[0]
 
 
 def check_extension(name: str, strict: bool) -> tuple[str, str]:
@@ -281,9 +305,11 @@ def decode_text(data: bytes) -> tuple[str, str] | None:
     return None
 
 
-def _check_image(kind: str, data: bytes, settings: Settings) -> None:
-    """Header only: decodable, within MAX_PIXELS, one frame (a multi-page TIFF may have up to max_pages; a GIF or WEBP
-    with more frames is read at its first frame). The pixels are never decoded here."""
+def _check_image(kind: str, data: bytes, settings: Settings) -> list[str]:
+    """Header only: decodable, within MAX_PIXELS, one frame (a multi-page TIFF may have up to max_pages; a GIF, WEBP, JPEG
+    (MPO) or PNG (APNG) with more frames is read at its first frame, with a note). A JPEG with up to JPEG_DRAFT_FACTOR
+    times the pixel budget is decoded at a reduced size (the reader's `draft`); above that it stays a refusal. The
+    pixels are never decoded here. Returns the Polish notes for the sidecar."""
     from PIL import Image
 
     try:
@@ -303,14 +329,20 @@ def _check_image(kind: str, data: bytes, settings: Settings) -> None:
                            limits={"max_pixels": settings.max_pixels}) from exc
     except Exception as exc:  # noqa: BLE001 - any decoder failure is "cannot read the header"
         raise ProblemError("UNREADABLE", "Nie udało się odczytać nagłówka obrazu.") from exc
-    if w * h > settings.max_pixels:
+    notes: list[str] = []
+    budget = settings.max_pixels * (JPEG_DRAFT_FACTOR if kind == "jpeg" else 1)
+    if w * h > budget:
         raise ProblemError("TOO_MANY_PIXELS", f"Obraz ma {w}x{h} pikseli.", limits={"max_pixels": settings.max_pixels})
+    if w * h > settings.max_pixels:
+        notes.append("Zdjęcie ma bardzo dużo pikseli; odczytano je w zmniejszonej rozdzielczości.")
     if kind == "tiff":
         if frames > settings.max_pages:
             raise ProblemError("TOO_LARGE", f"Obraz ma {frames} stron, limit to {settings.max_pages}.",
                                limits={"max_pages": settings.max_pages})
-    elif kind not in ("gif", "webp") and frames != 1:
-        raise ProblemError("TYPE_MISMATCH", "Obraz z wieloma klatkami (animacja) nie jest obsługiwany.")
+    elif frames > 1:
+        notes.append(f"Obraz ma {frames} klatek; odczytano pierwszą." if kind != "gif" and kind != "webp"
+                     else "Obraz jest animowany; odczytano pierwszą klatkę.")
+    return notes
 
 
 def _has_macros(kind: str, names: list[str]) -> bool:
@@ -323,7 +355,16 @@ def _has_macros(kind: str, names: list[str]) -> bool:
 
 def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declared_type: str | None = None) -> UploadInfo:
     """The whole guard for one upload that is already in memory. Raises ProblemError; never parses a body."""
-    name = check_name(raw_name)
+    name, warns_name = clean_name(raw_name)
+    warns: list[str] = list(warns_name)
+    no_ext = "." not in name
+    if no_ext:
+        # a name with no extension at all: the content decides when it is exactly one readable kind (D25)
+        guess = sniff_kinds(data, settings) if len(data) <= settings.max_upload_bytes else set()
+        if len(guess) == 1 and next(iter(guess)) in READABLE_KINDS:
+            actual = next(iter(guess))
+            name = f"{name}.{'jpg' if actual == 'jpeg' else actual}"
+            warns.append(f"Plik bez rozszerzenia odczytano jako {KIND_LABEL[actual]}.")
     written, ext = check_extension(name, settings.strict_extensions)
     kind = KIND_OF_EXT.get(ext, ext)
     if ext == "doc" and settings.doc_reader == "off":
@@ -332,7 +373,6 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         raise too_large(settings)
 
     kinds = sniff_kinds(data, settings)
-    warns: list[str] = []
     if len(kinds) > 1:
         raise ProblemError("TYPE_MISMATCH", "Plik spełnia dowody kilku formatów naraz (" + ", ".join(sorted(kinds)) + ").")
     declared_kind = kind
@@ -351,7 +391,7 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         kind = actual
 
     if kind in IMAGE_KINDS:
-        _check_image(kind, data, settings)
+        warns.extend(_check_image(kind, data, settings))
 
     if declared_type:
         mime = declared_type.split(";", 1)[0].strip().lower()

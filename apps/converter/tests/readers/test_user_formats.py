@@ -25,7 +25,7 @@ def texts(model, page=0):
 
 def test_registered_formats_include_the_new_readers():
     assert {"rtf", "xls", "txt"} <= set(readers.formats())
-    assert "heic" not in readers.formats()   # stage 1b
+    assert "heic" in readers.formats()
 
 
 def test_rtf_xls_txt_proofs_and_extensions():
@@ -114,9 +114,11 @@ def test_ole_without_word_or_workbook_stream_is_not_xls():
     assert sniff_kinds(ole_bytes({"WordDocument": b"x", "Workbook": b"x"})) == {"doc", "xls"}
 
 
-def test_heic_has_no_reader_yet_and_the_refusal_is_plain():
+def test_heic_without_the_decoder_the_refusal_is_plain(monkeypatch):
     from app import pipeline
+    from app.readers import heic
 
+    monkeypatch.setattr(heic, "find_decoder", lambda: None)
     with pytest.raises(ProblemError) as e:
         pipeline.run(HEIC, "a.heic", S)
     assert e.value.detail == "Ta instalacja nie ma dekodera HEIC." and "JPG" not in e.value.detail
@@ -132,7 +134,7 @@ def test_rtf_paragraphs_code_page_and_escapes():
     assert got[0] == "Imię: ż"   # \'ea is cp1250 ę; \u380 is ż and its fallback \'bf is skipped
     assert got[1] == "Zażółć — koniec".replace("ć", "ć") and got[2] == "druga linia"
     assert [r.anchor for r in p.runs[:3]] == ["p[0]", "p[1]", "p[2]"] and p.origin == "flow"
-    assert m.source.reader == "rtf" and m.source.format == "doc"
+    assert m.source.reader == "rtf" and m.source.format == "rtf"
 
 
 def test_rtf_raw_8bit_bytes_follow_the_code_page():
@@ -255,7 +257,7 @@ def test_xls_cells_bold_borders_merges_and_numbers():
                     bold={(0, 0)}, boxed={(0, 1)}, merges=[(2, 3, 0, 2)])
     m = read_document(data, "xls")
     p = m.pages[0]
-    assert m.source.reader == "xls" and m.source.format == "xlsx" and p.name == "Arkusz1" and p.origin == "flow"
+    assert m.source.reader == "xls" and m.source.format == "xls" and p.name == "Arkusz1" and p.origin == "flow"
     by_text = {r.text: r for r in p.runs}
     assert {"Imie i nazwisko", "wpisz", "3", "2.5", "Podpis"} <= set(by_text)
     assert by_text["Imie i nazwisko"].bold and not by_text["wpisz"].bold

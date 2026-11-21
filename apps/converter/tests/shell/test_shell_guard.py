@@ -37,7 +37,7 @@ def test_upper_case_extension_is_accepted():
 
 # ---- extension --------------------------------------------------------------------------------------------------
 
-@pytest.mark.parametrize("name", ["a.exe", "a.dll", "noextension", "a.pdf.exe", "a."])
+@pytest.mark.parametrize("name", ["a.exe", "a.dll", "a.pdf.exe", "a."])
 def test_wrong_extension(name):
     refused(name, fx.pdf(), "EXTENSION")
 
@@ -49,18 +49,26 @@ def test_jpe_is_accepted_by_default_and_refused_when_strict():
 
 # ---- names ------------------------------------------------------------------------------------------------------
 
-def test_name_with_percent():
-    refused("wniosek%20.pdf", fx.pdf(), "BAD_NAME")
+def cleaned(raw, expected_name):
+    info = inspect_upload(raw, fx.pdf(), S)
+    assert info.name == expected_name and info.kind == "pdf"
+    assert info.warnings and info.warnings[0].startswith("Nazwa pliku została oczyszczona")   # WP-F20f: cleaned, not refused
+    return info
 
 
-@pytest.mark.parametrize("ch", list(";:><\\/|'*$") + ["\x00", "\x07", "\u202e", "\u2066"])
-def test_name_with_forbidden_or_control_character(ch):
-    refused(f"a{ch}b.pdf", fx.pdf(), "BAD_NAME")
+def test_name_with_percent_is_cleaned():
+    cleaned("wniosek%20.pdf", "wniosek20.pdf")
 
 
-def test_name_of_251_characters_refused_and_250_accepted():
-    refused("a" * 247 + ".pdf", fx.pdf(), "BAD_NAME")  # 251 characters
-    assert inspect_upload("a" * 246 + ".pdf", fx.pdf(), S).kind == "pdf"  # 250 characters
+@pytest.mark.parametrize("ch", list(";:><" + chr(92) + "/|'*$") + [chr(0), chr(7), chr(0x202E), chr(0x2066)])
+def test_name_with_forbidden_or_control_character_is_cleaned(ch):
+    cleaned(f"a{ch}b.pdf", "ab.pdf")
+
+
+def test_name_of_251_characters_is_cut_to_250():
+    info = cleaned("a" * 247 + ".pdf", "a" * 246 + ".pdf")
+    assert len(info.name) == 250
+    assert not inspect_upload("a" * 246 + ".pdf", fx.pdf(), S).warnings  # 250 characters: unchanged
 
 
 def test_name_is_normalised_to_nfc():
@@ -68,8 +76,10 @@ def test_name_is_normalised_to_nfc():
     assert info.name == unicodedata.normalize("NFC", info.name)
 
 
-def test_missing_name():
-    refused(None, fx.pdf(), "BAD_NAME")
+def test_missing_name_is_read_by_content():
+    info = inspect_upload(None, fx.pdf(), S)
+    assert info.kind == "pdf" and info.name == "plik.pdf" and len(info.warnings) == 2
+    assert inspect_upload("noextension", fx.pdf(), S).kind == "pdf"
 
 
 # ---- content proofs ---------------------------------------------------------------------------------------------

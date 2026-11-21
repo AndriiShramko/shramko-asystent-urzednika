@@ -59,7 +59,7 @@ Sha256 = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
 PageNo = Annotated[int, Field(ge=1)]
 
 # Content kind of the input, not its extension: .jpg and .jpeg are both "jpeg" (design 6.2, task card).
-Format = Literal["pdf", "doc", "docx", "ods", "xlsx", "jpeg", "png"]
+Format = Literal["pdf", "doc", "docx", "ods", "xlsx", "jpeg", "png", "rtf", "xls", "txt", "heic"]
 
 # Reasons for something of the paper that does not become a field (design 6.4.3, 5.3 "dropped", 5.4
 # "omissions", ledger fate LEFT_OUT). Add a code here with the design row that needs it.

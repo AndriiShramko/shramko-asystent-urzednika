@@ -33,10 +33,9 @@ from ._base import Ids, ReaderError, ReadOptions, ReadResult
 __all__ = ["read_document", "register", "register_hook", "hook", "formats", "ReaderError", "ReadOptions",
            "ReadResult", "Ids"]
 
-# The page-model contract (app.model.common.Format) names seven kinds; the formats added later are recorded under
-# the nearest one until the lead extends it (request in docs/03-plan/wip/WP-F20e.status.md). `reader` tells them apart.
-MODEL_FORMAT = {"tiff": "png", "bmp": "png", "gif": "png", "webp": "png", "odt": "docx",
-                "rtf": "doc", "txt": "doc", "xls": "xlsx", "heic": "png"}   # WP-F20f: same request to the lead
+# The page-model contract (app.model.common.Format) names the formats of the readers except the ones recorded here under
+# the nearest kind (WP-F20e; `source.reader` tells them apart). WP-F20f added rtf, xls, txt and heic to the contract.
+MODEL_FORMAT = {"tiff": "png", "bmp": "png", "gif": "png", "webp": "png", "odt": "docx"}
 
 ReaderFn = Callable[[bytes, ReadOptions], ReadResult]
 

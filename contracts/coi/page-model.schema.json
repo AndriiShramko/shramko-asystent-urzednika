@@ -483,7 +483,11 @@
             "ods",
             "xlsx",
             "jpeg",
-            "png"
+            "png",
+            "rtf",
+            "xls",
+            "txt",
+            "heic"
           ],
           "title": "Format",
           "type": "string"

@@ -26,12 +26,17 @@ _PNG = b"\x89PNG\r\n\x1a\n"
 # ---------------------------------------------------------------- decode
 
 
-def decode(data: bytes, options: ReadOptions) -> Image.Image:
+JPEG_DRAFT_FACTOR = 2  # a JPEG with up to this many times `max_pixels` is decoded reduced; above it stays a refusal (guard: same)
+
+
+def decode(data: bytes, options: ReadOptions, notes: list[str] | None = None) -> Image.Image:
     """Bytes of a JPEG or PNG -> 8-bit grey image with no metadata at all (pixels only).
 
     Only the two formats are opened (Pillow restricted by `formats`). The size is read from the header and checked
     against `options.max_pixels` before a single pixel is decoded. Orientation from EXIF is applied, then dropped
-    with everything else; transparency is laid on white; only the first frame of an animated PNG is read."""
+    with everything else; transparency is laid on white; only the first frame of an animated PNG or a multi-picture
+    JPEG (MPO) is read. A JPEG over the pixel budget (up to JPEG_DRAFT_FACTOR times) is decoded with `draft()` at 1/2,
+    1/4 or 1/8 of its size, whichever first fits; `notes` then gets a sentence for the warnings."""
     if data[:3] == b"\xff\xd8\xff":
         formats = ["JPEG"]
     elif data[:8] == _PNG:
@@ -47,6 +52,14 @@ def decode(data: bytes, options: ReadOptions) -> Image.Image:
         w, h = im.size
         if w < 1 or h < 1:
             raise ReaderError("UNREADABLE", "the image has no pixels")
+        if im.format == "JPEG" and options.max_pixels < w * h <= options.max_pixels * JPEG_DRAFT_FACTOR:
+            for scale in (2, 4, 8):
+                if (w // scale) * (h // scale) <= options.max_pixels:
+                    break
+            im.draft("L", (max(1, -(-w // scale)), max(1, -(-h // scale))))
+            w, h = im.size
+            if notes is not None:
+                notes.append(f"the JPEG of {w * scale} x {h * scale} pixels was decoded at {w} x {h}")
         if w * h > options.max_pixels:
             raise ReaderError("TOO_LARGE", f"{w} x {h} pixels, the limit is {options.max_pixels} pixels")
         try:

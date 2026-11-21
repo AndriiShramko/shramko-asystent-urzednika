@@ -1,6 +1,6 @@
 # WP-F20f Do it for the user: status
 
-Branch: wp/F20-f-user-formats   Stage now: 1a done natively (items 1 to 4); next 1b (items 5 to 8), then stage 2 (image, push)
+Branch: wp/F20-f-user-formats   Stage now: 1a and 1b done natively (items 1 to 8); next stage 2 (image, push)
 
 ## Status
 - [x] 1. Guard routes by content: extensions rtf xls txt heic heif; proofs `{\rtf`, OLE `Workbook` or `Book` stream, ISO-BMFF brands (already), text (UTF-8, UTF-16 with BOM, cp1250); a disagreeing extension with exactly one known content kind is read as that kind with the Polish warning in `UploadInfo.warnings`; polyglots refused (`apps/converter/app/guard/checks.py`)
@@ -8,7 +8,11 @@ Branch: wp/F20-f-user-formats   Stage now: 1a done natively (items 1 to 4); next
 - [x] 3. XLS reader `readers/xls.py` with xlrd 2.0.2 (pyproject + both locks, only xlrd added)
 - [x] 4. TXT reader `readers/txt.py`
 - [x] Readers registered by discovery; HEIC ends in "Ta instalacja nie ma dekodera HEIC." (pipeline), no re-save advice
-- [ ] Stage 1b: PDF owner password and annotation guard, animated JPEG/PNG, draft() for big JPEG, file-name cleaning, HEIC reader
+- [x] 5. PDF: owner password opens (empty user password; pdfplumber `raise_unicode_errors=False`, a failing widget pass is a warning, the page stays); a user password gives "Plik PDF jest chroniony hasłem otwarcia; usługa nie zna hasła." (pdfplumber wraps pdfminer's PDFPasswordIncorrect in PdfminerException: the old catch never fired, fixed)
+- [x] 6. Images: animated PNG (APNG) and MPO give the first frame (note in the sidecar); JPEG up to 2x the pixel budget decoded with `draft()` (1/2, 1/4, 1/8), above 2x or any other format over the budget still refused
+- [x] 7. File names cleaned by `clean_name` (forbidden, control, bidi characters removed; cut to 250 keeping the extension; empty becomes `plik`; a name with no extension is read by its content); Polish note in `UploadInfo.warnings`
+- [x] 8. HEIC reader `readers/heic.py` (`heif-dec` child process, no shell, 30 s, own temp folder, PNG through the image reader); without the program: code NO_DECODER, "Ta instalacja nie ma dekodera HEIC."
+- [x] Granted: `Format` has rtf, xls, txt, heic (schemas regenerated with `python -m app.model.schemas`), `MODEL_FORMAT` cut to the F20e entries; `UploadInfo.warnings` reach the sidecar as `{"code": "INPUT_NOTE", "detail": ...}` through `pipeline.run(..., notes=)` from `main.py` and `cli.py`
 - [ ] Stage 2: image, fixtures, NOTICE (not mine now)
 
 ## Decisions

@@ -141,7 +141,8 @@ def read_webp(data: bytes, options: ReadOptions) -> ReadResult:
 
 
 def _read(data: bytes, options: ReadOptions) -> ReadResult:
-    grey = _raster.decode(data, options)
+    drafted: list[str] = []
+    grey = _raster.decode(data, options, drafted)
     ink_all = _raster.binarize(grey)
     cuts, unsnapped = _raster.cut_points(ink_all)
     del ink_all
@@ -149,7 +150,7 @@ def _read(data: bytes, options: ReadOptions) -> ReadResult:
         raise ReaderError("TOO_LARGE", f"{len(cuts) - 1} pages, the limit is {options.max_pages}")
     ids = Ids()
     pages: list[Page] = []
-    warnings: list[Warning] = []
+    warnings: list[Warning] = [Warning(code="UNREADABLE_PART", detail=d) for d in drafted]
     for i in range(len(cuts) - 1):
         page, warns = read_strip(grey.crop((0, cuts[i], grey.size[0], cuts[i + 1])), i + 1, ids, options)
         pages.append(page)

@@ -167,8 +167,8 @@ def test_wrong_extension_and_spoofs_through_http(client):
     problem(post(client, "/v1/forms/convert", "a.xlsx", bytes(3) + b"junk"), 415, "TYPE_MISMATCH")
     problem(post(client, "/v1/forms/convert", "a.doc", fx.ole("Other")), 415, "TYPE_MISMATCH")
     problem(post(client, "/v1/forms/convert", "a.pdf", fx.pdf_and_zip()), 415, "TYPE_MISMATCH")
-    problem(post(client, "/v1/forms/convert", "a%b.pdf", fx.pdf()), 400, "BAD_NAME")
-    problem(post(client, "/v1/forms/convert", "a" * 247 + ".pdf", fx.pdf()), 400, "BAD_NAME")
+    assert post(client, "/v1/forms/convert", "a%b.pdf", fx.pdf()).status_code == 200   # WP-F20f: a bad name is cleaned
+    assert post(client, "/v1/forms/convert", "a" * 247 + ".pdf", fx.pdf()).status_code == 200
 
 
 def test_upper_case_extension_and_jpe_through_http(tmp_path, secret_file):
