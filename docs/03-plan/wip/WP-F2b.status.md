@@ -6,9 +6,10 @@ Branch: wp/F2b-readers-sheets-doc   Stage now: core done; next integration/accep
 - [x] Shared pieces: `_zip.py` (part limits, safe XML), `_sheet.py` (grid of one sheet -> one flow page), `ReadOptions.max_cells`
 - [x] XLSX reader `xlsx.py`, ODS reader `ods.py`, binary Word reader `doc.py` (piece table, PAPX, CHPX, fonts, text boxes)
 - [x] Unit tests on synthetic files: `tests/readers/test_sheet_doc_readers.py` (16 tests) with `sheet_doc_builders.py` (hand-made ODS, OLE writer, Word 97 streams)
-- [ ] survey.py: read `.doc` files that are DOCX by content (guard's `sniff_kinds`), then refresh `eval/readers-sets.json`
-- [ ] sets tests (`@pytest.mark.sets`) for xlsx, ods, doc: every file reads; every OLE `.doc` has a title word in the first 20 runs (scratch check: run index 1..12 on all 7)
-- [ ] negative control recorded by break and restore; fast gate after merging main
+- [x] survey.py reads a `.doc` that is a DOCX by content (guard's `sniff_kinds`, row key `named`); `eval/readers-sets.json` refreshed: 69 files, read 42, no_reader 27 (images, F2c), 0 refused, 0 unhandled
+- [x] sets tests `tests/readers/test_sheet_doc_sets.py` (sets, slow; 5 passed): every xlsx and ods reads, xlsx and ods of a set agree on sheet names and title, every OLE `.doc` has its title in the first 20 runs, the text-box docs of sets 2 and 8 give 65 and 651 runs
+- [x] negative control recorded (break and restore)
+- [ ] acceptance stage: merge main, fast gate, review; drill 6 "one field per labelled merge" end to end needs the finder (WP-F3)
 - [ ] after merge (lead): READY_FORMATS and the formats-without-reader list (see Requests to lead)
 
 ## Decisions
@@ -27,10 +28,12 @@ Branch: wp/F2b-readers-sheets-doc   Stage now: core done; next integration/accep
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
 | unit tests, synthetic | `bash tools/gate.sh py -m pytest apps/converter/tests/readers -q` | 73 passed (16 new; sets tests of F2a included) | core commit |
+| survey | `bash tools/gate.sh py -m app.readers.survey --check` | 69 files: read 42, no_reader 27, 0 unhandled; each new-format file <= 0.2 s | survey commit |
+| sets tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_sheet_doc_sets.py -q` | 5 passed | survey commit |
 | sets, scratch read | scratch script over 7 OLE .doc, 7 xlsx, 9 ods | all read, 0 refused, 0 crashes, <= 0.21 s each; xlsx and ods give equal runs and cells in 6 of 7 sets (set 3: 22 vs 23 runs); .doc title word at run index 1..12 | core commit |
 
 ## Negative control
-Planned: `test_negative_control_ods_row_repeated_a_million_times_is_refused_before_expanding` with the budget check disabled must fail (time or no refusal). Not yet run.
+In `_sheet.py` the line that marks the squares under a merge as covered was replaced by `pass`: `test_xlsx_grid_merges_borders_and_sizes` and `test_ods_grid_spans_styles_and_trailing_repeats` failed (2 failed, 14 passed); restored with `git checkout`, 16 passed. The ODS million-row refusal is its own test (`test_negative_control_ods_row_repeated_a_million_times_is_refused_before_expanding`, TOO_LARGE in under 1 s).
 
 ## Requests to lead
 - After merge, `.github/workflows/image.yml`: `READY_FORMATS: "pdf docx"` -> `READY_FORMATS: "pdf docx xlsx ods doc"`.
