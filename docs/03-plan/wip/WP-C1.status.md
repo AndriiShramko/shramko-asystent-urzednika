@@ -24,8 +24,8 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
       `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` = 122 passed, 1 skipped
 - [ ] (e2) item 4 of the order: cues "należy wypełnić" (no word after it) and "musi zawierać" in a habit row `required_wording`,
       read by `_says_required`; tests first (`tests/mean/test_mean_c1_wording.py`)
-- [~] (f) the brief dump after is done and is in "## Evidence" (28 fields changed, all "required, inferred" -> optional);
-      the form counts after (`count_sets.py tmp/c1-after.json --all`, then `--diff`) are still to be read
+- [x] (f) counts after: brief dump (28 fields changed, all "required, inferred" -> optional) and form counts over all
+      70 inputs (`count_sets.py --diff`: no line, so no validator and no REQUIRED of a form changed; inputs equal) in "## Evidence"
 - [ ] (g) fast gate, chain compare, state `ready_to_merge`
 - [ ] (h) only if (c) to (e) are green: legend "pola oznaczone * / gwiazdką są obowiązkowe" makes starred labels required
 
@@ -48,6 +48,7 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 | Set 09: items 20 and 29 optional in doc, docx, pdf | `dump_required.py tmp/c1-brief-all-after.tsv`, diff against the run on main's code | in each of doc, docx, pdf: "Adres do korespondencji" (hint "jeśli różni się od ...") x3 and "Ewentualne dodatkowe informacje ..." x3 went from "required, inferred" to optional (18 fields) | 6d5e675 |
 | Set 08: matter fields not above the paper-cued ones | same | ods and xlsx: "Nr tel./fax" and four consent rows of the section titled "... (pola nieobowiązkowe)" went to optional (10 fields); no field gained REQUIRED | 6d5e675 |
 | A field REQUIRED by the paper stays so | same, all sets, 5 text formats | 689 fields; basis "paper" 10 before, 10 after; 0 changed lines held "paper"; required 670 -> 642; the 28 changed fields are exactly the two rows above, no other set changed | 6d5e675 |
+| No judged set loses an element or a validator in any format | `count_sets.py tmp/c1-after.json --all`, then `--diff tmp/c1-before.json tmp/c1-after.json` | 70 inputs (every set, every format): `--diff` prints nothing; inputs and REQUIRED per form equal; only "required in the brief" drops: set 08 ods and xlsx 105 -> 100, set 09 doc 51 -> 45, docx 44 -> 38, pdf 62 -> 56 (sum 28) | 6d5e675 |
 | Unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` | 122 passed, 1 skipped (29 new cases in three files) | 6d5e675 |
 
 ## Negative control
@@ -57,10 +58,10 @@ basis was "paper"); the 9 that passed are the guards that must hold before and a
 `bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_c1_negation.py ... test_mean_core.py test_mean_f3b.py test_mean_f3c.py -q` = 79 passed.
 
 ## Left for the next stage
-The rest of (f), then (g), then (e2) and (h) if time is left. Heartbeat of this section: 2026-11-22 01:08. Steps (c), (d),
-(e) are committed and their tests pass (122 passed on 6d5e675); the brief dump of all sets is compared (see "## Evidence").
-NEXT: command 4 below with `--all` (form counts after; expect no validator to change and REQUIRED of the forms not to drop,
-because the 28 changed fields were "inferred" and were not written under REQUIRED_POLICY=paper), then command 5 (fast gate, chain).
+Step (g), then (e2) and (h) if time is left. Heartbeat of this section: 2026-11-22 01:15. Steps (c) to (f) are committed;
+tests 122 passed and both measurements ran on 6d5e675 (see "## Evidence"). NEXT: command 5 below (fast gate, then the chain
+compare; read the tails of `tmp/fast.log` and `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write both results
+into "## Evidence", set the state in line 3 to `ready_to_merge`. The package is mergeable without (e2) and (h): they only add cues.
 `field_of(label, title=..., footnote=...)` of `test_mean_c1_negation.py` builds a synthetic one-field paper for new tests.
 Before-dump of ALL sets on main's code: `tmp/c1-brief-all-before.tsv` = 689 fields, 670 required, 10 with basis paper
 (local, not in git: re-make it from a checkout of `main` with the same tool if needed). Measuring tool of this package:
