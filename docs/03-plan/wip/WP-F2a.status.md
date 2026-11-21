@@ -1,13 +1,13 @@
 # WP-F2a Readers, PDF and DOCX: status
 
-Branch: wp/F2a-readers-pdf-docx   Stage now: core
+Branch: wp/F2a-readers-pdf-docx   Stage now: acceptance done
 
 ## Status
 - [x] Registry `app/readers/__init__.py` (self-registering modules, `read_document`, hooks), `_base.py`, `pdf.py`, `docx.py`
 - [x] Unit tests on synthetic files: 42 pass (reportlab PDF; python-docx and raw-XML DOCX)
 - [x] Tests on the sets (`@pytest.mark.sets`, also `slow`): 7 pass, 49 reader tests in all
 - [x] `app/readers/survey.py` writing `eval/readers-sets.json`: 69 files, 17 read (9 PDF, 8 DOCX), 0 refused, 0 unhandled, 52 no_reader (F2b, F2c formats)
-- [ ] Acceptance stage: `git merge --no-edit main`, fast gate, negative control (e.g. drop the Fallback skip in `_text_shares` and see set 2 / synthetic native test fail), Evidence table
+- [x] Acceptance stage: `git merge --no-edit main`, fast gate, negative control (e.g. drop the Fallback skip in `_text_shares` and see set 2 / synthetic native test fail), Evidence table
 - [x] Integration (own paths): `tests/readers/test_readers_integration.py`, 8 tests (6 suffix-swap refusals by content, same title from synthetic PDF and DOCX, 7+ sets share opening runs across formats); fast gate 315 passed
 - [ ] Still the lead: wire `read_document` into app/pipeline.py; map ReaderError.code to the 422 problem answer; map WP-F1 configuration (OCR_MIN_CHARS ...) onto ReadOptions
 - [ ] Not done in F2a, honest gaps: DOCX headers and footers, endnotes, automatic list numbers ("1.", "a)") are not read; PDF page rotation not normalised; text boxes in old VML-only form get text in flow mode but no position in native mode
@@ -35,11 +35,12 @@ Branch: wp/F2a-readers-pdf-docx   Stage now: core
 | Same form in PDF and DOCX gives the same opening runs; swapped suffix refused by content | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_readers_integration.py -q` | 8 passed (sets: 7 pairs share 4 to 15 of the first 20 runs, threshold 3) | integration commit |
 
 ## Negative control
-(acceptance stage)
+Break: removed the `if fallback: continue` skip in `_text_shares` (docx.py). `pytest apps/converter/tests/readers -q -x`: FAILED test_docx_reader.py::test_native_pages_from_sections (1 failed, 10 passed). Restored with `git checkout`; fast gate green again: 315 passed, 8 deselected, PASSED on c9329a2 (main already merged, up to date).
 
 ## Requests to lead
 - Acceptance "the DOCX of sets 2 and 8 give more than 100 runs each with boxes": set 2 holds 65 text boxes, not 130 (each is written twice, `mc:Choice` and its VML `mc:Fallback`); the reader gives 65 runs with boxes for set 2 (its PDF gives 70) and 651 for set 8. Proposed wording: "set 2 at least 60, set 8 more than 600 runs with boxes".
 
 ## Cost notes
+- acceptance: 4 turns; nothing to fix.
 - integration: one probe over the nine sets fixed the threshold of the cross-format test; few turns.
 - core: most turns went into learning the structure of the text-box DOCX (Choice/Fallback doubling, anchors relative to paragraph or page, lines drawn as filled custom shapes); three scratch probes. A one-paragraph note per set on "what the DOCX is made of" in design 6.2 would have saved them.
