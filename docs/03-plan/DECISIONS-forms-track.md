@@ -124,11 +124,11 @@ Noted by the owner at the meeting, in his own words; read from the questionnaire
 | P4 | "Urzędnik merytoryczny" | the review page speaks to the subject-matter official: plain words, no JSON terms in the decisions |
 | P18 | "Wolno rozszerzać": the same data as they have, and extending is allowed | the library reproduces the standard sections unchanged; extensions enter the form behind switches (P19, P20) |
 | P19 | "Tak, dodać" | **D16.** A path for the statutory representative (parent, guardian, curator): its own proof upload, no stamp duty; switch `STATUTORY_REPRESENTATIVE=on` (default on); a seventh journey in the fixtures |
-| P21 | the forms are made for the resident, not for entrepreneurs; where the address is collected it must be checked | no e-Delivery field is added to the contact block by default; where the paper asks for it, the field gets the validator `ADE`; for entities it stays a proposal in the sidecar |
+| P21 | the forms are made for the resident, not for entrepreneurs; the note ends with "but it has to be checked", and **what** is to be checked was not written down (ambiguous; the owner may know) | no e-Delivery field is added to the contact block by default; where the paper itself asks for the address, the field gets the validator `ADE` (this is D8 and holds under either reading); for entities it stays a proposal in the sidecar |
 | P5 | it depends on the application | the six journeys stay, plus the seventh of P19; a journey that a form cannot take is reported as `not_applicable` |
 | P20 | "propose something interesting, in variants" | **D17.** The stamp-duty question of a power of attorney may be extended by the reason of exemption (spouse, parents, children, siblings); switch `POA_EXEMPTION=off` by default, shown in the viewer as a variant |
 | P6 | "Tak" | new initial-data sources for entities (KRS, CEIDG, REGON, e-Delivery address) fit their plans: they stay proposals in the sidecar and get a line on slide 10 |
-| P7 | treat it as an entity | **D18.** A sole trader takes the entity path (design 6.4 said: a natural person with NIP and REGON) |
+| P7 | treat it as an entity (a note; no option was chosen) | **D18.** A sole trader takes the entity path (design 6.4 said: a natural person with NIP and REGON) |
 | P8, P9 | "our decision" | the redline and the form family stay last in the order of value |
 | P10 | by the rules of the materials they sent | the task card decides: no GPU and no model remain our choice and our claim (D12) |
 | P11 | identity document, street type, offices and authorities; "the rest probably too" | these three dictionary proposals are prepared first (feature 10) |
