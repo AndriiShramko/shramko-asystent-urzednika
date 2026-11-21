@@ -1,0 +1,1138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts/coi/meta.schema.json",
+  "$defs": {
+    "Checks": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ],
+          "title": "Schema",
+          "type": "string"
+        },
+        "partner_rules": {
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ],
+          "title": "Partner Rules",
+          "type": "string"
+        },
+        "grid": {
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ],
+          "title": "Grid",
+          "type": "string"
+        },
+        "conditions": {
+          "$ref": "#/$defs/ConditionChecks"
+        },
+        "journeys": {
+          "$ref": "#/$defs/JourneyChecks"
+        },
+        "zero_answer": {
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ],
+          "title": "Zero Answer",
+          "type": "string"
+        },
+        "html": {
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ],
+          "title": "Html",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema",
+        "partner_rules",
+        "grid",
+        "conditions",
+        "journeys",
+        "zero_answer",
+        "html"
+      ],
+      "title": "Checks",
+      "type": "object"
+    },
+    "ConditionChecks": {
+      "additionalProperties": false,
+      "properties": {
+        "total": {
+          "minimum": 0,
+          "title": "Total",
+          "type": "integer"
+        },
+        "evaluated": {
+          "minimum": 0,
+          "title": "Evaluated",
+          "type": "integer"
+        },
+        "failed": {
+          "minimum": 0,
+          "title": "Failed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total",
+        "evaluated",
+        "failed"
+      ],
+      "title": "ConditionChecks",
+      "type": "object"
+    },
+    "ConfidenceParts": {
+      "additionalProperties": false,
+      "properties": {
+        "geometry": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Geometry",
+          "type": "number"
+        },
+        "label": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Label",
+          "type": "number"
+        },
+        "text": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Text",
+          "type": "number"
+        },
+        "rule": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Rule",
+          "type": "number"
+        }
+      },
+      "title": "ConfidenceParts",
+      "type": "object"
+    },
+    "Converter": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "image": {
+          "enum": [
+            "core",
+            "plus"
+          ],
+          "title": "Image",
+          "type": "string"
+        },
+        "profile": {
+          "description": "Switches that shaped the output, e.g. \"FINISH_STYLE=export;VALIDATORS=on\".",
+          "title": "Profile",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "image",
+        "profile"
+      ],
+      "title": "Converter",
+      "type": "object"
+    },
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "runs_total": {
+          "minimum": 0,
+          "title": "Runs Total",
+          "type": "integer"
+        },
+        "assigned": {
+          "minimum": 0,
+          "title": "Assigned",
+          "type": "integer"
+        },
+        "unassigned": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Unassigned",
+          "type": "array"
+        },
+        "silent_pages": {
+          "default": [],
+          "description": "Pages with ink and no candidate (design 7.4).",
+          "items": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "title": "Silent Pages",
+          "type": "array"
+        }
+      },
+      "required": [
+        "runs_total",
+        "assigned"
+      ],
+      "title": "Coverage",
+      "type": "object"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "question": {
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "resolves": {
+          "description": "Ids of the warnings this one answer settles.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Resolves",
+          "type": "array"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "default": {
+          "type": "string",
+          "title": "Default"
+        }
+      },
+      "required": [
+        "id",
+        "question",
+        "resolves"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "Dropped": {
+      "additionalProperties": false,
+      "description": "Something of the paper left out on purpose, with its reason (brief \"dropped\", meta \"omissions\").",
+      "properties": {
+        "what": {
+          "minLength": 1,
+          "title": "What",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "PAPER_INSTRUCTION",
+            "COVERED_BY_STANDARD",
+            "SIGNATURE_AND_DATE",
+            "OFFICE_USE",
+            "PAGE_FURNITURE",
+            "GRAMMAR_VARIANT",
+            "CLAUSE_LINKED",
+            "EXPLANATION",
+            "COMPUTED_VALUE"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "count": {
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "what",
+        "reason"
+      ],
+      "title": "Dropped",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "FieldConfidence": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Value",
+          "type": "number"
+        },
+        "parts": {
+          "$ref": "#/$defs/ConfidenceParts"
+        }
+      },
+      "required": [
+        "value",
+        "parts"
+      ],
+      "title": "FieldConfidence",
+      "type": "object"
+    },
+    "FieldEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote"
+      ],
+      "title": "FieldEvidence",
+      "type": "object"
+    },
+    "Hashes": {
+      "additionalProperties": false,
+      "properties": {
+        "input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Sha256",
+          "type": "string"
+        },
+        "form_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Form Sha256",
+          "type": "string"
+        },
+        "brief_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Brief Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input_sha256",
+        "form_sha256",
+        "brief_sha256"
+      ],
+      "title": "Hashes",
+      "type": "object"
+    },
+    "JourneyChecks": {
+      "additionalProperties": false,
+      "properties": {
+        "run": {
+          "minimum": 0,
+          "title": "Run",
+          "type": "integer"
+        },
+        "passed": {
+          "minimum": 0,
+          "title": "Passed",
+          "type": "integer"
+        },
+        "not_applicable": {
+          "minimum": 0,
+          "title": "Not Applicable",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run",
+        "passed",
+        "not_applicable"
+      ],
+      "title": "JourneyChecks",
+      "type": "object"
+    },
+    "Ledger": {
+      "additionalProperties": false,
+      "properties": {
+        "blanks_found": {
+          "minimum": 0,
+          "title": "Blanks Found",
+          "type": "integer"
+        },
+        "became_field": {
+          "minimum": 0,
+          "title": "Became Field",
+          "type": "integer"
+        },
+        "merged": {
+          "minimum": 0,
+          "title": "Merged",
+          "type": "integer"
+        },
+        "covered_by_standard": {
+          "minimum": 0,
+          "title": "Covered By Standard",
+          "type": "integer"
+        },
+        "left_out": {
+          "minimum": 0,
+          "title": "Left Out",
+          "type": "integer"
+        },
+        "awaiting_decision": {
+          "minimum": 0,
+          "title": "Awaiting Decision",
+          "type": "integer"
+        },
+        "rows": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LedgerRow"
+          },
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "blanks_found",
+        "became_field",
+        "merged",
+        "covered_by_standard",
+        "left_out",
+        "awaiting_decision"
+      ],
+      "title": "Ledger",
+      "type": "object"
+    },
+    "LedgerRow": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "minLength": 1,
+          "title": "Candidate",
+          "type": "string"
+        },
+        "fate": {
+          "enum": [
+            "FIELD",
+            "MERGED",
+            "STANDARD",
+            "LEFT_OUT",
+            "AWAITING_DECISION"
+          ],
+          "title": "Fate",
+          "type": "string"
+        },
+        "field": {
+          "description": "FIELD: id of the form component.",
+          "title": "Field",
+          "type": "string"
+        },
+        "into": {
+          "description": "MERGED: candidate it was merged into.",
+          "title": "Into",
+          "type": "string"
+        },
+        "why": {
+          "enum": [
+            "COMB_CELLS",
+            "GROUP_MEMBER",
+            "LINE_BLOCK",
+            "SAME_ALTERNATIVE",
+            "TABLE_ROW"
+          ],
+          "title": "Why",
+          "type": "string"
+        },
+        "section": {
+          "description": "STANDARD: techName of the standard section.",
+          "title": "Section",
+          "type": "string"
+        },
+        "reason": {
+          "description": "LEFT_OUT: reason code.",
+          "enum": [
+            "PAPER_INSTRUCTION",
+            "COVERED_BY_STANDARD",
+            "SIGNATURE_AND_DATE",
+            "OFFICE_USE",
+            "PAGE_FURNITURE",
+            "GRAMMAR_VARIANT",
+            "CLAUSE_LINKED",
+            "EXPLANATION",
+            "COMPUTED_VALUE"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "decision": {
+          "description": "AWAITING_DECISION: id of the decision.",
+          "title": "Decision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate",
+        "fate"
+      ],
+      "title": "LedgerRow",
+      "type": "object"
+    },
+    "LegalBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "stated",
+            "not_found",
+            "ambiguous"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "eli": {
+          "title": "Eli",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "LegalBasis",
+      "type": "object"
+    },
+    "Proposals": {
+      "additionalProperties": false,
+      "properties": {
+        "dictionaries": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProposedDictionary"
+          },
+          "title": "Dictionaries",
+          "type": "array"
+        },
+        "initial_data": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProposedSource"
+          },
+          "title": "Initial Data",
+          "type": "array"
+        },
+        "validators": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProposedValidatorRow"
+          },
+          "title": "Validators",
+          "type": "array"
+        },
+        "other": {
+          "default": [],
+          "description": "E.g. an e-Delivery field, a third capacity (design 6.6).",
+          "items": {
+            "$ref": "#/$defs/ProposedOther"
+          },
+          "title": "Other",
+          "type": "array"
+        }
+      },
+      "title": "Proposals",
+      "type": "object"
+    },
+    "ProposedDictionary": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "entries": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "variants": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Variants",
+          "type": "array"
+        },
+        "pages": {
+          "default": [],
+          "items": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "title": "Pages",
+          "type": "array"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ProposedDictionary",
+      "type": "object"
+    },
+    "ProposedOther": {
+      "additionalProperties": false,
+      "properties": {
+        "what": {
+          "minLength": 1,
+          "title": "What",
+          "type": "string"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "what",
+        "why"
+      ],
+      "title": "ProposedOther",
+      "type": "object"
+    },
+    "ProposedSource": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "source": {
+          "description": "Partner notation, e.g. \"KRS.name\".",
+          "pattern": "^[A-Z][A-Z_]*\\.[A-Za-z_]+$",
+          "title": "Source",
+          "type": "string"
+        },
+        "why": {
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "source",
+        "why"
+      ],
+      "title": "ProposedSource",
+      "type": "object"
+    },
+    "ProposedValidatorRow": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "name": {
+          "enum": [
+            "NRB",
+            "KRS",
+            "KW",
+            "PHONE_PL",
+            "DATE_RANGE",
+            "PARCEL_ID"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "why": {
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "name",
+        "why"
+      ],
+      "title": "ProposedValidatorRow",
+      "type": "object"
+    },
+    "Receipts": {
+      "additionalProperties": false,
+      "properties": {
+        "fee": {
+          "$ref": "#/$defs/Stated"
+        },
+        "who_may_apply": {
+          "$ref": "#/$defs/Stated"
+        },
+        "mandatory_attachments": {
+          "$ref": "#/$defs/Stated"
+        }
+      },
+      "required": [
+        "fee",
+        "who_may_apply",
+        "mandatory_attachments"
+      ],
+      "title": "Receipts",
+      "type": "object"
+    },
+    "Resources": {
+      "additionalProperties": false,
+      "properties": {
+        "wall_ms": {
+          "minimum": 0,
+          "title": "Wall Ms",
+          "type": "integer"
+        },
+        "cpu_ms": {
+          "minimum": 0,
+          "title": "Cpu Ms",
+          "type": "integer"
+        },
+        "peak_rss_mb": {
+          "minimum": 0,
+          "title": "Peak Rss Mb",
+          "type": "integer"
+        },
+        "pages": {
+          "minimum": 0,
+          "title": "Pages",
+          "type": "integer"
+        },
+        "ocr_pages": {
+          "minimum": 0,
+          "title": "Ocr Pages",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "wall_ms",
+        "cpu_ms",
+        "peak_rss_mb",
+        "pages",
+        "ocr_pages"
+      ],
+      "title": "Resources",
+      "type": "object"
+    },
+    "Stated": {
+      "additionalProperties": false,
+      "description": "A value the paper states, does not state, or states in competing ways (design 5.3).\n\nstated: evidence with at least one quote; not_found: no value and no evidence; ambiguous: the competing quotes.\nA value is never filled in without one of the three.",
+      "properties": {
+        "status": {
+          "enum": [
+            "stated",
+            "not_found",
+            "ambiguous"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Stated",
+      "type": "object"
+    },
+    "Unsupported": {
+      "additionalProperties": false,
+      "properties": {
+        "what": {
+          "minLength": 1,
+          "title": "What",
+          "type": "string"
+        },
+        "code": {
+          "description": "Kind of behaviour, e.g. \"COMPUTED_VALUE\".",
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "what",
+        "code"
+      ],
+      "title": "Unsupported",
+      "type": "object"
+    },
+    "Warning": {
+      "additionalProperties": false,
+      "description": "One honest gap: what, where, and the quotes that show it.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "NOT_A_FORM",
+            "UNREADABLE_PART",
+            "OCR_USED",
+            "HIDDEN_SHEET",
+            "ACTIVE_CONTENT",
+            "FILLED_FORM",
+            "SILENT_PAGE",
+            "LABEL_NOT_FOUND",
+            "LABEL_RAW",
+            "AMBIGUOUS_GROUP",
+            "UNRESOLVED_REFERENCE",
+            "REQUIRED_INFERRED",
+            "ADDRESSEE_CONFLICT",
+            "COMPOSITE_UNRESOLVED",
+            "INFERRED_SHAPE",
+            "LOW_CONFIDENCE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Warning",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "meta_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Meta Version",
+      "type": "integer"
+    },
+    "converter": {
+      "$ref": "#/$defs/Converter"
+    },
+    "hashes": {
+      "$ref": "#/$defs/Hashes"
+    },
+    "origins": {
+      "additionalProperties": {
+        "enum": [
+          "paper",
+          "standard",
+          "reviewer"
+        ],
+        "type": "string"
+      },
+      "default": {},
+      "title": "Origins",
+      "type": "object"
+    },
+    "evidence": {
+      "additionalProperties": {
+        "$ref": "#/$defs/FieldEvidence"
+      },
+      "default": {},
+      "title": "Evidence",
+      "type": "object"
+    },
+    "confidence": {
+      "additionalProperties": {
+        "$ref": "#/$defs/FieldConfidence"
+      },
+      "default": {},
+      "title": "Confidence",
+      "type": "object"
+    },
+    "ledger": {
+      "$ref": "#/$defs/Ledger"
+    },
+    "omissions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Dropped"
+      },
+      "title": "Omissions",
+      "type": "array"
+    },
+    "receipts": {
+      "$ref": "#/$defs/Receipts"
+    },
+    "coverage": {
+      "$ref": "#/$defs/Coverage"
+    },
+    "decisions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Decision"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Warning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "unsupported": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Unsupported"
+      },
+      "title": "Unsupported",
+      "type": "array"
+    },
+    "proposals": {
+      "$ref": "#/$defs/Proposals",
+      "default": {
+        "dictionaries": [],
+        "initial_data": [],
+        "validators": [],
+        "other": []
+      }
+    },
+    "concepts": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Concepts",
+      "type": "object"
+    },
+    "legal_basis": {
+      "$ref": "#/$defs/LegalBasis"
+    },
+    "checks": {
+      "$ref": "#/$defs/Checks"
+    },
+    "resources": {
+      "$ref": "#/$defs/Resources"
+    }
+  },
+  "required": [
+    "converter",
+    "hashes",
+    "ledger",
+    "receipts",
+    "coverage",
+    "legal_basis"
+  ],
+  "title": "Meta",
+  "type": "object",
+  "description": "Sidecar meta keyed by form ids (design 5.4). Also checked by app.model.meta: the ledger closes (blanks_found equals the sum of the five fates, one row per blank, counts equal rows by fate), coverage adds up, decisions resolve existing warnings."
+}

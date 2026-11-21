@@ -1,0 +1,770 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts/coi/brief.schema.json",
+  "$defs": {
+    "Addressee": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "stated",
+            "not_found",
+            "ambiguous"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "office",
+            "body"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Addressee",
+      "type": "object"
+    },
+    "ApplicantExtra": {
+      "additionalProperties": false,
+      "properties": {
+        "concept": {
+          "enum": [
+            "pesel",
+            "nip",
+            "regon",
+            "zip_code",
+            "email",
+            "epuap",
+            "ade",
+            "id_card",
+            "nrb",
+            "krs",
+            "kw",
+            "parcel_id",
+            "phone",
+            "date",
+            "amount_pln",
+            "count",
+            "area"
+          ],
+          "title": "Concept",
+          "type": "string"
+        },
+        "party": {
+          "enum": [
+            "self",
+            "other_person",
+            "entity"
+          ],
+          "title": "Party",
+          "type": "string"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "concept",
+        "party"
+      ],
+      "title": "ApplicantExtra",
+      "type": "object"
+    },
+    "Applicants": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "stated",
+            "not_found",
+            "ambiguous"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "self": {
+          "default": false,
+          "title": "Self",
+          "type": "boolean"
+        },
+        "other_person": {
+          "default": false,
+          "title": "Other Person",
+          "type": "boolean"
+        },
+        "entity": {
+          "default": false,
+          "title": "Entity",
+          "type": "boolean"
+        },
+        "capacities": {
+          "default": [],
+          "items": {
+            "enum": [
+              "pelnomocnik",
+              "reprezentant",
+              "przedstawiciel_ustawowy"
+            ],
+            "type": "string"
+          },
+          "title": "Capacities",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Applicants",
+      "type": "object"
+    },
+    "Attachment": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "covered_by": {
+          "description": "Standard section that already asks for it, e.g. \"standard/pelnomocnictwo\".",
+          "pattern": "^[a-z0-9_]+(/[a-z0-9_]+)*$",
+          "title": "Covered By",
+          "type": "string"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "show_if": {
+          "$ref": "#/$defs/Cond"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "Attachment",
+      "type": "object"
+    },
+    "BriefField": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "maxLength": 60,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Key",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "TEXT_FIELD",
+            "CHECKBOX",
+            "NUMBER",
+            "CONSENT_SECTION",
+            "SELECT",
+            "TEXTAREA",
+            "FILE_UPLOADER",
+            "RADIO",
+            "DATEPICKER",
+            "TEXT_BLOCK",
+            "INFO_SECTION"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "concept": {
+          "enum": [
+            "pesel",
+            "nip",
+            "regon",
+            "zip_code",
+            "email",
+            "epuap",
+            "ade",
+            "id_card",
+            "nrb",
+            "krs",
+            "kw",
+            "parcel_id",
+            "phone",
+            "date",
+            "amount_pln",
+            "count",
+            "area"
+          ],
+          "title": "Concept",
+          "type": "string"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "required_basis": {
+          "enum": [
+            "paper",
+            "substance",
+            "inferred"
+          ],
+          "title": "Required Basis",
+          "type": "string"
+        },
+        "hint": {
+          "title": "Hint",
+          "type": "string"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "length": {
+          "minimum": 1,
+          "title": "Length",
+          "type": "integer"
+        },
+        "show_if": {
+          "$ref": "#/$defs/Cond"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "conf": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Conf",
+          "type": "number"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "label",
+        "type"
+      ],
+      "title": "BriefField",
+      "type": "object"
+    },
+    "Cond": {
+      "additionalProperties": false,
+      "description": "Predicate tree (design 6.7): exactly one of {field, is} | any_of | all_of | not.",
+      "properties": {
+        "field": {
+          "maxLength": 60,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Field",
+          "type": "string"
+        },
+        "is": {
+          "title": "Is",
+          "type": "string"
+        },
+        "any_of": {
+          "items": {
+            "$ref": "#/$defs/Cond"
+          },
+          "title": "Any Of",
+          "type": "array"
+        },
+        "all_of": {
+          "items": {
+            "$ref": "#/$defs/Cond"
+          },
+          "title": "All Of",
+          "type": "array"
+        },
+        "not": {
+          "$ref": "#/$defs/Cond"
+        }
+      },
+      "title": "Cond",
+      "type": "object"
+    },
+    "Consent": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "Consent",
+      "type": "object"
+    },
+    "Declarations": {
+      "additionalProperties": false,
+      "properties": {
+        "consents": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Consent"
+          },
+          "title": "Consents",
+          "type": "array"
+        },
+        "clause": {
+          "$ref": "#/$defs/Stated"
+        }
+      },
+      "required": [
+        "clause"
+      ],
+      "title": "Declarations",
+      "type": "object"
+    },
+    "Dropped": {
+      "additionalProperties": false,
+      "description": "Something of the paper left out on purpose, with its reason (brief \"dropped\", meta \"omissions\").",
+      "properties": {
+        "what": {
+          "minLength": 1,
+          "title": "What",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "PAPER_INSTRUCTION",
+            "COVERED_BY_STANDARD",
+            "SIGNATURE_AND_DATE",
+            "OFFICE_USE",
+            "PAGE_FURNITURE",
+            "GRAMMAR_VARIANT",
+            "CLAUSE_LINKED",
+            "EXPLANATION",
+            "COMPUTED_VALUE"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "count": {
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "what",
+        "reason"
+      ],
+      "title": "Dropped",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "InputRef": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "pdf",
+            "doc",
+            "docx",
+            "ods",
+            "xlsx",
+            "jpeg",
+            "png"
+          ],
+          "title": "Format",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "format"
+      ],
+      "title": "InputRef",
+      "type": "object"
+    },
+    "MatterSection": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[a-z0-9_]+(/[a-z0-9_]+)*$",
+          "title": "Role",
+          "type": "string"
+        },
+        "repeating": {
+          "default": false,
+          "title": "Repeating",
+          "type": "boolean"
+        },
+        "show_if": {
+          "$ref": "#/$defs/Cond"
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/BriefField"
+          },
+          "minItems": 1,
+          "title": "Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "role",
+        "fields"
+      ],
+      "title": "MatterSection",
+      "type": "object"
+    },
+    "Stated": {
+      "additionalProperties": false,
+      "description": "A value the paper states, does not state, or states in competing ways (design 5.3).\n\nstated: evidence with at least one quote; not_found: no value and no evidence; ambiguous: the competing quotes.\nA value is never filled in without one of the three.",
+      "properties": {
+        "status": {
+          "enum": [
+            "stated",
+            "not_found",
+            "ambiguous"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Stated",
+      "type": "object"
+    },
+    "Warning": {
+      "additionalProperties": false,
+      "description": "One honest gap: what, where, and the quotes that show it.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "NOT_A_FORM",
+            "UNREADABLE_PART",
+            "OCR_USED",
+            "HIDDEN_SHEET",
+            "ACTIVE_CONTENT",
+            "FILLED_FORM",
+            "SILENT_PAGE",
+            "LABEL_NOT_FOUND",
+            "LABEL_RAW",
+            "AMBIGUOUS_GROUP",
+            "UNRESOLVED_REFERENCE",
+            "REQUIRED_INFERRED",
+            "ADDRESSEE_CONFLICT",
+            "COMPOSITE_UNRESOLVED",
+            "INFERRED_SHAPE",
+            "LOW_CONFIDENCE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Warning",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "brief_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Brief Version",
+      "type": "integer"
+    },
+    "input": {
+      "$ref": "#/$defs/InputRef"
+    },
+    "title": {
+      "$ref": "#/$defs/Stated"
+    },
+    "addressee": {
+      "$ref": "#/$defs/Addressee"
+    },
+    "applicants": {
+      "$ref": "#/$defs/Applicants"
+    },
+    "applicant_extras": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ApplicantExtra"
+      },
+      "title": "Applicant Extras",
+      "type": "array"
+    },
+    "matter": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/MatterSection"
+      },
+      "title": "Matter",
+      "type": "array"
+    },
+    "attachments": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Attachment"
+      },
+      "title": "Attachments",
+      "type": "array"
+    },
+    "declarations": {
+      "$ref": "#/$defs/Declarations"
+    },
+    "fee": {
+      "$ref": "#/$defs/Stated"
+    },
+    "legal_basis": {
+      "$ref": "#/$defs/Stated"
+    },
+    "dropped": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Dropped"
+      },
+      "title": "Dropped",
+      "type": "array"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Warning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "input",
+    "title",
+    "addressee",
+    "applicants",
+    "declarations",
+    "fee",
+    "legal_basis"
+  ],
+  "title": "Brief",
+  "type": "object",
+  "description": "Brief, output of the understanding step (design 5.3). Also checked by app.model.brief: status stated or ambiguous has evidence and not_found has none, field keys and roles unique, conditions name existing fields and options, a required field states its basis."
+}

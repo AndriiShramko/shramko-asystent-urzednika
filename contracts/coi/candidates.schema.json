@@ -1,0 +1,544 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts/coi/candidates.schema.json",
+  "$defs": {
+    "Candidate": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "box"
+          ]
+        },
+        {
+          "required": [
+            "anchor"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "leader",
+            "line_block",
+            "comb",
+            "box",
+            "choice_group",
+            "cell",
+            "widget",
+            "blank_in_sentence",
+            "signature",
+            "office_use"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "description": "Runs that are the place itself (dots, box characters).",
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "cells": {
+          "description": "Comb: number of boxes.",
+          "minimum": 1,
+          "title": "Cells",
+          "type": "integer"
+        },
+        "lines": {
+          "description": "line_block: number of lines.",
+          "minimum": 1,
+          "title": "Lines",
+          "type": "integer"
+        },
+        "mask": {
+          "description": "Printed separators of a comb, e.g. \"__-___\", \"DD-MM-RRRR\".",
+          "title": "Mask",
+          "type": "string"
+        },
+        "widget": {
+          "description": "Id of the page-model widget, for kind widget.",
+          "title": "Widget",
+          "type": "string"
+        },
+        "label": {
+          "$ref": "#/$defs/Label"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ChoiceOption"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "group": {
+          "description": "Id of the choice_group this candidate belongs to.",
+          "title": "Group",
+          "type": "string"
+        },
+        "section": {
+          "title": "Section",
+          "type": "string"
+        },
+        "footnotes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Footnotes",
+          "type": "array"
+        },
+        "conf": {
+          "$ref": "#/$defs/Confidence"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "page",
+        "conf"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "ChoiceOption": {
+      "additionalProperties": false,
+      "description": "One alternative of a choice_group: its text, the box marking it (if drawn), the blank after it (if any).",
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "mark": {
+          "description": "Id of the box candidate that marks this option.",
+          "title": "Mark",
+          "type": "string"
+        },
+        "blank": {
+          "description": "Id of the candidate written after the option (\"inne ……\").",
+          "title": "Blank",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ChoiceOption",
+      "type": "object"
+    },
+    "Confidence": {
+      "additionalProperties": false,
+      "properties": {
+        "geometry": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Geometry",
+          "type": "number"
+        },
+        "label": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Label",
+          "type": "number"
+        },
+        "text": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Text",
+          "type": "number"
+        }
+      },
+      "required": [
+        "geometry",
+        "label",
+        "text"
+      ],
+      "title": "Confidence",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "InputRef": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "pdf",
+            "doc",
+            "docx",
+            "ods",
+            "xlsx",
+            "jpeg",
+            "png"
+          ],
+          "title": "Format",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "format"
+      ],
+      "title": "InputRef",
+      "type": "object"
+    },
+    "Label": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "how": {
+          "enum": [
+            "widget_name",
+            "same_cell",
+            "leader",
+            "left",
+            "above",
+            "header",
+            "question",
+            "sentence"
+          ],
+          "title": "How",
+          "type": "string"
+        },
+        "margin": {
+          "description": "Score distance to the second-best label; small means doubtful.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Margin",
+          "type": "number"
+        }
+      },
+      "required": [
+        "text",
+        "how",
+        "margin"
+      ],
+      "title": "Label",
+      "type": "object"
+    },
+    "Section": {
+      "additionalProperties": false,
+      "description": "A heading of the paper and what it heads; numbering as printed (\"2.1\", \"B.3\").",
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "number": {
+          "title": "Number",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "parent": {
+          "title": "Parent",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "page",
+        "title"
+      ],
+      "title": "Section",
+      "type": "object"
+    },
+    "Warning": {
+      "additionalProperties": false,
+      "description": "One honest gap: what, where, and the quotes that show it.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "NOT_A_FORM",
+            "UNREADABLE_PART",
+            "OCR_USED",
+            "HIDDEN_SHEET",
+            "ACTIVE_CONTENT",
+            "FILLED_FORM",
+            "SILENT_PAGE",
+            "LABEL_NOT_FOUND",
+            "LABEL_RAW",
+            "AMBIGUOUS_GROUP",
+            "UNRESOLVED_REFERENCE",
+            "REQUIRED_INFERRED",
+            "ADDRESSEE_CONFLICT",
+            "COMPOSITE_UNRESOLVED",
+            "INFERRED_SHAPE",
+            "LOW_CONFIDENCE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Warning",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "finder_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Finder Version",
+      "type": "integer"
+    },
+    "input": {
+      "$ref": "#/$defs/InputRef"
+    },
+    "order": {
+      "default": [],
+      "description": "Run ids in reading order (design 6.3.1).",
+      "items": {
+        "type": "string"
+      },
+      "title": "Order",
+      "type": "array"
+    },
+    "sections": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Section"
+      },
+      "title": "Sections",
+      "type": "array"
+    },
+    "candidates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Candidate"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "roles": {
+      "additionalProperties": {
+        "enum": [
+          "heading",
+          "note",
+          "instruction",
+          "legal_basis",
+          "clause",
+          "page_furniture",
+          "body"
+        ],
+        "type": "string"
+      },
+      "default": {},
+      "description": "Run id -> role, for runs that belong to no candidate, label or heading.",
+      "title": "Roles",
+      "type": "object"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Warning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "input"
+  ],
+  "title": "FinderOutput",
+  "type": "object",
+  "description": "Finder output (design 5.2). Also checked by app.model.candidate: ids unique, sections, groups and option marks resolve, a choice_group has two options or more, a comb states its cells."
+}

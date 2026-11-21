@@ -1,0 +1,708 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts/coi/page-model.schema.json",
+  "$defs": {
+    "Cell": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "box"
+          ]
+        },
+        {
+          "required": [
+            "anchor"
+          ]
+        }
+      ],
+      "properties": {
+        "r": {
+          "minimum": 0,
+          "title": "R",
+          "type": "integer"
+        },
+        "c": {
+          "minimum": 0,
+          "title": "C",
+          "type": "integer"
+        },
+        "rs": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Rs",
+          "type": "integer"
+        },
+        "cs": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Cs",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "borders": {
+          "default": "",
+          "description": "Drawn borders: any of t, r, b, l in this order.",
+          "pattern": "^t?r?b?l?$",
+          "title": "Borders",
+          "type": "string"
+        }
+      },
+      "required": [
+        "r",
+        "c"
+      ],
+      "title": "Cell",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Line": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "style": {
+          "default": "solid",
+          "enum": [
+            "solid",
+            "dashed",
+            "dotted"
+          ],
+          "title": "Style",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "box"
+      ],
+      "title": "Line",
+      "type": "object"
+    },
+    "Page": {
+      "additionalProperties": false,
+      "properties": {
+        "number": {
+          "minimum": 1,
+          "title": "Number",
+          "type": "integer"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "number"
+        },
+        "origin": {
+          "enum": [
+            "native",
+            "ocr",
+            "flow"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "name": {
+          "description": "Sheet name of a workbook page.",
+          "title": "Name",
+          "type": "string"
+        },
+        "hidden": {
+          "default": false,
+          "title": "Hidden",
+          "type": "boolean"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Run"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "lines": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Line"
+          },
+          "title": "Lines",
+          "type": "array"
+        },
+        "rects": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Rect"
+          },
+          "title": "Rects",
+          "type": "array"
+        },
+        "tables": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Table"
+          },
+          "title": "Tables",
+          "type": "array"
+        },
+        "widgets": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Widget"
+          },
+          "title": "Widgets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "number",
+        "origin"
+      ],
+      "title": "Page",
+      "type": "object"
+    },
+    "Rect": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "box"
+      ],
+      "title": "Rect",
+      "type": "object"
+    },
+    "Run": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "box"
+          ]
+        },
+        {
+          "required": [
+            "anchor"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "size": {
+          "description": "Font size in points, when the format gives it.",
+          "exclusiveMinimum": 0,
+          "title": "Size",
+          "type": "number"
+        },
+        "bold": {
+          "default": false,
+          "title": "Bold",
+          "type": "boolean"
+        },
+        "conf": {
+          "default": 1.0,
+          "description": "1 for native text; the OCR word confidence otherwise.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Conf",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "text"
+      ],
+      "title": "Run",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "pdf",
+            "doc",
+            "docx",
+            "ods",
+            "xlsx",
+            "jpeg",
+            "png"
+          ],
+          "title": "Format",
+          "type": "string"
+        },
+        "reader": {
+          "description": "Reader that made the model, e.g. \"pdf.native\".",
+          "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+          "title": "Reader",
+          "type": "string"
+        },
+        "pages": {
+          "minimum": 0,
+          "title": "Pages",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "format",
+        "reader",
+        "pages"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Table": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "box"
+          ]
+        },
+        {
+          "required": [
+            "anchor"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "cells": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Cell"
+          },
+          "title": "Cells",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Table",
+      "type": "object"
+    },
+    "Warning": {
+      "additionalProperties": false,
+      "description": "One honest gap: what, where, and the quotes that show it.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "NOT_A_FORM",
+            "UNREADABLE_PART",
+            "OCR_USED",
+            "HIDDEN_SHEET",
+            "ACTIVE_CONTENT",
+            "FILLED_FORM",
+            "SILENT_PAGE",
+            "LABEL_NOT_FOUND",
+            "LABEL_RAW",
+            "AMBIGUOUS_GROUP",
+            "UNRESOLVED_REFERENCE",
+            "REQUIRED_INFERRED",
+            "ADDRESSEE_CONFLICT",
+            "COMPOSITE_UNRESOLVED",
+            "INFERRED_SHAPE",
+            "LOW_CONFIDENCE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Warning",
+      "type": "object"
+    },
+    "Widget": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "box"
+          ]
+        },
+        {
+          "required": [
+            "anchor"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "text",
+            "checkbox",
+            "radio",
+            "choice",
+            "date",
+            "signature"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "max_len": {
+          "minimum": 1,
+          "title": "Max Len",
+          "type": "integer"
+        },
+        "comb": {
+          "default": false,
+          "title": "Comb",
+          "type": "boolean"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Options",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "title": "Widget",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Page model, output of every reader (design 5.1). Also checked by app.model.page: page numbers 1..n, source.pages equals the page count, ids unique in the document, flow pages use anchors and native or ocr pages use boxes, table cells name runs of their page.",
+  "properties": {
+    "model_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Model Version",
+      "type": "integer"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "pages": {
+      "items": {
+        "$ref": "#/$defs/Page"
+      },
+      "title": "Pages",
+      "type": "array"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Warning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source",
+    "pages"
+  ],
+  "title": "PageModel",
+  "type": "object"
+}

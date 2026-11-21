@@ -1,0 +1,24 @@
+{
+  "model_version": 1,
+  "source": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000001", "format": "pdf", "reader": "pdf.native", "pages": 1},
+  "pages": [
+    {
+      "number": 1,
+      "width": 595.3,
+      "height": 841.9,
+      "origin": "native",
+      "runs": [
+        {"id": "r17", "text": "Nazwa /Imię i nazwisko", "box": [56.7, 212.4, 190.2, 223.9], "size": 9.0, "bold": false, "conf": 1.0},
+        {"id": "r20", "text": "Data uiszczenia opłaty", "box": [60.0, 304.0, 160.0, 316.0], "size": 9.0, "bold": false, "conf": 1.0}
+      ],
+      "lines": [{"id": "l3", "box": [56.7, 240.1, 538.6, 240.1], "style": "solid"}],
+      "rects": [{"id": "q41", "box": [200.1, 228.0, 212.0, 242.0]}],
+      "tables": [
+        {"id": "t1", "box": [56.7, 300.0, 538.6, 380.0],
+         "cells": [{"r": 0, "c": 0, "rs": 1, "cs": 2, "box": [56.7, 300.0, 297.6, 320.0], "runs": ["r20"]}]}
+      ],
+      "widgets": [{"id": "w1", "kind": "text", "name": "nip", "box": [220.0, 228.0, 360.0, 242.0], "max_len": 10, "comb": true}]
+    }
+  ],
+  "warnings": []
+}
