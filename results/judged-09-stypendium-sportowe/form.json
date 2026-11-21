@@ -1558,9 +1558,7 @@
                       "techName": "klub_sportowy"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1581,7 +1579,7 @@
                   "description": "",
                   "options": [],
                   "validation": [
-                    "REQUIRED"
+                    "SERIAL_NUMBER_ID_CARD"
                   ],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -1613,9 +1611,7 @@
                       "techName": "inny_adres_korespondencyjny"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1661,7 +1657,7 @@
                   "description": "",
                   "options": [],
                   "validation": [
-                    "REQUIRED"
+                    "EPUAP"
                   ],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -1683,7 +1679,7 @@
                   "description": "",
                   "options": [],
                   "validation": [
-                    "REQUIRED"
+                    "ADE"
                   ],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -1778,9 +1774,7 @@
                   "title": "Imię",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1800,9 +1794,7 @@
                   "title": "Nazwisko",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1822,9 +1814,7 @@
                   "title": "Data urodzenia",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1844,9 +1834,7 @@
                   "title": "Adres zameldowania",
                   "description": "<html><head></head><body><p>adres zameldowania może być inny niż adres zamieszkania</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1866,9 +1854,7 @@
                   "title": "Adres do korespondencji",
                   "description": "<html><head></head><body><p>jeśli różni się od adresu zameldowania</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1904,9 +1890,7 @@
                       "techName": "indywidualna_lekkoatletyka"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2027,9 +2011,7 @@
                       "techName": "zapasy"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "searchEnabled": true,
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -2050,9 +2032,7 @@
                   "title": "Dyscyplina",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2146,9 +2126,7 @@
                   "title": "Opisz najważniejsze osiągnięcia sportowe kandydata, które będą brane pod uwagę przy ocenie wniosku",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2168,9 +2146,7 @@
                   "title": "Opinia macierzystego klubu sportowego, potwierdzająca nienaganną postawę etyczną i moralną sportowca",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2190,9 +2166,7 @@
                   "title": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do stypendium",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2238,9 +2212,7 @@
                   "title": "Imię i nazwisko kandydata",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2260,9 +2232,7 @@
                   "title": "Data",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2282,9 +2252,7 @@
                   "title": "Imię i nazwisko kandydata",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2304,9 +2272,7 @@
                   "title": "Ja niżej podpisany",
                   "description": "<html><head></head><body><p>rodzic/opiekun prawny</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2400,9 +2366,7 @@
                   "title": "Imię",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2422,9 +2386,7 @@
                   "title": "Nazwisko",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2444,9 +2406,7 @@
                   "title": "Data urodzenia",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2466,9 +2426,7 @@
                   "title": "Adres zameldowania",
                   "description": "<html><head></head><body><p>adres zameldowania może być inny niż adres zamieszkania</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2488,9 +2446,7 @@
                   "title": "Adres do korespondencji",
                   "description": "<html><head></head><body><p>jeśli różni się od adresu zameldowania</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2510,9 +2466,7 @@
                   "title": "Opisz najważniejsze osiągnięcia sportowe kandydata, które będą brane pod uwagę przy ocenie wniosku",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2532,9 +2486,7 @@
                   "title": "Opinia macierzystego klubu sportowego, potwierdzająca nienaganną postawę etyczną i moralną sportowca",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2554,9 +2506,7 @@
                   "title": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do nagrody",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2650,9 +2600,7 @@
                   "title": "Imię i nazwisko kandydata",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2672,9 +2620,7 @@
                   "title": "Data",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2694,9 +2640,7 @@
                   "title": "Imię i nazwisko kandydata",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2716,9 +2660,7 @@
                   "title": "Ja niżej podpisany",
                   "description": "<html><head></head><body><p>rodzic/opiekun prawny</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2775,9 +2717,7 @@
                       "techName": "klub_sportowy"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2798,7 +2738,7 @@
                   "description": "",
                   "options": [],
                   "validation": [
-                    "REQUIRED"
+                    "SERIAL_NUMBER_ID_CARD"
                   ],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -2819,9 +2759,7 @@
                   "title": "Inny adres korespondencyjny",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2842,7 +2780,7 @@
                   "description": "",
                   "options": [],
                   "validation": [
-                    "REQUIRED"
+                    "EPUAP"
                   ],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -2864,7 +2802,7 @@
                   "description": "",
                   "options": [],
                   "validation": [
-                    "REQUIRED"
+                    "ADE"
                   ],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
@@ -2959,9 +2897,7 @@
                   "title": "Imię",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -2981,9 +2917,7 @@
                   "title": "Nazwisko",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3003,9 +2937,7 @@
                   "title": "Data urodzenia",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3025,9 +2957,7 @@
                   "title": "Adres zameldowania",
                   "description": "<html><head></head><body><p>adres zameldowania może być inny niż adres zamieszkania</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3047,9 +2977,7 @@
                   "title": "Adres do korespondencji",
                   "description": "<html><head></head><body><p>jeśli różni się od adresu zameldowania</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3069,9 +2997,7 @@
                   "title": "Opinia macierzystego klubu sportowego, potwierdzająca nienaganną postawę etyczną i moralną opiekuna sportowego.",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3091,9 +3017,7 @@
                   "title": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do wyróżnienia",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3187,9 +3111,7 @@
                   "title": "Imię i nazwisko zawodniczki/zawodnika",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3209,9 +3131,7 @@
                   "title": "Osiągnięcia sportowe podopiecznego",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3231,9 +3151,7 @@
                   "title": "Imię i nazwisko zawodniczki/zawodnika",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3253,9 +3171,7 @@
                   "title": "Osiągnięcia sportowe podopiecznego",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3275,9 +3191,7 @@
                   "title": "Imię i nazwisko zawodniczki/zawodnika",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3297,9 +3211,7 @@
                   "title": "Osiągnięcia sportowe podopiecznego kandydata, które będą brane pod uwagę przy ocenie wniosku",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3345,9 +3257,7 @@
                   "title": "Imię i nazwisko zawodniczki/zawodnika",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3367,9 +3277,7 @@
                   "title": "Osiągnięcia sportowe podopiecznego kandydata, które będą brane pod uwagę przy ocenie wniosku",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3389,9 +3297,7 @@
                   "title": "Data sporządzenia wniosku",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3444,9 +3350,7 @@
                   "title": "Imię i nazwisko kandydata",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3466,9 +3370,7 @@
                   "title": "Data",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3514,9 +3416,7 @@
                   "title": "Imię i nazwisko podopiecznego",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3536,9 +3436,7 @@
                   "title": "Data",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3558,9 +3456,7 @@
                   "title": "Imię i nazwisko podopiecznego",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -3580,9 +3476,7 @@
                   "title": "Ja niżej podpisany",
                   "description": "<html><head></head><body><p>rodzic/opiekun prawny</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],

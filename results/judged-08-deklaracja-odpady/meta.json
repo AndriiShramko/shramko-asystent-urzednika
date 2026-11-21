@@ -298,27 +298,11 @@
       "detail": "no text that this place belongs to"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "dane_identyfikacyjne",
-      "candidate": "c1",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_RAW",
       "page": 1,
       "candidate": "c8",
       "evidence": [],
       "detail": "label kept as the paper's words: 'w zarządzie lub użytkowaniu'"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "w_zarzadzie_lub_uzytkowaniu",
-      "candidate": "c8",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -349,67 +333,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "numer_nieruchomosci_domu",
-      "candidate": "c27",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "wojewodztwo",
-      "candidate": "c28",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "ulica",
-      "candidate": "c29",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "numer_lokalu",
-      "candidate": "c30",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "gmina",
-      "candidate": "c31",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "kod_pocztowy",
-      "candidate": "c32",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "AMBIGUOUS_GROUP",
       "page": 2,
       "candidate": "c33",
       "evidence": [],
       "detail": "the paper does not say whether one or several options may be marked; several are allowed"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "okolicznosci",
-      "candidate": "c33",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -426,43 +354,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "powodujacego_ustanie_obowiazku_oplaty",
-      "candidate": "c38",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 2,
       "candidate": "c39",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "komunalnymi_data_wystapienia_zmiany_danych",
-      "candidate": "c41",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "danych_bedacych_podstawa_ustalenia_wysokosci_naleznej_oplaty",
-      "candidate": "c42",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "wystapienia_zmiany_danych",
-      "candidate": "c44",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -472,83 +368,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "numer_nieruchomosci_domu_2",
-      "candidate": "c46",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "kod_pocztowy_2",
-      "candidate": "c47",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "ulica_2",
-      "candidate": "c48",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "numer_lokalu_2",
-      "candidate": "c49",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "adres_lub_opis_miejsca_lokalizacji_pojemnikow",
-      "candidate": "c50",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "rodzaj_nieruchomosci",
-      "candidate": "c51",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja",
-      "candidate": "c54",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "oswiadczenie_o_wysokosci_oplaty_za_gospodarowanie_odpadami",
-      "candidate": "c58",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
       "candidate": "c60",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_o",
-      "candidate": "c61",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -558,27 +382,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_2",
-      "candidate": "c63",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
       "candidate": "c64",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_3",
-      "candidate": "c65",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -588,27 +396,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_4",
-      "candidate": "c67",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
       "candidate": "c68",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowym",
-      "candidate": "c69",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -618,35 +410,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_5",
-      "candidate": "c72",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
       "candidate": "c73",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_6",
-      "candidate": "c74",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_7",
-      "candidate": "c75",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -663,22 +431,6 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_8",
-      "candidate": "c78",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowy_2",
-      "candidate": "c79",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 4,
       "candidate": "c80",
@@ -686,43 +438,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "nr_tel_fax",
-      "candidate": "c81",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "adres_e_mail",
-      "candidate": "c82",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "AMBIGUOUS_GROUP",
       "page": 4,
       "candidate": "c83",
       "evidence": [],
       "detail": "a single box outside any group: 'Wyrażam zgodę na otrzymywanie korespondencji za pośrednictwem adresu poczty elek'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "imie",
-      "candidate": "c95",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "nazwisko",
-      "candidate": "c96",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -733,11 +453,7 @@
     },
     {
       "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "data_wypelnienia",
-      "candidate": "c98",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
+      "detail": "36 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: dane_identyfikacyjne, w_zarzadzie_lub_uzytkowaniu, rodzaj_nieruchomosci, mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja, numer_nieruchomosci_domu, wojewodztwo"
     },
     {
       "code": "CLAUSE_LINK_MISSING",

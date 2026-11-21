@@ -26,43 +26,7 @@
     },
     {
       "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "data_uiszczenia_oplaty",
-      "candidate": "c16",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "wysokosc_oplaty",
-      "candidate": "c17",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "uzasadnienie_wniosku",
-      "candidate": "c18",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "informacje_dotyczace_sposobu_zwrotu_oplaty_skarbowej",
-      "candidate": "c19",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "nr_rachunku",
-      "candidate": "c22",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
+      "detail": "5 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: data_uiszczenia_oplaty, wysokosc_oplaty, uzasadnienie_wniosku, informacje_dotyczace_sposobu_zwrotu_oplaty_skarbowej, nr_rachunku"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
