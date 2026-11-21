@@ -76,10 +76,16 @@ def test_same_input_gives_the_same_form_hash(client):
     assert a.headers["X-Form-SHA256"] == b.headers["X-Form-SHA256"] and a.content == b.content
 
 
-@pytest.mark.parametrize("name,data", [("a.docx", fx.docx()), ("a.xlsx", fx.xlsx()), ("a.ods", fx.ods()),
+def test_docx_is_converted(client):
+    assert post(client, "/v1/forms/convert", "a.docx", fx.docx()).status_code == 200
+
+
+@pytest.mark.parametrize("name,data", [("a.xlsx", fx.xlsx()), ("a.ods", fx.ods()),
                                        ("a.doc", fx.doc()), ("a.jpg", fx.jpeg()), ("a.png", fx.png())])
-def test_every_format_is_accepted(client, name, data):
-    assert post(client, "/v1/forms/convert", name, data).status_code == 200
+def test_a_format_without_a_reader_passes_the_guard_and_is_422(client, name, data):
+    # the guard accepts the eight formats; the pipeline has no reader for these yet and says so (WP-F0p)
+    body = problem(post(client, "/v1/forms/convert", name, data), 422, "UNREADABLE")
+    assert "jeszcze" in body["detail"]
 
 
 def test_report_is_multipart_mixed_with_form_and_meta(client):
@@ -107,14 +113,15 @@ def test_batch_streams_one_line_per_file_and_isolates_errors(client):
     r = client.post("/v1/batches", content=body, headers={"Content-Type": ctype, **auth()})
     lines = [json.loads(x) for x in r.text.splitlines()]
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/x-ndjson")
-    assert [x["state"] for x in lines] == ["ok", "error", "ok"] and lines[1]["code"] == "TYPE_MISMATCH"
+    assert [x["state"] for x in lines] == ["ok", "error", "error"] and lines[1]["code"] == "TYPE_MISMATCH"
+    assert lines[2]["code"] == "UNREADABLE"  # a PNG has no reader yet
     assert "name" not in lines[0] and len(lines[0]["name_sha256_16"]) == 16
 
 
 def test_batch_from_one_zip(client):
     z = fx.zip_of({"one.pdf": fx.pdf(), "dir/two.png": fx.png(), "readme.txt": b"skip me"})
     r = post(client, "/v1/batches", "pack.zip", z, "application/zip")
-    assert [json.loads(x)["state"] for x in r.text.splitlines()] == ["ok", "ok"]
+    assert [json.loads(x)["state"] for x in r.text.splitlines()] == ["ok", "error"]  # the PNG has no reader yet
 
 
 # ---- the seam ---------------------------------------------------------------------------------------------------
@@ -159,14 +166,15 @@ def test_wrong_extension_and_spoofs_through_http(client):
 def test_upper_case_extension_and_jpe_through_http(tmp_path, secret_file):
     c = make_client(tmp_path, secret_file)
     assert post(c, "/v1/forms/convert", "A.PDF", fx.pdf()).status_code == 200
-    assert post(c, "/v1/forms/convert", "a.jpe", fx.jpeg()).status_code == 200
+    problem(post(c, "/v1/forms/convert", "a.jpe", fx.jpeg()), 422, "UNREADABLE")  # accepted by the guard, no reader yet
     strict = make_client(tmp_path, secret_file, STRICT_EXTENSIONS="true")
     problem(post(strict, "/v1/forms/convert", "a.jpe", fx.jpeg()), 415, "EXTENSION")
 
 
 def test_a_file_one_byte_over_the_limit(client):
     ok = b"%PDF-1.4\n" + b"0" * (LIMIT - 9 - 7) + b"\n%%EOF\n"
-    assert len(ok) == LIMIT and post(client, "/v1/forms/convert", "a.pdf", ok).status_code == 200
+    assert len(ok) == LIMIT
+    problem(post(client, "/v1/forms/convert", "a.pdf", ok), 422, "UNREADABLE")  # inside the limit: the reader refuses the filler
     body = problem(post(client, "/v1/forms/convert", "a.pdf", ok + b" "), 413, "TOO_LARGE")
     assert body["limits"] == {"max_upload_bytes": LIMIT}
 
