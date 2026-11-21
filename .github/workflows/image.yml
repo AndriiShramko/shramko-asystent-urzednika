@@ -45,7 +45,8 @@ jobs:
       - name: Pins of base images, pip installs and actions
         run: python tools/ci/check_pins.py
       - name: Install the test environment (hashes, wheels only)
-        run: python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
       - name: Native suite (gate full; tests marked sets, container are skipped here and counted below)
         env:
           GATE_PYTHON: python
@@ -84,7 +85,8 @@ jobs:
             -t "converter:${{ matrix.target }}" .
           docker image ls "converter:${{ matrix.target }}" --format 'size {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Install the test environment for the fixture generator (hashes, wheels only)
-        run: python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
       - name: Synthetic blank forms, one per extension
         run: python tools/ci/make_fixtures.py "$RUNNER_TEMP/fixtures"
       - name: Prove the image (non-root, no capabilities, read-only, --network none conversion, HTTP path)
