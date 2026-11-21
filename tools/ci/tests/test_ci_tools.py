@@ -127,12 +127,95 @@ def _convert(path: Path) -> subprocess.CompletedProcess:
                           env=env_with_paths(), timeout=120)
 
 
-def test_every_fixture_converts_natively_to_a_passing_form_with_the_same_bytes_twice(fixtures):
+READY = container_check.READY_DEFAULT
+
+
+def test_ready_fixtures_convert_natively_to_a_passing_form_with_the_same_bytes_twice(fixtures):
     for path in sorted(fixtures.iterdir()):
+        if container_check.ext_of(path) not in READY:
+            continue
         a, b = _convert(path), _convert(path)
         assert a.returncode == 0, (path.name, a.stderr[-300:])
         assert formcheck.problems_of_form(a.stdout.rstrip(b"\n")) == [], path.name
         assert formcheck.problems_of_pair(a.stdout, b.stdout) == [], path.name
+
+
+def test_other_fixtures_are_refused_with_a_typed_refusal_and_no_traceback(fixtures):
+    refused = 0
+    for path in sorted(fixtures.iterdir()):
+        if container_check.ext_of(path) in READY:
+            continue
+        cp = _convert(path)
+        assert container_check.problems_of_refusal(cp.returncode, cp.stdout, cp.stderr) == [], path.name
+        refused += 1
+    assert refused == 6
+
+
+def test_gate_probe_reports_g1_and_g2_passed_for_a_converted_pdf(tmp_path):
+    """The program the container check runs inside the image, run natively on a synthetic PDF."""
+    (tmp_path / "a.pdf").write_bytes(make_fixtures.pdf(make_fixtures.TITLE))
+    cp = subprocess.run([sys.executable, "-c", container_check.GATE_PROBE, str(tmp_path / "a.pdf")],
+                        capture_output=True, env=env_with_paths(), timeout=120)
+    assert cp.returncode == 0, cp.stderr[-300:]
+    checks = json.loads(cp.stdout.decode().strip().splitlines()[-1])
+    assert list(checks) == [f"G{i}" for i in range(1, 13)]
+    assert container_check.problems_of_gate_checks(checks) == []
+
+
+@pytest.mark.parametrize("status", ["failed", "not_applicable", "absent"])
+def test_negative_control_gate_g1_or_g2_not_passed_inside_the_image_is_refused(status):
+    ok = {"G1": "passed", "G2": "passed"}
+    for cid in ("G1", "G2"):
+        bad = dict(ok)
+        if status == "absent":
+            del bad[cid]
+        else:
+            bad[cid] = status
+        assert container_check.problems_of_gate_checks(bad) == [f"{cid}: {status}, expected passed"]
+
+
+def test_two_different_pdfs_give_two_different_titles(tmp_path):
+    outs = []
+    for name, title in (("a.pdf", make_fixtures.TITLE), ("b.pdf", container_check.OTHER_TITLE)):
+        (tmp_path / name).write_bytes(make_fixtures.pdf(title))
+        outs.append(_convert(tmp_path / name).stdout)
+    assert container_check.problems_of_titles(*outs) == []
+
+
+def test_negative_control_same_title_for_different_files_is_refused():
+    same = b'{"title": "Wniosek", "tabs": [], "flow": []}'
+    assert container_check.problems_of_titles(same, same)
+    assert container_check.problems_of_titles(None, same)
+
+
+def test_negative_control_refusal_check_fails_on_a_form_a_traceback_or_silence():
+    pr = container_check.problems_of_refusal
+    assert pr(0, b"{}", b"")
+    assert pr(1, b"", b"Traceback (most recent call last)")
+    assert pr(1, b"", b"")
+    assert pr(1, b"", b"Ta wersja uslugi nie potrafi jeszcze czytac tego formatu") == []
+
+
+GOOD_CFG = {"User": "10001:10001", "ExposedPorts": {"8080/tcp": {}}, "Env": ["PATH=/usr/bin", "LANG=C.UTF-8"]}
+
+
+def test_image_config_check_passes_a_clean_image():
+    assert container_check.problems_of_image_config(GOOD_CFG, ["RUN pip install x", "ARG BASE=python"]) == []
+
+
+@pytest.mark.parametrize("cfg,history,expect", [
+    ({**GOOD_CFG, "User": ""}, [], "image user"),
+    ({**GOOD_CFG, "User": "root"}, [], "image user"),
+    ({**GOOD_CFG, "ExposedPorts": {"8080/tcp": {}, "22/tcp": {}}}, [], "exposed ports"),
+    ({**GOOD_CFG, "ExposedPorts": {}}, [], "exposed ports"),
+    ({**GOOD_CFG, "Env": ["API_TOKEN=x"]}, [], "environment"),
+    (GOOD_CFG, ["|1 SENTINEL_SECRET=x /bin/sh -c ARG SENTINEL_SECRET"], "history"),
+    (GOOD_CFG, ["ENV DB_PASSWORD=x"], "history"),
+])
+def test_negative_control_image_config_check_refuses_each_weakness(cfg, history, expect):
+    found = container_check.problems_of_image_config(cfg, history)
+    assert found and any(expect in f for f in found), found
+    assert not any("=x" in f for f in found)  # never a value
 
 
 def test_negative_control_form_check_refuses_a_fourth_key_broken_json_and_changed_bytes(fixtures):
@@ -192,7 +275,7 @@ def test_http_checks_pass_against_the_native_service(fixtures, tmp_path):
         res = container_check.Results()
         assert container_check.http_checks(f"http://127.0.0.1:{port}", key, fixtures, res)
         assert res.failed == 0, [r for r in res.rows if not r["ok"]]
-        assert len(res.rows) == 8
+        assert len(res.rows) == 8 + 6  # 8 as before, 6 refusals over HTTP
     finally:
         proc.terminate()
         proc.wait(timeout=10)

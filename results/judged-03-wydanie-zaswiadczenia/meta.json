@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "converter": {
+    "version": "0.1.0",
+    "pipeline": "interim",
+    "reader": "pdf.native"
+  },
+  "counts": {
+    "pages": 3,
+    "fields": 49,
+    "source_pages": 1
+  },
+  "warnings": [
+    {
+      "code": "BRIEF_NOT_READ",
+      "detail": "Pola sprawy nie zostały jeszcze odczytane z tego dokumentu: formularz zawiera tytuł dokumentu i standardowe sekcje. Pola dotyczące sprawy trzeba uzupełnić ręcznie."
+    },
+    {
+      "code": "APPLICANTS_ASSUMED",
+      "detail": "the brief does not say who may apply (not_found); the full standard block of both exports is written"
+    },
+    {
+      "code": "ADDRESSEE_MISSING",
+      "detail": "the brief names no addressee (not_found); the field is left empty and editable"
+    },
+    {
+      "code": "NO_MATTER",
+      "detail": "the brief holds no field of the matter: the form is the standard scaffold only"
+    },
+    {
+      "code": "CLAUSE_LINK_MISSING",
+      "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    }
+  ],
+  "meta": {
+    "origins": {
+      "f453a425-9419-5f5d-960e-891d990dd88e": "standard",
+      "1a9a5463-4f5e-5ded-8514-c5ec33f71b84": "standard",
+      "693486db-c718-5f82-b472-a03795ed12d3": "standard",
+      "20c568ec-26c0-5961-832c-1b006c741a7b": "standard",
+      "7f6194bc-5f0b-5b6e-a72b-357f6f3f54e3": "standard",
+      "f1d15a9a-ae5d-5ea6-a440-3e4700d7d021": "standard",
+      "adc05167-83a2-5877-aac1-e27efc7b0be4": "standard",
+      "ba5ea207-f4b4-5386-b66a-0fa45ca65177": "standard",
+      "3dd577e1-2424-5cf8-9bd5-d31d4d4ea80d": "standard",
+      "d17fd78c-bb34-50c2-a1a7-f6ee3af0bbd0": "standard",
+      "bc62c630-691e-5e45-b956-e6e8ac845c1f": "standard",
+      "177a9c97-d5f0-593e-a59f-8b3e692dda01": "standard",
+      "18e6e5d7-61b7-598f-9397-7d493fa2e92c": "standard",
+      "37e53541-f842-5573-b6b8-32cb00addf33": "standard",
+      "94cb9a51-9ef1-5f2e-b21c-2ddfbcb01b12": "standard",
+      "d3dface2-cc54-5b2d-8f53-49c82b1a649a": "standard",
+      "33800f43-2624-5909-b0a1-d6ed690c3066": "standard",
+      "a34109ae-64d2-5bc8-8866-834108889b77": "standard",
+      "8f7928ce-a3d3-596c-8fb3-c8a13a5fe386": "standard",
+      "c05f37bb-a638-5964-b402-b27f7537598f": "standard",
+      "ca7e9e43-7bc2-5841-8aba-5c5b5bb7058f": "standard",
+      "5fede5ff-62f6-55ff-89d2-b4747bea973b": "standard",
+      "ca88419c-f46b-511e-91f3-8981a9d2b6b3": "standard",
+      "079fa926-cc70-5266-afe2-b38852365ec4": "standard",
+      "ce295f9e-3439-5154-bd68-77880f294efa": "standard",
+      "5b370644-667a-55a8-b83f-f0e9901d53a0": "standard",
+      "e81126a4-db32-579b-be63-9f2b446f95b8": "standard",
+      "83dacc9d-6e17-5e6a-a001-38adfaf1c052": "standard",
+      "bfc42ca9-bc75-5b01-a712-e10be2eab958": "standard",
+      "17042d05-f21c-5c27-834d-696ec4184940": "standard",
+      "3e884eb8-bfa5-5482-b368-ce26d48e880a": "standard",
+      "de610ee1-7e95-571b-9936-e839d9e1745f": "standard",
+      "ff9cc36a-7be5-5b18-ae34-f4cf7a82147e": "standard",
+      "900ba3f0-6deb-5a18-ad54-bd804c5160b1": "standard",
+      "2aee3929-62ff-594d-adb8-595ef675e276": "standard",
+      "b0de4a64-9929-5c1b-9903-5c8e268fc1f1": "standard",
+      "767506bd-9850-52bc-b7d7-43176e334c5e": "standard",
+      "ae37b513-efc8-5de6-a002-59a5a86bc867": "standard",
+      "57a3115c-6151-5462-a620-0622efd9c38f": "standard",
+      "fd4f6d37-5234-5979-ba62-5714a62c6503": "standard",
+      "1a7f9eb1-828a-5a7b-bb2c-7806f0153799": "standard",
+      "a5127cfa-fd53-50dc-b913-2af7ed5aa0c6": "standard",
+      "67597862-8ebe-56e4-aa4d-d02d947c5799": "standard",
+      "19dfd3cc-a1f2-53af-8b3b-63b1cdbbdc42": "standard",
+      "fcebdca3-0b90-5de3-8295-0cc5cea3cf0f": "standard",
+      "4c51434f-3241-5db7-9cc4-efb8033cc0be": "standard",
+      "fc0c07b9-e1f4-5d84-9e96-ddf7311b173c": "standard",
+      "1c744cc7-c3b7-5a78-a812-b2554cf87196": "standard",
+      "f72211cf-6c8c-57b0-84e8-1efb344a7f36": "standard",
+      "ee3713dd-3104-551a-971c-4445d9c2f3d5": "standard",
+      "e6b5415f-324a-598f-9003-104fc6973302": "standard",
+      "2da1c4f7-d674-5d93-aa6f-c018f4cb8cb1": "standard",
+      "91656fe7-0680-5bfa-b1f1-3a9068e65c8d": "standard",
+      "bbdb05d2-cade-540a-82f3-001e481549ca": "standard",
+      "2b76b398-0448-537f-a78b-1560d4612c55": "standard",
+      "a5656779-67ff-5782-87c0-1c23f195ce23": "standard",
+      "8e4f3fb8-5637-5b2e-a19e-b1dfeeeab848": "standard",
+      "86837814-c1e7-5b47-bbcb-47bcd2835191": "standard",
+      "408bfbcf-9a52-58c6-94fa-31131d528283": "standard",
+      "c680ff78-3215-5d47-9239-82dfe3e53a23": "standard",
+      "654cbbfc-5e3d-556d-b017-c76a4fa59417": "standard",
+      "47eac519-2f5d-5d17-b294-24f099cb16c7": "standard",
+      "507e4b10-88c6-53c7-890d-1269d72bbf39": "standard",
+      "055ff540-550c-5d40-95f3-8a391764a992": "standard",
+      "f6b558b3-fe2d-5990-8694-45f3cea2db97": "standard"
+    },
+    "brief_keys": {}
+  }
+}

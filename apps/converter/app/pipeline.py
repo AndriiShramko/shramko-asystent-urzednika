@@ -1,20 +1,23 @@
 """The ONE seam between the service shell and the reading pipeline.
 
 `run(data, filename, settings)` takes the bytes of a file the guard has already accepted and returns the form (the
-partner's object, decision D1) and the sidecar (decision D2). Work package WP-F1 ships a stub: a fixed, valid form
-built in code, so the shell, the tests and the image can be proved before any reader exists. Later packages replace
-the body of `run` and nothing else: no endpoint, no command and no test of the shell may reach past this function.
+partner's object, decision D1) and the sidecar (decision D2). The steps: the format from the guard's proof of
+content, `read_document`, `app.interim.brief_from_pages` (a stand-in until WP-F3 and WP-F4), `compose`. A failure is
+a `ProblemError` of design section 3, which the HTTP shell and the command line already turn into an answer: no stack
+trace, no content of the file. No endpoint, no command and no test of the shell reaches past this function.
 """
 from __future__ import annotations
 
-import uuid
+import json
+import re
 from dataclasses import dataclass
 
-from app import __version__
-from app.config import Settings
-
-# Namespace of the ids (decision D10). An office may set its own through ID_NAMESPACE.
-DEFAULT_NAMESPACE = uuid.UUID("6f1c0a52-3b7e-5d2a-9c41-0d8e7a1b2c3d")
+from app import __version__, gate, interim
+from app.compose import ComposeError, compose
+from app.config import Settings, compose_options, read_options
+from app.guard import ProblemError
+from app.guard.checks import KIND_LABEL, sniff_kinds
+from app.readers import ReaderError, formats, read_document
 
 
 @dataclass(frozen=True)
@@ -23,62 +26,71 @@ class PipelineResult:
     sidecar: dict
 
 
-def _id(ns: uuid.UUID, *parts: str) -> str:
-    return str(uuid.uuid5(ns, "/".join(parts)))
+def _format_of(data: bytes, settings: Settings) -> str:
+    """The content kind the guard proves (a `.doc` that holds a DOCX is a DOCX)."""
+    kinds = sniff_kinds(data, settings)
+    if len(kinds) != 1:
+        raise ProblemError("UNREADABLE", "Nie udało się ustalić jednego formatu pliku.")
+    return next(iter(kinds))
 
 
-def _field(ns: uuid.UUID, scope: str, y: int, tech: str, title: str, ftype: str, description: str = "") -> dict:
-    return {
-        "x": 0, "y": y, "rows": 1, "cols": 3,
-        "field": {
-            "id": _id(ns, scope, tech), "type": ftype, "techName": tech, "title": title,
-            "description": description, "tooltipMessage": "", "questionOrder": y,
-            "options": [], "validation": ["REQUIRED"] if ftype != "TEXT_BLOCK" else [], "readOnly": False,
-            "repeatingSectionGrid": [], "states": [],
-        },
-    }
+def _problem_of(exc: ReaderError) -> ProblemError:
+    if exc.code == "TOO_LARGE":
+        return ProblemError("TOO_LARGE", "Dokument jest większy, niż pozwala ta instalacja (strony lub pamięć).")
+    if exc.code == "ENCRYPTED":
+        return ProblemError("UNREADABLE", "Plik jest zaszyfrowany lub chroniony hasłem; nie można go odczytać.")
+    if exc.code == "UNSUPPORTED_FORMAT":
+        return ProblemError("EXTENSION", "Ta wersja usługi nie ma czytnika tego formatu.")
+    return ProblemError("UNREADABLE", "Nie udało się odczytać pliku: jest uszkodzony lub nie ma tekstu do odczytu.")
 
 
-def _section(ns: uuid.UUID, page: str, y: int, tech: str, title: str, inner: list[dict]) -> dict:
-    q = _field(ns, page, y, tech, title, "SECTION", "<html><head></head><body></body></html>")
-    q["rows"] = len(inner) + 1
-    q["field"]["validation"] = []
-    q["field"]["repeatingSectionGrid"] = inner
-    return q
+def _count_fields(form: dict) -> int:
+    return sum(len(q["field"]["repeatingSectionGrid"]) for t in form["tabs"] for q in t["questions"])
 
 
-def stub_form(settings: Settings) -> dict:
-    """A fixed, valid form: a page with one section of two fields, and the closing page with one text block."""
-    ns = uuid.UUID(settings.id_namespace) if settings.id_namespace else DEFAULT_NAMESPACE
-    key = settings.form_key or "formularz-probny"
-    main_id, finish_id = _id(ns, key, "page", "main"), _id(ns, key, "page", "finish")
-    data = _section(ns, main_id, 0, "dane_wnioskodawcy", "Dane wnioskodawcy", [
-        _field(ns, main_id, 0, "imie", "Imię", "TEXT_FIELD"),
-        _field(ns, main_id, 1, "nazwisko", "Nazwisko", "TEXT_FIELD"),
-    ])
-    done = _section(ns, finish_id, 0, "zakonczenie", "Zakończenie", [
-        _field(ns, finish_id, 0, "informacja_koncowa", "Informacja", "TEXT_BLOCK",
-               "<html><head></head><body><p>Wniosek został przygotowany do wysłania.</p></body></html>"),
-    ])
-    return {
-        "title": "Formularz próbny",
-        "tabs": [
-            {"id": main_id, "title": "Dane", "type": "MAIN", "questions": [data]},
-            {"id": finish_id, "title": "Zakończenie", "type": "FINISH", "questions": [done]},
-        ],
-        "flow": {"links": [{"id": _id(ns, key, "link", "main-finish"), "source": main_id, "target": finish_id}]},
-    }
+_NO_QUOTES = re.compile(r"'[^']*'")   # a message may quote a value of the form; the place is enough
+
+
+def _gate_problem(failed: gate.CheckResult) -> ProblemError:
+    """500 GATE_FAILED: the id and name of the check and its first findings (a place and a rule, 1000 characters at most)."""
+    shown = "; ".join(f"{_NO_QUOTES.sub(chr(39) + '...' + chr(39), f.message)} at {f.path or '/'}" for f in failed.findings[:5])
+    more = f" (+{len(failed.findings) - 5} more)" if len(failed.findings) > 5 else ""
+    return ProblemError("GATE_FAILED", f"Bramka {failed.id} {failed.name} odrzuciła wynik: {shown}{more}"[:1000])
+
+
+def _checks_of(report: gate.GateReport) -> list[dict]:
+    return [{"id": c.id, "name": c.name, "status": c.status, **({"reason": c.reason} if c.reason else {})}
+            for c in report.checks]
 
 
 def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
-    """Stub body. `data` and `filename` are not read yet; the real pipeline reads the document here."""
-    form = stub_form(settings)
-    fields = sum(len(q["field"]["repeatingSectionGrid"]) for t in form["tabs"] for q in t["questions"])
+    """`filename` is not used: the format comes from the content, and a name must never reach a log."""
+    fmt = _format_of(data, settings)
+    if fmt not in formats():
+        label = KIND_LABEL.get(fmt, fmt)
+        raise ProblemError("UNREADABLE", f"Ta wersja usługi nie potrafi jeszcze czytać tego formatu ({label}).")
+    try:
+        model = read_document(data, fmt, read_options(settings))
+    except ReaderError as exc:
+        raise _problem_of(exc) from None
+    brief = interim.brief_from_pages(model)
+    try:
+        composed = compose(brief, compose_options(settings))
+    except ComposeError as exc:
+        raise ProblemError("GATE_FAILED", f"Kompozytor odrzucił wynik ({type(exc).__name__}).") from None
+    form = json.loads(composed.form.to_json_bytes())
+    report = gate.check(form)
+    if not report.passed:
+        raise _gate_problem(report.failed[0])
+    warnings = [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]
+    warnings.append(dict(interim.NOT_READ_WARNING))
+    warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
     sidecar = {
         "version": 1,
-        "converter": {"version": __version__, "pipeline": "stub"},
-        "counts": {"pages": len(form["tabs"]), "fields": fields},
-        "warnings": [{"code": "PIPELINE_STUB", "detail": "Czytnik formularzy nie jest jeszcze podłączony: to formularz stały."}],
-        "meta": {},
+        "converter": {"version": __version__, "pipeline": "interim", "reader": model.source.reader},
+        "counts": {"pages": len(form["tabs"]), "fields": _count_fields(form), "source_pages": model.source.pages},
+        "warnings": warnings,
+        "checks": _checks_of(report),
+        "meta": {"origins": composed.origins, "brief_keys": composed.brief_keys},
     }
     return PipelineResult(form=form, sidecar=sidecar)

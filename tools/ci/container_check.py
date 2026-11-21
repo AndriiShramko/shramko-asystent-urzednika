@@ -9,12 +9,18 @@
    it reports uid, gid, effective capabilities, whether / and the app folder are writable, its network
    interfaces and what a connect to a never-routed address does. Asserted: uid and gid not 0, no capability,
    root and app folder not writable, /tmp writable, only the loopback interface, connect refused.
-2. Conversion without network. Every fixture is converted TWICE through the command line inside such a
+2. Conversion without network. Formats named by --ready (the readers that exist; the workflow has one line for
+   them) must convert; every other fixture must be refused with a typed refusal (exit non-zero, no form on
+   stdout, no traceback), and a form for it is a failure. Every ready fixture is converted TWICE through the command line inside such a
    container. Each output must pass tools/ci/formcheck.py (exactly title, tabs, flow; lint strict = schema plus
-   the partner's rules) and both outputs must be byte-equal. Never compared with a stored copy.
+   the partner's rules) and both outputs must be byte-equal. Never compared with a stored copy. Two synthetic PDFs
+   with different titles must give different titles.
 3. HTTP path (unless --no-http). The same image started with a published loopback port and a token key as a
    read-only file: healthz 200; convert with a token 200 and a passing form; and the negative controls of the
-   guard and the token (no token, expired, algorithm none, PNG bytes named .pdf, wrong extension).
+   guard and the token (no token, expired, algorithm none, PNG bytes named .pdf, wrong extension), and for every
+   non-ready fixture HTTP 422 with code UNREADABLE.
+4. Final image: configured user not root, exactly one exposed port, no secret-like variable in the environment
+   or in the history (the layer commands).
 
 The token key is random per run, lives in a temporary folder and is never printed. Exit 1 when a check fails.
 Writes a Markdown table to $GITHUB_STEP_SUMMARY when that variable is set.
@@ -26,6 +32,7 @@ import base64
 import hashlib
 import hmac
 import json
+import re
 import os
 import secrets
 import shutil
@@ -40,7 +47,10 @@ import uuid
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import make_fixtures  # noqa: E402
 from formcheck import problems_of_form, problems_of_pair  # noqa: E402
+
+READY_DEFAULT = frozenset({"pdf", "docx"})
 
 HARDENED = ["--network", "none", "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
             "--tmpfs", "/tmp:rw,size=128m", "--pids-limit", "256", "--memory", "1g"]
@@ -110,11 +120,45 @@ def docker(*args: str, timeout: int = 120) -> subprocess.CompletedProcess:
     return subprocess.run(["docker", *args], capture_output=True, timeout=timeout)
 
 
+SECRET_WORDS = ("secret", "password", "passwd", "token", "apikey", "api_key", "private_key", "credential")
+SECRET_VALUE_HINTS = ("-----BEGIN", "ghp_", "eyJ")
+NAME_IN_HISTORY = re.compile(r"(?:\bARG\s+|\bENV\s+|--build-arg[ =]|\bexport\s+)([A-Za-z0-9_]+)", re.IGNORECASE)
+
+
+def problems_of_image_config(cfg: dict, history: list[str]) -> list[str]:
+    """cfg is `docker image inspect` .Config; history the CreatedBy lines. Names are reported, never a value."""
+    out = []
+    user = (cfg.get("User") or "").strip()
+    if not user or user.split(":")[0] in ("0", "root"):
+        out.append(f"image user is {user!r}")
+    ports = sorted((cfg.get("ExposedPorts") or {}).keys())
+    if len(ports) != 1:
+        out.append(f"{len(ports)} exposed ports {ports}, expected exactly one")
+    for entry in cfg.get("Env") or []:
+        name, _, value = entry.partition("=")
+        if any(w in name.lower() for w in SECRET_WORDS) or any(h in value for h in SECRET_VALUE_HINTS):
+            out.append(f"secret-like variable in the environment: {name}")
+    for line in history:
+        for name in NAME_IN_HISTORY.findall(line):
+            if any(w in name.lower() for w in SECRET_WORDS):
+                out.append(f"secret-like name in the build history: {name}")
+        if any(h in line for h in SECRET_VALUE_HINTS):
+            out.append("secret-like value in the build history")
+    return sorted(set(out))
+
+
 def check_image_config(image: str, res: Results) -> None:
-    cp = docker("image", "inspect", "-f", "{{.Config.User}}", image)
-    user = cp.stdout.decode().strip()
-    bad = [] if cp.returncode == 0 and user and user.split(":")[0] not in ("0", "root") else [f"image user is {user!r}"]
-    res.add("image declares a non-root USER", bad, f"USER {user}")
+    cp = docker("image", "inspect", "-f", "{{json .Config}}", image)
+    hp = docker("history", "--no-trunc", "--format", "{{.CreatedBy}}", image)
+    if cp.returncode != 0 or hp.returncode != 0:
+        res.add("final image configuration", [f"inspect exit {cp.returncode}, history exit {hp.returncode}"])
+        return
+    cfg = json.loads(cp.stdout.decode())
+    history = hp.stdout.decode(errors="replace").splitlines()
+    res.add("final image: non-root USER, one exposed port, no secret-like variable in environment or history",
+            problems_of_image_config(cfg, history),
+            f"USER {cfg.get('User')}, ports {sorted((cfg.get('ExposedPorts') or {}))}, "
+            f"{len(cfg.get('Env') or [])} variables, {len(history)} layers")
 
 
 def check_probe(image: str, res: Results) -> None:
@@ -128,13 +172,37 @@ def check_probe(image: str, res: Results) -> None:
             f"ifaces={probe['ifaces']} connect={probe['connect']}")
 
 
-def check_conversions(image: str, fixtures: Path, res: Results) -> None:
+def ext_of(path: Path) -> str:
+    return path.suffix.lstrip(".").lower()
+
+
+def problems_of_refusal(returncode: int, stdout: bytes, stderr: bytes) -> list[str]:
+    """A typed refusal: non-zero exit, no form, a message, no traceback."""
+    out = []
+    if returncode == 0:
+        out.append("exit 0: a form was produced for a format that has no reader")
+    if stdout.strip():
+        out.append(f"stdout not empty ({len(stdout)} bytes)")
+    if b"Traceback" in stderr:
+        out.append("traceback on stderr")
+    if returncode != 0 and not stderr.strip():
+        out.append("no message on stderr")
+    return out
+
+
+def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
     files = sorted(p for p in fixtures.iterdir() if p.is_file())
     if not files:
         res.add("fixtures present", [f"no file in {fixtures}"])
         return
     mount = ["-v", f"{fixtures.resolve()}:/in:ro"]
     for path in files:
+        if ext_of(path) not in ready:
+            cp = docker("run", "--rm", *HARDENED, *mount, image, "convert", f"/in/{path.name}", timeout=180)
+            res.add(f"refuse {path.name}: typed refusal, no form (no reader yet)",
+                    problems_of_refusal(cp.returncode, cp.stdout, cp.stderr),
+                    f"exit {cp.returncode}, {len(cp.stdout)} bytes on stdout")
+            continue
         outs = []
         for _ in range(2):
             t0 = time.monotonic()
@@ -152,6 +220,73 @@ def check_conversions(image: str, fixtures: Path, res: Results) -> None:
         res.add(f"convert {path.name} with --network none", problems,
                 f"{len(cp.stdout)} bytes, sha256 {hashlib.sha256(cp.stdout).hexdigest()[:12]}, {secs:.1f} s, "
                 "keys title/tabs/flow, lint strict clean, same bytes twice")
+
+
+GATE_PROBE = r"""
+import json, sys
+from app import pipeline
+from app.config import Settings
+r = pipeline.run(open(sys.argv[1], "rb").read(), "x", Settings.from_env({"AUTH_MODE": "off"}))
+print(json.dumps({c["id"]: c["status"] for c in r.sidecar["checks"]}))
+"""
+
+
+def problems_of_gate_checks(checks: dict) -> list[str]:
+    """G1 (schema) and G2 (partner rules) must have RUN and passed inside the image: failed means the linter or the
+    schema files are missing from it, not_applicable means the gate did not look."""
+    return [f"{cid}: {checks.get(cid, 'absent')}, expected passed" for cid in ("G1", "G2") if checks.get(cid) != "passed"]
+
+
+def check_gate_inside(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
+    pdfs = sorted(p for p in fixtures.iterdir() if p.suffix.lower() == ".pdf" and "pdf" in ready)
+    if not pdfs:
+        return
+    cp = docker("run", "--rm", *HARDENED, "-v", f"{fixtures.resolve()}:/in:ro", "--entrypoint", "python", image,
+                "-c", GATE_PROBE, f"/in/{pdfs[0].name}", timeout=180)
+    if cp.returncode != 0:
+        res.add("gate inside the image: G1 and G2 passed", [f"exit {cp.returncode}: {cp.stderr.decode(errors='replace')[-300:]}"])
+        return
+    checks = json.loads(cp.stdout.decode().strip().splitlines()[-1])
+    res.add("gate inside the image: G1 schema and G2 partner rules passed (not failed, not not_applicable)",
+            problems_of_gate_checks(checks),
+            ", ".join(f"{k} {v}" for k, v in checks.items()))
+
+
+OTHER_TITLE = "Wniosek o zmianę adresu zameldowania"
+
+
+def title_of(raw: bytes | None) -> str | None:
+    try:
+        return json.loads(raw)["title"]
+    except (ValueError, KeyError, TypeError):
+        return None
+
+
+def problems_of_titles(a: bytes | None, b: bytes | None) -> list[str]:
+    ta, tb = title_of(a), title_of(b)
+    if ta is None or tb is None:
+        return ["a conversion gave no form with a title"]
+    if ta == tb:
+        return ["two different files gave the same title: the output does not depend on the input"]
+    return []
+
+
+def check_different_forms(image: str, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
+    if "pdf" not in ready:
+        return
+    tmp = Path(tempfile.mkdtemp(prefix="convtitles"))
+    try:
+        os.chmod(tmp, 0o755)
+        (tmp / "a.pdf").write_bytes(make_fixtures.pdf())
+        (tmp / "b.pdf").write_bytes(make_fixtures.pdf(OTHER_TITLE))
+        for f in tmp.iterdir():
+            os.chmod(f, 0o644)
+        outs = [docker("run", "--rm", *HARDENED, "-v", f"{tmp}:/in:ro", image, "convert", f"/in/{n}.pdf",
+                       timeout=180).stdout for n in ("a", "b")]
+        res.add("two different files give two different forms (titles differ)", problems_of_titles(*outs),
+                f"{title_of(outs[0])!r} vs {title_of(outs[1])!r}")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 # ---- HTTP ------------------------------------------------------------------------------------------------------
@@ -195,7 +330,7 @@ def free_port() -> int:
         return s.getsockname()[1]
 
 
-def check_http(image: str, fixtures: Path, res: Results) -> None:
+def check_http(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
     key = secrets.token_urlsafe(48).encode()
     secdir = Path(tempfile.mkdtemp(prefix="convkey"))
     name = "convcheck-" + uuid.uuid4().hex[:8]
@@ -211,7 +346,7 @@ def check_http(image: str, fixtures: Path, res: Results) -> None:
         if cp.returncode != 0:
             res.add("HTTP container starts", [cp.stderr.decode(errors="replace")[-300:]])
             return
-        if not http_checks(f"http://127.0.0.1:{port}", key, fixtures, res):
+        if not http_checks(f"http://127.0.0.1:{port}", key, fixtures, res, ready):
             logs = docker("logs", "--tail", "40", name)
             print((logs.stdout + logs.stderr).decode(errors="replace")[-3000:])
     finally:
@@ -230,7 +365,8 @@ def wait_healthy(base: str, seconds: float = 45) -> int:
     return 0
 
 
-def http_checks(base: str, key: bytes, fixtures: Path, res: Results) -> bool:
+def http_checks(base: str, key: bytes, fixtures: Path, res: Results,
+                ready: frozenset[str] = READY_DEFAULT) -> bool:
     """The HTTP path against a running service (a container in CI, a native process in the unit test).
     Returns False when the service never became healthy."""
     status = wait_healthy(base)
@@ -257,6 +393,11 @@ def http_checks(base: str, key: bytes, fixtures: Path, res: Results) -> bool:
         got = _code(body)
         res.add(f"negative control: {label} -> {want} {code}",
                 [] if (st, got) == (want, code) else [f"got {st} {got}"], f"{st} {got}")
+    for path in sorted(p for p in fixtures.iterdir() if p.is_file() and ext_of(p) not in ready):
+        st, body = post_file(url, path.name, path.read_bytes(), good)
+        got = _code(body)
+        res.add(f"refusal over HTTP: {path.name} -> 422 UNREADABLE (no reader yet)",
+                [] if (st, got) == (422, "UNREADABLE") else [f"got {st} {got}"], f"{st} {got}")
     return True
 
 
@@ -273,14 +414,19 @@ def main() -> int:
     ap.add_argument("--image", required=True)
     ap.add_argument("--fixtures", type=Path, required=True)
     ap.add_argument("--report", type=Path)
+    ap.add_argument("--ready", default=",".join(sorted(READY_DEFAULT)),
+                    help="comma list of extensions that must convert; every other fixture must be refused")
     ap.add_argument("--no-http", action="store_true")
     args = ap.parse_args()
     res = Results()
     check_image_config(args.image, res)
     check_probe(args.image, res)
-    check_conversions(args.image, args.fixtures, res)
+    ready = frozenset(e.strip().lower() for e in args.ready.split(",") if e.strip())
+    check_conversions(args.image, args.fixtures, res, ready)
+    check_different_forms(args.image, res, ready)
+    check_gate_inside(args.image, args.fixtures, res, ready)
     if not args.no_http:
-        check_http(args.image, args.fixtures, res)
+        check_http(args.image, args.fixtures, res, ready)
     md = summary_markdown(args.image, res)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:

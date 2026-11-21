@@ -1,0 +1,85 @@
+{
+  "description": "The seven journeys of the gate (design 7.2, D16). Shared data: the gate replays them with jsonata-python, the viewer (WP-F10) with the reference JavaScript jsonata. An answer is written to field.__userAnswer of the field with that techName as a list holding the visible option name; a field with a list defaultValue answers with it; every other field is unanswered. A required answer whose field or option does not exist makes the journey not_applicable; an optional answer is applied only where its field exists. expect_visible: techNames that must exist and be shown; expect_hidden: techNames that must not be shown where they exist. The expectations were predicted by hand from the standard sections (coi-json-format section 7), before the first run.",
+  "version": 1,
+  "journeys": [
+    {
+      "id": "J1_self",
+      "name": "Wnioskuję w swoim imieniu",
+      "answers": [
+        {"field": "wybierz_w_czyim_imieniu_wnioskujesz", "value": "Swoim", "required": true}
+      ],
+      "expect_visible": ["twoje_dane"],
+      "expect_hidden": ["dane_podmiotu", "adres_siedziby", "potwierdzenie_ze_jestes_reprezentantem", "dane_innej_osoby",
+                        "adres_zamieszkania_osoby_ktorej_jestes_pelnomocnikiem", "pelnomocnictwo",
+                        "oplata_skarbowa_pelnomocnictwo_1", "oplata_skarbowa_pelnomocnictwo_2",
+                        "potwierdzenie_ze_jestes_przedstawicielem_ustawowym", "wybierz_jako_kto_wnioskujesz",
+                        "wybierz_jako_kto_wnioskujesz_inna_osoba"]
+    },
+    {
+      "id": "J2_other_person_poa",
+      "name": "Wnioskuję w imieniu innej osoby jako pełnomocnik",
+      "answers": [
+        {"field": "wybierz_w_czyim_imieniu_wnioskujesz", "value": "Innej osoby", "required": true},
+        {"field": "wybierz_jako_kto_wnioskujesz_inna_osoba", "value": "Pełnomocnik", "required": false}
+      ],
+      "expect_visible": ["dane_innej_osoby", "adres_zamieszkania_osoby_ktorej_jestes_pelnomocnikiem", "pelnomocnictwo",
+                         "oplata_skarbowa_pelnomocnictwo_1"],
+      "expect_hidden": ["dane_podmiotu", "adres_siedziby", "potwierdzenie_ze_jestes_reprezentantem",
+                        "oplata_skarbowa_pelnomocnictwo_2", "potwierdzenie_ze_jestes_przedstawicielem_ustawowym",
+                        "wybierz_jako_kto_wnioskujesz"]
+    },
+    {
+      "id": "J3_entity_representative",
+      "name": "Wnioskuję w imieniu podmiotu jako reprezentant",
+      "answers": [
+        {"field": "wybierz_w_czyim_imieniu_wnioskujesz", "value": "Osoby prawnej lub jednostki organizacyjnej", "required": true},
+        {"field": "wybierz_jako_kto_wnioskujesz", "value": "Reprezentant", "required": true}
+      ],
+      "expect_visible": ["dane_podmiotu", "adres_siedziby", "potwierdzenie_ze_jestes_reprezentantem", "wybierz_jako_kto_wnioskujesz"],
+      "expect_hidden": ["pelnomocnictwo", "oplata_skarbowa_pelnomocnictwo_1", "oplata_skarbowa_pelnomocnictwo_2",
+                        "dane_innej_osoby", "adres_zamieszkania_osoby_ktorej_jestes_pelnomocnikiem",
+                        "potwierdzenie_ze_jestes_przedstawicielem_ustawowym"]
+    },
+    {
+      "id": "J4_entity_poa",
+      "name": "Wnioskuję w imieniu podmiotu jako pełnomocnik",
+      "answers": [
+        {"field": "wybierz_w_czyim_imieniu_wnioskujesz", "value": "Osoby prawnej lub jednostki organizacyjnej", "required": true},
+        {"field": "wybierz_jako_kto_wnioskujesz", "value": "Pełnomocnik", "required": true}
+      ],
+      "expect_visible": ["dane_podmiotu", "adres_siedziby", "pelnomocnictwo", "oplata_skarbowa_pelnomocnictwo_2"],
+      "expect_hidden": ["potwierdzenie_ze_jestes_reprezentantem", "oplata_skarbowa_pelnomocnictwo_1", "dane_innej_osoby",
+                        "adres_zamieszkania_osoby_ktorej_jestes_pelnomocnikiem",
+                        "potwierdzenie_ze_jestes_przedstawicielem_ustawowym"]
+    },
+    {
+      "id": "J5_address_poland",
+      "name": "Mieszkam w Polsce",
+      "answers": [
+        {"field": "kraj", "value": "Polska", "required": true}
+      ],
+      "expect_visible": ["adres_zamieszkania", "kod_pocztowy", "ulica"],
+      "expect_hidden": ["miejscowosc_zagranica", "kod_pocztowy_zagranica", "ulica_zagranica"]
+    },
+    {
+      "id": "J6_address_abroad",
+      "name": "Mieszkam za granicą",
+      "answers": [
+        {"field": "kraj", "value": "Niemcy", "required": true}
+      ],
+      "expect_visible": ["adres_zamieszkania", "miejscowosc_zagranica", "kod_pocztowy_zagranica", "ulica_zagranica"],
+      "expect_hidden": ["kod_pocztowy", "ulica", "wojewodztwo"]
+    },
+    {
+      "id": "J7_statutory_representative",
+      "name": "Wnioskuję jako przedstawiciel ustawowy innej osoby",
+      "answers": [
+        {"field": "wybierz_w_czyim_imieniu_wnioskujesz", "value": "Innej osoby", "required": true},
+        {"field": "wybierz_jako_kto_wnioskujesz_inna_osoba", "value": "Przedstawiciel ustawowy", "required": true}
+      ],
+      "expect_visible": ["dane_innej_osoby", "potwierdzenie_ze_jestes_przedstawicielem_ustawowym"],
+      "expect_hidden": ["pelnomocnictwo", "oplata_skarbowa_pelnomocnictwo_1", "oplata_skarbowa_pelnomocnictwo_2",
+                        "dane_podmiotu", "adres_siedziby", "potwierdzenie_ze_jestes_reprezentantem"]
+    }
+  ]
+}

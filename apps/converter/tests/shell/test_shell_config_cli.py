@@ -85,8 +85,8 @@ def test_convert_writes_form_and_sidecar(tmp_path, monkeypatch, capsys):
 
 
 def test_convert_prints_the_form_to_standard_output(tmp_path, capsys):
-    src = tmp_path / "a.png"
-    src.write_bytes(fx.png())
+    src = tmp_path / "a.docx"
+    src.write_bytes(fx.docx())
     assert cli.main(["convert", str(src)]) == 0
     assert set(json.loads(capsys.readouterr().out)) == {"title", "tabs", "flow"}
 
