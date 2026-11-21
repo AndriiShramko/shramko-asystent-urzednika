@@ -1,5 +1,5 @@
 # WP-H4 the engine is always visible: status
-Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 02:05; state: running
+Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 02:30; state: running
 
 Branch: wp/H4-engine-visible   Stage now: core
 
@@ -16,9 +16,15 @@ Branch: wp/H4-engine-visible   Stage now: core
 - [x] byte comparison after the merge against main a7f2cee, code tree of b5d42f4: 158 of 158 on the chain corpora (71 sets, 80 unseen, 7 hostile) and 79 of 79 on the fixtures and sets, also with a fake configured model
 - [x] fast gate on the merged tree: PASSED on 2af59a7
 - [x] `/status` brought back to its six keys when nothing is configured (this commit): `tools/ci/first_run.py` on main fixes them, and its test failed on 2af59a7
-- [~] on this commit, started and not read yet: the fast gate, `tools/ci/tests`, the byte comparison of this head's code tree
+- [x] the log lines reach the output of a real server (this commit): found by a smoke run on 127.0.0.1 that the logger `converter` had no handler, so neither the engine line nor the line per conversion was ever printed
+- [~] on this commit, started and not read yet: the fast gate, `tools/ci/tests`, the byte comparison of this head's code tree against main a7f2cee
 
 ## Decisions
+- `serve` gives the logger `converter` the server's own handler (a copy of uvicorn's log configuration with one
+  more logger), and the engine line is written at start-up (lifespan), not while the app is built. Why: on a real
+  server every line of ours below a warning was lost, the tests saw them only through `caplog`. Rules out: a
+  handler installed at import or in `create_app` (it would leak into every test and every embedding). Side effect
+  to know: the content-free line `stage=convert result=ok job=… size=… engine=…` is now printed per conversion.
 - `/status` gains nothing while no model is configured; `model` appears with MODEL_BASE_URL. Why: the image's
   first-run check (`tools/ci/first_run.py`, `STATUS_KEYS`, not mine) demands exactly six keys, and the brief says
   "with nothing configured the output is byte-identical". Rules out: `configured: no` as an explicit field; a
@@ -52,7 +58,17 @@ Branch: wp/H4-engine-visible   Stage now: core
 | shell tests (header on convert, report, batch line; /status; /healthz bytes; log; CLI stderr; no secret with a fake configured model; a simulated MODEL_USED, MODEL_FALLBACK, MODEL_SKIPPED drives header, log, batch and /status with no shell change) | `bash tools/gate.sh py -m pytest apps/converter/tests/shell -q` | 258 passed | the commit "shell shows the engine" |
 | HARD: form and sidecar byte-identical to main 9e095ab | scratch `byteproof.py` (outside the tree): `pipeline.run` behind `inspect_upload`, once with `git archive 9e095ab apps/converter/app` first on `sys.path` (asserted by `app.__file__`), once with this checkout; SHA-256 of the canonical form and sidecar | 79 of 79 identical (9 synthetic drawn once and read by both runs, 70 files of the nine sets; 78 converted, 1 refused UNREADABLE, the same in both; 0 errors) | 937cb2a |
 | the same with a fake configured model (MODEL_BASE_URL with user, password, port, query; MODEL_NAME; MODEL_API_KEY) | same script, argument `model` | 79 of 79 identical to main | 937cb2a |
-| review page builds and its tests pass | `npm ci`, `npm run build` (tsc and vite), `npm test` in `apps/review-web` | built; 54 passed (3 files): engine read from the header, band in pl, en, es with words and token, nothing focusable, 9 new contrast pairs | this commit |
+| review page builds and its tests pass | `npm ci`, `npm run build` (tsc and vite), `npm test` in `apps/review-web` | built; 54 passed (3 files): engine read from the header, band in pl, en, es with words and token, nothing focusable, 9 new contrast pairs | 913f787, again on b5d42f4 |
+| HARD, after the merge: form and sidecar byte-identical to main a7f2cee | same script; both code trees unpacked outside the repository (`git archive a7f2cee apps/converter/app`, `git archive b5d42f4 apps/converter/app`) and put first on `sys.path`; the 158 items of `eval.chain.corpora` | 158 of 158 identical (152 converted, 6 refused, 0 errors: the numbers of the chain baseline) | b5d42f4 |
+| the same on the 9 synthetic fixtures and the 70 files of the nine sets, without and with a fake configured model | same script | 79 of 79 and 79 of 79 identical to main a7f2cee | b5d42f4 |
+| the comparison can fail | same script, main 9e095ab against main a7f2cee (the validators merge) | 56 of 158 identical, 102 differ: a real change of the output is seen | scratch trees |
+| before the merge, the 158 items against main 9e095ab | same script; the branch side read the checkout while main was being merged into it, so this row is a hint and not a proof | 158 of 158 identical | 913f787 |
+| shell tests on the merged tree | `bash tools/gate.sh py -m pytest apps/converter/tests/shell -q` | 258 passed | 2af59a7 |
+| fast gate on the merged tree | `bash tools/gate.sh fast` | `gate: fast PASSED on 2af59a7` | 2af59a7 |
+| the checks of the image that run without Docker | `bash tools/gate.sh py -m pytest tools/ci/tests -q` | 2af59a7: 1 failed (`test_first_run_of_the_native_service_with_no_configuration`: `/status` had eight keys), 99 passed. The fast gate does not run this folder | 2af59a7 |
+| `/status` back to six keys with no model; first-run check | `bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py apps/converter/tests/shell/test_service_fixes.py tools/ci/tests/test_first_run.py::test_first_run_of_the_native_service_with_no_configuration -q` | 54 passed | e4fc776 |
+| a real server on 127.0.0.1 (scratch `smoke.sh`: `python -m converter serve`, `curl`), without and with a fake configured model | `/healthz`, `/status`, convert, report, batch, `/ui/` bundle, the server's log | `/healthz` `{"status":"ok","version":"0.1.0"}` in both; header `x-converter-engine: rules` on convert and report; `"engine":"rules"` in both batch lines; the same `x-form-sha256` with and without the model; `/status` six keys without, `model` with (name, `host: public`, `key: variable`); the bundle holds the band's text; log: `INFO: engine=rules state=UNAVAILABLE model=… host=public reason=no-model-step` and `stage=convert result=ok … engine=rules`; 0 lines with the fake password, key, host, port, path or query in the log and the form | this commit |
+| engine and CLI tests after the log fix | `bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py apps/converter/tests/shell/test_shell_config_cli.py -q` | 75 passed | this commit |
 
 ## Negative control
 On 913f787 the line `engine.HEADER: engine.engine_of(...)` was removed from `headers_for` in `app/main.py`:

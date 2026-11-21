@@ -242,8 +242,8 @@ def test_healthz_is_unchanged_byte_for_byte(tmp_path):
 
 def test_the_log_names_the_engine_at_start_and_for_every_conversion(caplog):
     with caplog.at_level(logging.INFO, logger="converter"):
-        client = make()
-        assert post(client).status_code == 200
+        with make() as client:   # start-up runs: the line is written when the server's log handlers exist
+            assert post(client).status_code == 200
     lines = caplog.text.splitlines()
     assert sum("engine=rules state=OFF reason=not-configured" in x for x in lines) == 1
     done = [x for x in lines if "stage=convert result=ok" in x]
@@ -269,8 +269,7 @@ def test_nothing_of_the_model_configuration_but_name_and_host_class_leaves_the_s
 
     monkeypatch.setattr(socket, "create_connection", no_network)
     monkeypatch.setattr(socket, "getaddrinfo", no_network)
-    with caplog.at_level(logging.DEBUG):
-        client = make(**model_env(tmp_path))
+    with caplog.at_level(logging.DEBUG), make(**model_env(tmp_path)) as client:
         answers = {
             "/status": client.get("/status"), "/healthz": client.get("/healthz"), "convert": post(client),
             "convert+report": post(client, "/v1/forms/convert?report=1"), "report": post(client, "/v1/forms/report"),
@@ -312,6 +311,21 @@ def test_the_command_line_names_the_engine_on_standard_error_and_never_on_standa
     assert configured.out == plain.out and configured.err == "ENGINE: rules\n"
     assert (tmp_path / "rep2" / "a.meta.json").read_bytes() == (tmp_path / "rep" / "a.meta.json").read_bytes()
     assert_nothing_secret(configured.out + configured.err + (tmp_path / "rep2" / "a.meta.json").read_text(encoding="utf-8"), "CLI")
+
+
+def test_serve_sends_the_services_own_log_lines_where_the_servers_lines_go(monkeypatch):
+    """Found on a real server: the logger `converter` had no handler, so the engine line and the line per
+    conversion never reached the output. `serve` now gives the logger the server's handler."""
+    import uvicorn
+
+    for name in ("AUTH_MODE", "JWT_SECRET_FILE", "JWT_PUBLIC_KEY_FILE", "JWT_JWKS_FILE", "LOG_LEVEL"):
+        monkeypatch.delenv(name, raising=False)
+    seen: dict = {}
+    monkeypatch.setattr(uvicorn, "run", lambda app, **kw: seen.update(kw))
+    assert cli.main(["serve"]) == 0
+    assert seen["log_config"]["loggers"]["converter"] == {"handlers": ["default"], "level": "INFO", "propagate": False}
+    assert "default" in seen["log_config"]["handlers"] and seen["access_log"] is False
+    assert "converter" not in uvicorn.config.LOGGING_CONFIG["loggers"]   # the library's own dictionary is not touched
 
 
 def test_a_refused_file_prints_no_engine_line(tmp_path, capsys):

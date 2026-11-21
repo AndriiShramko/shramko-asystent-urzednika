@@ -87,11 +87,19 @@ def cmd_serve(args: argparse.Namespace) -> int:
     except ConfigError as exc:
         print("Configuration refused:\n  " + "\n  ".join(exc.problems), file=sys.stderr)
         return 3
+    import copy
+
     import uvicorn
+    from uvicorn.config import LOGGING_CONFIG
 
     from app.main import create_app
 
-    uvicorn.run(create_app(s), host=args.host, port=args.port, log_level=s.log_level, access_log=False)
+    # The service's own lines (logger `converter`: the engine at start, one content-free line per conversion) go
+    # where the server's lines go. Without this the logger has no handler and everything below a warning is lost.
+    log_config = copy.deepcopy(LOGGING_CONFIG)
+    log_config["loggers"]["converter"] = {"handlers": ["default"], "level": s.log_level.upper(), "propagate": False}
+    uvicorn.run(create_app(s), host=args.host, port=args.port, log_level=s.log_level, access_log=False,
+                log_config=log_config)
     return 0
 
 

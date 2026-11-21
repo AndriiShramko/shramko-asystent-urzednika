@@ -11,6 +11,7 @@ import logging
 import re
 import time
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import AsyncIterator
 
@@ -153,9 +154,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         log.warning("No JWT key configured: the API accepts requests WITHOUT a token. "
                     "For shared networks set AUTH_MODE=jwt and JWT_SECRET_FILE.")
     engine_state = engine.EngineState(s)
-    log.info(engine.start_line(s))   # which engine runs here: the model's name and host class at most, never a URL or a key
 
-    app = FastAPI(title="Konwerter formularzy", version=__version__)
+    @asynccontextmanager
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        # Which engine runs here: the model's name and host class at most, never a URL or a key. Logged at start-up
+        # and not while the app is built, because only then do the log handlers of the server exist.
+        log.info(engine.start_line(s))
+        yield
+
+    app = FastAPI(title="Konwerter formularzy", version=__version__, lifespan=lifespan)
     app.state.settings = s
     app.add_middleware(BodyLimit, settings=s)
     app.add_middleware(CatchAll)   # added last, so it wraps everything of ours
