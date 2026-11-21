@@ -1,0 +1,349 @@
+{
+  "version": "1.0",
+  "as_of": "2026-11-21",
+  "scope": "Requests arriving at a Polish city office (reference: Urzad Miasta Bydgoszczy) that may or may not be access-to-public-information (UDIP) requests. Derived from research/02-udip-law-process-taxonomy.md sections 2-4.",
+  "legal_status": {
+    "udip": "ustawa z 6.09.2001 o dostepie do informacji publicznej, t.j. Dz.U. 2022 poz. 902, amended by Dz.U. 2025 poz. 1844 (art. 10 ust. 1, in force 1.07.2026)",
+    "reuse_act": "ustawa z 11.08.2021 o otwartych danych i ponownym wykorzystywaniu informacji sektora publicznego, t.j. Dz.U. 2023 poz. 1524",
+    "kpa": "Kodeks postepowania administracyjnego, t.j. Dz.U. 2025 poz. 1691",
+    "note": "Evidence labels (V/S/U) of every rule are in the research report. Rules marked evidence=U must be checked by a lawyer before being hard-coded as automatic behaviour."
+  },
+  "clock": {
+    "day_zero": "Day the request reaches the office through any channel (EZD registration timestamp).",
+    "D14": "Filing date + 14 calendar days (UDIP art. 13 ust. 1). Show the conservative date without weekend or holiday shifting.",
+    "D60": "Filing date + 2 months (UDIP art. 13 ust. 2). Extension notice must be sent inside D14 with concrete reasons and a new date not later than D60.",
+    "applicant_reply_14": "14 days given to the applicant after an art. 14 ust. 2 notice or an art. 15 fee notice.",
+    "formal_defect_7": "At least 7 days to remedy a formal defect (KPA art. 64 par. 2; re-use act art. 39 ust. 5).",
+    "appeal_14": "Appeal to SKO within 14 days of service of a decision (KPA art. 129 par. 2); the appeal body decides within 14 days (UDIP art. 16 ust. 2).",
+    "court_files_15": "Office sends court complaint files and its answer within 15 days (UDIP art. 21 pkt 1)."
+  },
+  "applicant_identification": {
+    "id": "applicant_identification",
+    "description": "State attached to every case. UDIP sets no formal requirements, but the newer NSA line (III OSK 1602/24, III OSK 2396/25) lets the office clarify who the applicant is when the sender cannot be identified, and a decision always needs a party and a signature.",
+    "states": [
+      {"id": "identified", "meaning": "Name and a deliverable address or e-mail known; signature or qualified channel (ePUAP, login.gov.pl, e-Dorecz.) present."},
+      {"id": "partially_identified", "meaning": "E-mail address or alias only, or name without signature. Enough for a plain letter in the classic line."},
+      {"id": "anonymous", "meaning": "No usable identity. Never auto-reject. Office policy decides: answer anyway (I OSK 1277/08, I OSK 692/18) or call for identification (III OSK 1602/24, III OSK 2396/25)."},
+      {"id": "identification_requested", "meaning": "Call T9 or a policy clarification letter sent; waiting for a reply."},
+      {"id": "identification_failed", "meaning": "Call expired. Handling depends on office policy and a lawyer; for a planned decision the request is left without consideration (KPA art. 64 par. 2)."}
+    ],
+    "rules": [
+      "Assistant flags applicant_identified=false and shows both case-law lines; it never rejects.",
+      "If the planned outcome is a decision (T10, T11), stop the draft and propose T9 first until name, address and signature are on file.",
+      "Plain-letter outcomes (T1-T8, T12) go to the address given; no identity beyond a delivery channel is required in the classic line.",
+      "Mass-sender indicators (same sender, volume, near-duplicate text) are displayed to a lawyer only; no automatic label of abuse."
+    ],
+    "evidence": "V (judgments opened on orzeczenia.nsa.gov.pl)"
+  },
+  "approval_roles": {
+    "clerk": "Referent prowadzacy sprawe (UDIP desk or substantive department)",
+    "department_head": "Kierownik komorki merytorycznej holding the information",
+    "lawyer": "Radca prawny / biuro prawne",
+    "iod": "Inspektor Ochrony Danych (data protection officer)",
+    "signatory": "Prezydent Miasta or a person authorised in writing to issue decisions (upowaznienie)",
+    "finance": "Skarbnik / finance unit, for fee calculation"
+  },
+  "response_document_types": [
+    {"id": "T1", "name_pl": "Udostepnienie informacji", "nature": "czynnosc materialno-techniczna", "legal_basis": ["UDIP art. 10, 12, 13, 14"], "is_decision": false},
+    {"id": "T2", "name_pl": "Pismo: nie stanowi informacji publicznej", "nature": "pismo", "legal_basis": ["UDIP art. 1, 6"], "is_decision": false},
+    {"id": "T3", "name_pl": "Pismo: urzad nie posiada informacji", "nature": "pismo", "legal_basis": ["UDIP art. 4 ust. 3"], "is_decision": false},
+    {"id": "T4", "name_pl": "Pismo: wskazanie BIP, portalu danych, CRU JSFP", "nature": "pismo", "legal_basis": ["UDIP art. 10 ust. 1"], "is_decision": false},
+    {"id": "T5", "name_pl": "Zawiadomienie o przedluzeniu terminu", "nature": "zawiadomienie", "legal_basis": ["UDIP art. 13 ust. 2"], "is_decision": false},
+    {"id": "T6", "name_pl": "Wezwanie do wykazania szczegolnie istotnego interesu publicznego", "nature": "wezwanie", "legal_basis": ["UDIP art. 3 ust. 1 pkt 1"], "is_decision": false},
+    {"id": "T7", "name_pl": "Zawiadomienie o wysokosci oplaty", "nature": "zawiadomienie", "legal_basis": ["UDIP art. 15"], "is_decision": false},
+    {"id": "T8", "name_pl": "Zawiadomienie art. 14 ust. 2 (forma lub sposob niemozliwy)", "nature": "zawiadomienie", "legal_basis": ["UDIP art. 14 ust. 2"], "is_decision": false},
+    {"id": "T9", "name_pl": "Wezwanie do uzupelnienia brakow przed decyzja", "nature": "wezwanie", "legal_basis": ["KPA art. 64 par. 2", "UDIP art. 16 ust. 2"], "is_decision": false},
+    {"id": "T10", "name_pl": "Decyzja o odmowie udostepnienia informacji publicznej", "nature": "decyzja administracyjna", "legal_basis": ["UDIP art. 5, 16", "KPA art. 107"], "is_decision": true},
+    {"id": "T11", "name_pl": "Decyzja o umorzeniu postepowania", "nature": "decyzja administracyjna", "legal_basis": ["UDIP art. 14 ust. 2, art. 16 ust. 1", "KPA art. 105"], "is_decision": true},
+    {"id": "T12", "name_pl": "Pismo o innym trybie", "nature": "pismo", "legal_basis": ["UDIP art. 1 ust. 2"], "is_decision": false}
+  ],
+  "request_classes": [
+    {
+      "id": "UDIP",
+      "name": "Request for public information under UDIP",
+      "legal_route": "UDIP art. 2, 3, 10, 13, 14",
+      "subclasses": [
+        {
+          "id": "UDIP_SIMPLE",
+          "name": "Simple public information held by the office",
+          "legal_route": "UDIP art. 10, 12, 13, 14",
+          "response_document": ["T1"],
+          "deadline_rule": "D14",
+          "approvals": ["clerk", "department_head"],
+          "typical_evidence": ["department reply with the document or data", "EZD case record", "art. 12 metadata block (entity, author, releasing person, date)"],
+          "notes": "Never ask about purpose (art. 2 ust. 2). Release in the form and manner requested (art. 14 ust. 1)."
+        },
+        {
+          "id": "UDIP_PUBLISHED",
+          "name": "Information already available in BIP, portal danych or CRU JSFP",
+          "legal_route": "UDIP art. 10 ust. 1 (text in force since 1.07.2026 includes CRU JSFP)",
+          "response_document": ["T4"],
+          "deadline_rule": "D14",
+          "approvals": ["clerk"],
+          "typical_evidence": ["exact BIP deep link and navigation path", "dane.gov.pl dataset URL", "CRU JSFP entry (contracts concluded from 1.07.2026)"],
+          "notes": "A general 'see BIP' is treated as inaction. Contract content, annexes and pre-1.07.2026 contracts remain ordinary UDIP requests."
+        },
+        {
+          "id": "UDIP_NOT_PUBLIC",
+          "name": "Content is not public information",
+          "legal_route": "UDIP art. 1, 6",
+          "subclasses": [
+            {"id": "UDIP_NOT_PUBLIC_LEGAL_ADVICE", "name": "Legal advice, opinion, explanation of why, creation of a new opinion", "response_document": ["T2"]},
+            {"id": "UDIP_NOT_PUBLIC_PRIVATE", "name": "Purely private matter of a person", "response_document": ["T2"]},
+            {"id": "UDIP_NOT_PUBLIC_INTERNAL", "name": "Dokument wewnetrzny (working material, draft, internal note)", "response_document": ["T2"], "extra_approval": ["lawyer"], "risk": "High risk of inaction complaint; courts apply the doctrine narrowly (I OSK 2130/11). Documents that were a basis of a decision are public."},
+            {"id": "UDIP_NOT_PUBLIC_FUTURE", "name": "Facts or plans not yet recorded", "response_document": ["T3"]}
+          ],
+          "response_document": ["T2"],
+          "deadline_rule": "D14 (a plain letter must still arrive within 14 days)",
+          "approvals": ["clerk", "lawyer"],
+          "typical_evidence": ["content analysis against art. 1 and the art. 6 catalogue", "case-law citation", "department note"],
+          "notes": "Plain letter, not a decision (Bydgoszcz BIP card). Partly public content: release that part (T1)."
+        },
+        {
+          "id": "UDIP_NOT_HELD",
+          "name": "Office does not hold the information",
+          "legal_route": "UDIP art. 4 ust. 3",
+          "response_document": ["T3"],
+          "deadline_rule": "D14",
+          "approvals": ["clerk", "department_head"],
+          "typical_evidence": ["written confirmation from every department asked", "EZD and register search log"],
+          "notes": "No duty to forward (art. 65 KPA does not apply; evidence=U). Indicating who may hold it is courtesy. Partly held: release the part held."
+        },
+        {
+          "id": "UDIP_OTHER_REGIME",
+          "name": "Separate access regime applies",
+          "legal_route": "UDIP art. 1 ust. 2",
+          "response_document": ["T12"],
+          "deadline_rule": "D14",
+          "approvals": ["clerk"],
+          "typical_evidence": ["indication of the special act and the competent unit"],
+          "notes": "Check that the other act really regulates access comprehensively. See classes KPA_FILES, ENVIRONMENT, ARCHIVE, CIVIL_REGISTERS."
+        },
+        {
+          "id": "UDIP_PROCESSED",
+          "name": "Processed information (informacja przetworzona)",
+          "legal_route": "UDIP art. 3 ust. 1 pkt 1",
+          "response_document": ["T6", "T5", "T1", "T10"],
+          "sequence": "T6 (usually together with T5) within D14, then T1 if interest is shown or T10 if not.",
+          "deadline_rule": "T6 and T5 by D14; final act by the extended date, not later than D60",
+          "approvals": ["department_head", "lawyer", "signatory for T10"],
+          "typical_evidence": ["department estimate of operations, sources, files, staff time", "applicant's reply on public interest", "assessment of whether the interest is special"],
+          "notes": "No statutory procedure; court-made (I OSK 977/11, I OSK 1347/05). The wezwanie is not a formal-defect call: silence needs a decision."
+        },
+        {
+          "id": "UDIP_RESTRICTED_FULL",
+          "name": "Art. 5 restriction covers all of the information",
+          "legal_route": "UDIP art. 5, art. 16",
+          "restriction_grounds": ["art. 5 ust. 1 classified information or other statutory secret", "art. 5 ust. 2 privacy of a natural person", "art. 5 ust. 2 tajemnica przedsiebiorcy"],
+          "response_document": ["T10"],
+          "deadline_rule": "D14, or the extended date, not later than D60",
+          "approvals": ["lawyer", "iod_on_request", "signatory"],
+          "typical_evidence": ["document content", "confidentiality clause and formal plus material test of the trade secret", "statutory secret basis", "list of persons who took a position (art. 16 ust. 2 pkt 2)"],
+          "notes": "Privacy does not cover persons performing public functions in connection with the function. Applicant must be identified before the decision (T9 first if not)."
+        },
+        {
+          "id": "UDIP_RESTRICTED_PARTIAL",
+          "name": "Art. 5 restriction covers a part",
+          "legal_route": "UDIP art. 5, art. 16",
+          "response_document": ["T1", "T10"],
+          "sequence": "Release the anonymised document (T1) and issue T10 for the removed scope. A different line accepts routine anonymisation of private persons' data without a decision when the applicant did not ask for them (evidence=U); office policy decides, assistant flags every redaction.",
+          "deadline_rule": "D14, or the extended date, not later than D60",
+          "approvals": ["lawyer", "iod_on_request", "signatory"],
+          "typical_evidence": ["redaction log with ground per passage", "list of protected entities", "list of persons who took a position"],
+          "notes": "Anonymisation is not processing unless the scale makes it a major project."
+        },
+        {
+          "id": "UDIP_FORM_UNAVAILABLE",
+          "name": "Requested form or manner cannot be used",
+          "legal_route": "UDIP art. 14 ust. 2",
+          "response_document": ["T8", "T1", "T11"],
+          "sequence": "T8 by D14; if the applicant files a new request within 14 days, T1; otherwise T11 after the 14 days.",
+          "deadline_rule": "T8 by D14, then 14 days for the applicant",
+          "approvals": ["clerk", "signatory for T11"],
+          "typical_evidence": ["description of technical limits", "proof of delivery of T8 (date)"],
+          "notes": "Only technical means count, not convenience. Withdrawal by the applicant needs no decision."
+        },
+        {
+          "id": "UDIP_FEE",
+          "name": "Additional costs caused by the requested manner or conversion",
+          "legal_route": "UDIP art. 15",
+          "response_document": ["T7", "T1"],
+          "deadline_rule": "T7 by D14; release after 14 days from the notice unless the applicant changes or withdraws the request",
+          "approvals": ["clerk", "finance"],
+          "typical_evidence": ["cost calculation: media, copies, postage, conversion", "price list"],
+          "notes": "No charge for staff time or for searching."
+        },
+        {
+          "id": "UDIP_EXTENSION",
+          "name": "Cannot be completed in 14 days",
+          "legal_route": "UDIP art. 13 ust. 2",
+          "response_document": ["T5"],
+          "deadline_rule": "T5 by D14; new date not later than D60; no second extension",
+          "approvals": ["department_head"],
+          "typical_evidence": ["concrete reasons (volume, archive retrieval, consultation of third parties)", "new date"],
+          "notes": "Generic reasons such as workload are criticised; a late notice does not cure inaction."
+        },
+        {
+          "id": "UDIP_UNIDENTIFIED",
+          "name": "Sender not identifiable",
+          "legal_route": "Case law (III OSK 1602/24, III OSK 2396/25); KPA art. 64 par. 2 when a decision is planned",
+          "response_document": ["T9", "T1"],
+          "deadline_rule": "Call as early as possible, at least 7 days to reply; D14 keeps running for plain answers",
+          "approvals": ["clerk", "lawyer"],
+          "typical_evidence": ["sender address, headers, channel", "policy of the office on anonymous requests"],
+          "notes": "See applicant_identification section. Never auto-reject."
+        },
+        {
+          "id": "UDIP_ABUSE_SUSPECTED",
+          "name": "Indicators of abuse of the right to information",
+          "legal_route": "Case law (I OSK 1601/15, I OSK 2642/16); form of reaction disputed (letter versus decision)",
+          "response_document": [],
+          "automatic_document": false,
+          "deadline_rule": "D14 still applies",
+          "approvals": ["lawyer"],
+          "typical_evidence": ["sender history and volume", "near-duplicate texts", "link to a private dispute"],
+          "notes": "The assistant only displays indicators; the label and the reaction are decided by a lawyer."
+        }
+      ]
+    },
+    {
+      "id": "REUSE",
+      "name": "Request for re-use of public sector information",
+      "legal_route": "Ustawa z 11.08.2021, art. 39-43",
+      "triggers": ["ponowne wykorzystywanie", "declared commercial purpose or product or service", "request for a data feed, API or real-time access (art. 39 ust. 2)"],
+      "response_document": ["transfer without conditions", "information that information is not held", "information that no conditions apply", "offer with conditions or fees", "decision refusing consent (decyzja)"],
+      "response_document_note": "Own document types, not covered by T1-T12 skeletons; art. 41. Applicant has 14 days to accept or file sprzeciw.",
+      "deadline_rule": "D14 from receipt; extension to 2 months from filing (art. 40). Formal defects: call to remedy within 7 days (art. 39 ust. 5).",
+      "approvals": ["clerk", "lawyer", "signatory for decision"],
+      "typical_evidence": ["applicant name and address", "stated purpose of re-use", "data format and transfer manner"],
+      "notes": "Appeal body named in art. 43 ust. 1 is the minister for digital affairs; interaction with SKO for local government not checked (open question). A request merely for a document is UDIP even when the sender is a company."
+    },
+    {
+      "id": "KPA_FILES",
+      "name": "Party asks for access to files of its own case",
+      "legal_route": "KPA art. 73-74",
+      "response_document": ["T12"],
+      "deadline_rule": "D14 for the routing letter; KPA deadlines in the regime",
+      "approvals": ["clerk"],
+      "typical_evidence": ["case number and party status"],
+      "notes": "Refusal in that regime is a postanowienie, not a UDIP decision."
+    },
+    {
+      "id": "COMPLAINT",
+      "name": "Skarga or wniosek (complaint or motion)",
+      "legal_route": "KPA dzial VIII, art. 221-259",
+      "response_document": ["T12"],
+      "deadline_rule": "1 month in the complaints regime; route to complaints unit within D14",
+      "approvals": ["clerk"],
+      "typical_evidence": ["text of the complaint"],
+      "notes": "Evidence=U for routing practice."
+    },
+    {
+      "id": "PETITION",
+      "name": "Petycja",
+      "legal_route": "Ustawa z 11.07.2014 o petycjach",
+      "response_document": ["T12"],
+      "deadline_rule": "3 months in the petition regime; route to petitions unit",
+      "approvals": ["clerk"],
+      "typical_evidence": ["text of the petition"],
+      "notes": "Evidence=U."
+    },
+    {
+      "id": "ENVIRONMENT",
+      "name": "Request for environmental information",
+      "legal_route": "Ustawa z 3.10.2008 o udostepnianiu informacji o srodowisku, dzial II",
+      "response_document": ["T12"],
+      "deadline_rule": "1 month, up to 2 months in that regime; keep D14 for the routing letter if handled by UDIP desk",
+      "approvals": ["clerk", "department_head"],
+      "typical_evidence": ["subject of the request: emissions, tree felling, environmental decisions"],
+      "notes": "Evidence=U; check act title and deadlines before relying on them."
+    },
+    {
+      "id": "ARCHIVE",
+      "name": "Historical records at the state archive",
+      "legal_route": "Ustawa o narodowym zasobie archiwalnym i archiwach",
+      "response_document": ["T3", "T12"],
+      "deadline_rule": "D14",
+      "approvals": ["clerk"],
+      "typical_evidence": ["transfer record to the Archiwum Panstwowe"],
+      "notes": "Evidence=U."
+    },
+    {
+      "id": "CIVIL_REGISTERS",
+      "name": "Certificate, civil status record or registered-address data",
+      "legal_route": "Sector acts (akty stanu cywilnego, ewidencja ludnosci, KPA art. 217 zaswiadczenia)",
+      "response_document": ["T12"],
+      "deadline_rule": "Sector deadlines; D14 for the routing letter",
+      "approvals": ["clerk"],
+      "typical_evidence": ["sector act reference"],
+      "notes": "Evidence=U."
+    },
+    {
+      "id": "PRESS",
+      "name": "Press inquiry",
+      "legal_route": "Prawo prasowe art. 3a refers to UDIP; handle as UDIP for public information",
+      "response_document": ["T1", "T2", "T3", "T4"],
+      "deadline_rule": "D14",
+      "approvals": ["clerk", "press office"],
+      "typical_evidence": ["journalist identification"],
+      "notes": "Evidence=U for the exact press-law mechanics. The journalist gets no privilege and no worse treatment; processed-information test may still apply but the interest is usually shown."
+    },
+    {
+      "id": "PROSECUTOR_FILE",
+      "name": "Request for a whole prosecutor's or court case file",
+      "legal_route": "NSA resolution I OPS 7/13 of 9.12.2013 (not a UDIP request)",
+      "response_document": ["T12"],
+      "deadline_rule": "D14",
+      "approvals": ["clerk", "lawyer"],
+      "typical_evidence": ["scope of the request"],
+      "notes": "Evidence=V for the resolution."
+    },
+    {
+      "id": "MIXED",
+      "name": "Request with several items of different classes",
+      "legal_route": "Per item",
+      "response_document": ["combined letter with numbered sections", "plus separate decisions where needed"],
+      "deadline_rule": "One clock D14; art. 13 ust. 2 used once for items that need more time; partial release does not wait for the disputed part",
+      "approvals": ["per item"],
+      "typical_evidence": ["itemised split of the request (S3)"],
+      "notes": "Split first, classify each item, then merge outputs."
+    },
+    {
+      "id": "OTHER_UNCLEAR",
+      "name": "Cannot be classified with confidence",
+      "legal_route": "Unknown",
+      "response_document": [],
+      "deadline_rule": "D14 keeps running",
+      "approvals": ["clerk", "lawyer"],
+      "typical_evidence": ["model confidence below threshold"],
+      "notes": "Fallback: route to a human at once, never guess."
+    }
+  ],
+  "decision_tree": [
+    {"step": "S0", "action": "Register the incoming item, compute D14 and D60", "output": "case opened"},
+    {"step": "S1", "action": "Is it a UDIP request at all", "no_route": ["KPA_FILES", "COMPLAINT", "PETITION", "ENVIRONMENT", "ARCHIVE", "CIVIL_REGISTERS", "REUSE", "PROSECUTOR_FILE"]},
+    {"step": "S2", "action": "Set applicant_identification state"},
+    {"step": "S3", "action": "Split into items"},
+    {"step": "S4", "action": "Public matter (art. 1, 6)", "no_route": "UDIP_NOT_PUBLIC"},
+    {"step": "S5", "action": "Held by the office (art. 4 ust. 3)", "no_route": "UDIP_NOT_HELD"},
+    {"step": "S6", "action": "Already in BIP, portal danych or CRU JSFP", "yes_route": "UDIP_PUBLISHED"},
+    {"step": "S7", "action": "Separate access regime (art. 1 ust. 2)", "yes_route": "UDIP_OTHER_REGIME"},
+    {"step": "S8", "action": "Simple or processed", "processed_route": "UDIP_PROCESSED"},
+    {"step": "S9", "action": "Art. 5 restrictions", "routes": ["UDIP_RESTRICTED_FULL", "UDIP_RESTRICTED_PARTIAL"]},
+    {"step": "S10", "action": "Requested form and manner possible (art. 14)", "no_route": "UDIP_FORM_UNAVAILABLE"},
+    {"step": "S11", "action": "Additional costs (art. 15)", "yes_route": "UDIP_FEE"},
+    {"step": "S12", "action": "Doable by D14", "no_route": "UDIP_EXTENSION", "yes_route": "UDIP_SIMPLE"},
+    {"step": "S13", "action": "Close: log what was sent, to whom, by whom, when"}
+  ],
+  "ai_output_contract": {
+    "fields": ["request_id", "items[]", "items[].class_id", "items[].subclass_id", "items[].confidence", "items[].legal_basis[]", "items[].response_document[]", "items[].deadline_date", "items[].required_approvals[]", "items[].evidence_needed[]", "items[].citations[]", "applicant_identification", "flags[]"],
+    "flags_allowed": ["abuse_indicators", "anonymous_sender", "possible_trade_secret", "possible_private_data", "possible_public_function_person", "processed_information_suspected", "deadline_risk", "multi_item"],
+    "hard_rules": [
+      "The assistant drafts and cites; it never sends, signs or decides.",
+      "Every decision document (T10, T11) requires a named lawyer review and an authorised signatory.",
+      "Every art. 5 redaction and every 'not public information' or 'processed' classification is shown to a human with reasons.",
+      "Confidence below the configured threshold produces OTHER_UNCLEAR.",
+      "Audit trail records who took a position (UDIP art. 16 ust. 2 pkt 2)."
+    ]
+  }
+}

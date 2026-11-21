@@ -7,14 +7,14 @@ Clock times are for the event (Sat 21 – Sun 22 November 2026, local time). Gat
 | Time | Milestone | Gate |
 |---|---|---|
 | before Sat 11:00 | **P. Preparation**: finish open research jobs and architecture documents listed in STATUS; machine check; model access and an offline fallback ready | STATUS has no blocking "to do" |
-| Sat 11:00–12:00 | **G0. Intake**: read the full task cards, fill `docs/05-hackathon/ONSITE-INTAKE.md`, confirm the track with the owner, map the criteria to features | owner's answer (or default) recorded; criteria table in the intake file |
+| Sat 11:00–12:00 | **G0. Intake**: read the full task cards of both matching tasks, fill `docs/05-hackathon/ONSITE-INTAKE.md`, map the criteria to features. The build follows the unified plan (Module A, then the bridge WP-AB1); the owner fixes the task by 18:00 | criteria table in the intake file; model provider for the product decided (see STATUS) |
 | Sat 12:00–13:00 | **M0. Scaffold**: WP-00 | `tools/gate.sh fast` passes on an empty walking skeleton; one command starts API and web |
 | Sat 13:00–17:30 | **M1. Core and walking skeleton**: WP-A1, WP-A2, WP-A3 in parallel | a synthetic request goes in through the API, gets a mock analysis, appears in the web desk with deadlines; audit entries exist |
 | by Sat 18:00 | **HackTribe draft** (deadline 20:00): the lead prepares every field as text; the owner submits | owner confirms it is submitted |
 | Sat 17:30–23:30 | **M2. The assistant**: WP-A4, WP-A5, WP-A6 | the demo request of scope-decision §7 runs end to end with a real model and with the mock; citation check blocks an invented provision; evaluation set runs |
 | Sat 23:30–Sun 04:00 | **M3. Hardening and the strong moments**: WP-A7, WP-A8, WP-A9 | masking shown on screen; injection test set passes; similar-case search works on the synthetic archive; accessibility check has no critical finding |
-| Sun 04:00–08:00 | **M4. Optional**: Module B slice (WP-B1…B3) **or** depth for Module A, decided by the lead at 04:00 from the state of M3 and the intake | chosen items pass their acceptance lists; nothing half-built is shown |
-| Sun 08:00–10:30 | **M5. Submission**: presentation PDF (up to 10 slides, under 10 MB), demo video (under 2 minutes), README for jurors, public demo address if required, all links checked from a clean browser | owner submits in HackTribe by 10:30 (deadline 11:00) |
+| Sun 04:00–08:00 | **M4. The bridge and optional depth**: WP-AB1 first; then a Module B slice (WP-B1…B3) **or** depth for Module A, decided by the lead from the state of M3 and the intake | chosen items pass their acceptance lists; nothing half-built is shown |
+| Sun 08:00–10:00 | **M5. Submission**: WP-DEMO; presentation PDF from the deck print mode (under 10 MB), demo video (under 2 minutes), README for jurors, static demo at urzad.flyreelstudio.eu/app/, all links checked from a clean browser | owner submits in HackTribe by 10:00 (deadline 11:00) |
 | Sun 11:00–15:00 | **Pitch rehearsal**: 5-minute pitch, answers from `docs/05-hackathon/jury-qa.md`, backup video and offline demo | one timed run-through |
 | Sun 15:15 | Finals (if selected) | |
 
@@ -35,6 +35,8 @@ Module A and the core (Track A, default):
 | WP-A8 | Similar cases, duplicate and campaign detection; dashboard of deadlines and statistics | WP-A3, WP-A6 | by spec |
 | WP-A9 | Security pack: injection test set, audit hash chain check, access rules test, accessibility check, threat-model review | M2 | think (review) |
 | WP-A10 | Paste-a-request public page with synthetic data and rate limits (if the jury must try it in a browser) | M2 | by spec |
+| WP-AB1 | **The bridge**: the public-information request as a digitised online form with an "already published" hint; requests arrive structured (joins both matching tasks, see scope-decision §1a) | M2, WP-A3 | by spec |
+| WP-DEMO | Static demo build of the desk (recorded responses in the browser) published to `site/app/`; demo video; deck numbers (`metrics.json`, `status.json`) | M2 | by spec |
 
 Module B (Track B, or optional slice in M4):
 

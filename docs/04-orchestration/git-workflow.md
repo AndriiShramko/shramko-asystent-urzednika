@@ -8,7 +8,9 @@ Goal: several agents build at the same time and never overwrite each other; any 
 |---|---|
 | `main` | Always passes the fast gate (`tools/gate.sh fast`). Only the lead merges into it. Nobody commits feature work directly to `main`. |
 | Work-package branch | `wp/<id>-<slug>`, for example `wp/A2-triage`. Created from the current `main` by the lead when the package starts. |
-| Worktree | One per running package, in `.worktrees/<id>` (git-ignored): `git worktree add .worktrees/A2 -b wp/A2-triage main`. An agent works only inside its own worktree. If the harness offers worktree isolation for sub-agents, use that instead of creating worktrees by hand. |
+| Worktree (manual, preferred here) | One per running package, in `.worktrees/<id>` (git-ignored): `git worktree add .worktrees/A2 -b wp/A2-triage main`. An agent works only inside its own worktree. This flow is the one that allows the branch names `wp/<id>-<slug>`. |
+| Worktree (native, alternative) | `claude --worktree <name>` (or `-w`), `isolation: worktree` in an agent file, or the `EnterWorktree` tool create `.claude/worktrees/<name>` (add it to `.gitignore`) on branch `worktree-<name>`; `--worktree` cannot take a branch name, so the first step of the worker is `git branch -m wp/<id>-<slug>`. Base: the REMOTE default branch, not local `main`, unless `worktree.baseRef` is `"head"`. `-p` worktrees are never removed automatically; sub-agent worktrees with changes stay until the `cleanupPeriodDays` sweep; `.worktreeinclude` copies git-ignored files such as `.env`. A sub-agent in its own worktree takes `CLAUDE.md` and `.claude/rules/` from the main conversation, not from the worktree's branch: change them on `main` only. Agent-view sessions (`claude --bg`) move into their own worktree before editing. (research/08, official documentation read 2026-11-21) |
+| Base of native worktrees | Project settings (`.claude/settings.json`) set `worktree.baseRef` to `"head"`, AND the lead pushes `main` after every merge, so that a worktree never starts from a stale remote branch (research/08, official documentation read 2026-11-21). |
 | Contract branch | Changes to `contracts/openapi.yaml` and to `data/*.schema.json` are made by the lead on `main` (small, reviewed, announced in `docs/03-plan/STATUS.md`). A builder who needs a contract change writes a request in its status file and continues with a local mock. |
 
 Do not create junctions or symlinks from a worktree to another worktree's `node_modules` or `.venv`; install dependencies per worktree or use the package manager's shared cache.
@@ -30,13 +32,14 @@ Do not create junctions or symlinks from a worktree to another worktree's `node_
 - Never commit: secrets, `.env`, vendor SDK or licence files, downloaded form templates, real personal data, build output. The pre-commit check is `tools/precommit_scan.py` (secrets and identifier patterns); a hit blocks the commit.
 - Never run `git add -A` or `git add .`; add the paths you changed.
 - No `git stash`, no rebase, no force push, no history rewriting. To pick up new `main`: `git merge main` inside the worktree.
+- These bans are enforced, not only written: `.claude/settings.json` has `permissions.deny` rules for `git push --force`, `git add -A`, `git add .`, `git stash`, `git rebase`, `git reset --hard`, reading `.env` files and `rm -rf` (research/08, official documentation read 2026-11-21). Agents read the rules through `CLAUDE.md`, which imports `AGENTS.md` with `@AGENTS.md`; a brief still names `AGENTS.md`.
 
 ## Merge queue (lead)
 
 1. Builder reports "ready" with the commit hash and the gate result.
 2. Lead (or a merge agent) runs in the worktree: `git merge main` → `tools/gate.sh fast`.
 3. One independent review of the diff (`git diff main...wp/<id>`) against the package's acceptance list.
-4. `git checkout main && git merge --no-ff wp/<id>-<slug>` → `tools/gate.sh fast` on `main` → push.
+4. `git checkout main && git merge --no-ff wp/<id>-<slug>` → `tools/gate.sh fast` on `main` → `git push` of `main` (every merge, so native worktrees see it).
 5. Update `docs/03-plan/STATUS.md`; remove the worktree (`git worktree remove .worktrees/<id>`); keep the branch until the milestone is accepted.
 6. At a milestone: `tools/gate.sh full` (end-to-end, accessibility, visual regression of forms) once, on `main`.
 
@@ -44,6 +47,6 @@ Merges go in dependency order from [`docs/03-plan/roadmap.md`](../03-plan/roadma
 
 ## Recovering
 
-- Agent died mid-step: a new agent with the same brief starts with the RESUME-FIRST block (see [`subagent-brief-template.md`](subagent-brief-template.md)), inspects `git status` and the status file, finishes or reverts uncommitted work, commits, continues.
+- Agent stopped mid-step: if the lead session is the same, resume it with its history (`SendMessage` by agent id or name; not possible after a stop by the user) (research/08, official documentation read 2026-11-21). Otherwise, or if the agent died: a new agent with the same brief starts with the RESUME-FIRST block (see [`subagent-brief-template.md`](subagent-brief-template.md)), inspects `git status` and the status file, finishes or reverts uncommitted work, commits, continues.
 - Broken `main`: `git revert` of the merge commit, never a reset; open the package again.
 - Lost worktree folder: `git worktree prune`, then add it again from the branch; nothing is lost because every step was committed.

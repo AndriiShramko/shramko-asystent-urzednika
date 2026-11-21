@@ -24,12 +24,16 @@ Polski: [README.pl.md](README.pl.md) · Русский (для владельц�
 | [`docs/00-brief/requirements.md`](docs/00-brief/requirements.md) | The owner's requirements R1–R32 |
 | [`docs/01-product/scope-decision.md`](docs/01-product/scope-decision.md) | What to build for the jury and why; the wider platform; "one database for many institutions?" |
 | [`docs/01-product/gaps-and-additions.md`](docs/01-product/gaps-and-additions.md) | 38 things the original idea did not cover |
-| [`docs/03-plan/`](docs/03-plan/) | Roadmap with event clock times, work packages, live status |
-| [`docs/04-orchestration/`](docs/04-orchestration/) | Lead-agent playbook, sub-agent brief template, git workflow for parallel agents, resume after a usage limit |
-| [`docs/05-hackathon/ONSITE-INTAKE.md`](docs/05-hackathon/ONSITE-INTAKE.md) | Where the material handed out at the event goes, and what the lead agent does with it |
-| [`research/`](research/) | Verified research with sources: hackathon rules and judging, UDIP law and the clerk's decision tree, lessons from a 2022 production prototype; job prompts for the remaining research in [`research/_jobs/`](research/_jobs/) |
-| [`data/forms-catalog.json`](data/forms-catalog.json), [`.csv`](data/forms-catalog.csv) | Catalogue of service cards and form files of Urząd Miasta Bydgoszczy (links and metadata) |
-| [`tools/crawl_bydgoszcz_forms.py`](tools/crawl_bydgoszcz_forms.py) | The polite crawler that rebuilds the catalogue |
+| [`docs/02-architecture/`](docs/02-architecture/) | Design decisions and trust zones, API contract, security and privacy with a threat table, the AI layer (guardrails, model choice, quality, integration, deployment) |
+| [`docs/03-plan/`](docs/03-plan/) | Roadmap with event clock times, 18 work packages with acceptance lists, ownership table, live status |
+| [`docs/04-orchestration/`](docs/04-orchestration/), [`.claude/`](.claude/) | Lead-agent playbook, sub-agent brief template, git workflow for parallel agents, resume after a usage limit, publishing; agent definitions, project settings and a wave workflow |
+| [`docs/05-hackathon/`](docs/05-hackathon/) | Onsite intake procedure, pitch storyboard, demo script, the "what is real" table, a plain guide to the event for the owner (Russian) |
+| [`site/`](site/) | The public site <https://urzad.flyreelstudio.eu>: landing page and the animated pitch deck with a presenter window |
+| [`research/`](research/) | Ten research reports with sources and labels: hackathon rules and judging, UDIP law and the clerk's decision tree, forms catalogue and form anatomy, mObywatel and once-only, data protection and the AI regulation, technology, landscape, multi-agent orchestration, lessons from a 2022 production prototype, pitching |
+| [`data/`](data/) | Catalogue of 275 service cards and 710 form files of Urząd Miasta Bydgoszczy (links and metadata), request taxonomy, Polish response skeletons, canonical profile schema, a measured form descriptor |
+| [`prompts/`](prompts/) | Runtime instructions (Polish) for the product's AI steps |
+| [`tools/`](tools/) | The polite crawler that rebuilds the catalogue, a slow downloader of form files, a link checker |
+| [`docs/06-audit/`](docs/06-audit/) | Point-by-point check of an earlier research draft (Russian) |
 
 ## The idea in five lines
 

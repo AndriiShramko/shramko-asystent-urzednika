@@ -14,7 +14,7 @@ CHECKPOINTS: commit after every finished step and update the Status checklist in
 commit before any run longer than 2 minutes.
 
 READ (in this order, only these):
-1. AGENTS.md  (rules; 5 minutes)
+1. AGENTS.md  (rules; 5 minutes; Claude Code loads it only through the `@AGENTS.md` import in CLAUDE.md, so name it here anyway)
 2. docs/03-plan/work-packages/WP-<id>-<slug>.md  (your task, acceptance list, owned paths)
 3. <1-3 specific sections, for example docs/02-architecture/ai-layer.md#triage and contracts/openapi.yaml paths /cases*>
 
@@ -45,10 +45,15 @@ numbers; what is not verified and why; requests to lead; next step if you ran ou
 | Web research (new facts from the hackathon briefing, library checks) | researcher: web + files | top tier or middle | medium–high |
 | Bulk mechanical work (rename, format, generate fixtures, run and summarise) | slim builder or a plain script with no model | small or middle tier | low–medium |
 
-Name models by alias (the tier name without a version number) so the brief stays valid when versions change. A small model does selection and labelling, never judgement.
+Tiers: small = `haiku`, middle = `sonnet`, top = `opus` or `fable`. Name models by alias so the brief stays valid when versions change. Documented aliases: `fable`, `opus`, `sonnet`, `haiku`, `opusplan`, `default`, `best`. `sonnet` and `haiku` resolve to the 5.5 models only on the Anthropic API (4.6 and 4.5 on Bedrock, Foundry, Agent Platform). The per-invocation `model` parameter accepts aliases only; full model IDs go in the agent file. Order of resolution: per-invocation `model`, then the agent file `model`, then `CLAUDE_CODE_SUBAGENT_MODEL` (force with `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1`), then the parent's model; Explore, Plan and general-purpose agents inherit the parent, so a top-tier lead makes them expensive. Agent file keys that matter: `tools`, `model`, `effort`, `maxTurns`, `isolation: worktree`; unknown keys are silently ignored (research/08, official documentation read 2026-11-21).
+
+Effort levels: `low`, `medium`, `high`, `xhigh`, `max`. Claude Code defaults to `medium` on Fable 5.2, Opus 5.5, Sonnet 5.5 and Haiku 5.5 (API defaults differ: Fable 5.2 high, Opus 5.5 medium, Sonnet 5.5 high, Haiku 5.5 medium). `xhigh` is for agentic runs of 30 minutes or more; use `xhigh` or `max` only with a measured gain. Thinking cannot be switched off on these models in Claude Code. Haiku at `low` may skip checks in a long prompt: never use it for judgement (research/08, official documentation read 2026-11-21).
+
+Ready agent definitions: `.claude/agents/wp-builder.md`, `wp-reviewer.md`, `web-researcher.md`. A sub-agent in a worktree takes `CLAUDE.md` and rules from the main conversation.
 
 ## Size limits
 
 - One stage = one kind of work on named files, planned for at most about 30 replies. Larger work is split into stages; each ends with a commit and a status line, and the next stage starts in a fresh agent.
 - An agent is worth starting for at least about 10 replies of work or a large read. Anything smaller the lead does itself.
-- At most 3 builders run at the same time unless the owner raises the limit.
+- At most 3 builders run at the same time unless the owner raises the limit. This is this project's cost and merge policy, not a platform limit (the platform allows 20 sub-agents and 16 workflow agents) (research/08, official documentation read 2026-11-21).
+- Agent teams (experimental, off by default, `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`) are not used for implementation here: same-file overwrite risk and about 7x tokens in plan mode (research/08, official documentation read 2026-11-21).

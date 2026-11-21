@@ -19,6 +19,8 @@ https://github.com/AndriiShramko/shramko-asystent-urzednika (клонируй, �
 5. If the event has started (Saturday 21 November 2026, 11:00): open hacknation.pl/zadania, save the full task cards of **"Inteligentny asystent urzędnika" (Miasto Bydgoszcz)** and **"Cyfryzacja formularzy" (Centralny Ośrodek Informatyki)** into `docs/05-hackathon/intake/`, and follow [`docs/05-hackathon/ONSITE-INTAKE.md`](docs/05-hackathon/ONSITE-INTAKE.md). Then confirm the track with the owner according to [`docs/01-product/scope-decision.md`](docs/01-product/scope-decision.md) (one question, recommended option first).
 6. Report to the owner in three lines and start the first milestone of [`docs/03-plan/roadmap.md`](docs/03-plan/roadmap.md).
 
+What is already prepared for you: 18 work packages with acceptance lists (`docs/03-plan/work-packages/`), agent definitions and settings (`.claude/agents/`, `.claude/settings.json`), a wave workflow (`.claude/workflows/wp-wave.js`, untested: try it on one package first), runtime instructions for the product (`prompts/`), the pitch deck with a presenter window (`site/deck/`, live at <https://urzad.flyreelstudio.eu/deck/>) and the publishing path: commit into `site/` and push ([`docs/04-orchestration/deploy.md`](docs/04-orchestration/deploy.md)). Keep `site/deck/metrics.json`, `site/deck/status.json` and [`docs/05-hackathon/jury-qa.md`](docs/05-hackathon/jury-qa.md) equal to what the software really does.
+
 ## Deadlines you must not miss (verified on 20 November 2026, see [`research/01`](research/01-hacknation-2026-task-rules-jury.md))
 
 | When | What |

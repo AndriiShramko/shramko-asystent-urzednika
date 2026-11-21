@@ -168,6 +168,16 @@ class Fetcher:
         return out
 
 
+ACCOUNT_PLACEHOLDER = "[numer rachunku: patrz aktualna karta uslugi]"
+# Polish NRB: 26 digits, optionally with 'PL' prefix and spaces/dashes in any grouping.
+ACCOUNT_RE = re.compile(r"(?<![\d])(?:PL[\s-]?)?(?:\d{2}(?:[\s-]?\d){24})(?![\d])", re.I)
+
+
+def mask_accounts(text):
+    """Replace bank account numbers (NRB/IBAN-PL) with a placeholder: the public catalogue must not carry them."""
+    return ACCOUNT_RE.sub(ACCOUNT_PLACEHOLDER, text or "")
+
+
 def ext_of(url, label=""):
     path = unquote(urlparse(url).path)
     m = re.search(r"\.([A-Za-z0-9]{2,5})$", path)
@@ -311,9 +321,9 @@ def parse_card(soup, url, m, status):
     h = soup.find("h1")
     if h and norm(h.get_text()):
         c["title"] = norm(h.get_text())
-    c["department_text"] = section_text(soup, r"jednostk\w+ odpowiedzialn|gdzie za[lł]atwisz")
-    c["fees"] = section_text(soup, r"ile zap[lł]acisz|op[lł]at", 700)
-    c["legal_basis"] = section_text(soup, r"podstawa prawna", 600)
+    c["department_text"] = mask_accounts(section_text(soup, r"jednostk\w+ odpowiedzialn|gdzie za[lł]atwisz"))
+    c["fees"] = mask_accounts(section_text(soup, r"ile zap[lł]acisz|op[lł]at", 700))
+    c["legal_basis"] = mask_accounts(section_text(soup, r"podstawa prawna", 600))
     d = DATE_RE.search(text)
     if d:
         c["last_update"] = d.group(1)
@@ -351,8 +361,9 @@ def parse_card(soup, url, m, status):
     c["online_handling"] = bool(reasons)
     c["online_reasons"] = reasons
     # explicit denial: "nie można załatwić ... online/przez internet"
-    if re.search(r"(nie mo[zż]na|nie jest mo[zż]liwe)[^.]{0,80}(internet|online|elektronicz)", text, re.I):
+    if re.search(r"(nie mo[zż]na|nie jest mo[zż]liwe|nie za[lł]atwisz)[^.]{0,80}(internet|online|elektronicz)", text, re.I):
         c["online_denied_text"] = True
+        c["online_handling"] = False
     return c
 
 
@@ -421,8 +432,7 @@ def dedupe_cards(cards):
 
 
 def write_outputs(out, result, cards, bip, log=print):
-    with open(os.path.join(out, "forms-catalog.json"), "w", encoding="utf-8", newline="
-") as fh:
+    with open(os.path.join(out, "forms-catalog.json"), "w", encoding="utf-8", newline="\n") as fh:
         json.dump(result, fh, ensure_ascii=False, indent=1)
     with open(os.path.join(out, "forms-catalog.csv"), "w", encoding="utf-8-sig", newline="") as fh:
         w = csv.writer(fh)

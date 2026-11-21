@@ -8,7 +8,7 @@ The owner asked for everything he had not thought of to be thought through and a
 |---|---|---|---|
 | 1 | The challenge is about requests for public information (UDIP). The owner's idea is about forms at the counter. They are different problems with different users in the office. | A jury scores fit with the task first. An excellent counter product presented as the answer to a UDIP challenge loses to an average UDIP assistant. | [`scope-decision.md`](scope-decision.md): Module A (UDIP) is the product shown; Module B (counter) is a thin slice on the same core |
 | 2 | "Assistant" was read as "agent picks the forms". For the city it means: read the request, classify it legally, find the answer, draft the letter, keep the deadline. | Different features, different data, different risks. | [`../02-architecture/ai-layer.md`](../02-architecture/ai-layer.md) |
-| 3 | Nothing in the idea measures success. | "Shorter handling time" is the stated goal; a jury wants a number. | Evaluation harness and metrics in ai-layer; pitch numbers in [`../05-hackathon/pitch.md`](../05-hackathon/pitch.md) |
+| 3 | Nothing in the idea measures success. | "Shorter handling time" is the stated goal; a jury wants a number. | Evaluation harness and metrics in ai-layer; pitch numbers in [`../05-hackathon/presentation/storyboard.md`](../05-hackathon/presentation/storyboard.md) |
 
 ## 2. Law and roles
 

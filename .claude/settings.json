@@ -1,0 +1,22 @@
+{
+  "worktree": { "baseRef": "head" },
+  "permissions": {
+    "allow": [
+      "Workflow",
+      "Bash(git status *)", "Bash(git diff *)", "Bash(git log *)", "Bash(git fetch *)",
+      "Bash(git add *)", "Bash(git commit *)", "Bash(git merge *)", "Bash(git branch *)",
+      "Bash(git worktree *)", "Bash(git push *)",
+      "Bash(python *)", "Bash(pip *)", "Bash(uv *)", "Bash(node *)", "Bash(npm *)", "Bash(npx *)",
+      "Bash(pytest *)", "Bash(ruff *)", "Bash(playwright *)",
+      "Bash(bash tools/gate.sh *)",
+      "Bash(ls *)", "Bash(cat *)", "Bash(head *)", "Bash(tail *)", "Bash(wc *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)", "Bash(git push -f*)", "Bash(git push * --force*)", "Bash(git push * -f*)",
+      "Bash(git add -A*)", "Bash(git add .)", "Bash(git add --all*)",
+      "Bash(git stash*)", "Bash(git rebase*)", "Bash(git reset --hard*)",
+      "Bash(rm -rf *)",
+      "Read(./.env)", "Read(./.env.*)"
+    ]
+  }
+}

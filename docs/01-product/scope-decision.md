@@ -6,6 +6,30 @@ Answers requirements R26, R27, R28. Facts come from [`research/01-hacknation-202
 
 Build and show **a complete assistant for access-to-public-information requests** (Module A). Present the counter product, "data entered once, forms pre-filled" (Module B), as the next process on the same core: one slide in the pitch, a separate section in the repository, and a small live slice only if Module A already passes its gate. Do not present the wide platform as the product.
 
+## 1a. The unifying idea: from request to answer, one engine
+
+The owner asked for one system that honestly joins the two matching tasks instead of a stretched "bonus" (follow-up brief of 21 November). The join is real, because both tasks are the same pipe seen from two ends:
+
+| | The resident's end | The office's end |
+|---|---|---|
+| A letter with no form (a public-information request) | writes freely, often asks for what is already published | must read, classify, find, draft, keep the deadline: **the city's task** |
+| A paper or PDF form | fills the same data again and again | must turn each form into an online service: **the task "Cyfryzacja formularzy"** |
+
+One engine serves both: it understands documents, it keeps a registry of templates (a response document with its mandatory elements is a template in the same sense as an application form with its fields), it checks a filled template with rules and a model, it protects personal data, it waits for a person's approval and it logs.
+
+**The bridge that makes it one demo.** The city publishes an auxiliary PDF template for public-information requests. The form-onboarding step turns that PDF into an online form in minutes. The resident who opens it sees, before sending, where the information is already published; if the request is still sent, it arrives structured (separate questions, chosen form of disclosure, contact). The clerk's assistant then starts from clean data. So the loop closes:
+
+```
+PDF template ──(digitised by the engine)──▶ online request form ──▶ fewer and cleaner requests
+      ▲                                                                   │
+      │                                                                   ▼
+published answers ◀── approved answer ◀── draft with checked basis ◀── analysis and deadlines
+```
+
+For the city's jury this is "less repeated work at the source", a pain the task text does not even name. For the makers of the government's e-services it is "from a need to an online service in minutes" with a working back office behind it. The same build, two emphases.
+
+**Consequence for the plan:** work package WP-AB1 (the public-information request as a digitised online form with a "already published" hint) is built after the Module A gate, before any counter work. It is the first thing shown from Module B.
+
 ## 2. Who the customer is and what hurts
 
 The challenge names the user ("pracownicy urzędu"), two functions ("analiza wniosków", "przygotowywanie odpowiedzi"), two qualities ("inteligentny i bezpieczny") and two outcomes (shorter handling time, relief from repeated work). The jury is chosen by the city. The two city-hall mentors on the official list lead the City Council Office and the Social Communication unit: people whose desks receive letters of every kind and who must decide what each one is.
@@ -68,7 +92,12 @@ There are 15 tasks. Two matter here. One participant alone can submit one projec
 
 Switch to B only if all three hold at 11:00: the full card of B asks for what Module B is (digitising forms with AI, pre-filling, a path to an online service); the full card of A turns out narrower or more demanding than expected (for example a test on the city's own archive that cannot be prepared); and the owner prefers to build his own idea.
 
-If the owner finds a second person who can lead a second project, both tasks are possible, but it splits a small team across two juries. Not recommended.
+**Two tasks at once?** The rules allow a team at most two tasks, one separate project per task, and the second project needs a different team leader; the organisers "strongly discourage" one project for two tasks. A participant alone can therefore submit one project. What is possible and sensible:
+
+1. **Build once, decide late.** Until Saturday 18:00 the build follows the unified plan (Module A plus the bridge WP-AB1), which serves both tasks. The task is fixed in the submission draft by 20:00 and cannot be changed afterwards.
+2. **Show the other task's value inside the chosen one.** In the city's task the bridge is the slide "less work at the source" and the roadmap; in the forms task the clerk's assistant is the proof that a digitised form has a working back office.
+3. **Talk to both partners early** (their stands and mentors): what each says about their real pain decides the emphasis better than any guess made tonight.
+4. **Second submission only with a second person.** If someone joins the team and can lead a second project, the forms slice (WP-B6, WP-B1, WP-AB1) can be submitted to the forms task as its own small project with its own draft by 20:00. It doubles the submission work and the pitches may overlap in time; do it only if Module A is already safe.
 
 ## 6. What would change this decision
 
