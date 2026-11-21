@@ -532,7 +532,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 69
+   "fields": 67
   },
   "unseen:28c6e2b75ee0cda7": {
    "outcome": "converted",
@@ -598,7 +598,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 72
+   "fields": 71
   },
   "unseen:4d935be69de3ba12": {
    "outcome": "converted",
@@ -682,7 +682,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 51
+   "fields": 53
   },
   "unseen:633685b60542d936": {
    "outcome": "converted",
@@ -700,7 +700,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 51
+   "fields": 53
   },
   "unseen:6bf492657fdae25d": {
    "outcome": "converted",
@@ -742,7 +742,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 56
+   "fields": 55
   },
   "unseen:899c15a17a2dc28b": {
    "outcome": "converted",
@@ -940,7 +940,7 @@
    "outcome": "converted",
    "gate": "passed",
    "lint_errors": 0,
-   "fields": 66
+   "fields": 65
   },
   "unseen:fe9740f3e7146543": {
    "outcome": "converted",
