@@ -64,3 +64,13 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Local state of the build-time gateway client (ledger of spending, model list cache)
+.eden/
+
+# Sets of the forms task that stay local until the partner confirms they may be public
+# (they carry bank accounts and phone numbers of offices; hashes are in data/coi/INDEX.json;
+# unpack them with tools/coi_unpack.py)
+data/coi/judged-*/
+data/coi/reference-05-*/
+data/coi/text/

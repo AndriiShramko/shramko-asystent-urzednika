@@ -1,5 +1,275 @@
 [
  {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.doc",
+  "bytes": 622080,
+  "sha256_16": "5f0659b52d976404"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.docx",
+  "bytes": 53347,
+  "sha256_16": "3552082dba95f108"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpeg",
+  "bytes": 638690,
+  "sha256_16": "9c6be43789a51e40"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpg",
+  "bytes": 486240,
+  "sha256_16": "afd2fd2b46f93612"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.ods",
+  "bytes": 24953,
+  "sha256_16": "ea2e98dcb30ee615"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.pdf",
+  "bytes": 55873,
+  "sha256_16": "be4d196a6622490e"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.png",
+  "bytes": 311795,
+  "sha256_16": "8a81945e0a88474d"
+ },
+ {
+  "file": "data/coi/judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.xlsx",
+  "bytes": 10006,
+  "sha256_16": "6b76b513c0e8adb4"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.doc",
+  "bytes": 35328,
+  "sha256_16": "b6a4b3a68e71a61b"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.docx",
+  "bytes": 20564,
+  "sha256_16": "e4aef6daff830e86"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpeg",
+  "bytes": 380809,
+  "sha256_16": "3b52e99527a40512"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpg",
+  "bytes": 267868,
+  "sha256_16": "368b1e645a436639"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.ods",
+  "bytes": 4914,
+  "sha256_16": "a2ef5d47b193b463"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.pdf",
+  "bytes": 71891,
+  "sha256_16": "3c7f6a8d3ccddac4"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.png",
+  "bytes": 222470,
+  "sha256_16": "42af6393d6dc568d"
+ },
+ {
+  "file": "data/coi/judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.xlsx",
+  "bytes": 13344,
+  "sha256_16": "a464bc289b17d2ba"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.doc",
+  "bytes": 30720,
+  "sha256_16": "e717dc255395c556"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.docx",
+  "bytes": 19310,
+  "sha256_16": "5c80f453ad5d69cb"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpeg",
+  "bytes": 447406,
+  "sha256_16": "5106de926173dadc"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpg",
+  "bytes": 312570,
+  "sha256_16": "c14d2fe1ec3b0349"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.ods",
+  "bytes": 23629,
+  "sha256_16": "0ec713b2a5e18369"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.pdf",
+  "bytes": 65231,
+  "sha256_16": "8ba4a8c133f08c9a"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.png",
+  "bytes": 261609,
+  "sha256_16": "5992645abec43713"
+ },
+ {
+  "file": "data/coi/judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.xlsx",
+  "bytes": 13006,
+  "sha256_16": "3ec7b7aad2e472ae"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.doc",
+  "bytes": 45056,
+  "sha256_16": "73527169cf69aa83"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.docx",
+  "bytes": 9105,
+  "sha256_16": "a6f5f41e459a1dba"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpeg",
+  "bytes": 1112264,
+  "sha256_16": "d826ff9fa386dee1"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpg",
+  "bytes": 766089,
+  "sha256_16": "9ab799d09f705c87"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.ods",
+  "bytes": 26941,
+  "sha256_16": "78be30862cfaef96"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.pdf",
+  "bytes": 194867,
+  "sha256_16": "b251035b40bdd8a2"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.png",
+  "bytes": 666381,
+  "sha256_16": "8daaac3e579ccb46"
+ },
+ {
+  "file": "data/coi/judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.xlsx",
+  "bytes": 12162,
+  "sha256_16": "787099906ea66527"
+ },
+ {
+  "file": "data/coi/judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.DOC",
+  "bytes": 13522,
+  "sha256_16": "8563c1a84e99f22b"
+ },
+ {
+  "file": "data/coi/judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPE",
+  "bytes": 1471512,
+  "sha256_16": "895760a7117d4e23"
+ },
+ {
+  "file": "data/coi/judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPG",
+  "bytes": 1009090,
+  "sha256_16": "ab6810c4fd4f2458"
+ },
+ {
+  "file": "data/coi/judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.ODS",
+  "bytes": 40556,
+  "sha256_16": "42a839c26665dea8"
+ },
+ {
+  "file": "data/coi/judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PDF",
+  "bytes": 127981,
+  "sha256_16": "22d99255ad6b8d93"
+ },
+ {
+  "file": "data/coi/judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PNG",
+  "bytes": 819995,
+  "sha256_16": "5f373c9b16c88d02"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.doc",
+  "bytes": 791552,
+  "sha256_16": "2e37ffaaf831dc1f"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.docx",
+  "bytes": 194571,
+  "sha256_16": "2d584a9a1d048054"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpeg",
+  "bytes": 4814119,
+  "sha256_16": "2520eb24f40a4bb6"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpg",
+  "bytes": 3327126,
+  "sha256_16": "3a6df4584b028793"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.ods",
+  "bytes": 70083,
+  "sha256_16": "1c8b2175f7d6e235"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.pdf",
+  "bytes": 687466,
+  "sha256_16": "b0ebb030f204c3bc"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.png",
+  "bytes": 2815351,
+  "sha256_16": "b8b23d616d5bacc6"
+ },
+ {
+  "file": "data/coi/judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.xlsx",
+  "bytes": 77046,
+  "sha256_16": "3f61cb1ef2f60bd5"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.doc",
+  "bytes": 82432,
+  "sha256_16": "901a80a61bf7f89e"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.docx",
+  "bytes": 39702,
+  "sha256_16": "b0665d0f9621e531"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpeg",
+  "bytes": 6681824,
+  "sha256_16": "9e7e85be23deb68b"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpg",
+  "bytes": 4661696,
+  "sha256_16": "5da17ca6ce5a7587"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.ods",
+  "bytes": 26347,
+  "sha256_16": "f09455c87a20be4c"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.pdf",
+  "bytes": 419346,
+  "sha256_16": "d9ace125afc5c4af"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.png",
+  "bytes": 3127987,
+  "sha256_16": "117a903a918ddfff"
+ },
+ {
+  "file": "data/coi/judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.xlsx",
+  "bytes": 34628,
+  "sha256_16": "8f8b6c8627cf9434"
+ },
+ {
   "file": "data/coi/materials/Dane inicjalne - materialy dodatkowe do zadania rozszerzającego (2).pdf",
   "bytes": 127368,
   "sha256_16": "95c55bb91f44a5db"
@@ -38,6 +308,11 @@
   "file": "data/coi/materials/Wniosek o ustalenie numeru porządkowego nieruchomości – wizualizacja formularza po cyfryzacji .docx",
   "bytes": 547316,
   "sha256_16": "5d77a198afe8315d"
+ },
+ {
+  "file": "data/coi/README.md",
+  "bytes": 1926,
+  "sha256_16": "121558f9de2a6411"
  },
  {
   "file": "data/coi/reference-01-numer-porzadkowy/konfiguracja_form_wniosekOUstalenieNumeruPorządkowegoNieruchomości (1).json",
@@ -88,5 +363,50 @@
   "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.xlsx",
   "bytes": 12570,
   "sha256_16": "b41d0eadb5696004"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/konfiguracja_form_wniosekOStwierdzenieNadpłatyPodatkuHacknation (2).json",
+  "bytes": 103568,
+  "sha256_16": "c8ab4c1dd1cd3da4"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku - wizualizacja formularza cyfrowego (1).docx",
+  "bytes": 546353,
+  "sha256_16": "8c0b29fcb2802cdf"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.DOC",
+  "bytes": 21826,
+  "sha256_16": "0a32774bbc471cd8"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.docx",
+  "bytes": 21929,
+  "sha256_16": "f551277f2e57b3e0"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.jpeg",
+  "bytes": 245575,
+  "sha256_16": "2c07718c062e8f4d"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.JPG",
+  "bytes": 188528,
+  "sha256_16": "a215b1b268e7dae9"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.ODS",
+  "bytes": 18545,
+  "sha256_16": "808bfb541e4c0ac1"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PDF",
+  "bytes": 133029,
+  "sha256_16": "b4874b7d784e4e64"
+ },
+ {
+  "file": "data/coi/reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PNG",
+  "bytes": 886324,
+  "sha256_16": "091151313018ca41"
  }
 ]

@@ -1,0 +1,206 @@
+====================================================================================================
+FILE: konfiguracja_form_wniosekOUstalenieNumeruPorządkowegoNieruchomości (1).json
+top keys: ['title', 'tabs', 'flow']
+title: Wniosek o ustalenie numeru porządkowego nieruchomości
+tabs: [('Dane', 'MAIN', 12), ('Informacje o budynku', 'MAIN', 1), ('Kontakt z urzędem', 'MAIN', 2), ('Strona końcowa', 'FINISH', 1)]
+tab keys: ['id', 'questions', 'title', 'type']
+flow keys: ['links'] links: 3 link keys: ['id', 'source', 'target']
+flow link index pairs: [(0, 1), (1, 2), (2, 3)]
+section-level types: {'SECTION': 16}
+components: 53 {'TEXT_FIELD': 36, 'RADIO': 3, 'SELECT': 6, 'FILE_UPLOADER': 4, 'TEXT_BLOCK': 3, 'CONSENT_SECTION': 1}
+question(wrapper) keys: {'x': 69, 'y': 69, 'rows': 69, 'cols': 69, 'field': 69, 'minItemRows': 1}
+field keys: {'id': 69, 'type': 69, 'techName': 69, 'title': 69, 'description': 69, 'options': 69, 'validation': 69, 'readOnly': 69, 'repeatingSectionGrid': 69, 'questionOrder': 69, 'tooltipMessage': 69, 'defaultValue': 16, 'states': 68, 'defaultValueType': 8, 'dictionaryName': 6, 'multiLevelTree': 3, 'searchEnabled': 1, 'consentSectionConfig': 1}
+keys outside the documented schema, by type: {'SELECT': {'multiLevelTree': 3, 'searchEnabled': 1}}
+grid key spelling: {'repeatingSectionGrid': 16}
+validation value shapes: {'list': 66, 'dict': 3} | validators used: {} | fields with REQUIRED: 0
+dictionaries: {'TERYT_DOWODOWY': 1, 'Kraje': 3, 'TERYT_4G_DOWODOWY': 2}
+defaultValueType: {'EXTERNAL_SYSTEM': 8}
+defaults: {'"Wójt Gminy Elbląg"': 1, '"MLPZ.surname"': 1, '"MLPZ.name"': 1, '"MLPZ.postCode"': 1, '"MLPZ.street"': 1, '"MLPZ.building"': 1, '["Polska"]': 3, '"MLPZ.apartment"': 1, '"MLPZ.phoneNumber"': 1, '"MLPZ.email"': 1}
+EXTERNAL_SYSTEM fields (techName, source, readOnly): [('nazwisko', 'MLPZ.surname', True), ('imie', 'MLPZ.name', True), ('kod_pocztowy', 'MLPZ.postCode', False), ('ulica', 'MLPZ.street', False), ('numer_budynku', 'MLPZ.building', False), ('numer_lokalu', 'MLPZ.apartment', False), ('numer_telefonu', 'MLPZ.phoneNumber', False), ('adres_e_mail', 'MLPZ.email', False)]
+states: {'SHOW': 29}
+x: {0: 69} cols: {3: 69} rows(section): {2: 5, 3: 5, 9: 2, 5: 2, 8: 1, 4: 1} rows(component): {1: 53}
+nested sections inside sections: 0
+techName: max len 53 | duplicates across whole form: 0 | duplicates inside one section: 0
+non-slug techNames: []
+id uuid versions: {4: 69}
+description kinds: {'html': 19, 'empty': 50} | tooltips used: 0
+FINISH page sections: [('SECTION', ['TEXT_BLOCK'])]
+consent configs: [{"consents": [{"description": "<html><head></head><body><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(52, 56, 63);\">Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z </span><a href=\"klauzulą informacyjną \" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(255, 255, 255); color: rgb(0, 82, 165);\" title=\"klauzulą informacyjną\" aria-label=\"Link otwiera się w nowej karcie\">klauzulą informacyjną</a><a href=\"klauzulą informacyjną \" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(255, 255, 255); color: rgb(52, 56, 63);\" title=\" \" aria-label=\"Link otwiera się w nowej karcie\"> </a><a href=\"klauzulą informacyjną \" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(255, 255, 255); color: rgb(0, 82, 165);\" title=\"\" aria-label=\"Link otwiera się w nowej karcie\"><img s
+  PAGE [MAIN] Dane
+     SECTION            organ_do_ktorego_jest_skladany_wniosek         Organ, do którego jest składany wniosek
+         - TEXT_FIELD       nazwa_organu                             Nazwa organu                               def="Wójt Gminy Elbląg" RO
+     SECTION            podmiot_wniosku                                Podmiot wniosku
+         - RADIO            wybierz_jako_kto_wnioskujesz             Wybierz, jako kto wnioskujesz              cond opts=2
+         - RADIO            wybierz_w_czyim_imieniu_wnioskujesz      Wybierz, w czyim imieniu wnioskujesz       opts=3
+     SECTION            twoje_dane                                     Twoje dane
+         - TEXT_FIELD       nazwisko                                 Nazwisko                                   def="MLPZ.surname" RO
+         - TEXT_FIELD       imie                                     Imię                                       def="MLPZ.name" RO
+     SECTION            adres_zamieszkania                             Adres zamieszkania
+         - TEXT_FIELD       kod_pocztowy                             Kod pocztowy                               def="MLPZ.postCode" cond
+         - TEXT_FIELD       ulica                                    Ulica                                      def="MLPZ.street" cond
+         - SELECT           wojewodztwo                              TERYT_DOWODOWY                             dict=TERYT_DOWODOWY cond
+         - TEXT_FIELD       numer_budynku                            Numer budynku                              def="MLPZ.building"
+         - TEXT_FIELD       ulica_zagranica                          Ulica                                      cond
+         - TEXT_FIELD       miejscowosc_zagranica                    Miejscowość                                cond
+         - SELECT           kraj                                     Kraj                                       dict=Kraje def=["Polska"]
+         - TEXT_FIELD       kod_pocztowy_zagranica                   Kod pocztowy                               cond
+         - TEXT_FIELD       numer_lokalu                             Numer lokalu                               def="MLPZ.apartment"
+     SECTION            dane_podmiotu                                  Dane podmiotu <cond>
+         - TEXT_FIELD       nazwa                                    Nazwa                                      
+         - TEXT_FIELD       nip                                      NIP                                        
+         - TEXT_FIELD       regon                                    REGON                                      
+         - TEXT_FIELD       numer_krs                                Numer KRS                                  
+     SECTION            adres_siedziby                                 Adres siedziby <cond>
+         - TEXT_FIELD       miejscowosc_siedziba_zagranica           Miejscowość                                cond
+         - TEXT_FIELD       kod_pocztowy_siedziba_zagranica          Kod pocztowy                               cond
+         - TEXT_FIELD       ulica_siedziba_zagranica                 Ulica                                      cond
+         - SELECT           wojewodztwo_siedziba                     TERYT_4G_DOWODOWY                          dict=TERYT_4G_DOWODOWY cond
+         - TEXT_FIELD       kod_pocztowy_siedziba                    Kod pocztowy                               cond
+         - TEXT_FIELD       ulica_siedziba                           Ulica                                      cond
+         - TEXT_FIELD       numer_budynku_siedziba                   Numer budynku                              
+         - TEXT_FIELD       numer_lokalu_siedziba                    Numer lokalu                               
+         - SELECT           kraj_siedziba                            Kraj                                       dict=Kraje def=["Polska"]
+     SECTION            potwierdzenie_ze_jestes_reprezentantem         Potwierdzenie, że jesteś reprezentantem <cond>
+         - FILE_UPLOADER    plik_z_odpisem_danych                    Plik z odpisem danych                      
+     SECTION            dane_innej_osoby                               Dane innej osoby <cond>
+         - TEXT_FIELD       nazwisko_inna_osoba                      Nazwisko                                   
+         - TEXT_FIELD       imie_inna_osoba                          Imię                                       
+     SECTION            adres_zamieszkania_osoby_ktorej_jestes_pelnomo Adres zamieszkania innej osoby <cond>
+         - TEXT_FIELD       numer_budynku_inna_osoba                 Numer budynku                              
+         - TEXT_FIELD       ulica_inna_osoba_zagranica               Ulica                                      cond
+         - TEXT_FIELD       numer_lokalu_inna_osoba                  Numer lokalu                               
+         - TEXT_FIELD       kod_pocztowy_inna_osoba_zagranica        Kod pocztowy                               cond
+         - SELECT           kraj_inna_osoba                          Kraj                                       dict=Kraje def=["Polska"]
+         - SELECT           wojewodztwo_inna_osoba                   TERYT_4G_DOWODOWY                          dict=TERYT_4G_DOWODOWY cond
+         - TEXT_FIELD       kod_pocztowy_inna_osoba                  Kod pocztowy                               cond
+         - TEXT_FIELD       miejscowosc_inna_osoba_zagranica         Miejscowość                                cond
+         - TEXT_FIELD       ulica_inna_osoba                         Ulica                                      cond
+     SECTION            pelnomocnictwo                                 Pełnomocnictwo <cond>
+         - FILE_UPLOADER    dokument_z_potwierdzeniem_podpisany_elek Dokument z potwierdzeniem, podpisany elekt 
+     SECTION            oplata_skarbowa_pelnomocnictwo_1               Opłata skarbowa <cond>
+         - RADIO            czy_zlozenie_pelnomocnictwa_wymaga_oplat Czy złożenie pełnomocnictwa wymaga opłaty  opts=2
+         - TEXT_BLOCK       oplata_info_1                                                                       cond
+         - FILE_UPLOADER    potwierdzenie_przelewu                   Potwierdzenie przelewu                     cond
+     SECTION            oplata_skarbowa_pelnomocnictwo_2               Opłata skarbowa za pełnomonictwo <cond>
+         - TEXT_BLOCK       oplata_info                                                                         
+         - FILE_UPLOADER    potwierdzenie_przelewu_2                 Potwierdzenie przelewu                     
+  PAGE [MAIN] Informacje o budynku
+     SECTION            lokalizacja_budynku                            Lokalizacja budynku
+         - TEXT_FIELD       miejscowosc                              Miejscowość                                
+         - TEXT_FIELD       obreb_numer                              Obręb                                      
+         - TEXT_FIELD       numer_ewidencyjny_dzialki                Numer ewidencyjny działki                  
+         - TEXT_FIELD       ulica_budynku                            Ulica                                      
+  PAGE [MAIN] Kontakt z urzędem
+     SECTION            dane_do_kontaktu                               Dane do kontaktu
+         - TEXT_FIELD       numer_telefonu                           Numer telefonu                             def="MLPZ.phoneNumber"
+         - TEXT_FIELD       adres_e_mail                             Adres e-mail                               def="MLPZ.email"
+     SECTION            zgoda_sekcja                                   Zgoda_sekcja
+         - CONSENT_SECTION  zgoda                                                                               
+  PAGE [FINISH] Strona końcowa
+     SECTION            podglad_uzupelnionego_wniosku                  Podgląd uzupełnionego wniosku
+         - TEXT_BLOCK       podglad_1                                                                           
+====================================================================================================
+FILE: konfiguracja_form_wniosekOStwierdzenieNadpłatyPodatkuHacknation (2).json
+top keys: ['title', 'tabs', 'flow']
+title: Wniosek o stwierdzenie nadpłaty podatku
+tabs: [('Dane', 'MAIN', 12), ('Informacje o nadpłacie', 'MAIN', 3), ('Kontakt i zgody', 'MAIN', 2), ('Strona końcowa', 'FINISH', 1)]
+tab keys: ['id', 'questions', 'title', 'type']
+flow keys: ['links'] links: 3 link keys: ['id', 'source', 'target']
+flow link index pairs: [(0, 1), (1, 2), (2, 3)]
+section-level types: {'SECTION': 18}
+components: 55 {'TEXT_FIELD': 34, 'RADIO': 4, 'SELECT': 6, 'FILE_UPLOADER': 5, 'TEXT_BLOCK': 3, 'NUMBER': 1, 'TEXTAREA': 1, 'CONSENT_SECTION': 1}
+question(wrapper) keys: {'x': 73, 'y': 73, 'rows': 73, 'cols': 73, 'field': 73}
+field keys: {'id': 73, 'type': 73, 'techName': 73, 'title': 73, 'description': 73, 'options': 73, 'validation': 73, 'readOnly': 73, 'repeatingSectionGrid': 73, 'states': 73, 'questionOrder': 73, 'tooltipMessage': 73, 'defaultValue': 17, 'defaultValueType': 9, 'dictionaryName': 6, 'multiLevelTree': 5, 'searchEnabled': 5, 'consentSectionConfig': 1}
+keys outside the documented schema, by type: {'SELECT': {'multiLevelTree': 5, 'searchEnabled': 5}}
+grid key spelling: {'repeatingSectionGrid': 18}
+validation value shapes: {'list': 73} | validators used: {} | fields with REQUIRED: 0
+dictionaries: {'TERYT_4G_DOWODOWY': 2, 'Kraje': 3, 'TERYT_DOWODOWY': 1}
+defaultValueType: {'EXTERNAL_SYSTEM': 9}
+defaults: {'"Urząd Gminy Ulan-Majorat"': 1, '"PESEL.surname"': 1, '"PESEL.name"': 1, '"PESEL.pesel"': 1, '"MLPZ.postCode"': 1, '"MLPZ.street"': 1, '"MLPZ.building"': 1, '["Polska"]': 3, '"MLPZ.apartment"': 1, '"MLPZ.phoneNumber"': 1, '"MLPZ.email"': 1}
+EXTERNAL_SYSTEM fields (techName, source, readOnly): [('nazwisko', 'PESEL.surname', True), ('imie', 'PESEL.name', True), ('numer_pesel', 'PESEL.pesel', True), ('kod_pocztowy', 'MLPZ.postCode', False), ('ulica', 'MLPZ.street', False), ('numer_budynku', 'MLPZ.building', False), ('numer_lokalu', 'MLPZ.apartment', False), ('numer_telefonu', 'MLPZ.phoneNumber', False), ('adres_e_mail', 'MLPZ.email', False)]
+states: {'SHOW': 31}
+x: {0: 73} cols: {3: 73} rows(section): {2: 6, 3: 5, 4: 4, 9: 2, 8: 1} rows(component): {1: 55}
+nested sections inside sections: 0
+techName: max len 53 | duplicates across whole form: 0 | duplicates inside one section: 0
+non-slug techNames: []
+id uuid versions: {4: 73}
+description kinds: {'html': 22, 'empty': 51} | tooltips used: 0
+FINISH page sections: [('SECTION', ['TEXT_BLOCK'])]
+consent configs: [{"consents": [{"description": "<html><head></head><body><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(52, 56, 63);\">Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z </span><a href=\"klauzulą informacyjną \" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(255, 255, 255); color: rgb(0, 82, 165);\" title=\"klauzulą informacyjną\" aria-label=\"Link otwiera się w nowej karcie\">klauzulą informacyjną</a><a href=\"klauzulą informacyjną \" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(255, 255, 255); color: rgb(52, 56, 63);\" title=\" \" aria-label=\"Link otwiera się w nowej karcie\"> </a><a href=\"klauzulą informacyjną \" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(255, 255, 255); color: rgb(0, 82, 165);\" title=\"\" aria-label=\"Link otwiera się w nowej karcie\"><img s
+  PAGE [MAIN] Dane
+     SECTION            urzad_do_ktorego_jest_skladany_wniosek         Urząd, do którego jest składany wniosek
+         - TEXT_FIELD       nazwa_urzedu                             Nazwa urzędu                               def="Urząd Gminy Ulan-Majorat" RO
+     SECTION            podmiot_wniosku                                Podmiot wniosku
+         - RADIO            wybierz_jako_kto_wnioskujesz             Wybierz, jako kto wnioskujesz              cond opts=2
+         - RADIO            wybierz_w_czyim_imieniu_wnioskujesz      Wybierz, w czyim imieniu wnioskujesz       opts=3
+     SECTION            twoje_dane                                     Twoje dane
+         - TEXT_FIELD       nazwisko                                 Nazwisko                                   def="PESEL.surname" RO
+         - TEXT_FIELD       imie                                     Imię                                       def="PESEL.name" RO
+         - TEXT_FIELD       numer_pesel                              Numer PESEL                                def="PESEL.pesel" RO
+     SECTION            adres_zamieszkania                             Adres zamieszkania
+         - TEXT_FIELD       kod_pocztowy                             Kod pocztowy                               def="MLPZ.postCode" cond
+         - TEXT_FIELD       ulica                                    Ulica                                      def="MLPZ.street" cond
+         - SELECT           wojewodztwo                              TERYT_4G_DOWODOWY                          dict=TERYT_4G_DOWODOWY cond
+         - TEXT_FIELD       numer_budynku                            Numer budynku                              def="MLPZ.building"
+         - TEXT_FIELD       ulica_zagranica                          Ulica                                      cond
+         - TEXT_FIELD       miejscowosc_zagranica                    Miejscowość                                cond
+         - SELECT           kraj                                     Kraj                                       dict=Kraje def=["Polska"]
+         - TEXT_FIELD       kod_pocztowy_zagranica                   Kod pocztowy                               cond
+         - TEXT_FIELD       numer_lokalu                             Numer lokalu                               def="MLPZ.apartment"
+     SECTION            dane_podmiotu                                  Dane podmiotu <cond>
+         - TEXT_FIELD       nazwa                                    Nazwa                                      
+         - TEXT_FIELD       nip                                      NIP                                        
+     SECTION            adres_siedziby                                 Adres siedziby <cond>
+         - TEXT_FIELD       miejscowosc_siedziba_zagranica           Miejscowość                                cond
+         - TEXT_FIELD       kod_pocztowy_siedziba_zagranica          Kod pocztowy                               cond
+         - TEXT_FIELD       ulica_siedziba_zagranica                 Ulica                                      cond
+         - SELECT           wojewodztwo_siedziba                     TERYT_4G_DOWODOWY                          dict=TERYT_4G_DOWODOWY cond
+         - TEXT_FIELD       kod_pocztowy_siedziba                    Kod pocztowy                               cond
+         - TEXT_FIELD       ulica_siedziba                           Ulica                                      cond
+         - TEXT_FIELD       numer_budynku_siedziba                   Numer budynku                              
+         - TEXT_FIELD       numer_lokalu_siedziba                    Numer lokalu                               
+         - SELECT           kraj_siedziba                            Kraj                                       dict=Kraje def=["Polska"]
+     SECTION            potwierdzenie_ze_jestes_reprezentantem         Potwierdzenie, że jesteś reprezentantem <cond>
+         - FILE_UPLOADER    plik_z_odpisem_danych                    Plik z odpisem danych                      
+     SECTION            dane_innej_osoby                               Dane innej osoby <cond>
+         - TEXT_FIELD       nazwisko_inna_osoba                      Nazwisko                                   
+         - TEXT_FIELD       imie_inna_osoba                          Imię                                       
+     SECTION            adres_zamieszkania_osoby_ktorej_jestes_pelnomo Adres zamieszkania innej osoby <cond>
+         - TEXT_FIELD       numer_budynku_inna_osoba                 Numer budynku                              
+         - TEXT_FIELD       ulica_inna_osoba_zagranica               Ulica                                      cond
+         - TEXT_FIELD       numer_lokalu_inna_osoba                  Numer lokalu                               
+         - TEXT_FIELD       kod_pocztowy_inna_osoba_zagranica        Kod pocztowy                               cond
+         - SELECT           kraj_inna_osoba                          Kraj                                       dict=Kraje def=["Polska"]
+         - SELECT           wojewodztwo_inna_osoba                   TERYT_DOWODOWY                             dict=TERYT_DOWODOWY cond
+         - TEXT_FIELD       kod_pocztowy_inna_osoba                  Kod pocztowy                               cond
+         - TEXT_FIELD       miejscowosc_inna_osoba_zagranica         Miejscowość                                cond
+         - TEXT_FIELD       ulica_inna_osoba                         Ulica                                      cond
+     SECTION            pelnomocnictwo                                 Pełnomocnictwo <cond>
+         - FILE_UPLOADER    plik_dokumentu_z_pelnomocnictwem         Plik dokumentu z pełnomocnictwem           
+     SECTION            oplata_skarbowa_pelnomocnictwo_1               Opłata skarbowa <cond>
+         - RADIO            czy_zlozenie_pelnomocnictwa_wymaga_oplat Czy złożenie pełnomocnictwa wymaga opłaty  opts=2
+         - TEXT_BLOCK       oplata_info_1                                                                       cond
+         - FILE_UPLOADER    plik_z_potwierdzeniem_przelewu           Plik z potwierdzeniem przelewu             cond
+     SECTION            oplata_skarbowa_pelnomocnictwo_2               Opłata skarbowa za pełnomonictwo <cond>
+         - TEXT_BLOCK       oplata_info                                                                         
+         - FILE_UPLOADER    plik_z_potwierdzeniem_przelewu_2         Plik z potwierdzeniem przelewu             
+  PAGE [MAIN] Informacje o nadpłacie
+     SECTION            informacje_o_nadplacie                         Informacje o nadpłacie
+         - TEXT_FIELD       podatek_ktorego_dotyczy_nadplata         Podatek, którego dotyczy nadpłata          
+         - NUMBER           kwota                                    Kwota                                      
+         - TEXTAREA         uzasadnienie                             Uzasadnienie                               
+     SECTION            rozliczenie_nadplaty                           Rozliczenie nadpłaty
+         - RADIO            wybierz_co_mamy_zrobic_z_nadplata        Wybierz, co mamy zrobić z nadpłatą         opts=2
+         - TEXT_FIELD       nazwa_podatku                            Nazwa podatku                              cond
+         - TEXT_FIELD       numer_rachunku                           Numer rachunku                             cond
+     SECTION            korekta_deklaracji                             Korekta deklaracji
+         - FILE_UPLOADER    plik_deklaracji_podatkowej               Plik deklaracji podatkowej                 
+  PAGE [MAIN] Kontakt i zgody
+     SECTION            dane_do_kontaktu                               Dane do kontaktu
+         - TEXT_FIELD       numer_telefonu                           Numer telefonu                             def="MLPZ.phoneNumber"
+         - TEXT_FIELD       adres_e_mail                             Adres e-mail                               def="MLPZ.email"
+     SECTION            zgoda_wyrazenie                                Zgoda
+         - CONSENT_SECTION  zgoda                                                                               
+  PAGE [FINISH] Strona końcowa
+     SECTION            podglad_uzupelnionego_wniosku                  Podgląd uzupełnionego wniosku
+         - TEXT_BLOCK       podglad_1                                                                           
