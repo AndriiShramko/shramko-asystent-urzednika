@@ -24,7 +24,7 @@ from app.model.page import PageModel
 
 from ._doc import Doc
 from ._fields import read_fields
-from ._head import find_addressee, find_applicants, find_clause, find_fee, find_legal_basis, find_title, find_variants
+from ._head import find_addressee, find_applicants, find_clause, find_fee, find_legal_basis, find_title, find_variants, prune_by_exclusion
 
 __all__ = ["understand"]
 
@@ -62,13 +62,14 @@ def _run(pm: PageModel, fo: FinderOutput) -> Brief:
         page, end = doc.page(title_runs[0]), doc.pos[title_runs[0]]
         signals += [(doc.text(r), Evidence(quote=doc.text(r), page=page, runs=[r])) for r in doc.order[:end]
                     if doc.page(r) == page and doc.role(r) == "body" and doc.text(r)]
+    applicants, excluded = prune_by_exclusion(doc, find_applicants(signals))
     brief = Brief(
         input=InputRef(sha256=pm.source.sha256, format=pm.source.format),
-        title=title, addressee=addressee, applicants=find_applicants(signals), applicant_extras=read.extras,
+        title=title, addressee=addressee, applicants=applicants, applicant_extras=read.extras,
         matter=read.matter, attachments=read.attachments,
         declarations=Declarations(consents=read.consents, clause=clause),
         fee=find_fee(doc), legal_basis=find_legal_basis(doc), mandatory_attachments=_NOT_FOUND,
-        dropped=read.dropped + clause_dropped, warnings=conflicts + read.warnings, dispositions=read.dispositions,
+        dropped=read.dropped + clause_dropped + excluded, warnings=conflicts + read.warnings, dispositions=read.dispositions,
     )
     brief.warnings += check_paper_evidence(brief)
     return brief

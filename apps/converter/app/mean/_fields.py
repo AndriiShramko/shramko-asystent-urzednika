@@ -35,6 +35,9 @@ _LINE_KINDS = ("leader", "line_block", "blank_in_sentence")
 
 
 _YES_NO = {"tak", "nie"}
+# A name asked of a third person (the candidate, the ward) is a field of the matter, never the applicant's own name
+# (set judged-09 ODS/XLSX: "Imię i nazwisko kandydata" under the heading "Wnioskodawca").
+_THIRD_PERSON = re.compile(r"(kandydat|podopieczn|zawodnik|sportowc|trener|dzieck|uczestnik)\w*")
 
 
 @dataclass
@@ -145,6 +148,8 @@ class _Reader:
             return False
         for rx, row in lexicon.compiled("applicants", table="label"):
             if rx.search(low):
+                if row.get("role") == "standard/twoje_dane" and not row.get("concept") and _THIRD_PERSON.search(low):
+                    return False
                 role = sec_role or row["role"]
                 self._set(c, "STANDARD", role=role)
                 self.standard.setdefault(role, []).append(label)
