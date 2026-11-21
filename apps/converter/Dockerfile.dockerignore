@@ -1,6 +1,8 @@
 # Used by `docker build -f apps/converter/Dockerfile .` (BuildKit reads <Dockerfile>.dockerignore).
 # Keeps the partner's task sets, git history and local environments out of the build context and the image.
 .git
+.claude
+secrets
 .venv
 data
 research

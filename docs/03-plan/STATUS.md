@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 14:32 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 15:02 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -22,16 +22,25 @@ Last update: 2026-11-21 14:32 CET. **Track F (the forms converter) is being buil
 | 14:21 | WP-F0a form schema profiles, tolerant linter, golden list, contradiction docket (13 rows) | `1430f0a` | both exports pass the tolerant profile with zero errors and fail the strict one for the listed reasons; six negative controls |
 | 14:28 | WP-F0b data contracts and shared models (`apps/converter/app/model/`, four generated schema files, examples) | `4bb8854` | 54 model tests; both exports load and dump back with nothing lost; fast gate 71 passed. No independent agent review: a second opinion of a hosted model was asked instead (`research/eden/e7-…`) |
 
-**Running (14:32):**
+| 14:32 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
+| 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
+| 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
+
+**Running (15:02):**
 
 | What | Branch | How it runs |
 |---|---|---|
-| WP-F1 service shell (core stage done: 121 tests; integration stage writes the Dockerfile, README, environment check) | `wp/F1-service-shell` | wave run `wf_39a455e5-4cc` (saved workflow `wp-wave`; the stage hand-over of the wave script works on real agents) |
-| WP-F2a readers for PDF and DOCX (core on opus) | `wp/F2a-readers-pdf-docx` | second wave, run `wf_b4e50fbd-788`, started 14:30 |
-| WP-F5 composer (core on the session's model) | `wp/F5-composer` | the same wave |
-| Audit of the plan by three hosted models (coverage of every card requirement, failure modes on new files, proof for a non-programmer) | files `research/eden/e6-coverage-audit.*.md` | a background command on the partner's credits; raw reports, unverified by design |
+| WP-F0c revision 1.1 of the shared models (additive; `verification-plan.md` section 5, plus the composer's requests) | `wp/F0c-models11` | one thinker agent (opus), started 14:53 |
+| WP-F20b the image checks meet the real pipeline; publishing and signing of the first run on `main` verified; Grype gate; `probe.yml` deleted | `wp/F20-b-real-pipeline` (merges `wp/F0p-pipeline` first; may push only its own branch) | one builder agent (sonnet), started 15:02 |
+| WP-F14 pre-import gate, seven journeys, zero-answer canary (core on opus) | `wp/F14-gate` | wave run `wf_49caecbe-7ca`, started 15:02 |
 
-**Next:** WP-F20 (image pipeline) the moment F1 is merged or its Dockerfile is on its branch; then WP-F3 (finder) on top of F2a, WP-F14 (gate).
+**Ready but NOT merged on purpose:** `wp/F0p-pipeline` (head `a915319`, 392 tests): readers and composer behind the service instead of the stub, an interim brief that reads the title only (`app/interim.py`, warning `BRIEF_NOT_READ`), formats without a reader answer 422. It goes into `main` together with `wp/F20-b-real-pipeline`, because today's container checks on `main` demand that all eight fixtures convert and would turn red.
+
+**Merged since the table above:** WP-F20 image pipeline (`d576408`, 15:01): on its branch the run was green in three jobs; `core` is 274 MB, `plus` 363 MB, both on Python 3.14 with bases pinned by digest and wheels checked by hash; not root, no capability, read-only root, no network; SBOM gate with 0 findings. The first run on `main` (publishing, signing) is being verified by F20b.
+
+**Next:** WP-F3 (finder, core on the session's model) as soon as F0c is merged; then F4 on top of F3; F2b (sheets and binary Word) and F8 (validators) when a slot is free. Lead decisions taken at 15:02: the hostile corpus runs from the CI runner against the container (the tests are not in the image); the vulnerability gate is Grype on the SBOM and fails only on a critical finding that has a fix; `tools/licence_check.py` stays with WP-F12 and may reuse `tools/ci/sbom_gate.py`.
+
+**For the owner's next report:** D16 changes two standard conditions against the exports (docket row 18); the seven results will be delivered with the path of the statutory representative, and a second variant with `STATUTORY_REPRESENTATIVE=off` beside them.
 
 **Standing instructions of the owner (21 November, 14:22):**
 
