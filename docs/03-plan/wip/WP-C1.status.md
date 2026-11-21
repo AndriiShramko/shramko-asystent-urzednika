@@ -1,6 +1,6 @@
 # WP-C1 REQUIRED and optional follow the paper's own words: status
 
-Claimed by: build7 (agent c1-required); heartbeat: 2026-11-22 01:10; state: running
+Claimed by: build7 (agent c1-required); heartbeat: 2026-11-22 00:55; state: running
 Branch: wp/C1-required-cues (cut from main 7fedaed)   Stage now: core
 
 Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/habits.json`,
@@ -16,8 +16,9 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
       set 08 ods/xlsx: fields of the section titled "... (pola nieobowiązkowe)" ("Nr tel./fax", the consent rows).
       NOTE: `count_sets.py` takes OUT.json as its FIRST argument: `count_sets.py tmp/x.json --all`.
 - [x] (c) negation guard before a required cue (`_says_required` in `_fields.py`), tests `tests/mean/test_mean_c1_negation.py`
-- [~] (d) optional habits: `ewentualn`, "jeśli/jeżeli (są) różni", "w razie potrzeby", negated cue; the tests are WRITTEN
-      (`tests/mean/test_mean_c1_optional.py`, in git only with the code), the code is next
+- [x] (d) optional wording: `ewentualn`, "jeśli/jeżeli (są) różn", "w razie potrzeby", "niewymagan", "nie jest/są wymagan|obowiązkow"
+      (habit row `optional_wording`, `_says_optional` in `_fields.py`), tests `tests/mean/test_mean_c1_optional.py`;
+      with the mean tests and `tests/validators/test_required.py`: 104 passed
 - [~] (e) required and optional cues read from the field's hint and the title of its own section; the tests are WRITTEN
       (`tests/mean/test_mean_c1_sources.py`, in git only with the code), the code is next
 - [ ] (f) counts after, list of changed fields here
@@ -48,8 +49,12 @@ basis was "paper"); the 9 that passed are the guards that must hold before and a
 `bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_c1_negation.py ... test_mean_core.py test_mean_f3b.py test_mean_f3c.py -q` = 79 passed.
 
 ## Left for the next stage
-Steps (d) to (h). Heartbeat of this section: 2026-11-22 01:10. The design of (d) and (e) is fixed in "## Decisions";
-if the two test files of (d) and (e) are missing in your checkout, write them from the decisions (labels of a garden: synthetic).
+Steps (e) to (h). Heartbeat of this section: 2026-11-22 00:55 (the earlier "01:10" was a wrong clock). The design of (e)
+is fixed in "## Decisions"; if `tests/mean/test_mean_c1_sources.py` is missing in your checkout, write it from the decisions
+(synthetic labels of a garden; `field_of(label, title=..., footnote=...)` of `test_mean_c1_negation.py` builds the paper).
+Step (e) in `_fields.py::_field`: read the hint (`hint or self._hint_after(c)`) with `_says_optional` / `_says_required`
+(required void when the habit `conditional` matches the hint); then, only when the own words say nothing, the title of
+`self.doc.sections.get(c.section or "")`: optional anywhere, required only inside a bracket of the title.
 Before-dump of ALL sets on main's code: `tmp/c1-brief-all-before.tsv` = 689 fields, 670 required, 10 with basis paper
 (local, not in git: re-make it from a checkout of `main` with the same tool if needed). Measuring tool of this package:
 `bash tools/gate.sh py apps/converter/tests/mean/dump_required.py tmp/c1-brief-after.tsv judged-08 judged-09`

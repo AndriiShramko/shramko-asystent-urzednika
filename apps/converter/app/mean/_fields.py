@@ -70,6 +70,16 @@ def _says_required(text: str) -> bool:
     return any(not _NEGATION.search(low[max(0, m.start() - _NEGATION_REACH): m.start()]) for m in REQUIRED.finditer(low))
 
 
+_OPTIONAL_WORDING = _habit("optional_wording")
+
+
+def _says_optional(text: str) -> bool:
+    """The paper's own words mark this text optional: the habit `optional`, or the wording "ewentualne", "jeśli
+    różni się od", "w razie potrzeby", "nie jest wymagane"."""
+    low = text.casefold()
+    return bool(OPTIONAL.search(low) or _OPTIONAL_WORDING.search(low))
+
+
 _YES_NO_ROW = re.compile(r"^\s*(?:\d{1,2}[.)]\s*)?(.+?)\s+TAK\s+NIE\s*$")
 _SENTENCE_END = (".", "!", "?")
 # No fragments (audit T3 to T5): the kinds of place that take a label from the text around them, the labels that are
@@ -572,7 +582,7 @@ class _Reader:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
         notes = [doc.footnote(m) for m in c.footnotes]
-        optional = optional or bool(OPTIONAL.search(low)) or any(OPTIONAL.search(n) for n in notes)
+        optional = optional or _says_optional(low) or any(_says_optional(n) for n in notes)
         marked = _says_required(low) or any(_says_required(n) for n in notes)
         required = not optional
         basis = ("paper" if marked else "inferred") if required else None
