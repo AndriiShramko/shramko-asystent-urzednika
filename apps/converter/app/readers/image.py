@@ -71,6 +71,53 @@ def _quality(words: list[_ocr.Word], number: int) -> list[Warning]:
     return []
 
 
+GLYPH_MAX_PX = 26     # S1 glyph: a closed box at most this wide and tall (200 dpi) inside a word is a letter's counter
+THICK_MAX_PT = 1.5    # S1 thick: the finder takes a ruled line up to this thickness (find/_shapes.py `ruled`)
+DOTS = frozenset(".…_")
+
+
+def _cover(b: tuple[int, int, int, int], w: _ocr.Word) -> float:
+    """Share of box b that lies inside the word's box."""
+    ix = min(b[2], w.x1) - max(b[0], w.x0)
+    iy = min(b[3], w.y1) - max(b[1], w.y0)
+    area = max(1, (b[2] - b[0]) * (b[3] - b[1]))
+    return ix * iy / area if ix > 0 and iy > 0 else 0.0
+
+
+def _thin(b: tuple[int, int, int, int], across: int, k: float) -> tuple[int, int, int, int]:
+    """A line box whose thickness (axis `across`: 1 = y, 0 = x) is over THICK_MAX_PT -> a line of max(1, int(k))
+    pixels through its middle (k = pixels per point); a thinner line is returned as is."""
+    lo, hi = b[across], b[across + 2]
+    if (hi - lo) / k <= THICK_MAX_PT:
+        return b
+    mid = (lo + hi) // 2
+    t = max(1, int(k))
+    return (b[0], mid, b[2], mid + t) if across == 1 else (mid, b[1], mid + t, b[3])
+
+
+def _prep_shapes(shapes: _raster.Shapes, words: list[_ocr.Word], prep: frozenset[str], s: float) -> list[dict[str, Any]]:
+    """SCAN_PREP steps that need the OCR words (S1). Changes `shapes` in place; returns the runs to add."""
+    k = 1.0 / s
+    if "glyph" in prep:
+        big = [w for w in words if len(w.text) >= 2]
+        shapes.boxes = [b for b in shapes.boxes
+                        if not (b[2] - b[0] <= GLYPH_MAX_PX and b[3] - b[1] <= GLYPH_MAX_PX
+                                and any(_cover(b, w) >= 0.8 for w in big))]
+    if "thick" in prep:
+        shapes.hlines = [_thin(b, 1, k) for b in shapes.hlines]
+        shapes.vlines = [_thin(b, 0, k) for b in shapes.vlines]
+    extra: list[dict[str, Any]] = []
+    if "leader" in prep:
+        for b in shapes.leaders:
+            if any(set(w.text) <= DOTS and w.y0 - 10 <= b[3] and w.y1 + 10 >= b[1]
+                   and min(b[2], w.x1) - max(b[0], w.x0) > 0.5 * (b[2] - b[0]) for w in words):
+                continue  # the OCR already read these dots
+            x0, _, x1, y1 = _pt(b, s)
+            extra.append(dict(text="." * max(8, int((x1 - x0) / 2.2)), box=[x0, r2(max(0.0, y1 - 8)), x1, y1],
+                              size=8.0, conf=0.9))
+    return extra
+
+
 def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s: float = S) -> tuple[Page, list[Warning]]:
     """One page strip (mode L) -> page of origin "ocr" and its warnings."""
     w, h = grey.size
@@ -78,6 +125,7 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
     has_ink = ink.getbbox() is not None
     warns: list[Warning] = []
     runs: list[Run] = []
+    words: list[_ocr.Word] = []
     if has_ink:
         engine = _ocr.get_engine()
         if engine is None:
@@ -87,12 +135,14 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
             try:
                 words = engine.read(_png(grey), options.ocr_lang, options.ocr_timeout)
             except _ocr.OcrError as e:
+                words = []
                 warns.append(Warning(code="UNREADABLE_PART", page=number, detail=f"page not read: {e}"))
             else:
                 runs, bad = _runs(words, ids, number, s)
                 warns.extend(bad)
                 warns.extend(_quality(words, number))
     shapes = _raster.detect(ink)
+    extra = _prep_shapes(shapes, words, options.scan_prep, s) if words and options.scan_prep else []
     lines: list[Line] = []
     rects: list[Rect] = []
     items: list[tuple[str, Any, str]] = (
@@ -111,6 +161,11 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
     if dropped:
         warns.append(Warning(code="UNREADABLE_PART", page=number,
                              detail=f"{dropped} shapes beyond the limit of {MAX_SHAPES} per page were left out"))
+    for e in extra:
+        run, bad = Run.safe(number, id=ids.next("r"), **e)
+        warns.extend(bad)
+        if run is not None:
+            runs.append(run)
     page = Page(number=number, width=r2(w * s), height=r2(h * s), origin="ocr", runs=runs, lines=lines, rects=rects,
                 ink=has_ink)
     return page, warns
