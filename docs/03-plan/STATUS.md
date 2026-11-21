@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 05:00 CET, preparation session (before the event).
+Last update: 2026-11-21 04:45 CET, preparation session (before the event).
 
 ## Phase
 
@@ -15,7 +15,7 @@ Last update: 2026-11-21 05:00 CET, preparation session (before the event).
 | Owner requirements R1–R32 | done | `docs/00-brief/requirements.md` |
 | Research R1–R10 (hackathon, law, forms catalogue and anatomy, identity, data protection and AI law, technology, landscape, orchestration, 2022 lessons, pitch) | done; each file lists what could not be verified | `research/` |
 | Forms catalogue of Urząd Miasta Bydgoszczy: 275 service cards, 710 file links | done; the `fees` field is mostly empty and `online_handling` is a weak heuristic: read the card itself for those | `data/forms-catalog.json`, `.csv`, `tools/crawl_bydgoszcz_forms.py` |
-| Form files themselves | being downloaded slowly into a git-ignored cache; published as an archive attached to the release `pre-event` when complete | `tools/collect_forms.py` |
+| Form files themselves | being downloaded slowly on the preparing computer into a git-ignored cache; a script attaches the archive and its manifest to the release `pre-event` when the download finishes (expected in the morning of 21 November). Check: `gh release view pre-event --repo AndriiShramko/shramko-asystent-urzednika`. If the assets are missing, the catalogue links still work and `tools/publish_forms_archive.py` repeats the job | `tools/collect_forms.py`, `tools/publish_forms_archive.py` |
 | Request taxonomy, 12 response document types with Polish skeletons | done; wording is a draft for the office's lawyer | `data/udip-taxonomy.json`, `data/udip-response-templates.md` |
 | Canonical profile schema; descriptor example for the residence-registration form (page 1 measured) | done | `data/canonical-profile.schema.json`, `data/form-descriptor.example.json` |
 | Scope decision, the unifying idea, gaps, after-the-event plan | done (re-check at the 11:00 gate) | `docs/01-product/` |
@@ -24,7 +24,7 @@ Last update: 2026-11-21 05:00 CET, preparation session (before the event).
 | Orchestration playbook, brief template, git workflow, resume, publishing | done; corrected against official documentation (research/08) | `docs/04-orchestration/` |
 | Agent definitions, project settings, wave workflow | done; `wp-wave.js` is untested (no code existed to run it on): try it on WP-00 alone first | `.claude/` |
 | Runtime instructions for the product's AI steps (Polish) | starting versions | `prompts/` |
-| Pitch deck (11 slides, presenter window, print mode), storyboard, demo script, jury truth table, guide for the owner | done; numbers and the status lists are placeholders until the build measures them | `site/deck/`, `docs/05-hackathon/` |
+| Pitch deck (11 slides, presenter window, print mode), storyboard, demo script, jury truth table, guide for the owner | done and checked on the live site in a real browser (both windows stay in step, answer cards open); numbers and the status lists are placeholders until the build measures them; full-screen mode and a real demo video were not tested | `site/deck/`, `docs/05-hackathon/` |
 | Public site | live: <https://urzad.flyreelstudio.eu> (pull-based from `site/`) | `docs/04-orchestration/deploy.md` |
 | Audit of the earlier research (Russian) | done | `docs/06-audit/` |
 
