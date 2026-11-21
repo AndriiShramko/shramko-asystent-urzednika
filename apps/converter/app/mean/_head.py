@@ -18,8 +18,10 @@ _KIND_ANY = re.compile(rf"\b({_WORDS})", re.IGNORECASE)
 _FURNITURE = lexicon.regex("habits", habit="furniture_title")
 _LEGAL_REF = re.compile(r"\(\s*(?:t\.\s*j\.\s*)?Dz\.\s*U\.[^)]*\)|\bna podstawie\b.*$", re.IGNORECASE)
 _FEE = lexicon.regex("habits", habit="fee")
+_PERSONAL_ONLY = lexicon.regex("habits", habit="personal_only")
 _ADDR_SECTION = lexicon.regex("habits", habit="addressee_section")
 _LEGAL_SECTION = lexicon.regex("habits", habit="legal_section")
+_HEAD_NO = re.compile(r"^\s*(?:[IVX]{1,4}|[A-Z]|\d{1,2}(?:\.\d{1,2})*)[.)]\s+(?=\S)")   # "II. Wniosek ..."
 _TO = re.compile(r"^(?:do|adresat\s*:?)\s+", re.IGNORECASE)
 NOT_FOUND = Stated(status="not_found")
 
@@ -48,6 +50,8 @@ def _title_like(doc: Doc) -> list[str]:
         if doc.role(rid) not in ("body", "heading"):
             continue
         run, t = doc.runs[rid][1], doc.text(rid)
+        if rid in doc.heading:
+            t = _HEAD_NO.sub("", t)
         if not t or len(t) > 120 or _FURNITURE.search(t) or not KIND.search(t):
             continue
         if run.bold or rid in doc.heading or t.isupper():
@@ -60,9 +64,10 @@ def _group(doc: Doc, top: str) -> list[str]:
     first, group = doc.runs[top][1], [top]
     for rid in doc.order[doc.pos[top] + 1: doc.pos[top] + 4]:
         run, t = doc.runs[rid][1], doc.text(rid)
-        same_look = run.bold == first.bold and abs(_weight(run) - _weight(first)) <= 0.7
-        wraps = t[:1].islower() or (doc.text(top).isupper() and t.isupper())
-        numbered = rid in doc.heading and doc.sections[doc.heading[rid]].number is not None   # "B ...": the next section
+        same_look = run.bold == first.bold and abs(_weight(run) - _weight(first)) <= (1.6 if t[:1].islower() else 0.7)   # "WNIOSEK" over a smaller "o wydanie ..."
+        same_heading = rid in doc.heading and doc.heading[rid] == doc.heading.get(top)   # the finder joined them
+        wraps = t[:1].islower() or same_heading or (doc.text(top).isupper() and t.isupper())
+        numbered = rid in doc.heading and not same_heading and doc.sections[doc.heading[rid]].number is not None   # "B ...": the next section
         if not (t and doc.role(rid) in ("body", "heading") and same_look and wraps and not numbered and len(t) <= 120
                 and not NUMBERING.match(t) and not KIND.search(t) and not _FURNITURE.search(t)):
             break
@@ -71,7 +76,7 @@ def _group(doc: Doc, top: str) -> list[str]:
 
 
 def tidy_title(raw: str, strike: bool) -> str:
-    t = neutral(_LEGAL_REF.sub("", raw), strike)
+    t = neutral(_LEGAL_REF.sub("", _HEAD_NO.sub("", raw)), strike)
     return sentence_case(re.sub(r"\s+", " ", t).strip(" :.,;"))
 
 
@@ -94,9 +99,9 @@ def find_title(doc: Doc) -> tuple[Stated, list[str]]:
 def find_variants(doc: Doc, title_runs: list[str]) -> list[Variant]:
     """Design 6.4.4: the title pattern repeated at the top of later pages, each with its own places to fill.
     Fewer than two different titles: an ordinary paper, no variant."""
-    if not title_runs or not KIND.search(doc.text(title_runs[0])):
+    if not title_runs or not KIND.search(_HEAD_NO.sub("", doc.text(title_runs[0]))):
         return []
-    word = KIND.search(doc.text(title_runs[0])).group(1).casefold()   # type: ignore[union-attr]
+    word = KIND.search(_HEAD_NO.sub("", doc.text(title_runs[0]))).group(1).casefold()   # type: ignore[union-attr]
     first = " ".join(doc.text(r) for r in title_runs)
     found = [Variant(doc.pos[title_runs[0]], tidy_title(first, doc.strike), tuple(title_runs))]
     top_of_page: dict[int, list[str]] = {}
@@ -106,7 +111,7 @@ def find_variants(doc: Doc, title_runs: list[str]) -> list[Variant]:
         page = doc.page(rid)
         if page <= doc.page(found[-1].runs[0]) or rid not in top_of_page[page][:8]:
             continue
-        if KIND.search(doc.text(rid)).group(1).casefold() != word:   # type: ignore[union-attr]
+        if KIND.search(_HEAD_NO.sub("", doc.text(rid))).group(1).casefold() != word:   # type: ignore[union-attr]
             continue
         group = _group(doc, rid)
         title = tidy_title(" ".join(doc.text(r) for r in group), doc.strike)
@@ -217,6 +222,24 @@ def find_applicants(signals: list[tuple[str, Evidence]]) -> Applicants:
             seen.add(ev.quote)
             evidence.append(ev)
     return Applicants(status="stated", self_=person, other_person=person, entity=entity, capacities=capacities, evidence=evidence)
+
+
+def prune_by_exclusion(doc: Doc, a: Applicants) -> tuple[Applicants, list[Dropped]]:
+    """D20: the proxy route (other person, entity, power of attorney) is removed only when the paper says it in so
+    many words ("Wniosek składa się wyłącznie osobiście"); the quote stays in the evidence and in the dropped list."""
+    if a.status != "stated":
+        return a, []
+    for rid in doc.order:
+        t = re.sub(r"\s+", " ", doc.text(rid))
+        m = _PERSONAL_ONLY.search(t)
+        if m and doc.role(rid) in ("body", "note", "heading"):
+            ev = doc.evidence([rid], t)
+            # only the route the sentence names goes: a proxy. A company or a statutory representative stays.
+            kept = [c for c in a.capacities if c != "pelnomocnik"]
+            pruned = a.model_copy(update={"self_": a.self_ or not a.entity, "other_person": False, "capacities": kept,
+                                          "evidence": [*a.evidence, ev]})
+            return pruned, [Dropped(what=f"route of a proxy or an entity: {t[:160]}", reason="PAPER_INSTRUCTION", page=doc.page(rid), runs=[rid])]
+    return a, []
 
 
 # -- legal basis, fee, clause ---------------------------------------------------------------------------------------

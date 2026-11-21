@@ -17,3 +17,25 @@ T9 Validators, dictionaries, requiredness, labels (1.5 h, after T4). One evidenc
 T10 Spreadsheets (1 h, after T1). Test: openpyxl XLSX with merge B2:E2, placeholder "RRRR-MM-DD", yellow borderless cell, =SUM, hidden sheet with HELPER_TEST; hand-zipped ODS with a 1000 and a 1048576 repeated empty row between two fields: one field per merge, date control, no helper text, same two fields in order, under 5 s. Fix: sparse traversal, formulas are not inputs.
 T11 Review screen (1.5 h, after T1 and T3). Upload, matter fields first with source page and snippet, warnings, collapsed standard sections, download equal byte for byte to REST. Test: an unbriefed person, judged-03, 2 minutes. No batch, no editor, no cost dial; a branch preview only if T8 ships.
 T12 Release rehearsal (3 h protected, first container run by hour 4). Pull by digest on a second machine with --network none, README alone, all eight kinds plus T2 forms; spoofs 415, bad names 400; regenerate the seven judged JSONs from that digest and diff matter against reference 1 and 5; arm64 pull (2 of 3). Freeze at hour 13 with a tag and rollback digest; deck (10 slides) and film (3 min) in hours 14-16. Cut now: security work beyond what is merged, ledger and coverage gates, diff, agent pack, cost dial, second image and OCR engine, flag matrix.
+
+## Round 2 (program lead, 21 November 17:13; the seven results of `track-f-a2`)
+
+Tickets T1 to T15 (each reported by two of three vendors) live outside the repository: the lead's vault folder `lead-2026-11-21/audit/`, file `02-tickets-for-build-lead.md`. They quote the partner's forms and stay there.
+
+| Ticket | Subject | Package |
+|---|---|---|
+| T1 | choice groups and strike-out alternatives | F3b (sets 3 and 8 in part), WP-F3c item 1 |
+| T2 | attachments as FILE_UPLOADER | WP-F3c item 2 |
+| T3 | sentence tails, headings, printed rates as REQUIRED fields | WP-F3c item 3 |
+| T4 | one blank split into two fields | WP-F3c item 4 |
+| T5 | labels are fragments | WP-F3c item 5 |
+| T6 | table cells lost | WP-F3c item 7 or F3d |
+| T7 | unconditional REQUIRED, missing conditions | WP-F3c item 6 or F3d, with WP-F7 |
+| T8 | set 9 is three applications | F3b item 1 (selector); SHOW per part and repeating wards: F3d |
+| T9 | types of dates and counts | WP-F3c item 5 |
+| T10 | missing sections of set 8 (boxed positions "poz. NN") | F3d |
+| T11 | fee paragraph cut, duplicate uploaders | WP-F3c item 2 (duplicates); the cut paragraph: F3d |
+| T12 | standard scaffold contradicts the paper | F3d, with D20 |
+| T13 | repetition ("dla każdego") | F3d |
+| T14 | dictionary title `TERYT_4G_DOWODOWY` | composer one-liner, WP-F3c if time allows |
+| T15 | place and date of the application | docket row (the platform stamps the date) or F3d |

@@ -19,7 +19,8 @@
     {"habit": "furniture_title", "pattern": "^\\W*zał(ącznik|\\.)\\s*(nr|do)\\b", "source": "design 6.4.1; set judged-04", "date": "2026-11-21"},
     {"habit": "addressee_section", "pattern": "organ\\w*,? do którego", "source": "design 6.4.1; set judged-08 (A)", "date": "2026-11-21"},
     {"habit": "legal_section", "pattern": "^podstawa prawna", "source": "set judged-02 (6)", "date": "2026-11-21"},
-    {"habit": "acronym", "pattern": "^(PESEL|NIP|REGON|KRS|RODO|CEIDG|BHP|ePUAP)$", "source": "design 6.4.3 labels in sentence case", "date": "2026-11-21"},
+    {"habit": "acronym", "pattern": "^(PESEL|NIP|REGON|KRS|RODO|CEIDG|BHP|ePUAP|VIN)$", "source": "design 6.4.3 labels in sentence case", "date": "2026-11-21"},
+    {"habit": "personal_only", "pattern": "(sk[łl]ada si[ęe]|sk[łl]adan\\w+|do z[łl]o[żz]enia)\\s+wy[łl][ąa]cznie\\s+osobi[śs]cie|nie mo[żz]e by[ćc] sk[łl]adan\\w+ przez pe[łl]nomocnika", "source": "audit T4; decision D20 (an explicit exclusion prunes the proxy route)", "date": "2026-11-21"},
     {"habit": "function_word", "pattern": "^(w|we|z|ze|na|do|od|przy|wraz|oraz|a|i|o|tj|zam)\\b", "source": "design 6.4.3 'raw words with a flag'; sets reference-01, judged-06", "date": "2026-11-21"}
   ]
 }

@@ -172,6 +172,15 @@ def test_legal_reference_leaves_the_title():
     assert p.brief().title.value == "Wniosek o stwierdzenie nadpłaty podatku"
 
 
+def test_title_continues_into_a_smaller_bold_line_in_lower_case():
+    p = Paper()
+    p.text("WNIOSEK", bold=True, size=12.0)
+    p.text("o wydanie zezwolenia na zajęcie pasa drogowego", bold=True, size=11.04)
+    p.text("w celu prowadzenia robót", bold=True, size=11.04)
+    p.blank("Nazwa drogi")
+    assert p.brief().title.value == "Wniosek o wydanie zezwolenia na zajęcie pasa drogowego w celu prowadzenia robót"
+
+
 def test_a_body_gives_organ_and_an_office_named_on_two_lines_gives_urzad():
     b = hall().brief()
     assert (b.addressee.status, b.addressee.kind, b.addressee.name) == ("stated", "body", "Wójt Gminy Zmyślona")

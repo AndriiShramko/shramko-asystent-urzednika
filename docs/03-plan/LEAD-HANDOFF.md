@@ -38,6 +38,15 @@ Written by the first lead session of the build on 21 November 2026. [`STATUS.md`
 - **A worktree agent's downloads stay in its worktree**: the city archive was moved to `data/archive/` of the main checkout.
 - **The program lead is the only one who talks to the owner.** Its decisions and the audit's tickets arrive by message; record decisions in the decisions file (section 6c) and tickets in `audit-tickets-2026-11-21.md` with the package that takes each.
 
+### Learned by the third build lead (21 November, 17:07 to 17:25)
+
+- **A lead that hands over still acts on its own agents' notices.** The second lead's session merged F20e at 17:14 while the third lead was merging it too (merge.sh said "Already up to date"). Before a merge, `git log -3 main` and `git log origin/main -1`; tell the old session in one message that it merges nothing more.
+- **Agents report to the session that started them.** A new lead learns nothing from them: watch the package branches with one background loop (`git rev-parse` every 30 s, exit when a branch moves) and read the status file on the branch; never read an agent's output file.
+- **Check Actions after every code merge**: `bash tools/gate.sh py tools/ci/wait_run.py <full hash> --timeout 540`. `main` was red for 17 minutes (F2c made JPG and PNG readable while the image check still expected a refusal) and nobody saw it; `latest-main` silently stayed on an older commit. Which commit an image is: compare `image_digest.py --tag latest-main` with `image_digest.py <full hash>` of recent first-parent commits.
+- **The chain's baseline keeps no reason for a refusal**; the reasons came from a read-only agent converting the eight files natively. Worth adding the problem code to `baseline.json` (WP-F11b).
+- **Context:** the first turn of a lead costs about 120 thousand tokens (prompt, tools, skills); the program lead's rule hands over at that start plus about 100 thousand. Two agent reports and one STATUS rewrite fill most of it: delegate every read over 10 KB, keep reports to 15 lines.
+- **The owner may write to the build lead directly.** Answer him in Russian (rule 13), record what he decides (D25 came this way) and tell the program lead.
+
 ## 4. What comes next, in order
 
 1. (Second lead, 17:04) Merge WP-F3b and WP-F20e when they report; the rest of the order is in the STATUS handoff block, which wins over this list.
