@@ -39,7 +39,9 @@ Branch: wp/F0c-models11   Stage now: acceptance (single stage, lead-owned contra
 | fast gate, zero edits in readers/compose/guard/auth | `bash tools/gate.sh fast` | 416 passed (378 before), 8 deselected | this branch |
 
 ## Negative control
-Tests: element with neither box nor anchor refused; span past the text of its run refused; ledger from dispositions missing c51 refused; old 1.0 examples validate against the 1.1 schema and model. Break-and-restore: see below.
+Tests: element with neither box nor anchor refused; span past the text of its run refused; ledger from dispositions missing c51 refused; old 1.0 examples validate against the 1.1 schema and model. Break-and-restore on 3f2bbf3: the missing-candidate check of
+`assemble_ledger` disabled -> `test_negative_control_ledger_missing_a_finder_candidate_is_refused` failed (1 failed,
+37 passed); file restored from git, 38 passed. The gate's two warnings come from fastapi/jwt, not from the models.
 
 ## Requests to lead
 - Composer (WP-F5 owner): make the attachment id from `Attachment.key` when present; use `MatterSection.page_title` and `hint`; accept an optionless CHECKBOX (conditions "true"/"false") and the `applicant` selector in conditions; map `Remark.code` to `Warning.code` 1:1.
