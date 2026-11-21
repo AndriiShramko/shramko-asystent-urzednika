@@ -8,7 +8,7 @@ Branch: wp/F11a-check-chain   Stage now: integration (core done)
 - [x] `.gitignore`: `data/archive/`, `eval/chain/last-run.jsonl`
 - [x] Archive downloaded (182,931,304 bytes, equals the release), unpacked to data/archive/files (678 files); `--build-sample` -> `eval/chain/sample.json`: 80 files (seed 20261121; doc 15, docx 15, pdf 15 plus top-up, jpg 1, xls 1, xlsx 1, rtf 5 as refusal check; the archive has no ods, odt, png)
 - [x] First full run (below); `baseline.json` and `summary.json` committed (18 tests pass)
-- [ ] Owner's page `docs/03-plan/check-chain.ru.md`
+- [x] Owner's page `docs/03-plan/check-chain.ru.md`
 - [ ] Hostile corpus swap to `apps/converter/tests/evil` when WP-F16 lands
 
 ## Decisions
@@ -40,4 +40,5 @@ Forced exception inside the pipeline (`CHAIN_FAULT=raise`) is classed `failed` a
 - Let the fast gate also collect `eval/chain/tests` (or tell me where else it should live).
 
 ## Cost notes
+- integration: one reply set, only the owner page was left; nothing else needed.
 - core: the shell tool refuses commands containing the word eval or git inside compound commands; use Glob/Read and plain commands.
