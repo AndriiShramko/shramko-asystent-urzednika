@@ -62,6 +62,17 @@ Everything comes from the environment; the service refuses to start on an incons
 | `STRICT_EXTENSIONS` | `false` | `false` accepts `.jpe` as JPEG by content; `true` accepts exactly the eight extensions |
 | `DOC_READER` | `native` | `off` refuses binary Word with `415 DOC_READER_OFF` |
 | `ACTIVE_CONTENT` | `warn` | `strict` refuses files with macros |
+| `MAX_PAGES` | `60` | pages per document; more is `413 TOO_LARGE` |
+| `OCR_MIN_CHARS` | `20` | a PDF page with fewer characters takes the image way |
+| `FINISH_STYLE` | `export` | `export`: `SECTION` with `TEXT_BLOCK`; `info_section` |
+| `VALIDATORS` | `on` | `off` writes empty validator lists, as in the exports |
+| `REPEATING_STYLE` | `native` | `native`: `REPEATING_SECTION`; `flat`: one plain section |
+| `STATUTORY_REPRESENTATIVE` | `true` | path for a parent, guardian or curator (D16) |
+| `POA_EXEMPTION` | `false` | reason of exemption from stamp duty for a power of attorney (D17) |
+| `FORM_KEY` | empty | fixed key for ids; empty: the slug of the title |
+| `ID_NAMESPACE` | fixed UUID | namespace of the ids; must be a UUID |
+
+Until the finder and the understanding step exist (WP-F3, WP-F4) the form holds the title of the file and the standard sections; the sidecar carries the warning `BRIEF_NOT_READ`. Formats without a reader yet (XLSX, ODS, binary DOC, JPEG, PNG) answer `422 UNREADABLE`, never a made-up form.
 | `UI_ENABLED`, `UI_DIR` | `true`, empty | serve the front end; folder of a build |
 | `LOG_LEVEL` | `info` | logs are content-free at every level |
 
