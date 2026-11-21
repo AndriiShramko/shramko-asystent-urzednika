@@ -1,6 +1,6 @@
 # WP-F2b Readers of XLSX, ODS and binary Word: status
 
-Branch: wp/F2b-readers-sheets-doc   Stage now: core done; next integration/acceptance
+Branch: wp/F2b-readers-sheets-doc   Stage now: core and integration done; next acceptance
 
 ## Status
 - [x] Shared pieces: `_zip.py` (part limits, safe XML), `_sheet.py` (grid of one sheet -> one flow page), `ReadOptions.max_cells`
@@ -9,6 +9,7 @@ Branch: wp/F2b-readers-sheets-doc   Stage now: core done; next integration/accep
 - [x] survey.py reads a `.doc` that is a DOCX by content (guard's `sniff_kinds`, row key `named`); `eval/readers-sets.json` refreshed: 69 files, read 42, no_reader 27 (images, F2c), 0 refused, 0 unhandled
 - [x] sets tests `tests/readers/test_sheet_doc_sets.py` (sets, slow; 5 passed): every xlsx and ods reads, xlsx and ods of a set agree on sheet names and title, every OLE `.doc` has its title in the first 20 runs, the text-box docs of sets 2 and 8 give 65 and 651 runs
 - [x] negative control recorded (break and restore)
+- [x] integration: `tests/readers/test_sheet_doc_pipeline.py` (6 tests): xlsx, ods, doc go through `pipeline.run` with no lint ERROR; renamed OLE read by content; every set file xlsx/ods/doc through the pipeline (sets): no crash, no lint ERROR
 - [ ] acceptance stage: merge main, fast gate, review; drill 6 "one field per labelled merge" end to end needs the finder (WP-F3)
 - [ ] after merge (lead): READY_FORMATS and the formats-without-reader list (see Requests to lead)
 
@@ -31,6 +32,7 @@ Branch: wp/F2b-readers-sheets-doc   Stage now: core done; next integration/accep
 | survey | `bash tools/gate.sh py -m app.readers.survey --check` | 69 files: read 42, no_reader 27, 0 unhandled; each new-format file <= 0.2 s | survey commit |
 | sets tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_sheet_doc_sets.py -q` | 5 passed | survey commit |
 | sets, scratch read | scratch script over 7 OLE .doc, 7 xlsx, 9 ods | all read, 0 refused, 0 crashes, <= 0.21 s each; xlsx and ods give equal runs and cells in 6 of 7 sets (set 3: 22 vs 23 runs); .doc title word at run index 1..12 | core commit |
+| pipeline, synthetic and sets | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_sheet_doc_pipeline.py -q` | 6 passed (3.4 s, sets present) | integration commit |
 
 ## Negative control
 In `_sheet.py` the line that marks the squares under a merge as covered was replaced by `pass`: `test_xlsx_grid_merges_borders_and_sizes` and `test_ods_grid_spans_styles_and_trailing_repeats` failed (2 failed, 14 passed); restored with `git checkout`, 16 passed. The ODS million-row refusal is its own test (`test_negative_control_ods_row_repeated_a_million_times_is_refused_before_expanding`, TOO_LARGE in under 1 s).
@@ -42,3 +44,4 @@ In `_sheet.py` the line that marks the squares under a merge as covered was repl
 
 ## Cost notes
 - core: most turns went to the binary Word format (FIB, piece table, FKP pages) and to a byte-level test builder; a reference of MS-DOC offsets in the brief would save two turns.
+- integration: one turn on finding the pipeline's lint call shape; the pipeline needed no change, the readers register themselves.
