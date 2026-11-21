@@ -17,8 +17,8 @@ Scope of the first build (lead, 21 Nov 17:25; D22, D25): review view first, thre
 - [x] Every-device check: Playwright 1.x with Chromium and Firefox, 375 / 768 / 1280 px, `scripts/devices.mjs`; screenshots in `apps/review-web/evidence/`
 - [x] Real upload through the running native service (`AUTH_MODE=off`, synthetic PDF of `tools/ci/make_fixtures.py`): form shown, SHA-256 matches `X-Form-SHA256`
 - [ ] WebKit not run (no browser downloaded; Chromium + Firefox satisfy "at least two engines")
-- [ ] Token path against a service with `AUTH_MODE=jwt` (tested only with a mocked fetch)
-- [ ] Judged sets 8 and two exports loaded through the page (needs the partner's sets; not run in this stage)
+- [x] Token path against a real service with `AUTH_MODE=jwt` (HS256, synthetic key): no token, wrong key, expired -> plain refusal, no form; token with `scope: convert` -> form
+- [x] Judged sets 8 and 9 and both reference sets (1, 5) loaded through the page, 3 engines: form shown, SHA-256 agrees, matter section present (12 of 12)
 - [ ] Later (not in the first build): paper page with outlined places, two inks, decision cards, batch table
 
 ## Decisions
@@ -39,6 +39,8 @@ Scope of the first build (lead, 21 Nov 17:25; D22, D25): review view first, thre
 | Screenshots (result state, Polish) | `apps/review-web/evidence/` | `chromium-375.png`, `chromium-768.png`, `chromium-1280.png`, `firefox-375.png`, `firefox-768.png`, `firefox-1280.png`; full report `devices-report.json` | this commit |
 | Fast gate | `bash tools/gate.sh fast` | 652 passed, 2 skipped; links 21 passed | e01be5e + this commit's front-end only changes |
 
+- Integration check: `apps/review-web/scripts/integration.mjs` (files read in place via the paths of `tools/coi_paths.py`, nothing copied). Result: 21 PASS lines, `all passing` (3 engines x [3 refusals + 4 forms]). Fast gate: 670 passed, 2 skipped, links 21 passed.
+
 ## Negative control
 With the sidecar missing (or invalid) the form is still listed and downloadable and the page says what is absent: `tests/lib.test.ts` "negative control: with the sidecar missing or broken" and `tests/ui.test.ts` "negative control: sidecar missing, the form is still shown". A wrong hash is flagged ("bad"), and a colour pair below 4.5:1 is measured as failing (`contrast.test.ts`).
 
@@ -49,5 +51,8 @@ With the sidecar missing (or invalid) the form is still listed and downloadable 
 - The sidecar of the current pipeline has `meta.origins` but no `meta.evidence`, so fields of the matter show "no place on the paper found" (honest gap, tested). The snippet appears as soon as the service writes `meta.evidence`.
 - Re-run the device check: build (`npm run build`), start `AUTH_MODE=off bash tools/gate.sh py -m converter serve --port <free>`, `npm install --no-save playwright`, `PLAYWRIGHT_BROWSERS_PATH=.playwright npx playwright install chromium firefox`, then `node scripts/devices.mjs --engines chromium,firefox --base http://127.0.0.1:<port>/ui/ --file <synthetic pdf> --bad <text file named .png> --out evidence`. Port 8099 was taken by another process on this machine.
 
+- Integration found: a token without `scope: convert` gets 403 SCOPE; the page showed it as a plain refusal (first run, before the script minted the scope).
+
 ## Cost notes
 - core: the most turns went to reading the sidecar shape (the REST sidecar nests `meta.origins`, the contract keeps them at the top level; both are read). Cheaper next time if the lead fixes one shape in the brief.
+- integration: the most turns went to path forms (Git Bash `/c/...` vs Windows `C:/...` for Playwright) and the missing `scope` claim. Cheaper: pass Windows paths and say in the brief that the token needs `scope: convert`.
