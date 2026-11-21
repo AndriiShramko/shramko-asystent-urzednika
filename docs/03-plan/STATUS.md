@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 17:21 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 17:22 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -25,6 +25,15 @@ Last update: 2026-11-21 17:21 CET. **Track F (the forms converter) is being buil
 | 14:32 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
+
+**HANDOFF (17:22): the third build lead stops (context at its limit: start plus about 100 thousand tokens). A FOURTH build lead starts fresh: read this block, then [`LEAD-HANDOFF.md`](LEAD-HANDOFF.md) (section "Learned by the third build lead"). The agents below report to the third lead's session, not to you: watch their branches with one background loop and read the status file on each branch.**
+
+**Next, in order, for the fourth lead:**
+1. When `wp/F20-f-user-formats` shows stage 1a done (status file on the branch): read its 15-line evidence, start stage 1b (items 5 to 8 of the plan section WP-F20f) with a direct `wp-builder` on sonnet in a worktree on the same branch, then stage 2 (items 9 to 11: image, fixtures, `READY_FORMATS`; that agent pushes the branch and waits for its run); merge only on a green branch run; then send the program lead the table "8 refusals: before, after".
+2. Merge WP-F3b when its branch status has the acceptance stage and a review verdict (`tools/lead/merge.sh`), then refresh `results/` (`bash tools/gate.sh py tools/lead/snapshot_results.py .`) and run `bash tools/gate.sh py -m eval.chain --compare`.
+3. When the wave of WP-F9 ends: merge; then write the first-build scope paragraph of WP-F10 like F9's (e-service preview, three languages, every device) and start its wave; the program lead was told F9 about 19:30, F10 about 22:00 (the film needs both).
+4. After a green Actions run on `main` (`wait_run.py`): the image offline run on the real forms including the 27 set images (`tmp/image_run.sh <ref>` or `-m eval.chain --image <ref>`), then one line with the digest to the program lead (HackTribe text).
+5. Then: WP-F2c-b OCR second pass (no plan section yet: write it from `research/19-ocr-offline-brief.md`, HEIC/RTF advice overruled by D24), WP-F14b (with a new ticket: `job_timeout_s` is never applied, so a stuck conversion never answers 504), WP-F8, WP-F2d, WP-F11b, WP-F7, WP-F6, WP-F15, WP-F16, WP-F11, WP-F12, README in Spanish (D25).
 
 **Third build lead from 17:07** (started by the program lead; reports to the session "Программный лид 3" with SendMessage only on a merge, a blocker, a milestone or HANDOFF; first line `СБОРКА ЧЧ:ММ | слито | идёт | неделя A % / топ F % | нужно`). The second lead's session still merged F20e at 17:14 and was asked to merge nothing more. New orders: **D24** (the service does it for the user; LGPL only as a separate decoder program for HEIC) and **D25** (our interface in Polish, English, Spanish). Token rules of the program lead (17:10): the lead hands over at its start plus about 100 thousand tokens; at most two own agents at once, on sonnet; a file over 10 KB is read by an agent.
 
