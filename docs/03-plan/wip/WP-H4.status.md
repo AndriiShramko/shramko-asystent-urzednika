@@ -1,5 +1,5 @@
 # WP-H4 the engine is always visible: status
-Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 03:02; state: running
+Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 03:15; state: stopped at the reply limit, built and proven up to 6115de9; on the head two checks were still running and are not read (see "Left for the next stage")
 
 Branch: wp/H4-engine-visible   Stage now: core
 
@@ -19,7 +19,9 @@ Branch: wp/H4-engine-visible   Stage now: core
 - [x] the log lines reach the output of a real server (this commit): found by a smoke run on 127.0.0.1 that the logger `converter` had no handler, so neither the engine line nor the line per conversion was ever printed
 - [x] on e4fc776: byte comparison against main a7f2cee 158 of 158 and 79 of 79 (fake model configured); on 6115de9: `tools/ci/tests` 100 passed
 - [x] merge of main 2837867 (97af238), pushed
-- [~] on 97af238, started 02:55 and not read yet: the fast gate, `tools/ci/tests`, the byte comparison against main 2837867 (158 and 79)
+- [x] on 6115de9: byte comparison against main a7f2cee 158 of 158 and 79 of 79 (fake model configured)
+- [x] on the head (dc877c6, code of 97af238): the package's own tests, the first-run check and the model contract tests, 184 passed
+- [~] NOT READ, the builder's reply limit came first: on 97af238 the fast gate (at 40 percent at 03:14, no failure so far), `tools/ci/tests`, and the byte comparison against main 2837867 (80 of 158 hashed on both sides at 03:14). The last complete fast gate is on 2af59a7 (PASSED); a gate started on 6115de9 was at 88 percent with no failure. The head's code under `apps/converter/app` differs from the proven 6115de9 by one line of `pipeline.py`, and that line is main's own (2837867 against a7f2cee: the same single file)
 
 ## Decisions
 - `serve` gives the logger `converter` the server's own handler (a copy of uvicorn's log configuration with one
@@ -71,6 +73,12 @@ Branch: wp/H4-engine-visible   Stage now: core
 | `/status` back to six keys with no model; first-run check | `bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py apps/converter/tests/shell/test_service_fixes.py tools/ci/tests/test_first_run.py::test_first_run_of_the_native_service_with_no_configuration -q` | 54 passed | e4fc776 |
 | a real server on 127.0.0.1 (scratch `smoke.sh`: `python -m converter serve`, `curl`), without and with a fake configured model | `/healthz`, `/status`, convert, report, batch, `/ui/` bundle, the server's log | `/healthz` `{"status":"ok","version":"0.1.0"}` in both; header `x-converter-engine: rules` on convert and report; `"engine":"rules"` in both batch lines; the same `x-form-sha256` with and without the model; `/status` six keys without, `model` with (name, `host: public`, `key: variable`); the bundle holds the band's text; log: `INFO: engine=rules state=UNAVAILABLE model=… host=public reason=no-model-step` and `stage=convert result=ok … engine=rules`; 0 lines with the fake password, key, host, port, path or query in the log and the form | this commit |
 | engine and CLI tests after the log fix | `bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py apps/converter/tests/shell/test_shell_config_cli.py -q` | 75 passed | this commit |
+| HARD, on the tree with `/status` reduced: form and sidecar byte-identical to main a7f2cee | same script, `git archive e4fc776 apps/converter/app` | 158 of 158; 79 of 79 with a fake configured model | e4fc776 |
+| HARD, on the tree with the log fix | same script, `git archive 6115de9 apps/converter/app` | 158 of 158 (152 converted, 6 refused, 0 errors); 79 of 79 with a fake configured model | 6115de9 |
+| the checks of the image that run without Docker | `bash tools/gate.sh py -m pytest tools/ci/tests -q` | 100 passed | 6115de9 |
+| after the merge of main 2837867: the package's tests, the first-run check, the model contract tests | `bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py apps/converter/tests/shell/test_service_fixes.py apps/converter/tests/shell/test_shell_config_cli.py tools/ci/tests/test_first_run.py apps/converter/tests/model -q` | 184 passed | dc877c6 |
+| after the merge of main 2837867: what differs from main under `apps/converter/app` | `diff -rq` of `git archive 2837867` and `git archive 97af238` | five files: `cli.py`, `config.py`, `engine.py` (new), `main.py`, `model/common.py`; against 6115de9 the head adds only main's one line in `pipeline.py` | 97af238 |
+| NOT READ: fast gate, `tools/ci/tests` and the 158 and 79 comparison against main 2837867 on the head | started 02:57, the reply limit came first | no result; re-run as "Left for the next stage" says | 97af238 |
 
 ## Negative control
 On 913f787 the line `engine.HEADER: engine.engine_of(...)` was removed from `headers_for` in `app/main.py`:
@@ -140,3 +148,8 @@ Checks passed and on which commit: see "## Evidence".
 
 ## Cost notes
 - core: the 5-hour limit cut the first session after 9 replies of reading; the lead saved the loose files.
+- The byte proof was run five times (about 12 minutes each, in the background) because main moved twice and
+  because two late findings changed the shell: the six keys of `/status` fixed by `tools/ci/first_run.py`, and
+  the logger without a handler. Cheaper: run `tools/ci/tests` and one smoke on a real server BEFORE the first
+  proof (the fast gate runs neither), and keep both code trees of the proof outside the checkout from the start
+  (one run was spoiled by a merge into the checkout it was reading).
