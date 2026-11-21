@@ -1,0 +1,403 @@
+{
+ "corpora": {
+  "hostile": {
+   "converted": 0,
+   "failed": 0,
+   "fields": 0,
+   "fields_matter": 0,
+   "files": 7,
+   "formats": {
+    "docx": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 1,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 1,
+     "seconds": 0.04,
+     "warnings": {}
+    },
+    "ods": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 1,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 1,
+     "seconds": 0.1,
+     "warnings": {}
+    },
+    "pdf": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 3,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 3,
+     "seconds": 0.0,
+     "warnings": {}
+    },
+    "png": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 2,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 2,
+     "seconds": 0.33,
+     "warnings": {}
+    }
+   },
+   "gate_failed": 0,
+   "lint_errors": 0,
+   "no_label": 0,
+   "refused": 7,
+   "seconds": 0.47,
+   "warnings": {}
+  },
+  "sets": {
+   "converted": 44,
+   "failed": 0,
+   "fields": 2156,
+   "fields_matter": 0,
+   "files": 71,
+   "formats": {
+    "doc": {
+     "converted": 9,
+     "failed": 0,
+     "fields": 441,
+     "fields_matter": 0,
+     "files": 9,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 5.62,
+     "warnings": {
+      "ADDRESSEE_MISSING": 9,
+      "APPLICANTS_ASSUMED": 9,
+      "BRIEF_NOT_READ": 9,
+      "CLAUSE_LINK_MISSING": 9,
+      "NO_MATTER": 9,
+      "UNREADABLE_PART": 3
+     }
+    },
+    "docx": {
+     "converted": 10,
+     "failed": 0,
+     "fields": 490,
+     "fields_matter": 0,
+     "files": 10,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 6.68,
+     "warnings": {
+      "ADDRESSEE_MISSING": 10,
+      "APPLICANTS_ASSUMED": 10,
+      "BRIEF_NOT_READ": 10,
+      "CLAUSE_LINK_MISSING": 10,
+      "NO_MATTER": 10
+     }
+    },
+    "jpe": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 1,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 1,
+     "seconds": 0.18,
+     "warnings": {}
+    },
+    "jpeg": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 8,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 8,
+     "seconds": 1.49,
+     "warnings": {}
+    },
+    "jpg": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 9,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 9,
+     "seconds": 1.81,
+     "warnings": {}
+    },
+    "ods": {
+     "converted": 9,
+     "failed": 0,
+     "fields": 441,
+     "fields_matter": 0,
+     "files": 9,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 6.02,
+     "warnings": {
+      "ADDRESSEE_MISSING": 9,
+      "APPLICANTS_ASSUMED": 9,
+      "BRIEF_NOT_READ": 9,
+      "CLAUSE_LINK_MISSING": 9,
+      "NO_MATTER": 9
+     }
+    },
+    "pdf": {
+     "converted": 9,
+     "failed": 0,
+     "fields": 441,
+     "fields_matter": 0,
+     "files": 9,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 11.73,
+     "warnings": {
+      "ADDRESSEE_MISSING": 9,
+      "APPLICANTS_ASSUMED": 9,
+      "BRIEF_NOT_READ": 9,
+      "CLAUSE_LINK_MISSING": 9,
+      "NO_MATTER": 9
+     }
+    },
+    "png": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 9,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 9,
+     "seconds": 1.85,
+     "warnings": {}
+    },
+    "xlsx": {
+     "converted": 7,
+     "failed": 0,
+     "fields": 343,
+     "fields_matter": 0,
+     "files": 7,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 4.78,
+     "warnings": {
+      "ADDRESSEE_MISSING": 7,
+      "APPLICANTS_ASSUMED": 7,
+      "BRIEF_NOT_READ": 7,
+      "CLAUSE_LINK_MISSING": 7,
+      "NO_MATTER": 7
+     }
+    }
+   },
+   "gate_failed": 0,
+   "lint_errors": 0,
+   "no_label": 0,
+   "refused": 27,
+   "seconds": 40.16,
+   "warnings": {
+    "ADDRESSEE_MISSING": 44,
+    "APPLICANTS_ASSUMED": 44,
+    "BRIEF_NOT_READ": 44,
+    "CLAUSE_LINK_MISSING": 44,
+    "NO_MATTER": 44,
+    "UNREADABLE_PART": 3
+   }
+  },
+  "unseen": {
+   "converted": 72,
+   "failed": 0,
+   "fields": 3528,
+   "fields_matter": 0,
+   "files": 80,
+   "formats": {
+    "doc": {
+     "converted": 19,
+     "failed": 0,
+     "fields": 931,
+     "fields_matter": 0,
+     "files": 19,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 12.26,
+     "warnings": {
+      "ADDRESSEE_MISSING": 19,
+      "APPLICANTS_ASSUMED": 19,
+      "BRIEF_NOT_READ": 19,
+      "CLAUSE_LINK_MISSING": 19,
+      "NO_MATTER": 19,
+      "UNREADABLE_PART": 5
+     }
+    },
+    "docx": {
+     "converted": 20,
+     "failed": 0,
+     "fields": 980,
+     "fields_matter": 0,
+     "files": 20,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 13.11,
+     "warnings": {
+      "ADDRESSEE_MISSING": 20,
+      "APPLICANTS_ASSUMED": 20,
+      "BRIEF_NOT_READ": 20,
+      "CLAUSE_LINK_MISSING": 20,
+      "NO_MATTER": 20
+     }
+    },
+    "jpg": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 1,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 1,
+     "seconds": 0.22,
+     "warnings": {}
+    },
+    "pdf": {
+     "converted": 32,
+     "failed": 0,
+     "fields": 1568,
+     "fields_matter": 0,
+     "files": 33,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 1,
+     "seconds": 43.0,
+     "warnings": {
+      "ADDRESSEE_MISSING": 32,
+      "APPLICANTS_ASSUMED": 32,
+      "BRIEF_NOT_READ": 32,
+      "CLAUSE_LINK_MISSING": 32,
+      "NO_MATTER": 32,
+      "TITLE_MISSING": 3,
+      "UNREADABLE_PART": 29
+     }
+    },
+    "rtf": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 5,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 5,
+     "seconds": 0.0,
+     "warnings": {}
+    },
+    "xls": {
+     "converted": 0,
+     "failed": 0,
+     "fields": 0,
+     "fields_matter": 0,
+     "files": 1,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 1,
+     "seconds": 0.0,
+     "warnings": {}
+    },
+    "xlsx": {
+     "converted": 1,
+     "failed": 0,
+     "fields": 49,
+     "fields_matter": 0,
+     "files": 1,
+     "gate_failed": 0,
+     "lint_errors": 0,
+     "no_label": 0,
+     "refused": 0,
+     "seconds": 0.63,
+     "warnings": {
+      "ADDRESSEE_MISSING": 1,
+      "APPLICANTS_ASSUMED": 1,
+      "BRIEF_NOT_READ": 1,
+      "CLAUSE_LINK_MISSING": 1,
+      "NO_MATTER": 1
+     }
+    }
+   },
+   "gate_failed": 0,
+   "lint_errors": 0,
+   "no_label": 0,
+   "refused": 8,
+   "seconds": 69.22,
+   "warnings": {
+    "ADDRESSEE_MISSING": 72,
+    "APPLICANTS_ASSUMED": 72,
+    "BRIEF_NOT_READ": 72,
+    "CLAUSE_LINK_MISSING": 72,
+    "NO_MATTER": 72,
+    "TITLE_MISSING": 3,
+    "UNREADABLE_PART": 34
+   }
+  }
+ },
+ "total": {
+  "converted": 116,
+  "failed": 0,
+  "fields": 5684,
+  "fields_matter": 0,
+  "files": 158,
+  "gate_failed": 0,
+  "lint_errors": 0,
+  "no_label": 0,
+  "refused": 42,
+  "seconds": 109.85,
+  "warnings": {
+   "ADDRESSEE_MISSING": 116,
+   "APPLICANTS_ASSUMED": 116,
+   "BRIEF_NOT_READ": 116,
+   "CLAUSE_LINK_MISSING": 116,
+   "NO_MATTER": 116,
+   "TITLE_MISSING": 3,
+   "UNREADABLE_PART": 37
+  }
+ }
+}
