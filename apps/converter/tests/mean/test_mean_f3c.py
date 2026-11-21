@@ -210,6 +210,50 @@ def test_a_regulation_annex_line_and_a_bare_attachments_heading_give_no_upload()
     assert b.attachments == [] and "Regulaminu" not in (b.title.value or "")
 
 
+def test_words_after_the_verb_that_name_no_document_give_no_upload() -> None:
+    """Review of 21 Nov: a deadline, a place, a list header with words before its colon and a ban each made a
+    required upload with a label that names no document."""
+    for line in ("Brakujące dokumenty należy dołączyć w terminie 7 dni od dnia złożenia wniosku.",
+                 "Oświadczenie należy dołączyć do akt sprawy.",
+                 "Do wniosku należy dołączyć następujące dokumenty:",
+                 "Do wniosku należy dołączyć (zaznaczyć właściwe):",
+                 "W załączeniu przedkładam:",
+                 "Kopii dowodu nie należy załączyć do wniosku.",
+                 "Należy załączyć do wniosku kopię umowy najmu."):
+        assert _one_line_paper(line).attachments == [], line
+    kept = _one_line_paper("Do wniosku należy dołączyć dowód uiszczenia opłaty skarbowej w wysokości 17 zł.")
+    assert [(a.label, a.required) for a in kept.attachments] == [("Dowód uiszczenia opłaty skarbowej w wysokości 17 zł", True)]
+
+
+def test_the_next_numbered_heading_ends_a_list_of_attachments() -> None:
+    def labels(items: tuple[str, ...]) -> list[str]:
+        n = Native()
+        n.text(70, 60, "WNIOSEK O WYNAJEM", 300, bold=True)
+        n.text(50, 100, "Nazwa sali", 80)
+        n.text(140, 100, DOTS, 200)
+        n.text(50, 140, "4. Załączniki:", 100)
+        y = 154
+        for item in items:
+            n.text(60, y, item, 200)
+            y += 14
+        n.text(50, y, "5. Oświadczenie", 120, bold=True)
+        n.text(50, y + 14, "6. Podpis wnioskodawcy", 150, bold=True)
+        return [a.label for a in _run(n).attachments]
+
+    assert labels(("1. Kopia umowy najmu.", "2. Mapa terenu.")) == ["Kopia umowy najmu", "Mapa terenu"]
+    assert labels(("- Kopia umowy najmu.", "- Mapa terenu.")) == ["Kopia umowy najmu", "Mapa terenu"]
+
+
+def test_a_lower_case_label_the_lexicon_knows_as_a_phrase_keeps_its_own_wording() -> None:
+    """Set judged-06 ODS and XLSX: "w miejscowości" under the caption of the blank before it became "Nazwa drogi
+    oraz jej nr w miejscowości" instead of "Miejscowość"."""
+    p = Paper()
+    p.text("WNIOSEK O ZEZWOLENIE", bold=True)
+    p.text("nazwa drogi oraz jej nr")
+    p.blank("w miejscowości", how="left")
+    assert list(_fields(p.brief())) == ["Miejscowość"]
+
+
 # -- item 3 (T3): sentence tails, stubs, headings and printed amounts are no fields ------------------------------------
 
 def _left(b) -> list[str]:
@@ -360,6 +404,21 @@ def test_a_caption_without_brackets_or_under_a_blank_of_its_own_label_makes_no_m
     p.blank("Adres", how="left")
     p.blank("/ nr domu /", caption=True, how="left")
     assert len(_fields(p.brief())) == 4
+
+
+def test_dotted_lines_each_with_its_own_caption_under_it_stay_separate_fields() -> None:
+    """Review of 21 Nov: a stack of dotted lines, each named by the caption in brackets under it (the usual head of
+    a Polish form), collapsed into one TEXTAREA with the second caption as its hint; the other blanks were lost."""
+    for caps in (("(nazwa imprezy)", "(miejsce imprezy)", "(termin imprezy)"), ("/nazwa imprezy/", "/miejsce imprezy/", "/termin imprezy/")):
+        n = Native()
+        n.text(70, 60, "WNIOSEK O ZEZWOLENIE NA IMPREZE", 300, bold=True)
+        y = 110
+        for cap in caps:
+            n.text(50, y, DOTS, 400)
+            n.text(120, y + 11, cap, 200, size=8.0)
+            y += 30
+        got = _fields(_run(n))
+        assert list(got) == ["Nazwa imprezy", "Miejsce imprezy", "Termin imprezy"] and all(f.hint is None for f in got.values())
 
 
 def test_a_caption_in_slashes_right_under_a_blank_is_its_hint() -> None:

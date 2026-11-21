@@ -48,6 +48,10 @@ _ATT_LIST = re.compile(r"^(?:\d{1,2}\.\s*)?(?:załączniki\b[^:]{0,40}|do wniosk
 _ATT_ITEM = re.compile(r"^\s*(?:[-–•]|\d{1,2}[.)]|[a-z]\))\s*(?=\w)")
 _ATT_SAY = re.compile(r"\b(?:należy|można|trzeba)\s+(?:dołączyć|załączyć)\s+(?!:)(.+)|\bw\s+załączeniu\s+(.+)", re.IGNORECASE)
 _ATT_BEFORE = re.compile(r"(?:^|[(,;:–-]\s*)([^(),;:–-]{6,80}?)\s+(?:należy\s+)?załączyć\s+do\s+wniosku", re.IGNORECASE)
+# The words after the verb do not name a document: "w terminie 7 dni", "do akt sprawy", "(zaznaczyć właściwe):", a list
+# header with words before its colon ("następujące dokumenty:", "przedkładam:").
+_ATT_NOT_ITEM = re.compile(r"\(|(?:do|w|we|na|po|przed|od|z|ze|nr|najpóźniej|niezwłocznie|następując\w*|poniższ\w*|niżej|przedkładam|przesyłam"
+                           r"|przekazuję|przedstawiam|składam)\b|.*:\s*$", re.IGNORECASE)
 _ATT_IF = re.compile(r",?\s+(?:jeżeli|jeśli|w\s+przypadku|gdy)\b", re.IGNORECASE)
 # The condition of an either-or pair says the OTHER item is not required ("jeżeli nie jest wymagany X"), not just "nie".
 _NOT_REQUIRED = re.compile(r"\bnie\s+(?:jest|są|będzie|będą)\s+(?:wymagan|konieczn|potrzebn)\w*|\bnie\s+dotyczy\b|\bw\s+przypadku\s+braku\b",
@@ -298,7 +302,7 @@ class _Reader:
         above = self._above(first) if first else None
         end_of_sentence = c.kind != "line_block" and text.endswith(".") and len(text.split()) >= 4 and above is not None and self._wraps_into(above)
         if known and not end_of_sentence:
-            if text[:1].islower():
+            if text[:1].islower() and low not in _PHRASES:    # a phrase the lexicon knows is a whole label ("w miejscowości")
                 lead = self._lead_in(c, raw)
                 if lead is not None:
                     self.quote[c.id] = doc.evidence([*lead[1], *c.label.runs], f"{lead[0]} {text}", c.id)
@@ -326,15 +330,20 @@ class _Reader:
         if prev is None or c.kind not in ("leader", "line_block") or prev.kind not in _LINE_KINDS or c.label is None \
                 or c.label.how != "leader" or len(c.label.runs) != 1 or prev.section != c.section or prev.page != c.page:
             return False
+        def caption(t: str) -> bool:
+            return len(t) > 4 and ((t[0] == "(" and t[-1] == ")") or (t[0] == "/" and t[-1] == "/"))
+
         cap = doc.text(c.label.runs[0]) if c.label.runs[0] in doc.runs else ""
-        if not (len(cap) > 4 and ((cap[0] == "(" and cap[-1] == ")") or (cap[0] == "/" and cap[-1] == "/"))):
+        if not caption(cap):
             return False
+        if prev.label is not None and len(prev.label.runs) == 1 and prev.label.runs[0] in doc.runs and caption(doc.text(prev.label.runs[0])):
+            return False        # the blank above is named by a caption of its own: two captioned blanks, never one field
         root = prev.id
         while root in self.disp and self.disp[root].fate == "MERGED" and self.disp[root].why == "LINE_BLOCK":
             root = self.disp[root].into or ""
         target = self.field_of.get(root)
-        if target is None or not self._adjacent(prev, c):
-            return False
+        if target is None or target.hint or not self._adjacent(prev, c):
+            return False        # a field that has its caption already is not given the caption of the next blank
         target.hint = target.hint or cap[1:-1].strip()
         if target.type == "TEXT_FIELD" and target.concept is None:
             target.type, target.length = "TEXTAREA", None
@@ -421,7 +430,15 @@ class _Reader:
             if _ATT_LIST.match(text):
                 may = bool(_ATT_MAY.search(text))
                 i += 1
+                mark0, count = None, 0
                 while i < len(lines) and _ATT_ITEM.match(lines[i][1]):
+                    mark = _ATT_ITEM.match(lines[i][1]).group(0).strip()
+                    kind = "n" if mark[0].isdigit() else "a" if mark[0].isalpha() else "-"
+                    count += 1
+                    if mark0 is None:
+                        mark0 = kind
+                    if kind != mark0 or (kind == "n" and int(re.match(r"\d+", mark).group(0)) != count) or doc.role(lines[i][0][0]) == "heading":
+                        break       # "5. Oświadczenie" after the items "1." and "2." (or after dashes) is the next section, not an item
                     item, used = _ATT_ITEM.sub("", lines[i][1]), list(lines[i][0])
                     x0 = self._x0(lines[i][0])
                     i += 1
@@ -437,7 +454,7 @@ class _Reader:
                     break
                 window, used = window + " " + lines[i + k][1], used + list(lines[i + k][0])
             m = _ATT_SAY.search(window)
-            if m and (re.match(r"do\s+(?:niniejszego\s+)?(?:wniosku|formularza|zgłoszenia|deklaracji)\b", m.group(1) or m.group(2) or "", re.IGNORECASE)
+            if m and (_ATT_NOT_ITEM.match(m.group(1) or m.group(2) or "")
                       or re.search(r"\bnie\s*$", window[: m.start()], re.IGNORECASE)):
                 m = None        # "X należy załączyć do wniosku" names X before the verb; "nie można dołączyć X" forbids it
             if m and m.start() < len(text):
@@ -445,7 +462,7 @@ class _Reader:
                 found.append((m.group(k).split(". ")[0], used, bool(_ATT_MAY.search(window[: m.start(k)]))))
             else:
                 b = _ATT_BEFORE.search(window)
-                if b and b.start(1) < len(text):
+                if b and b.start(1) < len(text) and not re.search(r"\bnie$|^\s*(?:należy|można|trzeba)\s*$", b.group(1), re.IGNORECASE):
                     found.append((b.group(1), used, bool(_ATT_MAY.search(window))))
             i += 1
         made: list[tuple[Attachment, str]] = []                # (upload, its condition)
