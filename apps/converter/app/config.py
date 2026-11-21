@@ -7,6 +7,7 @@ to start. Nothing secret is stored here: keys are read from files by the auth mo
 from __future__ import annotations
 
 import os
+import uuid
 from dataclasses import dataclass, fields
 from pathlib import Path
 from typing import Mapping
@@ -47,6 +48,9 @@ class Settings:
     finish_style: str = "export"
     validators: str = "on"
     repeating_style: str = "native"
+    statutory_representative: bool = True
+    poa_exemption: bool = False
+    ocr_min_chars: int = 20
     strict_extensions: bool = False
     doc_reader: str = "native"
     ocr_langs: str = "pol+eng"
@@ -151,6 +155,11 @@ class Settings:
                     out.append(f"{label} is a file path: the service calls nothing, a URL is not supported")
                 elif path and not Path(path).is_file():
                     out.append(f"{label} names a file that does not exist")
+        if self.id_namespace:
+            try:
+                uuid.UUID(self.id_namespace)
+            except ValueError:
+                out.append("ID_NAMESPACE must be a UUID")
         if self.sign_output == "jws" and not self.signing_key_file:
             out.append("SIGN_OUTPUT=jws needs SIGNING_KEY_FILE")
         return out
@@ -158,3 +167,26 @@ class Settings:
     @property
     def auth_enabled(self) -> bool:
         return self.auth_mode == "jwt"
+
+
+def read_options(s: Settings):
+    """Settings -> the limits and thresholds of the readers."""
+    from app.readers import ReadOptions
+
+    return ReadOptions(ocr_min_chars=s.ocr_min_chars, max_pages=s.max_pages)
+
+
+def compose_options(s: Settings):
+    """Settings -> the switches of the composer. `flat` repeating style is the composer's one plain section."""
+    from app.compose import ComposeOptions
+    from app.compose.names import ID_NAMESPACE
+
+    return ComposeOptions(
+        finish_style=s.finish_style,
+        validators=s.validators == "on",
+        repeating_style="section" if s.repeating_style == "flat" else "native",
+        statutory_representative=s.statutory_representative,
+        poa_exemption=s.poa_exemption,
+        form_key=s.form_key or None,
+        id_namespace=uuid.UUID(s.id_namespace) if s.id_namespace else ID_NAMESPACE,
+    )
