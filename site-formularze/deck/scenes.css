@@ -1,0 +1,49 @@
+/* scenes.css — motion of the drawings of this deck (scenes.js).
+   The engine styles (deck.css) are an unchanged copy of site/deck/deck.css.
+   Rule from deck.css still holds: the natural state of every element is its
+   final frame; ".still" (print, key M, reduced motion) switches all of this off. */
+
+/* generic: enter from an offset (--dx, --dy, --s) to the natural place */
+.fx-from { animation-name: fx-from; transform-box: fill-box; transform-origin: center; }
+@keyframes fx-from { 0% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)) scale(var(--s, 1)); } 20% { opacity: 1; } 100% { transform: none; } }
+/* generic: a copy flies from its place to (--dx, --dy) and disappears (use inside lp-only) */
+.fx-fly { animation: fx-fly var(--t, 1.2s) ease-in-out var(--d, 0s) both; transform-box: fill-box; transform-origin: center; }
+@keyframes fx-fly { 0% { opacity: 0; transform: none; } 12% { opacity: 1; transform: none; } 85% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(var(--s, 1)); } }
+
+/* 2 solution: the scanning line passes over the form (once, then as a gentle loop) */
+.s2-scan { animation: s2-scan 1.8s ease-in-out 1.2s both; }
+.s2-scanl { animation-name: s2-scan; }
+@keyframes s2-scan { 0% { transform: none; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(330px); opacity: 0; } }
+
+/* 3 demo 1: two boxes are dragged into place by a cursor */
+.s3-drag { animation: s3-drag 1.6s ease-in-out var(--d) both; }
+@keyframes s3-drag { 0%, 35% { transform: translate(var(--dx), var(--dy)); } 100% { transform: none; } }
+.s3-cur { animation: s3-cur 1.6s linear var(--d) both; }
+@keyframes s3-cur { 0% { opacity: 0; } 10%, 85% { opacity: 1; } 100% { opacity: 0; } }
+
+/* 4 demo 2: the filled sheet slides out of the printer */
+.s4-out { animation: s4-out 1.2s ease-out var(--d) both; }
+@keyframes s4-out { from { transform: translateY(-175px); } }
+
+/* 5 queue: the queue moves forward twice; the printer keeps printing */
+.s5-q { animation: s5-q 6s ease-in-out both; }
+@keyframes s5-q { 0%, 70% { transform: translateX(-320px); } 80%, 90% { transform: translateX(-160px); } 100% { transform: none; } }
+.s5-print { animation-name: s5-print; }
+@keyframes s5-print { 0% { transform: translateY(110px); opacity: 1; } 60% { transform: none; opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+
+/* 6 data once: three fields hop phone -> QR -> office; the packet dissolves; the timer runs out */
+.s6-hop { animation: s6-hop 2s ease-in-out var(--d) both; transform-box: fill-box; transform-origin: center; }
+@keyframes s6-hop { 0% { opacity: 0; transform: none; } 8% { opacity: 1; transform: none; }
+  40%, 55% { transform: translate(var(--qx), var(--qy)) scale(.7); }
+  92% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(.7); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.7); } }
+.s6-pkt { animation: s6-pkt 5.8s linear both; transform-box: fill-box; transform-origin: center; }
+@keyframes s6-pkt { 0%, 70% { opacity: 0; transform: none; } 74%, 86% { opacity: 1; transform: none; } 100% { opacity: 0; transform: scale(1.6); } }
+.s6-drain { animation: s6-drain 1.6s linear 3.9s both; }
+@keyframes s6-drain { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 1; } }
+
+/* measured numbers over the demo slides (only those present in metrics.json) */
+.demo-metrics { position: absolute; right: 28px; bottom: 22px; display: flex; gap: 24px; pointer-events: none; }
+.demo-metrics div { background: var(--panel); border: 4px solid var(--acc); border-radius: 22px; padding: 8px 26px 12px; text-align: center; }
+.demo-metrics b { display: block; font: 800 66px/1.1 var(--font); color: var(--acc); }
+.demo-metrics span { font: 600 26px var(--font); color: var(--muted); }

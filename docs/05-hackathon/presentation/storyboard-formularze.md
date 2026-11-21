@@ -16,12 +16,12 @@ Fields: **Screen** · **Motion** · **Say** (Polish) · **RU** (meaning) · **Cu
 
 ### 1. The size of the problem
 
-- **Screen:** 710 druków. Jedno miasto.
+- **Screen:** 710 plików. Jedno miasto.
 - **Motion:** a map pin „Bydgoszcz”; paper icons marked PDF, DOC, RTF pour out of it and stack into a wall; two counters run up to „275 kart usług” and „710 plików”; at the end one single sheet lights up green with the label „1 z 32 z polami”.
-- **Say:** Szanowni Państwo, dzień dobry. W jednym mieście policzyliśmy 275 kart usług i 710 plików formularzy, a tylko jeden z 32 zbadanych ma pola do wypełnienia. Każdy z tych druków czeka na swoją usługę online.
-- **RU:** В одном городе мы насчитали 275 карточек услуг и 710 файлов бланков, и только один из 32 изученных имеет поля для заполнения. Каждый из этих бланков ждёт своей онлайн-услуги.
+- **Say:** Szanowni Państwo, dzień dobry. W jednym mieście policzyliśmy 275 kart usług i 710 plików formularzy. Połowa to pliki Word i RTF, a w próbie 32 druków tylko jeden miał pola do wypełnienia.
+- **RU:** В одном городе мы насчитали 275 карточек услуг и 710 файлов бланков. Половина это файлы Word и RTF, а в выборке из 32 бланков только один имел поля для заполнения.
 - **Cue:** дождись, пока один лист загорится зелёным.
-- **Caption:** Skala: w jednym urzędzie miasta 275 kart usług i 710 plików formularzy (PDF, DOC, RTF); tylko 1 z 32 zbadanych formularzy ma pola do wypełnienia. Dane: katalog w repozytorium projektu.
+- **Caption:** Skala: w jednym urzędzie miasta 275 kart usług i 710 plików formularzy, z czego połowa to pliki DOC, DOCX i RTF; w próbie 32 formularzy tylko 1 miał pola do wypełnienia. Dane: katalog w repozytorium projektu.
 
 ### 2. The solution in one picture
 
@@ -29,7 +29,7 @@ Fields: **Screen** · **Motion** · **Say** (Polish) · **RU** (meaning) · **Cu
 - **Motion:** a paper form enters from the left; a scanning line passes over it and coloured boxes appear on its fields; a person icon presses „zatwierdź”; the form splits into three results that slide to the right: a phone with a form („formularz online”), a printed sheet identical to the original („wydruk na wzorze”), a checklist with ticks („reguły kontroli”).
 - **Say:** Nasze rozwiązanie zamienia urzędowy druk w usługę online: AI rozpoznaje pola i proponuje ich znaczenie, a człowiek zatwierdza. Z jednego opisu powstają formularz na telefon, wydruk na oryginalnym wzorze i reguły kontroli.
 - **RU:** Наше решение превращает официальный бланк в онлайн-услугу: ИИ распознаёт поля и предлагает их значение, человек утверждает. Из одного описания получаются форма для телефона, печать на оригинальном образце и правила проверки.
-- **Cue:** три результата выедут сами; сразу переходи к показу.
+- **Cue:** три результата выедут сами; сразу переходи к показу. Если спросят про Generator Formularzy, ответ в карточке 4.
 - **Caption:** AI rozpoznaje pola urzędowego druku i proponuje ich znaczenie, człowiek zatwierdza; z jednego opisu powstają formularz online, wydruk na oryginalnym wzorze i reguły kontroli.
 
 ### 3. Demo, part one: a new form becomes a service (pause slide)
@@ -52,29 +52,29 @@ Fields: **Screen** · **Motion** · **Say** (Polish) · **RU** (meaning) · **Cu
 
 ### 5. Proven in a real queue
 
-- **Screen:** Sprawdzone w kolejce. Opole 2022.
+- **Screen:** Z kolejki. Opole 2022.
 - **Motion:** a queue of people, each holding a phone that glows as they type; at the head of the queue a printer pushes out filled forms one after another; the queue visibly shortens; a badge „punkt pomocy uchodźcom”.
-- **Say:** To nie teoria: w 2022 roku w punkcie pomocy uchodźcom w Opolu ludzie wpisywali dane na telefonach, stojąc w kolejce. Wolontariusze drukowali gotowe wnioski, zamiast przepisywać dokumenty ręcznie. Z tamtych doświadczeń pochodzą reguły tego systemu.
-- **RU:** Это не теория: в 2022 году в пункте помощи беженцам в Ополе люди вводили данные на телефонах, стоя в очереди. Волонтёры печатали готовые заявления вместо того, чтобы переписывать документы вручную. Из того опыта взяты правила этой системы.
+- **Say:** To nie teoria, tylko moje doświadczenie: w 2022 roku w punkcie pomocy uchodźcom w Opolu ludzie wpisywali dane na telefonach, stojąc w kolejce. Wolontariusze drukowali gotowe wnioski, zamiast przepisywać dokumenty ręcznie. Z tamtych doświadczeń pochodzą reguły tego systemu.
+- **RU:** Это не теория, а мой опыт: в 2022 году в пункте помощи беженцам в Ополе люди вводили данные на телефонах, стоя в очереди. Волонтёры печатали готовые заявления вместо того, чтобы переписывать документы вручную. Из того опыта взяты правила этой системы.
 - **Cue:** это твой настоящий опыт; скажи спокойно и коротко.
 - **Caption:** Rozwiązanie wyrosło z praktyki: w 2022 r. w punkcie pomocy uchodźcom w Opolu interesanci wpisywali dane na telefonach w kolejce, a wolontariusze drukowali gotowe wnioski.
 
 ### 6. Data once, without a shared database
 
-- **Screen:** Dane raz. Bez wspólnej bazy.
-- **Motion:** a phone holds a profile with a padlock; only three of its many fields light up and fly, locked, through a QR code to an office building; a small timer above them runs out and the packet dissolves; underneath, a shelf „rejestr wzorów” connects several office buildings while a big database of people is crossed out.
-- **Say (if built):** Dane zostają na telefonie mieszkańca: do urzędu trafiają tylko pola potrzebne w tej sprawie, zaszyfrowane, na kilka minut. W mObywatelu istnieje już przekazywanie danych instytucji kodem QR i nasz adapter jest na to przygotowany. Wspólny dla urzędów jest rejestr opisów formularzy, a nie baza danych o ludziach.
-- **Say (fallback, not built):** Dane zostają na telefonie mieszkańca: do urzędu trafiają tylko pola potrzebne w tej sprawie, zaszyfrowane, na kilka minut. W mObywatelu istnieje już przekazywanie danych instytucji kodem QR; nasz projekt przewiduje taki adapter. Wspólny dla urzędów jest rejestr opisów formularzy, a nie baza danych o ludziach.
-- **RU:** Данные остаются на телефоне жителя: в мэрию уходят только поля, нужные для этого дела, зашифрованные, на несколько минут. В mObywatel уже есть передача данных учреждению по QR-коду, и наш адаптер к этому готов. Общим для учреждений будет реестр описаний бланков, а не база данных о людях.
+- **Screen:** Dane zostają u mieszkańca.
+- **Motion:** a phone holds a profile with a padlock; only three of its many fields light up and fly, locked, through a QR code to an office building; a small timer above them runs out and the packet dissolves; underneath, a shelf „katalog opisów” connects several office buildings while a big database of people is crossed out.
+- **Say (if built):** Dane zostają na telefonie mieszkańca: do urzędu trafiają tylko pola potrzebne w tej sprawie, zaszyfrowane, na kilka minut. Na tej samej zasadzie działa przekazywanie danych w mObywatelu: instytucja pokazuje kod QR, a mieszkaniec zatwierdza. Wspólny dla urzędów jest katalog opisów formularzy, a nie baza danych o ludziach.
+- **Say (fallback, not built):** Dane zostają na telefonie mieszkańca: do urzędu trafiają tylko pola potrzebne w tej sprawie, zaszyfrowane, na kilka minut. Na tej samej zasadzie działa przekazywanie danych w mObywatelu: instytucja pokazuje kod QR, a mieszkaniec zatwierdza. Wspólny dla urzędów jest katalog opisów formularzy, a nie baza danych o ludziach.
+- **RU:** Данные остаются на телефоне жителя: в мэрию уходят только поля, нужные для этого дела, зашифрованные, на несколько минут. По тому же принципу работает передача данных в mObywatel: учреждение показывает QR-код, житель подтверждает. Общим для учреждений будет каталог описаний бланков, а не база данных о людях.
 - **Cue:** это слайд для людей из COI: про mObywatel скажи обязательно.
-- **Caption:** Dane pozostają na telefonie mieszkańca; do urzędu trafiają tylko potrzebne pola, zaszyfrowane, na kilka minut. Rozwiązanie jest przygotowane na przekazywanie danych z mObywatela kodem QR. Wspólny jest rejestr opisów formularzy, nie baza danych osobowych.
+- **Caption:** Dane pozostają na telefonie mieszkańca; do urzędu trafiają tylko potrzebne pola, zaszyfrowane, na kilka minut, na tej samej zasadzie co przekazywanie danych instytucji w mObywatelu. Wspólny jest katalog opisów formularzy, nie baza danych osobowych.
 
 ### 7. What works, what is simulated
 
 - **Screen:** Co działa. Co symulujemy.
-- **Motion:** the same two-column scene as in the first deck, filled from `status.json`: left with green ticks („rozpoznanie pól”, „formularz online”, „przekazanie kodem QR”, „kontrola AI”, „wydruk na wzorze”), right with amber dots („mObywatel”, „czytnik dokumentów”, „logowanie urzędowe”); underneath „dane syntetyczne”.
-- **Say:** Uczciwie: to, co Państwo widzieli, działa na prawdziwym kodzie. Połączenie z mObywatelem, czytnik dokumentów i logowanie urzędowe są symulowane. Dane w pokazie są syntetyczne.
-- **RU:** Честно: то, что вы видели, работает на настоящем коде. Подключение к mObywatel, сканер документов и вход через учётные записи учреждения имитируются. Данные в показе синтетические.
+- **Motion:** the same two-column scene as in the first deck, filled from `status.json`: left with green ticks („rozpoznanie pól”, „formularz online”, „przekazanie kodem QR”, „kontrola AI”, „wydruk na wzorze”), right with amber dots („mObywatel”, „czytnik dokumentów”, „login.gov.pl”); underneath „dane syntetyczne”.
+- **Say:** Uczciwie: to, co Państwo widzieli, działa na prawdziwym kodzie. Połączenie z mObywatelem, czytnik dokumentów i logowanie przez login.gov.pl są symulowane. Dane w pokazie są syntetyczne.
+- **RU:** Честно: то, что вы видели, работает на настоящем коде. Подключение к mObywatel, сканер документов и вход через login.gov.pl имитируются. Данные в показе синтетические.
 - **Cue:** называй только то, что стоит в левой колонке на экране.
 - **Caption:** Co działa w prototypie, a co jest symulowane: lista na slajdzie; dane w pokazie są syntetyczne.
 
@@ -82,10 +82,10 @@ Fields: **Screen** · **Motion** · **Say** (Polish) · **RU** (meaning) · **Cu
 
 - **Screen:** Każdy druk może być usługą.
 - **Motion:** the wall of paper from slide 1 returns and its sheets turn into phone screens one by one, in a wave; a QR code to `formularze.flyreelstudio.eu` and the repository address fade in.
-- **Say:** Proponujemy pilotaż: dziesięć najczęstszych druków jednego urzędu jako usługi online, w otwartym rejestrze, z którego skorzysta każdy urząd. Dziękuję i zapraszam do pytań.
-- **RU:** Предлагаем пилот: десять самых частых бланков одного учреждения как онлайн-услуги, в открытом реестре, которым сможет пользоваться любое учреждение. Спасибо, жду вопросов.
+- **Say:** Proponujemy pilotaż: dziesięć najczęstszych druków jednego urzędu jako usługi online, z otwartym opisem gotowym do wprowadzenia do platform państwowych. Dziękuję i zapraszam do pytań.
+- **RU:** Предлагаем пилот: десять самых частых бланков одного учреждения как онлайн-услуги, с открытым описанием, готовым для государственных платформ. Спасибо, жду вопросов.
 - **Cue:** оставь слайд на экране на время вопросов; ответы в твоём окне, клавиши 1–9 и 0.
-- **Caption:** Propozycja: pilotaż dziesięciu najczęstszych druków jednego urzędu jako usług online w otwartym rejestrze. Demo i kod: formularze.flyreelstudio.eu · github.com/AndriiShramko/shramko-asystent-urzednika
+- **Caption:** Propozycja: pilotaż dziesięciu najczęstszych druków jednego urzędu jako usług online, z otwartym opisem gotowym do wprowadzenia do platform państwowych. Demo i kod: formularze.flyreelstudio.eu · github.com/AndriiShramko/shramko-asystent-urzednika
 
 ## Answer cards (presenter window only)
 
@@ -93,13 +93,13 @@ Fields: **Screen** · **Motion** · **Say** (Polish) · **RU** (meaning) · **Cu
 |---|---|---|---|
 | 1 | Jak AI rozpoznaje pola? | Analizujemy układ druku: linie, kratki i podpisy pól, a model proponuje nazwę, typ i powiązanie z danymi mieszkańca. Człowiek zatwierdza każde pole. Na końcu automat porównuje wydruk z oryginałem. | Разбираем разметку бланка, модель предлагает название, тип и связь с данными жителя; человек утверждает каждое поле; в конце автомат сравнивает печать с оригиналом. |
 | 2 | Ile trwa cyfryzacja jednego druku? | Pokazaliśmy to na żywo na jednym druku. Podaję tylko czas zmierzony w pokazie; większe formularze wymagają więcej poprawek człowieka. | Показали вживую на одном бланке; называю только измеренное время; большие бланки требуют больше правок. |
-| 3 | Co z dostępnością? | Formularz online powstaje z opisu pól według jednego szablonu, więc każdy ma etykiety, obsługę klawiatury i odpowiedni kontrast. Sprawdzamy to automatycznie przy publikacji. | Онлайн-форма строится из описания по одному шаблону: подписи, клавиатура, контраст; проверяется автоматически при публикации. |
-| 4 | Jak to się ma do usług na gov.pl i w mObywatelu? | Nie zastępujemy platform centralnych. Dajemy opis formularza w otwartym formacie i gotowy formularz dla urzędu; eksport do formatów platform centralnych to kolejny krok, do ustalenia z Państwem. | Не заменяем центральные платформы: даём описание в открытом формате и готовую форму для учреждения; экспорт в форматы центральных платформ это следующий шаг. |
+| 3 | Co z dostępnością? | Formularz online powstaje z opisu pól według jednego szablonu, więc każdy ma etykiety, obsługę klawiatury i kontrast zgodny z WCAG 2.1 AA. Testy automatyczne wykrywają tylko część problemów, dlatego szablon sprawdza też człowiek. | Онлайн-форма строится из описания по одному шаблону: подписи, клавиатура, контраст по WCAG 2.1 AA; автоматические тесты ловят только часть проблем, шаблон проверяет и человек. |
+| 4 | Jak to się ma do usług na gov.pl i w mObywatelu? | Nie zastępujemy platform centralnych ani planowanego Generatora Formularzy. Dajemy szybkie przejście od papierowego druku do opisu w otwartym formacie, który może być dla nich wejściem. Eksport do formatów repozytorium wzorów to kolejny krok, do ustalenia z Państwem. | Не заменяем центральные платформы и планируемый Generator Formularzy: даём быстрый переход от бумажного бланка к описанию в открытом формате, которое может быть для них входом; экспорт в форматы репозитория образцов это следующий шаг. |
 | 5 | A mObywatel? | Przekazywanie danych instytucji kodem QR już w aplikacji istnieje, ale wymaga porozumienia. W pokazie używamy własnego, szyfrowanego przekazania kodem QR i nie twierdzimy, że jesteśmy zintegrowani. | Передача данных по QR в приложении уже есть, но нужен договор; в показе свой шифрованный обмен, интеграцию не заявляем. |
 | 6 | Gdzie są dane mieszkańca? | Na jego telefonie. Do urzędu trafiają tylko pola potrzebne w danej sprawie, zaszyfrowane od telefonu do urzędu, i znikają po wydruku albo po kilku minutach. | На его телефоне; в учреждение уходят только нужные поля, зашифрованные, и исчезают после печати или через несколько минут. |
 | 7 | Co, gdy urząd zmieni wzór druku? | Opis formularza jest związany z konkretnym plikiem wzoru. Gdy plik się zmieni, system to wykrywa i wstrzymuje formularz do ponownego sprawdzenia. | Описание привязано к конкретному файлу образца; при изменении файла система это видит и останавливает форму до перепроверки. |
 | 8 | Jaki model i dlaczego? | Puste druki są publiczne, więc do ich analizy można użyć dowolnego modelu, także otwartego polskiego. Dane osobowe sprawdzają najpierw zwykłe reguły, a model działa lokalnie albo na danych po pseudonimizacji. | Пустые бланки публичны: для их разбора годится любая модель, в том числе открытая польская; персональные данные сначала проверяют правила, модель локальная или на обезличенных данных. |
-| 9 | Co w demo jest prawdziwe? | Powiem to wprost. Działają: rozpoznanie pól, formularz online, przekazanie kodem QR, kontrola i wydruk na wzorze. Symulowane są: mObywatel, czytnik dokumentów i logowanie urzędowe. Dane są syntetyczne. | Работает распознавание полей, онлайн-форма, обмен по QR, проверка и печать; имитируются mObywatel, сканер и вход; данные синтетические. (Главный агент правит под то, что построено.) |
+| 9 | Co w demo jest prawdziwe? | Powiem to wprost. Działają: rozpoznanie pól, formularz online, przekazanie kodem QR, kontrola i wydruk na wzorze. Symulowane są: mObywatel, czytnik dokumentów i login.gov.pl. Dane są syntetyczne. | Работает распознавание полей, онлайн-форма, обмен по QR, проверка и печать; имитируются mObywatel, сканер и вход; данные синтетические. (Главный агент правит под то, что построено.) |
 | 0 | Co powstało na hackathonie? | Badania, katalog formularzy i specyfikację przygotowałem wcześniej i jawnie to oznaczyłem. Kod aplikacji powstał tutaj, w ciągu 24 godzin; widać to w historii repozytorium. | Исследование, каталог бланков и спецификация сделаны заранее и помечены; код написан здесь за 24 часа. |
 
 Phrases for difficult moments: the same four as in the first deck.

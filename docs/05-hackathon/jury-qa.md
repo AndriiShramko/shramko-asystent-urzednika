@@ -28,6 +28,26 @@ Update the "State" column at each milestone gate. Allowed values: **live** (work
 | Hardware document reader | planned | Simulator only |
 | Real personal data anywhere | never | Synthetic data only |
 
+## The same table for the forms product (primary track)
+
+| Capability | State before the event | Notes for the answer |
+|---|---|---|
+| Recognition of fields on a blank form and proposals of labels and meaning | planned | Say the measured share of fields found on the golden form |
+| Review screen with correction by dragging | planned | |
+| Generated online form for the phone | planned | |
+| Print on the original template with an automatic comparison | planned | Say "on the original template file, without re-typesetting" |
+| Phone page with a profile kept on the device | planned | |
+| QR handoff with end-to-end encryption, comparison code, lifetime of minutes | planned | Show what the relay stores: ciphertext |
+| Clerk's view: waiting list, large-type check, provenance marks | planned | |
+| Checker: rules first, then a model | planned | State which model ran |
+| Bundles: one data entry, several forms and persons | planned | |
+| Camera reading of the machine-readable zone on the device | planned | No image stored or sent |
+| Government wallet or mObywatel data sharing | simulated | The flow exists for selected partners; no agreement: never claim an integration |
+| Hardware document reader | simulated | The owner has a reader; licence and consent of the manufacturer are open |
+| Login with the office's identity provider | simulated | Demo users |
+| Export to the formats of central platforms | planned, not shown | A next step to agree with the partner |
+| Real personal data anywhere | never | Synthetic data only |
+
 ## Prepared answers
 
 - Ten short answers in Polish with Russian hints are in the presenter window of the deck (keys 1–9 and 0). Their source is [`presentation/storyboard.md`](presentation/storyboard.md), section "Answer cards".

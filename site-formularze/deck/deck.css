@@ -1,0 +1,205 @@
+/* deck.css — look of the deck. Colours are tokens below: change them here only.
+   Main words: --ink on --bg (contrast about 17:1); muted text --muted (about 9:1). */
+:root {
+  --bg: #0b1020;
+  --bg2: #10183a;
+  --panel: #18213f;
+  --panel2: #222e57;
+  --line: #3a4878;
+  --ink: #f5f7ff;
+  --muted: #b3bddc;
+  --acc: #ffc547;     /* the one accent: amber (the request / the envelope) */
+  --green: #4ade80;   /* verified, approved */
+  --red: #ff6b6b;     /* deadline, error, blocked */
+  --blue: #6cb2ff;    /* system, office */
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: var(--font); }
+body.audience { overflow: hidden; cursor: none; }
+body.audience:hover { cursor: default; }
+
+/* ---------- audience stage: 1920x1080, scaled to fit the window ---------- */
+.stage {
+  position: absolute; left: 50%; top: 50%;
+  width: 1920px; height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--k, 1));
+  display: flex; flex-direction: column;
+  padding: 52px 80px 30px;
+  background: radial-gradient(1200px 700px at 50% 30%, var(--bg2), var(--bg) 70%);
+  overflow: hidden;
+}
+.words {
+  flex: none; margin: 0; text-align: center;
+  font-weight: 800; letter-spacing: -0.02em; line-height: 1.04;
+  color: var(--ink); font-size: 132px;
+  max-height: 290px; overflow: hidden;
+}
+.scene { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; margin-top: 18px; position: relative; }
+.scene > svg, .scene > .demo-wrap { width: 100%; height: 100%; display: block; }
+.foot { flex: none; display: flex; justify-content: space-between; color: var(--muted); font-size: 22px; height: 30px; opacity: .75; }
+.caption { display: none; }
+.jump { position: absolute; left: 24px; bottom: 20px; font: 700 40px var(--font); color: var(--acc); background: var(--panel); padding: 6px 18px; border-radius: 12px; }
+.jump:empty { display: none; }
+.motion-flag { position: absolute; right: 24px; top: 18px; font: 600 20px var(--font); color: var(--muted); }
+
+/* demo video (slide 4) */
+.demo-wrap { position: relative; }
+.demo-wrap video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 24px; display: none; }
+.demo-wrap.has-video video { display: block; }
+.demo-wrap.has-video svg { display: none; }
+.demo-wrap svg { width: 100%; height: 100%; }
+
+/* ---------- SVG drawing kit (used by scenes.js) ---------- */
+.scene svg text { font-family: var(--font); font-weight: 700; fill: var(--ink); }
+.scene svg .mono { font-family: var(--mono); }
+.scene svg * { stroke-linecap: round; stroke-linejoin: round; }
+.fa { fill: var(--acc); } .fg { fill: var(--green); } .fr { fill: var(--red); } .fb { fill: var(--blue); }
+.fi { fill: var(--ink); } .fm { fill: var(--muted); } .fp { fill: var(--panel); } .fp2 { fill: var(--panel2); }
+.fbg { fill: var(--bg); } .fn { fill: none; } .fl { fill: var(--line); }
+.sa { stroke: var(--acc); } .sg { stroke: var(--green); } .sr { stroke: var(--red); } .sb { stroke: var(--blue); }
+.si { stroke: var(--ink); } .sm { stroke: var(--muted); } .sl { stroke: var(--line); } .sbg { stroke: var(--bg); }
+.scene svg text.fa { fill: var(--acc); } .scene svg text.fg { fill: var(--green); } .scene svg text.fr { fill: var(--red); }
+.scene svg text.fm { fill: var(--muted); } .scene svg text.fb { fill: var(--blue); } .scene svg text.fbg { fill: var(--bg); }
+
+/* Entrance: class "e" + one keyframe class; delay via style="--d:1.2s", duration via --t.
+   Natural (un-animated) state of every element = its FINAL state; print mode relies on it. */
+.e { animation-duration: var(--t, .8s); animation-delay: var(--d, 0s); animation-fill-mode: both;
+     animation-timing-function: cubic-bezier(.2, .8, .2, 1); transform-box: fill-box; transform-origin: center; }
+/* Loop: class "lp" + one keyframe class; starts after the entrance (--L set on the scene). */
+.lp { animation-delay: calc(var(--L, 8s) + var(--ld, 0s)); animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out; animation-duration: var(--lt, 4s); transform-box: fill-box; transform-origin: center; }
+
+.fade { animation-name: k-fade; } .pop { animation-name: k-pop; } .rise { animation-name: k-rise; }
+.drop { animation-name: k-drop; } .slideL { animation-name: k-slideL; } .slideR { animation-name: k-slideR; }
+.flip { animation-name: k-flip; } .draw { animation-name: k-draw; stroke-dasharray: 1; } .grow { animation-name: k-grow; transform-origin: left center; }
+.press { animation-name: k-press; } .out { animation-name: k-out; } .redden { animation-name: k-redden; }
+.bob { animation-name: k-bob; } .pulse { animation-name: k-pulse; } .glow { animation-name: k-glow; }
+.flow { animation-name: k-flow; animation-timing-function: linear; stroke-dasharray: 6 22; }
+.spin { animation-name: k-spin; animation-timing-function: linear; }
+.tap { animation-name: k-tap; }
+
+@keyframes k-fade { from { opacity: 0; } }
+@keyframes k-pop { 0% { opacity: 0; transform: scale(.4); } 70% { opacity: 1; transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes k-rise { from { opacity: 0; transform: translateY(70px); } }
+@keyframes k-drop { 0% { opacity: 0; transform: translateY(-220px); } 70% { opacity: 1; transform: translateY(12px); } 100% { transform: none; } }
+@keyframes k-slideL { from { opacity: 0; transform: translateX(-260px); } }
+@keyframes k-slideR { from { opacity: 0; transform: translateX(260px); } }
+@keyframes k-flip { 0% { opacity: 0; transform: scaleX(0); } 60% { opacity: 1; transform: scaleX(1.06); } 100% { transform: scaleX(1); } }
+@keyframes k-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes k-grow { from { transform: scaleX(0); } }
+@keyframes k-press { 0%, 100% { transform: none; } 50% { transform: scale(.86); } }
+@keyframes k-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes k-bob { 0%, 100% { transform: none; } 50% { transform: translateY(-10px); } }
+@keyframes k-pulse { 0%, 100% { transform: none; } 50% { transform: scale(1.06); } }
+@keyframes k-glow { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+@keyframes k-flow { to { stroke-dashoffset: -56; } }
+@keyframes k-spin { to { transform: rotate(360deg); } }
+@keyframes k-tap { 0%, 70%, 100% { transform: none; } 80% { transform: rotate(-22deg); } 90% { transform: rotate(4deg); } }
+
+/* ---------- scene-specific motion ---------- */
+/* 1 problem: envelopes fall into the tray fast, leave it slowly */
+.s1-in { animation: s1-in 1.1s linear infinite; animation-delay: var(--d, 0s); }
+.s1-out { animation: s1-out 3.3s ease-in infinite; animation-delay: var(--d, 0s); }
+@keyframes s1-in { 0% { transform: translateY(-260px); opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(0); opacity: 0; } }
+@keyframes s1-out { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(420px); opacity: 0; } }
+.s1-day { animation: s1-day .35s both; animation-delay: var(--d); }
+@keyframes s1-day { from { fill: var(--panel2); } }
+.s1-num { animation: s1-num .35s both; animation-delay: var(--d); }
+@keyframes s1-num { from { fill: var(--ink); } }
+
+/* 3 solution + 11 close: the envelope travelling along the line */
+.s3-env { animation: s3-env 7s both cubic-bezier(.45, 0, .55, 1); animation-delay: .4s; }
+@keyframes s3-env {
+  0% { transform: translateX(-1020px); opacity: 0; } 4% { opacity: 1; }
+  14%, 24% { transform: translateX(-1020px); } 34%, 44% { transform: translateX(-680px); }
+  54%, 64% { transform: translateX(-340px); } 76% { transform: translateX(0); opacity: 1; }
+  86%, 100% { transform: translateX(0); opacity: 0; } }
+.s3-arm { animation: s3-arm 1.2s both; animation-delay: 5.8s; transform-box: view-box; transform-origin: 1400px 250px; }
+@keyframes s3-arm { 0% { transform: rotate(40deg); } 50% { transform: rotate(-6deg); } 100% { transform: none; } }
+.s11-orbit { animation: k-spin 3.2s cubic-bezier(.5, 0, .5, 1) both; animation-delay: .6s; transform-box: view-box; transform-origin: 420px 300px; }
+.s11-orbit-up { animation: s11-counter 3.2s cubic-bezier(.5, 0, .5, 1) both; animation-delay: .6s; }
+@keyframes s11-counter { to { transform: rotate(-360deg); } }
+.s11-dot { animation: k-spin 9s linear infinite; animation-delay: 6s; transform-box: view-box; transform-origin: 420px 300px; }
+
+/* 6 legal: chips fly to the law book and back */
+.s6-fly { animation: s6-fly 1.8s both ease-in-out; animation-delay: var(--d); }
+@keyframes s6-fly { 0% { transform: none; opacity: 0; } 10% { opacity: 1; } 45%, 55% { transform: translate(var(--dx), var(--dy)) scale(.9); } 90% { opacity: 1; } 100% { transform: none; opacity: 0; } }
+.s6-bounce { animation: s6-bounce 1.8s both ease-in-out; animation-delay: var(--d); }
+@keyframes s6-bounce { 0% { transform: none; opacity: 0; } 10% { opacity: 1; } 45% { transform: translate(var(--dx), var(--dy)) scale(.9); } 52% { transform: translate(calc(var(--dx) - 60px), var(--dy)) rotate(-8deg); } 90% { opacity: 1; } 100% { transform: none; opacity: 0; } }
+.stamp { animation: stamp .5s both cubic-bezier(.3, 1.6, .5, 1); animation-delay: var(--d); transform-box: fill-box; transform-origin: center; }
+@keyframes stamp { from { opacity: 0; transform: scale(2.6); } to { transform: none; } }
+/* 5 secure: masked tokens fly from the office to the model */
+.s5-fly { animation: s5-fly 1.4s both ease-in-out; animation-delay: var(--d); }
+@keyframes s5-fly { 0% { opacity: 0; transform: translate(var(--dx), var(--dy)); } 15% { opacity: 1; transform: translate(var(--dx), var(--dy)); } 100% { transform: none; } }
+/* 1 problem: the "today" marker walks across the calendar */
+.s1-mark { animation: s1-mark 5.6s steps(14, jump-none) .4s both; }
+@keyframes s1-mark { from { transform: translateX(-1300px); } }
+/* 10 pilot: a light dot travels from "today" to the next point */
+.s10-dot { animation: s10-dot 3s ease-in-out infinite; animation-delay: var(--L); }
+@keyframes s10-dot { 0% { transform: none; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(427px); opacity: 0; } }
+/* elements that exist only while animating (hidden in print and reduced motion) / only in print */
+.print-only { display: none; }
+.still .print-only { display: inline; }
+
+/* 7 source: unsent envelope appears then fades; sent envelope flies to the office */
+.s7-unsent { animation: s7-unsent 1.6s both; animation-delay: 4.4s; }
+@keyframes s7-unsent { 0% { opacity: 0; transform: translateY(30px); } 30%, 55% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-40px) scale(.7); } }
+.s7-sent { animation: s7-sent 1.9s both ease-in-out; animation-delay: 6.2s; }
+@keyframes s7-sent { 0% { opacity: 0; transform: none; } 15% { opacity: 1; transform: none; } 85% { opacity: 1; transform: translate(760px, -10px) scale(.8); } 100% { opacity: 0; transform: translate(780px, -10px) scale(.6); } }
+
+/* 8 counter: copies of the forms fly to the shelf */
+.s8-fly { animation: s8-fly 1.1s both ease-in-out; animation-delay: var(--d); transform-box: fill-box; transform-origin: center; }
+@keyframes s8-fly { 0% { opacity: 0; transform: none; } 15% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.3); } }
+/* 8 counter: QR handshake pulse */
+.s8-beam { animation: k-flow 1.2s linear infinite; stroke-dasharray: 6 22; }
+
+/* ---------- reduced motion (system setting or key M) and print: final frame ---------- */
+.still .scene *, .still .scene { animation: none !important; }
+.still .lp-only { display: none; }
+.reduced .scene { animation: k-fade .9s both !important; }
+
+/* ---------- print mode: one 1920x1080 page per slide ---------- */
+@page { size: 1920px 1080px; margin: 0; }
+body.print { overflow: visible; cursor: default; }
+body.print .page { position: relative; width: 1920px; height: 1080px; overflow: hidden; page-break-after: always; break-after: page; }
+body.print .page:last-child { page-break-after: auto; break-after: auto; }
+body.print .stage { position: absolute; left: 0; top: 0; transform: none; padding-bottom: 26px; }
+body.print .caption { display: block; flex: none; margin: 14px 60px 12px; text-align: center; font-size: 32px; line-height: 1.32; color: var(--muted); font-weight: 500; }
+body.print .foot { opacity: 1; }
+@media print { html, body { background: var(--bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+/* ---------- presenter window ---------- */
+body.presenter { overflow: auto; }
+.pv { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; padding: 16px 28px; gap: 12px; }
+.pv-top { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; font-size: 26px; color: var(--muted); }
+.pv-num { font-size: 40px; font-weight: 800; color: var(--ink); }
+.pv-timer { font: 800 52px var(--mono); color: var(--green); padding: 2px 16px; border-radius: 12px; background: var(--panel); }
+.pv-timer.warn { color: var(--acc); }
+.pv-timer.over { color: #fff; background: #b3261e; }
+.pv-timer.idle { color: var(--muted); }
+.pv-next { margin-left: auto; text-align: right; }
+.pv-next b { color: var(--ink); font-size: 30px; }
+.pv-main { display: flex; flex-direction: column; gap: 18px; min-height: 0; }
+.pv-say { font-size: 40px; line-height: 1.42; font-weight: 600; color: var(--ink); user-select: text; max-width: 60ch; }
+.pv-ru { font-size: 24px; line-height: 1.45; color: var(--muted); user-select: text; max-width: 80ch; }
+.pv-cue { font-size: 24px; color: var(--acc); user-select: text; }
+.pv-cue::before { content: "▶ "; }
+.pv-answers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.pv button { font: 600 19px/1.25 var(--font); color: var(--ink); background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; text-align: left; cursor: pointer; }
+.pv button:hover { border-color: var(--muted); }
+.pv button:focus-visible, .pv-answer button:focus-visible { outline: 4px solid var(--acc); outline-offset: 2px; }
+.pv button kbd { display: inline-block; min-width: 1.6em; text-align: center; font: 800 20px var(--mono); color: var(--bg); background: var(--acc); border-radius: 6px; margin-right: 8px; }
+.pv-answer { position: fixed; inset: 0; background: var(--bg); padding: 40px 64px; display: none; flex-direction: column; gap: 26px; overflow: auto; }
+.pv-answer.open { display: flex; }
+.pv-answer h2 { margin: 0; font-size: 34px; color: var(--acc); }
+.pv-answer p { margin: 0; font-size: 44px; line-height: 1.42; font-weight: 600; max-width: 56ch; user-select: text; }
+.pv-answer .ru { font-size: 26px; font-weight: 400; color: var(--muted); }
+.pv-answer button { align-self: flex-start; font: 600 22px var(--font); color: var(--ink); background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 10px 18px; cursor: pointer; }
+.pv-link { font-size: 18px; color: var(--muted); margin-top: 8px; }
+.pv-phrases { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 12px; font-size: 22px; color: var(--ink); user-select: text; }
+.pv-phrases span { background: var(--panel2); border-radius: 10px; padding: 6px 12px; }
+.pv-answer .pv-phrases { margin-top: auto; font-size: 26px; }
+/* slide 9 status columns */
+.s9-item { animation: k-slideL .6s both cubic-bezier(.2, .8, .2, 1); animation-delay: var(--d); }

@@ -2,7 +2,18 @@
 
 Answers requirements R26, R27, R28. Facts come from [`research/01-hacknation-2026-task-rules-jury.md`](../../research/01-hacknation-2026-task-rules-jury.md) and [`research/02-udip-law-process-taxonomy.md`](../../research/02-udip-law-process-taxonomy.md), both checked on 20 November 2026. Re-check this page at the 11:00 gate on Saturday, when the full task cards are published.
 
-## 1. The decision in one paragraph
+## 0. Current decision (owner, 21 November 2026, morning)
+
+**Primary track: the forms product for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki).** The owner's idea fits that task directly, and he wants the jury to see a working product with two sides, visitor and clerk, not slides of theory. Therefore:
+
+- **Module B is built first** (form onboarding with AI, the phone page with the QR handoff, the clerk's counter view, the checker, the print on the original template). Timeline: [`../03-plan/roadmap.md`](../03-plan/roadmap.md), "Timeline for Track B".
+- **Module A (the city's task) stays fully specified** as the alternative submission and as the back-office example: the city's own request template is the first form digitised in the demo (work package WP-AB1), which keeps both tasks joined (§1a).
+- The task is fixed in the submission draft on Saturday by 18:00, after both full task cards have been read at 11:00. If the forms task card asks for something this product cannot honestly show (§5, "Switch back to A"), the build switches to Track A; everything for it is ready.
+- Two sites and two decks exist: <https://formularze.flyreelstudio.eu> (forms task) and <https://urzad.flyreelstudio.eu> (city's task).
+
+Sections 1–3 below were written for Track A as the default and remain valid as its reasoning.
+
+## 1. The decision in one paragraph (Track A)
 
 Build and show **a complete assistant for access-to-public-information requests** (Module A). Present the counter product, "data entered once, forms pre-filled" (Module B), as the next process on the same core: one slide in the pitch, a separate section in the repository, and a small live slice only if Module A already passes its gate. Do not present the wide platform as the product.
 
@@ -88,9 +99,11 @@ There are 15 tasks. Two matter here. One participant alone can submit one projec
 | Likely competition | lower prize and a legal topic: probably fewer teams | popular partner and higher prize: probably more and stronger teams |
 | Side benefit | the owner lives in Bydgoszcz; a pilot with his own city hall is realistic | direct contact with the makers of mObywatel, to whom the QR prefill idea should be proposed anyway |
 
-**Default: A.** Reasons: it is the owner's stated choice, it is the best prepared, the jury is local and practical, and the chance of reaching the final five is higher. Whatever is chosen, visit the other partner's stand: the Module B idea is worth showing to Centralny Ośrodek Informatyki in conversation.
+**Default since the owner's decision of 21 November: B** (see §0). Reasons: the idea is his own and he has run it in real life (Opole, 2022); the repository holds measured facts about forms that speak directly to the makers of e-services (275 service cards, 710 files, one fillable PDF among 32, a profile fills 55–60 % of simple forms); the demo is tangible (a phone, a clerk's screen, a printed form); and the partner builds the government app into which "fill the form from the wallet" belongs. Known risks: a higher prize attracts more and stronger teams, and the jury is technical: the demo must really work and every claim must be exact.
 
-Switch to B only if all three hold at 11:00: the full card of B asks for what Module B is (digitising forms with AI, pre-filling, a path to an online service); the full card of A turns out narrower or more demanding than expected (for example a test on the city's own archive that cannot be prepared); and the owner prefers to build his own idea.
+Likely criteria (proxy: the same partner's task card of 2025): fit with the task 25 %, deployment potential 25 %, validation and data security 20 %, user experience and ergonomics of work 15 %, innovation and presentation 15 %. The product answers them with: the form onboarding flow (fit), the open registry and the pilot offer (deployment), the checker plus end-to-end encryption and minutes-long lifetime (validation and security), the two-sided live demo (experience), the QR handoff prepared for the government wallet (innovation).
+
+**Switch back to A** if at 11:00 the forms task card turns out to require something this product cannot honestly show within 24 hours (for example work inside a specific internal tool of the partner, or data we do not have), or if the city's card and mentors show a clearly better chance. Track A's reasoning: it was the first choice, it is equally prepared, the jury is local and practical, and competition is probably weaker. Whatever is chosen, visit the other partner's stand.
 
 **Two tasks at once?** The rules allow a team at most two tasks, one separate project per task, and the second project needs a different team leader; the organisers "strongly discourage" one project for two tasks. A participant alone can therefore submit one project. What is possible and sensible:
 

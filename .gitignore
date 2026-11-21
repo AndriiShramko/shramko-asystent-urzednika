@@ -22,6 +22,7 @@ data/forms-cache/
 *.xlsx
 !docs/assets/**
 !site/deck/*.pdf
+!site-formularze/deck/*.pdf
 
 # Anything that may contain personal data
 data/private/

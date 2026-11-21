@@ -1,10 +1,10 @@
 # Publishing: the project site, the deck and test versions
 
-Public address: **<https://urzad.flyreelstudio.eu>** on the owner's server. Set up on 21 November 2026.
+Public addresses on the owner's server, set up on 21 November 2026: **<https://formularze.flyreelstudio.eu>** (the forms product, primary track; folder [`site-formularze/`](../../site-formularze/)) and **<https://urzad.flyreelstudio.eu>** (the city's task; folder [`site/`](../../site/)).
 
 ## How it works
 
-The server keeps a mirror of this repository and serves the folder [`site/`](../../site/) as static files. A scheduled job on the server pulls `main` every two minutes. **To publish, commit into `site/` and push `main`. Nothing else is needed, from any computer.** No keys or logins for the server are required on the build machine.
+The server keeps a mirror of this repository and serves the two folders as static files, one per address. A scheduled job on the server pulls `main` every two minutes. **To publish, commit into `site-formularze/` or `site/` and push `main`. Nothing else is needed, from any computer.** No keys or logins for the server are required on the build machine. The table below shows the paths of the first site; the second site has the same layout under its own folder (`deck/`, `deck/media/demo-1.mp4` and `demo-2.mp4`, `app/`).
 
 | Address | Folder in the repository | What |
 |---|---|---|

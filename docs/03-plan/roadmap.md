@@ -2,7 +2,29 @@
 
 Clock times are for the event (Sat 21 – Sun 22 November 2026, local time). Gates are hard: a milestone is not started until the previous gate passes. Work-package files live in `work-packages/`; packages without a file yet are specified by the lead from the architecture documents before they start (state in [`STATUS.md`](STATUS.md)).
 
-## Timeline
+## Which timeline applies
+
+Since the owner's decision of 21 November the **primary track is B** (the forms product for the task "Cyfryzacja formularzy"); see [`../01-product/scope-decision.md`](../01-product/scope-decision.md) §0. Track A (the city's task) is the alternative and stays ready. The gates G0, the HackTribe draft, M5 and the pitch rehearsal are the same for both.
+
+## Timeline for Track B (primary)
+
+The goal is a working two-sided product: a form is digitised with AI in front of the jury, a visitor fills it once on a phone, the clerk sees the data, the checker flags a mistake, the form prints on the original template. Slides are secondary.
+
+| Time | Milestone | Gate |
+|---|---|---|
+| Sat 11:00–12:00 | **G0. Intake**: read both full task cards, fill `docs/05-hackathon/ONSITE-INTAKE.md`, map the criteria to features, confirm the track with the owner | criteria table in the intake file; model provider decided |
+| Sat 12:00–13:00 | **M0. Scaffold**: WP-00 (with the counter view and the visitor page as the two front ends instead of the request desk) | fast gate passes; one command starts API, clerk view and visitor page |
+| Sat 13:00–17:30 | **M1. The loop without AI**: WP-B1 (profile schema, forms engine, two forms from ready descriptors, visual regression), WP-B2 (visitor page, QR handoff, relay, deletion), WP-B3 first cut (waiting list, large-print check, print) | a synthetic visitor fills the form on a phone, the clerk prints it on the original template; nothing personal on disk or in logs |
+| by Sat 18:00 | **HackTribe draft** (deadline 20:00) | owner confirms it is submitted |
+| Sat 17:30–23:30 | **M2. The AI parts**: WP-B6 (form onboarding: blank PDF to a reviewed descriptor and an online form), WP-B5 (checker), WP-A2 reduced to what B needs (model gateway with mock, local and cloud providers; blank forms are public data, personal data only local or pseudonymised) | a form never seen before is digitised live and passes the print test; the checker catches the seeded mistakes; canary test passes |
+| Sat 23:30–Sun 04:00 | **M3. Depth and trust**: bundles for two life situations (one data entry, several forms and persons), WP-B4 (camera reading of the machine-readable zone on the device; simulators for the document reader and the government wallet), security tests of the relay, accessibility check, Polish, Ukrainian and English on the visitor page | demo script of `docs/05-hackathon/demo-script-formularze.md` runs end to end twice in a row, also with the network cable unplugged |
+| Sun 04:00–08:00 | **M4. The bridge and the numbers**: WP-AB1 as the showcase (the city's request template digitised with the same flow), measurements for the deck (`site-formularze/deck/metrics.json`), static demo build | measured numbers on slides; static demo at formularze.flyreelstudio.eu/app/ |
+| Sun 08:00–10:00 | **M5. Submission**: two demo videos (each under a minute, or one under two minutes), PDF from the deck print mode, README for jurors, links checked from a clean browser | owner submits in HackTribe by 10:00 (deadline 11:00) |
+| Sun 11:00–15:00 | **Pitch rehearsal**: live demo first, slides second; one timed run with a second phone | |
+
+Order inside M1 if the allowance is short: WP-B1 and WP-B2 first (they are independent), then WP-B3. If WP-B6 does not reach its gate, the demo uses forms with hand-made descriptors and says so; the two-sided flow is still the product.
+
+## Timeline for Track A (alternative: the city's task)
 
 | Time | Milestone | Gate |
 |---|---|---|

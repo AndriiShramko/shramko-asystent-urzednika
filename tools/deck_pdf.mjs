@@ -3,9 +3,13 @@
  * deck_pdf.mjs — render the deck's print mode (site/deck/index.html?print=1)
  * to site/deck/Asystent-Urzednika.pdf (one 1920x1080 page per slide).
  *
- *   node tools/deck_pdf.mjs
+ *   node tools/deck_pdf.mjs                       (site/deck -> Asystent-Urzednika.pdf)
+ *   node tools/deck_pdf.mjs <deck folder> <out.pdf>
+ *   e.g. node tools/deck_pdf.mjs site-formularze/deck Od-druku-do-uslugi.pdf
+ * The deck folder is relative to the repository root (or absolute); the PDF
+ * name is written inside that folder unless it is an absolute path.
  *
- * 1. Regenerates site/deck/metrics.js and status.js from metrics.json and
+ * 1. Regenerates <deck>/metrics.js and status.js from metrics.json and
  *    status.json (the .js copies are what the deck reads when opened from disk).
  * 2. Uses Playwright if it is installed; otherwise runs the installed Chrome /
  *    Chromium / Edge headless with --print-to-pdf. Set CHROME_PATH to override.
@@ -18,8 +22,8 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 import { spawnSync, execSync } from 'node:child_process';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const deck = join(root, 'site', 'deck');
-const out = join(deck, 'Asystent-Urzednika.pdf');
+const deck = resolve(root, process.argv[2] || join('site', 'deck'));
+const out = resolve(deck, process.argv[3] || 'Asystent-Urzednika.pdf');
 const url = pathToFileURL(join(deck, 'index.html')).href + '?print=1';
 
 function regen(name, globalName) {

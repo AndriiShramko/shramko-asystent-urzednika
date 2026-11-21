@@ -1,19 +1,33 @@
 """Smoke test of the deck via Chrome DevTools Protocol (no Playwright needed).
-Usage: python -X utf8 smoke.py [slides...]   e.g. smoke.py 8 9   (default: all + presenter + sheet)
+Usage: python -X utf8 deck_smoke.py [--deck DIR] [--out DIR] [--presenter-slide N] [slides...]
+  default deck: site/deck, screenshots: docs/assets/deck (paths relative to the repo root)
+  e.g. deck_smoke.py 8 9                (only slides 8 and 9)
+       deck_smoke.py --deck site-formularze/deck --out docs/assets/deck-formularze --presenter-slide 4
+  Without slide numbers: all slides + presenter + answer card + print check + contact sheet.
+  The last slide's screenshot is scanned for a QR code.
 """
-import asyncio, base64, json, os, subprocess, sys, tempfile, time, urllib.request
+import asyncio, base64, json, os, re, subprocess, sys, tempfile, time, urllib.request
 from pathlib import Path
 import websockets
 import numpy as np, cv2
 from PIL import Image
 
+ROOT = Path(__file__).resolve().parent.parent
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-DECK = Path(r"C:\dev\shramko-asystent-urzednika\site\deck\index.html")
-OUT = Path(r"C:\dev\shramko-asystent-urzednika\docs\assets\deck")
+
+def opt(name, default):
+    if name in sys.argv:
+        i = sys.argv.index(name); v = sys.argv[i + 1]; del sys.argv[i:i + 2]; return v
+    return default
+DECK_DIR = (ROOT / opt("--deck", "site/deck")).resolve()
+OUT = (ROOT / opt("--out", "docs/assets/deck")).resolve()
+PRESENTER_SLIDE = int(opt("--presenter-slide", "5"))
+DECK = DECK_DIR / "index.html"
 OUT.mkdir(parents=True, exist_ok=True)
 URL = DECK.as_uri()
-PORT = 9339
+PORT = int(opt("--port", "9339"))  # use another port if a second smoke run may be active
 only = [int(a) for a in sys.argv[1:] if a.isdigit()]
+OPTIONAL_VIDEO = re.compile(r"demo(-\d+)?\.mp4")  # optional demo videos absent: expected
 
 class CDP:
     def __init__(s, ws): s.ws, s.i, s.events, s.pending = ws, 0, [], {}
@@ -44,7 +58,7 @@ class CDP:
                 errs.append(str(e["params"]["args"]))
             elif mth == "Log.entryAdded" and e["params"]["entry"]["level"] == "error":
                 txt = e["params"]["entry"]["text"]
-                if "demo.mp4" not in e["params"]["entry"].get("url", "") + txt:  # optional video absent: expected
+                if not OPTIONAL_VIDEO.search(e["params"]["entry"].get("url", "") + txt):
                     errs.append(txt)
         s.events = []
         return errs
@@ -72,7 +86,11 @@ async def main():
         c = CDP(ws)
         for m in ("Page.enable", "Runtime.enable", "Log.enable"): await c.call(m)
         await c.call("Emulation.setDeviceMetricsOverride", width=1280, height=720, deviceScaleFactor=1, mobile=False)
-        slides = only or list(range(1, 12))
+        # test the animated deck even when the OS has animations off (Windows: reduce motion -> still frames)
+        await c.call("Emulation.setEmulatedMedia", features=[{"name": "prefers-reduced-motion", "value": "no-preference"}])
+        await c.call("Page.navigate", url=URL); await c.drain(1.0)
+        total = (await c.call("Runtime.evaluate", expression="window.DECK.slides.length"))["result"]["value"]
+        slides = only or list(range(1, total + 1))
         for n in slides:
             await c.call("Page.navigate", url="about:blank"); await c.drain(0.3); c.events = []
             await c.call("Page.navigate", url=f"{URL}#{n}")
@@ -84,7 +102,7 @@ async def main():
         if not only:
             await c.call("Emulation.setDeviceMetricsOverride", width=1280, height=800, deviceScaleFactor=1, mobile=False)
             await c.call("Page.navigate", url="about:blank"); await c.drain(0.3)
-            await c.call("Page.navigate", url=f"{URL}?presenter=1#5"); await c.drain(1.5)
+            await c.call("Page.navigate", url=f"{URL}?presenter=1#{PRESENTER_SLIDE}"); await c.drain(1.5)
             await shot(c, OUT / "presenter.png", 1280, 800)
             for typ in ("keyDown", "keyUp"):
                 await c.call("Input.dispatchKeyEvent", type=typ, key="3", code="Digit3", windowsVirtualKeyCode=51)
@@ -96,12 +114,15 @@ async def main():
             r = await c.call("Runtime.evaluate", expression="document.querySelectorAll('.page').length")
             report.append(f"print pages={r['result'].get('value')} errors={c.errors()}")
     p.terminate()
-    # QR decode from the actual slide 11 screenshot
-    img = cv2.imread(str(OUT / "slide-11.png"))
-    report.append("QR from screenshot: " + repr(cv2.QRCodeDetector().detectAndDecode(img)[0]))
+    # QR decode from the actual screenshot of the last slide
+    last = OUT / f"slide-{total:02d}.png"
+    if last.exists():
+        img = cv2.imread(str(last))
+        report.append("QR from screenshot: " + repr(cv2.QRCodeDetector().detectAndDecode(img)[0]))
     if not only:
-        ims = [Image.open(OUT / f"slide-{n:02d}.png").convert("RGB").resize((640, 360)) for n in range(1, 12)]
-        sheet = Image.new("RGB", (3 * 640 + 4 * 16, 4 * 360 + 5 * 16), (11, 16, 32))
+        ims = [Image.open(OUT / f"slide-{n:02d}.png").convert("RGB").resize((640, 360)) for n in range(1, total + 1)]
+        nrows = (total + 2) // 3
+        sheet = Image.new("RGB", (3 * 640 + 4 * 16, nrows * 360 + (nrows + 1) * 16), (11, 16, 32))
         for k, im in enumerate(ims):
             sheet.paste(im, (16 + (k % 3) * 656, 16 + (k // 3) * 376))
         sheet.save(OUT / "contact-sheet.png", optimize=True)
