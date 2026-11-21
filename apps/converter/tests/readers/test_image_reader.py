@@ -269,6 +269,29 @@ def test_a_pdf_without_text_takes_the_image_way_with_a_page_in_points():
     assert [w.code for w in model.warnings] == ["OCR_USED"]
 
 
+def test_a_huge_pdf_page_is_rendered_within_the_pixel_budget():
+    from reportlab.pdfgen import canvas
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=(200 * 72, 200 * 72))   # 200 x 200 inches: at 200 dpi this would be 1.6 gigapixels
+    c.rect(1000, 1000, 2000, 300)
+    c.showPage()
+    c.save()
+    seen = []
+
+    class Spy:
+        name = "spy"
+
+        def read(self, png, lang, timeout):
+            seen.append(Image.open(io.BytesIO(png)).size)
+            return []
+
+    _ocr.set_engine(Spy())
+    budget = 4_000_000
+    model = readers.read_document(buf.getvalue(), "pdf", ReadOptions(max_pixels=budget))
+    assert seen and seen[0][0] * seen[0][1] <= budget
+    assert model.pages[0].width == pytest.approx(14400, rel=0.01)    # mapped back to points
+
+
 def test_a_pdf_without_text_and_without_ocr_stays_native_with_a_warning():
     model = readers.read_document(_textless_pdf(), "pdf")
     assert model.pages[0].origin == "native"

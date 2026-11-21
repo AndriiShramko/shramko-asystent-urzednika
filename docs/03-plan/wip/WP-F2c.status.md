@@ -1,6 +1,6 @@
 # WP-F2c Reader of images (JPEG, PNG) and the image way of a PDF: status
 
-Branch: wp/F2c-images-ocr   Stage now: acceptance done (fast gate red only on 6 stale tests outside our paths)
+Branch: wp/F2c-images-ocr   Stage now: follow-up done (stale tests fixed, PDF render budget, settings mapped)
 
 ## Status
 - [x] `_raster.py`: decode with limits (formats restricted, size from header before decoding, `max_pixels`), metadata drop (pixels re-wrapped, EXIF orientation applied first), transparency on white, Otsu binarisation
@@ -14,6 +14,8 @@ Branch: wp/F2c-images-ocr   Stage now: acceptance done (fast gate red only on 6 
 - [x] negative control
 - [x] integration: `tests/readers/test_image_pipeline.py` end to end through `pipeline.run` (no lint ERROR) for synthetic PNG/JPEG, a 6-page scan, a fake engine, a truncated PNG, and the set images; real Tesseract runs only in the image workflow (marker `tesseract`)
 - [x] acceptance: main merged (already up to date), fast gate run, negative control recorded; fast gate not green only because of 6 stale tests of other packages (Requests); drills 1 and 2 need the finder, which does not exist yet (not run)
+- [x] follow-up: the 6 stale tests rewritten (truncated PNG is the unreadable file; jpe now 200); `read_options` maps `max_pixels` and `ocr_langs` (no timeout setting exists, `ocr_timeout` keeps 90 s); `pipeline.py` has no list of formats without a reader, nothing to change
+- [x] audit T7: a PDF page for OCR is rendered with the scale fitted exactly to `max_pixels` (before: 0.8 steps with a floor at 0.5, a 200 x 200 inch page still came to 51 Mpx and beyond); test with a 200 x 200 inch page; negative control (fixed scale) fails it
 
 ## Decisions
 - Units: pixels x 0.36 = points (a 1654 px wide scan is A4 at 200 dpi); a PDF page rendered at 200 dpi (less if over `max_pixels`) maps back with 1/scale / one constant, no DPI from metadata / rules out trusting declared DPI.
@@ -34,6 +36,7 @@ Branch: wp/F2c-images-ocr   Stage now: acceptance done (fast gate red only on 6 
 | integration, synthetic + set images | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_image_pipeline.py -q` | 8 passed (the sets test ran on this machine: every JPG/PNG of the sets, no crash, no lint ERROR) | 7c8bed5 |
 | fast gate after merging main | `bash tools/gate.sh fast` | 564 passed, 1 skipped, 6 failed; all 6 are stale tests outside our paths (see Requests) | 7c8bed5 |
 | acceptance: fast gate after merging main (already up to date) | `bash tools/gate.sh fast` | 564 passed, 1 skipped, 6 failed, same 6 stale tests outside our paths; 0 failures in our modules | 0ea8a15 |
+| follow-up fast gate after merging main (WP-F4) | `bash tools/gate.sh fast` | 615 passed, 1 skipped, 1 failed: `tests/mean/test_mean_sets.py::test_the_stored_briefs_cover_every_judged_set` (the briefs are local files, absent in a worktree; not ours) | follow-up commit |
 
 ## Negative control
 In `_raster.py` the metadata-dropping `Image.frombytes` was replaced by `return grey` and the white-row test by `False`: `test_decode_drops_metadata_and_applies_orientation` and `test_tall_scan_is_cut_into_pages_at_white_bands` failed (2 failed, 21 passed); restored, 23 passed.

@@ -136,8 +136,9 @@ def textless_pdf_page(data: bytes, index: int, number: int, ids: Ids, options: R
         pg = pdf[index]
         w_pt, h_pt = pg.get_size()
         scale = 200.0 / 72.0
-        while w_pt * h_pt * scale * scale > options.max_pixels and scale > 0.5:
-            scale *= 0.8
+        if w_pt > 0 and h_pt > 0 and w_pt * h_pt * scale * scale > options.max_pixels:
+            # the pixel budget is a hard limit: scale down exactly, never render a huge page at a fixed dpi
+            scale = (options.max_pixels / (w_pt * h_pt)) ** 0.5
         grey = pg.render(scale=scale).to_pil().convert("L")
     finally:
         pdf.close()
