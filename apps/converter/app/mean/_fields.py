@@ -437,6 +437,9 @@ class _Reader:
                     break
                 window, used = window + " " + lines[i + k][1], used + list(lines[i + k][0])
             m = _ATT_SAY.search(window)
+            if m and (re.match(r"do\s+(?:niniejszego\s+)?(?:wniosku|formularza|zgłoszenia|deklaracji)\b", m.group(1) or m.group(2) or "", re.IGNORECASE)
+                      or re.search(r"\bnie\s*$", window[: m.start()], re.IGNORECASE)):
+                m = None        # "X należy załączyć do wniosku" names X before the verb; "nie można dołączyć X" forbids it
             if m and m.start() < len(text):
                 k = 1 if m.group(1) else 2
                 found.append((m.group(k).split(". ")[0], used, bool(_ATT_MAY.search(window[: m.start(k)]))))
@@ -457,7 +460,7 @@ class _Reader:
             label = sentence_case(label.strip(" ,.;:–-"))
             if len(label) < 4 or any(a.label.casefold() == label.casefold() for a in self.out.attachments):
                 continue
-            cover = next((row["role"] for rx, row in lexicon.compiled("habits", habit="attachment_cover") if rx.search(item)), None)
+            cover = next((row["role"] for rx, row in lexicon.compiled("habits", habit="attachment_cover") if rx.search(label)), None)   # the item, not its condition
             a = Attachment(**some(label=label, covered_by=cover, key=self.keys.unique(key_of(label, "zalacznik")),
                                   required=not (may or cut) and cover is None,
                                   evidence=[doc.evidence(used, " ".join(doc.text(r) for r in used)[:400])]))

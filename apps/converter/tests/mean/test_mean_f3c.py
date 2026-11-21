@@ -176,6 +176,28 @@ def test_a_negation_that_does_not_say_the_other_item_is_not_required_is_no_eithe
     assert all(a.show_if is None for a in b.attachments)
 
 
+def _one_line_paper(line: str):
+    n = Native()
+    n.text(70, 60, "WNIOSEK O WYNAJEM", 300, bold=True)
+    n.text(50, 100, "Nazwa sali", 80)
+    n.text(140, 100, DOTS, 200)
+    n.text(50, 140, line, 400)
+    return _run(n)
+
+
+def test_the_item_before_the_verb_is_the_upload_not_the_words_after_it() -> None:
+    """Critic round 2: "Kopię dowodu należy załączyć do wniosku" made an upload called "Do wniosku"."""
+    got = [(a.label, a.required) for a in _one_line_paper("Kopię dowodu należy załączyć do wniosku.").attachments]
+    assert got == [("Kopię dowodu", True)]
+
+
+def test_a_condition_naming_another_item_does_not_cover_this_one_and_a_ban_is_no_upload() -> None:
+    cond = _one_line_paper("Kopię umowy należy załączyć do wniosku, jeżeli pełnomocnictwo nie jest wymagane.")
+    assert [(a.label, a.covered_by) for a in cond.attachments] == [("Kopię umowy", None)]
+    ban = _one_line_paper("Nie można dołączyć kopii dowodu.")
+    assert ban.attachments == []
+
+
 def test_a_regulation_annex_line_and_a_bare_attachments_heading_give_no_upload() -> None:
     n = Native()
     n.text(50, 40, "Załącznik nr 2 do Regulaminu korzystania z sal", 300)
