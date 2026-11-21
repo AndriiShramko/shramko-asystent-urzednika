@@ -1,6 +1,6 @@
 # WP-F3c Matter quality round 2 (choice groups, attachments, no fragments): status
 
-Branch: wp/F3c-matter-quality-2   Stage now: core (probe, items 1 to 5)
+Branch: wp/F3c-matter-quality-2   Stage now: acceptance done (items 1 to 5); items 6, 7 not started
 
 Owned: `apps/converter/app/find/**`, `app/mean/**`, `app/lexicon/**`, `app/compose/**`, their tests, `eval/probe/**`.
 Probe: `bash tools/gate.sh py eval/probe/matter.py [--labels <scratch dir>] [--tickets <audit ticket file>]` (counts only;
@@ -13,7 +13,8 @@ labels go to a folder outside the repository for a before/after diff).
 - [x] item 3 (T3 no field without an input cue): printed amount, heading strip, last line of a sentence, stub label; 8 synthetic tests (4 negative)
 - [x] item 5 (T5 labels, T9 types): lower-case label takes the body line above (and a numbered heading above wrapped lines); DD-MM-RRRR / "dnia" -> DATEPICKER, "dni" -> NUMBER; 4 tests (3 negative)
 - [x] item 4 (T4 caption under a blank): caption in slashes or brackets on a second dotted line is the hint of the blank above, `_hint_after` takes "/.../"; 3 tests (1 negative group)
-- [ ] items 6 and 7 (T7, T6): only if replies remain
+- [ ] items 6 and 7 (T7, T6): not started (second core stage or F3d)
+- [x] acceptance stage: probe before/after, sets tests, fast gate, chain compare, negative control (Evidence)
 
 ## Probe (counts only; RADIO/CHECKBOX: count [options per field]; upl = uploaders of the matter; req = REQUIRED of the matter; low = labels whose printed words (evidence quote) start lower-case; <4 = labels with fewer than four letters)
 
@@ -100,19 +101,39 @@ Removed fragments (count): set 6 PDF one field merged (caption line); set 8 PDF 
 | find/mean/compose/pipeline | same selection as above | 194 passed, 1 skipped | items 3, 5, 4 commit |
 | probe, 13 files | `bash tools/gate.sh py eval/probe/matter.py --labels <scratch>` | table "After items 3, 5, 4"; 0 strict-lint errors on all 13; sets 2, 3, 4, 7 label diff 0 lines | items 3, 5, 4 commit |
 | fast gate | `bash tools/gate.sh fast` | 696 passed, 2 skipped, 22 deselected; chain tests 21 passed; PASSED | items 3, 5, 4 commit (run on the working tree before the commit) |
+| acceptance: sets tests | `bash tools/gate.sh py -m pytest apps/converter/tests -q -m sets` | 125 passed, 1 skipped (local briefs absent) | merge 7ab5ae3 |
+| acceptance: probe before (aa8b0be) and after (a0d3190) | `bash tools/gate.sh py eval/probe/matter.py` in two worktrees | table below (13 files, lint 0 on all) | aa8b0be, a0d3190 |
+| acceptance: fast gate after merging main | `bash tools/gate.sh fast` | 696 passed, 2 skipped, 22 deselected; chain tests 21 passed; PASSED | 7ab5ae3 |
+| acceptance: chain compare | `bash tools/gate.sh py -m eval.chain --corpus sets,hostile --compare` (archive of unseen files absent here, so 80 baseline rows of "unseen" are notes) | 78 files: 72 converted, 6 refused (hostile), 0 failed; gate failures 0; strict-lint errors 0; compare 1 worse (non-fatal), 15 better; exit 0 | 7ab5ae3 |
+
+Acceptance probe table, aa8b0be (before this stage) -> a0d3190 (after items 3, 5, 4); rows not shown are identical:
+
+| set | fmt | fields | RADIO | CHECKBOX | upl | req | low | <4 |
+|---|---|---|---|---|---|---|---|---|
+| 06 | docx | 16 | 0 | 0 | 0 | 16 | 12 | 2 -> 0 |
+| 06 | pdf | 19 -> 18 | 1 [2] | 0 | 5 | 24 -> 23 | 13 | 3 -> 0 |
+| 08 | docx | 28 -> 25 | 7 x [2] | 2 [5, 0] | 1 | 27 -> 24 | 17 -> 8 | 0 |
+| 08 | pdf | 39 -> 37 | 2 [2, 2] | 2 [4, 0] | 3 | 38 -> 36 | 17 -> 6 | 0 |
+| 09 | pdf | 61 | 4 [3, 2, 2, 2] | 1 [3] | 4 | 62 | 15 -> 7 | 0 |
+
+Chain: the only "worse" row is set 8 DOCX, 80 -> 78 fields of the whole form, which are the removed fragments counted above (two section headings and a rate cell; one count cell is gained elsewhere). Fifteen sets rows gain fields (+1 to +7). No regression in outcome, gate or lint.
+Acceptance negative control: `_AMOUNT` check in `mean/_fields.py` line 143 switched off (`if False and label and ...`): `test_a_printed_rate_is_text_of_the_form_not_a_field` failed (1 failed, 25 passed); restored with `git checkout --` -> 26 passed. Nothing committed broken.
 
 ## Negative control
 Items 3, 5, 4: the lead-in switched off (`if False and text[:1].islower()` in `_clarify`): the two lead-in tests failed (2 failed, 24 passed); line restored -> 26 passed. Nothing committed in the broken state. Item 1 control below.
 
 The group split disabled (`if head and ...` -> `if False and head and ...` in `_split_group`): `test_a_line_ending_in_a_colon_between_options_splits_the_group_in_two` failed (1 failed, 11 passed); file restored with `git checkout --` -> 12 passed. Nothing committed in the broken state.
 
-## Left for the next core stage (cases located on the PDFs with `dump` of reading order; no form text here)
-- item 3 (T3): set 6 two short tails ("Mui", "Tj") are words after a blank inside a sentence; set 8 two section headings became fields of their own (a `cell` candidate whose label is the section heading: c58, c59 kind) and a printed rate cell became a field; set 9 a consent sentence tail. Plan: a `cell` candidate labelled only by its section heading and a candidate whose label is a printed amount ("NN zł NN gr") are text, LEFT_OUT with a reason; a label of one or two letters after a blank in a sentence is MERGED into the field before it.
-- item 5 (T5/T9): label that starts lower-case and whose run continues a body line right above (geometry, `_below` in reverse) gets that line prepended (set 9 disciplines lead-in, "Inna" + "dyscyplina", the club opinion); set 8 household counts need the row header with the bound; types: "DD-MM-RRRR" / "dnia" -> DATEPICKER, "liczba / ilość / dni" -> NUMBER (lexicon `concepts`).
-- item 4 (T4): set 6 a caption in parentheses or slashes under a blank: merge into the blank above as its hint (extend `_hint_after` to "/.../" and to a caption that the finder made a candidate of its own).
-- set 9 channel group (single box + unlabelled group of two inboxes) is still split; set 3 DOCX options still need the reader's list marker (F3b request 1); set 6 DOCX attachments list has no printed dash.
+## Left for the next core stage (cases located on the PDFs; no form text here)
+Done in core stage 2: items 3, 5, 4 (see Status). Not started: item 6 (T7 optional marks) and item 7 (T6 table cells). Open:
+- set 9 channel group (single box + unlabelled group of two inboxes) is still split;
+- set 3 DOCX options need the reader's list marker (F3b request 1);
+- set 6 DOCX attachments list has no printed dash (Word numbering), so no uploader there;
+- "Inna" + "dyscyplina" (one capitalised word is not a sentence that goes on); set 9 attachments are asked once, not per variant;
+- no synthetic test is named for the "ticked box drawn in an instruction is not a group" control (the filled square is simply not a mark).
 
 ## Requests to lead
 
 ## Cost notes
 - core (items 1, 2, about 50 replies): the worktree guard refuses any command line holding the word of the evaluation folder in some forms (`ls`, `sed`, `cd`) and every compound command; scratch Python scripts (`dump.py` reading order with roles, `cmp.py` label diff of two probe `--labels` folders) made each item one probe run plus one diff. Cheaper next time: commit both helpers under `eval/probe/` (they print form text, so only with output to a folder outside git).
+- acceptance: the long runs (sets tests 3 min, fast gate 2.5 min) took the waiting turns; the chain needed `--corpus sets,hostile` because the archive of unseen files is absent here.
