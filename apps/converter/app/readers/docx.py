@@ -213,6 +213,9 @@ def _tab_stops(ppr: etree._Element | None) -> list[tuple[float, str]]:
 LIST_BOX = "□"            # the first of the finder's BOX_CHARS (app/find/_core.py)
 _BOXES = "□❑❒☐❏❐▢◻◽⬜■"
 _DASHES = "-–—‐"
+# Symbol-font code points the finder takes as an option mark before a word (PUA_MARKS of app/find/_core.py: sets 3
+# and 9 print one before each option); as a list bullet they become LIST_BOX.
+_PUA_OPTION_MARKS = frozenset((0xF0F0, 0xF092, 0xF06F, 0xF071, 0xF0A8, 0xF0FE))
 _MAX_LEVELS = 9
 
 
@@ -263,6 +266,8 @@ def _bullet(text: str, font: str) -> str:
         return LIST_BOX
     if ch in "☑☒":
         return ch
+    if code in _PUA_OPTION_MARKS:
+        return LIST_BOX
     if ch in _DASHES:
         return "-"
     return "•"

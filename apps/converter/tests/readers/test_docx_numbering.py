@@ -71,9 +71,11 @@ def test_symbol_box_bullet_becomes_box_and_round_bullet_becomes_dot() -> None:
     num = (_abstract(1, _lvl(0, "bullet", "", font="Wingdings"))
            + _abstract(2, _lvl(0, "bullet", "", font="Symbol"))
            + _abstract(3, _lvl(0, "bullet", "-", font="Calibri"))
-           + _num(1, 1) + _num(2, 2) + _num(3, 3))
-    body = _np("Wyrażam zgodę", 1) + _np("Nie wyrażam zgody", 1) + _np("punkt", 2) + _np("myślnik", 3)
-    assert _read(body, num) == ["□ Wyrażam zgodę", "□ Nie wyrażam zgody", "• punkt", "- myślnik"]
+           + _abstract(4, _lvl(0, "bullet", "", font="Symbol"))
+           + _num(1, 1) + _num(2, 2) + _num(3, 3) + _num(4, 4))
+    body = (_np("Wyrażam zgodę", 1) + _np("Nie wyrażam zgody", 1) + _np("punkt", 2) + _np("myślnik", 3)
+            + _np("opcja", 4))
+    assert _read(body, num) == ["□ Wyrażam zgodę", "□ Nie wyrażam zgody", "• punkt", "- myślnik", "□ opcja"]
 
 
 def test_start_and_start_override() -> None:
