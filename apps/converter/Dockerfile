@@ -35,6 +35,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONUTF8=1 PIP_NO_CACHE_DIR=1
 # Determinism (WP-F20i): one OCR thread whatever the host has, one locale, one time zone. C.UTF-8 is built into
 # glibc and is the only locale of musl; tools/ci/container_check.py asks the C library inside each image.
 ENV OMP_THREAD_LIMIT=1 OMP_NUM_THREADS=1 LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC
+# NEGATIVE CONTROL, never merge: the image refuses to start without a key, so the first-run check must go red.
+ENV AUTH_MODE=jwt
 RUN apt-get update && \
     apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-pol tesseract-ocr-eng \
         libheif-examples libheif-plugin-libde265 && \
@@ -70,6 +72,8 @@ FROM ${PY_ALPINE} AS core
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONUTF8=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 # Determinism (WP-F20i), the same line as in plus: one OCR thread, one locale, one time zone.
 ENV OMP_THREAD_LIMIT=1 OMP_NUM_THREADS=1 LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC
+# NEGATIVE CONTROL, never merge: the image refuses to start without a key, so the first-run check must go red.
+ENV AUTH_MODE=jwt
 RUN apk add --no-cache tesseract-ocr tesseract-ocr-data-pol tesseract-ocr-data-eng libheif-tools && \
     adduser -S -D -H -u 10001 -s /sbin/nologin converter
 # HEIC (WP-F20f, D24): the narrowest package that gives heif-dec, never libheif-plugins-all. No x265 (GPL-2.0+).
