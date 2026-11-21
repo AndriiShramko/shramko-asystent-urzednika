@@ -31,6 +31,7 @@ class ConfigError(Exception):
 class Settings:
     max_upload_bytes: int = 20971520
     max_pages: int = 60
+    max_cells: int = 200_000
     max_pixels: int = 80000000
     job_timeout_s: int = 120
     worker_memory_mb: int = 1024
@@ -173,7 +174,7 @@ def read_options(s: Settings):
     """Settings -> the limits and thresholds of the readers."""
     from app.readers import ReadOptions
 
-    return ReadOptions(ocr_min_chars=s.ocr_min_chars, max_pages=s.max_pages)
+    return ReadOptions(ocr_min_chars=s.ocr_min_chars, max_pages=s.max_pages, max_cells=s.max_cells)
 
 
 def compose_options(s: Settings):

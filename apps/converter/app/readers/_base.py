@@ -20,6 +20,7 @@ class ReadOptions:
     max_pages: int = 500             # a document with more pages is refused, not read halfway
     max_part_bytes: int = 64 << 20   # a ZIP part larger than this when unpacked is refused (DOCX)
     max_ratio: int = 200             # unpacked / packed size of a ZIP part above this is refused (zip bomb)
+    max_cells: int = 200_000         # sheet cells a workbook may expand to (XLSX, ODS repeats), counted first
 
     @classmethod
     def of(cls, options: ReadOptions | Mapping[str, Any] | None) -> ReadOptions:

@@ -148,7 +148,7 @@ def test_other_fixtures_are_refused_with_a_typed_refusal_and_no_traceback(fixtur
         cp = _convert(path)
         assert container_check.problems_of_refusal(cp.returncode, cp.stdout, cp.stderr) == [], path.name
         refused += 1
-    assert refused == 6
+    assert refused == 3
 
 
 def test_gate_probe_reports_g1_and_g2_passed_for_a_converted_pdf(tmp_path):
@@ -275,7 +275,7 @@ def test_http_checks_pass_against_the_native_service(fixtures, tmp_path):
         res = container_check.Results()
         assert container_check.http_checks(f"http://127.0.0.1:{port}", key, fixtures, res)
         assert res.failed == 0, [r for r in res.rows if not r["ok"]]
-        assert len(res.rows) == 8 + 6  # 8 as before, 6 refusals over HTTP
+        assert len(res.rows) == 8 + 3  # 8 as before, 3 refusals over HTTP
     finally:
         proc.terminate()
         proc.wait(timeout=10)

@@ -63,6 +63,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `DOC_READER` | `native` | `off` refuses binary Word with `415 DOC_READER_OFF` |
 | `ACTIVE_CONTENT` | `warn` | `strict` refuses files with macros |
 | `MAX_PAGES` | `60` | pages per document; more is `413 TOO_LARGE` |
+| `MAX_CELLS` | `200000` | cells with content per sheet file (XLSX, ODS); more is `413 TOO_LARGE` |
 | `OCR_MIN_CHARS` | `20` | a PDF page with fewer characters takes the image way |
 | `FINISH_STYLE` | `export` | `export`: `SECTION` with `TEXT_BLOCK`; `info_section` |
 | `VALIDATORS` | `on` | `off` writes empty validator lists, as in the exports |

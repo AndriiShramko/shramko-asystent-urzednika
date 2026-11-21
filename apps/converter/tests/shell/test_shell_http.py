@@ -80,8 +80,7 @@ def test_docx_is_converted(client):
     assert post(client, "/v1/forms/convert", "a.docx", fx.docx()).status_code == 200
 
 
-@pytest.mark.parametrize("name,data", [("a.xlsx", fx.xlsx()), ("a.ods", fx.ods()),
-                                       ("a.doc", fx.doc()), ("a.jpg", fx.jpeg()), ("a.png", fx.png())])
+@pytest.mark.parametrize("name,data", [("a.jpg", fx.jpeg()), ("a.png", fx.png())])
 def test_a_format_without_a_reader_passes_the_guard_and_is_422(client, name, data):
     # the guard accepts the eight formats; the pipeline has no reader for these yet and says so (WP-F0p)
     body = problem(post(client, "/v1/forms/convert", name, data), 422, "UNREADABLE")
