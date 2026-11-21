@@ -135,6 +135,22 @@ def _ole_kind(data: bytes) -> str:
         return "ole"
 
 
+def _embedded_in_ole(data: bytes) -> bool:
+    """True for a compound file (legacy Word, Excel) that merely CONTAINS a zip package in the middle.
+
+    Real Word 97 files carry an Office theme package in one of their streams (measured on the partner's sets: every
+    .doc has one). The ZIP proof does not count there, because the archive does not end the file. A zip that does end
+    the file, appended to a compound file, is still a polyglot.
+    """
+    if not data.startswith(OLE_MAGIC):
+        return False
+    i = data.rfind(b"PK", max(0, len(data) - 65557))
+    if i < 0 or i + 22 > len(data):
+        return True
+    comment = struct.unpack_from("<H", data, i + 20)[0]
+    return i + 22 + comment != len(data)
+
+
 def check_archive(data: bytes, settings: Settings) -> zipfile.ZipFile:
     """Open the ZIP and enforce design 6.1 item 5. Members are decompressed in chunks and counted, never written."""
     claimed = _eocd_entries(data)
@@ -190,7 +206,7 @@ def sniff_kinds(data: bytes, settings: Settings | None = None) -> set[str]:
         kinds.add("png")
     if data.startswith(OLE_MAGIC):
         kinds.add(_ole_kind(data))
-    if zipfile.is_zipfile(io.BytesIO(data)):
+    if zipfile.is_zipfile(io.BytesIO(data)) and not _embedded_in_ole(data):
         zf = check_archive(data, settings)
         kinds |= _zip_kinds(zf)
     return kinds
@@ -236,6 +252,10 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         raise too_large(settings)
 
     kinds = sniff_kinds(data, settings)
+    if ext == "doc" and kinds == {"docx"}:
+        # Measured on the partner's sets: two forms named .DOC hold a DOCX package (set 7 and reference 5). The
+        # content proof is exact, so the file is read as the DOCX it is; the caller sees kind docx, ext doc.
+        kind = "docx"
     if len(kinds) > 1:
         raise ProblemError("TYPE_MISMATCH", "Plik spełnia dowody kilku formatów naraz (" + ", ".join(sorted(kinds)) + ").")
     if kinds != {kind}:
