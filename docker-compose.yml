@@ -1,0 +1,36 @@
+# Runs the converter with a token check. From the repository root:
+#
+#   mkdir -p secrets && printf '%s' "<a long random string>" > secrets/jwt_secret   # never committed (secrets/ is ignored)
+#   docker compose up --build
+#   curl http://127.0.0.1:8080/healthz
+#
+# For local work without a token: AUTH_MODE=off docker compose up  (the service logs a warning at start).
+# Set IMAGE to run the published image instead of building: IMAGE=ghcr.io/andriishramko/shramko-asystent-urzednika:<tag>
+services:
+  converter:
+    image: ${IMAGE:-converter:core}
+    build:
+      context: .
+      dockerfile: apps/converter/Dockerfile
+      target: core            # or: plus
+    ports:
+      - "127.0.0.1:8080:8080"  # one port, loopback only; remove "127.0.0.1:" to publish it on the network
+    environment:
+      AUTH_MODE: ${AUTH_MODE:-jwt}
+      JWT_ALG: HS256
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      # Every other variable of the configuration table (apps/converter/README.md) may be set here.
+    secrets:
+      - jwt_secret
+    read_only: true            # the service writes only to its temporary folder
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+secrets:
+  jwt_secret:
+    file: ./secrets/jwt_secret

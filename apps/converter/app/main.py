@@ -1,0 +1,296 @@
+"""The HTTP shell (design section 3): endpoints, problem answers, token and rate checks, body limit.
+
+Order inside every conversion request: token, scope, rate limit, concurrency, then the body is read (counted),
+then the guard, then the pipeline behind `app.pipeline.run`. Nothing here parses a document.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import logging
+import time
+import uuid
+from pathlib import Path
+from typing import AsyncIterator
+
+import asyncio
+from fastapi import FastAPI, Request
+from fastapi.concurrency import run_in_threadpool
+from fastapi.responses import JSONResponse, Response, StreamingResponse
+from starlette.datastructures import UploadFile
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.staticfiles import StaticFiles
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
+
+from app import __version__, pipeline
+from app.auth import RateLimiter, TokenVerifier, scopes_of
+from app.config import Settings
+from app.guard import ProblemError, UploadInfo, inspect_upload
+from app.guard.checks import EXTENSIONS, check_archive, too_large
+
+log = logging.getLogger("converter")
+
+FRAMING_SLACK = 1 << 20          # multipart framing around the one file part
+BATCH_MAX_FILES = 20
+BATCH_MAX_FACTOR = 5             # a batch body may be this many times the single-file limit
+PROBLEM_JSON = "application/problem+json"
+FORM_KEYS = {"title", "tabs", "flow"}  # decision D1: the partner's object and nothing else
+
+
+def _event(stage: str, result: str, job: str, size: int | None = None) -> None:
+    """Content-free log line: stage, result code, random job id, a size bucket. Never a name, text or token."""
+    bucket = "n/a" if size is None else f"<=2^{max(size, 1).bit_length()}"
+    log.info("stage=%s result=%s job=%s size=%s", stage, result, job, bucket)
+
+
+def problem_response(exc: ProblemError) -> JSONResponse:
+    return JSONResponse(exc.body(), status_code=exc.status, media_type=PROBLEM_JSON, headers=exc.headers)
+
+
+class BodyLimit:
+    """Pure ASGI middleware: the declared Content-Length first, then bytes counted as they arrive, so a lying
+    header cannot let a large body through and the body is never read to its end once it is over the cap."""
+
+    class _Over(Exception):
+        pass
+
+    def __init__(self, app: ASGIApp, settings: Settings) -> None:
+        self.app = app
+        self.s = settings
+
+    def _cap(self, path: str) -> int:
+        factor = BATCH_MAX_FACTOR if path.startswith("/v1/batches") else 1
+        return self.s.max_upload_bytes * factor + FRAMING_SLACK
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http" or scope["method"] not in ("POST", "PUT", "PATCH"):
+            await self.app(scope, receive, send)
+            return
+        cap = self._cap(scope["path"])
+        declared = None
+        for k, v in scope["headers"]:
+            if k == b"content-length":
+                try:
+                    declared = int(v)
+                except ValueError:
+                    declared = None
+        started = False
+        seen = 0
+
+        async def counting_receive() -> Message:
+            nonlocal seen
+            msg = await receive()
+            if msg["type"] == "http.request":
+                seen += len(msg.get("body", b""))
+                if seen > cap:
+                    raise BodyLimit._Over()
+            return msg
+
+        async def tracking_send(msg: Message) -> None:
+            nonlocal started
+            started = started or msg["type"] == "http.response.start"
+            await send(msg)
+
+        if declared is not None and declared > cap:
+            await problem_response(too_large(self.s))(scope, receive, send)
+            return
+        try:
+            await self.app(scope, counting_receive, tracking_send)
+        except BodyLimit._Over:
+            if not started:
+                await problem_response(too_large(self.s))(scope, receive, send)
+
+
+def create_app(settings: Settings | None = None) -> FastAPI:
+    s = settings or Settings.from_env()
+    logging.getLogger("converter").setLevel(s.log_level.upper())
+    verifier = TokenVerifier(s) if s.auth_enabled else None
+    limiter = RateLimiter(s.rate_limit_per_min)
+    gate = asyncio.Semaphore(s.concurrency)
+    if not s.auth_enabled:
+        log.warning("AUTH_MODE=off: every request is accepted without a token. Local work only.")
+
+    app = FastAPI(title="Konwerter formularzy", version=__version__)
+    app.state.settings = s
+    app.add_middleware(BodyLimit, settings=s)
+
+    @app.exception_handler(ProblemError)
+    async def _problem(_: Request, exc: ProblemError) -> JSONResponse:
+        return problem_response(exc)
+
+    @app.exception_handler(StarletteHTTPException)
+    async def _http(_: Request, exc: StarletteHTTPException) -> JSONResponse:
+        body = {"type": "about:blank", "title": str(exc.detail), "status": exc.status_code}
+        return JSONResponse(body, status_code=exc.status_code, media_type=PROBLEM_JSON)
+
+    # ---- shared steps ------------------------------------------------------------------------------------------
+
+    def authorize(request: Request, scope: str) -> str:
+        """Token, scope and rate limit; returns the subject. With AUTH_MODE=off the subject is `anonymous`."""
+        if verifier is None:
+            subject = "anonymous"
+        else:
+            header = request.headers.get("authorization", "")
+            scheme, _, token = header.partition(" ")
+            claims = verifier.verify(token.strip() if scheme.lower() == "bearer" else None)
+            if scope not in scopes_of(claims):
+                raise ProblemError("SCOPE", f"Wymagany zakres: {scope}.")
+            subject = str(claims.get("sub", "unknown"))
+        limiter.check(subject)
+        return subject
+
+    async def read_parts(request: Request, many: bool = False) -> list[UploadFile]:
+        try:
+            form = await request.form(max_files=BATCH_MAX_FILES + 1, max_fields=10)
+        except ProblemError:
+            raise
+        except BodyLimit._Over:
+            raise
+        except Exception as exc:  # noqa: BLE001 - a malformed multipart body is the client's error
+            raise ProblemError("BAD_REQUEST", "Treść żądania nie jest poprawnym multipart/form-data.") from exc
+        parts = [p for p in form.getlist("file") if isinstance(p, UploadFile)]
+        if not parts or (not many and len(parts) != 1):
+            raise ProblemError("BAD_REQUEST", "Oczekiwano dokładnie jednej części o nazwie `file`." if not many
+                               else "Oczekiwano części `file`.")
+        return parts
+
+    def run_one(name: str | None, data: bytes, declared: str | None) -> tuple[UploadInfo, pipeline.PipelineResult, int]:
+        t0 = time.perf_counter()
+        info = inspect_upload(name, data, s, declared)
+        result = pipeline.run(data, info.name, s)
+        if set(result.form) != FORM_KEYS:  # the shell's own gate; the full gate (WP-F14) comes behind the pipeline
+            raise ProblemError("GATE_FAILED", "Wynik ma klucze inne niż title, tabs, flow.")
+        return info, result, int((time.perf_counter() - t0) * 1000)
+
+    async def convert_request(request: Request, scope: str) -> tuple[UploadInfo, pipeline.PipelineResult, int, str]:
+        job = uuid.uuid4().hex[:12]
+        authorize(request, scope)
+        if gate.locked():
+            raise ProblemError("BUSY", "Wszystkie stanowiska przetwarzania są zajęte.", headers={"Retry-After": "5"})
+        async with gate:
+            part = (await read_parts(request))[0]
+            data = await part.read()
+            await part.close()
+            try:
+                info, result, ms = await run_in_threadpool(run_one, part.filename, data, part.content_type)
+            except ProblemError as exc:
+                _event("convert", exc.code, job, len(data))
+                raise
+        _event("convert", "ok", job, info.size)
+        return info, result, ms, job
+
+    def canonical(obj: dict) -> bytes:
+        return json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+
+    def headers_for(info: UploadInfo, body: bytes, ms: int) -> dict[str, str]:
+        return {
+            "X-Input-SHA256": info.sha256,
+            "X-Form-SHA256": hashlib.sha256(body).hexdigest(),
+            "X-Converter-Version": __version__,
+            "Server-Timing": f"total;dur={ms}",
+        }
+
+    # ---- endpoints ---------------------------------------------------------------------------------------------
+
+    @app.get("/healthz")
+    async def healthz() -> dict:
+        return {"status": "ok", "version": __version__}
+
+    @app.post("/v1/forms/convert")
+    async def convert(request: Request, report: int = 0) -> Response:
+        info, result, ms, _ = await convert_request(request, "convert")
+        form_body = canonical(result.form)
+        headers = headers_for(info, form_body, ms)
+        if not report:
+            return Response(form_body, media_type="application/json", headers=headers)
+        meta_body = canonical(result.sidecar)
+        boundary = "formularze-" + headers["X-Form-SHA256"][:24]
+        out = b""
+        for name, payload in (("form.json", form_body), ("meta.json", meta_body)):
+            out += (f"--{boundary}\r\nContent-Type: application/json\r\n"
+                    f'Content-Disposition: attachment; filename="{name}"\r\n\r\n').encode() + payload + b"\r\n"
+        out += f"--{boundary}--\r\n".encode()
+        return Response(out, media_type=f"multipart/mixed; boundary={boundary}", headers=headers)
+
+    @app.post("/v1/forms/report")
+    async def report_only(request: Request) -> Response:
+        info, result, ms, _ = await convert_request(request, "convert")
+        form_body = canonical(result.form)
+        return Response(canonical(result.sidecar), media_type="application/json", headers=headers_for(info, form_body, ms))
+
+    @app.post("/v1/forms/inspect")
+    async def inspect(request: Request) -> JSONResponse:
+        authorize(request, "convert")
+        part = (await read_parts(request))[0]
+        data = await part.read()
+        await part.close()
+        info = await run_in_threadpool(inspect_upload, part.filename, data, s, part.content_type)
+        # What the shell cannot see yet is null, never a guess: the readers (WP-F2) fill pages and links in.
+        return JSONResponse({
+            "name_sha256_16": info.name_hash, "extension": info.ext, "content_kind": info.kind,
+            "size_bytes": info.size, "sha256": info.sha256, "archive_members": info.members,
+            "macros": info.macros, "pages": None, "external_links": None, "embedded_files": None,
+        })
+
+    @app.post("/v1/batches")
+    async def batches(request: Request) -> StreamingResponse:
+        authorize(request, "convert")
+        parts = await read_parts(request, many=True)
+        if len(parts) > BATCH_MAX_FILES:
+            raise ProblemError("BAD_REQUEST", f"Co najwyżej {BATCH_MAX_FILES} plików w jednym żądaniu.")
+        items: list[tuple[str | None, bytes, str | None]] = []
+        zip_name = parts[0].filename or ""
+        if len(parts) == 1 and zip_name.lower().endswith(".zip"):
+            items = await run_in_threadpool(_zip_items, await parts[0].read(), s)
+        else:
+            for p in parts:
+                items.append((p.filename, await p.read(), p.content_type))
+        for p in parts:
+            await p.close()
+        if gate.locked():
+            raise ProblemError("BUSY", "Wszystkie stanowiska przetwarzania są zajęte.", headers={"Retry-After": "5"})
+
+        async def lines() -> AsyncIterator[bytes]:
+            async with gate:
+                for name, data, declared in items:
+                    t0 = time.perf_counter()
+                    line: dict = {"name_sha256_16": hashlib.sha256((name or "").encode()).hexdigest()[:16]}
+                    try:
+                        info, result, _ = await run_in_threadpool(run_one, name, data, declared)
+                        line.update(state="ok", counts=result.sidecar.get("counts", {}),
+                                    warnings=result.sidecar.get("warnings", []), form=result.form)
+                    except ProblemError as exc:
+                        line.update(state="error", code=exc.code, status=exc.status, counts={}, warnings=[], form=None)
+                    line["seconds"] = round(time.perf_counter() - t0, 3)
+                    yield canonical(line) + b"\n"
+
+        return StreamingResponse(lines(), media_type="application/x-ndjson")
+
+    # ---- front end ---------------------------------------------------------------------------------------------
+
+    if s.ui_enabled:
+        here = Path(__file__).resolve().parent.parent
+        for cand in (s.ui_dir, str(here / "ui"), str(here.parent / "review-web" / "dist")):
+            if cand and Path(cand).is_dir():
+                app.mount("/ui", StaticFiles(directory=cand, html=True), name="ui")
+                break
+    return app
+
+
+def _zip_items(data: bytes, s: Settings) -> list[tuple[str | None, bytes, str | None]]:
+    """The members of a batch ZIP, in memory. Archive limits first; only the eight formats are taken."""
+    if not data.startswith(b"PK"):
+        raise ProblemError("TYPE_MISMATCH", "Plik .zip nie jest archiwum ZIP.")
+    zf = check_archive(data, s)
+    out: list[tuple[str | None, bytes, str | None]] = []
+    for info in zf.infolist():
+        if info.is_dir():
+            continue
+        base = info.filename.rsplit("/", 1)[-1]
+        if base.rsplit(".", 1)[-1].lower() in EXTENSIONS + ("jpe",):
+            out.append((base, zf.read(info), None))
+        if len(out) > BATCH_MAX_FILES:
+            raise ProblemError("BAD_REQUEST", f"Co najwyżej {BATCH_MAX_FILES} plików w jednym żądaniu.")
+    if not out:
+        raise ProblemError("BAD_REQUEST", "Archiwum nie zawiera plików obsługiwanych formatów.")
+    return out
