@@ -7,7 +7,7 @@ Branch: wp/F20-c-gate-image   Stage now: integration (lead-owned)
 - [x] Image: both targets copy `tools/coi_lint.py` to `/srv/converter/tools/` and the two form schemas to `/srv/converter/contracts/coi/` (where `coi_lint.CONTRACTS` resolves from `__file__`). `.dockerignore` needed no change (tools and contracts are not excluded).
 - [x] Container check `check_gate_inside` in tools/ci/container_check.py: runs the pipeline inside the hardened container on a synthetic PDF; G1 and G2 must be `passed`.
 - [x] Tests (tests/pipeline: 18 passed; tools/ci/tests: 46 passed).
-- [ ] CI run of the branch head (see Evidence).
+- [x] CI run on code commit 0d19c3f: actions/runs/44913958216, image (core), image (plus) and native all success; the container check ran the new row inside both images. `bash tools/gate.sh fast`: 496 passed, 8 deselected.
 
 ## Decisions
 - The detail of GATE_FAILED holds the check id and name and the findings as place plus rule text, with quoted values replaced by `'...'` / a jsonschema message echoes the offending value; the answer must not carry content of the file.
