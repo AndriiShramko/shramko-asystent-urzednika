@@ -36,7 +36,7 @@ docker build -f apps/converter/Dockerfile --target plus -t converter:plus .   # 
 docker compose up --build                                                     # needs secrets/jwt_secret, see docker-compose.yml
 ```
 
-Both images run as a dedicated user (uid 10001), expose port 8080, hold no secret, pin their bases by digest and install Python packages with `--require-hashes --only-binary=:all:`. The commands for the published image, tested in bash and in Windows PowerShell 5.1, are in the jury section of the root [`README.md`](../../README.md) (Polish: [`README.pl.md`](../../README.pl.md)). The published image: `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:REPLACE_WITH_FINAL_DIGEST`. With a local build, conversion without a network on Linux (on macOS drop `--user`; in Git Bash drop `--user` and put `MSYS_NO_PATHCONV=1` in front, otherwise Git Bash rewrites `/in/...` into a Windows path):
+Both images run as a dedicated user (uid 10001), expose port 8080, hold no secret, pin their bases by digest and install Python packages with `--require-hashes --only-binary=:all:`. The commands for the published image, tested in bash and in Windows PowerShell 5.1, are in the jury section of the root [`README.md`](../../README.md) (Polish: [`README.pl.md`](../../README.pl.md)). The published image: `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b`. With a local build, conversion without a network on Linux (on macOS drop `--user`; in Git Bash drop `--user` and put `MSYS_NO_PATHCONV=1` in front, otherwise Git Bash rewrites `/in/...` into a Windows path):
 
 ```bash
 mkdir -p out && docker run --rm --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" converter:core convert /in/form.pdf --out /out/form.json
@@ -75,6 +75,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `OCR_MIN_CHARS` | `20` | a PDF page with fewer characters takes the image way |
 | `FINISH_STYLE` | `export` | `export`: `SECTION` with `TEXT_BLOCK`; `info_section` |
 | `VALIDATORS` | `on` | `off` writes empty validator lists, as in the exports |
+| `REQUIRED_POLICY` | `paper` | `paper`: `REQUIRED` only where the paper or the standard says so (the partner's exports carry none); `inferred`: also where our rule calls a field the substance of the request, each reported as `REQUIRED_INFERRED` in the sidecar |
 | `REPEATING_STYLE` | `native` | `native`: `REPEATING_SECTION`; `flat`: one plain section |
 | `STATUTORY_REPRESENTATIVE` | `true` | path for a parent, guardian or curator (D16) |
 | `POA_EXEMPTION` | `false` | reason of exemption from stamp duty for a power of attorney (D17) |

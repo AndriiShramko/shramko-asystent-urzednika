@@ -59,3 +59,9 @@ Documents only. The control is the Git Bash run without `MSYS_NO_PATHCONV=1` (ex
 
 ## Cost notes
 - core: the Git Bash path conversion and PowerShell redirect traps took the test turns; a ready scratch test script per shell would make it cheaper.
+
+## Lead, 22 November 00:20
+- Token replaced by the V1 core digest `061fce4b...4982b` (image workflow of `9e095ab` green) in `README.md`, `README.pl.md`, `README.ru.md`, `apps/converter/README.md`.
+- "Not verified" list closed on that image by `jury_accept.sh` (ALL PASS: no-flags start in 4 s, two simultaneous first calls, unwritable `--out` is exit 4, explicit jwt without a key exits 3) and `GET /status` read from a running V1 container (16 formats, `auth: off`, limits 600 s, 2, 60 pages).
+- Row `REQUIRED_POLICY` added to the configuration table (ships with the merge of `wp/F-val-validators`).
+- Still not verified: the Linux `--user` line on a real Linux host, an ARM Mac.
