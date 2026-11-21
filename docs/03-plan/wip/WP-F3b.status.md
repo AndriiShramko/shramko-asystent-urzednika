@@ -9,6 +9,7 @@ Measuring: `bash tools/gate.sh py eval/briefs/make_briefs.py <main checkout>/eva
 ## Status
 - [x] item 3, set 3 PDF: symbol-font marks (U+F0F0, U+F092 and Wingdings box codes) at the start of a line are option marks; set 3 PDF gives the CHECKBOX of five certificate options with "inne" and its text field, plus the purpose field
 - [x] item 1, set 9 PDF: numbered headings without bold among the first three lines of a page open sections; a one- or two-word line under a heading continues it; the understanding step strips "I." / "1." before the title words -> one selector `rodzaj_wniosku` with three options, sections per variant
+- [x] fast gate passed on fcf7ff4 (592 passed)
 - [x] item 5, composer: a CHECKBOX without options is written with one option "Tak" (strict linter 0 errors); `ComposeResult.brief_keys` carries `Attachment.key` of an upload (the upload's id is made from the key when the brief gives one)
 - [ ] item 3, set 3 DOCX: the list has no glyph in the text (Word numbering symbols); needs the reader to give the list marker (request 1) or a rule "question ending with ':' + list lines"; today 2 fields
 - [ ] item 2: single boxes on one line or one column not grouped on sets 8 and 9 (set 9 PDF: 16 awaiting decision, labels "Dane reprezentanta ..." / "Dane pełnomocnika ..." are section switches, not options)
@@ -27,11 +28,12 @@ Measuring: `bash tools/gate.sh py eval/briefs/make_briefs.py <main checkout>/eva
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
-| fields of the matter per judged set, before -> after, PDF (DOCX) | `bash tools/gate.sh py eval/briefs/make_briefs.py <silver>` | set 2: 5 (5) -> 5 (5); set 3: 2 (2) -> 3 (2); set 4: 7 (6) -> 7 (6); set 6: 18 (16) -> 18 (16); set 7: 10 -> 10; set 8: 32 (24) -> 38 (27); set 9: 83 (42) -> 62 (42). Strict-linter errors 0 on all 13 files | this commit |
-| silver match (Claude / Gemini labels matched by a field of ours), set 3 PDF | same | 0 / 0 -> 1 / 0 (the loose label measure does not credit the CHECKBOX options) | this commit |
-| set 8: no field lost | scratch diff of the briefs before/after | PDF: only additions (Województwo, Gmina); DOCX: only additions (Numer nieruchomości/domu, Numer lokalu, Kod pocztowy) | this commit |
-| set 9 PDF one selector | scratch dump | RADIO `rodzaj_wniosku` with 3 options; sections `matter/w1/...`, `w2`, `w3` shown by it; title "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza" (was "... Zgierza ii") | this commit |
-| unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/find apps/converter/tests/mean apps/converter/tests/compose apps/converter/tests/pipeline -q -m "not slow"` | 159 passed (151 before the new tests), sets tests included | this commit |
+| fields of the matter per judged set, before -> after, PDF (DOCX) | `bash tools/gate.sh py eval/briefs/make_briefs.py <silver>` | set 2: 5 (5) -> 5 (5); set 3: 2 (2) -> 3 (2); set 4: 7 (6) -> 7 (6); set 6: 18 (16) -> 18 (16); set 7: 10 -> 10; set 8: 32 (24) -> 38 (27); set 9: 83 (42) -> 62 (42). Strict-linter errors 0 on all 13 files | fcf7ff4 |
+| silver match (Claude / Gemini labels matched by a field of ours), set 3 PDF | same | 0 / 0 -> 1 / 0 (the loose label measure does not credit the CHECKBOX options) | fcf7ff4 |
+| set 8: no field lost | scratch diff of the briefs before/after | PDF: only additions (Województwo, Gmina); DOCX: only additions (Numer nieruchomości/domu, Numer lokalu, Kod pocztowy) | fcf7ff4 |
+| set 9 PDF one selector | scratch dump | RADIO `rodzaj_wniosku` with 3 options; sections `matter/w1/...`, `w2`, `w3` shown by it; title "Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza" (was "... Zgierza ii") | fcf7ff4 |
+| unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/find apps/converter/tests/mean apps/converter/tests/compose apps/converter/tests/pipeline -q -m "not slow"` | 159 passed (151 before the new tests), sets tests included | fcf7ff4 |
+| fast gate | `bash tools/gate.sh fast` | 592 passed, 21 deselected; "gate: fast PASSED on fcf7ff4" | fcf7ff4 |
 
 ## Negative control
 `PUA_RE` switched off in `app/find/_core.py` (`if pua:` -> `if pua and False:`): `test_symbol_font_marks_make_one_group_with_the_blank_of_inne` failed (1 failed, 4 passed); file restored from a copy -> 5 passed. Nothing committed in the broken state.
