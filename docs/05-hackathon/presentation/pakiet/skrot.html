@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Od potrzeby do podpisu: jedna wizyta, komplet wniosków</title>
+<meta name="description" content="AI zamienia urzędowy druk w usługę; mieszkaniec podaje dane raz, urzędnik sprawdza tylko wyjątki, komplet wniosków drukuje się na oryginalnych wzorach. Projekt na HackNation 2026, zadanie Cyfryzacja formularzy.">
+<style>
+:root{--bg:#0b1020;--panel:#18213f;--line:#3a4878;--ink:#f5f7ff;--muted:#b3bddc;--acc:#ffc547;--green:#4ade80;
+--red:#ff6b6b;--blue:#6cb2ff;--deep:#0f1630;
+--font:Inter,"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box}
+html{background:#060914}
+body{margin:0;background:#060914;color:var(--ink);font-family:var(--font);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap{max-width:1320px;margin:0 auto;padding:20px 20px 60px}
+.intro{color:var(--muted);font-size:15px;line-height:1.5;margin:6px 4px 18px}
+.intro b{color:var(--ink)}
+.page{container-type:inline-size;position:relative;background:var(--bg);border:1px solid #1c2647;border-radius:18px;
+margin:0 0 22px;overflow:hidden}
+.inner{--u:1cqw;aspect-ratio:16/9;display:flex;flex-direction:column;padding:calc(var(--u)*2.2) calc(var(--u)*3.4) calc(var(--u)*2.2)}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:calc(var(--u)*1.02);color:var(--muted);
+letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.top .pn{font-variant-numeric:tabular-nums;letter-spacing:0}
+.grid{flex:1;display:grid;grid-template-columns:40fr 60fr;gap:calc(var(--u)*3);align-items:center;min-height:0}
+.grid.wide{grid-template-columns:1fr;align-content:center;gap:calc(var(--u)*2.2)}
+.txt{min-width:0}
+h1,h2{margin:0;font-weight:800;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
+h1{font-size:calc(var(--u)*5.6)}
+h1 + .sub{font-size:calc(var(--u)*3);font-weight:800;color:var(--acc);margin:calc(var(--u)*.6) 0 0;letter-spacing:-.01em}
+h2{font-size:calc(var(--u)*3.4)}
+.kicker{font-size:calc(var(--u)*1.15);color:var(--muted);font-weight:600;margin:0 0 calc(var(--u)*1.1)}
+.body{font-size:calc(var(--u)*1.6);line-height:1.45;color:#e2e7fa;margin:calc(var(--u)*1.4) 0 0;text-wrap:pretty}
+.lead{font-size:calc(var(--u)*2);line-height:1.4;color:#e2e7fa;margin:calc(var(--u)*1.6) 0 0;max-width:46em;text-wrap:pretty}
+.src{font-size:calc(var(--u)*1);line-height:1.4;color:var(--muted);margin:calc(var(--u)*1.2) 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*.8);margin:calc(var(--u)*1.8) 0 0;padding:0;list-style:none}
+.chips li{font-size:calc(var(--u)*1.2);font-weight:600;border:1px solid var(--line);background:var(--panel);
+border-radius:99px;padding:calc(var(--u)*.45) calc(var(--u)*1.2)}
+.draft{position:absolute;bottom:calc(var(--u)*2.2);right:calc(var(--u)*3.4);font-size:calc(var(--u)*1);font-weight:700;color:var(--bg);
+background:var(--acc);border-radius:99px;padding:calc(var(--u)*.4) calc(var(--u)*1.1)}
+.art{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.art svg{width:100%;height:auto;display:block;max-height:calc(var(--u)*45)}
+.grid.wide .art svg{max-height:calc(var(--u)*30)}
+svg text{font-family:var(--font)}
+.side{font-size:calc(var(--u)*1.18);line-height:1.4;color:#e2e7fa;border:1px solid var(--blue);background:#10224a;
+border-radius:calc(var(--u)*1);padding:calc(var(--u)*.9) calc(var(--u)*1.1);margin:calc(var(--u)*1.3) 0 0}
+.side b{color:var(--ink)}
+.metrics{display:flex;flex-wrap:wrap;gap:calc(var(--u)*1.4);font-size:calc(var(--u)*1.15);color:var(--muted);margin:calc(var(--u)*1.2) 0 0}
+.metrics b{color:var(--ink);font-size:calc(var(--u)*1.7);font-weight:800;margin-right:.3em}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*1.4)}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:calc(var(--u)*1.4);padding:calc(var(--u)*1.5) calc(var(--u)*1.7)}
+.stat b{display:block;white-space:nowrap;font-size:calc(var(--u)*5);font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:calc(var(--u)*1.3);color:var(--muted);margin-top:calc(var(--u)*.7);line-height:1.3}
+.meter{margin-top:calc(var(--u)*1.8);background:var(--panel);border:1px solid var(--line);border-radius:calc(var(--u)*1.4);
+padding:calc(var(--u)*1.3) calc(var(--u)*1.7) calc(var(--u)*1.5)}
+.meter-head{display:flex;justify-content:space-between;align-items:baseline;gap:1em;font-size:calc(var(--u)*1.3);color:var(--muted)}
+.meter-head b{color:var(--ink);font-size:calc(var(--u)*1.9);font-weight:800;white-space:nowrap}
+.track{height:calc(var(--u)*.9);border-radius:99px;background:#22407a;margin-top:calc(var(--u)*.9);overflow:hidden}
+.fill{height:100%;border-radius:99px;background:var(--blue)}
+.principles{list-style:none;margin:calc(var(--u)*1.6) 0 0;padding:0;display:grid;gap:calc(var(--u)*1.05)}
+.principles li{display:grid;grid-template-columns:calc(var(--u)*2) 1fr;gap:calc(var(--u)*.9);align-items:start;
+font-size:calc(var(--u)*1.5);line-height:1.38;color:#e2e7fa}
+.principles b{color:var(--ink)}
+.principles svg,.status svg{width:calc(var(--u)*1.9);height:calc(var(--u)*1.9);display:block}
+.status{display:grid;grid-template-columns:1.25fr 1fr;gap:calc(var(--u)*1.6)}
+.status>div{background:var(--panel);border:1px solid var(--line);border-radius:calc(var(--u)*1.4);padding:calc(var(--u)*1.5) calc(var(--u)*1.6)}
+.status h3{margin:0 0 calc(var(--u)*1);font-size:calc(var(--u)*1.6);font-weight:800}
+.status ul{list-style:none;margin:0;padding:0;display:grid;gap:calc(var(--u)*.75)}
+.status li{display:grid;grid-template-columns:calc(var(--u)*1.9) 1fr;gap:calc(var(--u)*.8);align-items:center;font-size:calc(var(--u)*1.45);font-weight:600}
+.tag{display:inline-block;margin:calc(var(--u)*1.3) 0 0;font-size:calc(var(--u)*1.1);font-weight:600;color:var(--muted);
+border:1px solid var(--line);border-radius:99px;padding:calc(var(--u)*.35) calc(var(--u)*1)}
+.links{display:flex;align-items:center;gap:calc(var(--u)*1.4);margin:calc(var(--u)*1.4) 0 0}
+.links .qr{width:calc(var(--u)*8.2);flex:none;background:#fff;border-radius:calc(var(--u)*.7);padding:calc(var(--u)*.3);line-height:0}
+.links .qr svg{width:100%;height:auto}
+.links b{display:block;font-size:calc(var(--u)*1.55);color:var(--acc)}
+.links span{display:block;font-size:calc(var(--u)*1);color:var(--muted);margin-top:calc(var(--u)*.35);overflow-wrap:anywhere}
+.title-top{margin-top:calc(var(--u)*1.2)}
+/* page 1: the whole idea in half a minute */
+.one{flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:0;padding-top:calc(var(--u)*1.4)}
+.one-head{display:flex;justify-content:space-between;align-items:flex-end;gap:calc(var(--u)*2)}
+.one h1{font-size:calc(var(--u)*4.7)}
+.one h1 + .sub{font-size:calc(var(--u)*2.5)}
+.one-side{display:flex;flex-direction:column;align-items:flex-end;gap:calc(var(--u)*.8);max-width:46%}
+.one-side .chips{margin:0;justify-content:flex-end}
+.one-side .chips li{font-size:calc(var(--u)*1.05)}
+.one-side .draft{position:static}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*1.4);margin:calc(var(--u)*1.7) 0 calc(var(--u)*1.5)}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:calc(var(--u)*1.3);padding:calc(var(--u)*1.2) calc(var(--u)*1.5) calc(var(--u)*1.4)}
+.cell .lab{display:flex;align-items:center;gap:.6em;font-size:calc(var(--u)*1.05);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cell .lab i{width:.8em;height:.8em;border-radius:50%;display:inline-block;flex:none}
+.cell p{margin:calc(var(--u)*.7) 0 0;font-size:calc(var(--u)*1.42);line-height:1.38;color:#e2e7fa;text-wrap:pretty}
+.cell p b{color:var(--ink);font-weight:800}
+.one .art svg{max-height:calc(var(--u)*17)}
+.more{font-size:calc(var(--u)*1.15);line-height:1.5;color:var(--muted);margin:calc(var(--u)*1.3) 0 0;overflow-wrap:anywhere}
+.more b{color:var(--acc);font-size:calc(var(--u)*1.5)}
+/* Russian commentary (ru.html only) */
+.note{background:#101733;border:1px solid #26315c;border-radius:14px;margin:-10px 0 34px;padding:16px 20px;font-size:16px;line-height:1.55;color:#dfe5fb}
+.note h3{margin:0 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.note p{margin:0 0 12px}.note p:last-child{margin:0}
+/* motion: screen only, and only when scripts run */
+.flow{animation:dash 1.1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-19}}
+.js .page:not(.in) .rv{opacity:0;transform:translateY(14px)}
+.js .page:not(.in) .rvo{opacity:0}
+.rv{transition:opacity .6s ease var(--d,0s),transform .6s ease var(--d,0s)}
+.rvo{transition:opacity .7s ease var(--d,0s)}
+.static .rv,.static .rvo{transition:none}.static .flow{animation:none}
+@media (prefers-reduced-motion:reduce){.flow{animation:none}.rv,.rvo{transition:none}
+.js .page:not(.in) .rv,.js .page:not(.in) .rvo{opacity:1;transform:none}}
+@media screen and (max-width:760px){
+.wrap{padding:10px 10px 40px}
+.inner{--u:2.5vw;aspect-ratio:auto;padding:22px 18px 26px}
+.top{font-size:11px;margin-bottom:14px}
+.grid{grid-template-columns:1fr;gap:22px}
+.art svg{max-height:none}
+.grid.wide .art{overflow-x:auto;display:block}
+.grid.wide .art svg{min-width:720px;max-height:none}
+.stat b{font-size:calc(var(--u)*4.2)}
+.draft{position:static;display:inline-block;margin:0 0 12px;font-size:12px;padding:4px 12px}
+.status{grid-template-columns:1fr}
+.one-head{flex-direction:column;align-items:flex-start}
+.one-side{align-items:flex-start;max-width:none}
+.one-side .chips{justify-content:flex-start}
+.one-side .chips li{font-size:12px}
+.trio{grid-template-columns:1fr}
+.one .art{overflow-x:auto;display:block}
+.one .art svg{min-width:720px;max-height:none}
+}
+@page{size:13.333in 7.5in;margin:0}
+@media print{
+html,body{background:var(--bg)}
+.wrap{max-width:none;padding:0}
+.intro,.note{display:none}
+.page{width:13.333in;height:7.5in;margin:0;border:0;border-radius:0;break-after:page;page-break-after:always;break-inside:avoid}
+.page:last-of-type{break-after:auto;page-break-after:auto}
+.inner{height:7.5in;aspect-ratio:auto}
+.flow{animation:none}
+.rv,.rvo{opacity:1!important;transform:none!important;transition:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap" lang="pl"><section class="page" id="s1"><div class="inner"><div class="top"><span>HackNation 2026 · zadanie „Cyfryzacja formularzy”</span><span class="pn">1 / 2</span></div><div class="one"><div class="one-head"><div><h1 class="rv">Od potrzeby do podpisu</h1><p class="sub rv" style="--d:.15s">Jedna wizyta, komplet wniosków.</p></div><div class="one-side rv" style="--d:.25s"><div class="draft">Wersja robocza: opis rozwiązania budowanego podczas hackathonu</div><ul class="chips"><li>otwarty kod (MIT)</li><li>dane osobowe nie trafiają do chmury</li><li>dane w pokazie są syntetyczne</li></ul></div></div><div class="trio rv" style="--d:.35s"><div class="cell"><span class="lab"><i style="background:#ff6b6b"></i>Problem</span><p>Mieszkaniec wpisuje te same dane na każdym druku. Urzędnik przepisuje je i porównuje z dokumentem. Brak jednego wniosku albo załącznika: wezwanie i co najmniej 7 dni.</p></div><div class="cell"><span class="lab"><i style="background:#4ade80"></i>Rozwiązanie</span><p>AI zamienia każdy druk w usługę, człowiek zatwierdza. Dane podaje się raz. Urzędnik sprawdza tylko wyjątki i drukuje komplet. Jest też wejście dla asystenta AI mieszkańca.</p></div><div class="cell"><span class="lab"><i style="background:#6cb2ff"></i>Skala</span><p><b>661</b> dokumentów jednego miasta program przeczytał w <b>142 s</b> i w 70% sam znalazł miejsca do wypełnienia. Wzór ustawowy opisany raz służy każdej z <b>2 479</b> gmin.</p></div></div><div class="art"><svg viewBox="0 0 1600 320" role="img" aria-label="Pięć kroków: potrzeba, komplet, dane raz, kontrola wyjątków, podpis" xmlns="http://www.w3.org/2000/svg"><defs><marker id="ah-rb1-m" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#b3bddc"/></marker><marker id="ah-rb1-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ffc547"/></marker><marker id="ah-rb1-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ff6b6b"/></marker><marker id="ah-rb1-g" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker><marker id="ah-rb1-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6cb2ff"/></marker></defs><g class="rvo" style="--d:0.15s"><rect x="55" y="20" width="210" height="160" rx="28" fill="#18213f" stroke="#3a4878" stroke-width="2"/><path d="M104 62 h112 a14 14 0 0 1 14 14 v36 a14 14 0 0 1 -14 14 h-66 l-22 22 v-22 h-24 a14 14 0 0 1 -14 -14 v-36 a14 14 0 0 1 14 -14 z" fill="none" stroke="#ffc547" stroke-width="4" stroke-linejoin="round"/><circle cx="134" cy="94" r="6" fill="#ffc547"/><circle cx="160" cy="94" r="6" fill="#ffc547"/><circle cx="186" cy="94" r="6" fill="#ffc547"/><circle cx="80" cy="45" r="17" fill="#ffc547"/><text x="80" y="52.5" font-size="21" font-weight="800" fill="#0b1020" text-anchor="middle">1</text><text x="160" y="226" font-size="30" font-weight="800" fill="#f5f7ff" text-anchor="middle">Potrzeba</text><text x="160" y="262" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">Mówię, co chcę</text><text x="160" y="290" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">załatwić</text></g><line x1="276" y1="100" x2="362" y2="100" stroke="#ffc547" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-rb1-a)"/><g class="rvo" style="--d:0.33s"><rect x="375" y="20" width="210" height="160" rx="28" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="422" y="64" width="60" height="80" rx="4" fill="#aeb8d8" stroke="none" stroke-width="0"/><rect x="430.4" y="76.8" width="43.199999999999996" height="3" rx="2" fill="#c3cbe6"/><rect x="430.4" y="93.33333333333333" width="33.6" height="3" rx="2" fill="#c3cbe6"/><rect x="430.4" y="109.86666666666667" width="43.199999999999996" height="3" rx="2" fill="#c3cbe6"/><rect x="446" y="56" width="60" height="80" rx="4" fill="#d5dcf2" stroke="none" stroke-width="0"/><rect x="454.4" y="68.8" width="43.199999999999996" height="3" rx="2" fill="#c3cbe6"/><rect x="454.4" y="85.33333333333333" width="33.6" height="3" rx="2" fill="#c3cbe6"/><rect x="454.4" y="101.86666666666667" width="43.199999999999996" height="3" rx="2" fill="#c3cbe6"/><rect x="472" y="64" width="60" height="80" rx="4" fill="#f5f7ff" stroke="none" stroke-width="0"/><rect x="480.4" y="76.8" width="43.199999999999996" height="3" rx="2" fill="#c3cbe6"/><rect x="480.4" y="93.33333333333333" width="33.6" height="3" rx="2" fill="#c3cbe6"/><rect x="480.4" y="109.86666666666667" width="43.199999999999996" height="3" rx="2" fill="#c3cbe6"/><circle cx="536" cy="140" r="17" fill="#4ade80"/><path d="M528.35 140 l5.44 5.78 l10.2 -11.22" fill="none" stroke="#0b1020" stroke-width="3.74" stroke-linecap="round" stroke-linejoin="round"/><circle cx="400" cy="45" r="17" fill="#ffc547"/><text x="400" y="52.5" font-size="21" font-weight="800" fill="#0b1020" text-anchor="middle">2</text><text x="480" y="226" font-size="30" font-weight="800" fill="#f5f7ff" text-anchor="middle">Komplet</text><text x="480" y="262" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">Wnioski, załączniki,</text><text x="480" y="290" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">opłaty</text></g><line x1="596" y1="100" x2="682" y2="100" stroke="#ffc547" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-rb1-a)"/><g class="rvo" style="--d:0.51s"><rect x="695" y="20" width="210" height="160" rx="28" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="738" y="50" width="56" height="102" rx="8.96" fill="#0f1630" stroke="#3a4878" stroke-width="3"/><rect x="746.96" y="70.4" width="38.080000000000005" height="6.12" rx="3.06" fill="#ffc547"/><rect x="746.96" y="91.48" width="38.080000000000005" height="6.12" rx="3.06" fill="#ffc547"/><rect x="746.96" y="112.56" width="38.080000000000005" height="6.12" rx="3.06" fill="#2a3560"/><rect x="806" y="72" width="58" height="58" rx="5.800000000000001" fill="#f5f7ff" stroke="none" stroke-width="0"/><rect x="812.4444444444445" y="78.44444444444444" width="19.333333333333336" height="19.333333333333336" fill="#0b1020"/><rect x="816.9555555555555" y="82.95555555555555" width="10.311111111111112" height="10.311111111111112" fill="#f5f7ff"/><rect x="819.5333333333333" y="85.53333333333333" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="838.2222222222222" y="78.44444444444444" width="19.333333333333336" height="19.333333333333336" fill="#0b1020"/><rect x="842.7333333333332" y="82.95555555555555" width="10.311111111111112" height="10.311111111111112" fill="#f5f7ff"/><rect x="845.311111111111" y="85.53333333333333" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="812.4444444444445" y="104.22222222222223" width="19.333333333333336" height="19.333333333333336" fill="#0b1020"/><rect x="816.9555555555555" y="108.73333333333333" width="10.311111111111112" height="10.311111111111112" fill="#f5f7ff"/><rect x="819.5333333333333" y="111.31111111111112" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="838.2222222222222" y="104.22222222222223" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="844.6666666666666" y="110.66666666666667" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="851.1111111111111" y="104.22222222222223" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="838.2222222222222" y="117.11111111111111" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="851.1111111111111" y="117.11111111111111" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="833.0666666666667" y="84.88888888888889" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="818.8888888888889" y="99.06666666666666" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="833.0666666666667" y="99.06666666666666" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="845.9555555555555" y="99.06666666666666" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><rect x="833.0666666666667" y="111.95555555555555" width="5.155555555555556" height="5.155555555555556" fill="#0b1020"/><circle cx="720" cy="45" r="17" fill="#ffc547"/><text x="720" y="52.5" font-size="21" font-weight="800" fill="#0b1020" text-anchor="middle">3</text><text x="800" y="226" font-size="30" font-weight="800" fill="#f5f7ff" text-anchor="middle">Dane raz</text><text x="800" y="262" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">Z telefonu,</text><text x="800" y="290" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">przez kod QR</text></g><line x1="916" y1="100" x2="1002" y2="100" stroke="#ffc547" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-rb1-a)"/><g class="rvo" style="--d:0.69s"><rect x="1015" y="20" width="210" height="160" rx="28" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="1058" y="54" width="124" height="96" rx="12" fill="#0f1630" stroke="#3a4878" stroke-width="2"/><circle cx="1080" cy="76" r="9" fill="#4ade80"/><path d="M1075.95 76 l2.88 3.06 l5.3999999999999995 -5.94" fill="none" stroke="#0b1020" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1098" y="72" width="66" height="8" rx="4" fill="#2a3560"/><circle cx="1080" cy="102" r="9" fill="#4ade80"/><path d="M1075.95 102 l2.88 3.06 l5.3999999999999995 -5.94" fill="none" stroke="#0b1020" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1098" y="98" width="66" height="8" rx="4" fill="#2a3560"/><circle cx="1080" cy="128" r="9" fill="#ffc547"/><rect x="1079.1" y="122.78" width="1.8" height="6.3" rx="0.9" fill="#0b1020"/><circle cx="1080" cy="132.05" r="1.17" fill="#0b1020"/><rect x="1098" y="124" width="66" height="8" rx="4" fill="#ffc547"/><circle cx="1040" cy="45" r="17" fill="#ffc547"/><text x="1040" y="52.5" font-size="21" font-weight="800" fill="#0b1020" text-anchor="middle">4</text><text x="1120" y="226" font-size="30" font-weight="800" fill="#f5f7ff" text-anchor="middle">Kontrola wyjątków</text><text x="1120" y="262" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">System porównuje</text><text x="1120" y="290" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">z dokumentem</text></g><line x1="1236" y1="100" x2="1322" y2="100" stroke="#ffc547" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-rb1-a)"/><g class="rvo" style="--d:0.87s"><rect x="1335" y="20" width="210" height="160" rx="28" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="1402" y="50" width="76" height="102" rx="4.56" fill="#f5f7ff" stroke="none" stroke-width="0"/><rect x="1412.64" y="66.32" width="54.72" height="3.5700000000000003" rx="2" fill="#c3cbe6"/><rect x="1412.64" y="87.39999999999999" width="42.56" height="3.5700000000000003" rx="2" fill="#c3cbe6"/><rect x="1412.64" y="108.47999999999999" width="54.72" height="3.5700000000000003" rx="2" fill="#c3cbe6"/><line x1="1412.64" y1="137.72" x2="1467.36" y2="137.72" stroke="#7d87a8" stroke-width="2" stroke-dasharray="3 5"/><path d="M1417.2 131.72 q6.08 -9.18 12.16 0 t12.16 0 t10.64 -4" fill="none" stroke="#2f6fd6" stroke-width="3" stroke-linecap="round"/><circle cx="1360" cy="45" r="17" fill="#ffc547"/><text x="1360" y="52.5" font-size="21" font-weight="800" fill="#0b1020" text-anchor="middle">5</text><text x="1440" y="226" font-size="30" font-weight="800" fill="#f5f7ff" text-anchor="middle">Podpis</text><text x="1440" y="262" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">Wydruk na</text><text x="1440" y="290" font-size="22" font-weight="500" fill="#b3bddc" text-anchor="middle">oryginalnym wzorze</text></g></svg></div></div></div></section><section class="page" id="s2"><div class="inner"><div class="top"><span>Od potrzeby do podpisu</span><span class="pn">2 / 2</span></div><div class="grid"><div class="txt"><h2 class="rv">Jeden opis druku. Trzech odbiorców.</h2><p class="body rv" style="--d:.15s">Każdy druk urzędu dostaje jeden opis: AI proponuje pola i ich znaczenie, człowiek zatwierdza. Z tego samego opisu korzystają mieszkaniec na telefonie, urzędnik przy okienku i osobisty asystent AI mieszkańca. Opisy powstają z góry dla całego katalogu, więc urzędnik dodaje tylko nowy druk.</p><div class="side"><b>Francja dała asystentom AI oficjalny dostęp do danych publicznych.</b> Proponujemy następny krok: oficjalne wejście do usług. Każdą czynność zatwierdza człowiek.</div><p class="more">Pełna wersja i kod: <b>formularze.flyreelstudio.eu</b><br>github.com/AndriiShramko/shramko-asystent-urzednika</p></div><div class="art" style="--d:.2s"><svg viewBox="0 0 1000 590" role="img" aria-label="Dokumenty miasta wczytane z góry stają się opisami formularzy: AI proponuje, człowiek zatwierdza; z jednego opisu korzystają mieszkaniec, urzędnik i asystent AI mieszkańca" xmlns="http://www.w3.org/2000/svg"><defs><marker id="ah-th-m" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#b3bddc"/></marker><marker id="ah-th-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ffc547"/></marker><marker id="ah-th-r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ff6b6b"/></marker><marker id="ah-th-g" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker><marker id="ah-th-b" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6cb2ff"/></marker></defs><g class="rvo" style="--d:0.15s"><rect x="30" y="140" width="96" height="132" rx="5.76" fill="#aeb8d8" stroke="none" stroke-width="0"/><rect x="43.44" y="161.12" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="43.44" y="177.488" width="53.760000000000005" height="4.62" rx="2" fill="#c3cbe6"/><rect x="43.44" y="193.856" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="43.44" y="210.22400000000002" width="53.760000000000005" height="4.62" rx="2" fill="#c3cbe6"/><rect x="43.44" y="226.592" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="56" y="128" width="96" height="132" rx="5.76" fill="#d5dcf2" stroke="none" stroke-width="0"/><rect x="69.44" y="149.12" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="69.44" y="165.488" width="53.760000000000005" height="4.62" rx="2" fill="#c3cbe6"/><rect x="69.44" y="181.856" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="69.44" y="198.22400000000002" width="53.760000000000005" height="4.62" rx="2" fill="#c3cbe6"/><rect x="69.44" y="214.592" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="82" y="140" width="96" height="132" rx="5.76" fill="#f5f7ff" stroke="none" stroke-width="0"/><rect x="95.44" y="161.12" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="95.44" y="177.488" width="53.760000000000005" height="4.62" rx="2" fill="#c3cbe6"/><rect x="95.44" y="193.856" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><rect x="95.44" y="210.22400000000002" width="53.760000000000005" height="4.62" rx="2" fill="#c3cbe6"/><rect x="95.44" y="226.592" width="69.12" height="4.62" rx="2" fill="#c3cbe6"/><text x="106" y="348" font-size="64" font-weight="800" fill="#f5f7ff" text-anchor="middle">661</text><text x="106" y="380" font-size="21" font-weight="600" fill="#b3bddc" text-anchor="middle">dokumentów miasta</text><rect x="13.625" y="409.95" width="184.75" height="36.1" rx="18.05" fill="#10183a" stroke="#3a4878" stroke-width="2"/><text x="106" y="434.84" font-size="19" font-weight="600" fill="#b3bddc" text-anchor="middle">wczytane z góry</text></g><line x1="186" y1="206" x2="212" y2="206" stroke="#ffc547" stroke-width="3" stroke-linecap="round" marker-end="url(#ah-th-a)"/><g class="rvo" style="--d:0.5s"><rect x="222" y="145" width="262" height="300" rx="22" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="246" y="172" width="62" height="82" rx="4" fill="#f5f7ff" stroke="none" stroke-width="0"/><rect x="254.68" y="185.12" width="44.64" height="3" rx="2" fill="#c3cbe6"/><rect x="254.68" y="197.83" width="34.720000000000006" height="3" rx="2" fill="#c3cbe6"/><rect x="254.68" y="210.54" width="44.64" height="3" rx="2" fill="#c3cbe6"/><rect x="254.68" y="223.25" width="34.720000000000006" height="3" rx="2" fill="#c3cbe6"/><circle cx="330" cy="188" r="5" fill="#6cb2ff"/><rect x="344" y="184" width="112" height="8" rx="4" fill="#6cb2ff"/><circle cx="330" cy="208" r="5" fill="#6cb2ff"/><rect x="344" y="204" width="98" height="8" rx="4" fill="#6cb2ff"/><circle cx="330" cy="228" r="5" fill="#6cb2ff"/><rect x="344" y="224" width="84" height="8" rx="4" fill="#6cb2ff"/><circle cx="330" cy="248" r="5" fill="#6cb2ff"/><rect x="344" y="244" width="70" height="8" rx="4" fill="#6cb2ff"/><rect x="265.0" y="281.0" width="176.0" height="38.0" rx="19.0" fill="#2b2410" stroke="#ffc547" stroke-width="2"/><text x="353" y="307.2" font-size="20" font-weight="700" fill="#f5f7ff" text-anchor="middle">AI proponuje</text><circle cx="256" cy="352" r="13" fill="#4ade80"/><path d="M250.15 352 l4.16 4.42 l7.8 -8.58" fill="none" stroke="#0b1020" stroke-width="2.86" stroke-linecap="round" stroke-linejoin="round"/><text x="278" y="359" font-size="19" font-weight="700" fill="#f5f7ff" text-anchor="start">człowiek zatwierdza</text><text x="353" y="414" font-size="27" font-weight="800" fill="#f5f7ff" text-anchor="middle">opis formularza</text></g><text x="353" y="482" font-size="20" font-weight="600" fill="#b3bddc" text-anchor="middle">bez danych osobowych</text><g class="rvo" style="--d:0.90s"><rect x="560" y="25" width="430" height="150" rx="24" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="595" y="52" width="54" height="96" rx="8.64" fill="#0f1630" stroke="#3a4878" stroke-width="3"/><rect x="603.64" y="71.2" width="36.720000000000006" height="5.76" rx="2.88" fill="#ffc547"/><rect x="603.64" y="91.04" width="36.720000000000006" height="5.76" rx="2.88" fill="#2a3560"/><rect x="603.64" y="110.88" width="36.720000000000006" height="5.76" rx="2.88" fill="#2a3560"/><text x="682" y="97" font-size="31" font-weight="800" fill="#f5f7ff" text-anchor="start">Mieszkaniec</text><text x="682" y="131" font-size="21" font-weight="600" fill="#b3bddc" text-anchor="start">dane raz, z telefonu</text></g><path d="M492 295 C528 295 520 100 552 100" fill="none" stroke="#b3bddc" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-th-m)"/><g class="rvo" style="--d:1.15s"><rect x="560" y="220" width="430" height="150" rx="24" fill="#18213f" stroke="#3a4878" stroke-width="2"/><circle cx="622" cy="271.5" r="17.85" fill="#6cb2ff"/><path d="M588.4 338.7 a33.6 37.800000000000004 0 0 1 67.2 0 z" fill="#6cb2ff"/><circle cx="650" cy="333" r="13" fill="#4ade80"/><path d="M644.15 333 l4.16 4.42 l7.8 -8.58" fill="none" stroke="#0b1020" stroke-width="2.86" stroke-linecap="round" stroke-linejoin="round"/><text x="682" y="292" font-size="31" font-weight="800" fill="#f5f7ff" text-anchor="start">Urzędnik</text><text x="682" y="326" font-size="21" font-weight="600" fill="#b3bddc" text-anchor="start">tylko wyjątki i wydruk</text></g><path d="M492 295 C528 295 520 295 552 295" fill="none" stroke="#b3bddc" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-th-m)"/><g class="rvo" style="--d:1.40s"><rect x="560" y="415" width="430" height="150" rx="24" fill="#18213f" stroke="#3a4878" stroke-width="2"/><rect x="588" y="456" width="68" height="68" rx="16" fill="#2b2410" stroke="#ffc547" stroke-width="3"/><path d="M622 467 l7 16 l16 7 l-16 7 l-7 16 l-7 -16 l-16 -7 l16 -7 z" fill="#ffc547"/><rect x="862.0" y="429.8" width="112.0" height="30.4" rx="15.2" fill="#10183a" stroke="#3a4878" stroke-width="2"/><text x="918" y="450.76" font-size="16" font-weight="600" fill="#b3bddc" text-anchor="middle">propozycja</text><text x="682" y="487" font-size="31" font-weight="800" fill="#f5f7ff" text-anchor="start">Asystent AI</text><text x="682" y="521" font-size="21" font-weight="600" fill="#b3bddc" text-anchor="start">oficjalne wejście: MCP, API</text></g><path d="M492 295 C528 295 520 490 552 490" fill="none" stroke="#b3bddc" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9" class="flow" marker-end="url(#ah-th-m)"/></svg></div></div></div></section></main>
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var still=/[?&]static=1/.test(location.search)||window.matchMedia('print').matches;
+  function finalNumbers(){still=true;[].forEach.call(document.querySelectorAll('[data-count]'),function(el){el.textContent=el.getAttribute('data-count');});}
+  function count(el){
+    var target=+el.getAttribute('data-count'),t0=null;
+    if(still||!target||window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
+    function step(ts){if(still){el.textContent=target;return;}if(!t0){t0=ts;}var k=Math.min(1,(ts-t0)/900);
+      el.textContent=Math.round(target*(1-Math.pow(1-k,3)));if(k<1){requestAnimationFrame(step);}}
+    requestAnimationFrame(step);
+  }
+  function show(p){if(p.classList.contains('in')){return;}p.classList.add('in');
+    [].forEach.call(p.querySelectorAll('[data-count]'),count);}
+  /* ?static=1 shows everything at once, without motion (for screenshots and checks) */
+  if(/[?&]static=1/.test(location.search)){document.documentElement.classList.add('static');pages.forEach(show);return;}
+  if(!('IntersectionObserver' in window)||window.matchMedia('print').matches){pages.forEach(show);return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){show(e.target);io.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -12% 0px'});
+  pages.forEach(function(p){io.observe(p);});
+  window.addEventListener('beforeprint',function(){finalNumbers();pages.forEach(show);});
+})();
+</script>
+</body>
+</html>

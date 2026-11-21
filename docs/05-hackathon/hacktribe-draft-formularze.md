@@ -31,10 +31,11 @@ Each Polish text is followed by its meaning in Russian for the owner.
 > 1. Układ druku czytamy z geometrii strony (linie, kratki, pola), a model dostaje obraz strony i listę kandydatów na pola: proponuje nazwy i znaczenie, nigdy współrzędne.
 > 2. AI proponuje, człowiek zatwierdza. Każda propozycja i każde zatwierdzenie zostają w dzienniku.
 > 3. Opis formularza jest związany z sumą kontrolną pliku wzoru. Test porównuje wydruk z oryginałem: poza polami nie może zmienić się ani jeden piksel.
-> 4. Dane osobowe zostają u mieszkańca: profil na telefonie, przekazanie szyfrowane, tylko pola potrzebne w sprawie, na kilka minut. Model pracuje lokalnie albo na danych po pseudonimizacji.
+> 4. Dane osobowe zostają u mieszkańca: profil na telefonie, przekazanie szyfrowane, tylko pola potrzebne w sprawie, na kilka minut. Dane osobowe nie trafiają do chmury: model czyta puste druki, a kontrola i wydruk działają na regułach.
 > 5. Otwarty kod, uruchomienie w infrastrukturze urzędu jednym poleceniem, interfejs projektowany zgodnie z WCAG 2.1 AA.
 > 6. Badania, katalog 275 kart usług jednego urzędu i specyfikacja powstały przed wydarzeniem i są jawnie oznaczone w repozytorium. Kod aplikacji powstaje podczas hackathonu.
-> [7. Dwa wejścia do tej samej usługi: strona dla każdego i oficjalny interfejs (MCP, API) dla asystentów AI mieszkańców. Asystent wypełnia, człowiek zatwierdza. — only if WP-B10 is built; otherwise delete.]
+> 7. Cały katalog z góry: program przeczytał wszystkie 661 dokumentów z kart usług miasta w 142 s i w 461 z nich sam znalazł miejsca do wypełnienia (pierwszy etap, bez modelu). Opisy zatwierdza człowiek; urzędnik dodaje tylko nowy druk. *(After WP-B11 add: how many descriptions are published.)*
+> [8. Dwa wejścia do tej samej usługi: strona dla każdego i oficjalny interfejs (MCP, API) dla asystentów AI mieszkańców. Asystent wypełnia, człowiek zatwierdza. — only if WP-B10 is built; otherwise delete.]
 
 *(1. Разметку бланка читаем из геометрии страницы, модель получает изображение и список кандидатов в поля: предлагает названия и смысл, но не координаты. 2. ИИ предлагает, человек утверждает; всё пишется в журнал. 3. Описание бланка привязано к контрольной сумме файла образца; тест сравнивает печать с оригиналом, вне полей не меняется ни один пиксель. 4. Персональные данные остаются у жителя: профиль в телефоне, шифрованная передача, только нужные поля, на несколько минут; модель локальная или на обезличенных данных. 5. Открытый код, запуск в инфраструктуре учреждения одной командой, доступность по WCAG 2.1 AA. 6. Исследование, каталог 275 карточек услуг и спецификация сделаны до события и помечены; код пишется на хакатоне.)*
 

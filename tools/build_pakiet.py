@@ -39,6 +39,18 @@ METRICS = {
     "scan_to_print_seconds": None,   # page 9
 }
 
+# Measured on the whole archive of the city by tools/forms_census.py
+# (data/forms-census.json, research/13). First pass only, not approved descriptions.
+CENSUS = {
+    "documents": 661,         # unique documents in the service cards
+    "first_pass": 461,        # places to fill found from geometry and text, no model
+    "fillable_pdf": 29,       # PDFs that declare their own fields
+    "word_share": "ok. ½",    # 336 of 661 are DOC, DOCX, RTF
+    "scans": 24,              # no text layer
+    "seconds": 142,           # time to read the whole archive, two cores
+}
+COMMUNES = "2\u00a0479"            # gminy, MSWiA, state on 1.01.2026
+
 WORKS = [
     "rozpoznanie pól", "formularz online", "komplet wniosków",
     "przekazanie przez kod QR", "kontrola wyjątków", "wydruk na wzorze",
@@ -567,6 +579,53 @@ def draw_check() -> str:
                "Ekran urzędnika: pola zgodne z dokumentem zwinięte, dwa pola do sprawdzenia, potwierdzenie tożsamości, wydruk kompletu")
 
 
+def draw_three() -> str:
+    """Page 2: the whole catalogue becomes one description per form; three kinds of user read it."""
+    uid = "th"
+    b = []
+    stack = [sheet(30, 140, 96, 132, 5, fill="#aeb8d8"), sheet(56, 128, 96, 132, 5, fill="#d5dcf2"),
+             sheet(82, 140, 96, 132, 5)]
+    stack.append(T(106, 348, str(CENSUS["documents"]), 64, INK, 800, "middle"))
+    stack.append(T(106, 380, "dokumentów miasta", 21, MUTED, 600, "middle"))
+    stack.append(pill(106, 428, "wczytane z góry", 19, fill="#10183a", stroke=LINE, color=MUTED, padx=14, weight=600))
+    b.append(f'<g class="rvo" style="--d:0.15s">{"".join(stack)}</g>')
+    b.append(arrow(uid, 186, 206, 212, 206, "a", flow=False))
+    card = [R(222, 145, 262, 300, rx=22)]
+    card.append(sheet(246, 172, 62, 82, 4))
+    for k in range(4):
+        card.append(f'<circle cx="330" cy="{188 + k * 20}" r="5" fill="{BLUE}"/>')
+        card.append(f'<rect x="344" y="{184 + k * 20}" width="{112 - k * 14}" height="8" rx="4" fill="{BLUE}"/>')
+    card.append(pill(353, 300, "AI proponuje", 20, fill="#2b2410", stroke=ACC, padx=16))
+    card.append(check(256, 352, 13))
+    card.append(T(278, 359, "człowiek zatwierdza", 19, INK, 700))
+    card.append(T(353, 414, "opis formularza", 27, INK, 800, "middle"))
+    b.append(f'<g class="rvo" style="--d:0.5s">{"".join(card)}</g>')
+    b.append(T(353, 482, "bez danych osobowych", 20, MUTED, 600, "middle"))
+    tiles = (("Mieszkaniec", "dane raz, z telefonu"), ("Urzędnik", "tylko wyjątki i wydruk"),
+             ("Asystent AI", "oficjalne wejście: MCP, API"))
+    for i, (lab, sub) in enumerate(tiles):
+        y = 25 + i * 195
+        g = [R(560, y, 430, 150, rx=24)]
+        ix, iy = 622, y + 75
+        if i == 0:
+            g.append(phone(ix - 27, iy - 48, 54, 96, 3, hl=(0,)))
+        elif i == 1:
+            g.append(person(ix, iy + 8, 1.05))
+            g.append(check(ix + 28, iy + 38, 13))
+        else:
+            g.append(R(ix - 34, iy - 34, 68, 68, rx=16, fill="#2b2410", stroke=ACC, sw=3))
+            g.append(f'<path d="M{ix} {iy - 23} l7 16 l16 7 l-16 7 l-7 16 l-7 -16 l-16 -7 l16 -7 z" fill="{ACC}"/>')
+            if not AGENT_DOOR_BUILT:
+                g.append(pill(918, y + 30, "propozycja", 16, fill="#10183a", stroke=LINE, color=MUTED, padx=12, weight=600))
+        g.append(T(682, y + 72, lab, 31, INK, 800))
+        g.append(T(682, y + 106, sub, 21, MUTED, 600))
+        b.append(f'<g class="rvo" style="--d:{0.9 + i * 0.25:.2f}s">{"".join(g)}</g>')
+        b.append(arrow(uid, 0, 0, 0, 0, "m", path=f"M492 295 C528 295 520 {y + 75} 552 {y + 75}"))
+    return svg(uid, 1000, 590, "".join(b),
+               "Dokumenty miasta wczytane z góry stają się opisami formularzy: AI proponuje, człowiek zatwierdza; "
+               "z jednego opisu korzystają mieszkaniec, urzędnik i asystent AI mieszkańca")
+
+
 def draw_scale() -> str:
     uid = "sc"
     b = []
@@ -579,11 +638,13 @@ def draw_scale() -> str:
     card.append(T(185, 412, "opis formularza", 24, INK, 800, "middle"))
     b.append("".join(card))
     b.append(T(185, 480, "bez danych osobowych", 20, MUTED, 600, "middle"))
-    offices = (("urząd miasta", 150), ("urząd gminy", 340), ("starostwo", 530))
+    offices = (("urząd miasta", 150), ("urząd gminy", 340), ("urząd miasta i gminy", 530))
     for i, (lab, by) in enumerate(offices):
         b.append(arrow(uid, 0, 0, 0, 0, "b", path=f"M330 320 C470 320 520 {by - 50} 690 {by - 50}"))
         b.append(f'<g class="rvo" style="--d:{0.5 + i * 0.25:.2f}s">{building(790, by, 1.05)}'
                  f'{T(790, by + 32, lab, 21, INK, 700, "middle")}</g>')
+    b.append(T(925, 296, COMMUNES, 40, INK, 800, "middle"))
+    b.append(T(925, 326, "gmin", 22, MUTED, 600, "middle"))
     b.append(pill(470, 48, "Generator Formularzy e-Usług", 22, fill="#10224a", stroke=BLUE, padx=20))
     b.append(arrow(uid, 0, 0, 0, 0, "m", path="M185 188 C185 128 205 90 252 64"))
     b.append(T(160, 150, "może zasilić", 19, MUTED, 600, "end"))
@@ -633,7 +694,7 @@ def pages() -> list[dict]:
     principles = [
         ("Dane zostają u mieszkańca.", "Urząd dostaje tylko pola potrzebne w sprawie."),
         ("AI proponuje, urzędnik zatwierdza.", "Każda decyzja zostawia ślad."),
-        ("Dane osobowe nie trafiają do chmury.", "Model działa lokalnie."),
+        ("Dane osobowe nie trafiają do chmury.", "AI czyta puste druki; kontrola i wydruk działają na regułach."),
         ("Otwarty kod (MIT).", "Uruchomienie w infrastrukturze urzędu."),
         ("Interfejs zgodny z WCAG 2.1 AA." if BUILT else "Interfejs projektowany zgodnie z WCAG 2.1 AA.",
          "Klawiatura, kontrast, etykiety."),
@@ -643,10 +704,10 @@ def pages() -> list[dict]:
 
     stats = (
         '<div class="stats">'
-        '<div class="stat"><b data-count="275">275</b><span>kart usług w\u00a0jednym urzędzie miasta</span></div>'
-        '<div class="stat"><b data-count="710">710</b><span>plików do pobrania w\u00a0tych kartach</span></div>'
-        '<div class="stat"><b>ok. ½</b><span>z\u00a0nich to pliki Word i\u00a0RTF</span></div>'
-        '<div class="stat"><b>1 z 32</b><span>w\u00a0próbie ma pola do wypełnienia na ekranie</span></div>'
+        f'<div class="stat"><b data-count="{CENSUS["documents"]}">{CENSUS["documents"]}</b><span>dokumentów do pobrania w\u00a0kartach usług jednego urzędu miasta</span></div>'
+        f'<div class="stat"><b data-count="{CENSUS["fillable_pdf"]}">{CENSUS["fillable_pdf"]}</b><span>z\u00a0nich to PDF z\u00a0polami do wypełnienia na ekranie</span></div>'
+        f'<div class="stat"><b>{CENSUS["word_share"]}</b><span>to pliki Word i\u00a0RTF</span></div>'
+        f'<div class="stat"><b data-count="{CENSUS["scans"]}">{CENSUS["scans"]}</b><span>to skany bez warstwy tekstowej</span></div>'
         '</div>'
         '<div class="meter" role="img" aria-label="179 z 344 zmapowanych usług centralnych dla obywateli jest cyfrowych">'
         '<div class="meter-head"><span>Usługi centralne dla obywateli, które są już cyfrowe</span><b>179 z 344</b></div>'
@@ -654,12 +715,38 @@ def pages() -> list[dict]:
 
     return [
         dict(kind="title",
-             ru=("ИИ превращает официальный бланк в услугу. Житель даёт данные только один раз. Чиновник ничего не "
-                 "переписывает и проверяет только то, что требует проверки. Плашки: открытый код, работает локально "
-                 "в учреждении, данные в показе выдуманные."),
-             why=("Первая страница должна за пять секунд сказать, что это и чем отличается. Лента из пяти шагов "
-                  "повторяется на странице 4 уже с пояснениями. Пока программа не построена, наверху стоит пометка "
-                  "«рабочая версия»: агент снимет её, когда всё заработает.")),
+             ru=("Вся идея за полминуты. Проблема: житель пишет одни и те же данные на каждом бланке, чиновник "
+                 "переписывает и сверяет вручную, нет одного заявления или приложения — вызов на устранение "
+                 "недостатков и минимум семь дней. Решение: ИИ превращает каждый бланк в услугу, человек "
+                 "утверждает; данные дают один раз; чиновник проверяет только исключения и печатает комплект; "
+                 "есть вход и для ИИ-ассистента жителя. Масштаб: 661 документ города программа прочитала за "
+                 "142 секунды; образец, установленный законом и описанный один раз, служит каждой из 2 479 гмин. "
+                 "Ниже лента из пяти шагов одного визита."),
+             why=("Ты просил: в начале максимально коротко, чтобы сразу были понятны мысли и проблемы. Это та самая "
+                  "страница: если жюри прочитает только её, оно уже знает, что болит, что мы делаем и какой "
+                  "масштаб. Числа 661 и 142 измерены нашей программой на всём архиве города, 2 479 взято у "
+                  "министерства. Пока программа не построена, справа стоит пометка «рабочая версия».")),
+        dict(h="Jeden opis druku. Trzech odbiorców.",
+             body=("Każdy druk urzędu dostaje jeden opis: AI proponuje pola i ich znaczenie, człowiek zatwierdza. "
+                   "Z tego samego opisu korzystają mieszkaniec na telefonie, urzędnik przy okienku i osobisty "
+                   "asystent AI mieszkańca. Opisy powstają z góry dla całego katalogu, więc urzędnik dodaje tylko "
+                   "nowy druk."),
+             extra=('<div class="side"><b>Francja dała asystentom AI oficjalny dostęp do danych publicznych.</b> '
+                    'Proponujemy następny krok: oficjalne wejście do usług. Każdą czynność zatwierdza człowiek.</div>'),
+             src=("Eksperymentalny serwer MCP platformy data.gouv.fr, luty 2026, tylko odczyt danych. "
+                  + ("W prototypie kalendarz terminów i wysyłka wniosku są symulowane." if AGENT_DOOR_BUILT
+                     else "Wejście dla asystentów AI jest w tym projekcie propozycją.")),
+             art=draw_three(),
+             ru=("У каждого бланка учреждения одно описание: ИИ предлагает поля и их смысл, человек утверждает. "
+                 "Одним и тем же описанием пользуются житель в телефоне, чиновник у окошка и личный ИИ-ассистент "
+                 "жителя. Описания делаются заранее для всего каталога, поэтому чиновник добавляет только новый "
+                 "бланк. В рамке: Франция дала ИИ-ассистентам официальный доступ к открытым данным; мы предлагаем "
+                 "следующий шаг, официальный вход к услугам, и каждое действие подтверждает человек."),
+             why=("Это крючок: необычное и большое. Необычное: учреждение, в которое можно прийти самому, с "
+                  "телефоном или прислать своего ассистента. Большое: весь каталог города оцифровывается заранее, "
+                  "без чиновника (твоя мысль от 10:48). Про Францию говорим точно: у них открыт доступ к данным, "
+                  "не к услугам, и сервер экспериментальный. Нельзя говорить «мы первые в мире». Пока вход для "
+                  "агентов не построен, на картинке стоит пометка «propozycja».")),
         dict(h="Dziś: te same dane, wiele razy",
              body=("Mieszkaniec sam ustala, których druków potrzebuje, i na każdym wpisuje to samo. Urzędnik pomaga "
                    "wypełniać, przepisuje i porównuje dane z dokumentem litera po literze. Gdy zabraknie wniosku albo "
@@ -675,37 +762,39 @@ def pages() -> list[dict]:
         dict(h="Skala: jedno miasto",
              body=("Usługi centralne są coraz częściej cyfrowe. Lokalne druki pozostają plikami do wydrukowania "
                    "i wypełnienia ręcznie, a cyfryzacja każdego z nich to dziś czasochłonna, ręczna praca."),
-             src=("Katalog kart usług i formularzy Urzędu Miasta Bydgoszczy w repozytorium projektu, stan na 21.11.2026; "
-                  "próba 32 formularzy tego urzędu. Mapa Życia, Ministerstwo Cyfryzacji i COI, 13.05.2026."),
+             src=("Pomiar całego archiwum formularzy Urzędu Miasta Bydgoszczy (224 karty usług z plikami), "
+                  "21.11.2026, w repozytorium projektu. Mapa Życia, Ministerstwo Cyfryzacji i COI, 13.05.2026."),
              art=stats, art_html=True,
              ru=("Центральные услуги всё чаще цифровые. Местные бланки остаются файлами, которые печатают и "
-                 "заполняют от руки, а оцифровка каждого сегодня это долгая ручная работа. Числа: 275 карточек услуг, "
-                 "710 файлов, около половины это Word и RTF, из 32 изученных только один можно заполнить на экране; "
-                 "в стране цифровые 179 из 344 услуг."),
-             why=("Масштаб на примере их же города. Все числа из нашего каталога и из публикации министерства; "
-                  "люди из COI эти 179 из 344 знают сами. Мы не говорим «всё на бумаге», мы говорим «длинный хвост "
-                  "местных бланков».")),
-        dict(kind="wide", h="Rozwiązanie w jednym obrazie",
-             body=("Najpierw druk staje się usługą. Potem każda wizyta przebiega tak samo: potrzeba, komplet, dane, "
-                   "kontrola, podpis."),
-             art=ribbon("rb2", sub=True, base=True),
-             ru=("Сначала бланк становится услугой. Потом каждый визит идёт одинаково: потребность, комплект, "
-                 "данные, проверка, подпись. Внизу «шаг 0»: ИИ превращает бланк в услугу, человек утверждает."),
-             why=("Вся идея одной картинкой. Если жюри посмотрит только одну страницу, пусть это будет она. "
-                  "Шаг 0 это прямое задание COI; шаги 1–5 это твоя идея «один визит, полный комплект».")),
-        dict(h="Krok 0. Druk staje się usługą",
-             body=("Pracownik urzędu wczytuje pusty druk: PDF, DOCX albo XLSX. AI rozpoznaje pola i proponuje ich "
-                   "znaczenie, a człowiek poprawia i zatwierdza. Z jednego opisu powstają formularz online, wydruk "
-                   "na oryginalnym wzorze i reguły kontroli. Automat porównuje wydruk z oryginałem."),
-             extra=metric_line((("digitise_seconds", " s", "od wczytania do publikacji"),
-                                ("fields_detected_pct", " %", "pól rozpoznanych poprawnie"))),
+                 "заполняют от руки, а оцифровка каждого сегодня это долгая ручная работа. Числа: 661 документ в "
+                 "карточках услуг одного города, только 29 из них это PDF с полями для заполнения на экране, около "
+                 "половины это Word и RTF, 24 это сканы без текста; в стране цифровые 179 из 344 услуг."),
+             why=("Масштаб на примере их же города. Числа теперь измерены на всём архиве (раньше была выборка из "
+                  "32 бланков); 179 из 344 взято из публикации министерства, люди из COI это число знают сами. Мы "
+                  "не говорим «всё на бумаге», мы говорим «длинный хвост местных бланков».")),
+        dict(h="Krok 0. Cały katalog z góry",
+             body=("Druki urzędu (PDF, DOCX, XLSX) wczytujemy wszystkie naraz, zanim urzędnik otworzy program. "
+                   "System sam robi pierwszy etap: znajduje pola i proponuje ich znaczenie. Opiekun katalogu "
+                   "zatwierdza każdy opis raz. Z opisu powstają formularz online, wydruk na oryginalnym wzorze "
+                   "i reguły kontroli. Urzędnik przy okienku dodaje tylko nowy druk."),
+             extra=(f'<p class="metrics"><span><b>{CENSUS["documents"]}</b> dokumentów przeczytanych '
+                    f'w {CENSUS["seconds"]} s</span><span><b>{CENSUS["first_pass"]}</b> z miejscami do wypełnienia '
+                    'znalezionymi bez modelu</span></p>'
+                    + metric_line((("digitise_seconds", " s", "od wczytania do publikacji"),
+                                   ("fields_detected_pct", " %", "pól rozpoznanych poprawnie")))),
+             src=("Pomiar na archiwum Urzędu Miasta Bydgoszczy, 21.11.2026. To pierwszy etap, nie zatwierdzone "
+                  "opisy: do okienka trafia tylko opis zatwierdzony przez człowieka."),
              art=draw_step0(),
-             ru=("Сотрудник учреждения загружает пустой бланк: PDF, DOCX или XLSX. ИИ распознаёт поля и предлагает "
-                 "их смысл, человек правит и утверждает. Из одного описания получаются онлайн-форма, печать на "
-                 "оригинальном образце и правила проверки. Автомат сравнивает печать с оригиналом."),
-             why=("Это то, о чём COI просит прямо: «инструмент ИИ, который превращает бланки в услуги». Они сами "
-                  "назвали PDF, DOCX, XLSX. Если программа к сдаче не будет принимать Excel, агент уберёт XLSX из "
-                  "текста. После показа здесь появятся измеренные секунды и процент распознанных полей.")),
+             ru=("Бланки учреждения (PDF, DOCX, XLSX) загружаем все сразу, до того как чиновник откроет программу. "
+                 "Система сама делает первый этап: находит поля и предлагает их смысл. Хранитель каталога утверждает "
+                 "каждое описание один раз. Из описания получаются онлайн-форма, печать на оригинальном образце и "
+                 "правила проверки. Чиновник у окошка добавляет только новый бланк. Числа: 661 документ прочитан за "
+                 "142 секунды, в 461 места для заполнения найдены без модели. Мелко: это первый этап, к окошку "
+                 "попадает только описание, утверждённое человеком."),
+             why=("Твоя мысль от 10:48: оцифровать всё заранее, без чиновника. И это прямое задание COI: «инструмент "
+                  "ИИ, который превращает бланки в услуги»; PDF, DOCX, XLSX назвали они сами. Важно не обещать "
+                  "лишнего: 461 это «программа нашла, куда писать», а не «готовые услуги». Готовым бланк становится "
+                  "после того, как человек утвердил описание. Сколько утверждено, агент впишет после сборки.")),
         dict(h="Od potrzeby do kompletu",
              body=("Mieszkaniec wybiera sprawę albo opisuje ją jednym zdaniem: w domu, przy rezerwacji wizyty, albo "
                    "przy okienku. System pokazuje komplet: wnioski dla każdej osoby, dokumenty do zabrania i opłaty. "
@@ -777,25 +866,28 @@ def pages() -> list[dict]:
         dict(h="Bezpiecznie i gotowe do wdrożenia" if BUILT else "Bezpieczeństwo i wdrożenie",
              body_html=p9_left, art=p9_right, art_html=True,
              ru=("Принципы: данные остаются у жителя, учреждение получает только нужные поля; ИИ предлагает, "
-                 "чиновник утверждает, каждое решение оставляет след; персональные данные не уходят в облако, "
-                 "модель работает локально; открытый код, запуск в инфраструктуре учреждения; интерфейс по "
+                 "чиновник утверждает, каждое решение оставляет след; персональные данные не уходят в облако: "
+                 "ИИ читает пустые бланки, а проверка и печать работают на правилах; открытый код, запуск в инфраструктуре учреждения; интерфейс по "
                  "стандарту доступности. Справа: что строим в прототипе и что имитируем; данные выдуманные."),
              why=("COI написал, что премирует open-source, который можно развернуть у себя (on-prem): эта страница "
-                  "отвечает им прямо. Правая колонка сейчас называется «строим в прототипе», потому что кода ещё "
+                  "отвечает им прямо. По твоему решению от 10:56 пустые бланки читает сильная модель (они открытые), "
+                  "а с данными людей работают правила, без облака. Правая колонка сейчас называется «строим в прототипе», потому что кода ещё "
                   "нет. Перед сдачей агент заменит её на «что работает» и оставит только то, что реально работает.")),
         dict(h="Jeden opis, wiele urzędów",
-             body=("Opis formularza nie zawiera danych osobowych, więc może być wspólny: druk opisany raz działa "
-                   "w każdym urzędzie, a zmianę wzoru wykrywa suma kontrolna pliku. Opis w otwartym formacie może "
-                   "zasilić Generator Formularzy e-Usług. Proponujemy pilotaż: dziesięć najczęstszych druków jednego "
-                   "urzędu jako usługi „od potrzeby do podpisu”."),
+             body=("Opis formularza nie zawiera danych osobowych, więc może być wspólny. Wzór zgłoszenia pobytu "
+                   f"stałego określa rozporządzenie: jest ten sam w każdej z {COMMUNES} gmin, więc opisany raz służy "
+                   "wszystkim. Zmianę wzoru wykrywa suma kontrolna pliku. Opis w otwartym formacie może zasilić "
+                   "Generator Formularzy e-Usług. Proponujemy pilotaż: dziesięć najczęstszych druków jednego urzędu."),
              extra=(f'<div class="links"><div class="qr">{qr_real()}</div><div><b>{esc(SITE_LABEL)}</b>'
                     f'<span>{esc(REPO_LABEL)}</span><span>Andrii Shramko · Shramko Asystent Urzędnika</span></div></div>'),
-             src=("Badania, katalog formularzy i specyfikacja powstały przed wydarzeniem i są jawnie oznaczone "
-                  "w repozytorium; kod aplikacji powstaje w ciągu 24 godzin hackathonu. Projekt niezależny; nazwy "
-                  "mObywatel i Generator Formularzy e-Usług należą do ich właścicieli."),
+             src=("Liczba gmin: MSWiA, stan na 1.01.2026. Wzór: Dz. U. z 2022 r. poz. 2070. Badania, katalog "
+                  "formularzy i specyfikacja powstały przed wydarzeniem i są oznaczone w repozytorium; kod aplikacji "
+                  "powstaje podczas hackathonu. Projekt niezależny; nazwy mObywatel i Generator Formularzy e-Usług "
+                  "należą do ich właścicieli."),
              art=draw_scale(),
-             ru=("Описание бланка не содержит персональных данных, поэтому может быть общим: описанный один раз "
-                 "бланк работает в любом учреждении, а смену образца видно по контрольной сумме файла. Описание в "
+             ru=("Описание бланка не содержит персональных данных, поэтому может быть общим. Образец заявления о "
+                 "постоянной прописке установлен министерским распоряжением: он один и тот же в каждой из 2 479 "
+                 "гмин, поэтому описанный один раз служит всем. Смену образца видно по контрольной сумме файла. Описание в "
                  "открытом формате может питать государственный Generator Formularzy e-Usług. Предлагаем пилот: десять "
                  "самых частых бланков одного учреждения как услуги «от потребности до подписи»."),
              why=("Масштаб и предложение. Generator Formularzy e-Usług это продукт самого COI: в нём учреждения "
@@ -876,6 +968,24 @@ border:1px solid var(--line);border-radius:99px;padding:calc(var(--u)*.35) calc(
 .links b{display:block;font-size:calc(var(--u)*1.55);color:var(--acc)}
 .links span{display:block;font-size:calc(var(--u)*1);color:var(--muted);margin-top:calc(var(--u)*.35);overflow-wrap:anywhere}
 .title-top{margin-top:calc(var(--u)*1.2)}
+/* page 1: the whole idea in half a minute */
+.one{flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:0;padding-top:calc(var(--u)*1.4)}
+.one-head{display:flex;justify-content:space-between;align-items:flex-end;gap:calc(var(--u)*2)}
+.one h1{font-size:calc(var(--u)*4.7)}
+.one h1 + .sub{font-size:calc(var(--u)*2.5)}
+.one-side{display:flex;flex-direction:column;align-items:flex-end;gap:calc(var(--u)*.8);max-width:46%}
+.one-side .chips{margin:0;justify-content:flex-end}
+.one-side .chips li{font-size:calc(var(--u)*1.05)}
+.one-side .draft{position:static}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*1.4);margin:calc(var(--u)*1.7) 0 calc(var(--u)*1.5)}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:calc(var(--u)*1.3);padding:calc(var(--u)*1.2) calc(var(--u)*1.5) calc(var(--u)*1.4)}
+.cell .lab{display:flex;align-items:center;gap:.6em;font-size:calc(var(--u)*1.05);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cell .lab i{width:.8em;height:.8em;border-radius:50%;display:inline-block;flex:none}
+.cell p{margin:calc(var(--u)*.7) 0 0;font-size:calc(var(--u)*1.42);line-height:1.38;color:#e2e7fa;text-wrap:pretty}
+.cell p b{color:var(--ink);font-weight:800}
+.one .art svg{max-height:calc(var(--u)*17)}
+.more{font-size:calc(var(--u)*1.15);line-height:1.5;color:var(--muted);margin:calc(var(--u)*1.3) 0 0;overflow-wrap:anywhere}
+.more b{color:var(--acc);font-size:calc(var(--u)*1.5)}
 /* Russian commentary (ru.html only) */
 .note{background:#101733;border:1px solid #26315c;border-radius:14px;margin:-10px 0 34px;padding:16px 20px;font-size:16px;line-height:1.55;color:#dfe5fb}
 .note h3{margin:0 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
@@ -901,6 +1011,13 @@ border:1px solid var(--line);border-radius:99px;padding:calc(var(--u)*.35) calc(
 .stat b{font-size:calc(var(--u)*4.2)}
 .draft{position:static;display:inline-block;margin:0 0 12px;font-size:12px;padding:4px 12px}
 .status{grid-template-columns:1fr}
+.one-head{flex-direction:column;align-items:flex-start}
+.one-side{align-items:flex-start;max-width:none}
+.one-side .chips{justify-content:flex-start}
+.one-side .chips li{font-size:12px}
+.trio{grid-template-columns:1fr}
+.one .art{overflow-x:auto;display:block}
+.one .art svg{min-width:720px;max-height:none}
 }
 @page{size:13.333in 7.5in;margin:0}
 @media print{
@@ -940,8 +1057,12 @@ document.documentElement.classList.add('js');
 """
 
 
-def render(lang: str) -> str:
+def render(lang: str, short: bool = False) -> str:
     ps = pages()
+    if short:   # the first two pages are the whole idea; the second one gets the addresses
+        ps = ps[:2]
+        ps[1] = dict(ps[1], src="", extra=ps[1]["extra"] + (
+            f'<p class="more">Pełna wersja i kod: <b>{esc(SITE_LABEL)}</b><br>{esc(REPO_LABEL)}</p>'))
     n = len(ps)
     out = []
     for i, p in enumerate(ps, 1):
@@ -949,21 +1070,32 @@ def render(lang: str) -> str:
         if p.get("kind") == "title":
             draft = ("" if BUILT else
                      '<div class="draft">Wersja robocza: opis rozwiązania budowanego podczas hackathonu</div>')
+            c = CENSUS
             inner = (
-                f'{draft}<div class="top"><span>HackNation 2026 · zadanie „Cyfryzacja formularzy”</span>'
+                f'<div class="top"><span>HackNation 2026 · zadanie „Cyfryzacja formularzy”</span>'
                 f'<span class="pn">{i} / {n}</span></div>'
-                '<div class="grid wide"><div class="txt title-top">'
+                '<div class="one"><div class="one-head"><div>'
                 '<h1 class="rv">Od potrzeby do podpisu</h1>'
-                '<p class="sub rv" style="--d:.15s">Jedna wizyta, komplet wniosków.</p>'
-                '<p class="lead rv" style="--d:.3s">AI zamienia urzędowy druk w\u00a0usługę. Mieszkaniec podaje dane tylko raz. '
-                'Urzędnik niczego nie przepisuje i\u00a0sprawdza tylko to, co wymaga sprawdzenia.</p>'
-                '<ul class="chips rv" style="--d:.45s"><li>otwarty kod (MIT)</li><li>działa lokalnie w urzędzie</li>'
-                '<li>dane w pokazie są syntetyczne</li></ul></div>'
-                f'<div class="art">{ribbon("rb1", sub=False, base=False)}</div></div>')
+                '<p class="sub rv" style="--d:.15s">Jedna wizyta, komplet wniosków.</p></div>'
+                f'<div class="one-side rv" style="--d:.25s">{draft}<ul class="chips"><li>otwarty kod (MIT)</li>'
+                '<li>dane osobowe nie trafiają do chmury</li><li>dane w pokazie są syntetyczne</li></ul></div></div>'
+                '<div class="trio rv" style="--d:.35s">'
+                f'<div class="cell"><span class="lab"><i style="background:{RED}"></i>Problem</span><p>'
+                + nb('Mieszkaniec wpisuje te same dane na każdym druku. Urzędnik przepisuje je i porównuje '
+                     'z dokumentem. Brak jednego wniosku albo załącznika: wezwanie i co najmniej 7 dni.')
+                + f'</p></div><div class="cell"><span class="lab"><i style="background:{GREEN}"></i>Rozwiązanie</span><p>'
+                + nb('AI zamienia każdy druk w usługę, człowiek zatwierdza. Dane podaje się raz. Urzędnik sprawdza '
+                     'tylko wyjątki i drukuje komplet. Jest też wejście dla asystenta AI mieszkańca.')
+                + f'</p></div><div class="cell"><span class="lab"><i style="background:{BLUE}"></i>Skala</span><p>'
+                + nb(f'<b>{c["documents"]}</b> dokumentów jednego miasta program przeczytał w <b>{c["seconds"]}\u00a0s</b> '
+                     f'i w 70% sam znalazł miejsca do wypełnienia. Wzór ustawowy opisany raz służy każdej '
+                     f'z <b>{COMMUNES}</b> gmin.')
+                + '</p></div></div>'
+                f'<div class="art">{ribbon("rb1", sub=True, base=False)}</div></div>')
         else:
             body = p.get("body_html") or f'<p class="body rv" style="--d:.15s">{esc(nb(p["body"]))}</p>'
             src = f'<p class="src rv" style="--d:.3s">{esc(nb(p["src"]))}</p>' if p.get("src") else ""
-            extra = nb(p.get("extra", "")) if "qr" not in p.get("extra", "") else p["extra"]
+            extra = nb(p.get("extra", "")) if 'class="qr"' not in p.get("extra", "") else p["extra"]
             art = p["art"]
             if p.get("kind") == "wide":
                 inner = (f'{top}<div class="grid wide"><div class="txt"><h2 class="rv">{esc(p["h"])}</h2>{body}</div>'
@@ -978,7 +1110,7 @@ def render(lang: str) -> str:
                        f'<h3>Зачем она и что помнить</h3><p>{esc(p["why"])}</p></aside>')
     if lang == "ru":
         title = "Od potrzeby do podpisu: версия для чтения с пояснениями по-русски"
-        intro = ('<p class="intro"><b>Версия для Андрея.</b> Это те же десять страниц, которые прочитает жюри, '
+        intro = ('<p class="intro"><b>Версия для Андрея.</b> Это те же одиннадцать страниц, которые прочитает жюри, '
                  'по-польски. Под каждой страницей перевод и пояснение: зачем она нужна и что помнить. '
                  'Эту страницу не публикуем; для жюри предназначен файл <b>index.html</b> и PDF.</p>')
         html_lang = "ru"
@@ -996,8 +1128,8 @@ def render(lang: str) -> str:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    for lang, name in (("pl", "index.html"), ("ru", "ru.html")):
-        (OUT / name).write_text(render(lang), encoding="utf-8")
+    for lang, name, short in (("pl", "index.html", False), ("ru", "ru.html", False), ("pl", "skrot.html", True)):
+        (OUT / name).write_text(render(lang, short), encoding="utf-8")
         print("wrote", OUT / name)
 
 
