@@ -59,6 +59,8 @@ def test_set_9_has_one_selector_and_no_second_form_from_the_docx():
 
 def test_the_stored_briefs_cover_every_judged_set():
     stored = {p.name.split(".")[0] for p in BRIEFS.glob("judged-*.json")}
+    if not stored:
+        pytest.skip("eval/briefs/*.json are local only (they quote the partner's forms); run eval/briefs/make_briefs.py")
     assert {f.name for f in sets("judged")} <= stored
     for p in BRIEFS.glob("judged-*.json"):
         assert "matter" in json.loads(p.read_text(encoding="utf-8"))
