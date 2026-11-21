@@ -4,7 +4,7 @@
   "$defs": {
     "Cell": {
       "additionalProperties": false,
-      "oneOf": [
+      "anyOf": [
         {
           "required": [
             "box"
@@ -90,7 +90,7 @@
     },
     "Evidence": {
       "additionalProperties": false,
-      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.\n\nRevision 1.1: a record may carry box and anchor together (an anchored text box), and may leave out the quote\nwhen it locates a drawn blank with a box or an anchor. A Stated value still needs a quote (see Stated).",
       "properties": {
         "page": {
           "minimum": 1,
@@ -139,11 +139,15 @@
         "candidate": {
           "title": "Candidate",
           "type": "string"
+        },
+        "spans": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Spans",
+          "type": "array"
         }
       },
-      "required": [
-        "quote"
-      ],
       "title": "Evidence",
       "type": "object"
     },
@@ -269,6 +273,51 @@
           },
           "title": "Widgets",
           "type": "array"
+        },
+        "pictures": {
+          "description": "1.1: bounds of placed pictures (stamps, logos, scans) the source declares.",
+          "items": {
+            "maxItems": 4,
+            "minItems": 4,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Pictures",
+          "type": "array"
+        },
+        "ink": {
+          "description": "1.1: whether the page shows anything at all; absent: not measured.",
+          "title": "Ink",
+          "type": "boolean"
+        },
+        "row_heights": {
+          "description": "1.1: sheet row heights in points, by row index from 0.",
+          "items": {
+            "type": "number"
+          },
+          "title": "Row Heights",
+          "type": "array"
+        },
+        "col_widths": {
+          "description": "1.1: sheet column widths in points, by column index from 0.",
+          "items": {
+            "type": "number"
+          },
+          "title": "Col Widths",
+          "type": "array"
         }
       },
       "required": [
@@ -316,7 +365,7 @@
     },
     "Run": {
       "additionalProperties": false,
-      "oneOf": [
+      "anyOf": [
         {
           "required": [
             "box"
@@ -382,6 +431,33 @@
           "minimum": 0.0,
           "title": "Conf",
           "type": "number"
+        },
+        "leader": {
+          "description": "1.1: tab leader the source declares for this run's tab.",
+          "enum": [
+            "dots",
+            "underscores",
+            "none"
+          ],
+          "title": "Leader",
+          "type": "string"
+        },
+        "region": {
+          "description": "1.1: part of the page the source declares; absent: not declared.",
+          "enum": [
+            "body",
+            "header",
+            "footer",
+            "footnote"
+          ],
+          "title": "Region",
+          "type": "string"
+        },
+        "footnote": {
+          "description": "1.1: id of the footnote, on its reference mark and on the runs of its text.",
+          "minLength": 1,
+          "title": "Footnote",
+          "type": "string"
         }
       },
       "required": [
@@ -433,9 +509,37 @@
       "title": "Source",
       "type": "object"
     },
+    "Span": {
+      "additionalProperties": false,
+      "description": "Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an\noption that shares its run with others (\"❑ pies ❑ suka\"). Revision 1.1. A whole run is still named by its id\nalone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans).",
+      "properties": {
+        "run": {
+          "minLength": 1,
+          "title": "Run",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run",
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
     "Table": {
       "additionalProperties": false,
-      "oneOf": [
+      "anyOf": [
         {
           "required": [
             "box"
@@ -486,6 +590,17 @@
           },
           "title": "Cells",
           "type": "array"
+        },
+        "region": {
+          "description": "1.1: part of the page the source declares.",
+          "enum": [
+            "body",
+            "header",
+            "footer",
+            "footnote"
+          ],
+          "title": "Region",
+          "type": "string"
         }
       },
       "required": [
@@ -519,7 +634,20 @@
             "ADDRESSEE_CONFLICT",
             "COMPOSITE_UNRESOLVED",
             "INFERRED_SHAPE",
-            "LOW_CONFIDENCE"
+            "LOW_CONFIDENCE",
+            "REQUIRED_WITHOUT_EVIDENCE",
+            "CONDITION_NOT_WRITTEN",
+            "SECTION_SPLIT",
+            "REPEATING_FLATTENED",
+            "STEP_NOTE_ADDED",
+            "MARKUP_IN_LABEL",
+            "TITLE_MISSING",
+            "ADDRESSEE_MISSING",
+            "APPLICANTS_ASSUMED",
+            "SOLE_TRADER_AS_ENTITY",
+            "CLAUSE_LINK_MISSING",
+            "NO_MATTER",
+            "EXTRA_NOT_PLACED"
           ],
           "title": "Code",
           "type": "string"
@@ -584,7 +712,7 @@
     },
     "Widget": {
       "additionalProperties": false,
-      "oneOf": [
+      "anyOf": [
         {
           "required": [
             "box"
@@ -661,6 +789,26 @@
           },
           "title": "Options",
           "type": "array"
+        },
+        "field": {
+          "description": "1.1: reference of the field this widget is one of (the radio group's shared field).",
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "values": {
+          "description": "1.1: display and export value of each option, when they differ or are declared.",
+          "items": {
+            "$ref": "#/$defs/WidgetValue"
+          },
+          "title": "Values",
+          "type": "array"
+        },
+        "on_state": {
+          "description": "1.1: the value a checkbox or radio button takes when on.",
+          "minLength": 1,
+          "title": "On State",
+          "type": "string"
         }
       },
       "required": [
@@ -669,16 +817,39 @@
       ],
       "title": "Widget",
       "type": "object"
+    },
+    "WidgetValue": {
+      "additionalProperties": false,
+      "description": "1.1: one option of a widget as the file declares it: the text shown and the value exported.",
+      "properties": {
+        "display": {
+          "title": "Display",
+          "type": "string"
+        },
+        "export": {
+          "title": "Export",
+          "type": "string"
+        }
+      },
+      "required": [
+        "display",
+        "export"
+      ],
+      "title": "WidgetValue",
+      "type": "object"
     }
   },
   "additionalProperties": false,
-  "description": "Page model, output of every reader (design 5.1). Also checked by app.model.page: page numbers 1..n, source.pages equals the page count, ids unique in the document, flow pages use anchors and native or ocr pages use boxes, table cells name runs of their page.",
+  "description": "Page model, output of every reader (design 5.1). Also checked by app.model.page: page numbers 1..n, source.pages equals the page count, ids unique in the document, every element of a flow page has an anchor and of a native or ocr page a box (1.1: the other may be given too), a flow page carries lines, rects or pictures only with its size, table cells name runs of their page. Revision 1.1, additive.",
   "properties": {
     "model_version": {
-      "const": 1,
-      "default": 1,
-      "title": "Model Version",
-      "type": "integer"
+      "default": 1.1,
+      "description": "Revision of this contract; 1 (1.0) still validates.",
+      "enum": [
+        1,
+        1.1
+      ],
+      "title": "Model Version"
     },
     "source": {
       "$ref": "#/$defs/Source"

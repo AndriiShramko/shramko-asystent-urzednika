@@ -29,16 +29,16 @@ ASCII = str.maketrans("ąćęłńóśźżĄĆĘŁŃÓŚŹŻ", "acelnoszzACELNOSZ
 EXTENSIONS = ("pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg")
 
 
-def pdf() -> bytes:
+def pdf(title: str = TITLE) -> bytes:
     """reportlab's built-in fonts have no Polish letters: the PDF carries the same words without diacritics."""
     from reportlab.lib.pagesizes import A4
     from reportlab.pdfgen import canvas
 
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=A4, invariant=1)
-    c.setTitle(TITLE.translate(ASCII))
+    c.setTitle(title.translate(ASCII))
     c.setFont("Helvetica-Bold", 14)
-    c.drawString(72, 780, TITLE.translate(ASCII))
+    c.drawString(72, 780, title.translate(ASCII))
     c.setFont("Helvetica", 9)
     c.drawString(72, 762, NOTE.translate(ASCII))
     y = 730

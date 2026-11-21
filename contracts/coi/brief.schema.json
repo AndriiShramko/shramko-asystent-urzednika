@@ -93,6 +93,51 @@
       "title": "ApplicantExtra",
       "type": "object"
     },
+    "ApplicantOption": {
+      "additionalProperties": false,
+      "description": "1.1: one way of applying: who the party is and, when someone acts for it, in which capacity.",
+      "properties": {
+        "key": {
+          "maxLength": 60,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Key",
+          "type": "string"
+        },
+        "party": {
+          "enum": [
+            "self",
+            "other_person",
+            "entity"
+          ],
+          "title": "Party",
+          "type": "string"
+        },
+        "capacity": {
+          "description": "Absent: the party applies in person.",
+          "enum": [
+            "pelnomocnik",
+            "reprezentant",
+            "przedstawiciel_ustawowy"
+          ],
+          "title": "Capacity",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "party"
+      ],
+      "title": "ApplicantOption",
+      "type": "object"
+    },
     "Applicants": {
       "additionalProperties": false,
       "properties": {
@@ -144,6 +189,14 @@
           },
           "title": "Capacities",
           "type": "array"
+        },
+        "options": {
+          "description": "1.1: the ways of applying as items, beside the flags.",
+          "items": {
+            "$ref": "#/$defs/ApplicantOption"
+          },
+          "title": "Options",
+          "type": "array"
         }
       },
       "required": [
@@ -181,6 +234,13 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "key": {
+          "description": "1.1: stable key; the composer makes the id from it when present, from the label otherwise.",
+          "maxLength": 60,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Key",
+          "type": "string"
         }
       },
       "required": [
@@ -359,6 +419,16 @@
           },
           "title": "Evidence",
           "type": "array"
+        },
+        "kind": {
+          "default": "consent",
+          "description": "1.1: consent (default) or a declaration the applicant affirms.",
+          "enum": [
+            "consent",
+            "declaration"
+          ],
+          "title": "Kind",
+          "type": "string"
         }
       },
       "required": [
@@ -386,6 +456,87 @@
         "clause"
       ],
       "title": "Declarations",
+      "type": "object"
+    },
+    "Disposition": {
+      "additionalProperties": false,
+      "description": "1.1: what became of one finder candidate, decided by the understanding step (design 5.4 fates).",
+      "properties": {
+        "candidate": {
+          "minLength": 1,
+          "title": "Candidate",
+          "type": "string"
+        },
+        "fate": {
+          "enum": [
+            "FIELD",
+            "MERGED",
+            "STANDARD",
+            "LEFT_OUT",
+            "AWAITING_DECISION"
+          ],
+          "title": "Fate",
+          "type": "string"
+        },
+        "key": {
+          "description": "FIELD: key of the brief field or attachment it became.",
+          "maxLength": 60,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Key",
+          "type": "string"
+        },
+        "into": {
+          "description": "MERGED: candidate it was merged into.",
+          "minLength": 1,
+          "title": "Into",
+          "type": "string"
+        },
+        "why": {
+          "description": "MERGED: why.",
+          "enum": [
+            "COMB_CELLS",
+            "GROUP_MEMBER",
+            "LINE_BLOCK",
+            "SAME_ALTERNATIVE",
+            "TABLE_ROW"
+          ],
+          "title": "Why",
+          "type": "string"
+        },
+        "role": {
+          "description": "STANDARD: role of the standard section, e.g. \"standard/twoje_dane\".",
+          "pattern": "^[a-z0-9_]+(/[a-z0-9_]+)*$",
+          "title": "Role",
+          "type": "string"
+        },
+        "reason": {
+          "description": "LEFT_OUT: reason code.",
+          "enum": [
+            "PAPER_INSTRUCTION",
+            "COVERED_BY_STANDARD",
+            "SIGNATURE_AND_DATE",
+            "OFFICE_USE",
+            "PAGE_FURNITURE",
+            "GRAMMAR_VARIANT",
+            "CLAUSE_LINKED",
+            "EXPLANATION",
+            "COMPUTED_VALUE"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "decision": {
+          "description": "AWAITING_DECISION: id of the decision.",
+          "minLength": 1,
+          "title": "Decision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate",
+        "fate"
+      ],
+      "title": "Disposition",
       "type": "object"
     },
     "Dropped": {
@@ -440,7 +591,7 @@
     },
     "Evidence": {
       "additionalProperties": false,
-      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.",
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.\n\nRevision 1.1: a record may carry box and anchor together (an anchored text box), and may leave out the quote\nwhen it locates a drawn blank with a box or an anchor. A Stated value still needs a quote (see Stated).",
       "properties": {
         "page": {
           "minimum": 1,
@@ -489,11 +640,15 @@
         "candidate": {
           "title": "Candidate",
           "type": "string"
+        },
+        "spans": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Spans",
+          "type": "array"
         }
       },
-      "required": [
-        "quote"
-      ],
       "title": "Evidence",
       "type": "object"
     },
@@ -554,6 +709,18 @@
           "minItems": 1,
           "title": "Fields",
           "type": "array"
+        },
+        "page_title": {
+          "description": "1.1: title of the page this section opens, when it differs from the section title.",
+          "minLength": 1,
+          "title": "Page Title",
+          "type": "string"
+        },
+        "hint": {
+          "description": "1.1: description of the section.",
+          "minLength": 1,
+          "title": "Hint",
+          "type": "string"
         }
       },
       "required": [
@@ -562,6 +729,64 @@
         "fields"
       ],
       "title": "MatterSection",
+      "type": "object"
+    },
+    "ProposedFee": {
+      "additionalProperties": false,
+      "description": "1.1: a fee we propose (from a statute or a guide), kept apart from the paper's fee: it never turns a\n`not_found` fee into `stated` (brief.proposed_fee, meta proposals.fee).",
+      "properties": {
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "value",
+        "why"
+      ],
+      "title": "ProposedFee",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "description": "Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an\noption that shares its run with others (\"❑ pies ❑ suka\"). Revision 1.1. A whole run is still named by its id\nalone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans).",
+      "properties": {
+        "run": {
+          "minLength": 1,
+          "title": "Run",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run",
+        "start",
+        "end"
+      ],
+      "title": "Span",
       "type": "object"
     },
     "Stated": {
@@ -621,7 +846,20 @@
             "ADDRESSEE_CONFLICT",
             "COMPOSITE_UNRESOLVED",
             "INFERRED_SHAPE",
-            "LOW_CONFIDENCE"
+            "LOW_CONFIDENCE",
+            "REQUIRED_WITHOUT_EVIDENCE",
+            "CONDITION_NOT_WRITTEN",
+            "SECTION_SPLIT",
+            "REPEATING_FLATTENED",
+            "STEP_NOTE_ADDED",
+            "MARKUP_IN_LABEL",
+            "TITLE_MISSING",
+            "ADDRESSEE_MISSING",
+            "APPLICANTS_ASSUMED",
+            "SOLE_TRADER_AS_ENTITY",
+            "CLAUSE_LINK_MISSING",
+            "NO_MATTER",
+            "EXTRA_NOT_PLACED"
           ],
           "title": "Code",
           "type": "string"
@@ -688,10 +926,13 @@
   "additionalProperties": false,
   "properties": {
     "brief_version": {
-      "const": 1,
-      "default": 1,
-      "title": "Brief Version",
-      "type": "integer"
+      "default": 1.1,
+      "description": "Revision of this contract; 1 (1.0) still validates.",
+      "enum": [
+        1,
+        1.1
+      ],
+      "title": "Brief Version"
     },
     "input": {
       "$ref": "#/$defs/InputRef"
@@ -753,6 +994,22 @@
       },
       "title": "Warnings",
       "type": "array"
+    },
+    "mandatory_attachments": {
+      "$ref": "#/$defs/Stated",
+      "description": "1.1: receipt: does the paper say which attachments are mandatory."
+    },
+    "proposed_fee": {
+      "$ref": "#/$defs/ProposedFee",
+      "description": "1.1: a fee we propose; `fee` stays what the paper states."
+    },
+    "dispositions": {
+      "description": "1.1: one per finder candidate id.",
+      "items": {
+        "$ref": "#/$defs/Disposition"
+      },
+      "title": "Dispositions",
+      "type": "array"
     }
   },
   "required": [
@@ -766,5 +1023,5 @@
   ],
   "title": "Brief",
   "type": "object",
-  "description": "Brief, output of the understanding step (design 5.3). Also checked by app.model.brief: status stated or ambiguous has evidence and not_found has none, field keys and roles unique, conditions name existing fields and options, a required field states its basis."
+  "description": "Brief, output of the understanding step (design 5.3). Also checked by app.model.brief: status stated or ambiguous has a quote and not_found has no evidence, field keys and roles unique, conditions name existing fields and options (1.1: or the applicant selector and its option keys), a required field states its basis, dispositions name each candidate once and resolve. Revision 1.1, additive."
 }
