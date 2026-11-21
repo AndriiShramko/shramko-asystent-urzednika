@@ -2,7 +2,7 @@
 
 **Open brief and reference design for an AI assistant for Polish public offices (urząd): it helps clerks analyse access-to-public-information requests (wnioski o udostępnienie informacji publicznej, UDIP) and draft answers, and it pre-fills official forms from data a visitor enters once.** Prepared for HackNation 2026 (21–22 November 2026, Bydgoszcz), challenge "Inteligentny asystent urzędnika" by Miasto Bydgoszcz.
 
-Polski: [README.pl.md](README.pl.md) · Русский (для владельца проекта): [README.ru.md](README.ru.md) · For AI agents: [START_HERE.md](START_HERE.md), [AGENTS.md](AGENTS.md), [llms.txt](llms.txt)
+Site and pitch deck: <https://urzad.flyreelstudio.eu> · Polski: [README.pl.md](README.pl.md) · Русский (для владельца проекта): [README.ru.md](README.ru.md) · For AI agents: [START_HERE.md](START_HERE.md), [AGENTS.md](AGENTS.md), [AGENT_SETUP.md](AGENT_SETUP.md), [llms.txt](llms.txt) · Known traps: [docs/warnings.md](docs/warnings.md)
 
 > **Status: pre-event brief (tag `pre-event`).** This repository contains research, requirements, a scope decision, a build plan and an orchestration playbook written before the hackathon. It contains no application code yet. Application code is written during the 24 hours of the event and will be recognisable by commits after the tag. Live state: [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md).
 

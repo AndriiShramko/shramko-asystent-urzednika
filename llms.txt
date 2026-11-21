@@ -9,6 +9,9 @@
 - HackNation 2026: full task cards at Sat 21.11.2026 11:00; draft in HackTribe by Sat 20:00; final submission Sun 11:00 with a PDF presentation up to 10 MB; finals are a 5-minute pitch plus 5 minutes of questions.
 - The repository contains a machine-readable catalogue of service cards and form files of Urząd Miasta Bydgoszczy (links and metadata only).
 - Design rule: centralise form descriptions, not personal data; personal data stays with the person and the office handling the case.
+- mObywatel has a QR-based data-sharing flow for selected partner institutions ("Przekaż instytucji", since 2020); no public interface or sandbox for it was found as of November 2026.
+- A resident profile fills about 55-60 % of the fields of simple resident forms and about 36 % across 32 analysed forms of the city hall (own estimate).
+- Catalogue size: 275 service cards and 710 form files of Urząd Miasta Bydgoszczy.
 
 ## Documents
 - [README](https://github.com/AndriiShramko/shramko-asystent-urzednika#readme): overview, questions answered, limits
@@ -17,6 +20,12 @@
 - [HackNation rules and judging](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/01-hacknation-2026-task-rules-jury.md): schedule, deliverables, criteria of 2025, jury questions
 - [Lessons from a 2022 prototype](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/09-lessons-from-2022-prototype.md): pre-filled forms in a refugee help centre
 - [Forms catalogue](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/data/forms-catalog.csv): service cards and form files of Urząd Miasta Bydgoszczy
+
+- [Site and pitch deck](https://urzad.flyreelstudio.eu/): landing page and animated deck with a presenter window
+- [mObywatel, registers and once-only](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/04-mobywatel-identity-once-only.md): what can lawfully feed resident data into an office form
+- [Data protection, AI regulation, model providers](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/05-rodo-ai-act-security-requirements.md): legal bases, identity documents, 26 controls
+- [Form anatomy and canonical profile](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/03b-form-anatomy-and-canonical-profile.md): statutory templates, overlay printing, share of fields a profile fills
+- [Known traps](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/docs/warnings.md): law, data, software and agent pitfalls
 
 ## For agents
 - [START_HERE](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/START_HERE.md): bootstrap for the lead agent
