@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 import time
 import uuid
 from pathlib import Path
@@ -157,7 +158,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def run_one(name: str | None, data: bytes, declared: str | None) -> tuple[UploadInfo, pipeline.PipelineResult, int]:
         t0 = time.perf_counter()
         info = inspect_upload(name, data, s, declared)
-        result = pipeline.run(data, info.name, s, **({"notes": info.warnings} if info.warnings else {}))
+        result = pipeline.run_limited(data, info.name, s, **({"notes": info.warnings} if info.warnings else {}))
         if set(result.form) != FORM_KEYS:  # the shell's own gate; the full gate (WP-F14) comes behind the pipeline
             raise ProblemError("GATE_FAILED", "Wynik ma klucze inne niż title, tabs, flow.")
         return info, result, int((time.perf_counter() - t0) * 1000)
@@ -182,8 +183,29 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def canonical(obj: dict) -> bytes:
         return json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
 
-    def headers_for(info: UploadInfo, body: bytes, ms: int) -> dict[str, str]:
-        return {
+    def warnings_header(result: pipeline.PipelineResult) -> str:
+        """D19: `3; GATE_G8, INPUT_NOTE`: the count and the distinct codes, ASCII, cut at 200 characters."""
+        found = result.sidecar.get("warnings", []) if isinstance(result.sidecar, dict) else []
+        codes: list[str] = []
+        for w in found:
+            code = re.sub(r"[^A-Za-z0-9_.-]", "", str(w.get("code", ""))) if isinstance(w, dict) else ""
+            if code and code not in codes:
+                codes.append(code)
+        text = f"{len(found)}; "
+        shown = 0
+        for code in codes:
+            nxt = text + (", " if shown else "") + code
+            if len(nxt) > 200:
+                text += ", ..." if shown else "..."
+                break
+            text, shown = nxt, shown + 1
+        return text.rstrip("; ") if not shown and not codes else text
+
+    def headers_for(info: UploadInfo, body: bytes, ms: int, result: pipeline.PipelineResult | None = None) -> dict[str, str]:
+        extra = {}
+        if result is not None and isinstance(result.sidecar, dict) and result.sidecar.get("warnings"):
+            extra["X-Converter-Warnings"] = warnings_header(result)
+        return {**extra,
             "X-Input-SHA256": info.sha256,
             "X-Form-SHA256": hashlib.sha256(body).hexdigest(),
             "X-Converter-Version": __version__,
@@ -200,7 +222,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def convert(request: Request, report: int = 0) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
         form_body = canonical(result.form)
-        headers = headers_for(info, form_body, ms)
+        headers = headers_for(info, form_body, ms, result)
         if not report:
             return Response(form_body, media_type="application/json", headers=headers)
         meta_body = canonical(result.sidecar)
@@ -216,7 +238,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def report_only(request: Request) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
         form_body = canonical(result.form)
-        return Response(canonical(result.sidecar), media_type="application/json", headers=headers_for(info, form_body, ms))
+        return Response(canonical(result.sidecar), media_type="application/json", headers=headers_for(info, form_body, ms, result))
 
     @app.post("/v1/forms/inspect")
     async def inspect(request: Request) -> JSONResponse:

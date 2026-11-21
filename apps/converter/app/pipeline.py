@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import threading
 from dataclasses import dataclass
 
 from app import __version__, gate, interim
@@ -65,6 +66,40 @@ def _gate_problem(failed: gate.CheckResult) -> ProblemError:
     return ProblemError("GATE_FAILED", f"Bramka {failed.id} {failed.name} odrzuciła wynik: {shown}{more}"[:1000])
 
 
+BLOCKING_CHECKS = frozenset({"G1", "G2", "G3", "G4"})   # D19: schema, partner rules, grid, ids and links
+
+
+def _gate_warning(check: gate.CheckResult) -> dict:
+    """A failed non-blocking check as a warning: the code of the check, the places (no values), Polish and short."""
+    places = ", ".join(dict.fromkeys(f.path or "/" for f in check.findings[:3]))
+    more = f" (łącznie {len(check.findings)})" if len(check.findings) > 3 else ""
+    return {"code": f"GATE_{check.id}",
+            "detail": f"Kontrola {check.id} ({check.name}) zgłosiła uwagi w miejscach: {places}{more}."[:300]}
+
+
+def run_limited(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] = ()) -> PipelineResult:
+    """`run` under `settings.job_timeout_s`: the job runs in a daemon thread and the caller stops waiting when the
+    time is up (504 TIMEOUT). A thread cannot be killed, so the abandoned job ends by itself; the normal path is
+    unchanged, so the bytes are too."""
+    box: dict = {}
+    args = (data, filename, settings, notes) if notes else (data, filename, settings)
+
+    def work() -> None:
+        try:
+            box["result"] = run(*args)
+        except BaseException as exc:   # handed to the caller, which re-raises it
+            box["error"] = exc
+
+    th = threading.Thread(target=work, name="convert-job", daemon=True)
+    th.start()
+    th.join(settings.job_timeout_s)
+    if th.is_alive():
+        raise ProblemError("TIMEOUT", f"Przetwarzanie pliku trwało dłużej niż {settings.job_timeout_s} s i zostało przerwane.")
+    if "error" in box:
+        raise box["error"]
+    return box["result"]
+
+
 def _checks_of(report: gate.GateReport) -> list[dict]:
     return [{"id": c.id, "name": c.name, "status": c.status, **({"reason": c.reason} if c.reason else {})}
             for c in report.checks]
@@ -112,9 +147,11 @@ def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] =
         raise ProblemError("GATE_FAILED", f"Kompozytor odrzucił wynik ({type(exc).__name__}).") from None
     form = json.loads(composed.form.to_json_bytes())
     report = gate.check(form)
-    if not report.passed:
-        raise _gate_problem(report.failed[0])
+    blocking = [c for c in report.failed if c.id in BLOCKING_CHECKS]
+    if blocking:   # D19: only G1 to G4 are our fault (500); a failed G5 to G12 is a warning of a 200
+        raise _gate_problem(blocking[0])
     warnings = [{"code": "INPUT_NOTE", "detail": n} for n in notes]
+    warnings += [_gate_warning(c) for c in report.failed]
     warnings += [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]
     if fallback:
         warnings.append(dict(interim.NOT_READ_WARNING))
