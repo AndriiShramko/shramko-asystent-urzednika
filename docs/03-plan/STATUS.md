@@ -38,7 +38,7 @@ Last update: 2026-11-21 16:54 CET. **Track F (the forms converter) is being buil
 
 **Next, in order:** merge F2c and F11a; the Docker run; then WP-F8 (validators), WP-F2d (native readers: reference 5 `.doc` ReaderError, sheets give one run for reference 1, audit T5 and T10), WP-F11b (content scorer, audit T2), WP-F7, WP-F6, WP-F15, WP-F16, WP-F9 with WP-F10 (every-device acceptance), WP-F11, WP-F12. Audit tickets and their mapping: [`audit-tickets-2026-11-21.md`](audit-tickets-2026-11-21.md); decisions D19 to D23 in section 6c of the decisions file. Formats beyond the card (owner's question): TIFF, BMP, GIF, WEBP cheap (Pillow), ODT medium, RTF expensive (76 files in the city archive are RTF), HEIC no (LGPL).
 
-**Budget, measured 16:54:** week 76 %, top model 84 %. At 16:06: 70 % and 80 %. The owner allows the subscription to 99 % and the whole Eden grant (cap 115 USD; 17.9 spent at 17:20).
+**Budget, measured 16:54:** week 76 %, top model 84 %. At 16:06: 70 % and 80 %. The owner allows the subscription to 99 % and the whole Eden grant (cap 115 USD; 17.9 spent at 16:40).
 
 **Merged since the table above** (all through `tools/lead/merge.sh`, fast gate green after each):
 
@@ -52,7 +52,7 @@ Last update: 2026-11-21 16:54 CET. **Track F (the forms converter) is being buil
 | 15:39 | WP-F3 finder | `7568884` | candidates for the PDF and DOCX of the nine sets with no unhandled error and no unassigned run; combs with masks, choice groups, blanks in a sentence; drills 3, 4, 7, 8, 10 |
 | 15:47 | WP-F2b readers for XLSX, ODS and binary Word, with WP-F20d | `81e4781` | 42 of the 69 set files read (the other 27 are images); five formats convert inside both images; fast gate 540 passed |
 | 16:25 | README files true to Track F (docs) | `24034ef` | pl, en, ru describe the converter, the published image, ready formats and what is not done |
-| 17:40 | WP-F4 understanding and wiring | `559d839` | finder and understanding replace interim; fields of the matter (PDF): set 2: 5, 3: 2, 4: 7, 6: 18, 7: 10, 8: 32, 9: 83; gate 17/17; 584 tests. Review blockers (reference parity across formats, set 9 PDF selector) moved to WP-F3b; briefs stay local |
+| 16:50 | WP-F4 understanding and wiring | `559d839` | finder and understanding replace interim; fields of the matter (PDF): set 2: 5, 3: 2, 4: 7, 6: 18, 7: 10, 8: 32, 9: 83; gate 17/17; 584 tests. Review blockers (reference parity across formats, set 9 PDF selector) moved to WP-F3b; briefs stay local |
 
 **Open follow-ups for packages that are merged** (small stages for a builder when a slot is free):
 
