@@ -1,0 +1,21 @@
+{
+  "name": "review-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Review page of the forms converter (WP-F9): upload, fields of the matter, warnings, the form JSON. No runtime dependencies.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "licences": "node scripts/licences.mjs",
+    "check:devices": "node scripts/devices.mjs"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.0.0",
+    "typescript": "~5.9.0",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.0"
+  }
+}
