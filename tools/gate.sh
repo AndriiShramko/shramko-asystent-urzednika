@@ -40,7 +40,9 @@ export PYTHONUTF8=1 PYTHONIOENCODING=utf-8
 lint() {
   if "$PY" -m ruff --version >/dev/null 2>&1; then
     # Only what is a bug in any style: syntax errors, undefined names, broken comparisons.
-    "$PY" -m ruff check --quiet --select E9,F63,F7,F82 "$R/apps/converter" "$R/tools" "$R/eval"
+    local dirs=() d
+    for d in apps/converter tools eval; do [ -d "$ROOT/$d" ] && dirs+=("$R/$d"); done
+    "$PY" -m ruff check --quiet --select E9,F63,F7,F82 "${dirs[@]}"
     echo "gate: lint ok"
   else
     echo "gate: lint SKIPPED (ruff is not installed in $PY)"

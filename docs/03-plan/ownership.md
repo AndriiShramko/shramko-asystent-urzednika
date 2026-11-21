@@ -27,7 +27,8 @@ An agent edits only the paths of its own package. Everything not listed is lead-
 | `apps/agent-gateway/**`, `data/demo/slots.json`, `apps/visitor-pwa/src/features/confirm/**`, `apps/visitor-pwa/src/features/draft/**`, `tools/agent_door_demo.md` | WP-B10 |
 | `tools/batch_first_pass.py`, `data/descriptors/**`, `apps/api/app/modules/catalogue/**`, `apps/clerk-web/src/features/catalogue/**` | WP-B11 |
 | `apps/converter/app/main.py`, `apps/converter/app/cli.py`, `apps/converter/app/config.py`, `apps/converter/app/auth/**`, `apps/converter/app/guard/**`, `apps/converter/Dockerfile`, `docker-compose.yml`, `apps/converter/README.md`, `tools/env_check.py`, `docs/03-plan/wip/environment.md` | WP-F1 |
-| `apps/converter/app/readers/**` | WP-F2 |
+| `apps/converter/app/pipeline.py` (the one seam between the service shell and the steps: `run(data, filename, settings)`) | written by WP-F1; since its merge the lead: a package never edits it, the lead wires each step in after its merge |
+| `apps/converter/app/readers/**`, `eval/readers-sets.json` | WP-F2 |
 | `apps/converter/app/find/**` | WP-F3 |
 | `apps/converter/app/mean/**`, `apps/converter/app/lexicon/**`, `eval/briefs/**` | WP-F4 |
 | `apps/converter/app/compose/**` | WP-F5 |
