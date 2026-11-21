@@ -42,6 +42,7 @@ option blank of the new RADIO; set 9 PDF the 22-option SELECT became a CHECKBOX 
 plus the applicant RADIO of two options. ("[x, 0]": a CHECKBOX of one box; the composer writes the option "Tak".)
 
 Ticket keys of T3 to T5 still present in the seven PDF forms: 12 of 12.
+Ticket keys of T3 to T5 still present in the seven PDF forms after items 3 to 5 (probe `--tickets`, 18:45, head a0d3190): 3 of 12 (was 12 of 12). The three left are not named by the probe; to be named when items 6 and 7 are planned.
 
 ## Decisions
 - Probe counts the brief (matter sections, attachments without `covered_by`) and lints the composed form / the brief is what the finder and the understanding step decide / rules out counting the standard pages and the fee uploader (T11, not this package).
