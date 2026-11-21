@@ -21,7 +21,7 @@ def env(tmp_path: Path, **over: str) -> dict[str, str]:
 
 def test_defaults_follow_the_design(tmp_path):
     s = Settings.from_env(env(tmp_path))
-    assert (s.max_upload_bytes, s.max_pages, s.max_pixels, s.job_timeout_s) == (20971520, 60, 80000000, 120)
+    assert (s.max_upload_bytes, s.max_pages, s.max_pixels, s.job_timeout_s) == (20971520, 60, 80000000, 600)
     assert (s.concurrency, s.rate_limit_per_min, s.jwt_alg, s.jwt_leeway_s) == (2, 60, "HS256", 30)
     assert s.jwt_required_claims == ("exp",) and s.strict_extensions is False and s.auth_enabled
 

@@ -33,7 +33,7 @@ class Settings:
     max_pages: int = 60
     max_cells: int = 200_000
     max_pixels: int = 80000000
-    job_timeout_s: int = 120
+    job_timeout_s: int = 600   # fits the page budget: 60 scanned pages at about 6 s each (review D19, B2)
     worker_memory_mb: int = 1024
     concurrency: int = 2
     rate_limit_per_min: int = 60

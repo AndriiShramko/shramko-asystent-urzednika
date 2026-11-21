@@ -9,7 +9,8 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 - [x] 1. J1 `AUTH_MODE=auto` default, `auth_enabled`, warning that names the cause
 - [x] 1. committed as 734d419
 - [x] 2. R1 cold-start race of the readers registry (lock, flag after the imports, warm-up in `create_app`)
-- [ ] 3. R2 `job_timeout_s` 600; abandoned jobs count against the slots (BUSY, Retry-After 30)
+- [x] 2. committed as 671ddf8
+- [x] 3. R2 `job_timeout_s` 600; abandoned jobs count against the slots (BUSY, Retry-After 30)
 - [ ] 4. R3 catch-all: unexpected exception and request validation as problem JSON; batch stream continues
 - [ ] 5. J3 `GET /status`
 - [ ] 6. J2 `convert --out` that cannot be written: one line, exit 4
