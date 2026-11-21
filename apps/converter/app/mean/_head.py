@@ -18,6 +18,7 @@ _KIND_ANY = re.compile(rf"\b({_WORDS})", re.IGNORECASE)
 _FURNITURE = lexicon.regex("habits", habit="furniture_title")
 _LEGAL_REF = re.compile(r"\(\s*(?:t\.\s*j\.\s*)?Dz\.\s*U\.[^)]*\)|\bna podstawie\b.*$", re.IGNORECASE)
 _FEE = lexicon.regex("habits", habit="fee")
+_PERSONAL_ONLY = lexicon.regex("habits", habit="personal_only")
 _ADDR_SECTION = lexicon.regex("habits", habit="addressee_section")
 _LEGAL_SECTION = lexicon.regex("habits", habit="legal_section")
 _HEAD_NO = re.compile(r"^\s*(?:[IVX]{1,4}|[A-Z]|\d{1,2}(?:\.\d{1,2})*)[.)]\s+(?=\S)")   # "II. Wniosek ..."
@@ -221,6 +222,22 @@ def find_applicants(signals: list[tuple[str, Evidence]]) -> Applicants:
             seen.add(ev.quote)
             evidence.append(ev)
     return Applicants(status="stated", self_=person, other_person=person, entity=entity, capacities=capacities, evidence=evidence)
+
+
+def prune_by_exclusion(doc: Doc, a: Applicants) -> tuple[Applicants, list[Dropped]]:
+    """D20: the proxy route (other person, entity, power of attorney) is removed only when the paper says it in so
+    many words ("Wniosek składa się wyłącznie osobiście"); the quote stays in the evidence and in the dropped list."""
+    if a.status != "stated":
+        return a, []
+    for rid in doc.order:
+        t = re.sub(r"\s+", " ", doc.text(rid))
+        m = _PERSONAL_ONLY.search(t)
+        if m and doc.role(rid) in ("body", "note", "heading"):
+            ev = doc.evidence([rid], t)
+            pruned = a.model_copy(update={"self_": True, "other_person": False, "entity": False, "capacities": [],
+                                          "evidence": [*a.evidence, ev]})
+            return pruned, [Dropped(what=f"route of a proxy or an entity: {t[:160]}", reason="PAPER_INSTRUCTION", page=doc.page(rid), runs=[rid])]
+    return a, []
 
 
 # -- legal basis, fee, clause ---------------------------------------------------------------------------------------

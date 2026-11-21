@@ -15,8 +15,8 @@ Measuring: `bash tools/gate.sh py eval/briefs/make_briefs.py <main checkout>/eva
 - [x] item 2 (part): single boxes numbered 1., 2., 3. ... on one page under one heading are one group even with other places between them (set 8 PDF: CHECKBOX "Okoliczności" of four options); set 9 "Dane pełnomocnika ..." are section switches, left awaiting on purpose
 - [x] item 7 (part): title continues into a smaller bold lower-case line (set 6 PDF and DOCX: "Wniosek o wydanie zezwolenia na zajęcie pasa drogowego w celu prowadzenia robót", was "Wniosek")
 - [ ] item 4: reference 1 addressee (PDF glued capital "W"; DOCX "Wnioskodawca: Adresat:" two-column line)
-- [ ] item 6: audit T1 fixtures (reservation PDFs "Numer sali" vs "Liczba uczestników"; vehicle sale notice with buyer PESEL, VIN, "Data zbycia")
-- [ ] item 7: audit T4 (titles sentence case without "*", "Wniosek składa się wyłącznie osobiście" prunes the proxy route with the quote, parent/child and buyer blocks keep their owner)
+- [x] item 6: audit T1 fixtures as synthetic tests ("Numer sali" = TEXT_FIELD, "Liczba uczestników" = NUMBER; sale notice: buyer PESEL, "Numer VIN" (VIN added to the acronyms), "Data zbycia" DATEPICKER)
+- [x] item 7: titles sentence case without "*" (already so on all 13 files), explicit exclusion "składa się wyłącznie osobiście" prunes other person / entity / capacities, the quote in evidence and in dropped (PAPER_INSTRUCTION; no new reason code, request 2); owners of parent/child and buyer blocks: not changed, see not verified
 - [ ] set 9 PDF lost per variant the fields "Numer telefonu", "Nazwa klubu sportowego", "Adres siedziby", "Telefon kontaktowy" (now under the heading "Wnioskodawca" they go to the standard applicant block); decide whether the club data are the entity applicant (standard) or matter
 - [ ] acceptance: fast gate after merging main, check chain `bash tools/gate.sh py -m eval.chain --compare`, sets tests for the new numbers, reference 1 PDF = DOCX
 
