@@ -6,8 +6,8 @@ Downloaded on 21 November 2026 from the event's Discord, channel of the task, se
 
 | Folder | What | In git |
 |---|---|---|
-| `materials/` | the partner's schema file, the description of the JSON fields, the technical rules for configuring forms, the design standard, the dictionaries note, the initial-data note, two visualisations of finished e-services | yes (8 files) |
-| `reference-01-numer-porzadkowy/` | reference set 1: one paper form in eight formats (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG), the JSON the partner made from it, the visualisation | yes (10 files) |
+| `materials/` | the partner's schema file, the description of the JSON fields, the technical rules for configuring forms, the design standard, the dictionaries note, the initial-data note, two visualisations of finished e-services | **no, local only** (left the repository on 21 November after the mentor's answer) |
+| `reference-01-numer-porzadkowy/` | reference set 1: one paper form in eight formats (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG), the JSON the partner made from it, the visualisation | **no, local only** (same) |
 | `reference-05-nadplata-podatku/` | reference set 5 (refund of overpaid tax): the second form that comes with its JSON; seven formats, the JSON, the visualisation | **no, local only** |
 | `judged-02-zwrot-oplaty-skarbowej/`, `judged-03-wydanie-zaswiadczenia/`, `judged-04-wynajecie-swietlicy/`, `judged-06-zajecie-pasa-drogowego/`, `judged-07-psy-rasy-agresywne/`, `judged-08-deklaracja-odpady/`, `judged-09-stypendium-sportowe/` | the seven forms "do cyfryzacji": **the converter's outputs for these are judged**. Eight formats each (set 7 has six) | **no, local only** |
 | `text/` | plain text of every DOCX, PDF and XLSX above, made by `tools/coi_unpack.py`, for quick reading | **no, local only** |

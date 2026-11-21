@@ -74,3 +74,10 @@ Thumbs.db
 data/coi/judged-*/
 data/coi/reference-05-*/
 data/coi/text/
+
+# Second opinions of hosted models on the task forms: they quote the forms, so they stay local like the sets
+eval/silver/
+
+# The partner's materials and reference sets: the mentor said they may not be public (21 November)
+data/coi/materials/
+data/coi/reference-*/

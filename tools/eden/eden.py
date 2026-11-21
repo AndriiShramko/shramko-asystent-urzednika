@@ -139,10 +139,51 @@ def _content(prompt: str, images: list[str]) -> object:
     return parts
 
 
-def cmd_chat(a: argparse.Namespace) -> None:
+def request(body: dict, purpose: str, timeout: int = 900) -> dict:
+    """One chat completion. Checks the cap, writes the ledger, returns
+    {"text", "data", "in", "out", "usd", "seconds", "finish", "spent"}. Raises RuntimeError on failure."""
     spent, cap = _spent(), _cap()
     if spent >= cap:
-        sys.exit("Budget cap reached: spent $%.2f of $%.2f. Raise EDEN_BUDGET_USD only on the owner's word." % (spent, cap))
+        raise RuntimeError("Budget cap reached: spent $%.2f of $%.2f. Raise EDEN_BUDGET_USD only on the owner's word." % (spent, cap))
+    req = urllib.request.Request(
+        API + "/chat/completions",
+        data=json.dumps(body).encode("utf-8"),
+        headers={"Authorization": "Bearer " + _key(), "Content-Type": "application/json"},
+        method="POST",
+    )
+    t0 = time.time()
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            data = json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise RuntimeError("HTTP %s from the gateway: %s" % (e.code, e.read().decode("utf-8", "replace")[:600])) from None
+    except Exception as e:  # network, timeout
+        raise RuntimeError("Call failed: %s" % type(e).__name__) from None
+    seconds = time.time() - t0
+    usage = data.get("usage") or {}
+    tin = int(usage.get("prompt_tokens") or usage.get("input_tokens") or 0)
+    tout = int(usage.get("completion_tokens") or usage.get("output_tokens") or 0)
+    usd = None
+    for candidate in (data.get("cost"), usage.get("cost")):
+        try:
+            usd = float(candidate)
+            break
+        except (TypeError, ValueError):
+            continue
+    if usd is None:
+        pin, pout = _price(str(body.get("model")))
+        usd = tin * pin + tout * pout
+    STATE.mkdir(exist_ok=True)
+    with LEDGER.open("a", encoding="utf-8") as f:
+        f.write(json.dumps({"t": int(time.time()), "model": body.get("model"), "in": tin, "out": tout, "usd": round(float(usd), 6), "s": round(seconds, 1), "purpose": purpose}) + "\n")
+    choice = (data.get("choices") or [{}])[0]
+    text = (choice.get("message") or {}).get("content") or ""
+    if isinstance(text, list):
+        text = "".join(part.get("text", "") for part in text if isinstance(part, dict))
+    return {"text": text, "data": data, "in": tin, "out": tout, "usd": float(usd), "seconds": seconds, "finish": choice.get("finish_reason"), "spent": spent + float(usd)}
+
+
+def cmd_chat(a: argparse.Namespace) -> None:
     prompt = a.prompt if a.prompt is not None else Path(a.prompt_file).read_text(encoding="utf-8")
     messages = []
     if a.system:
@@ -157,51 +198,19 @@ def cmd_chat(a: argparse.Namespace) -> None:
         body["response_format"] = {"type": "json_object"}
     if a.extra:
         body.update(json.loads(a.extra))
-    req = urllib.request.Request(
-        API + "/chat/completions",
-        data=json.dumps(body).encode("utf-8"),
-        headers={"Authorization": "Bearer " + _key(), "Content-Type": "application/json"},
-        method="POST",
-    )
-    t0 = time.time()
     try:
-        with urllib.request.urlopen(req, timeout=a.timeout) as r:
-            data = json.loads(r.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        detail = e.read().decode("utf-8", "replace")[:600]
-        sys.exit("HTTP %s from the gateway: %s" % (e.code, detail))
-    except Exception as e:  # network, timeout
-        sys.exit("Call failed: %s" % (type(e).__name__,))
-    seconds = time.time() - t0
-    usage = data.get("usage") or {}
-    tin = int(usage.get("prompt_tokens") or usage.get("input_tokens") or 0)
-    tout = int(usage.get("completion_tokens") or usage.get("output_tokens") or 0)
-    usd = None
-    for candidate in (data.get("cost"), usage.get("cost")):
-        try:
-            usd = float(candidate)
-            break
-        except (TypeError, ValueError):
-            continue
-    if usd is None:
-        pin, pout = _price(a.model)
-        usd = tin * pin + tout * pout
-    STATE.mkdir(exist_ok=True)
-    with LEDGER.open("a", encoding="utf-8") as f:
-        f.write(json.dumps({"t": int(time.time()), "model": a.model, "in": tin, "out": tout, "usd": round(float(usd), 6), "s": round(seconds, 1), "purpose": a.purpose}) + "\n")
-    choice = (data.get("choices") or [{}])[0]
-    text = (choice.get("message") or {}).get("content") or ""
-    if isinstance(text, list):
-        text = "".join(p.get("text", "") for p in text if isinstance(p, dict))
+        r = request(body, a.purpose, a.timeout)
+    except RuntimeError as e:
+        sys.exit(str(e))
     if a.raw:
-        Path(a.raw).write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        Path(a.raw).write_text(json.dumps(r["data"], ensure_ascii=False, indent=1), encoding="utf-8")
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(text, encoding="utf-8")
-        print("ok: %s | in %d out %d tokens | $%.4f | %.0fs | finish=%s | total spent $%.3f" % (a.out, tin, tout, usd, seconds, choice.get("finish_reason"), spent + float(usd)))
+        Path(a.out).write_text(r["text"], encoding="utf-8")
+        print("ok: %s | in %d out %d tokens | $%.4f | %.0fs | finish=%s | total spent $%.3f" % (a.out, r["in"], r["out"], r["usd"], r["seconds"], r["finish"], r["spent"]))
     else:
-        print(text)
-        print("\n-- in %d out %d tokens | $%.4f | %.0fs | total spent $%.3f" % (tin, tout, usd, seconds, spent + float(usd)), file=sys.stderr)
+        print(r["text"])
+        print("\n-- in %d out %d tokens | $%.4f | %.0fs | total spent $%.3f" % (r["in"], r["out"], r["usd"], r["seconds"], r["spent"]), file=sys.stderr)
 
 
 def main() -> None:

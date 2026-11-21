@@ -26,20 +26,28 @@ An agent edits only the paths of its own package. Everything not listed is lead-
 | `apps/visitor-pwa/src/features/profile-start/**` | WP-B9 |
 | `apps/agent-gateway/**`, `data/demo/slots.json`, `apps/visitor-pwa/src/features/confirm/**`, `apps/visitor-pwa/src/features/draft/**`, `tools/agent_door_demo.md` | WP-B10 |
 | `tools/batch_first_pass.py`, `data/descriptors/**`, `apps/api/app/modules/catalogue/**`, `apps/clerk-web/src/features/catalogue/**` | WP-B11 |
-| `apps/converter/app/main.py`, `apps/converter/app/guard/**`, `apps/converter/Dockerfile`, `docker-compose.yml`, `apps/converter/README.md` | WP-F1 |
+| `apps/converter/app/main.py`, `apps/converter/app/cli.py`, `apps/converter/app/config.py`, `apps/converter/app/auth/**`, `apps/converter/app/guard/**`, `apps/converter/Dockerfile`, `docker-compose.yml`, `apps/converter/README.md`, `tools/env_check.py`, `docs/03-plan/wip/environment.md` | WP-F1 |
 | `apps/converter/app/readers/**` | WP-F2 |
 | `apps/converter/app/find/**` | WP-F3 |
-| `apps/converter/app/mean/**`, `prompts/converter-*.md` | WP-F4 |
+| `apps/converter/app/mean/**`, `apps/converter/app/lexicon/**`, `eval/briefs/**` | WP-F4 |
 | `apps/converter/app/compose/**` | WP-F5 |
 | `apps/converter/app/dictionaries/**` | WP-F6 |
 | `apps/converter/app/conditions/**` | WP-F7 |
 | `apps/converter/app/validation/**` | WP-F8 |
-| `apps/review-web/**` except `src/features/viewer/**` | WP-F9 |
+| `apps/review-web/**` except `src/features/viewer/**` and `src/features/cost/**` | WP-F9 |
 | `apps/review-web/src/features/viewer/**` | WP-F10 |
-| `eval/**`, `results/**` | WP-F11 |
+| `eval/**` except `eval/briefs/**`, `results/**` | WP-F11 |
 | `docs/02-architecture/converter.md`, `LICENCES.md`, `tools/licence_check.py` | WP-F12 |
 | `apps/converter/app/export/**` | WP-F13 |
-| `contracts/coi/**`, `docs/02-architecture/coi-json-format.md`, `data/coi/**`, `tools/coi_lint.py` | WP-F0 (lead) |
+| `apps/converter/app/gate/**` | WP-F14 |
+| `apps/converter/app/sidecar/**` | WP-F15 |
+| `apps/converter/app/worker/**`, `apps/converter/app/security/**`, `apps/converter/tests/evil/**` | WP-F16 |
+| `apps/converter/app/privacy/**` | WP-F17 |
+| `apps/converter/app/diff/**` | WP-F18 |
+| `apps/converter/app/metrics/**`, `apps/review-web/src/features/cost/**` | WP-F19 |
+| `.github/workflows/**`, `tools/ci/**` | WP-F20 |
+| `apps/converter/tests/<module>/**` | the owner of `apps/converter/app/<module>/**` |
+| `contracts/coi/**`, `apps/converter/app/model/**`, `apps/converter/pyproject.toml`, `docs/02-architecture/coi-json-format.md`, `docs/02-architecture/converter-design.md`, `docs/02-architecture/contradiction-docket.md`, `docs/03-plan/DECISIONS-forms-track.md`, `data/coi/**`, `tools/coi_lint.py`, `tools/coi_unpack.py`, `tools/coi_paths.py`, `tools/eden/**` | WP-F0 (lead) |
 | `tools/build_deck.py`, `docs/05-hackathon/presentation/deck/**`, `docs/assets/deck-document/**` | WP-P1 |
 | `README*`, `AGENTS.md`, `START_HERE.md`, `docs/**` except each package's own status file, `research/**` | lead |
 | `docs/03-plan/wip/WP-<id>.status.md` | the builder of that package |

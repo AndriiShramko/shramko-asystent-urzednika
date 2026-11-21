@@ -2,7 +2,45 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 11:21 CET. **The task cards are published and they change the plan: read the section "Phase" before anything else.**
+Last update: 2026-11-21 13:45 CET. **Track F (the forms converter) is prepared and the build may start: read "Now" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+
+## Now (21 November, 13:45)
+
+**The task is fixed: "Cyfryzacja formularzy" (COI), Track F.** One sentence: a compiler with an accountant, not a scanner with AI. No application code exists yet; the build starts with the next session of the lead.
+
+Prepared this afternoon by the preparing session on the owner's laptop:
+
+| What | Where | State |
+|---|---|---|
+| Decisions of the track (contract with the importer, stack, accounting features, defaults for open questions) | [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md) | done; wins over older documents |
+| Detailed design of the converter | [`../02-architecture/converter-design.md`](../02-architecture/converter-design.md) | written by a background writer; the lead checks that it exists and follows the decisions |
+| Work packages, version 2, with the clock from Saturday 14:30 to Sunday 10:30 | [`work-packages/WP-F-forms-to-json.md`](work-packages/WP-F-forms-to-json.md) | same |
+| Rules, agent types, wave script, project skills, model routing, machine notes | `AGENTS.md`, `START_HERE.md`, `.claude/`, [`../04-orchestration/`](../04-orchestration/) | same |
+| Submission text for 20:00, ten slides, film, defence questions | [`../05-hackathon/hacktribe-draft-formularze.md`](../05-hackathon/hacktribe-draft-formularze.md), [`../05-hackathon/presentation/storyboard-coi-v2.md`](../05-hackathon/presentation/storyboard-coi-v2.md), [`../05-hackathon/jury-qa-formularze.md`](../05-hackathon/jury-qa-formularze.md) | same |
+| Research with sources: stack and licences under Python 3.14; the partner's platform and the origin of the format; security; applicant kinds; evolution and interoperability | `research/14` … `research/18` | done |
+| Raw reports of hosted models (deep research, thirty ideas, defence questions) | `research/eden/` | done; unverified by design |
+| The task sets: two references and seven judged forms | `data/coi/` **local only**, hashes in `data/coi/INDEX.json`; unpack with `tools/coi_unpack.py`; paths through `tools/coi_paths.py` | on the owner's laptop |
+| Facts measured on both reference exports; the standard sections compared | [`../05-hackathon/mentor-questions/reference-json-forensics.txt`](../05-hackathon/mentor-questions/reference-json-forensics.txt), [`../../contracts/coi/standard-sections-diff.md`](../../contracts/coi/standard-sections-diff.md) | done |
+| Second opinions of two hosted models on every form (what a careful reader finds on the paper) | `eval/silver/` **local only**; `python tools/eden/silver_briefs.py --compare` | done for the sets present |
+| Client for the partner's model credits, with a ledger and a cap of 60 USD | `tools/eden/eden.py`; key only in the variable `EDENAI_API_KEY` | about 2 USD of 100 EUR spent |
+| Questionnaire for the mentors (a hidden presentation: facts we found, our decisions to confirm) | private artifact of the owner; questions in [`../05-hackathon/mentor-questions/`](../05-hackathon/mentor-questions/) | owner meets the technical mentor at 13:30 and the business side at about 14:00 |
+
+**Mentor answers, 13:40 (technical):** no hard requirements, "propose interesting solutions"; the jury reads conformity with the design standard and runs the image **on its own computer in Docker**, so the image must be published; LibreOffice and any open source are allowed; metadata may sit in the same JSON; the partner's materials may not be public (they left the repository; history is the owner's decision). Full table: section 6a of the decisions. The business meeting is at about 14:00; its answers will be in the store under `biz`. **The owner must register the task by 19:00.**
+
+**Local only, not in git:** `research/17-applicant-kinds-person-business-representation.md` and `research/eden/e3-identifiers-and-law.sonar-deep-research.md` are on the owner's laptop in the main checkout; the publishing check stops on their example identifiers (PESEL, accounts, document numbers). First small job of the lead: replace the examples by clearly synthetic ones, run the check, commit.
+
+**Where documents disagree:** the wave script and the playbook use native worktrees; where `docs/04-orchestration/git-workflow.md` says otherwise, the playbook wins. The GitHub Actions workflow that builds and publishes the image belongs to WP-F1 and WP-F20 (`.github/`).
+
+**What the lead does first** (details in `START_HERE.md`):
+
+1. Environment check. Measured at 13:20: **the laptop has no Docker and no WSL**, Python 3.13 and 3.11 only, 59 GB free. The owner installs WSL and Docker Desktop (administrator rights, a reboot) or the image is proved by GitHub Actions; code is developed natively either way.
+2. Read the mentors' answers from the questionnaire store (ArtifactData, collection `ankieta`, documents `tech` and `biz`) and enter them into section 6 of the decisions; an answer may flip a switch (last page style, validators, LibreOffice).
+3. Commit whatever the background writers left uncommitted (publishing check first), then start the first wave: WP-F1 (service shell), WP-F2 for PDF and DOCX, WP-F5 library of standard sections from `contracts/coi/standard-sections-diff.md`.
+4. Fix `contracts/coi/form.schema.json` and `tools/coi_lint.py` for what reference set 5 showed (link ids that are not UUIDs, an option without `techName`): our output stays strict, the reader of references becomes tolerant.
+
+**Budget, measured at 13:40:** 51 % of the week for all models and **65 % for the strongest model** are used (reset 26 November 13:00). The preparing session cost 5 and 9 points in one hour, mostly through forks of a large context: **do not fork a session above about 300 thousand tokens; brief fresh agents through files.** Builders run on the middle tier; the strongest model only for the lead and the three think packages (finder, understanding, composer); bulk work and second opinions go to the partner's credits.
+
+Known inconsistencies of the partner's own exports (use them at the defence, never copy them): the address dictionary is `TERYT_DOWODOWY` in one place and `TERYT_4G_DOWODOWY` in the other, swapped between the two exports, and the field label equals the dictionary name; the same upload fields carry different `techName` in the two exports; REGON and KRS exist in one export only; three `validation` values are objects instead of lists; link ids of set 5 are five-character strings.
 
 ## Phase
 

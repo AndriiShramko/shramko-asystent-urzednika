@@ -1,43 +1,76 @@
 # START HERE (lead agent)
 
-You are the lead agent of the project "Shramko Asystent Urzędnika". The owner, Andrii Shramko, directs and decides; you do the work through sub-agents and git. He is not a programmer. Talk to him in Russian, briefly. Write code, commits and agent-facing documents in English; texts for the jury in Polish.
+You are the lead agent of the project "Shramko Asystent Urzędnika" at HackNation 2026. The build is **Track F**: the forms converter for the task "Cyfryzacja formularzy" of Centralny Ośrodek Informatyki. The owner, Andrii Shramko, directs and decides; you do the work through sub-agents and git. He is not a programmer. Talk to him in Russian, briefly. Write code, commits and agent-facing documents in English; texts for the jury in Polish.
 
 ## What the owner pastes to start you
 
+The chat is opened **in the folder of this repository** (`C:\dev\shramko-asystent-urzednika`); otherwise the project's agents, skills, workflow and settings are not loaded.
+
 ```
-Ты главный агент проекта Shramko Asystent Urzędnika. Открой репозиторий
-https://github.com/AndriiShramko/shramko-asystent-urzednika (клонируй, если его нет),
-прочитай START_HERE.md и действуй по нему. Отвечай по-русски, коротко.
+Ты главный агент проекта Shramko Asystent Urzędnika (HackNation, задание COI «Cyfryzacja formularzy»).
+Репозиторий уже на этом компьютере: C:\dev\shramko-asystent-urzednika. Прочитай START_HERE.md и действуй по нему.
+Отвечай по-русски, коротко.
 ```
 
-## Your first 30 minutes
+## Step 0: the machine (one message, read-only)
 
-1. Read [`AGENTS.md`](AGENTS.md) (rules and map) and [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) (where the project stands). **The task cards were published on 21 November at 11:00 and changed the plan: STATUS, section "Phase", says which track is built; the digests of the cards are in [`docs/05-hackathon/intake/`](docs/05-hackathon/intake/README.md); for the forms task the build is Track F ([`docs/03-plan/work-packages/WP-F-forms-to-json.md`](docs/03-plan/work-packages/WP-F-forms-to-json.md)), not Track B.** Then read [`docs/01-product/one-visit-package.md`](docs/01-product/one-visit-package.md): it is the owner's latest brief (21 November) and says what the product must show; its optional extension for residents' AI agents is [`docs/01-product/agent-door.md`](docs/01-product/agent-door.md). The newest brief (every template of the office gets its first pass in advance; which model does it) is [`docs/03-plan/work-packages/WP-B11-catalogue-in-advance.md`](docs/03-plan/work-packages/WP-B11-catalogue-in-advance.md), with the measured worklist in `data/forms-census.csv`. Do not read anything else yet.
-2. Read [`docs/04-orchestration/lead-agent-playbook.md`](docs/04-orchestration/lead-agent-playbook.md). It is how you work.
-3. Check the machine: `git --version`, `gh auth status`, Python 3.11+, Node 20+. Missing tools: install them yourself; a login is the only thing you ask the owner for (open the page, tell him in one line what to press).
-4. If `STATUS.md` lists unfinished preparation items (research jobs, missing documents), finish those that block the build first. Research job prompts are ready in [`research/_jobs/`](research/_jobs/): run each as one web-research sub-agent, three at a time at most.
-5. If the event has started (Saturday 21 November 2026, 11:00): open hacknation.pl/zadania, save the full task cards of **"Inteligentny asystent urzędnika" (Miasto Bydgoszcz)** and **"Cyfryzacja formularzy" (Centralny Ośrodek Informatyki)** into `docs/05-hackathon/intake/`, and follow [`docs/05-hackathon/ONSITE-INTAKE.md`](docs/05-hackathon/ONSITE-INTAKE.md). Then confirm the track with the owner according to [`docs/01-product/scope-decision.md`](docs/01-product/scope-decision.md) §0 (one question, recommended option first). **The default is Track B: the forms product for "Cyfryzacja formularzy"**, built as a working two-sided product (visitor on a phone, clerk on the laptop) following "Timeline for Track B" in the roadmap and [`docs/05-hackathon/demo-script-formularze.md`](docs/05-hackathon/demo-script-formularze.md). The owner wants the jury to see the product work, not slides of theory.
-6. Report to the owner in three lines and start the first milestone of [`docs/03-plan/roadmap.md`](docs/03-plan/roadmap.md).
+```bash
+docker --version; wsl.exe -l -q | tr -d '\0'; python --version; py -0; tesseract --version | head -1; node --version
+git config user.name; git config user.email | sed 's/@.*/@…/'
+powershell -NoProfile -Command "[bool][Environment]::GetEnvironmentVariable('EDENAI_API_KEY','User')"
+python tools/coi_paths.py; python tools/eden/eden.py budget
+```
 
-What is already prepared for you: 23 work packages of tracks A and B plus the fourteen of Track F with acceptance lists (`docs/03-plan/work-packages/`; WP-B7…B11 and two change requests to WP-B1 and WP-B2 came with the latest briefs), agent definitions and settings (`.claude/agents/`, `.claude/settings.json`), a wave workflow (`.claude/workflows/wp-wave.js`, untested: try it on one package first), runtime instructions for the product (`prompts/`), the pitch deck with a presenter window (`site/deck/`, live at <https://urzad.flyreelstudio.eu/deck/>) and the publishing path: commit into `site/` and push ([`docs/04-orchestration/deploy.md`](docs/04-orchestration/deploy.md)). Keep `site/deck/metrics.json`, `site/deck/status.json` and [`docs/05-hackathon/jury-qa.md`](docs/05-hackathon/jury-qa.md) equal to what the software really does. For the first judging stage, which reads without the presenter, an eleven-page reading version exists as a draft ([`docs/05-hackathon/presentation/storyboard-pakiet.md`](docs/05-hackathon/presentation/storyboard-pakiet.md)): replace its placeholders with measured numbers and export it to PDF at milestone M5.
+The third line prints `True` or `False` and never the value. What the answers mean:
+
+| Missing | What you do |
+|---|---|
+| Docker or WSL (both were missing on 21 November) | Do not install: it needs the owner's administrator rights and a reboot. Ask him once, with the steps of `README.ru.md`, if he has not done it. Until then code is built and tested natively, and the GitHub Actions workflow that builds and tests the image on every push is the proof of every acceptance item about the image |
+| Python 3.14 | Develop on the installed 3.13; use nothing the image's 3.14 lacks; the image workflow runs the tests on 3.14 |
+| Tesseract | Tests of the scan path are marked, skipped locally with a printed reason, and run in the image |
+| Node | The review page and the viewer need it: ask the owner to install it (one command) |
+| git identity | Ask the owner for the name and address; never invent one |
+| `EDENAI_API_KEY` is `False` | The partner's credits are unavailable; nothing in the build depends on them. Tell the owner in one line; never look for the key |
+| Task sets (fewer than nine folders) | `python tools/coi_unpack.py "<folder with the downloaded archives>"`; the owner's Downloads folder holds them |
+
+More about this machine: [`docs/04-orchestration/machine-notes.md`](docs/04-orchestration/machine-notes.md).
+
+## Your first ten minutes
+
+1. Read [`AGENTS.md`](AGENTS.md), [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) and [`docs/03-plan/DECISIONS-forms-track.md`](docs/03-plan/DECISIONS-forms-track.md). Nothing else yet. The skill `track-f-lead` is the one-page version of how you work; the long version is [`docs/04-orchestration/lead-agent-playbook.md`](docs/04-orchestration/lead-agent-playbook.md).
+2. `git fetch && git status --short && git log --oneline -5`. If STATUS marks packages as running: [`docs/04-orchestration/resume-after-limit.md`](docs/04-orchestration/resume-after-limit.md).
+3. Read the mentors' answers: the owner's private artifact "Ankieta COI HackNation" (ask him for the link if the start message has none; the artifact data tool, collection `ankieta`, documents `tech` and `biz`). Write each answer into section 7 of the decisions file. The questions and what each answer decides: [`docs/05-hackathon/mentor-questions/`](docs/05-hackathon/mentor-questions/).
+4. Read the plan usage and write both numbers into STATUS (playbook, section 7).
+5. Start the first wave with **one** package, the one STATUS names first, to prove the wave workflow on real agents; then three at a time.
+6. Tell the owner in three lines: where the project stands, what runs now, when the next gate is expected.
 
 ## Deadlines you must not miss (verified on 20 November 2026, see [`research/01`](research/01-hacknation-2026-task-rules-jury.md))
 
 | When | What |
 |---|---|
-| Sat 21.11, 11:00 | Full task cards published; coding starts |
-| Sat 21.11, **20:00** | Draft of the project must exist in HackTribe (project name, team, **task choice**, repository link, table number, short description, approach, progress). The task cannot be changed afterwards. Do it by 18:00. |
-| Sun 22.11, **11:00** | Final submission: all fields, presentation as **PDF up to 10 MB**, working links, a short demo (up to 2 minutes recommended). Nothing can be changed afterwards. Submit by 10:30. |
-| Sun 22.11, 15:15 | Finals for the five best teams per task: 5 minutes pitch and 5 minutes questions |
+| Sat 21.11, **20:00** | Draft of the project in HackTribe: name, team, **task choice**, repository link, table number, short description, approach, progress. The task cannot be changed afterwards. Text: [`docs/05-hackathon/hacktribe-draft-formularze.md`](docs/05-hackathon/hacktribe-draft-formularze.md). Done by 18:00 |
+| Sun 22.11, **11:00** | Final submission. For this task: title and description, a presentation as PDF of at most 10 slides, the JSON files for the seven judged forms, a film of at most 3 minutes in an open repository, the code repository. Nothing can be changed afterwards. Submitted by 10:30 |
+| Sun 22.11, 15:15 | Finals for the best teams: 5 minutes pitch, 5 minutes questions, and the solution run on **new files** handed over at the defence |
 
-The owner is on site and does everything that needs a person: registration, the HackTribe account, talking to mentors, the pitch. You prepare every text and file he needs, ready to paste.
+The owner is on site and does everything that needs a person: HackTribe, the mentors, the pitch, anything with administrator rights. You prepare every text and file he needs, ready to paste.
 
 ## Non-negotiable rules
 
-- No real personal data in the repository, in prompts to cloud models, in logs or in screenshots. Synthetic data only.
-- No secrets in git. Keys live in `.env` (git-ignored) on the machine.
-- Everything goes through git: one work package, one branch, one worktree, one sub-agent. `main` stays green. See [`docs/04-orchestration/git-workflow.md`](docs/04-orchestration/git-workflow.md).
-- At most three sub-agents at the same time unless the owner raises the limit.
-- Say "done" only after checking the result where the owner or the jury will see it.
-- Material prepared before the event is disclosed as such (README, slide). Product code is written during the event.
-- If a usage limit stops you: [`docs/04-orchestration/resume-after-limit.md`](docs/04-orchestration/resume-after-limit.md).
+The fourteen hard rules of [`AGENTS.md`](AGENTS.md). The ones that end a hackathon when broken:
+
+- Nothing in the product calls out of the container; no hosted model at run time.
+- No key in a file, a prompt, a log or a commit. No personal data. The task sets stay local.
+- Everything goes through git: one package, one branch, staged agents, one review. `main` stays green.
+- At most three packages at the same time.
+- Protect the submission: at every milestone a tagged version that works and the seven outputs saved.
+- "Done" only after checking the result where the owner or the jury will see it.
+
+## What is prepared for you
+
+- Decisions, design and plan: the decisions file, [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md), [`docs/03-plan/work-packages/WP-F-forms-to-json.md`](docs/03-plan/work-packages/WP-F-forms-to-json.md), [`docs/03-plan/ownership.md`](docs/03-plan/ownership.md).
+- The partner's format: description, our schema (`contracts/coi/form.schema.json`), the rule checker (`tools/coi_lint.py`), facts measured on both exports.
+- Research `research/14` … `research/18` (stack and licences on Python 3.14, the partner's platform, security, who may apply, form evolution) and raw model reports in `research/eden/`.
+- The task sets, unpacked locally under `data/coi/` (not in git).
+- Orchestration: four agent types, the wave workflow, four skills, project settings, the playbook, model routing, resume rules.
+- For the submission: the HackTribe draft, the storyboard of ten slides and the film, questions the jury may ask, in `docs/05-hackathon/`.
+- The partner's model credits for build-time work: skill `eden-credits`.
