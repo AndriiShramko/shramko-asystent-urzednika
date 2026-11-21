@@ -1,6 +1,6 @@
 # WP-F2c Reader of images (JPEG, PNG) and the image way of a PDF: status
 
-Branch: wp/F2c-images-ocr   Stage now: integration done; next acceptance
+Branch: wp/F2c-images-ocr   Stage now: acceptance done (fast gate red only on 6 stale tests outside our paths)
 
 ## Status
 - [x] `_raster.py`: decode with limits (formats restricted, size from header before decoding, `max_pixels`), metadata drop (pixels re-wrapped, EXIF orientation applied first), transparency on white, Otsu binarisation
@@ -13,7 +13,7 @@ Branch: wp/F2c-images-ocr   Stage now: integration done; next acceptance
 - [x] `eval/readers-sets.json` refreshed by the survey: 69 of 69 read (was 42 + 27 no_reader); scans give 2, 6, 16 pages
 - [x] negative control
 - [x] integration: `tests/readers/test_image_pipeline.py` end to end through `pipeline.run` (no lint ERROR) for synthetic PNG/JPEG, a 6-page scan, a fake engine, a truncated PNG, and the set images; real Tesseract runs only in the image workflow (marker `tesseract`)
-- [ ] acceptance: fast gate green after the lead's changes below; drills 1 and 2 of verification plan section 2 need the finder
+- [x] acceptance: main merged (already up to date), fast gate run, negative control recorded; fast gate not green only because of 6 stale tests of other packages (Requests); drills 1 and 2 need the finder, which does not exist yet (not run)
 
 ## Decisions
 - Units: pixels x 0.36 = points (a 1654 px wide scan is A4 at 200 dpi); a PDF page rendered at 200 dpi (less if over `max_pixels`) maps back with 1/scale / one constant, no DPI from metadata / rules out trusting declared DPI.
@@ -33,6 +33,7 @@ Branch: wp/F2c-images-ocr   Stage now: integration done; next acceptance
 
 | integration, synthetic + set images | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_image_pipeline.py -q` | 8 passed (the sets test ran on this machine: every JPG/PNG of the sets, no crash, no lint ERROR) | 7c8bed5 |
 | fast gate after merging main | `bash tools/gate.sh fast` | 564 passed, 1 skipped, 6 failed; all 6 are stale tests outside our paths (see Requests) | 7c8bed5 |
+| acceptance: fast gate after merging main (already up to date) | `bash tools/gate.sh fast` | 564 passed, 1 skipped, 6 failed, same 6 stale tests outside our paths; 0 failures in our modules | 0ea8a15 |
 
 ## Negative control
 In `_raster.py` the metadata-dropping `Image.frombytes` was replaced by `return grey` and the white-row test by `False`: `test_decode_drops_metadata_and_applies_orientation` and `test_tall_scan_is_cut_into_pages_at_white_bands` failed (2 failed, 21 passed); restored, 23 passed.
@@ -45,5 +46,6 @@ In `_raster.py` the metadata-dropping `Image.frombytes` was replaced by `return 
 - Optional (WP-F1 owner): map settings onto `ReadOptions.max_pixels`, `ocr_lang`, `ocr_timeout` in `app/config.py::read_options`.
 
 ## Cost notes
+- acceptance: 2 replies; only the 2-minute fast gate; no change needed.
 - integration: the fast gate (150 s) was the longest wait; one test module was enough, the sets test already ran locally.
 - core: most turns went to the shape detector (leader false positive on long rules, box sides) and to the knock-on PDF hook behaviour; a test with a drawn page at the start would have saved two turns.
