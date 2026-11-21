@@ -88,6 +88,7 @@ def test_legacy_bytes_in_an_annotation_do_not_sink_the_page():
     data = pdf_with_legacy_annotation(2)
     m = read_document(data, "pdf")
     assert len(m.pages) == 1 and any("Adres zamieszkania" in r.text for r in m.pages[0].runs)
+    assert not [w for w in m.warnings if "form fields" in (w.detail or "")]   # the bad string is dropped, not a failed pass
     assert pipeline.run(data, "a.pdf", S).form["tabs"]
 
 
