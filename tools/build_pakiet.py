@@ -25,7 +25,7 @@ from pathlib import Path
 # ----------------------------------------------------------------------------
 
 # False = nothing is built yet: page 1 carries a "wersja robocza" ribbon and
-# page 9 says "W prototypie budujemy". Set True only when WORKS equals
+# page 10 says "W prototypie budujemy". Set True only when WORKS equals
 # site-formularze/deck/status.json and the truth table in docs/05-hackathon/jury-qa.md.
 BUILT = False
 
@@ -33,10 +33,10 @@ BUILT = False
 METRICS = {
     "digitise_seconds": None,        # page 5
     "fields_detected_pct": None,     # page 5
-    "fields_in_set": None,           # page 8
-    "fields_typed_by_clerk": None,   # page 8
-    "fields_looked_at": None,        # page 8
-    "scan_to_print_seconds": None,   # page 8
+    "fields_in_set": None,           # page 9
+    "fields_typed_by_clerk": None,   # page 9
+    "fields_looked_at": None,        # page 9
+    "scan_to_print_seconds": None,   # page 9
 }
 
 WORKS = [
@@ -44,6 +44,9 @@ WORKS = [
     "przekazanie przez kod QR", "kontrola wyjątków", "wydruk na wzorze",
 ]
 SIMULATED = ["mObywatel", "czytnik dokumentów", "login.gov.pl", "rezerwacja wizyt"]
+
+# The agent door (WP-B10) is optional. False = the page carries the tag "propozycja".
+AGENT_DOOR_BUILT = False
 
 SITE_URL = "https://formularze.flyreelstudio.eu"   # change to .../pakiet/ after publishing
 SITE_LABEL = "formularze.flyreelstudio.eu"
@@ -418,6 +421,70 @@ def draw_need() -> str:
                "Przykład: mieszkaniec opisuje sprawę, system pokazuje komplet wniosków, dokumenty do zabrania i opłatę; odpowiedź na pytanie zmienia komplet")
 
 
+def draw_doors() -> str:
+    uid = "dr"
+    b = []
+    if not AGENT_DOOR_BUILT:
+        b.append(pill(926, 34, "propozycja", 18, fill="#10183a", stroke=LINE, color=MUTED, padx=14))
+    # door 1
+    b.append(T(30, 42, "Wejście 1: dla każdego", 21, INK, 800))
+    b.append(person(72, 128, 1.0))
+    b.append(arrow(uid, 118, 122, 176, 122, "m"))
+    b.append(phone(188, 64, 66, 116, 3, hl=(0,)))
+    b.append(T(221, 208, "strona na telefonie", 18, MUTED, 600, "middle"))
+    b.append(T(221, 230, "albo okienko", 18, MUTED, 600, "middle"))
+    b.append(arrow(uid, 0, 0, 0, 0, "a", path="M266 122 C440 122 520 150 610 226"))
+    # door 2
+    b.append(T(30, 286, "Wejście 2: dla osób z asystentem AI", 21, INK, 800))
+    b.append(f'<path d="M52 304 h206 a16 16 0 0 1 16 16 v40 a16 16 0 0 1 -16 16 h-150 l-22 22 v-22 h-34 '
+             f'a16 16 0 0 1 -16 -16 v-40 a16 16 0 0 1 16 -16 z" fill="#1a2244" stroke="{ACC}" stroke-width="3" '
+             f'stroke-linejoin="round"/>')
+    b.append(T(54, 334, "„Umów wizytę", 19, INK, 700))
+    b.append(T(54, 360, "i przygotuj wnioski”", 19, INK, 700))
+    b.append(person(72, 470, 1.0))
+    b.append(R(128, 436, 66, 66, rx=16, fill="#2b2410", stroke=ACC, sw=3))
+    b.append(f'<path d="M161 448 l6 15 l15 6 l-15 6 l-6 15 l-6 -15 l-15 -6 l15 -6 z" fill="{ACC}"/>')
+    b.append(T(161, 528, "własny asystent AI", 18, MUTED, 600, "middle"))
+    b.append(arrow(uid, 202, 469, 254, 469, "a"))
+    door = [R(264, 388, 306, 166, rx=18, fill="#10224a", stroke=BLUE, sw=2.5)]
+    door.append(T(284, 420, "Wejście dla agentów", 22, INK, 800))
+    door.append(T(284, 443, "MCP · API · te same reguły", 16, MUTED, 600))
+    chips = (("znajdź sprawę", 284, 458, 142), ("komplet", 434, 458, 118),
+             ("termin wizyty", 284, 502, 142), ("wypełnij", 434, 502, 118))
+    for lab, x, y, w in chips:
+        door.append(R(x, y, w, 34, rx=17, fill="#18305f", stroke=BLUE, sw=1.5))
+        door.append(T(x + w / 2, y + 23, lab, 16, INK, 700, "middle"))
+    b.append(f'<g class="rvo" style="--d:0.5s">{"".join(door)}</g>')
+    b.append(arrow(uid, 0, 0, 0, 0, "a", path="M578 440 C600 440 592 330 612 300"))
+    # the set
+    card = [R(620, 186, 176, 150, rx=20)]
+    card.append(sheet(660, 204, 44, 58, 3, fill="#aeb8d8") + sheet(680, 198, 44, 58, 3, fill="#d5dcf2") + sheet(700, 204, 44, 58, 3))
+    card.append(check(752, 258, 14))
+    card.append(T(708, 296, "Komplet", 23, INK, 800, "middle"))
+    card.append(T(708, 320, "te same reguły", 16, MUTED, 600, "middle"))
+    b.append(f'<g class="rvo" style="--d:0.9s">{"".join(card)}</g>')
+    ends = (("scyfryzowany", "wysyła człowiek", 96), ("papierowy", "podpis w urzędzie", 226))
+    for i, (a, c, y) in enumerate(ends):
+        g = [R(826, y, 160, 96, rx=16)]
+        g.append(T(906, y + 42, a, 19, INK, 800, "middle"))
+        g.append(T(906, y + 68, c, 15, MUTED, 600, "middle"))
+        b.append(f'<g class="rvo" style="--d:{1.2 + i * 0.2:.2f}s">{"".join(g)}</g>')
+    b.append(arrow(uid, 800, 232, 820, 168, "m", flow=False, sw=2.5))
+    b.append(arrow(uid, 800, 290, 820, 280, "m", flow=False, sw=2.5))
+    # the person's approval
+    ok = [R(620, 396, 366, 174, rx=18)]
+    ok.append(check(648, 426, 13))
+    ok.append(T(672, 433, "zatwierdza człowiek", 20, INK, 800))
+    for i, lab in enumerate(("Potwierdzam rezerwację", "Pozwalam wypełnić wniosek")):
+        y = 450 + i * 54
+        ok.append(R(640, y, 326, 42, rx=12, fill="#123322", stroke=GREEN))
+        ok.append(T(803, y + 28, lab, 18, INK, 700, "middle"))
+    b.append(f'<g class="rvo" style="--d:1.5s">{"".join(ok)}</g>')
+    b.append(arrow(uid, 576, 520, 612, 500, "g"))
+    return svg(uid, 1000, 600, "".join(b),
+               "Dwa wejścia do tego samego kompletu: strona na telefonie albo okienko, oraz wejście dla asystentów AI; rezerwację i wypełnienie wniosku zatwierdza człowiek")
+
+
 def draw_data() -> str:
     uid = "dt"
     b = []
@@ -517,12 +584,12 @@ def draw_scale() -> str:
         b.append(arrow(uid, 0, 0, 0, 0, "b", path=f"M330 320 C470 320 520 {by - 50} 690 {by - 50}"))
         b.append(f'<g class="rvo" style="--d:{0.5 + i * 0.25:.2f}s">{building(790, by, 1.05)}'
                  f'{T(790, by + 32, lab, 21, INK, 700, "middle")}</g>')
-    b.append(pill(450, 48, "Generator Formularzy ePUC", 22, fill="#10224a", stroke=BLUE, padx=20))
-    b.append(arrow(uid, 0, 0, 0, 0, "m", path="M185 188 C185 120 240 86 300 68"))
+    b.append(pill(470, 48, "Generator Formularzy e-Usług", 22, fill="#10224a", stroke=BLUE, padx=20))
+    b.append(arrow(uid, 0, 0, 0, 0, "m", path="M185 188 C185 128 205 90 252 64"))
     b.append(T(160, 150, "może zasilić", 19, MUTED, 600, "end"))
     b.append(pill(385, 588, "pilotaż: 10 najczęstszych druków jednego urzędu", 21, fill="#2b2410", stroke=ACC, padx=20))
     return svg(uid, 1000, 630, "".join(b),
-               "Jeden opis formularza, bez danych osobowych, służy wielu urzędom i może zasilić Generator Formularzy ePUC")
+               "Jeden opis formularza, bez danych osobowych, służy wielu urzędom i może zasilić Generator Formularzy e-Usług")
 
 
 def qr_real() -> str:
@@ -652,6 +719,28 @@ def pages() -> list[dict]:
              why=("Твоя главная мысль: «помощник сразу подбирает весь пакет, и забытого бланка не бывает». Пример на "
                   "картинке (прописка с ребёнком) агент сверит с карточкой услуги мэрии. Про онлайн-запись: мы "
                   "говорим «при записи на визит», но не говорим, что подключены к их системе.")),
+        dict(h="Dwa wejścia: sam albo przez asystenta AI",
+             body=("Coraz więcej osób powierza codzienne sprawy osobistym asystentom AI. Dziś taki asystent musi "
+                   "klikać po stronach urzędu jak człowiek. Proponujemy oficjalne wejście dla agentów: ten sam "
+                   "komplet i te same reguły przez otwarty interfejs (MCP i API). Asystent znajduje sprawę, umawia "
+                   "wizytę zgodną z kalendarzem i wypełnia scyfryzowane formularze danymi swojego właściciela. "
+                   "Rezerwację i wysłanie wniosku zawsze zatwierdza człowiek."),
+             src=("Dane osobowe przechodzą tylko w ramach zgody na jedną sprawę, udzielonej na telefonie. "
+                  "W prototypie kalendarz terminów i wysyłka wniosku są symulowane."),
+             art=draw_doors(),
+             ru=("Всё больше людей поручают повседневные дела личным ИИ-ассистентам. Сегодня такой ассистент "
+                 "вынужден кликать по страницам учреждения как человек. Предлагаем официальный вход для агентов: "
+                 "тот же комплект и те же правила через открытый интерфейс (MCP и API). Ассистент находит дело, "
+                 "записывает на визит по календарю и заполняет оцифрованные формы данными своего владельца. "
+                 "Запись и отправку заявления всегда подтверждает человек. Мелко: персональные данные проходят "
+                 "только в рамках разрешения на одно дело, выданного на телефоне; в прототипе календарь и "
+                 "отправка имитируются."),
+             why=("Это твоя новая мысль: два варианта работы. Вход 1 для тех, кто не дружит с агентами (страница "
+                  "в телефоне или окошко). Вход 2 для таких, как ты и дочь: говоришь ассистенту, он всё готовит. "
+                  "Главное правило, которое надо говорить вслух: «Asystent wypełnia, człowiek zatwierdza» "
+                  "(ассистент заполняет, человек подтверждает). Агент никогда не подписывает и не отправляет "
+                  "за тебя. Пока это не построено, на картинке стоит пометка «propozycja» (предложение); если "
+                  "агенты успеют сделать пакет WP-B10, пометку снимут и покажут вживую.")),
         dict(h="Dane raz, z telefonu mieszkańca",
              body=("Profil powstaje raz: przeglądarka podpowiada zapisane imię, adres i telefon, a dokument można "
                    "odczytać aparatem. Profil zostaje na telefonie. Przy okienku mieszkaniec skanuje kod QR, widzi, "
@@ -697,20 +786,20 @@ def pages() -> list[dict]:
         dict(h="Jeden opis, wiele urzędów",
              body=("Opis formularza nie zawiera danych osobowych, więc może być wspólny: druk opisany raz działa "
                    "w każdym urzędzie, a zmianę wzoru wykrywa suma kontrolna pliku. Opis w otwartym formacie może "
-                   "zasilić Generator Formularzy ePUC. Proponujemy pilotaż: dziesięć najczęstszych druków jednego "
+                   "zasilić Generator Formularzy e-Usług. Proponujemy pilotaż: dziesięć najczęstszych druków jednego "
                    "urzędu jako usługi „od potrzeby do podpisu”."),
              extra=(f'<div class="links"><div class="qr">{qr_real()}</div><div><b>{esc(SITE_LABEL)}</b>'
                     f'<span>{esc(REPO_LABEL)}</span><span>Andrii Shramko · Shramko Asystent Urzędnika</span></div></div>'),
              src=("Badania, katalog formularzy i specyfikacja powstały przed wydarzeniem i są jawnie oznaczone "
                   "w repozytorium; kod aplikacji powstaje w ciągu 24 godzin hackathonu. Projekt niezależny; nazwy "
-                  "mObywatel i ePUC należą do ich właścicieli."),
+                  "mObywatel i Generator Formularzy e-Usług należą do ich właścicieli."),
              art=draw_scale(),
              ru=("Описание бланка не содержит персональных данных, поэтому может быть общим: описанный один раз "
                  "бланк работает в любом учреждении, а смену образца видно по контрольной сумме файла. Описание в "
-                 "открытом формате может питать государственный Generator Formularzy ePUC. Предлагаем пилот: десять "
+                 "открытом формате может питать государственный Generator Formularzy e-Usług. Предлагаем пилот: десять "
                  "самых частых бланков одного учреждения как услуги «от потребности до подписи»."),
-             why=("Масштаб и предложение. Generator Formularzy это то, что министерство само строит для местных "
-                  "властей: мы не конкурент, мы «быстрый вход» в него. Мелким шрифтом честно сказано, что "
+             why=("Масштаб и предложение. Generator Formularzy e-Usług это продукт самого COI: в нём учреждения "
+                  "собирают формы, которые публикуются на mobywatel.gov.pl. Мы не конкурент, мы «быстрый вход» в него. Мелким шрифтом честно сказано, что "
                   "исследование сделано заранее, а код пишется на хакатоне. QR-код ведёт на сайт проекта.")),
     ]
 

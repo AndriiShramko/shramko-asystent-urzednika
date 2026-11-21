@@ -45,6 +45,8 @@ Update the "State" column at each milestone gate. Allowed values: **live** (work
 | "Prepare your visit": the intent chosen at home arrives with the handoff | planned | The link from the city's booking system is a proposal: **never claim an integration** |
 | Comparison of the document reading with the declared data; check by exception in three groups | planned | Say "urzędnik potwierdza tożsamość zawsze"; the address and PESEL are not confirmed by the machine-readable zone |
 | First profile entry from saved browser data (`autocomplete`) | planned | The browser offers, the person accepts; the page does not read saved data |
+| The agent door: an assistant finds the matter, gets the set and holds a visit; the person confirms on the phone | planned, optional | The calendar is a demo calendar; **no link to the city's booking system** |
+| The agent door: an assistant fills the draft of a digitised form inside a permission approved on the phone; the person reads and submits | planned, optional | Filing is simulated; say "asystent wypełnia, człowiek zatwierdza"; the agent never signs, submits or proves identity |
 | Runs with no cloud: local open model, one start command | planned | The partner rewards open source that can be hosted on premise (research/12) |
 | Camera reading of the machine-readable zone on the device | planned | No image stored or sent |
 | Government wallet or mObywatel data sharing | simulated | The flow exists for selected partners; no agreement: never claim an integration |
@@ -72,7 +74,7 @@ Update the "State" column at each milestone gate. Allowed values: **live** (work
 | Fields in the set, fields typed by the clerk, fields the clerk looked at, seconds from scan to print | counters of the demo run (WP-B7, WP-B8) | only after it is measured |
 | Accuracy, time per request, zero invented citations, zero leaks | the evaluation run of the build (`metrics.json`) | only after it is measured |
 
-Never say: how often residents come twice or how many applications are incomplete (no data; say "zdarza się" and give the seven days), that the booking system of the city is connected, a number for time or money saved in the real office (nobody measured it), that the city uses a specific document system (not established), that mObywatel is integrated, that the print is "legally identical" to a statutory template (no primary source; say "on the original template file, without re-typesetting").
+Never say: that the state supports or plans an interface for agents, how many people use AI assistants (say "coraz więcej osób"), how often residents come twice or how many applications are incomplete (no data; say "zdarza się" and give the seven days), that the booking system of the city is connected, a number for time or money saved in the real office (nobody measured it), that the city uses a specific document system (not established), that mObywatel is integrated, that the print is "legally identical" to a statutory template (no primary source; say "on the original template file, without re-typesetting").
 
 ## If a question is not understood
 

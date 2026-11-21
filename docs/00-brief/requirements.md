@@ -1,6 +1,6 @@
-# Owner requirements (R1–R43)
+# Owner requirements (R1–R50)
 
-This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026 and a third of 21 November, section F; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
+This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026, a third and a fourth of 21 November, sections F and G; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
 
 Vocabulary used by the owner: *wniosek* = application form or request filed in a Polish office; *urzędnik* = clerk, the office worker at the counter; *urząd* = public office (here: Urząd Miasta Bydgoszczy, the city hall); *UDIP* = the Polish Act on Access to Public Information; *mObywatel* = the Polish government's mobile app with digital documents.
 
@@ -74,6 +74,20 @@ The owner's words in short: "the data about me are stored in advance; I tell the
 | R41 | All of this is in git so that a new chat can hand the work to the next agent quickly and clearly. | [`START_HERE.md`](../../START_HERE.md), [`STATUS.md`](../03-plan/STATUS.md), this section |
 | R42 | Whatever was left unresearched or unfinished because of usage limits is finished now; the limits are no longer a constraint (owner, 21 November, 09:56). | research/12; STATUS "Budget" |
 | R43 | The owner does not know yet what hurts clerks most ("mostly helping to fill in and writing the forms in"); find out and close as many of those pains as possible. | one-visit-package §2; [`ONSITE-INTAKE.md`](../05-hackathon/ONSITE-INTAKE.md) §3a–3b |
+
+## G. Fourth brief: the resident's own AI agent (21 November 2026, 10:29–10:33)
+
+The owner's words in short: "I work with agents as personal secretaries, and so does my daughter; soon everybody will. Today my agents help me book visits and fill online forms, but only through the browser version of sites, which is very inconvenient. I want my agent to connect to the office officially and safely, through MCP or an API: pick the right services, the date and the time, book me, put it into my calendar after checking when I am free, and fill the digitised forms with my data, which are kept on my side. Part of the documents is still signed on paper in the office and part is digitised: with the digitised ones it would be perfect to work online through agents. Offer both variants: for advanced users, and for those who do not and will not work with agents." The idea as a design: [`docs/01-product/agent-door.md`](../01-product/agent-door.md).
+
+| Id | Requirement | Where |
+|---|---|---|
+| R44 | A resident's own AI agent can reach the office's services officially and safely (MCP, API or what is right): find the needed service, choose date and time, book the visit. | agent-door §4; [`WP-B10`](../03-plan/work-packages/WP-B10-agent-door.md) part a |
+| R45 | The agent checks the resident's calendar, enters the visit into it and prepares everything the resident must hand over; the resident comes and only hands over the data. | agent-door §2, §5; WP-B10 items 5–6 |
+| R46 | The agent can fill the office's **digitised** forms online with the data its owner keeps. | agent-door §1, §3 rule 4; WP-B10 part b |
+| R47 | The system distinguishes documents still signed on paper in the office from digitised ones, and lets agents work online with the digitised ones. | agent-door §1 (`channel` per form) |
+| R48 | Two variants side by side, the same result: for people who work with agents and for people who do not. | agent-door §0, §2; reading version page 7 |
+| R49 | The presentation speaks to the generation that already lives with AI assistants and shows which of its pains this removes (browser automation of public sites is slow and fragile). | [`storyboard-pakiet.md`](../05-hackathon/presentation/storyboard-pakiet.md) page 7; agent-door §6 |
+| R50 | Build on the owner's earlier open work on agents acting for a person (purchases under a signed mandate with limits and an audit log). | agent-door §3 rule 7 |
 
 ## E. Constraints stated or implied
 

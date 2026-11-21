@@ -18,7 +18,7 @@ Together with [`research/03b`](../research/03b-form-anatomy-and-canonical-profil
 
 | Use | Form | Path in the archive | SHA-256 (first 16) | Notes |
 |---|---|---|---|---|
-| Part two of the demo; golden test of field recognition | Zgłoszenie pobytu stałego (ministry's template EL/ZPS/1) | `UMB55/Formularz_meld._-_Zgloszenie_pobytu_stalego.pdf` | `4bf2818f2c0c927d` | Flat PDF, one character per box, broken text layer; page 1 measured in [`form-descriptor.example.json`](form-descriptor.example.json) |
+| Part two of the demo; golden test of field recognition | Zgłoszenie pobytu stałego (ministry's template EL/ZPS/1) | `UMB55/Formularz_meld._-_Zgloszenie_pobytu_stalego.pdf` | `4bf2818f2c0c927d` | Flat PDF, one character per box, broken text layer; all three pages measured in [`form-descriptor.example.json`](form-descriptor.example.json) (31 fields; overlay check with zero changed pixels outside the field boxes) |
 | Second person or second situation in the bundle | Zgłoszenie pobytu czasowego | `UMB55/Formularz_meld._-_Zgloszenie_pobytu_czasowego_-.pdf` | `95b42c5928501dc5` | Same family of templates |
 | Part one of the demo (digitise live); the bridge to the city's task | Wniosek o udostępnienie informacji publicznej (city's auxiliary template) | not in the archive: download from <https://bip.um.bydgoszcz.pl/attachments/download/30900> (PDF) | check after download | Two pages, few fields, no personal data required |
 | Spare for "pick any form" | Pełnomocnictwo (vehicle department) | `UMB202/Pelnomocnictwo1.pdf` | `68804a398948c919` | One page |

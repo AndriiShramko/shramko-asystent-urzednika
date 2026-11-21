@@ -24,6 +24,7 @@ An agent edits only the paths of its own package. Everything not listed is lead-
 | `apps/api/app/modules/bundles/**`, `apps/visitor-pwa/src/features/prepare/**`, `apps/clerk-web/src/features/counter/set/**` | WP-B7 |
 | `apps/api/app/modules/crosscheck/**`, `apps/clerk-web/src/features/counter/verify/**` | WP-B8 |
 | `apps/visitor-pwa/src/features/profile-start/**` | WP-B9 |
+| `apps/agent-gateway/**`, `data/demo/slots.json`, `apps/visitor-pwa/src/features/confirm/**`, `apps/visitor-pwa/src/features/draft/**`, `tools/agent_door_demo.md` | WP-B10 |
 | `README*`, `AGENTS.md`, `START_HERE.md`, `docs/**` except each package's own status file, `research/**` | lead |
 | `docs/03-plan/wip/WP-<id>.status.md` | the builder of that package |
 

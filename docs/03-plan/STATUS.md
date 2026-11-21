@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 10:25 CET, preparation session (before the event); the owner's third brief is built in.
+Last update: 2026-11-21 10:39 CET, preparation session (before the event); the owner's third brief is built in.
 
 ## Phase
 
@@ -11,6 +11,8 @@ Last update: 2026-11-21 10:25 CET, preparation session (before the event); the o
 **Primary track since the owner's decision of 21 November: B, the forms product for the task "Cyfryzacja formularzy".** Track A (the city's task) is the alternative and stays ready. See [`../01-product/scope-decision.md`](../01-product/scope-decision.md) §0. The owner wants a working two-sided product (visitor and clerk) shown live, with as little theory on slides as possible.
 
 **Third brief of the owner (21 November, about 09:55): "one visit, complete set".** The second half of the demo is told as "from need to signature": the need yields the whole set of forms, the data are handed over once, the clerk types nothing and sees only what needs a look. **Read [`../01-product/one-visit-package.md`](../01-product/one-visit-package.md) before planning the build** (ten minutes). Requirements R33–R43, packages WP-B7…B9, facts in `research/12`. No gate moves.
+
+**Fourth brief (21 November, 10:29–10:33): the resident's own AI agent.** A second, official entrance for assistants (MCP and API): find the matter, get the set, hold a visit, fill digitised forms with the owner's data inside a permission approved on the phone; "the assistant fills, the person confirms". Design: [`../01-product/agent-door.md`](../01-product/agent-door.md); requirements R44–R50; package WP-B10, **optional, after the M2 gate**, third part of the demo only if it passes its acceptance list.
 
 ## What exists
 
@@ -21,7 +23,7 @@ Last update: 2026-11-21 10:25 CET, preparation session (before the event); the o
 | Forms catalogue of Urząd Miasta Bydgoszczy: 275 service cards, 710 file links | done; the `fees` field is mostly empty and `online_handling` is a weak heuristic: read the card itself for those | `data/forms-catalog.json`, `.csv`, `tools/crawl_bydgoszcz_forms.py` |
 | Form files themselves: 676 files, 183 MB archive plus manifest | done; attached to the release `pre-event` and verified by size | release assets; `data/demo-forms.md` lists the forms chosen for the demo |
 | Request taxonomy, 12 response document types with Polish skeletons (Track A) | done; wording is a draft for the office's lawyer | `data/udip-taxonomy.json`, `data/udip-response-templates.md` |
-| Canonical profile schema; descriptor example for the residence-registration form (page 1 measured) | done | `data/canonical-profile.schema.json`, `data/form-descriptor.example.json` |
+| Canonical profile schema; descriptor for the residence-registration form: **all three pages measured** (31 fields), overlay check passes with zero changed pixels outside the field boxes | done; check: `python tools/descriptor_overlay_check.py data/form-descriptor.example.json <template.pdf>` | `data/canonical-profile.schema.json`, `data/form-descriptor.example.json` |
 | Scope decision, the unifying idea, gaps, after-the-event plan | done (re-check at the 11:00 gate) | `docs/01-product/` |
 | Architecture decisions, API contract v0, security and privacy, AI layer | done | `docs/02-architecture/` |
 | Roadmap with the event clock for both tracks, 18 work packages, ownership table | done | `docs/03-plan/` |
@@ -36,17 +38,18 @@ Last update: 2026-11-21 10:25 CET, preparation session (before the event); the o
 | Third brief built in: the idea as one flow, pains table, rules of the check by exception, what is not claimed | done | `docs/01-product/one-visit-package.md`; for the owner in Russian: `docs/01-product/kak-eto-rabotaet.ru.md` |
 | Research R12: the partner's announcement (open source, on-premise, LLM credits, PDF-DOCX-XLSX), the city's booking calendar, the seven-day rule, browser pre-fill, contact picker | done; four items are search excerpts only and are labelled | `research/12-one-visit-package-addendum.md` |
 | Work packages WP-B7 (need to set), WP-B8 (comparison and check by exception), WP-B9 (profile start); two change requests to WP-B1 and WP-B2 | specified, not started | `docs/03-plan/work-packages/WP-B7-B9-one-visit.md` |
-| Reading version of the presentation for the first judging stage (ten pages, Polish) and its web page; the same in Russian for the owner | drafts; numbers and the "what works" page are placeholders until the build measures them; **not yet under `site-formularze/`**, see "Waiting for the owner" | `docs/05-hackathon/presentation/storyboard-pakiet.md`, `docs/05-hackathon/presentation/pakiet/` (pages), `docs/assets/deck-pakiet/` (PDF, contact sheet), generator `tools/build_pakiet.py` |
+| The agent door: design with seven safety rules, interface of nine tools, two kinds of forms (`online`, `counter`); package WP-B10 in two parts (a: public tools and visit hold; b: permission and draft filling) | specified, not started, optional | `docs/01-product/agent-door.md`, `docs/03-plan/work-packages/WP-B10-agent-door.md` |
+| Reading version of the presentation for the first judging stage (eleven pages, Polish; page 7 is the agent door, marked „propozycja" until built) and its web page; the same in Russian for the owner | drafts; numbers and the "what works" page are placeholders until the build measures them; **not yet under `site-formularze/`**, see "Waiting for the owner" | `docs/05-hackathon/presentation/storyboard-pakiet.md`, `docs/05-hackathon/presentation/pakiet/` (pages), `docs/assets/deck-pakiet/` (PDF, contact sheet), generator `tools/build_pakiet.py` |
 
 ## Not done before the event (first tasks if time allows)
 
-1. Submission texts for HackTribe in Polish: templates are in `research/10-pitch-and-presentation.md` §3; rewrite them for the chosen task after reading the real task card.
+1. Submission texts for HackTribe in Polish: **drafted for the forms task** in `docs/05-hackathon/hacktribe-draft-formularze.md` (with the plan of the two-minute video); re-read them against the real task card after 11:00. For the city's task the templates are still in `research/10-pitch-and-presentation.md` §3.
 2. After WP-00: add the gate hook described in `docs/04-orchestration/lead-agent-playbook.md`.
-3. Pages 2–3 of the residence-registration form descriptor (needed for part two of the forms demo).
+3. ~~Pages 2–3 of the residence-registration form descriptor~~ done on 21 November (see "What exists"). Still open: the descriptor of the temporary-residence form (same family, 115 cells) and the bundle's second form.
 4. Work-package files of Track B are grouped in two files (`work-packages/WP-B1-B6-counter.md`, `work-packages/WP-B7-B9-one-visit.md`); each has its goal, method and acceptance list. Split a package into its own status file when it starts.
 5. Apply the two change requests at the top of `WP-B7-B9-one-visit.md` when WP-B1 and WP-B2 are briefed (bundle fields; `autocomplete` tokens and the optional `intent` in the payload).
 6. Build the two demo bundles from the text of the service cards (UMB55 and one of the vehicle department); `research/12` item 7 is a pointer, not a source.
-7. Rewrite the live deck's slide 4 and its demo around "od potrzeby do podpisu" (wording in `storyboard-pakiet.md`, section "Changes to the live deck"), and keep the reading version's page 9 equal to `status.json`.
+7. Rewrite the live deck's slide 4 and its demo around "od potrzeby do podpisu" (wording in `storyboard-pakiet.md`, section "Changes to the live deck"), and keep the reading version's page 10 equal to `status.json`.
 
 ## Budget
 
@@ -80,4 +83,7 @@ Points from research R11 to check at the partner's stand before building: the mi
 | 2026-11-21 | Public sites on the owner's server are static only and update from the repository on push; test versions are static demo builds | deploy.md |
 | 2026-11-21 | Stack: Python and FastAPI backend, React and TypeScript front ends, SQLite by default; no copyleft libraries in the core (the Polish spaCy model and PyMuPDF are excluded) | design-notes §2, research/06, research/07 |
 | 2026-11-21 | **Primary track B (forms task); demo-first pitch; second site and deck** | scope-decision §0, roadmap |
+| 2026-11-21 | Agents of residents get an official door; public tools carry no personal data; personal data pass only inside a one-matter permission approved on the person's phone; the agent never submits, signs or proves identity | agent-door §3, WP-B10 |
+| 2026-11-21 | Everything committed before 11:00 on 21 November is pre-event material: tag `pre-event-2` marks its end (the first tag `pre-event` is older than several preparation commits) | NOTICE, CHANGELOG |
+| 2026-11-21 | Jury texts use the partner's product name „Generator Formularzy e-Usług"; online pre-filling is never presented as new | research/12 item 11, one-visit-package §5 and §8 |
 | 2026-11-21 | Second half of the demo is "one visit, complete set"; check by exception with a mandatory identity confirmation; intent before the visit without touching the city's booking system; open source and on-premise operation stated as product properties | one-visit-package, WP-B7…B9, research/12 |

@@ -59,31 +59,10 @@
   "Wypełniaj kolorem czarnym lub niebieskim"
  ],
  "pages_covered_in_this_example": [
-  1
+  1,
+  2,
+  3
  ],
- "fields_other_pages_summary": {
-  "2": [
-   "street",
-   "house_number(9 cells)",
-   "flat_number(7 cells)",
-   "postal_code(2-3 cells)",
-   "city",
-   "gmina",
-   "voivodeship",
-   "unregister_temporary_checkbox",
-   "proxy_surname",
-   "proxy_name",
-   "confirm_place",
-   "confirm_date(8 cells)"
-  ],
-  "3": [
-   "owner_signature_box",
-   "place",
-   "date(8 cells)",
-   "applicant_signature_box",
-   "official_section(place,date,stamp_and_signature)"
-  ]
- },
  "fields": [
   {
    "id": "surname",
@@ -391,12 +370,516 @@
    "mark": "X",
    "required": false,
    "depends_on": "consent_contact_register"
+  },
+  {
+   "id": "new_street",
+   "label_pl": "Ulica / Street",
+   "canonical_path": "person.residence_address.street",
+   "page": 2,
+   "bbox": {
+    "x0": 186.2,
+    "y0": 144.0,
+    "x1": 516.9,
+    "y1": 161.4
+   },
+   "kind": "text",
+   "who_fills": "applicant_profile",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "overflow": "shrink_to_9pt_then_flag",
+   "note": "Section 3: address of the NEW place of permanent residence. Empty for localities without street names."
+  },
+  {
+   "id": "new_house_number",
+   "label_pl": "Numer domu / House number",
+   "canonical_path": "person.residence_address.house_number",
+   "page": 2,
+   "bbox": {
+    "x0": 185.6,
+    "y0": 174.3,
+    "x1": 295.8,
+    "y1": 191.7
+   },
+   "kind": "comb",
+   "who_fills": "applicant_profile",
+   "comb": {
+    "cells": [
+     185.6,
+     197.9,
+     210.2,
+     222.4,
+     234.7,
+     246.9,
+     259.1,
+     271.4,
+     283.6
+    ],
+    "cell_w": 12.2,
+    "y0": 174.3,
+    "y1": 191.7
+   },
+   "max_chars": 9,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "transform": "upper",
+   "align": "left_from_first_cell"
+  },
+  {
+   "id": "new_flat_number",
+   "label_pl": "Numer lokalu / Flat number",
+   "canonical_path": "person.residence_address.flat_number",
+   "page": 2,
+   "bbox": {
+    "x0": 417.8,
+    "y0": 173.9,
+    "x1": 503.5,
+    "y1": 191.3
+   },
+   "kind": "comb",
+   "who_fills": "applicant_profile",
+   "comb": {
+    "cells": [
+     417.8,
+     430.0,
+     442.3,
+     454.5,
+     466.7,
+     479.0,
+     491.3
+    ],
+    "cell_w": 12.2,
+    "y0": 173.9,
+    "y1": 191.3
+   },
+   "max_chars": 7,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "transform": "upper",
+   "align": "left_from_first_cell"
+  },
+  {
+   "id": "new_postal_code",
+   "label_pl": "Kod pocztowy / Postal code",
+   "canonical_path": "person.residence_address.postal_code",
+   "page": 2,
+   "bbox": {
+    "x0": 185.5,
+    "y0": 205.6,
+    "x1": 262.7,
+    "y1": 223.4
+   },
+   "kind": "comb",
+   "who_fills": "applicant_profile",
+   "comb": {
+    "cells": [
+     185.5,
+     197.7,
+     226.0,
+     238.3,
+     250.5
+    ],
+    "cell_w": 12.2,
+    "y0": 205.6,
+    "y1": 223.4,
+    "groups": [
+     2,
+     3
+    ],
+    "separators": [
+     "-"
+    ]
+   },
+   "max_chars": 5,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "validation": "^[0-9]{2}-[0-9]{3}$",
+   "transform": "digits_only"
+  },
+  {
+   "id": "new_city_district",
+   "label_pl": "Miejscowość - dzielnica / City - City district",
+   "canonical_path": "person.residence_address.city",
+   "page": 2,
+   "bbox": {
+    "x0": 185.2,
+    "y0": 238.6,
+    "x1": 515.9,
+    "y1": 256.0
+   },
+   "kind": "text",
+   "who_fills": "applicant_profile",
+   "transform": "upper|append_dash_city_district",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "overflow": "shrink_to_9pt_then_flag",
+   "note": "Value = city, then ' - ' and residence_address.city_district when the district is known."
+  },
+  {
+   "id": "new_commune",
+   "label_pl": "Gmina / Commune",
+   "canonical_path": "person.residence_address.commune",
+   "page": 2,
+   "bbox": {
+    "x0": 185.2,
+    "y0": 269.1,
+    "x1": 515.8,
+    "y1": 286.5
+   },
+   "kind": "text",
+   "who_fills": "applicant_profile",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "overflow": "shrink_to_9pt_then_flag"
+  },
+  {
+   "id": "new_voivodeship",
+   "label_pl": "Województwo / Voivodeship",
+   "canonical_path": "person.residence_address.voivodeship",
+   "page": 2,
+   "bbox": {
+    "x0": 185.1,
+    "y0": 300.5,
+    "x1": 515.8,
+    "y1": 317.9
+   },
+   "kind": "text",
+   "who_fills": "applicant_profile",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "overflow": "shrink_to_9pt_then_flag"
+  },
+  {
+   "id": "unregister_temporary_residence",
+   "label_pl": "Zaznacz, jeśli chcesz się wymeldować z miejsca pobytu czasowego",
+   "canonical_path": "case.parameters.unregister_temporary_residence",
+   "page": 2,
+   "bbox": {
+    "x0": 76.0,
+    "y0": 390.2,
+    "x1": 86.5,
+    "y1": 400.7
+   },
+   "kind": "checkbox",
+   "who_fills": "applicant_decision",
+   "mark": "X",
+   "required": false,
+   "note": "Case-specific (section 4); not part of the profile. The path is a proposal: the profile schema v0 has no case.parameters object yet."
+  },
+  {
+   "id": "proxy_surname",
+   "label_pl": "Nazwisko pełnomocnika / Surname of the proxy",
+   "canonical_path": "proxy.person.surname",
+   "page": 2,
+   "bbox": {
+    "x0": 182.1,
+    "y0": 485.9,
+    "x1": 512.7,
+    "y1": 503.3
+   },
+   "kind": "text",
+   "who_fills": "applicant_profile",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "overflow": "shrink_to_9pt_then_flag",
+   "required_if": "proxy is present",
+   "note": "Section 5: only when a proxy files the registration."
+  },
+  {
+   "id": "proxy_given_name",
+   "label_pl": "Imię pełnomocnika / Name of the proxy",
+   "canonical_path": "proxy.person.given_names[0]",
+   "page": 2,
+   "bbox": {
+    "x0": 182.3,
+    "y0": 520.0,
+    "x1": 513.0,
+    "y1": 537.4
+   },
+   "kind": "text",
+   "who_fills": "applicant_profile",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "overflow": "shrink_to_9pt_then_flag",
+   "required_if": "proxy is present"
+  },
+  {
+   "id": "owner_confirmation_place",
+   "label_pl": "Miejscowość (potwierdzenie pobytu przez właściciela) / Place",
+   "canonical_path": "case.place",
+   "page": 2,
+   "bbox": {
+    "x0": 182.5,
+    "y0": 612.3,
+    "x1": 513.2,
+    "y1": 629.7
+   },
+   "kind": "text",
+   "who_fills": "property_owner_by_hand",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "overflow": "shrink_to_9pt_then_flag",
+   "note": "Section 6: the owner of the premises, or another holder of a legal title, confirms the stay. Blank by default; an office may switch who_fills to 'system' when the owner signs at the counter."
+  },
+  {
+   "id": "owner_confirmation_date",
+   "label_pl": "Data (potwierdzenie pobytu przez właściciela) dd-mm-rrrr",
+   "canonical_path": "case.date",
+   "page": 2,
+   "bbox": {
+    "x0": 184.1,
+    "y0": 639.6,
+    "x1": 314.8,
+    "y1": 657.1
+   },
+   "kind": "date-parts",
+   "who_fills": "property_owner_by_hand",
+   "comb": {
+    "cells": [
+     184.1,
+     196.3,
+     223.3,
+     235.5,
+     265.7,
+     278.0,
+     290.3,
+     302.6
+    ],
+    "cell_w": 12.2,
+    "y0": 639.6,
+    "y1": 657.1,
+    "groups": [
+     2,
+     2,
+     4
+    ],
+    "separators": [
+     "-",
+     "-"
+    ]
+   },
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "transform": "dd|mm|yyyy"
+  },
+  {
+   "id": "owner_signature",
+   "label_pl": "Własnoręczny czytelny podpis właściciela lokalu lub innego podmiotu dysponującego tytułem prawnym do lokalu",
+   "canonical_path": null,
+   "page": 3,
+   "bbox": {
+    "x0": 182.7,
+    "y0": 77.8,
+    "x1": 399.0,
+    "y1": 142.2
+   },
+   "kind": "signature",
+   "who_fills": "property_owner_by_hand",
+   "required": true,
+   "note": "Never pre-filled: stays blank on the printout.",
+   "geometry_source": "image element of the template (not a vector rectangle)"
+  },
+  {
+   "id": "declaration_place",
+   "label_pl": "Miejscowość (oświadczam, że powyższe dane są prawdziwe) / Place",
+   "canonical_path": "case.place",
+   "page": 3,
+   "bbox": {
+    "x0": 185.3,
+    "y0": 180.2,
+    "x1": 513.5,
+    "y1": 197.7
+   },
+   "kind": "text",
+   "who_fills": "system",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "overflow": "shrink_to_9pt_then_flag",
+   "note": "Place of the visit: the office's locality from the session."
+  },
+  {
+   "id": "declaration_date",
+   "label_pl": "Data (oświadczam, że powyższe dane są prawdziwe) dd-mm-rrrr",
+   "canonical_path": "case.date",
+   "page": 3,
+   "bbox": {
+    "x0": 185.3,
+    "y0": 210.4,
+    "x1": 316.0,
+    "y1": 228.0
+   },
+   "kind": "date-parts",
+   "who_fills": "system",
+   "comb": {
+    "cells": [
+     185.3,
+     197.5,
+     224.5,
+     236.7,
+     266.9,
+     279.2,
+     291.5,
+     303.8
+    ],
+    "cell_w": 12.2,
+    "y0": 210.4,
+    "y1": 228.0,
+    "groups": [
+     2,
+     2,
+     4
+    ],
+    "separators": [
+     "-",
+     "-"
+    ]
+   },
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": true,
+   "transform": "dd|mm|yyyy",
+   "validation": "date_is_today"
+  },
+  {
+   "id": "applicant_signature",
+   "label_pl": "Własnoręczny czytelny podpis osoby zgłaszającej",
+   "canonical_path": null,
+   "page": 3,
+   "bbox": {
+    "x0": 183.9,
+    "y0": 256.4,
+    "x1": 401.5,
+    "y1": 326.1
+   },
+   "kind": "signature",
+   "who_fills": "applicant_by_hand",
+   "required": true,
+   "note": "Never pre-filled: stays blank on the printout.",
+   "geometry_source": "image element of the template (not a vector rectangle)"
+  },
+  {
+   "id": "official_place",
+   "label_pl": "Sekcja dla urzędnika: Miejscowość / Place",
+   "canonical_path": null,
+   "page": 3,
+   "bbox": {
+    "x0": 190.0,
+    "y0": 387.0,
+    "x1": 512.7,
+    "y1": 405.4
+   },
+   "kind": "text",
+   "who_fills": "clerk",
+   "transform": "upper",
+   "max_chars": 60,
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "overflow": "shrink_to_9pt_then_flag",
+   "note": "Section for official use: left blank by the system."
+  },
+  {
+   "id": "official_date",
+   "label_pl": "Sekcja dla urzędnika: Data dd-mm-rrrr",
+   "canonical_path": null,
+   "page": 3,
+   "bbox": {
+    "x0": 190.0,
+    "y0": 414.8,
+    "x1": 332.3,
+    "y1": 433.3
+   },
+   "kind": "date-parts",
+   "who_fills": "clerk",
+   "comb": {
+    "cells": [
+     190.0,
+     204.2,
+     232.8,
+     247.0,
+     275.6,
+     289.7,
+     303.9,
+     318.1
+    ],
+    "cell_w": 14.2,
+    "y0": 414.8,
+    "y1": 433.3,
+    "groups": [
+     2,
+     2,
+     4
+    ],
+    "separators": [
+     "-",
+     "-"
+    ]
+   },
+   "font": "Lato-Regular",
+   "size": 11,
+   "required": false,
+   "transform": "dd|mm|yyyy"
+  },
+  {
+   "id": "official_stamp_signature",
+   "label_pl": "Sekcja dla urzędnika: Pieczęć i podpis urzędnika",
+   "canonical_path": null,
+   "page": 3,
+   "bbox": {
+    "x0": 190.0,
+    "y0": 447.0,
+    "x1": 408.1,
+    "y1": 502.1
+   },
+   "kind": "signature",
+   "who_fills": "clerk",
+   "required": true,
+   "note": "Never pre-filled: stays blank on the printout."
   }
  ],
  "regression_test": {
   "render_dpi": 150,
   "mask": "union of all field bboxes expanded by 1.5 pt",
   "pass": "pixel diff (sum abs RGB > 30) outside mask == 0",
-  "measured_on_this_descriptor": "3 fields overlaid, 3521 diff px inside mask, 0 outside"
+  "measured_on_this_descriptor": "pages 1-3, 2026-11-21, tools/descriptor_overlay_check.py with synthetic values: page 1: 12 of 12 fields filled, 13200 changed px inside the mask, 0 outside; page 2: 10 of 12 fields filled, 11549 changed px inside the mask, 0 outside; page 3: 2 of 7 fields filled, 2111 changed px inside the mask, 0 outside. Earlier measurement of page 1 alone (research/03b): 3 fields overlaid, 3521 diff px inside mask, 0 outside.",
+  "tool": "python tools/descriptor_overlay_check.py data/form-descriptor.example.json <template.pdf>"
+ },
+ "who_fills_values": {
+  "applicant_profile": "from the resident's profile handed over at the counter",
+  "applicant_decision": "a choice the resident makes for this case",
+  "system": "from the session (place and date of the visit)",
+  "property_owner_by_hand": "written by the owner of the premises; blank on the printout",
+  "applicant_by_hand": "handwritten signature; blank on the printout",
+  "clerk": "section for official use; blank on the printout"
+ },
+ "geometry_measured": {
+  "pages_2_3": "2026-11-21, vector rectangles and image elements read with pdfplumber 0.11 (coordinates equal to page 1's convention); labels read from a 110 dpi rendering by a person-in-the-loop model, not from the garbled text layer",
+  "page_1": "see research/03b"
  }
 }

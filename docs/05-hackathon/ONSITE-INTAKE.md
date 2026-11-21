@@ -69,12 +69,15 @@ The owner asks in Polish; the line in italics is the meaning in Russian for him;
 
 1. Czy pula kredytów na modele LLM dla zespołów jest dostępna i jak ją uzyskać? *(Есть ли обещанные кредиты на модели и как их получить?)* → the model provider of the build (STATUS, "Waiting for the owner" 2).
 2. Jakie pliki formularzy są dla Państwa najważniejsze: PDF, DOCX, XLSX? Czy dostaniemy przykładowe? *(Какие файлы бланков для вас главные и дадите ли примеры?)* → inputs of WP-B6, forms for the live demo.
-3. Co ma być wynikiem: formularz dla Generatora Formularzy ePUC, opis w konkretnym formacie, czy działająca usługa? *(Что должно быть результатом: форма для вашего генератора, описание в формате или работающая услуга?)* → export target; answer card 4.
+3. Co ma być wynikiem: formularz dla Generatora Formularzy e-Usług, opis w konkretnym formacie, czy działająca usługa? Czy Generator przyjmuje import definicji formularza? *(Что должно быть результатом: форма для вашего генератора, описание в формате или работающая услуга? Умеет ли генератор импортировать описание формы?)* → export target; answer card 4.
 4. Kto będzie użytkownikiem narzędzia: urzędnik publikujący formularze, analityk w COI, mieszkaniec? *(Кто пользователь инструмента?)* → the first screen of the demo.
 5. Co znaczy „on-prem” w Państwa ocenie: bez żadnej chmury, z lokalnym modelem? Jaki sprzęt zakładamy? *(Что вы понимаете под on-prem: совсем без облака, локальная модель, какое железо?)* → default provider in the demo, the "what works" page.
 6. Jak będzie oceniana poprawność: na Państwa formularzach testowych? *(Как будете проверять точность: на своих бланках?)* → the golden test and the numbers on the slides.
 7. Czy w funkcji „Przekaż instytucji” w mObywatelu instytucja może poprosić o listę pól zależną od sprawy? Jakie atrybuty są dostępne? *(Может ли учреждение в mObywatel запросить набор полей под конкретное дело и какие поля доступны?)* → `docs/01-product/one-visit-package.md` §5; whether that slide may be said as more than a proposal.
 8. Czy pokaz „od potrzeby do podpisu” w urzędzie (komplet wniosków, dane raz, kontrola wyjątków) jest dla Państwa w zakresie zadania, czy tylko dodatkiem? *(Наш показ «от потребности до подписи» входит в задание или это только дополнение?)* → the split of the five minutes between part one and part two.
+
+9. Czy widzą Państwo asystentów AI mieszkańców jako kolejny kanał dla scyfryzowanych formularzy: oficjalny interfejs (MCP, API) zamiast klikania po stronach przez przeglądarkę? *(Видите ли вы ИИ-ассистентов жителей как ещё один канал для оцифрованных форм: официальный интерфейс вместо кликов через браузер?)* → the priority of WP-B10 and the weight of page 7 in the reading version.
+10. Jakie upoważnienie agenta byłoby dla Państwa do przyjęcia: zgoda zatwierdzana w mObywatelu, login.gov.pl, portfel tożsamości? Czy asystent w mObywatelu mógłby korzystać z takiego interfejsu? *(Какое полномочие агента для вас приемлемо: согласие в mObywatel, login.gov.pl, кошелёк? Мог бы ассистент в mObywatel пользоваться таким интерфейсом?)* → agent-door §3 rule 7 and §6; whether "mandate" may be said as more than a proposal.
 
 ## 3b. Questions to ask clerks about the counter (city's stand, or any official present)
 

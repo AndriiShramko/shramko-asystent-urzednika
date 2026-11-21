@@ -8,6 +8,10 @@
 - Work packages WP-B7 (need to set), WP-B8 (comparison with the document, check by exception), WP-B9 (profile start); change requests to WP-B1 and WP-B2.
 - Reading version of the presentation for the first judging stage: storyboard of ten pages, the page in Polish and a longer one in Russian for the owner, a PDF.
 - Questions for the partner's stand and for clerks in `docs/05-hackathon/ONSITE-INTAKE.md`.
+- The descriptor of the residence-registration form covers all three pages (31 fields); `tools/descriptor_overlay_check.py` verifies a descriptor against its template (hash, no change outside the field boxes, ink in every filled field).
+- HackTribe texts for the forms task and the plan of the two-minute video: `docs/05-hackathon/hacktribe-draft-formularze.md`.
+- Requirements R44–R50 (fourth brief): an official door for residents' AI agents. Design `docs/01-product/agent-door.md`, package WP-B10, research items on official agent interfaces and on the protocol, page 7 of the reading version.
+- Tag `pre-event-2`: end of the material prepared before the coding start.
 
 ## 0.1.0 — 2026-11-21 (pre-event brief, tag `pre-event`)
 

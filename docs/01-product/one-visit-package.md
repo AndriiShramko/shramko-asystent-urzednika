@@ -8,6 +8,8 @@ A resident says what they need. The system answers with the **complete set** for
 
 Why this is the right frame for the forms task: the task text says "droga od potrzeby do wygodnej usługi online" and the partner's announcement says "narzędzie AI, które zmieni formularze w zwinne cyfrowe usługi publiczne" (research/12 item 1). Part one of the demo shows the tool; part two shows that what the tool produces is a service a resident and a clerk can really use, from the need to the signature.
 
+A second entrance to stage 2, for residents who use a personal AI assistant, and online filling of digitised forms by that assistant, are designed in [`agent-door.md`](agent-door.md) (the owner's fourth brief). Everything below stays the path for everyone else and the ending for forms signed in the office.
+
 ## 1. The journey
 
 Stage 0 happens once per form, stage 1 once per person; stages 2–5 are one visit.
@@ -78,6 +80,8 @@ Today the profile is a page on the resident's phone, because there is no public 
 
 Open question for the COI stand (ONSITE-INTAKE §3a): can an institution in that function ask for a per-case list of fields, and which attributes are available?
 
+**Where this sits next to the partner's own product.** COI builds the Generator Formularzy e-Usług: offices create forms there, the forms are published at mobywatel.gov.pl and are pre-filled from public registers (research/12 item 11). So online, for a logged-in citizen, "data once" is already the state's work. What this project adds is on both sides of that generator: **before it**, the AI step that turns a file form into a reviewed form definition in minutes instead of rebuilding it by hand; **beside it**, the counter channel for people who come in person and for forms that must be printed on a statutory template. Say it in this order to the partner, and use their product's name.
+
 ## 6. Intent before the visit, without an integration
 
 The city's booking calendar already makes the resident choose the matter (research/12 item 4). The design uses this without touching the booking system:
@@ -107,6 +111,7 @@ The detailed steps are in [`../05-hackathon/demo-script-formularze.md`](../05-ha
 - No "the clerk no longer checks": the clerk checks less by hand and confirms the person always.
 - No reading of the address or of PESEL from the machine-readable zone.
 - No automatic import of browser data: the browser offers, the person accepts.
+- No claim that pre-filling an online form is new: the partner's generator does it from registers. Our claims are the conversion of a file form, the counter channel and the print on the original template.
 
 ## 9. Order of value if time is short
 
