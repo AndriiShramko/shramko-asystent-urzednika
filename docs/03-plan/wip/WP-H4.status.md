@@ -1,5 +1,5 @@
 # WP-H4 the engine is always visible: status
-Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 01:08; state: running
+Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 01:28; state: running
 
 Branch: wp/H4-engine-visible   Stage now: core
 
@@ -12,8 +12,9 @@ Branch: wp/H4-engine-visible   Stage now: core
 - [x] no-leak test over HTTP, log and CLI with a fake configured model; `/healthz` byte check
 - [x] byte comparison of form and sidecar against main 9e095ab, synthetic fixtures and the nine task sets: 79 of 79
 - [x] review page: band with the engine of the last conversion, three languages, contrast pairs, tests (this commit)
-- [~] byte comparison on the 158 files of the chain corpora (71 sets, 80 unseen, 7 hostile): both runs started 01:05, not compared yet
-- [ ] negative control, merge of main, fast gate
+- [x] negative control (on 913f787), merge of main a7f2cee (b5d42f4)
+- [~] byte comparison after the merge against main a7f2cee on the 158 files of the chain corpora (71 sets, 80 unseen, 7 hostile) and the 9 synthetic fixtures: both runs started 01:20, not compared yet
+- [~] fast gate on the merged tree: started 01:22, result not read yet
 
 ## Decisions
 - The engine of one conversion is read from the warning codes of its sidecar (`engine.engine_of`): MODEL_FALLBACK
@@ -48,29 +49,62 @@ Branch: wp/H4-engine-visible   Stage now: core
 | review page builds and its tests pass | `npm ci`, `npm run build` (tsc and vite), `npm test` in `apps/review-web` | built; 54 passed (3 files): engine read from the header, band in pl, en, es with words and token, nothing focusable, 9 new contrast pairs | this commit |
 
 ## Negative control
-(not run yet)
+On 913f787 the line `engine.HEADER: engine.engine_of(...)` was removed from `headers_for` in `app/main.py`:
+`bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py -q` gave 5 failed, 42 passed; the
+failures were `test_every_conversion_answer_carries_the_engine_header`, the three cases of
+`test_the_shell_follows_a_model_step_without_being_changed` and
+`test_a_configured_model_changes_no_byte_of_the_form_or_the_sidecar`. The line was put back (`git diff` empty);
+nothing of the control was committed.
 
 ## Requests to lead
-- BLOCKING FOR THE IMAGE WORKFLOW: `tools/ci/container_check.py` line 222 (`if cp.stderr.strip(): problems.append("stderr
-  not empty…")`) fails every converted fixture once the CLI prints `ENGINE: rules` on stderr, which the brief asks
-  for. `tools/ci/**` is not mine. Proposed text for lines 222-223:
-  `noise = [ln for ln in cp.stderr.decode(errors="replace").splitlines() if ln.strip() and not ln.startswith("ENGINE: ")]`
-  `if noise: problems.append(f"stderr not empty: {' | '.join(noise)[-200:]}")`
-  Merge H4 together with this patch, or the image workflow goes red.
+1. BLOCKING FOR THE IMAGE WORKFLOW (the run on this branch is expected red until it is applied).
+   `tools/ci/container_check.py`, function `conversion_problems` (lines 293-294 on main a7f2cee), fails every
+   converted fixture when the CLI's stderr is not empty; the brief asks for the line `ENGINE: rules` on stderr.
+   `tools/ci/**` is not mine. Proposed text in place of the two lines:
+   `    noise = [ln for ln in first_stderr.decode(errors="replace").splitlines() if ln.strip() and not ln.startswith("ENGINE: ")]`
+   `    if noise:`
+   `        problems.append(f"stderr not empty: {' | '.join(noise)[-200:]}")`
+   `    if b"ENGINE: " not in first_stderr:`
+   `        problems.append("no ENGINE line on stderr")`
+   and in `tools/ci/tests/test_image_checks.py` lines 118-126 the second argument `b""` becomes `b"ENGINE: rules\n"`.
+   If the lead prefers no change in `tools/ci`, the other way is to drop the CLI line (one `print` in
+   `app/cli.py`, one test); the header, `/status`, the log and the page do not depend on it.
+2. Documents (not mine), exact proposed text:
+   - `docs/05-hackathon/jury-qa-formularze.md:99`: "…w produkcie nie ma żadnego modelu, klucza ani wywołania
+     sieciowego. Dowodem jest kontener uruchomiony bez sieci i punkt `GET /v1/selftest`." becomes "…w produkcie
+     domyślnie nie działa żaden model: bez konfiguracji nie ma klucza ani wywołania sieciowego, a wynik powstaje z
+     samych reguł. Dowodem jest kontener uruchomiony bez sieci, nagłówek `X-Converter-Engine: rules` w każdej
+     odpowiedzi i punkt `GET /status`." (line 101, the Russian gloss, the same way.)
+   - `docs/03-plan/DECISIONS-forms-track.md` D12: "…A model step exists only as an interface that picks from an
+     enumeration, switched off; no weights are shipped" becomes "…A model step is optional: `MODEL_STEP=auto` (the
+     default) uses a model only when `MODEL_BASE_URL` is configured, and with nothing configured the output is
+     byte-identical to the rules; the engine of every conversion is shown (`X-Converter-Engine`, `GET /status`); no
+     weights are shipped".
+   - D13: "`GET /v1/selftest` reports the mode and proves it" becomes "`GET /status` names the engine and whether a
+     model is configured (by default none: nothing leaves the container)". D14, one line added: "Exception (owner,
+     21 Nov): an open model the operator configures by `MODEL_BASE_URL` may be called by the product's model step;
+     never by default, never with a key in the image."
+   - `docs/02-architecture/converter-design.md:154`: "| `MODEL_STEP` | `auto` | `auto`: the model step runs when
+     `MODEL_BASE_URL` is set and the step is built (WP-H1); `off`: rules only. With nothing configured nothing is
+     loaded or called |", and three new rows `MODEL_BASE_URL`, `MODEL_NAME`, `MODEL_API_KEY_FILE` (or the
+     variable `MODEL_API_KEY`), all empty by default. Lines 88, 135, 499, 510, 550 still name `/v1/selftest`,
+     which does not exist; `GET /status` exists.
+3. For WP-H1 (not built here, by the brief): the header `X-Converter-Model`, the page `GET /`, the probe, the
+   state REFUSED, `meta.model` in the sidecar. H1 sets `engine.MODEL_STEP_BUILT = True`, refines
+   `engine.model_state`, and emits MODEL_USED, MODEL_FALLBACK or MODEL_SKIPPED in the sidecar warnings.
 
 ## Left for the next stage
-Python side and review page are done and tested. Left, in this order:
-1. The 158-file comparison (the corpora of `eval.chain`: sets, unseen sample of `data/archive` of the main
-   checkout, hostile files built once). It needs a scratch script (mine is not in git): for each item of
-   `eval.chain.corpora.sets_items() + unseen_items(archive=<main checkout>/data/archive) + hostile_items(<dir>)` run
-   `inspect_upload` and `pipeline.run`, hash the canonical form and sidecar, once per code tree, compare.
-2. Negative control: remove the `engine.HEADER` line in `headers_for` (`app/main.py`), see
-   `test_every_conversion_answer_carries_the_engine_header` fail, restore.
-3. `git merge --no-edit main` (keep both sides in `config.py`: `required_policy` and the `model_*` fields), then
-   `bash tools/gate.sh fast > <log> 2>&1`, read the tail; re-run the byte proof only if `main` changed code under
-   `apps/converter/app` (then against the new main, not 9e095ab).
-Checks passed: shell tests 258 passed on 937cb2a; byte proof 79 of 79 on 937cb2a (review page files do not enter
-the Python package); `npm run build` and `npm test` 54 passed on this commit. The fast gate has not run yet.
+Everything of the brief is built. Main a7f2cee is merged (b5d42f4; `config.py` holds both `required_policy` and the
+`model_*` fields, no conflict). Running when this was committed, results not read yet:
+1. `bash tools/gate.sh fast` on the merged tree. If it was cut: run it again, log to a file, read the tail.
+2. Byte proof after the merge, because main changed code under `apps/converter/app`: `git archive a7f2cee
+   apps/converter/app` against `git archive <this head> apps/converter/app`, both unpacked outside the tree and
+   put first on `sys.path`; the 158 items of `eval.chain.corpora` (`sets_items()`, `unseen_items(archive=<main
+   checkout>/data/archive)`, `hostile_items(<dir>)` built once) and the 9 synthetic fixtures; compare SHA-256 of
+   the canonical form and sidecar. The scratch script is not in git; this paragraph is its whole recipe.
+Checks passed: shell tests 258 passed on 937cb2a; byte proof 79 of 79 against 9e095ab on 937cb2a; `npm run build`
+and `npm test` 54 passed on 913f787; negative control on 913f787. Not yet passed on the merged tree: the fast gate,
+the byte proof against a7f2cee.
 
 ## Cost notes
 - core: the 5-hour limit cut the first session after 9 replies of reading; the lead saved the loose files.
