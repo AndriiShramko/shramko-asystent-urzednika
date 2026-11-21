@@ -28,6 +28,18 @@ These are requirements for every implementation built from this brief; the detai
 7. A legal basis cited in a draft is verified by code against the stored text of the act.
 8. Logs contain identifiers of records, never the personal values.
 
+## Converter service (the forms converter of Track F)
+
+What a person who runs the image must know. Checked against the code on 22 November 2026.
+
+- **Authentication is off unless a key is configured.** The default is `AUTH_MODE=auto`: a JWT is required when `JWT_SECRET_FILE`, `JWT_PUBLIC_KEY_FILE` or `JWT_JWKS_FILE` names a key file; with none of them the service accepts requests without a token, logs a warning at start and shows `"auth": "off"` in `GET /status`. The image starts this way so that the jury can run it with one command.
+- **A key variable that is set but empty, or misspelt, means authentication is off.** For a deployment set `AUTH_MODE=jwt`: then a missing key refuses the start (exit 3). `docker-compose.yml` does this.
+- **Publish the port on loopback only**: `-p 127.0.0.1:8080:8080`, as every command of the README does. `-p 8080:8080` opens it on every interface of the host. Open without a token are: convert, report, inspect, batches and the review page `/ui/`.
+- **Why the open default is acceptable here:** the service is stateless, stores no upload and no result, and calls nothing outside the container; the exposure is processor time and the caller's own file. All callers without a token share one rate limit (60 requests a minute), so one outside client can exhaust it: another reason for loopback.
+- **`/healthz` and `/status` never need a token**; they hold no key, no path and no file content.
+- **A job over `JOB_TIMEOUT_S` (default 600 s) answers 504 but is not killed**: it ends in the background and keeps counting against the slots; while `CONCURRENCY` such jobs run, new requests get 429 `BUSY`. So at most 2 x `CONCURRENCY` - 1 conversions run at once.
+- **Uploads are untrusted**: type by content, 20 MiB, 60 pages, 80 megapixels checked before decoding, archive limits, XML without DTD or entities; the image runs as a non-root user, works read-only with no capability.
+
 ## Scope and limits
 
 This repository is a specification and research package. It has not been audited. Before production use an office needs its own security review, a data protection impact assessment and an accessibility audit.

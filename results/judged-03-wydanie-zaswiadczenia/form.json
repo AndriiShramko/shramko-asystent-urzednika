@@ -207,7 +207,9 @@
                   "title": "Numer PESEL",
                   "description": "",
                   "options": [],
-                  "validation": [],
+                  "validation": [
+                    "PESEL"
+                  ],
                   "readOnly": true,
                   "repeatingSectionGrid": [],
                   "defaultValue": "PESEL.pesel",
@@ -1047,9 +1049,7 @@
                       "techName": "inne"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1094,9 +1094,7 @@
                   "title": "Zaświadczenie potrzebne jest celem przedłożenia w",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],

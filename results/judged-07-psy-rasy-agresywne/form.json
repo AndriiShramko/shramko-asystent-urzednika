@@ -1093,9 +1093,7 @@
                   "title": "Pochodzenie psa",
                   "description": "<html><head></head><body><p>metryka, numer rodowodu, imię, nazwisko i adres poprzedniego właściciela</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1115,9 +1113,7 @@
                   "title": "Rasa psa",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1137,9 +1133,7 @@
                   "title": "Data urodzenia psa",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1159,9 +1153,7 @@
                   "title": "Data szczepienia",
                   "description": "<html><head></head><body><p>w przypadku jego braku</p></body></html>",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1192,9 +1184,7 @@
                       "techName": "suka"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1230,9 +1220,7 @@
                       "techName": "brak"
                     }
                   ],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1302,9 +1290,7 @@
                   "title": "Adres miejsca utrzymywania psa/psów",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
@@ -1324,9 +1310,7 @@
                   "title": "Opis miejsca i warunków w jakich wnioskodawca zamierza utrzymywać psa/psy",
                   "description": "",
                   "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
+                  "validation": [],
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],

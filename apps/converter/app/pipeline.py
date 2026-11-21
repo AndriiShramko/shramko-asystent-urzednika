@@ -106,7 +106,7 @@ def run_limited(data: bytes, filename: str, settings: Settings, notes: tuple[str
     if th.is_alive():
         with _abandoned_lock:
             _abandoned.append(th)
-        raise ProblemError("TIMEOUT", f"Przetwarzanie pliku trwało dłużej niż {settings.job_timeout_s} s i zostało przerwane.")
+        raise ProblemError("TIMEOUT", f"Przetwarzanie pliku trwało dłużej niż {settings.job_timeout_s} s; wynik nie zostanie zwrócony, a zadanie kończy się w tle.")
     if "error" in box:
         raise box["error"]
     return box["result"]

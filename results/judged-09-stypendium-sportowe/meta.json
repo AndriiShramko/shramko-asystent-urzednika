@@ -285,91 +285,11 @@
       "detail": "no text that this place belongs to"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "wnioskodawca",
-      "candidate": "c1",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "AMBIGUOUS_GROUP",
       "page": 2,
       "candidate": "c8",
       "evidence": [],
       "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "seria_i_numer_dowodu_osobistego",
-      "candidate": "c11",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "korespondencja_z_urzedem",
-      "candidate": "c17",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "skrzynka_epuap_adres_skrzynki",
-      "candidate": "c24",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "edoreczenia_adres_skrzynki",
-      "candidate": "c26",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "imie",
-      "candidate": "c27",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "nazwisko",
-      "candidate": "c28",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "data_urodzenia",
-      "candidate": "c29",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "adres_zameldowania",
-      "candidate": "c30",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "adres_do_korespondencji",
-      "candidate": "c31",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "AMBIGUOUS_GROUP",
@@ -379,75 +299,11 @@
       "detail": "the paper does not say whether one or several options may be marked; several are allowed"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "a_nastepnie_wybierz_konkretne_dyscypliny_z_listy",
-      "candidate": "c32",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "dyscypliny_sportowe",
-      "candidate": "c32",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "dyscyplina",
-      "candidate": "c56",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "opisz_najwazniejsze_osiagniecia_sportowe_kandydata_ktore",
-      "candidate": "c57",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "opinia_macierzystego_klubu_sportowego_potwierdzajaca",
-      "candidate": "c58",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 4,
-      "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do",
-      "candidate": "c59",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 4,
       "candidate": "c60",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 6,
-      "field": "imie_i_nazwisko_kandydata",
-      "candidate": "c61",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 6,
-      "field": "data",
-      "candidate": "c62",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -457,27 +313,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 6,
-      "field": "imie_i_nazwisko_kandydata_2",
-      "candidate": "c64",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_RAW",
       "page": 6,
       "candidate": "c65",
       "evidence": [],
       "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 6,
-      "field": "ja_nizej_podpisany",
-      "candidate": "c65",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -501,91 +341,11 @@
       "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "imie_2",
-      "candidate": "c94",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "nazwisko_2",
-      "candidate": "c95",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "data_urodzenia_2",
-      "candidate": "c96",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "adres_zameldowania_2",
-      "candidate": "c97",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "adres_do_korespondencji_2",
-      "candidate": "c98",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "opisz_najwazniejsze_osiagniecia_sportowe_kandydata_ktore_2",
-      "candidate": "c99",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 8,
-      "field": "opinia_macierzystego_klubu_sportowego_potwierdzajaca_2",
-      "candidate": "c100",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 9,
-      "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2",
-      "candidate": "c101",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 9,
       "candidate": "c103",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 10,
-      "field": "imie_i_nazwisko_kandydata_3",
-      "candidate": "c104",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 10,
-      "field": "data_2",
-      "candidate": "c105",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -595,27 +355,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 10,
-      "field": "imie_i_nazwisko_kandydata_4",
-      "candidate": "c107",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_RAW",
       "page": 10,
       "candidate": "c108",
       "evidence": [],
       "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 10,
-      "field": "ja_nizej_podpisany_2",
-      "candidate": "c108",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -632,179 +376,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 11,
-      "field": "wnioskodawca_3",
-      "candidate": "c111",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "AMBIGUOUS_GROUP",
       "page": 11,
       "candidate": "c118",
       "evidence": [],
       "detail": "a single box outside any group: 'Dane pełnomocnika klubu sportowego'; an option or a yes-or-no question"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 11,
-      "field": "seria_i_numer_dowodu_osobistego_3",
-      "candidate": "c121",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 11,
-      "field": "inny_adres_korespondencyjny",
-      "candidate": "c130",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 11,
-      "field": "skrzynka_epuap_adres_skrzynki_3",
-      "candidate": "c134",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 11,
-      "field": "edoreczenia_adres_skrzynki_3",
-      "candidate": "c136",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "imie_3",
-      "candidate": "c137",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "nazwisko_3",
-      "candidate": "c138",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "data_urodzenia_3",
-      "candidate": "c139",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "adres_zameldowania_3",
-      "candidate": "c140",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "adres_do_korespondencji_3",
-      "candidate": "c141",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "opinia_macierzystego_klubu_sportowego_potwierdzajaca_3",
-      "candidate": "c142",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 12,
-      "field": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3",
-      "candidate": "c143",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 13,
-      "field": "imie_i_nazwisko_zawodniczki_zawodnika",
-      "candidate": "c144",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 13,
-      "field": "osiagniecia_sportowe_podopiecznego",
-      "candidate": "c145",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 13,
-      "field": "imie_i_nazwisko_zawodniczki_zawodnika_2",
-      "candidate": "c146",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 13,
-      "field": "osiagniecia_sportowe_podopiecznego_2",
-      "candidate": "c147",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 13,
-      "field": "imie_i_nazwisko_zawodniczki_zawodnika_3",
-      "candidate": "c148",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 13,
-      "field": "osiagniecia_sportowe_podopiecznego_kandydata_ktore_beda",
-      "candidate": "c149",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 14,
-      "field": "imie_i_nazwisko_zawodniczki_zawodnika_4",
-      "candidate": "c150",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 14,
-      "field": "osiagniecia_sportowe_podopiecznego_kandydata_ktore_beda_2",
-      "candidate": "c151",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 14,
-      "field": "data_sporzadzenia_wniosku",
-      "candidate": "c152",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -814,43 +390,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 15,
-      "field": "imie_i_nazwisko_kandydata_5",
-      "candidate": "c154",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 15,
-      "field": "data_3",
-      "candidate": "c155",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_NOT_FOUND",
       "page": 15,
       "candidate": "c156",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 16,
-      "field": "imie_i_nazwisko_podopiecznego",
-      "candidate": "c157",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 16,
-      "field": "data_4",
-      "candidate": "c158",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -860,27 +404,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 16,
-      "field": "imie_i_nazwisko_podopiecznego_2",
-      "candidate": "c160",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_RAW",
       "page": 16,
       "candidate": "c161",
       "evidence": [],
       "detail": "label kept as the paper's words: 'Ja niżej podpisany'"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 16,
-      "field": "ja_nizej_podpisany_3",
-      "candidate": "c161",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -895,6 +423,22 @@
       "candidate": "c163",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "detail": "field adres_do_korespondencji: REQUIRED is not written; the paper makes the field optional or conditional ('jeśli' in the hint)"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "detail": "field adres_do_korespondencji_2: REQUIRED is not written; the paper makes the field optional or conditional ('jeśli' in the hint)"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "detail": "field adres_do_korespondencji_3: REQUIRED is not written; the paper makes the field optional or conditional ('jeśli' in the hint)"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "detail": "56 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: wnioskodawca, seria_i_numer_dowodu_osobistego, korespondencja_z_urzedem, skrzynka_epuap_adres_skrzynki, edoreczenia_adres_skrzynki, imie"
     },
     {
       "code": "CLAUSE_LINK_MISSING",

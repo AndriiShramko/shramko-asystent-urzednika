@@ -245,7 +245,7 @@ Acceptance: the ledger closes on all nine sets; coverage has no unassigned run o
 
 ## WP-F16 — Parser airlock and the hostile corpus (new)
 
-Design 8, 9.3. The worker process per upload with the two limit implementations; the audit-hook guard; `GET /v1/selftest`; `python -m tests.evil`, which builds every hostile file from code (no hostile binary is committed) and prints a pass or fail line per attack.
+Design 8, 9.3. The worker process per upload with the two limit implementations; the audit-hook guard; the offline proof by `convert` under `--network none` and the state at `GET /status` (a self-test endpoint was planned here and never built); `python -m tests.evil`, which builds every hostile file from code (no hostile binary is committed) and prints a pass or fail line per attack.
 
 Acceptance, native: the corpus runs on Windows for everything that does not depend on the operating system; a job that spins is killed at the timeout and **the next job succeeds**; the worker's environment holds no key. Acceptance, container (CI): all attacks of the design table pass; the self-test reports `none` and both blocks with `--network none`, and "kernel: not isolated; guard: active" with a published port; the process has no capability and cannot write to the root. **Negative controls:** the corpus itself; plus one test that the guard, when switched off, lets the canary connection through (so the test is able to fail).
 

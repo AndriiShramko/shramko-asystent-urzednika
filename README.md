@@ -1,20 +1,84 @@
 # Forms converter: from a blank official form to e-service JSON
 
-A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. Access is guarded by a token. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
+A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. A shared deployment guards access with a JWT token; started alone on one computer the service is open and says so in its log. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
 
 The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. No language model runs in the product and it makes no network call at run time.
 
-**Published image** (milestone (a), commit `920dbf1`, tag `track-f-a`): `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf`. Convert without a network (from [`apps/converter/README.md`](apps/converter/README.md), which also covers `serve`, the token and all settings):
+## For the jury: three commands
+
+How it works inside: local OCR, layout analysis and rules, without a language model, without an API key and without a GPU.
+
+The image (the same reference in every command below):
+
+`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b`
+
+Put the blank form into a folder `forms` next to where you stand, as `forms/form.pdf`. Each command is one line: paste it whole. The image is built for `linux/amd64`; `--platform linux/amd64` lets an ARM Mac run it under emulation. Run conversions one after another: the service works on two uploads at a time and answers `429 BUSY` to more.
+
+**1. Offline, the form to standard output.** This is the proof that nothing leaves the container: `--network none` gives the container no network at all.
+
+bash (Linux, macOS, Git Bash; `MSYS_NO_PATHCONV=1` stops Git Bash from rewriting `/in/...` into a Windows path and does nothing elsewhere):
 
 ```bash
-docker run --rm --network none --read-only --tmpfs /tmp --cap-drop ALL --user 10001 \
-  -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" \
-  ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf \
-  convert /in/form.pdf --out /out/form.json
+MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf > form.json
 ```
 
-- **Converts today:** PDF, DOCX, XLSX, ODS, binary Word (.doc). **In progress:** JPG, JPEG, PNG (images and OCR).
-- **Not done yet:** today the produced form holds the title and the partner's standard sections; the fields of the matter of each paper arrive with the understanding step (WP-F4) and its wiring, in progress. Also not yet: validators, dictionaries, conditions, the review page and the viewer.
+Windows PowerShell 5.1: its own `>` would write UTF-16 with a byte-order mark, so the redirect is left to `cmd`, which keeps the bytes as they are (UTF-8 without a BOM):
+
+```powershell
+cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf > form.json'
+```
+
+**2. Offline, the form written into a mounted folder with `--out`.** On Linux the container runs as your own user so that it may write into `out`:
+
+```bash
+mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+```
+
+macOS and Git Bash (Docker Desktop maps the owner of the folder itself, so no `--user`):
+
+```bash
+mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+```
+
+Windows PowerShell 5.1 (the simplest choice there; the file is UTF-8 without a BOM):
+
+```powershell
+mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+```
+
+If `out` cannot be written, `convert` says so in one line and exits with code 4.
+
+**A whole folder of new forms**, one after another, every result into `out/<name>.json`:
+
+```bash
+mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert "/in/$n" > "out/${n%.*}.json"; done
+```
+
+```powershell
+mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
+```
+
+**3. REST and the review page, published on this computer only (loopback).** Start the service in one window (stop it with Ctrl+C):
+
+```bash
+docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b
+```
+
+The same line works in PowerShell. Then, in a second window, from the folder that holds `form.pdf`:
+
+```bash
+curl -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
+```
+
+```powershell
+curl.exe -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
+```
+
+(In PowerShell `curl` is another command, `Invoke-WebRequest`; write `curl.exe`.) The review page: <http://127.0.0.1:8080/ui/>. The state of the service (name, version, `engine: "rules"`, the token mode, the readable formats, the limits): <http://127.0.0.1:8080/status>.
+
+Started without settings and without a key file, the service is open and writes a warning about it into its log; that is why the example publishes on `127.0.0.1` only. For a shared network use [`docker-compose.yml`](docker-compose.yml), which runs with a JWT token. A REST server under `--network none` cannot be reached from the host, so the offline proof is command 1, not the REST one. All settings: [`apps/converter/README.md`](apps/converter/README.md).
+
+- **Reads:** PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (images and scans through local OCR). What it could not read is a warning with the page and the place, never a made-up field.
 - Links: state of the build [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) · [`apps/converter/README.md`](apps/converter/README.md) · [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md) · pre-event disclosure [`NOTICE`](NOTICE).
 
 ---

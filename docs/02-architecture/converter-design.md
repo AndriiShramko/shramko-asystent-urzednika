@@ -85,7 +85,7 @@ tools/env_check.py           what this machine has and what to do about what it 
 | `POST /v1/batches` (several parts `file`, or one ZIP) | `convert` | `200 application/x-ndjson`: one line per file as it finishes: name hash, state, counts, warnings, seconds, the form. Nothing is kept after the stream ends |
 | `POST /v1/forms/diff` (two form JSON files) | `convert` | typed list of changes (section 6.9) |
 | `POST /v1/forms/export` (one form JSON, optional sidecar) | `convert` | the agent pack as `multipart/mixed` |
-| `GET /v1/selftest` | `selftest` | network mode, proof of blocked egress, hardening state (section 8) |
+| `GET /status` | none | service name and version, `engine: "rules"`, the token mode, the readable formats, the limits. The offline proof is not an endpoint: it is `convert` in a container started with `--network none` (section 8); a self-test endpoint was planned here and never built |
 | `GET /healthz` | none | `200` when the worker pool answers |
 | `GET /about/licences`, `/about/sbom`, `/about/build` | none | licence list, SBOM, git commit and base image digest |
 | `GET /openapi.json`, `/ui/` | none | the generated API description; the front end |
@@ -115,7 +115,7 @@ Errors are `application/problem+json` (RFC 9457) with a Polish `title` and a sta
 | 422 | `UNREADABLE`, `NOT_A_FORM`, `ACTIVE_CONTENT` | nothing could be read; no place to fill was found; macros with `ACTIVE_CONTENT=strict` |
 | 429 | `BUSY` | concurrency or rate limit, with `Retry-After` |
 | 500 | `GATE_FAILED` | our own gate refused the result; the body names the failed check; **a broken form is never sent** |
-| 504 | `TIMEOUT` | the worker was killed at `JOB_TIMEOUT_S` |
+| 504 | `TIMEOUT` | the job ran longer than `JOB_TIMEOUT_S`: no result is returned; the job is NOT killed, it ends in the background and counts against the slots until it does (at `CONCURRENCY` such jobs the next request is 429 `BUSY`) |
 
 A paper that is partly unreadable still gives `200` with a valid form and warnings in the sidecar. `422 UNREADABLE` only when no text at all was obtained.
 
@@ -128,11 +128,11 @@ Every value comes from the environment or from a file named by the environment; 
 | `MAX_UPLOAD_BYTES` | `20971520` | largest upload (C-TECH-SIZE). The largest file of the judged sets is 6.7 MB |
 | `MAX_PAGES` | `60` | pages per document |
 | `MAX_PIXELS` | `80000000` | pixels of one decoded image. **Not lower: the scan of set 9 is 1654 × 37424 = 61.9 million pixels** |
-| `JOB_TIMEOUT_S` | `120` | wall-clock limit of one worker |
+| `JOB_TIMEOUT_S` | `600` | wall-clock limit of one conversion; over it the request answers 504 and the job ends in the background |
 | `WORKER_MEMORY_MB` | `1024` | address-space limit of one worker |
 | `CONCURRENCY` | `2` | workers at once; more uploads wait or get `429` |
 | `RATE_LIMIT_PER_MIN` | `60` | per token subject |
-| `AUTH_MODE` | `jwt` | `off` only for local work; logged as a warning at start and shown by `/v1/selftest` |
+| `AUTH_MODE` | `auto` | `auto`: JWT when a key file is configured, otherwise open; `jwt`: a key file is required, start refused without it (exit 3); `off`: open. An open start is logged as a warning and shown by `GET /status` |
 | `JWT_ALG` | `HS256` | one of `HS256`, `HS384`, `HS512`, `RS256`, `ES256`, `EdDSA`; never read from the token |
 | `JWT_SECRET_FILE` / `JWT_PUBLIC_KEY_FILE` / `JWT_JWKS_FILE` | none | the key, by file. A JWKS **URL** is not supported: the service calls nothing (D13) |
 | `JWT_ISSUER`, `JWT_AUDIENCE` | none | required equal when set |
@@ -493,10 +493,10 @@ A composition of independent parts, kept separately in the sidecar: geometry (ho
 
 | Threat | Control | Negative test in `tests/evil/` |
 |---|---|---|
-| a parser hangs or eats memory | **airlock**: one worker process per upload, started fresh with a scrubbed environment and resource limits, in its own process group, killed at `JOB_TIMEOUT_S`; the API process never touches file bytes | a job that spins is killed, answers 504, leaves no process; the next job succeeds |
+| a parser hangs or eats memory | **airlock**: one worker process per upload, started fresh with a scrubbed environment and resource limits, in its own process group, killed at `JOB_TIMEOUT_S`; the API process never touches file bytes. **As built today: the conversion runs in a thread of the service, not in a separate worker; at `JOB_TIMEOUT_S` the request answers 504 and the thread is abandoned, not killed (an OCR child is killed at its own limit of 90 s per page)** | as built: a job that spins answers 504, keeps its slot until it ends, and with `CONCURRENCY` such jobs the service answers 429 `BUSY`; a job that is killed and leaves no process needs the worker of WP-F16 |
 | the worker leaks the key | the worker receives no key and no environment beyond `PATH`, `TMPDIR`, `LANG`; its only output is one JSON document that the API process validates as untrusted | the worker's environment dump in a test contains no `JWT` name |
 | a file makes the service call out (remote template, linked image, external entity) | no HTTP client in the worker; an audit hook raises on name resolution, connect, bind and on any subprocess other than the allowed OCR and office programs | a DOCX whose template target is a local listener: the listener sees no connection, the guard counter is one |
-| claim "no network" is only words | `GET /v1/selftest` reports the network mode (`none`, `internal`, `bridge`), tries test addresses that are never routed, and reports kernel and code guard separately. With a published port the honest answer is "kernel: not isolated; guard: active"; the hardened profile uses `--network none` with a Unix socket | the endpoint in a container started with `--network none` says `none` and both blocked |
+| claim "no network" is only words | the proof is a run, not an endpoint: `convert` in a container started with `--network none` (command 1 of the README) gives the form with no network at all; a REST server under `--network none` cannot be reached from the host, so the published port is the other mode and is not offered as the proof. (A self-test endpoint was planned here and never built.) | command 1 of the README passes on the image under `--network none` |
 | entity tricks in XML | any part with `<!DOCTYPE` or `<!ENTITY` is refused before parsing; the parser has entities, DTD loading and network off | billion-laughs DOCX, XLSX and ODS: 422 within two seconds, memory flat |
 | archive bombs, traversal | limits of 6.1 on bytes read; names checked; nothing extracted | a member of 1 GB of zeros; a member named `../../x` |
 | image bombs | header read before decoding; `MAX_PIXELS`; only JPEG and PNG decoders; one frame | a 100,000 × 100,000 one-bit PNG is refused from its header |
@@ -507,7 +507,7 @@ A composition of independent parts, kept separately in the sidecar: geometry (ho
 | hostile text becomes script in the partner's generator | D11: templates, escaping, allow-list; the gate re-checks | a form whose label is `<img src=x onerror=…>` and one with a `javascript:` link: both arrive as plain text |
 | a filled form is uploaded | **alarm**: valid PESEL, NIP or account numbers inside fill areas, typed values in declared fields, ink density inside boxes and on leaders. Default: convert, warn, copy no value (G12). `FILLED_FORM=reject` answers 422 | a fixture with a synthetic valid PESEL in the comb: warning present, the number absent from form, sidecar and logs |
 | content in logs | events are structured and content-free: stage, reason code, size and time buckets, random job id, hash of the input; never the name, the text or the token | a sentinel surname in the file name, in the text and in a parser exception appears in no log line |
-| container | non-root user, read-only root, `tmpfs` for `/tmp`, all capabilities dropped, no new privileges, process and memory limits, one port | `/v1/selftest` shows uid not zero, no capabilities, root not writable |
+| container | non-root user, read-only root, `tmpfs` for `/tmp`, all capabilities dropped, no new privileges, process and memory limits, one port | the commands of the README run with `--read-only --cap-drop ALL`; the image user is uid 10001 (Dockerfile) |
 | supply chain | base images pinned by digest; `pip --require-hashes`; SBOM from the final image plus what a scanner misses (OCR data, fonts, front-end bundle); vulnerability gate (Grype, pip-audit); licence gate; signature of the image | `tools/licence_check.py` fails on a planted GPL package; the build fails on an unpinned line |
 | prompt injection | no model (D12). The switched-off interface can only return one value of an enumeration | none needed while `MODEL_STEP=off`; a test asserts that nothing is loaded |
 
@@ -547,7 +547,7 @@ A workflow in the public repository runs on every push to `main` and on every pu
 1. Lint, type check and the native test suite on Linux with Python 3.14.
 2. Build both targets with every base pinned by digest and `pip --require-hashes --only-binary=:all:` (a missing wheel for Alpine fails here, in the first hour, not at the defence).
 3. Start `core` with `--network none`, a read-only root, a dedicated user and no capabilities, and convert reference set 1 **inside** the container through the command line entry (`python -m converter convert`): the result must pass the gate and equal the stored expectation. A second start with a published port checks the HTTP path with a token: `healthz`, one conversion, the negative controls of the guard and of the token.
-4. Run the hostile corpus against the container. Run `GET /v1/selftest` in both network modes and assert what it reports.
+4. Run the hostile corpus against the container. Run `convert` under `--network none` and assert the form; with the port published assert what `GET /status` reports.
 5. Produce the SBOM from the final image, run the vulnerability and licence gates, attach the reports to the run.
 6. Push the image to the registry of the repository under the commit hash and sign it. The README names the image by digest.
 

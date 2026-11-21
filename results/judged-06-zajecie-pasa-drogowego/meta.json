@@ -86,123 +86,11 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
-      "candidate": "c6",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "nazwa_drogi_oraz_jej_nr",
-      "candidate": "c7",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "miejscowosc",
-      "candidate": "c8",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "numer_ewidencyjny_dzialki",
-      "candidate": "c9",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
       "code": "LABEL_RAW",
       "page": 1,
       "candidate": "c10",
       "evidence": [],
       "detail": "label kept as the paper's words: 'w celu wykonania'"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "w_celu_wykonania",
-      "candidate": "c10",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "dlugosc",
-      "candidate": "c12",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "szerokosc",
-      "candidate": "c13",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "razem",
-      "candidate": "c14",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "calkowita_powierzchnia_zajecia",
-      "candidate": "c36",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "termin_od",
-      "candidate": "c37",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "termin_do",
-      "candidate": "c38",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "liczba_dni",
-      "candidate": "c39",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "wykonawca_robot_bedzie",
-      "candidate": "c40",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
-      "candidate": "c41",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "LABEL_RAW",
@@ -213,27 +101,7 @@
     },
     {
       "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
-      "candidate": "c42",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "adres_zamieszkania",
-      "candidate": "c43",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "telefon",
-      "candidate": "c44",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
+      "detail": "17 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego, nazwa_drogi_oraz_jej_nr, miejscowosc, numer_ewidencyjny_dzialki, w_celu_wykonania, calkowita_powierzchnia_zajecia"
     },
     {
       "code": "SECTION_SPLIT",
