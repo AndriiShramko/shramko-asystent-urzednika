@@ -96,11 +96,11 @@ True only if: always (decision D12).
 
 ### 12. „Karta zakazuje modeli dostępnych tylko przez API. Jak korzystali Państwo z AI?”
 
-> Modele hostowane pisały, testowały i recenzowały kod, na co karta pozwala; w produkcie nie ma żadnego modelu, klucza ani wywołania sieciowego. Dowodem jest kontener uruchomiony bez sieci i punkt `GET /v1/selftest`.
+> Modele hostowane pisały, testowały i recenzowały kod, na co karta pozwala; w produkcie nie ma żadnego modelu, klucza ani wywołania sieciowego. Dowodem jest konwersja w kontenerze uruchomionym z `--network none` (polecenie 1 w README), a `GET /status` pokazuje `engine: "rules"`.
 
-*(Облачные модели писали, тестировали и проверяли код, что карточка разрешает; в продукте нет ни модели, ни ключа, ни сетевого вызова. Доказательство: контейнер, запущенный без сети, и точка `GET /v1/selftest`.)*
+*(Облачные модели писали, тестировали и проверяли код, что карточка разрешает; в продукте нет ни модели, ни ключа, ни сетевого вызова. Доказательство: конвертация в контейнере, запущенном с `--network none` (команда 1 в README), а `GET /status` показывает `engine: "rules"`.)*
 
-True only if: the offline run passed on the submitted image. Without the self-test endpoint say only the first sentence and show the offline run.
+True only if: the offline run (command 1 of the README) passed on the submitted image. If `GET /status` is not in the submitted image, drop the second half of the sentence.
 
 ### 13. „Jakie licencje mają zależności i jak czytają Państwo pliki DOC bez LibreOffice?”
 
