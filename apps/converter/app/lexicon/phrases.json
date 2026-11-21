@@ -1,0 +1,13 @@
+{
+  "lexicon": "phrases",
+  "about": "The noun phrase before a blank, put into the nominative (design 6.4.3 last paragraph: the phrase table comes first). Key: the cleaned lower-case words of the paper. A fragment that is not here keeps its raw words and gets the warning LABEL_RAW.",
+  "rows": [
+    {"phrase": "w miejscowości", "label": "Miejscowość", "source": "sets reference-01, judged-06", "date": "2026-11-21"},
+    {"phrase": "przy ulicy", "label": "Ulica", "source": "set reference-01", "date": "2026-11-21"},
+    {"phrase": "w obrębie", "label": "Obręb", "source": "set reference-01", "date": "2026-11-21"},
+    {"phrase": "nr ewidencyjny działki", "label": "Numer ewidencyjny działki", "source": "set reference-01", "date": "2026-11-21"},
+    {"phrase": "działka nr ewid", "label": "Numer ewidencyjny działki", "source": "set judged-06", "date": "2026-11-21"},
+    {"phrase": "w kwocie", "label": "Kwota", "source": "set reference-05", "date": "2026-11-21"},
+    {"phrase": "tel", "label": "Telefon", "source": "set judged-06", "date": "2026-11-21"}
+  ]
+}
