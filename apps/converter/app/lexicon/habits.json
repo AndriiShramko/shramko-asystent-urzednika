@@ -1,0 +1,25 @@
+{
+  "lexicon": "habits",
+  "about": "Paper habits (design 6.4.3): wording that decides what a place becomes or why it is left out. `habit` names the rule that reads the row. Patterns of the habits optional, required and strike_out hold no spaces on purpose: footnotes are matched with their whitespace removed, because readers split them.",
+  "rows": [
+    {"habit": "optional", "pattern": "nieobowiązkow|opcjonaln|fakultatywn", "source": "design 6.4.3 row 'a footnote that makes something optional'; sets reference-01, judged-09", "date": "2026-11-21"},
+    {"habit": "required", "pattern": "(?<!nie)obowiązkow|wymagan", "source": "design 6.4.3 'required when the paper marks it'", "date": "2026-11-21"},
+    {"habit": "strike_out", "pattern": "niepotrzebne\\s*skreślić|niewłaściwe\\s*skreślić|właściwe\\s*podkreślić", "source": "design 6.4.3 row 3; sets judged-04, judged-07", "date": "2026-11-21"},
+    {"habit": "date_place", "pattern": "^(data|dnia|miejscowość i data|miejscowość, data|miejscowość, dnia|data i miejscowość)$|, dnia$", "source": "design 6.4.3 row 'miejscowość, data'; sets reference-01, reference-05, judged-03, 04, 07", "date": "2026-11-21"},
+    {"habit": "signature_section", "pattern": "podpis", "source": "set judged-02 (8. Data i podpis wnioskodawcy)", "date": "2026-11-21"},
+    {"habit": "exclusive_option", "pattern": "^(tak|nie|brak|nie dotyczy|pies|suka|kobieta|mężczyzna)$", "source": "design 6.4.3 row 'tick boxes'; set judged-07", "date": "2026-11-21"},
+    {"habit": "exclusive_wording", "pattern": "zaznaczyć właściwą|właściwe zaznaczyć|zaznacz\\w* jedn|wybrać jedn", "source": "design 6.4.3 row 'tick boxes'", "date": "2026-11-21"},
+    {"habit": "multiple_wording", "pattern": "zaznacz\\w* wszystkie|więcej niż jedn", "source": "design 6.4.3 row 'tick boxes'", "date": "2026-11-21"},
+    {"habit": "computed", "pattern": "^(razem|suma|łącznie|ogółem)\\b", "source": "design 6.4.3 row 'printed arithmetic'; set judged-06", "date": "2026-11-21"},
+    {"habit": "attachments_section", "pattern": "^załączniki?\\b|informacja o załącznikach", "source": "design 6.4.3 row 'Załączniki'; sets judged-02, judged-08", "date": "2026-11-21"},
+    {"habit": "attachment_cover", "pattern": "opłat\\w+ skarbow\\w+ za pełnomocnictw", "role": "standard/oplata_skarbowa", "source": "design 5.3 example; set judged-02", "date": "2026-11-21"},
+    {"habit": "attachment_cover", "pattern": "pełnomocnictw", "role": "standard/pelnomocnictwo", "source": "design 5.3 example; set judged-02", "date": "2026-11-21"},
+    {"habit": "declaration", "pattern": "\\boświadczam\\b", "source": "design 6.4.3 row 'Oświadczam, że'; set judged-04", "date": "2026-11-21"},
+    {"habit": "fee", "pattern": "opłat\\w*[^.;]{0,80}?(\\d[\\d ]*(?:[,.]\\d{2})?)\\s*zł", "source": "design 6.4.3 last row; set judged-03", "date": "2026-11-21"},
+    {"habit": "furniture_title", "pattern": "^\\W*zał(ącznik|\\.)\\s*(nr|do)\\b", "source": "design 6.4.1; set judged-04", "date": "2026-11-21"},
+    {"habit": "addressee_section", "pattern": "organ\\w*,? do którego", "source": "design 6.4.1; set judged-08 (A)", "date": "2026-11-21"},
+    {"habit": "legal_section", "pattern": "^podstawa prawna", "source": "set judged-02 (6)", "date": "2026-11-21"},
+    {"habit": "acronym", "pattern": "^(PESEL|NIP|REGON|KRS|RODO|CEIDG|BHP|ePUAP)$", "source": "design 6.4.3 labels in sentence case", "date": "2026-11-21"},
+    {"habit": "function_word", "pattern": "^(w|we|z|ze|na|do|od|przy|wraz|oraz|a|i|o|tj|zam)\\b", "source": "design 6.4.3 'raw words with a flag'; sets reference-01, judged-06", "date": "2026-11-21"}
+  ]
+}
