@@ -10,7 +10,7 @@ Branch: wp/F2b-readers-sheets-doc   Stage now: core and integration done; next a
 - [x] sets tests `tests/readers/test_sheet_doc_sets.py` (sets, slow; 5 passed): every xlsx and ods reads, xlsx and ods of a set agree on sheet names and title, every OLE `.doc` has its title in the first 20 runs, the text-box docs of sets 2 and 8 give 65 and 651 runs
 - [x] negative control recorded (break and restore)
 - [x] integration: `tests/readers/test_sheet_doc_pipeline.py` (6 tests): xlsx, ods, doc go through `pipeline.run` with no lint ERROR; renamed OLE read by content; every set file xlsx/ods/doc through the pipeline (sets): no crash, no lint ERROR
-- [ ] acceptance stage: merge main, fast gate, review; drill 6 "one field per labelled merge" end to end needs the finder (WP-F3)
+- [x] acceptance stage: main merged (already up to date), fast gate run: 4 failures, all stale tests of other packages (see Requests to lead); readers suite green; drill 6 "one field per labelled merge" end to end needs the finder (WP-F3)
 - [ ] after merge (lead): READY_FORMATS and the formats-without-reader list (see Requests to lead)
 
 ## Decisions
@@ -33,15 +33,19 @@ Branch: wp/F2b-readers-sheets-doc   Stage now: core and integration done; next a
 | sets tests | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_sheet_doc_sets.py -q` | 5 passed | survey commit |
 | sets, scratch read | scratch script over 7 OLE .doc, 7 xlsx, 9 ods | all read, 0 refused, 0 crashes, <= 0.21 s each; xlsx and ods give equal runs and cells in 6 of 7 sets (set 3: 22 vs 23 runs); .doc title word at run index 1..12 | core commit |
 | pipeline, synthetic and sets | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_sheet_doc_pipeline.py -q` | 6 passed (3.4 s, sets present) | integration commit |
+| acceptance, readers suite | `bash tools/gate.sh py -m pytest apps/converter/tests/readers -q` | 84 passed (sets present) | 07184ed |
+| acceptance, fast gate | `bash tools/gate.sh fast` | 509 passed, 4 failed: tests/pipeline/test_pipeline.py::test_an_xlsx_has_no_reader_yet_and_is_not_answered_with_a_form, tests/shell/test_shell_http.py::test_a_format_without_a_reader_passes_the_guard_and_is_422[a.xlsx, a.ods, a.doc]; they assert 422 'jeszcze' for formats that now have readers | 07184ed |
 
 ## Negative control
 In `_sheet.py` the line that marks the squares under a merge as covered was replaced by `pass`: `test_xlsx_grid_merges_borders_and_sizes` and `test_ods_grid_spans_styles_and_trailing_repeats` failed (2 failed, 14 passed); restored with `git checkout`, 16 passed. The ODS million-row refusal is its own test (`test_negative_control_ods_row_repeated_a_million_times_is_refused_before_expanding`, TOO_LARGE in under 1 s).
 
 ## Requests to lead
+- Fast gate is red after this merge only because of four stale tests outside our paths: in apps/converter/tests/shell/test_shell_http.py drop xlsx, ods, doc from the parametrize of `test_a_format_without_a_reader_passes_the_guard_and_is_422` (keep jpg, png); in apps/converter/tests/pipeline/test_pipeline.py replace `test_an_xlsx_has_no_reader_yet...` by a test that an xlsx gives 200 with tabs. Do it in the merge commit.
 - After merge, `.github/workflows/image.yml`: `READY_FORMATS: "pdf docx"` -> `READY_FORMATS: "pdf docx xlsx ods doc"`.
 - `app/pipeline.py` has no fixed list: it refuses `fmt not in formats()`; the three readers register themselves, so no line changes there. The interim brief over sheet pages is untested.
 - Optional (WP-F1 owner): map a setting onto `ReadOptions.max_cells` (default 200,000) in `app/config.py::read_options`.
 
 ## Cost notes
+- acceptance: one gate run found the stale tests; all else was bookkeeping.
 - core: most turns went to the binary Word format (FIB, piece table, FKP pages) and to a byte-level test builder; a reference of MS-DOC offsets in the brief would save two turns.
 - integration: one turn on finding the pipeline's lint call shape; the pipeline needed no change, the readers register themselves.
