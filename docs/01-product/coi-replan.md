@@ -16,6 +16,14 @@ Three rules of the card overturn decisions we had recorded:
 
 What stays true and becomes more valuable: the geometry-first reading of forms, the measured archive of 661 real documents of one city as a robustness set, the batch idea (the card names batch processing as a scored convenience), the rule "AI proposes, a person approves", the ban on copyleft libraries (already our rule), open source and on-premise operation.
 
+## 1a. What the partner's materials added (read at 11:30)
+
+The partner's sample shows what "convert" means: a one-page paper form becomes a four-page e-service with 69 components, and about four fifths of them are standard sections from the partner's design standard that are not on the paper at all. From the paper come the title, the addressee, who may apply, the fields of the matter, attachments, declarations and fees. Details: [`../02-architecture/coi-json-format.md`](../02-architecture/coi-json-format.md).
+
+Consequences: (1) a library of standard sections plus a short list of questions about the paper gives most of the result, by rules, without a model; (2) every set holds the same form in eight formats, so the readers matter as much as the understanding; (3) the review screen should show the questions and their evidence, not sixty-nine components; (4) the materials contradict each other in eight places, which we list and ask about instead of guessing silently.
+
+**Recommendation on the task, changed after the materials: stay with the forms task.** Most of the score can be reached by rules written by the agents; nothing has to run that the owner's laptop cannot run; no paid model key is needed; our archive of 661 real forms is a test set nobody else has. The city's task stays the fallback (STATUS, "Waiting for the owner", item 1).
+
 ## 2. The owner's ideas, placed against the card
 
 | Idea (requirement) | Place now |
@@ -55,6 +63,7 @@ Each line names the criterion it serves. This is the list to build beyond the mi
 - Second step, switchable: a small open model served inside the container for wording tasks only (clean a label, name a section, decide the concept of a field, read a condition). Candidates already named in [`../02-architecture/ai-layer.md`](../02-architecture/ai-layer.md) §2 with their licences: an open Polish model. Size is chosen after the owner says which laptop is at the event; the licence of the weights is checked and written into the licence list before use.
 - Scans and photos: optical character recognition with an open engine plus line and box detection, then the same path. A vision model is a later option, only if the hardware allows.
 - The owner's wish for strong models is met where the card allows it: Claude Code writes, tests and reviews everything.
+- **Owner, 11:23: his laptop cannot run any model, and he would rather use cloud models for everything.** For this task that is not possible inside the product. Therefore the product at the event runs on rules only; the model step stays a switched-off interface. An open model on a server the owner rents, inside our own container, is a possible later step, only after a mentor confirms that it meets the rule (question 2 below).
 
 ## 5. Shape of the service
 
@@ -93,6 +102,11 @@ Whether the report may travel inside the answer or must be a second endpoint dep
 7. **Python 3.14: wymóg czy preferencja? A obraz Alpine?** *(3.14 и Alpine: требование или предпочтение?)*
 8. **Jak odebrać tokeny i do jakich modeli są?** *(Как получить токены и к каким они моделям?)*
 9. **Gdzie jest wzór umowy przeniesienia praw (załącznik nr 1)?** *(Где образец договора о передаче прав?)*
+10. **Schemat i opis mają klucz „repetingSectionGrid”, a przykładowy JSON i zapytania JSONata „repeatingSectionGrid”. Który jest poprawny przy imporcie?** *(В схеме и в образце ключ написан по-разному: какой правильный?)*
+11. **Jakie są dokładne nazwy słowników do pola „dictionaryName” (Województwo, Powiat, Gmina, Miejscowość, Numery kierunkowe)? W przykładzie są „Kraje” i „TERYT_DOWODOWY”.** *(Точные имена словарей?)*
+12. **W przykładowym JSON żadne pole nie ma walidatora REQUIRED. Czy mamy go ustawiać?** *(В образце нет обязательных полей: ставить ли REQUIRED?)*
+13. **Jak zapisać w JSON limit plików (liczba, rozmiar, formaty) i walidację wzorcem (regex)?** *(Как записать ограничения файлов и регулярное выражение?)*
+14. **Czy materiały do zadania możemy trzymać w publicznym repozytorium z rozwiązaniem?** *(Можно ли держать ваши материалы в открытом репозитории?)*
 
 ## 8. Order of value if time is short
 

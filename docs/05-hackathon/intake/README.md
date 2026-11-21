@@ -7,8 +7,8 @@ Read on 21 November 2026 between 11:10 and 11:25. These files are digests writte
 | Task "Cyfryzacja formularzy", Centralny Ośrodek Informatyki: full task and task regulations (two PDFs) | organisers' shared drive, folder of the task: <https://drive.google.com/drive/folders/1c-auiHyLjPMktJq0pZwWpfif9YcOvGpw> | [`coi-task-card.md`](coi-task-card.md) |
 | Task "Inteligentny asystent urzędnika", Miasto Bydgoszcz: full task and task regulations (two PDFs) | <https://drive.google.com/drive/folders/1TZVKTW6CrpSGFKe6yJjOS87w2ISnlsZo> | [`umb-task-card.md`](umb-task-card.md) |
 | All fifteen task folders | <https://drive.google.com/drive/folders/1Cpyv5YCocwynbLyma_Xj5Mu59S6aWzI1> | not digested |
-| **Working materials of the forms task** (sample forms, their JSON files, screenshots of a sample e-service, rules for designing electronic forms, dictionaries and initial data) | Discord of the event, channel of the task "Cyfryzacja formularzy", section "materiały-dodatkowe" (the owner's link: <https://discord.com/channels/1430883737486229536/1433228150623572038>) | **not read yet**: the browser session needs the owner's login. First job of whoever continues: get these files into `data/private/coi/` (git-ignored) and write `docs/02-architecture/coi-json-format.md` from them |
-| Test materials of the city's task (sample requests and answers, a draft of the calendar table) | handed out by the city's mentors as a QR code | not received yet |
+| **Working materials of the forms task**: one archive of documents and nine archives of forms (two reference sets with their JSON, seven sets to digitise) | Discord of the event, category "CYFRYZACJA FORMULARZY", channel `materiały-dodatkowe` (posted 21 November, 11:11) | read; the documents and reference set 1 are in [`data/coi/`](../../../data/coi/README.md); format described in [`docs/02-architecture/coi-json-format.md`](../../02-architecture/coi-json-format.md); eight archives still to download |
+| Test materials of the city's task: four folders ("Wyzwanie", "Schemat kalendarium", "Przykładowe wnioski i odpowiedzi", "Dokumenty i podstawy prawne") | linked in the Discord channel `materiały-dodatkowe` of the category "INTELIGENTNY ASYSTENT URZĘDNIKA": <https://drive.google.com/drive/folders/1EJJ9w8KbJdDQfAl8dlCSqIsft6JsNepd> | listed, not read (only needed if the owner switches to the city's task) |
 | Participant guide | <https://hacknation.pl/przewodnik-uczestnika> | facts below |
 
 ## Facts from the participant guide (read 21 November 2026)
@@ -22,8 +22,8 @@ Read on 21 November 2026 between 11:10 and 11:25. These files are digests writte
 
 | Whom | Where |
 |---|---|
-| Mentors of the forms task | the stand of Centralny Ośrodek Informatyki; the task's channel on Discord |
-| Experts of the city (one from Biuro Komunikacji Społecznej, one from Biuro Rady Miasta) | the stand of Bydgoszcz; the city task's channel on Discord |
+| Mentors of the forms task | the partner's stand and the mentor zone; they wear blue hoodies (their own message in the task channel, 11:17). Questions: Discord channel `cyfryzacja-formularzy`. A session can be booked through the channel `harmonogram-mentorów` of the same category |
+| Experts of the city (one from Biuro Komunikacji Społecznej, one from Biuro Rady Miasta) | the stand of Bydgoszcz; Discord channel `inteligentny-asystent-urzędnika`; booking through that category's `harmonogram-mentorów` |
 | Organisers | Discord channel `#zapytaj-organizatora`; kontakt@hacknation.pl |
 
 ## What changed because of the cards

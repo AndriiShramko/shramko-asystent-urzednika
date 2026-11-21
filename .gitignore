@@ -21,6 +21,7 @@ data/forms-cache/
 *.xls
 *.xlsx
 !docs/assets/**
+!data/coi/**
 !site/deck/*.pdf
 !site-formularze/deck/*.pdf
 

@@ -39,7 +39,7 @@ An agent edits only the paths of its own package. Everything not listed is lead-
 | `eval/**`, `results/**` | WP-F11 |
 | `docs/02-architecture/converter.md`, `LICENCES.md`, `tools/licence_check.py` | WP-F12 |
 | `apps/converter/app/export/**` | WP-F13 |
-| `contracts/coi/**`, `docs/02-architecture/coi-json-format.md`, `data/private/coi/**` (git-ignored) | WP-F0 (lead) |
+| `contracts/coi/**`, `docs/02-architecture/coi-json-format.md`, `data/coi/**`, `tools/coi_lint.py` | WP-F0 (lead) |
 | `tools/build_deck.py`, `docs/05-hackathon/presentation/deck/**`, `docs/assets/deck-document/**` | WP-P1 |
 | `README*`, `AGENTS.md`, `START_HERE.md`, `docs/**` except each package's own status file, `research/**` | lead |
 | `docs/03-plan/wip/WP-<id>.status.md` | the builder of that package |

@@ -1,0 +1,92 @@
+[
+ {
+  "file": "data/coi/materials/Dane inicjalne - materialy dodatkowe do zadania rozszerzającego (2).pdf",
+  "bytes": 127368,
+  "sha256_16": "95c55bb91f44a5db"
+ },
+ {
+  "file": "data/coi/materials/HackNation - Standardy i dobre praktyki projektowania formularzy.pdf",
+  "bytes": 899061,
+  "sha256_16": "125a149cc74803d3"
+ },
+ {
+  "file": "data/coi/materials/Hacknation - Słowniki  (1).docx",
+  "bytes": 18360,
+  "sha256_16": "d81043275e45a6b2"
+ },
+ {
+  "file": "data/coi/materials/importowanyPlikJsonSchemat (1).json",
+  "bytes": 5011,
+  "sha256_16": "6486974a7e6debb6"
+ },
+ {
+  "file": "data/coi/materials/OpisImportowanegoPlikuJSON (1).docx",
+  "bytes": 22855,
+  "sha256_16": "f6a1976fadf4d0b5"
+ },
+ {
+  "file": "data/coi/materials/Reguły techniczne konfiguracji formularzy i pól na formularzu - materiał do zadania obligatoryjnego  (2).docx",
+  "bytes": 47970,
+  "sha256_16": "4e71bb091a478168"
+ },
+ {
+  "file": "data/coi/materials/Wniosek o stwierdzenie nadpłaty podatku - wizualizacja formularza cyfrowego.docx",
+  "bytes": 546353,
+  "sha256_16": "8c0b29fcb2802cdf"
+ },
+ {
+  "file": "data/coi/materials/Wniosek o ustalenie numeru porządkowego nieruchomości – wizualizacja formularza po cyfryzacji .docx",
+  "bytes": 547316,
+  "sha256_16": "5d77a198afe8315d"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/konfiguracja_form_wniosekOUstalenieNumeruPorządkowegoNieruchomości (1).json",
+  "bytes": 97374,
+  "sha256_16": "6de4a1cc7f91f8ce"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości (1).png",
+  "bytes": 505304,
+  "sha256_16": "c50af8c2699794c8"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości – wizualizacja formularza po cyfryzacji .docx",
+  "bytes": 547316,
+  "sha256_16": "5d77a198afe8315d"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.doc",
+  "bytes": 44032,
+  "sha256_16": "0006c49c55facade"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.docx",
+  "bytes": 21883,
+  "sha256_16": "d26d86aea213ea09"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpeg",
+  "bytes": 777577,
+  "sha256_16": "340f304da52f1809"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpg",
+  "bytes": 550028,
+  "sha256_16": "60971995a203fc51"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.ods",
+  "bytes": 24611,
+  "sha256_16": "3f12eef510757599"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.pdf",
+  "bytes": 87588,
+  "sha256_16": "f728269466bdcb23"
+ },
+ {
+  "file": "data/coi/reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.xlsx",
+  "bytes": 12570,
+  "sha256_16": "b41d0eadb5696004"
+ }
+]

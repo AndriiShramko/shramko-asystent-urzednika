@@ -7,7 +7,8 @@ Rules of this track, on top of `AGENTS.md`:
 - **Nothing in the product calls out of the container.** No external API, no hosted model, no MCP client, no SaaS (C-TECH-NOEXT). A test in the gate starts the container without network and runs the conversion.
 - Python 3.14, FastAPI. Every dependency is open source and not copyleft; `tools/licence_check.py` fails the gate on GPL, AGPL, LGPL or an unknown licence. Model weights and OCR data are dependencies too.
 - Uploaded files live only in memory or in a temporary directory removed in a `finally` block; file content is never logged.
-- The partner's materials (their sample forms, JSON files, rules, dictionaries) stay in `data/private/coi/`, which is git-ignored. What we commit is our own description of the format and our own outputs.
+- The partner's materials are in [`data/coi/`](../../../data/coi/README.md), committed at the owner's instruction with a notice that they are not ours. Our description of their format is [`docs/02-architecture/coi-json-format.md`](../../02-architecture/coi-json-format.md): **read it before any package of this track.** It shows that about four fifths of a finished form are standard sections that are not on the paper.
+- **The product runs on rules. No language model is needed to produce a valid form**, and none runs at the event: the owner's laptop cannot run one (owner, 11:23) and a hosted one is forbidden. The model step of WP-F4 stays an interface with the switch off.
 - Module layout: `apps/converter/` (service), `apps/review-web/` (front end), `contracts/coi/` (schema and examples written by us), `eval/` (evaluation). One package owns one folder.
 
 | Id | Package | Depends on | Kind | Card |
@@ -16,8 +17,8 @@ Rules of this track, on top of `AGENTS.md`:
 | WP-F1 | Service shell: endpoint, guard, token, configuration, Docker, README | none | by spec | C-TECH |
 | WP-F2 | Readers: every input format to one page model | F1 | by spec | C-TECH-FMT |
 | WP-F3 | Field finder: places to fill, labels, groups, sections | F2 | think | C-MIN-1a |
-| WP-F4 | Meaning: concept, type, required, paper habits translated, thematic pages | F3, F0 | think | C-MIN-1c |
-| WP-F5 | Writer: the partner's JSON, validated; report | F0, F4 | by spec | C-MIN-1b |
+| WP-F4 | Understanding: the ten questions about a paper form (title, addressee, who may apply, fields of the matter, attachments, declarations, fee, what to drop) | F3, F0 | think | C-MIN-1a, 1c |
+| WP-F5 | Composer: library of standard sections plus the pages of the matter, written as the partner's JSON; report | F0, F4 | think | C-MIN-1b, 1c |
 | WP-F6 | Dictionaries and initial data; proposal of a new dictionary | F0, F4 | think | C-OPT-1, C-OPT-2 |
 | WP-F7 | Dependencies and dynamic flows | F4 | think | C-OPT-3 |
 | WP-F8 | Validation pack | F4 | by spec | C-OPT-6 |
@@ -28,15 +29,18 @@ Rules of this track, on top of `AGENTS.md`:
 | WP-F13 | Originality: agent-readable export; form family | F5 | by spec | originality |
 | WP-P1 | Presentation, film, submission texts | F11 | think | C-SUB |
 
-## WP-F0 — The partner's format (first hour, lead)
+## WP-F0 — The partner's format (mostly done on 21 November by the preparing session)
 
-1. Put every file from the task's Discord section "materiały-dodatkowe" into `data/private/coi/` and list it (name, size, SHA-256, what it is) in `data/private/coi/INDEX.md`.
-2. Write `docs/02-architecture/coi-json-format.md` in our words: every element of their JSON with its meaning, allowed values, required or optional, and one small example composed by us; the form-design rules as a numbered list; the dictionaries and initial data as a table (id, meaning, when to use).
-3. Write `contracts/coi/form.schema.json` (JSON Schema) from the samples and the rules. Every sample JSON must validate against it; **negative control:** a sample with one required element removed must fail.
-4. Pair the sample forms with their sample JSON files: `eval/golden.json` (paths inside `data/private/coi/`, no content).
-5. List what the samples do not explain; hand the list to the owner as questions for the mentors, in Polish, the same hour.
+Done: the materials and reference set 1 are in `data/coi/`; the format is described in `docs/02-architecture/coi-json-format.md`; `contracts/coi/form.schema.json` and `tools/coi_lint.py` exist, the partner's sample passes both and five negative controls fail (missing FINISH page, missing techName, unreachable page, a condition that points nowhere, the misspelled grid key).
 
-Acceptance: the four files exist; all sample JSON files validate; the negative control fails; the open questions are in `docs/05-hackathon/ONSITE-INTAKE.md`.
+Left for the lead:
+
+1. Add reference set 5 and the seven judged sets to `data/coi/` when the owner has downloaded them (`data/coi/README.md` says how); extend `INDEX.json`.
+2. Run the linter on the JSON of reference set 5; add to the format document whatever it shows that set 1 did not (repeating sections, checkboxes, dates, numbers are likely).
+3. `eval/golden.json`: for each reference set the eight input files and the expected JSON.
+4. The open points of coi-json-format §10 go to the mentors through the owner (questions in coi-replan §7).
+
+Acceptance: both reference JSON files pass the linter; `eval/golden.json` lists sixteen inputs and two expected outputs; every question has an answer or the note "no answer, we follow the sample".
 
 ## WP-F1 — Service shell
 
@@ -46,7 +50,7 @@ Acceptance: the image builds from a clean checkout and answers `healthz`; a vali
 
 ## WP-F2 — Readers
 
-One page model for all formats: pages with text runs (text, box, font size, bold), lines, rectangles, tables with cells, images, plus what the format itself declares (PDF form fields; content controls and legacy form fields in DOCX; data-validation lists, merged cells and comments in XLSX and ODS). PDF with a text layer: geometry and text. DOCX: structure read directly, and a rendering to pages for geometry. XLSX and ODS: the sheet grid is the layout. DOC: converted (the tool depends on the mentors' answer about its licence; until then behind a switch). JPG, PNG and PDFs without text: OCR with an open engine and Polish data, line and box detection on the image; every text run carries a confidence.
+Every set of the partner holds the same form in eight formats, and the new files at the defence may come in any of them: the eight must lead to the same result. One page model for all formats: pages with text runs (text, box, font size, bold), lines, rectangles, tables with cells, images, plus what the format itself declares (PDF form fields; content controls and legacy form fields in DOCX; data-validation lists, merged cells and comments in XLSX and ODS). PDF with a text layer: geometry and text. DOCX: structure read directly, and a rendering to pages for geometry. XLSX and ODS: the sheet grid is the layout. DOC: converted (the tool depends on the mentors' answer about its licence; until then behind a switch). JPG, PNG and PDFs without text: OCR with an open engine and Polish data, line and box detection on the image; every text run carries a confidence.
 
 Acceptance: for each of the eight extensions a fixture produces a page model with at least one text run and one candidate place; a broken file gives a 422 with a reason and no stack trace; the whole city archive (`data/forms-census.csv`, 661 documents) runs through the readers without an unhandled exception, with the count of failures and their reasons written to `eval/readers-archive.json`.
 
@@ -56,21 +60,32 @@ From the page model to candidate fields: dotted and underscored leaders, rows of
 
 Acceptance: on the residence form the finder recovers at least the share of the 31 hand-measured fields recorded in the status file (`data/form-descriptor.example.json` is the reference); on the partner's samples it finds at least the recorded share of the fields named in their JSON; **negative control:** an information sheet without places to fill yields zero fields and a warning, not invented fields.
 
-## WP-F4 — Meaning
+## WP-F4 — Understanding
 
-Rules first, in this order: dictionary of known labels (Polish, with variants) to a concept of the canonical list (`data/canonical-profile.schema.json` is the seed); type and requiredness from the concept, the wording and marks such as an asterisk; paper habits translated (table in coi-replan §3 row 2); sections assigned to thematic pages by the partner's design rules. Then, only if the switch is on, a small open model inside the container answers closed questions about wording the rules could not decide; its answer is validated against an enumeration and retried once, otherwise the rule result stays and a warning is written. The model never sees more than labels and headings of a blank form.
+From the candidates of WP-F3 to a **form brief**: the answers to questions D1–D10 of coi-json-format §8, each with its evidence (page, place, the words) and a confidence. The brief is a small JSON of our own (`contracts/coi/brief.schema.json`): title; addressee and whether it is an office or a body; who may apply; extra data about the applicant; the matter as sections with fields (label, type, options, required, hint); attachments; declarations and whether a data-protection clause exists; fee; what was dropped and why.
 
-Acceptance: with the model switched off the result still validates and every field has a type; the share of fields decided by rules alone is measured and reported; with the model on, the same forms give at least as many correctly typed fields on the golden pairs; **negative control:** a model answer outside the enumeration is rejected and logged.
+Rules, in this order: headings and the addressee block; applicant kinds from the wording of the applicant block ("imię i nazwisko", "nazwa", NIP, REGON, "pełnomocnik"); blanks inside sentences become fields whose label is the noun phrase before the blank put into the nominative (a small table of frequent phrases first, a lemmatiser with a permissive licence second, the raw words last and flagged); boxes in a row become one field; tick lists become RADIO, CHECKBOX or SELECT by the count and by wording such as "niepotrzebne skreślić"; type from the label (date, number, e-mail, phone, PESEL, NIP, REGON, postal code, document number); required unless a footnote or the wording says optional; "Załączniki" lists become uploads; "Oświadczam" paragraphs become consents; signature, place and date, "wypełnia urząd" go to the dropped list. Labels and hints are rewritten by rules of the partner's standard (sentence case, no legal references in the title, second person).
 
-## WP-F5 — Writer
+A model step exists only as an interface: `suggest(question, context) -> answer from an enumeration`. Its switch is off; with it off every question still gets an answer or an honest "not found".
 
-Compose the partner's JSON from the internal model, in their order and naming, and validate it against `contracts/coi/form.schema.json` before answering. The report (warnings with page and place, confidence per field, seconds, hash of the input, which steps used the model) travels as the format allows: inside the answer if their structure tolerates extra elements, otherwise from `GET /v1/forms/report/{id}` kept in memory for a few minutes. Deterministic output: the same file gives the same JSON.
+Acceptance: for reference set 1 the brief from each of the eight formats has the same title, addressee, applicant kinds and the four fields of the matter (images may differ in spelling of a label by at most the recorded edit distance); on reference set 5 the recorded share of expected fields is found; **negative control:** the data-protection clause on page two does not become fields.
 
-Acceptance: every golden form converts to a JSON that validates; the comparison with the partner's sample JSON is printed as fields matched, missing, extra; two runs on the same file are byte-identical; a form the readers could not fully read still answers 200 with warnings, or 422 when nothing was readable.
+## WP-F5 — Composer
+
+Turn a brief into the partner's JSON.
+
+1. **Library of standard sections** (`apps/converter/app/compose/library/`): one builder per section of coi-json-format §7, taken from the partner's sample as the template (texts, initial data, dictionaries, conditions), with the names as parameters. A test rebuilds every standard section of the sample and compares it with the sample, ignoring ids.
+2. **Pages of the matter** from the brief: thematic sections, one column, repeating sections where the paper has a table of equal rows, alternative pages only when a whole stage depends on an answer.
+3. Contact page, consent section, last page, flow links in order.
+4. Ids: UUID version 5 from the hash of the input file and the path of the component, so the same file always gives the same JSON. Grid and order by the conventions of §2. Conditions only through the builder of §5.
+5. Before answering, the result must pass `contracts/coi/form.schema.json` and `tools/coi_lint.py` (imported as a module); a failure is a 500 with the finding, never a broken JSON.
+6. Report beside the form: warnings with page and place, confidence per answer of the brief, what was dropped, seconds, hash of the input.
+
+Acceptance: for reference set 1 the output from each of the eight formats passes the linter and has the same pages, the same standard sections (by `techName`) and the four fields of the matter as the partner's JSON; a printed comparison lists matched, missing and extra components; two runs on the same file are byte-identical; a file that could not be read fully still gives a valid form with warnings, or 422 when nothing was readable.
 
 ## WP-F6 — Dictionaries and initial data
 
-Load the partner's dictionaries and initial data from configuration files derived in WP-F0. Link a field when its concept or its option list matches (exact concept first, then similarity of option texts above a threshold). Mark fields the state already knows about a logged-in person as initial data. When a group of options matches nothing, propose a new dictionary: a name, the entries, and where it was seen, in the report and, if their structure allows, in the JSON.
+The standard sections already carry their dictionaries and initial data (WP-F5). This package covers the fields of the matter and the extra data about the applicant: load the tables of coi-json-format §6 as configuration. Link a field when its concept or its option list matches (exact concept first, then similarity of option texts above a threshold). Mark fields the state already knows about a logged-in person as initial data. When a group of options matches nothing, propose a new dictionary: a name, the entries, and where it was seen, in the report and, if their structure allows, in the JSON.
 
 Acceptance: on the golden pairs the links agree with the partner's sample JSON at the recorded share; a made-up option list produces a proposal, not a wrong link; **negative control:** two similar but different dictionaries are not confused on the fixture written for it.
 

@@ -6,6 +6,7 @@
 - The forms task is a converter from a form file to the partner's JSON: analysis, the owner's ideas placed against the card, thirteen unstated pains with answers, model policy, risks, questions for mentors (`docs/01-product/coi-replan.md`).
 - Track F: fourteen work packages with acceptance lists and a clock (`docs/03-plan/work-packages/WP-F-forms-to-json.md`). Track B is parked for that task.
 - Fit of the city's card with Track A, gap by gap.
+- The partner's materials read: description of their JSON format, the standard sections, the ten questions a converter must answer about a paper form, eight contradictions in the materials (`docs/02-architecture/coi-json-format.md`); our stricter schema and `tools/coi_lint.py` with negative controls; the materials and reference set 1 in `data/coi/`.
 - Requirements R55–R58. New presentation concept "the deck is an official document that the product processes" (`docs/05-hackathon/presentation/concept-document-deck.md`).
 
 ## 0.3.0 — 2026-11-21 (during the event, after 11:00; the owner's fifth brief)

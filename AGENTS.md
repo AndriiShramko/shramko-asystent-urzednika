@@ -16,6 +16,7 @@ An assistant for clerks of a Polish city office. Module A handles access-to-publ
 | What the demo must show (owner's latest briefs: one visit, complete set; a door for residents' AI agents) | [`docs/01-product/one-visit-package.md`](docs/01-product/one-visit-package.md), [`docs/01-product/agent-door.md`](docs/01-product/agent-door.md) |
 | The published task cards (digests), where the mentors are | [`docs/05-hackathon/intake/`](docs/05-hackathon/intake/README.md) |
 | The forms task as published and how the plan changed | [`docs/01-product/coi-replan.md`](docs/01-product/coi-replan.md), [`docs/03-plan/work-packages/WP-F-forms-to-json.md`](docs/03-plan/work-packages/WP-F-forms-to-json.md) |
+| The partner's JSON format for the forms task, its rules, the standard sections | [`docs/02-architecture/coi-json-format.md`](docs/02-architecture/coi-json-format.md), materials in [`data/coi/`](data/coi/README.md) |
 | Your task | `docs/03-plan/work-packages/WP-<id>-*.md` |
 | Architecture, API, data, security, AI layer, forms engine | `docs/02-architecture/` |
 | Facts with sources | [`research/`](research/) (each file starts with a summary for builders) |
@@ -49,6 +50,7 @@ The build scaffold (work package WP-00) creates `tools/gate.sh fast|full`, `tool
 ```bash
 python tools/crawl_bydgoszcz_forms.py --help      # rebuild the forms catalogue
 node tools/export_research_jobs.js --help         # (maintenance) export research job prompts
+python tools/coi_lint.py FILE.json                # check a form JSON against the partner's schema and rules (forms task)
 ```
 
 ## Definition of done
