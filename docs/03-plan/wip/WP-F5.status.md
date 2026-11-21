@@ -11,7 +11,7 @@ Branch: wp/F5-composer   Stage now: core (done) -> integration
 - [x] One negative control recorded (see below)
 - [ ] Integration: the lead wires `app/config.py` and `app/pipeline.py` to `ComposeOptions` and `compose` (request 4)
 - [ ] Integration: replace `CONCEPT_VALIDATORS` by the table of WP-F8 and `compose/query.py` by the writer of WP-F7 when they exist; conditions inside repeating sections are theirs
-- [ ] Acceptance: `git merge --no-edit main`, fast gate again, evidence table refreshed on that commit
+- [x] Integration: `main` merged (already up to date), fast gate 329 passed, composer tests 63 passed, on f2f205b (own paths have nothing more to wire: app/config.py and app/pipeline.py are WP-F1's, request 4)
 - [ ] Acceptance: the "cheapest test" on the seven judged outputs (needs the briefs of WP-F4); today it runs on reference 5 only
 - [ ] Acceptance: briefs from WP-F4 instead of the hand-written fixtures for the two reference sets
 
@@ -64,3 +64,4 @@ On 57b0de9, `Names.unique` was made to return the slug without the uniqueness ch
 
 ## Cost notes
 - core: reading the two exports in full (about 12k tokens) and writing the library took the most; a committed, id-free digest of the standard sections (text and conditions per techName) would let the next stage skip the exports.
+- integration: nothing to wire inside owned paths, the stage was a merge and a gate run; the remaining items wait for WP-F4, F7, F8 and the lead's wiring.
