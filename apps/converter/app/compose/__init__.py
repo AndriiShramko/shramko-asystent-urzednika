@@ -57,6 +57,7 @@ CONCEPT_VALIDATORS = {"pesel": "PESEL", "nip": "NIP", "regon": "REGON", "zip_cod
                       "epuap": "EPUAP", "ade": "ADE", "id_card": "SERIAL_NUMBER_ID_CARD"}
 # Shapes that no export shows (skill rule 14): each use is a remark.
 INFERRED_SHAPES = ("DATEPICKER", "CHECKBOX", "INFO_SECTION")
+SINGLE_BOX_OPTION = "Tak"
 _NO_VALIDATION = ("TEXT_BLOCK", "INFO_SECTION", "CONSENT_SECTION")
 
 
@@ -198,7 +199,12 @@ def _brief_comp(f: BriefField) -> Comp:
     if f.type == "CONSENT_SECTION":
         return Comp(title="", consents=((doc(p(f.label)), f.required),), **common)
     validation = (("REQUIRED",) if f.required else ()) + ((CONCEPT_VALIDATORS[f.concept],) if f.concept in CONCEPT_VALIDATORS else ())
-    return Comp(title=f.label, html=doc(p(f.hint)) if f.hint else "", options=tuple(f.options), validation=validation,
+    options = tuple(f.options)
+    if f.type == "CHECKBOX" and not options:
+        # a single yes-or-no box (brief 1.1): the partner's grammar wants options, so the box is one option "Tak"
+        # under the question; no export shows a CHECKBOX, the shape is flagged INFERRED_SHAPE like every CHECKBOX
+        options = (SINGLE_BOX_OPTION,)
+    return Comp(title=f.label, html=doc(p(f.hint)) if f.hint else "", options=options, validation=validation,
                 search=True if f.type == "SELECT" and len(f.options) > 15 else None, **common)
 
 
@@ -212,8 +218,8 @@ def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark]) -> lis
     uploads = [a for a in brief.attachments if a.covered_by is None]
     if uploads:
         secs.append(Sec("matter/zalaczniki", "Załączniki", None, [
-            Comp(slug(a.label, fallback="zalacznik"), "FILE_UPLOADER", a.label, show=from_brief(a.show_if),
-                 validation=("REQUIRED",) if a.required else (), origin="paper") for a in uploads], origin="paper"))
+            Comp(a.key or slug(a.label, fallback="zalacznik"), "FILE_UPLOADER", a.label, show=from_brief(a.show_if),
+                 validation=("REQUIRED",) if a.required else (), origin="paper", brief_key=a.key) for a in uploads], origin="paper"))
     if brief.fee.status == "stated":
         quotes = [brief.fee.value] if brief.fee.value else [e.quote for e in brief.fee.evidence]
         secs.append(Sec("matter/oplata_za_wniosek", "Opłata", None, [
