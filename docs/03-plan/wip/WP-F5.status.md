@@ -3,11 +3,11 @@
 Branch: wp/F5-composer   Stage now: core (done) -> integration
 
 ## Status
-- [x] Library of standard sections cut from both exports, `Standard` parameters, presets `EXPORT_1`, `EXPORT_5` (core commit)
-- [x] `compose(brief, options) -> ComposeResult` in `apps/converter/app/compose/__init__.py`: pages, pagination, ids (D10), techNames (D7), HTML (D11), last page (D5), validators switch (D8), repeating style, origins and brief keys for the sidecar (core commit)
-- [x] D16 statutory representative (on by default), D17 reason of exemption (off by default), D18 sole trader on the entity path (core commit)
-- [x] Fixture briefs of reference sets 1 and 5 written by hand; synthetic briefs for the controls (core commit)
-- [x] Tests without the sets (57) and with the sets (6); fast gate green (core commit)
+- [x] Library of standard sections cut from both exports, `Standard` parameters, presets `EXPORT_1`, `EXPORT_5` (57b0de9)
+- [x] `compose(brief, options) -> ComposeResult` in `apps/converter/app/compose/__init__.py`: pages, pagination, ids (D10), techNames (D7), HTML (D11), last page (D5), validators switch (D8), repeating style, origins and brief keys for the sidecar (57b0de9)
+- [x] D16 statutory representative (on by default), D17 reason of exemption (off by default), D18 sole trader on the entity path (57b0de9)
+- [x] Fixture briefs of reference sets 1 and 5 written by hand; synthetic briefs for the controls (57b0de9)
+- [x] Tests without the sets (57) and with the sets (6); fast gate green (57b0de9)
 - [x] One negative control recorded (see below)
 - [ ] Integration: the lead wires `app/config.py` and `app/pipeline.py` to `ComposeOptions` and `compose` (request 4)
 - [ ] Integration: replace `CONCEPT_VALIDATORS` by the table of WP-F8 and `compose/query.py` by the writer of WP-F7 when they exist; conditions inside repeating sections are theirs
@@ -36,18 +36,18 @@ Branch: wp/F5-composer   Stage now: core (done) -> integration
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
-| Every standard section of both exports rebuilt, ids ignored | `bash tools/gate.sh py -m pytest apps/converter/tests/compose/test_compose_sets.py -q` | set 1: 15 sections, 49 components, 10 named tolerances; set 5: 15 sections, 48 components, 5 named tolerances | core commit |
-| Same pages, same standard sections, fields of the matter; printed comparison | same file | set 1: 4 of 4 matter fields matched, 0 missing, 0 extra, page title "Lokalizacja budynku" vs "Informacje o budynku" (named); set 5: 7 of 7, 0, 0, the two conditions equal | core commit |
-| Default options against the exports | same file | set 5: 73 matched, 0 missing, 3 extra (D16); set 1: 61 matched, 8 missing (wording variants, REGON, KRS, two techNames), 9 extra | core commit |
-| Two runs byte-identical | `... -m pytest apps/converter/tests/compose/test_compose_core.py -q` | 9 briefs | core commit |
-| One changed label changes that title and no id | same file | 1 title differs, 0 ids | core commit |
-| No page empty on any journey | same file | 27 forms (9 briefs x 3 option sets): 0 pages without fixed content; seven journeys and the zero-answer canary evaluated with JSONata on reference 5 | core commit |
-| Strict profile on every composed form | same file | 27 forms: schema and `coi_lint` strict, 0 errors; every condition parses | core commit |
-| Negative controls | same file | same title twice -> unique techNames; `<img src=x onerror=1>` -> text, 0 markup, 6 escaped copies; 100 fields -> 10 pages of 10 | core commit |
-| Fast gate | `bash tools/gate.sh fast` | 134 passed | core commit |
+| Every standard section of both exports rebuilt, ids ignored | `bash tools/gate.sh py -m pytest apps/converter/tests/compose/test_compose_sets.py -q` | set 1: 15 sections, 49 components, 10 named tolerances; set 5: 15 sections, 48 components, 5 named tolerances | 57b0de9 |
+| Same pages, same standard sections, fields of the matter; printed comparison | same file | set 1: 4 of 4 matter fields matched, 0 missing, 0 extra, page title "Lokalizacja budynku" vs "Informacje o budynku" (named); set 5: 7 of 7, 0, 0, the two conditions equal | 57b0de9 |
+| Default options against the exports | same file | set 5: 73 matched, 0 missing, 3 extra (D16); set 1: 61 matched, 8 missing (wording variants, REGON, KRS, two techNames), 9 extra | 57b0de9 |
+| Two runs byte-identical | `... -m pytest apps/converter/tests/compose/test_compose_core.py -q` | 9 briefs | 57b0de9 |
+| One changed label changes that title and no id | same file | 1 title differs, 0 ids | 57b0de9 |
+| No page empty on any journey | same file | 27 forms (9 briefs x 3 option sets): 0 pages without fixed content; seven journeys and the zero-answer canary evaluated with JSONata on reference 5 | 57b0de9 |
+| Strict profile on every composed form | same file | 27 forms: schema and `coi_lint` strict, 0 errors; every condition parses | 57b0de9 |
+| Negative controls | same file | same title twice -> unique techNames; `<img src=x onerror=1>` -> text, 0 markup, 6 escaped copies; 100 fields -> 10 pages of 10 | 57b0de9 |
+| Fast gate | `bash tools/gate.sh fast` | 134 passed | 57b0de9 |
 
 ## Negative control
-`Names.unique` made to return the slug without the uniqueness check: `test_two_sections_with_the_same_title_give_unique_technames` failed (the strict model refused the form: duplicate techNames). Restored with `git checkout -- apps/converter/app/compose/names.py`; the test passes again.
+On 57b0de9, `Names.unique` was made to return the slug without the uniqueness check (working tree only, never committed). `pytest apps/converter/tests/compose/test_compose_core.py -k "same_title or gate"`: 7 failed of 28, among them `test_two_sections_with_the_same_title_give_unique_technames` and the gate test on the briefs whose labels collide with the library. Restored with `git checkout -- apps/converter/app/compose/names.py`; all 63 composer tests pass again.
 
 ## Requests to lead
 1. Brief model: an optional page title (or heading level) on `MatterSection`. Today a matter page takes the title of its first section, so set 1 gives "Lokalizacja budynku" where the export says "Informacje o budynku".
