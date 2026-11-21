@@ -1,0 +1,34 @@
+{
+  "lexicon": "applicants",
+  "about": "Who may apply and what the standard sections already ask (design 6.4.2, 6.4.3 row 'applicant block'). table=wording: the wording that selects the party options and the capacities. table=section: headings of the applicant block. table=label: labels the standard sections cover, with the role of the section and, for a number, the concept and the party it is asked of. Patterns are tried on lower-case text, rows in file order.",
+  "rows": [
+    {"table": "wording", "signal": "person", "pattern": "\\bimi[ęe]\\b|\\bnazwisk", "source": "design 6.4.2 row 1", "date": "2026-11-21"},
+    {"table": "wording", "signal": "person", "pattern": "\\bpesel\\b", "source": "design 6.4.2 row 1", "date": "2026-11-21"},
+    {"table": "wording", "signal": "person", "pattern": "zamieszkania|zameldowania", "source": "design 6.4.2 row 1", "date": "2026-11-21"},
+    {"table": "wording", "signal": "entity", "pattern": "\\bnazwa\\b|siedzib", "source": "design 6.4.2 row 2", "date": "2026-11-21"},
+    {"table": "wording", "signal": "entity", "pattern": "\\bnip\\b|\\bregon\\b|\\bkrs\\b", "source": "design 6.4.2 row 2", "date": "2026-11-21"},
+    {"table": "wording", "signal": "entity", "pattern": "\\bfirm|\\bpodmiot", "source": "design 6.4.2 row 3; sets reference-05, judged-06", "date": "2026-11-21"},
+    {"table": "wording", "signal": "entity", "pattern": "klub\\w* sportow|wspólnot\\w* mieszkaniow|spółdzieln", "source": "design 6.4.2 row 6; sets judged-08, judged-09", "date": "2026-11-21"},
+    {"table": "wording", "signal": "pelnomocnik", "pattern": "pełnomocni", "source": "design 6.4.2; set judged-02", "date": "2026-11-21"},
+    {"table": "wording", "signal": "reprezentant", "pattern": "reprezent", "source": "design 6.4.2; set judged-09", "date": "2026-11-21"},
+    {"table": "wording", "signal": "przedstawiciel_ustawowy", "pattern": "przedstawiciel\\w* ustawow|opiekun\\w* prawn|\\brodzic", "source": "design 6.4.2 row 5; decision D16", "date": "2026-11-21"},
+
+    {"table": "section", "pattern": "dane pełnomocnika", "role": "standard/pelnomocnictwo", "source": "set judged-02 (2.4)", "date": "2026-11-21"},
+    {"table": "section", "pattern": "^wnioskodawc|dane\\b.{0,30}\\bwnioskodawc", "source": "sets judged-02, judged-07, judged-09", "date": "2026-11-21"},
+    {"table": "section", "pattern": "^dane identyfikacyjne$|^dane kontaktowe", "source": "sets judged-02, judged-08", "date": "2026-11-21"},
+    {"table": "section", "pattern": "dane podmiotu|dane składającego", "source": "set judged-08 (B)", "date": "2026-11-21"},
+    {"table": "section", "pattern": "^adres (zamieszkania|siedziby)", "source": "set judged-08 (B.3)", "date": "2026-11-21"},
+
+    {"table": "label", "pattern": "\\bpesel\\b", "role": "standard/twoje_dane", "concept": "pesel", "party": "self", "source": "design 6.4.3 applicant block", "date": "2026-11-21"},
+    {"table": "label", "pattern": "\\bnip\\b", "role": "standard/dane_podmiotu", "concept": "nip", "party": "entity", "source": "design 5.3 example; decision D18", "date": "2026-11-21"},
+    {"table": "label", "pattern": "\\bregon\\b", "role": "standard/dane_podmiotu", "concept": "regon", "party": "entity", "source": "design 6.4.2; decision D18", "date": "2026-11-21"},
+    {"table": "label", "pattern": "\\bkrs\\b", "role": "standard/dane_podmiotu", "concept": "krs", "party": "entity", "source": "design 6.4.2", "date": "2026-11-21"},
+    {"table": "label", "pattern": "telefon|^tel\\.?$", "role": "standard/dane_do_kontaktu", "source": "design 6.4.3: phone and e-mail go to 'Dane do kontaktu'", "date": "2026-11-21"},
+    {"table": "label", "pattern": "e-?mail|poczt\\w* elektroniczn", "role": "standard/dane_do_kontaktu", "source": "design 6.4.3", "date": "2026-11-21"},
+    {"table": "label", "pattern": "\\bimi[ęe]\\b|\\bnazwisk", "role": "standard/twoje_dane", "source": "design 6.4.3 applicant block", "date": "2026-11-21"},
+    {"table": "label", "pattern": "^wnioskodawca$", "role": "standard/twoje_dane", "source": "set reference-05", "date": "2026-11-21"},
+    {"table": "label", "pattern": "^nazwa\\b|nazwa firmy|nazwa pełna", "role": "standard/dane_podmiotu", "source": "design 6.4.2 row 2", "date": "2026-11-21"},
+    {"table": "label", "pattern": "^adres\\b|siedzib", "role": "standard/adres", "source": "design 6.4.3 applicant block", "date": "2026-11-21"},
+    {"table": "label", "pattern": "^(miejscowość|ulica|nr domu|numer domu|nr lokalu|numer lokalu|numer nieruchomości|kod pocztowy|poczta|kraj|województwo|powiat|gmina)\\b", "role": "standard/adres", "source": "sets judged-02, judged-07, judged-08", "date": "2026-11-21"}
+  ]
+}
