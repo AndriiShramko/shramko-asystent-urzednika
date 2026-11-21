@@ -28,7 +28,7 @@ Written by the first lead session of the build on 21 November 2026. [`STATUS.md`
 - **An agent that finds a fact about the partner's materials** (a typo in the exports, a wrong form name in a standard text) reports it; the lead adds a row to `docs/02-architecture/contradiction-docket.md`. These rows are slide material.
 - One worktree could not be removed (`.claude/worktrees/agent-a272afdf3fc7f8677`: permission denied, a process held it). Remove it after the reboot: `git worktree remove <path>`; then `git worktree prune`.
 
-### Learned by the second build lead (21 November, 16:10 to 17:30)
+### Learned by the second build lead (21 November, 16:10 to 17:04)
 
 - **`tools/lead/status_block.py` replaces everything from the "Running" line down to the "Budget, measured" line**, including the merged table and the open follow-ups. Edit STATUS with a small script or the file tool instead, and keep lines 1 to 70 true: the program lead's agents read them as the truth about the build.
 - **Take times from `date`.** The second lead's reports ran half an hour fast until the program lead noticed.
@@ -40,7 +40,7 @@ Written by the first lead session of the build on 21 November 2026. [`STATUS.md`
 
 ## 4. What comes next, in order
 
-1. (Second lead, 17:30) Merge WP-F3b and WP-F20e when they report; the rest of the order is in the STATUS handoff block, which wins over this list.
+1. (Second lead, 17:04) Merge WP-F3b and WP-F20e when they report; the rest of the order is in the STATUS handoff block, which wins over this list.
 2. WP-F4 (understanding: the brief) on top of the finder. Then a wiring stage: finder and understanding replace `app/interim.py`; `assemble_ledger` gets the inverse of `ComposeResult.brief_keys`; `UploadInfo` reaches the pipeline.
 3. In parallel, as slots allow: WP-F8 (validators), WP-F2c (images and OCR; Tesseract only in CI), WP-F7 (conditions from the paper's wording), WP-F6 (dictionaries, initial data, proposals), WP-F15 (accounting sidecar), WP-F16 (airlock and hostile corpus), WP-F9 with WP-F10 (one front end, two views).
 4. The open follow-ups of merged packages listed in STATUS (composer, readers, shell).
