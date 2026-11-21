@@ -25,6 +25,7 @@ dependencies = [
   "python-docx>=1.1.2",        # MIT
   "openpyxl>=3.1.5",           # MIT
   "olefile>=0.47",             # BSD-2-Clause
+  "xlrd==2.0.2",               # BSD-3-Clause; old .xls (BIFF), approved by the lead (D24, research/20)
   "nh3>=0.2.18",               # MIT
   "rapidfuzz>=3.10",           # MIT
   "simplemma>=1.1",            # MIT

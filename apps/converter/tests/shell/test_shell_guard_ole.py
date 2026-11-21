@@ -42,6 +42,6 @@ def test_a_docx_named_doc_is_read_as_docx(name):
 
 
 def test_the_other_swaps_stay_refused():
-    assert _code("a.xlsx", fx.docx()) == "TYPE_MISMATCH"
-    assert _code("a.doc", fx.legacy_workbook()) == "TYPE_MISMATCH"
-    assert _code("a.doc", fx.xlsx()) == "TYPE_MISMATCH"
+    assert _code("a.xlsx", fx.zip_of({"hello.bin": b"x"})) == "TYPE_MISMATCH"
+    assert _code("a.doc", fx.ole("Other")) == "TYPE_MISMATCH"
+    assert _code("a.doc", fx.zip_of({"hello.bin": b"x"})) == "TYPE_MISMATCH"

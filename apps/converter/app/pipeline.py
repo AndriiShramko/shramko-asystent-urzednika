@@ -86,6 +86,8 @@ def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
     """`filename` is not used: the format comes from the content, and a name must never reach a log."""
     fmt = _format_of(data, settings)
     if fmt not in formats():
+        if fmt == "heic":   # the reader comes with WP-F20f stage 1b; the user is never asked to re-save the file
+            raise ProblemError("UNREADABLE", "Ta instalacja nie ma dekodera HEIC.")
         label = KIND_LABEL.get(fmt, fmt)
         raise ProblemError("UNREADABLE", f"Ta wersja usługi nie potrafi jeszcze czytać tego formatu ({label}).")
     try:

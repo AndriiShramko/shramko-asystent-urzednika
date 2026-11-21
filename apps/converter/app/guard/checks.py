@@ -19,23 +19,23 @@ NAME_FORBIDDEN = set(";:><\\/|'*%$")
 # Direction overrides, embeddings, isolates and marks: a name must never reorder its own display.
 NAME_BIDI = set("‎‏؜‪‫‬‭‮⁦⁧⁨⁩")
 
-EXTENSIONS = ("pdf", "doc", "docx", "ods", "odt", "xlsx", "jpg", "jpeg", "png", "tif", "tiff", "bmp", "gif", "webp")
-KIND_OF_EXT = {"jpeg": "jpeg", "jpg": "jpeg", "tif": "tiff"}  # the other extensions are their own kind
-# Formats we recognise by content and refuse on purpose, with the reason shown to the person (WP-F20e).
-REFUSED_EXT = {
-    "heic": "heic", "heif": "heic",
-}
-HEIC_REASON = ("Zdjęcia HEIC/HEIF nie są obsługiwane (nie mamy dekodera na wolnej licencji). "
-               "Zapisz zdjęcie jako JPG (na telefonie: udostępnij lub eksportuj jako JPG) i wyślij ponownie.")
+EXTENSIONS = ("pdf", "doc", "docx", "ods", "odt", "xls", "xlsx", "rtf", "txt", "jpg", "jpeg", "png", "tif", "tiff", "bmp",
+              "gif", "webp", "heic", "heif")
+KIND_OF_EXT = {"jpeg": "jpeg", "jpg": "jpeg", "tif": "tiff", "heif": "heic"}  # the other extensions are their own kind
+# Content kinds a reader exists for (heic: stage 1b of WP-F20f). "zip" and "ole" are proofs of a container of no
+# known kind: they never count as "the content is exactly one known kind".
+READABLE_KINDS = frozenset({"pdf", "doc", "docx", "ods", "odt", "xls", "xlsx", "rtf", "txt", "jpeg", "png", "tiff",
+                            "bmp", "gif", "webp", "heic"})
 IMAGE_KINDS = ("jpeg", "png", "tiff", "bmp", "gif", "webp")
 PILLOW_FORMAT = {"jpeg": "JPEG", "png": "PNG", "tiff": "TIFF", "bmp": "BMP", "gif": "GIF", "webp": "WEBP"}
 HEIC_BRANDS = {b"heic", b"heix", b"hevc", b"hevx", b"heim", b"heis", b"hevm", b"hevs", b"mif1", b"msf1"}
+TEXT_OK_EXT = frozenset({"txt", "doc", "rtf", "xls"})   # kinds whose extension may hold plain text (WP-F20f)
 KIND_LABEL = {
     "pdf": "dokument PDF", "docx": "dokument DOCX", "xlsx": "arkusz XLSX", "ods": "arkusz ODS",
     "doc": "dokument Word (DOC)", "jpeg": "obraz JPEG", "png": "obraz PNG", "zip": "archiwum ZIP",
     "odt": "dokument ODT", "tiff": "obraz TIFF", "bmp": "obraz BMP", "gif": "obraz GIF", "webp": "obraz WEBP",
-    "heic": "zdjęcie HEIC/HEIF (zapisz je jako JPG)",
-    "ole": "plik OLE innego typu (na przykład stary arkusz)",
+    "heic": "zdjęcie HEIC/HEIF", "xls": "arkusz XLS", "rtf": "dokument RTF", "txt": "plik tekstowy",
+    "ole": "plik OLE innego typu",
 }
 ZIP_FORMATS = ("docx", "xlsx", "ods", "odt")
 MIME = {
@@ -51,6 +51,10 @@ MIME = {
     "bmp": {"image/bmp", "image/x-ms-bmp", "image/x-bmp"},
     "gif": {"image/gif"},
     "webp": {"image/webp"},
+    "xls": {"application/vnd.ms-excel", "application/x-msexcel", "application/excel"},
+    "rtf": {"application/rtf", "text/rtf", "text/richtext", "application/x-rtf"},
+    "txt": {"text/plain"},
+    "heic": {"image/heic", "image/heif", "image/heic-sequence", "image/heif-sequence"},
 }
 ZIP_MIME = {"application/zip", "application/x-zip-compressed"}
 NEUTRAL_MIME = {"", "application/octet-stream", "binary/octet-stream"}
@@ -75,6 +79,7 @@ class UploadInfo:
     sha256: str
     members: int | None = None
     macros: bool = False
+    warnings: tuple[str, ...] = ()   # Polish sentences for the sidecar: the extension disagreed with the content
 
     @property
     def name_hash(self) -> str:
@@ -101,8 +106,6 @@ def check_extension(name: str, strict: bool) -> tuple[str, str]:
     ext = name.rsplit(".", 1)[1].lower() if "." in name else ""
     if ext == "jpe" and not strict:
         return ext, "jpeg"
-    if ext in REFUSED_EXT:
-        raise ProblemError("EXTENSION", HEIC_REASON)
     if ext not in EXTENSIONS:
         raise ProblemError("EXTENSION", "Obsługiwane rozszerzenia: " + ", ".join(EXTENSIONS) + ".")
     return ext, ext
@@ -146,14 +149,19 @@ def _zip_kinds(zf: zipfile.ZipFile) -> set[str]:
     return out or {"zip"}
 
 
-def _ole_kind(data: bytes) -> str:
+def _ole_kind(data: bytes) -> set[str]:
     try:
         import olefile
 
         with olefile.OleFileIO(io.BytesIO(data)) as ole:
-            return "doc" if ole.exists("WordDocument") else "ole"
+            kinds = set()
+            if ole.exists("WordDocument"):
+                kinds.add("doc")
+            if ole.exists("Workbook") or ole.exists("Book"):   # BIFF8, BIFF5 (xlrd reads both)
+                kinds.add("xls")
+            return kinds or {"ole"}
     except Exception:  # noqa: BLE001 - a damaged compound file is "OLE of no known kind"
-        return "ole"
+        return {"ole"}
 
 
 def _embedded_in_ole(data: bytes) -> bool:
@@ -233,14 +241,44 @@ def sniff_kinds(data: bytes, settings: Settings | None = None) -> set[str]:
         kinds.add("webp")
     if data[:2] == b"BM" and len(data) >= 26 and struct.unpack_from("<I", data, 14)[0] in (12, 40, 52, 56, 64, 108, 124):
         kinds.add("bmp")
+    if data.startswith(b"{\\rtf"):
+        kinds.add("rtf")
     if data[4:8] == b"ftyp" and data[8:12] in HEIC_BRANDS:
         kinds.add("heic")
     if data.startswith(OLE_MAGIC):
-        kinds.add(_ole_kind(data))
+        kinds |= _ole_kind(data)
     if zipfile.is_zipfile(io.BytesIO(data)) and not _embedded_in_ole(data):
         zf = check_archive(data, settings)
         kinds |= _zip_kinds(zf)
+    if not kinds and decode_text(data) is not None:
+        kinds.add("txt")   # the fallback proof: text that no other proof claims
     return kinds
+
+
+def decode_text(data: bytes) -> tuple[str, str] | None:
+    """(text, encoding) when the bytes are plain text: UTF-8, UTF-16 with a byte-order mark, or cp1250; else None.
+
+    Plain text has no NUL byte (UTF-16 apart) and no control character besides tab, line feeds and form feed; cp1250
+    is tried last, since nearly any byte string without NUL decodes as a code page."""
+    if not data.strip():
+        return None
+    if data.startswith(b"\xef\xbb\xbf"):
+        tries = ("utf-8-sig",)
+    elif data.startswith((b"\xff\xfe", b"\xfe\xff")):
+        tries = ("utf-16",)
+    elif b"\x00" in data:
+        return None
+    else:
+        tries = ("utf-8", "cp1250")
+    for enc in tries:
+        try:
+            text = data.decode(enc)
+        except UnicodeDecodeError:
+            continue
+        if any((c < " " and c not in "\t\n\r\f") or "\x7f" <= c <= "\x9f" for c in text):
+            return None
+        return text, enc
+    return None
 
 
 def _check_image(kind: str, data: bytes, settings: Settings) -> None:
@@ -294,25 +332,30 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         raise too_large(settings)
 
     kinds = sniff_kinds(data, settings)
-    if ext == "doc" and kinds == {"docx"}:
-        # Measured on the partner's sets: two forms named .DOC hold a DOCX package (set 7 and reference 5). The
-        # content proof is exact, so the file is read as the DOCX it is; the caller sees kind docx, ext doc.
-        kind = "docx"
-    if kinds == {"heic"}:
-        raise ProblemError("TYPE_MISMATCH", HEIC_REASON)
+    warns: list[str] = []
     if len(kinds) > 1:
         raise ProblemError("TYPE_MISMATCH", "Plik spełnia dowody kilku formatów naraz (" + ", ".join(sorted(kinds)) + ").")
+    declared_kind = kind
+    if not kinds:
+        raise ProblemError("TYPE_MISMATCH", f"Rozszerzenie .{written}, a zawartość nie jest rozpoznanym formatem.")
     if kinds != {kind}:
-        actual = KIND_LABEL.get(next(iter(kinds)), "") if kinds else ""
-        what = f"a zawartość to {actual}" if actual else "a zawartość nie jest rozpoznanym formatem"
-        raise ProblemError("TYPE_MISMATCH", f"Rozszerzenie .{written}, {what}.")
+        actual = next(iter(kinds))
+        # Text is the weakest proof: it is read only where the person may well have sent text (a .doc or .xls that is
+        # really text or CSV); a "PDF" or an image that is plain text is a damaged file, and stays refused (hostile corpus).
+        if actual not in READABLE_KINDS or (actual == "txt" and declared_kind not in TEXT_OK_EXT):
+            what = f"a zawartość to {KIND_LABEL[actual]}" if actual in KIND_LABEL else "a zawartość nie jest rozpoznanym formatem"
+            raise ProblemError("TYPE_MISMATCH", f"Rozszerzenie .{written}, {what}.")
+        # The content is exactly one known kind (a .doc that holds RTF or a DOCX is the common case, measured on the
+        # partner's sets): the file is read as the kind it is and the sidecar says so (WP-F20f, D24).
+        warns.append(f"Rozszerzenie .{written} nie zgadza się z zawartością; plik odczytano jako {KIND_LABEL[actual]}.")
+        kind = actual
 
     if kind in IMAGE_KINDS:
         _check_image(kind, data, settings)
 
     if declared_type:
         mime = declared_type.split(";", 1)[0].strip().lower()
-        allowed = MIME[kind] | (ZIP_MIME if kind in ZIP_FORMATS else set())
+        allowed = MIME[kind] | MIME.get(declared_kind, set()) | (ZIP_MIME if kind in ZIP_FORMATS else set())
         if mime not in NEUTRAL_MIME and mime not in allowed:
             raise ProblemError("TYPE_MISMATCH", "Deklarowany typ części nie zgadza się z zawartością pliku.")
 
@@ -326,4 +369,4 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         if macros and settings.active_content == "strict":
             raise ProblemError("ACTIVE_CONTENT", "Plik zawiera makra, a ACTIVE_CONTENT=strict.")
     return UploadInfo(name=name, ext=ext, kind=kind, size=len(data), sha256=hashlib.sha256(data).hexdigest(),
-                      members=members, macros=macros)
+                      members=members, macros=macros, warnings=tuple(warns))

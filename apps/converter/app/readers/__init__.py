@@ -35,7 +35,8 @@ __all__ = ["read_document", "register", "register_hook", "hook", "formats", "Rea
 
 # The page-model contract (app.model.common.Format) names seven kinds; the formats added later are recorded under
 # the nearest one until the lead extends it (request in docs/03-plan/wip/WP-F20e.status.md). `reader` tells them apart.
-MODEL_FORMAT = {"tiff": "png", "bmp": "png", "gif": "png", "webp": "png", "odt": "docx"}
+MODEL_FORMAT = {"tiff": "png", "bmp": "png", "gif": "png", "webp": "png", "odt": "docx",
+                "rtf": "doc", "txt": "doc", "xls": "xlsx", "heic": "png"}   # WP-F20f: same request to the lead
 
 ReaderFn = Callable[[bytes, ReadOptions], ReadResult]
 

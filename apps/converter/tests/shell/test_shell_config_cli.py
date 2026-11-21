@@ -93,7 +93,7 @@ def test_convert_prints_the_form_to_standard_output(tmp_path, capsys):
 
 def test_convert_refuses_a_spoofed_file_with_exit_2_and_a_problem(tmp_path, capsys):
     src = tmp_path / "a.pdf"
-    src.write_bytes(fx.png())
+    src.write_bytes(bytes(3) + b"spoof")   # neither a known format nor text (WP-F20f: a PNG named .pdf is now read as PNG)
     assert cli.main(["convert", str(src)]) == 2
     captured = capsys.readouterr()
     assert captured.out == "" and json.loads(captured.err)["code"] == "TYPE_MISMATCH"

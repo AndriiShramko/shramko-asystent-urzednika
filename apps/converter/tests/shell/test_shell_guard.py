@@ -37,7 +37,7 @@ def test_upper_case_extension_is_accepted():
 
 # ---- extension --------------------------------------------------------------------------------------------------
 
-@pytest.mark.parametrize("name", ["a.txt", "a.exe", "noextension", "a.pdf.exe", "a."])
+@pytest.mark.parametrize("name", ["a.exe", "a.dll", "noextension", "a.pdf.exe", "a."])
 def test_wrong_extension(name):
     refused(name, fx.pdf(), "EXTENSION")
 
@@ -74,9 +74,9 @@ def test_missing_name():
 
 # ---- content proofs ---------------------------------------------------------------------------------------------
 
-def test_png_bytes_named_pdf():
-    e = refused("a.pdf", fx.png(), "TYPE_MISMATCH")
-    assert "PNG" in e.detail
+def test_png_bytes_named_pdf_are_read_as_png_with_a_warning():
+    info = inspect_upload("a.pdf", fx.png(), S)
+    assert info.kind == "png" and "obraz PNG" in info.warnings[0]
 
 
 def test_text_named_pdf_and_empty_file():
@@ -85,21 +85,21 @@ def test_text_named_pdf_and_empty_file():
 
 
 def test_pdf_without_end_marker():
-    refused("a.pdf", b"%PDF-1.4\n" + b"x" * 5000, "TYPE_MISMATCH")
+    refused("a.pdf", b"%PDF-1.4\n" + bytes(1) + b"x" * 5000, "TYPE_MISMATCH")   # not text either (a NUL byte)
 
 
 @pytest.mark.parametrize("data,name,actual", [
     (fx.docx(), "a.xlsx", "DOCX"), (fx.xlsx(), "a.ods", "XLSX"), (fx.ods(), "a.docx", "ODS"),
     (fx.docx(), "a.ods", "DOCX"), (fx.xlsx(), "a.docx", "XLSX"),
 ])
-def test_swapped_zip_suffixes_are_refused_by_content_not_as_a_generic_zip(data, name, actual):
-    e = refused(name, data, "TYPE_MISMATCH")
-    assert actual in e.detail and "ZIP" not in e.detail
+def test_swapped_zip_suffixes_are_read_by_content_with_a_warning(data, name, actual):
+    info = inspect_upload(name, data, S)   # WP-F20f: exactly one known kind is read as that kind
+    assert info.kind == actual.lower() and actual in info.warnings[0] and "ZIP" not in info.warnings[0]
 
 
-def test_legacy_workbook_named_doc():
-    e = refused("a.doc", fx.legacy_workbook(), "TYPE_MISMATCH")
-    assert "OLE" in e.detail
+def test_legacy_workbook_named_doc_is_read_as_xls_with_a_warning():
+    info = inspect_upload("a.doc", fx.legacy_workbook(), S)
+    assert info.kind == "xls" and "XLS" in info.warnings[0]
 
 
 def test_plain_zip_named_docx():

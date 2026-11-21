@@ -13,7 +13,7 @@ def test_pdf_and_docx_registered():
 
 def test_unknown_format_refused():
     with pytest.raises(ReaderError) as e:
-        read_document(b"abc", "txt")
+        read_document(b"abc", "nope")
     assert e.value.code == "UNSUPPORTED_FORMAT"
 
 
