@@ -1,5 +1,5 @@
 # WP-H4 the engine is always visible: status
-Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 02:30; state: running
+Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 03:02; state: running
 
 Branch: wp/H4-engine-visible   Stage now: core
 
@@ -17,7 +17,9 @@ Branch: wp/H4-engine-visible   Stage now: core
 - [x] fast gate on the merged tree: PASSED on 2af59a7
 - [x] `/status` brought back to its six keys when nothing is configured (this commit): `tools/ci/first_run.py` on main fixes them, and its test failed on 2af59a7
 - [x] the log lines reach the output of a real server (this commit): found by a smoke run on 127.0.0.1 that the logger `converter` had no handler, so neither the engine line nor the line per conversion was ever printed
-- [~] on this commit, started and not read yet: the fast gate, `tools/ci/tests`, the byte comparison of this head's code tree against main a7f2cee
+- [x] on e4fc776: byte comparison against main a7f2cee 158 of 158 and 79 of 79 (fake model configured); on 6115de9: `tools/ci/tests` 100 passed
+- [x] merge of main 2837867 (97af238), pushed
+- [~] on 97af238, started 02:55 and not read yet: the fast gate, `tools/ci/tests`, the byte comparison against main 2837867 (158 and 79)
 
 ## Decisions
 - `serve` gives the logger `converter` the server's own handler (a copy of uvicorn's log configuration with one
@@ -92,41 +94,49 @@ nothing of the control was committed.
    If the lead prefers no change in `tools/ci`, the other way is to drop the CLI line (one `print` in
    `app/cli.py`, one test); the header, `/status`, the log and the page do not depend on it.
 2. Documents (not mine), exact proposed text:
+     (Line numbers as on main 2837867, where `/v1/selftest` is already replaced by `GET /status`.)
    - `docs/05-hackathon/jury-qa-formularze.md:99`: "…w produkcie nie ma żadnego modelu, klucza ani wywołania
-     sieciowego. Dowodem jest kontener uruchomiony bez sieci i punkt `GET /v1/selftest`." becomes "…w produkcie
-     domyślnie nie działa żaden model: bez konfiguracji nie ma klucza ani wywołania sieciowego, a wynik powstaje z
-     samych reguł. Dowodem jest kontener uruchomiony bez sieci, nagłówek `X-Converter-Engine: rules` w każdej
-     odpowiedzi i punkt `GET /status`." (line 101, the Russian gloss, the same way.)
+     sieciowego. Dowodem jest konwersja w kontenerze uruchomionym z `--network none` (polecenie 1 w README), a
+     `GET /status` pokazuje `engine: "rules"`." becomes "…w produkcie domyślnie nie działa żaden model: bez
+     konfiguracji nie ma klucza ani wywołania sieciowego, a wynik powstaje z samych reguł. Dowodem jest konwersja w
+     kontenerze uruchomionym z `--network none` (polecenie 1 w README); każda odpowiedź ma nagłówek
+     `X-Converter-Engine: rules`, a `GET /status` pokazuje `engine: "rules"`." (line 101, the Russian gloss, the
+     same way). True today without "domyślnie" too; the word is needed from the day WP-H1 is merged.
    - `docs/03-plan/DECISIONS-forms-track.md` D12: "…A model step exists only as an interface that picks from an
      enumeration, switched off; no weights are shipped" becomes "…A model step is optional: `MODEL_STEP=auto` (the
      default) uses a model only when `MODEL_BASE_URL` is configured, and with nothing configured the output is
      byte-identical to the rules; the engine of every conversion is shown (`X-Converter-Engine`, `GET /status`); no
      weights are shipped".
-   - D13: "`GET /v1/selftest` reports the mode and proves it" becomes "`GET /status` names the engine and whether a
-     model is configured (by default none: nothing leaves the container)". D14, one line added: "Exception (owner,
-     21 Nov): an open model the operator configures by `MODEL_BASE_URL` may be called by the product's model step;
-     never by default, never with a key in the image."
+   - D14, one line added: "Exception (owner, 21 Nov): an open model the operator configures by `MODEL_BASE_URL`
+     may be called by the product's model step; never by default, never with a key in the image." D13 then needs
+     "by default" before "Nothing leaves the container".
    - `docs/02-architecture/converter-design.md:154`: "| `MODEL_STEP` | `auto` | `auto`: the model step runs when
      `MODEL_BASE_URL` is set and the step is built (WP-H1); `off`: rules only. With nothing configured nothing is
      loaded or called |", and three new rows `MODEL_BASE_URL`, `MODEL_NAME`, `MODEL_API_KEY_FILE` (or the
-     variable `MODEL_API_KEY`), all empty by default. Lines 88, 135, 499, 510, 550 still name `/v1/selftest`,
-     which does not exist; `GET /status` exists.
+     variable `MODEL_API_KEY`), all empty by default. Line 88 (`GET /status`): add "and, when a model is
+     configured, `model` with its name and host class". README configuration tables: the same four names.
 3. For WP-H1 (not built here, by the brief): the header `X-Converter-Model`, the page `GET /`, the probe, the
    state REFUSED, `meta.model` in the sidecar. H1 sets `engine.MODEL_STEP_BUILT = True`, refines
    `engine.model_state`, and emits MODEL_USED, MODEL_FALLBACK or MODEL_SKIPPED in the sidecar warnings.
 
 ## Left for the next stage
-Everything of the brief is built. Main a7f2cee is merged (b5d42f4; `config.py` holds both `required_policy` and the
-`model_*` fields, no conflict). Running when this was committed, results not read yet:
-1. `bash tools/gate.sh fast` on the merged tree. If it was cut: run it again, log to a file, read the tail.
-2. Byte proof after the merge, because main changed code under `apps/converter/app`: `git archive a7f2cee
-   apps/converter/app` against `git archive <this head> apps/converter/app`, both unpacked outside the tree and
-   put first on `sys.path`; the 158 items of `eval.chain.corpora` (`sets_items()`, `unseen_items(archive=<main
-   checkout>/data/archive)`, `hostile_items(<dir>)` built once) and the 9 synthetic fixtures; compare SHA-256 of
-   the canonical form and sidecar. The scratch script is not in git; this paragraph is its whole recipe.
-Checks passed: shell tests 258 passed on 937cb2a; byte proof 79 of 79 against 9e095ab on 937cb2a; `npm run build`
-and `npm test` 54 passed on 913f787; negative control on 913f787. Not yet passed on the merged tree: the fast gate,
-the byte proof against a7f2cee.
+Everything of the brief is built. Main 2837867 is merged (97af238; before it a7f2cee as b5d42f4). Under
+`apps/converter/app` the merged head differs from main 2837867 in five files only: `cli.py`, `config.py`,
+`engine.py` (new), `main.py`, `model/common.py`; `pipeline.py` and everything it imports are main's.
+Not done, and not possible on this laptop:
+1. The image workflow on this branch is expected RED until request 1 below is applied (stderr of `convert`).
+2. The band of the review page was not looked at in a real browser (the device check needs Playwright, which is
+   not a dependency): `npm install --no-save playwright`, then `node scripts/devices.mjs` as its header says; the
+   pictures in `apps/review-web/evidence/` are older and do not show the band.
+If a limit cut the last step, re-run on the head of this branch and write the results into "## Evidence":
+- `bash tools/gate.sh fast > <log> 2>&1` and `bash tools/gate.sh py -m pytest tools/ci/tests -q`;
+- the byte proof: `git archive 2837867 apps/converter/app` against `git archive <head> apps/converter/app`, both
+  unpacked outside the tree and put first on `sys.path` (assert `app.__file__`); for every item of
+  `eval.chain.corpora` (`sets_items()`, `unseen_items(archive=<main checkout>/data/archive)`,
+  `hostile_items(<dir>)` built once: 158 items) and the 9 synthetic fixtures drawn once: `inspect_upload`, then
+  `pipeline.run`; SHA-256 of the canonical form and sidecar (`json.dumps(…, ensure_ascii=False,
+  separators=(",", ":"))`); compare. The scratch script is not in git; this paragraph is its whole recipe.
+Checks passed and on which commit: see "## Evidence".
 
 ## Cost notes
 - core: the 5-hour limit cut the first session after 9 replies of reading; the lead saved the loose files.
