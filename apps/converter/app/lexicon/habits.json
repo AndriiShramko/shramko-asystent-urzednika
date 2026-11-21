@@ -3,7 +3,8 @@
   "about": "Paper habits (design 6.4.3): wording that decides what a place becomes or why it is left out. `habit` names the rule that reads the row. Patterns of the habits optional, required and strike_out hold no spaces on purpose: footnotes are matched with their whitespace removed, because readers split them.",
   "rows": [
     {"habit": "optional", "pattern": "nieobowiązkow|opcjonaln|fakultatywn", "source": "design 6.4.3 row 'a footnote that makes something optional'; sets reference-01, judged-09", "date": "2026-11-21"},
-    {"habit": "required", "pattern": "(?<!nie)obowiązkow|wymagan", "source": "design 6.4.3 'required when the paper marks it'", "date": "2026-11-21"},
+    {"habit": "conditional", "pattern": "\\b(je[śs]li|je[żz]eli|o ile|w przypadku)\\b", "source": "design 6.4.3 'optional when a footnote, a bracket or the standard says so'; coi-json-format section 10 item 2; set judged-09 ('jeśli różni się od adresu zameldowania'). Read by the composer only (compose/required.py), on the hint and at the start of a label; with spaces, unlike the habit optional", "date": "2026-11-21"},
+    {"habit": "required","pattern": "(?<!nie)obowiązkow|wymagan", "source": "design 6.4.3 'required when the paper marks it'", "date": "2026-11-21"},
     {"habit": "strike_out", "pattern": "niepotrzebne\\s*skreślić|niewłaściwe\\s*skreślić|właściwe\\s*podkreślić", "source": "design 6.4.3 row 3; sets judged-04, judged-07", "date": "2026-11-21"},
     {"habit": "date_place", "pattern": "^(data|dnia|miejscowość i data|miejscowość, data|miejscowość, dnia|data i miejscowość)$|, dnia$", "source": "design 6.4.3 row 'miejscowość, data'; sets reference-01, reference-05, judged-03, 04, 07", "date": "2026-11-21"},
     {"habit": "signature_section", "pattern": "podpis", "source": "set judged-02 (8. Data i podpis wnioskodawcy)", "date": "2026-11-21"},

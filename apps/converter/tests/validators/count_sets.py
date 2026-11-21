@@ -1,11 +1,12 @@
 """Count validators and REQUIRED on the task sets (local only; nothing of the sets is written into git).
 
-    bash tools/gate.sh py apps/converter/tests/validators/count_sets.py OUT.json [--all] [--off]
+    bash tools/gate.sh py apps/converter/tests/validators/count_sets.py OUT.json [--all] [--off] [--paper]
 
 One input per judged set, picked like `tools/lead/snapshot_results.py` (the PDF, else the DOCX); `--all` converts
-every readable file of every set (judged and reference). `--off` runs with VALIDATORS=off. OUT.json holds, per input:
-the techNames per validator, and for REQUIRED the basis the brief gave ("paper", "inferred", "substance", or
-"attachment" for an upload of the attachment list). The last line printed is a table of counts.
+every readable file of every set (judged and reference). `--off` runs with VALIDATORS=off; `--paper` with the
+composer's required policy "paper". OUT.json holds, per input: the techNames per validator, and for REQUIRED the
+basis the brief gave ("paper", "inferred", "substance", or "attachment" for an upload of the attachment list).
+The table printed last holds the counts.
 Compare two runs with:  ... count_sets.py --diff BEFORE.json AFTER.json
 """
 from __future__ import annotations
@@ -47,7 +48,7 @@ def measure(form: dict, sidecar: dict, brief) -> dict:
             "outside_the_list": foreign}
 
 
-def run(out: Path, every: bool, off: bool) -> None:
+def run(out: Path, every: bool, off: bool, policy: str | None = None) -> None:
     from app import pipeline
     from app.config import Settings
     from tools.coi_paths import sets
@@ -60,6 +61,11 @@ def run(out: Path, every: bool, off: bool) -> None:
         return seen[-1]
 
     pipeline.understand = keep
+    if policy:                          # the service has no switch for it yet: the option is set on its way to the composer
+        from dataclasses import replace
+
+        options = pipeline.compose_options
+        pipeline.compose_options = lambda s: replace(options(s), required_policy=policy)
     convert = pipeline.run
     settings = Settings.from_env({"AUTH_MODE": "off", **({"VALIDATORS": "off"} if off else {})})
     result: dict = {}
@@ -113,4 +119,4 @@ if __name__ == "__main__":
     if args and args[0] == "--diff":
         diff(Path(args[1]), Path(args[2]))
     else:
-        run(Path(args[0]), "--all" in args, "--off" in args)
+        run(Path(args[0]), "--all" in args, "--off" in args, "paper" if "--paper" in args else None)
