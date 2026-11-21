@@ -57,7 +57,7 @@ export const en: Dict = {
   'warnings.where': 'Place: page {page}',
   'warnings.detail': 'Text from the service (in Polish)',
   'warnings.unknown': 'A warning with a code this page does not describe yet. The text from the service is shown below.',
-  'warnings.times': '{n} times',
+  'warnings.times': '×{n}',
   'warnings.group': '{code} - {n}',
 
   'json.heading': 'The form as JSON',

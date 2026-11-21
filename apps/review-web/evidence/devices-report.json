@@ -1,0 +1,434 @@
+[
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "pl",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "pl",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "pl",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "en",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "en",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "en",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "es",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "es",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 375,
+  "lang": "es",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "pl",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "pl",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "pl",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "en",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "en",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "en",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "es",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "es",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 768,
+  "lang": "es",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "pl",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "pl",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "pl",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "en",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "en",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "en",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "es",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "es",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "chromium",
+  "width": 1280,
+  "lang": "es",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "pl",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "pl",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "pl",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "en",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "en",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "en",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "es",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "es",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 375,
+  "lang": "es",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "pl",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "pl",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "pl",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "en",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "en",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "en",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "es",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "es",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 768,
+  "lang": "es",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "pl",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "pl",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "pl",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "en",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "en",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "en",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "es",
+  "state": "idle",
+  "controls": 3,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "es",
+  "state": "result",
+  "controls": 12,
+  "findings": []
+ },
+ {
+  "engine": "firefox",
+  "width": 1280,
+  "lang": "es",
+  "state": "error",
+  "controls": 3,
+  "findings": []
+ }
+]

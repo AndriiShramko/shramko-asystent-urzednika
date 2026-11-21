@@ -59,7 +59,7 @@ export const pl = {
   'warnings.where': 'Miejsce: strona {page}',
   'warnings.detail': 'Treść z usługi (po polsku)',
   'warnings.unknown': 'Ostrzeżenie o kodzie, którego ta strona jeszcze nie opisuje. Treść z usługi jest pokazana poniżej.',
-  'warnings.times': '{n} razy',
+  'warnings.times': '×{n}',
   'warnings.group': '{code} — {n}',
 
   'json.heading': 'Formularz w formacie JSON',
