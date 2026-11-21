@@ -7,10 +7,10 @@ A push while a run of this branch is in progress CANCELS that run (workflow conc
 
 ## Status
 - [x] Stage 1 code: image environment (S3), sidecar check (V1), determinism under processor limits, hostile files; 40 unit tests (commit c97b2a5)
-- [~] Stage 1 CI run: pushed c97b2a5 on 21 Nov; waiting with `bash tools/gate.sh py tools/ci/wait_run.py c97b2a5e20badbcfdc3aa65bf380b1933cfec3c2 --timeout 1500` (log `%TEMP%/f20i_run1.log`); run id not known yet
-- [x] Stage 2: `wp/F-service-fixes` merged at dc77011 (its items 1 to 8 checked, acceptance open) (merge commit 1ae882e)
-- [x] Stage 2 code: `tools/ci/first_run.py` called by `container_check.py`; 12 unit tests, three of them the same first run against the native service (this commit)
-- [ ] Stage 2 CI run green for both targets (run id here)
+- [x] Stage 1 CI run GREEN on c97b2a5: actions/runs/44953569833 (native, image core, image plus all success; container check 57 passed, 0 failed in each target)
+- [x] Stage 2: `wp/F-service-fixes` merged at dc77011 (merge commit 1ae882e); then main merged twice, last at 27b2621, which holds the lead's merge 9e095ab of the same branch (merge commit 2c30940, documents only on top of 16582c5)
+- [x] Stage 2 code: `tools/ci/first_run.py` called by `container_check.py`; 12 unit tests, three of them the same first run against the native service (commit 4e2ba15; log tool `tools/ci/job_log.py` in 6d50964)
+- [~] Stage 2 CI run: pushed the head named in the next status commit; waiting with `wait_run.py <hash> --timeout 1500` (it returns after 540 s at most: exit 2 means call again)
 - [ ] One recorded RED run on a throw-away commit (plan: `ENV AUTH_MODE=jwt` baked into the Dockerfile, so the first run exits 3), then the fix
 - [ ] Final run of the branch head green for both targets; digests recorded
 
@@ -33,7 +33,10 @@ A push while a run of this branch is in progress CANCELS that run (workflow conc
 | Fast gate before the first push | `bash tools/gate.sh fast` | 781 passed, 3 skipped, exit 0 (8 min) | c97b2a5 |
 | C.UTF-8 exists in both bases | probe of `container_check.PROBE` in a local core image with `-e`; `docker run python:3.14-slim-trixie@sha256:9aaa47...` | see Decisions (locale) | c97b2a5 |
 | Hostile files refused natively | part of the unit tests (8 files, exit 2, about 1 s each) | passed | c97b2a5 |
-| First run natively, no configuration | `bash tools/gate.sh py -m pytest tools/ci/tests/test_first_run.py tools/ci/tests/test_image_checks.py -q` | 52 passed in 49 s | merge 1ae882e plus this commit's files |
+| First run natively, no configuration | `bash tools/gate.sh py -m pytest tools/ci/tests/test_first_run.py tools/ci/tests/test_image_checks.py -q` | 52 passed in 49 s | 4e2ba15 |
+| Stage 1 in CI, both targets | `bash tools/gate.sh py tools/ci/job_log.py c97b2a5e20badbcfdc3aa65bf380b1933cfec3c2 --job "image ("` | actions/runs/44953569833: core 57 passed 0 failed, plus 57 passed 0 failed. Locale: core (musl) `C.UTF-8;C;C;C;C;C`, plus (glibc) `C.UTF-8`, both codeset UTF-8, offset +0000. Determinism: PNG form sha256 8a400f2edda6 and sidecar f71fc4c4a07a, PDF form 5c101d40c2fd and sidecar 0494608a8ab6, each the same in 4 conversions AND the same in core and plus. Hostile: 8 of 8 refused on the command line (exit 2, 0.6 to 1.6 s) and over HTTP (413, 415, 422, at most 0.1 s), healthz 200 after. Sidecars of 21 fixtures valid; 10 rules of the full contract not met | c97b2a5 |
+| Fast gate before the second push | `bash tools/gate.sh fast` | `gate: fast PASSED on 16582c5` (log `%TEMP%/f20i_fast2.log`); after it only `tools/ci/**` and documents changed: `bash tools/gate.sh py -m pytest tools/ci/tests -q` 100 passed in 209 s, lint selection of the gate clean on `tools/ci` | 16582c5, then 6d50964 |
+| The slow file really is slow | one local container of an older core image, `convert /in/skan.pdf` (40 pages, 52599 bytes) | 121 s on the laptop, about 3 s a page; the command line has no time limit | local image 18892d084c8e |
 
 ## Negative control
 Unit level (in `tools/ci/tests/test_image_checks.py`, `test_first_run.py`): a broken sidecar (8 kinds), a changed image variable (5), a refused locale, wrong offset, differing bytes between runs, a hostile answer that is a form, a traceback, a 500 plain text, a hang, a first pair with one 429 or different bytes, exit 1 instead of 3 or 4, a 200 instead of 504: each makes its check report a problem. The recorded RED CI run comes next.
