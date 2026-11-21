@@ -1,0 +1,648 @@
+{
+  "description": "Readers over every input file of the nine task sets (WP-F2). Paths are relative to tools.coi_paths.coi_dir(); counts only, no content. Written by python -m app.readers.survey.",
+  "readers": [
+    "docx",
+    "pdf"
+  ],
+  "summary": {
+    "no_reader": 52,
+    "read": 17
+  },
+  "files": [
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości (1).png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.flow",
+      "pages": 1,
+      "origins": [
+        "flow"
+      ],
+      "runs": 34,
+      "runs_with_box": 0,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.009
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 2,
+      "origins": [
+        "native"
+      ],
+      "runs": 77,
+      "runs_with_box": 77,
+      "lines": 4,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.31
+    },
+    {
+      "set": "reference-01-numer-porzadkowy",
+      "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.DOC",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.flow",
+      "pages": 1,
+      "origins": [
+        "flow"
+      ],
+      "runs": 33,
+      "runs_with_box": 0,
+      "lines": 0,
+      "rects": 0,
+      "tables": 1,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.008
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.JPG",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.ODS",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PDF",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 1,
+      "origins": [
+        "native"
+      ],
+      "runs": 45,
+      "runs_with_box": 45,
+      "lines": 80,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.086
+    },
+    {
+      "set": "reference-05-nadplata-podatku",
+      "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PNG",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.native",
+      "pages": 2,
+      "origins": [
+        "native"
+      ],
+      "runs": 65,
+      "runs_with_box": 65,
+      "lines": 506,
+      "rects": 106,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.094
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 2,
+      "origins": [
+        "native"
+      ],
+      "runs": 70,
+      "runs_with_box": 70,
+      "lines": 256,
+      "rects": 3,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.131
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-02-zwrot-oplaty-skarbowej",
+      "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.flow",
+      "pages": 1,
+      "origins": [
+        "flow"
+      ],
+      "runs": 27,
+      "runs_with_box": 0,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.006
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 1,
+      "origins": [
+        "native"
+      ],
+      "runs": 37,
+      "runs_with_box": 37,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.033
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-03-wydanie-zaswiadczenia",
+      "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.flow",
+      "pages": 1,
+      "origins": [
+        "flow"
+      ],
+      "runs": 29,
+      "runs_with_box": 0,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.005
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 1,
+      "origins": [
+        "native"
+      ],
+      "runs": 42,
+      "runs_with_box": 42,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.052
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-04-wynajecie-swietlicy",
+      "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.flow",
+      "pages": 1,
+      "origins": [
+        "flow"
+      ],
+      "runs": 53,
+      "runs_with_box": 0,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.009
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 2,
+      "origins": [
+        "native"
+      ],
+      "runs": 149,
+      "runs_with_box": 149,
+      "lines": 1,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.174
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-06-zajecie-pasa-drogowego",
+      "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-07-psy-rasy-agresywne",
+      "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.DOC",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-07-psy-rasy-agresywne",
+      "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPE",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-07-psy-rasy-agresywne",
+      "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPG",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-07-psy-rasy-agresywne",
+      "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.ODS",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-07-psy-rasy-agresywne",
+      "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PDF",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 2,
+      "origins": [
+        "native"
+      ],
+      "runs": 139,
+      "runs_with_box": 139,
+      "lines": 127,
+      "rects": 10,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.289
+    },
+    {
+      "set": "judged-07-psy-rasy-agresywne",
+      "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PNG",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.native",
+      "pages": 6,
+      "origins": [
+        "native"
+      ],
+      "runs": 651,
+      "runs_with_box": 651,
+      "lines": 1048,
+      "rects": 307,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.345
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 6,
+      "origins": [
+        "native"
+      ],
+      "runs": 386,
+      "runs_with_box": 386,
+      "lines": 1134,
+      "rects": 177,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.873
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-08-deklaracja-odpady",
+      "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.doc",
+      "format": "doc",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.docx",
+      "format": "docx",
+      "status": "read",
+      "reader": "docx.flow",
+      "pages": 16,
+      "origins": [
+        "flow"
+      ],
+      "runs": 267,
+      "runs_with_box": 0,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.047
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpeg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpg",
+      "format": "jpeg",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.ods",
+      "format": "ods",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.pdf",
+      "format": "pdf",
+      "status": "read",
+      "reader": "pdf.native",
+      "pages": 16,
+      "origins": [
+        "native"
+      ],
+      "runs": 493,
+      "runs_with_box": 493,
+      "lines": 0,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [],
+      "seconds": 0.741
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.png",
+      "format": "png",
+      "status": "no_reader"
+    },
+    {
+      "set": "judged-09-stypendium-sportowe",
+      "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.xlsx",
+      "format": "xlsx",
+      "status": "no_reader"
+    }
+  ]
+}
