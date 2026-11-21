@@ -1,0 +1,47 @@
+{
+  "brief_version": 1,
+  "input": {"sha256": "5555555555555555555555555555555555555555555555555555555555555555", "format": "pdf"},
+  "title": {"status": "stated", "value": "Wniosek o stwierdzenie nadpłaty podatku",
+            "evidence": [{"page": 1, "quote": "WNIOSEK"}, {"page": 1, "quote": "o stwierdzenie nadpłaty podatku"}]},
+  "addressee": {"status": "stated", "kind": "office", "name": "Urząd Gminy Ulan-Majorat",
+                "evidence": [{"page": 1, "quote": "Urząd Gminy"}, {"page": 1, "quote": "Ulan-Majorat"}]},
+  "applicants": {"status": "stated", "self": true, "other_person": true, "entity": true,
+                 "capacities": ["pelnomocnik", "reprezentant"],
+                 "evidence": [{"page": 1, "quote": "Nazwisko i imię/Nazwa firmy"},
+                              {"page": 1, "quote": "podpis wnioskodawcy lub osoby upoważnionej"}]},
+  "applicant_extras": [{"concept": "pesel", "party": "self"}, {"concept": "nip", "party": "entity"}],
+  "matter": [
+    {"title": "Informacje o nadpłacie", "role": "matter/informacje_o_nadplacie", "fields": [
+      {"key": "podatek", "label": "Podatek, którego dotyczy nadpłata", "type": "TEXT_FIELD", "required": true,
+       "required_basis": "substance", "evidence": [{"page": 1, "quote": "(rodzaj podatku)"}]},
+      {"key": "kwota", "label": "Kwota", "type": "NUMBER", "concept": "amount_pln", "required": true, "required_basis": "substance",
+       "evidence": [{"page": 1, "quote": "w kwocie"}]},
+      {"key": "uzasadnienie", "label": "Uzasadnienie", "type": "TEXTAREA", "required": true, "required_basis": "substance",
+       "hint": "Uzasadnij dlaczego Twoim zdaniem powstała nadpłata i z czego wynika jej wysokość.",
+       "evidence": [{"page": 1, "quote": "Uzasadnienie:"}]}
+    ]},
+    {"title": "Rozliczenie nadpłaty", "role": "matter/rozliczenie_nadplaty", "fields": [
+      {"key": "sposob_rozliczenia", "label": "Wybierz, co mamy zrobić z nadpłatą", "type": "RADIO",
+       "options": ["Zaliczyć na poczet przyszłego zobowiązania podatkowego", "Zwrócić przelewem na rachunek bankowy"],
+       "required": true, "required_basis": "substance", "evidence": [{"page": 1, "quote": "Kwotę nadpłaty proszę:"}]},
+      {"key": "nazwa_podatku", "label": "Nazwa podatku", "type": "TEXT_FIELD",
+       "show_if": {"field": "sposob_rozliczenia", "is": "Zaliczyć na poczet przyszłego zobowiązania podatkowego"},
+       "evidence": [{"page": 1, "quote": "1) zaliczyć na poczet przyszłego zobowiązania podatkowego z tytułu"}]},
+      {"key": "numer_rachunku", "label": "Numer rachunku", "type": "TEXT_FIELD", "concept": "nrb",
+       "show_if": {"field": "sposob_rozliczenia", "is": "Zwrócić przelewem na rachunek bankowy"},
+       "evidence": [{"page": 1, "quote": "2) zwrócić przelewem na wskazany rachunek"}]}
+    ]},
+    {"title": "Korekta deklaracji", "role": "matter/korekta_deklaracji", "fields": [
+      {"key": "plik_deklaracji", "label": "Plik deklaracji podatkowej", "type": "FILE_UPLOADER",
+       "evidence": [{"page": 1, "quote": "1) korekta deklaracji"}]}
+    ]}
+  ],
+  "declarations": {"consents": [], "clause": {"status": "not_found"}},
+  "fee": {"status": "not_found"},
+  "legal_basis": {"status": "stated", "evidence": [{"page": 1, "quote": "Na podstawie art. 75 ustawy z dnia 29 sierpnia 1997 r. - Ordynacja podatkowa"}]},
+  "dropped": [
+    {"what": "Ulan-Majorat, dnia", "reason": "SIGNATURE_AND_DATE", "page": 1},
+    {"what": "Wnioskodawca: nazwisko i imię / nazwa firmy, adres, PESEL, NIP", "reason": "COVERED_BY_STANDARD", "page": 1},
+    {"what": "podpis wnioskodawcy lub osoby upoważnionej", "reason": "SIGNATURE_AND_DATE", "page": 1}
+  ]
+}
