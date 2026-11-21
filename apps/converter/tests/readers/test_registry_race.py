@@ -78,6 +78,57 @@ def test_a_failed_import_is_tried_again_not_left_half_done(monkeypatch):
     assert readers.formats() == full
 
 
+def test_pdfium_renders_one_page_at_a_time(monkeypatch):
+    """R4: PDFium is not thread-safe, so the render of a textless PDF page is behind one lock of the process."""
+    import pypdfium2
+    from PIL import Image
+
+    from app.readers import image as image_reader
+
+    count = {"now": 0, "peak": 0}
+    guard = threading.Lock()
+
+    class FakePage:
+        def get_size(self) -> tuple[float, float]:
+            return 72.0, 72.0
+
+        def render(self, scale: float):
+            with guard:
+                count["now"] += 1
+                count["peak"] = max(count["peak"], count["now"])
+            time.sleep(0.05)
+            with guard:
+                count["now"] -= 1
+            return SimpleNamespace(to_pil=lambda: Image.new("RGB", (20, 20), "white"))
+
+    class FakeDocument:
+        def __init__(self, data: bytes) -> None:
+            pass
+
+        def __getitem__(self, index: int) -> FakePage:
+            return FakePage()
+
+        def close(self) -> None:
+            pass
+
+    monkeypatch.setattr(pypdfium2, "PdfDocument", FakeDocument)
+    monkeypatch.setattr(image_reader, "read_strip", lambda grey, number, ids, options, unit: (grey.size, []))
+    start = threading.Barrier(4)
+    done: list = []
+
+    def render() -> None:
+        start.wait(10)
+        done.append(image_reader.textless_pdf_page(b"", 0, 1, readers.Ids(), readers.ReadOptions()))
+
+    threads = [threading.Thread(target=render) for _ in range(4)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(30)
+    assert len(done) == 4 and all(size == (20, 20) for size, _ in done)
+    assert count["peak"] == 1, "two PDFium renders ran at the same time"
+
+
 def _pdf() -> bytes:
     from reportlab.pdfgen import canvas
 

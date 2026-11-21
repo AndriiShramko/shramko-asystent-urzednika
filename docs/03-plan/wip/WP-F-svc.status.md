@@ -13,7 +13,7 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 - [x] 4. R3 catch-all: unexpected exception and request validation as problem JSON; batch stream continues  (6349e8d)
 - [x] 5. J3 `GET /status`
 - [x] 6. J2 `convert --out` that cannot be written: one line, exit 4
-- [ ] 7. R4 PDFium lock; robust time-limit test
+- [x] 7. R4 PDFium lock (test: four threads, one render at a time); the time-limit test was fixed in e021b98
 - [ ] 8. Optional: wait for a free slot up to `QUEUE_WAIT_S` (only if the review page sends files in parallel)
 - [ ] Acceptance: shell and readers tests, fast gate, negative control, evidence table
 

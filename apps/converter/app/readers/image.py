@@ -10,6 +10,7 @@ UNREADABLE_PART "not read" with the page number: never a crash, never an invente
 from __future__ import annotations
 
 import io
+import threading
 from typing import Any
 
 from PIL import Image
@@ -162,21 +163,27 @@ def _read(data: bytes, options: ReadOptions) -> ReadResult:
     return ReadResult(reader=reader, pages=pages, warnings=warnings)
 
 
+# PDFium is not thread-safe and pypdfium2 calls it with the GIL released: with CONCURRENCY=2 two scanned PDFs would
+# render at once. One render at a time in the process; the OCR of the rendered page runs outside the lock.
+_PDFIUM_LOCK = threading.Lock()
+
+
 def textless_pdf_page(data: bytes, index: int, number: int, ids: Ids, options: ReadOptions) -> tuple[Page, list[Warning]]:
     """Hook "pdf.textless_page": render the page at 200 dpi and read its pixels."""
     import pypdfium2 as pdfium
 
-    pdf = pdfium.PdfDocument(data)
-    try:
-        pg = pdf[index]
-        w_pt, h_pt = pg.get_size()
-        scale = 200.0 / 72.0
-        if w_pt > 0 and h_pt > 0 and w_pt * h_pt * scale * scale > options.max_pixels:
-            # the pixel budget is a hard limit: scale down exactly, never render a huge page at a fixed dpi
-            scale = (options.max_pixels / (w_pt * h_pt)) ** 0.5
-        grey = pg.render(scale=scale).to_pil().convert("L")
-    finally:
-        pdf.close()
+    with _PDFIUM_LOCK:
+        pdf = pdfium.PdfDocument(data)
+        try:
+            pg = pdf[index]
+            w_pt, h_pt = pg.get_size()
+            scale = 200.0 / 72.0
+            if w_pt > 0 and h_pt > 0 and w_pt * h_pt * scale * scale > options.max_pixels:
+                # the pixel budget is a hard limit: scale down exactly, never render a huge page at a fixed dpi
+                scale = (options.max_pixels / (w_pt * h_pt)) ** 0.5
+            grey = pg.render(scale=scale).to_pil().convert("L")
+        finally:
+            pdf.close()
     grey = Image.frombytes("L", grey.size, grey.tobytes())
     return read_strip(grey, number, ids, options, 1.0 / scale)
 
