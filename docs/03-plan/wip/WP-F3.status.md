@@ -1,6 +1,6 @@
 # WP-F3 Finder: status
 
-Branch: wp/F3-finder   Stage now: core (done) -> integration
+Branch: wp/F3-finder   Stage now: integration (done as far as this package owns it)
 
 Entry: `from app.find import find`; `find(page_model, options=None) -> FinderOutput` (revision 1.1, spans).
 Files: `apps/converter/app/find/__init__.py` (entry, safety net), `_text.py` (runs -> lines with run offsets),
@@ -16,7 +16,7 @@ labels), `survey.py` (-> `eval/finder-sets.json`). Tests: `apps/converter/tests/
 - [x] synthetic tests (23) and tests on the sets (7); drills 3, 4, 7, 8, 10 each have a test (commit c591299)
 - [x] survey module and `eval/finder-sets.json`; `main` merged, fast gate 519 passed (merge 7e54a49)
 - [x] one negative control recorded
-- [ ] integration: the lead wires `find` into `app/pipeline.py`; run the fast gate after merging `main` again
+- [x] integration: `main` merged again (already up to date), fast gate 519 passed on 2a41ae3; wiring `find` into `app/pipeline.py` is the lead's (request 7)
 - [ ] set 2: the account is a `cell`, not a comb (see Evidence): needs the lead's word or a raster reader
 - [ ] DOCX of set 2: three stray drawn boxes on page 2 (two beside the date combs, one beside a hint) become `box` candidates; sub-headings 2.1-2.4 are not sections there (8 sections, the PDF gives 12)
 - [ ] set 9 PDF: 0 sections (headings are neither numbered nor capitals; the PDF reader reports no bold there), DOCX gives 24
@@ -72,5 +72,8 @@ passed. The negative controls of the acceptance list are tests of their own (see
 5. Readers (WP-F2a): bold is not reported for the headings of set 9 in the PDF (the DOCX has it); drawn example pictures aside, the DOCX of set 2 gives small rectangles beside the date combs that are not on the PDF.
 6. Lead: the acceptance line "the account is one comb" cannot hold for the PDF of set 2 from vectors (one box, no dividers). Either the wording changes to "one field", or the dividers come from a raster pass (WP-F2c).
 
+7. Lead: wire `from app.find import find` into `app/pipeline.py` (never raises; `strict` for tests). Open items in Status (set 2 account, set 9 PDF headings, LABEL_NOT_FOUND on sets 8 and 9, radio grouping) were not touched in this stage.
+
 ## Cost notes
 - core: most turns went to reading the page models of the sets before designing (one dump script, read once) and to two rounds of fixes after the first run on the sets; a ready dump of the nine page models as text, made by the readers' survey, would save three turns.
+- integration: 3 replies; the wiring is outside owned paths, so only the merge and gate were done.
