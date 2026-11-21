@@ -1,22 +1,28 @@
 # WP-H4 the engine is always visible: status
-Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 01:28; state: running
+Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 02:05; state: running
 
 Branch: wp/H4-engine-visible   Stage now: core
 
 ## Status
 - [x] engine state module `app/engine.py`, settings names in `app/config.py`, unit tests (this commit; saved first as 26fb3e9)
 - [x] header `X-Converter-Engine` on convert, report; `engine` in every batch line; engine in the request log line
-- [x] `/status` extended (engine, engine_counts, model), start log line
+- [x] `/status`: `engine` always; the key `model` (state, reason, name, host class, key source, conversions by engine) only when MODEL_BASE_URL is set, so with nothing configured the body is byte for byte main's; start log line
 - [x] CLI line `ENGINE: rules` on stderr after a successful conversion (exit 0 only)
 - [x] warning codes MODEL_USED, MODEL_FALLBACK, MODEL_SKIPPED and the four regenerated schema files (diff: the three names only)
 - [x] no-leak test over HTTP, log and CLI with a fake configured model; `/healthz` byte check
 - [x] byte comparison of form and sidecar against main 9e095ab, synthetic fixtures and the nine task sets: 79 of 79
 - [x] review page: band with the engine of the last conversion, three languages, contrast pairs, tests (this commit)
 - [x] negative control (on 913f787), merge of main a7f2cee (b5d42f4)
-- [~] byte comparison after the merge against main a7f2cee on the 158 files of the chain corpora (71 sets, 80 unseen, 7 hostile) and the 9 synthetic fixtures: both runs started 01:20, not compared yet
-- [~] fast gate on the merged tree: started 01:22, result not read yet
+- [x] byte comparison after the merge against main a7f2cee, code tree of b5d42f4: 158 of 158 on the chain corpora (71 sets, 80 unseen, 7 hostile) and 79 of 79 on the fixtures and sets, also with a fake configured model
+- [x] fast gate on the merged tree: PASSED on 2af59a7
+- [x] `/status` brought back to its six keys when nothing is configured (this commit): `tools/ci/first_run.py` on main fixes them, and its test failed on 2af59a7
+- [~] on this commit, started and not read yet: the fast gate, `tools/ci/tests`, the byte comparison of this head's code tree
 
 ## Decisions
+- `/status` gains nothing while no model is configured; `model` appears with MODEL_BASE_URL. Why: the image's
+  first-run check (`tools/ci/first_run.py`, `STATUS_KEYS`, not mine) demands exactly six keys, and the brief says
+  "with nothing configured the output is byte-identical". Rules out: `configured: no` as an explicit field; a
+  status without the key `model` means no model is configured, and `"engine":"rules"` says the rest.
 - The engine of one conversion is read from the warning codes of its sidecar (`engine.engine_of`): MODEL_FALLBACK
   -> rules-fallback, MODEL_USED -> rules+model, else rules. Why: H1 emits a warning in the pipeline and the shell
   follows with no new plumbing. Rules out: a second channel from the pipeline to the shell.

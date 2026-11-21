@@ -30,6 +30,7 @@ def model_env(tmp_path) -> dict[str, str]:
     }
 
 
+ZERO = {"rules": 0, "rules+model": 0, "rules-fallback": 0}
 FORBIDDEN = (URL_USER, URL_PASS, URL_HOST, URL_PORT, URL_QUERY, "secretpath", KEY_VALUE, KEY_IN_FILE, "model-key-folder",
              "model.key")
 
@@ -87,9 +88,7 @@ def test_with_nothing_configured_the_state_is_off_and_the_engine_is_rules():
     assert engine.model_state(s) == ("OFF", "not-configured") and engine.expected_engine(s) == "rules"
     assert engine.model_config(s) == engine.ModelConfig(step="auto", configured=False, name="", host="", key="none")
     assert engine.start_line(s) == "engine=rules state=OFF reason=not-configured"
-    assert engine.EngineState(s).status() == {
-        "engine": "rules", "engine_counts": {"rules": 0, "rules+model": 0, "rules-fallback": 0},
-        "model": {"configured": False, "state": "OFF", "reason": "not-configured"}}
+    assert engine.EngineState(s).status() == {"engine": "rules"}   # nothing else: /status keeps its six keys
 
 
 def test_a_configured_model_is_reported_by_name_and_host_class_and_is_not_used(tmp_path):
@@ -100,7 +99,8 @@ def test_a_configured_model_is_reported_by_name_and_host_class_and_is_not_used(t
     assert engine.start_line(s) == f"engine=rules state=UNAVAILABLE model={MODEL_NAME} host=public reason=no-model-step"
     status = engine.EngineState(s).status()
     assert status["engine"] == "rules" and status["model"] == {
-        "configured": True, "state": "UNAVAILABLE", "reason": "no-model-step", "name": MODEL_NAME, "host": "public", "key": "file"}
+        "configured": True, "state": "UNAVAILABLE", "reason": "no-model-step", "name": MODEL_NAME, "host": "public", "key": "file",
+        "conversions": ZERO}
     for text, where in ((repr(s), "repr(Settings)"), (repr(cfg), "repr(ModelConfig)"), (engine.start_line(s), "start line"),
                         (repr(status), "status")):
         assert_nothing_secret(text, where)
@@ -118,7 +118,9 @@ def test_the_key_variable_is_seen_as_present_and_its_value_is_never_stored(tmp_p
 def test_model_step_off_wins_over_a_configured_model_and_other_values_are_refused(tmp_path):
     s = Settings.from_env({**model_env(tmp_path), "MODEL_STEP": "off"})
     assert engine.model_state(s) == ("OFF", "MODEL_STEP=off") and engine.model_config(s).configured is False
-    assert engine.EngineState(s).status()["model"] == {"configured": False, "state": "OFF", "reason": "MODEL_STEP=off"}
+    assert engine.EngineState(s).status()["model"] == {
+        "configured": False, "state": "OFF", "reason": "MODEL_STEP=off", "name": MODEL_NAME, "host": "public", "key": "file",
+        "conversions": ZERO}
     with pytest.raises(ConfigError, match="MODEL_STEP must be one of auto, off"):
         Settings.from_env({"MODEL_STEP": "on"})
 
@@ -129,12 +131,13 @@ def test_a_model_name_is_cleaned_to_a_safe_token():
 
 
 def test_the_record_counts_conversions_by_engine_and_remembers_the_last():
-    state = engine.EngineState(Settings.from_env({}))
+    state = engine.EngineState(Settings.from_env({"MODEL_BASE_URL": "http://ollama:11434/v1"}))
     assert state.record({"warnings": []}) == "rules"
     assert state.record({"warnings": [{"code": "MODEL_USED"}]}) == "rules+model"
     assert state.record({"warnings": [{"code": "MODEL_FALLBACK"}]}) == "rules-fallback"
     assert state.status()["engine"] == "rules-fallback"
-    assert state.status()["engine_counts"] == {"rules": 1, "rules+model": 1, "rules-fallback": 1}
+    assert state.status()["model"]["conversions"] == {"rules": 1, "rules+model": 1, "rules-fallback": 1}
+    assert state.status()["model"]["name"] is None and state.status()["model"]["key"] == "none"   # unnamed, no key: said so
     assert engine.cli_line("rules") == "ENGINE: rules"
 
 
@@ -189,7 +192,7 @@ def test_a_refusal_carries_no_engine_header():
                                             ("MODEL_SKIPPED", "rules")])
 def test_the_shell_follows_a_model_step_without_being_changed(monkeypatch, caplog, code, expected):
     model_step_says(monkeypatch, code)
-    client = make()
+    client = make(MODEL_BASE_URL="http://ollama:11434/v1", MODEL_NAME="open-model")
     with caplog.at_level(logging.INFO, logger="converter"):
         r = post(client)
     assert r.status_code == 200 and r.headers["X-Converter-Engine"] == expected
@@ -197,17 +200,36 @@ def test_the_shell_follows_a_model_step_without_being_changed(monkeypatch, caplo
     assert f"stage=convert result=ok job=" in caplog.text and f" engine={expected}" in caplog.text
     assert [x.get("engine") for x in map(json.loads, batch(client).text.splitlines())] == [expected, expected, None]
     status = client.get("/status").json()
-    assert status["engine"] == expected and status["engine_counts"][expected] == 3
+    assert status["engine"] == expected and status["model"]["conversions"][expected] == 3
 
 
-def test_status_shows_the_engine_and_says_no_model_is_configured():
+def test_status_with_no_model_configured_is_byte_for_byte_what_it_was():
+    """The first-run check of the image (`tools/ci/first_run.py`) fixes the six keys; main 9e095ab answered exactly
+    this body. The engine is in it already: `"engine":"rules"`."""
+    from app import readers
+
     client = make()
-    body = client.get("/status").json()
-    assert set(body) == {"service", "version", "engine", "engine_counts", "model", "auth", "formats", "limits"}
-    assert body["engine"] == "rules" and body["engine_counts"] == {"rules": 0, "rules+model": 0, "rules-fallback": 0}
-    assert body["model"] == {"configured": False, "state": "OFF", "reason": "not-configured"}
+    s = Settings.from_env({"AUTH_MODE": "off"})
+    before = client.get("/status")
+    expected = {"service": "Konwerter formularzy", "version": __version__, "engine": "rules", "auth": "off",
+                "formats": readers.formats(),
+                "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
+                           "max_upload_bytes": s.max_upload_bytes}}
+    assert before.content == json.dumps(expected, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     assert post(client).status_code == 200
-    assert client.get("/status").json()["engine_counts"]["rules"] == 1
+    assert client.get("/status").content == before.content   # and a conversion on the rules changes nothing in it
+    assert make(MODEL_STEP="off").get("/status").content == before.content
+
+
+def test_status_names_a_configured_model_and_counts_its_conversions():
+    client = make(MODEL_BASE_URL="http://localhost:11434/v1", MODEL_NAME="qwen3:14b")
+    body = client.get("/status").json()
+    assert set(body) == {"service", "version", "engine", "model", "auth", "formats", "limits"}
+    assert body["engine"] == "rules" and body["model"] == {
+        "configured": True, "state": "UNAVAILABLE", "reason": "no-model-step", "name": "qwen3:14b", "host": "loopback",
+        "key": "none", "conversions": ZERO}
+    assert post(client).status_code == 200
+    assert client.get("/status").json()["model"]["conversions"] == {**ZERO, "rules": 1}
 
 
 def test_healthz_is_unchanged_byte_for_byte(tmp_path):
@@ -261,7 +283,8 @@ def test_nothing_of_the_model_configuration_but_name_and_host_class_leaves_the_s
     assert_nothing_secret(caplog.text, "the log")
     status = answers["/status"].json()
     assert status["engine"] == "rules" and status["model"] == {
-        "configured": True, "state": "UNAVAILABLE", "reason": "no-model-step", "name": MODEL_NAME, "host": "public", "key": "file"}
+        "configured": True, "state": "UNAVAILABLE", "reason": "no-model-step", "name": MODEL_NAME, "host": "public", "key": "file",
+        "conversions": ZERO}
     assert f"engine=rules state=UNAVAILABLE model={MODEL_NAME} host=public reason=no-model-step" in caplog.text
 
 

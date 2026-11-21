@@ -44,7 +44,7 @@ def test_status_tells_what_runs_here_without_a_token(tmp_path):
     r = make(JOB_TIMEOUT_S="77", CONCURRENCY="3", MAX_PAGES="9", MAX_UPLOAD_BYTES="12345").get("/status")
     assert r.status_code == 200 and r.headers["content-type"] == "application/json"
     body = r.json()
-    assert set(body) == {"service", "version", "engine", "engine_counts", "model", "auth", "formats", "limits"}   # WP-H4 added two
+    assert set(body) == {"service", "version", "engine", "auth", "formats", "limits"}
     assert (body["version"], body["engine"], body["auth"]) == (__version__, "rules", "off") and body["service"]
     assert body["formats"] == readers.formats() and {"pdf", "docx", "xlsx", "ods", "png"} <= set(body["formats"])
     assert body["limits"] == {"job_timeout_s": 77, "concurrency": 3, "max_pages": 9, "max_upload_bytes": 12345}

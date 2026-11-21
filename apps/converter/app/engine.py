@@ -143,12 +143,17 @@ class EngineState:
 
     def status(self) -> dict[str, Any]:
         """The part of `GET /status` about the engine. `engine` is the engine of the last conversion; before the
-        first one, the engine the next conversion is expected to run on."""
+        first one, the engine the next conversion is expected to run on.
+
+        With no model named in the configuration this is `{"engine": "rules"}` and nothing else, so `/status` is
+        byte for byte what it was before this module existed (the first-run check of the image fixes its six
+        keys). The key `model` appears only when MODEL_BASE_URL is set."""
         cfg = model_config(self._s)
-        state, reason = model_state(self._s)
         with self._lock:
             counts, last = dict(self._counts), self._last
-        model: dict[str, Any] = {"configured": cfg.configured, "state": state, "reason": reason}
-        if cfg.configured:
-            model.update(name=cfg.name or None, host=cfg.host, key=cfg.key)
-        return {"engine": last or expected_engine(self._s), "engine_counts": counts, "model": model}
+        out: dict[str, Any] = {"engine": last or expected_engine(self._s)}
+        if cfg.host:   # a base URL is named, whatever MODEL_STEP says
+            state, reason = model_state(self._s)
+            out["model"] = {"configured": cfg.configured, "state": state, "reason": reason, "name": cfg.name or None,
+                            "host": cfg.host, "key": cfg.key, "conversions": counts}
+        return out

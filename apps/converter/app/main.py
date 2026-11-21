@@ -280,8 +280,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def status() -> dict:
         """What runs here, for a person or a script before the first upload. No token, like `/healthz`, and so
         nothing that needs one: no secret, no path, no key material; the name, the version and the limits in force.
-        `engine`, `engine_counts` and `model` come from `app.engine`: of a configured model only its name and the
-        class of its host."""
+        `engine` comes from `app.engine`; so does the key `model`, present only when a model is configured, and
+        then with its name and the class of its host at most. With no model configured the six keys are fixed."""
         return {
             "service": app.title,
             "version": __version__,
