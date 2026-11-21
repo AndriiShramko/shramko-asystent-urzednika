@@ -1,6 +1,6 @@
-# Owner requirements (R1–R50)
+# Owner requirements (R1–R54)
 
-This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026, a third and a fourth of 21 November, sections F and G; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
+This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026, a third, a fourth and a fifth of 21 November, sections F, G and H; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
 
 Vocabulary used by the owner: *wniosek* = application form or request filed in a Polish office; *urzędnik* = clerk, the office worker at the counter; *urząd* = public office (here: Urząd Miasta Bydgoszczy, the city hall); *UDIP* = the Polish Act on Access to Public Information; *mObywatel* = the Polish government's mobile app with digital documents.
 
@@ -88,6 +88,17 @@ The owner's words in short: "I work with agents as personal secretaries, and so 
 | R48 | Two variants side by side, the same result: for people who work with agents and for people who do not. | agent-door §0, §2; reading version page 7 |
 | R49 | The presentation speaks to the generation that already lives with AI assistants and shows which of its pains this removes (browser automation of public sites is slow and fragile). | [`storyboard-pakiet.md`](../05-hackathon/presentation/storyboard-pakiet.md) page 7; agent-door §6 |
 | R50 | Build on the owner's earlier open work on agents acting for a person (purchases under a signed mandate with limits and an audit log). | agent-door §3 rule 7 |
+
+## H. Fifth brief: the whole catalogue in advance, a short opening, the model (21 November 2026, 10:48–10:56)
+
+The owner's words in short: "when a clerk adds a document to make it digital, the system does the first step itself. Better: we load and digitise all possible documents ourselves in advance, without the clerk; he only adds new ones to the shared system. Make the presentation extremely short at the start, so that the ideas and the problems are clear at once, and only then expand. Hook the judges and mentors with something unusual, global, large in scale." At 10:56: "I do not want to use their code or local models if they are poor. I build with Claude Code. Their models only for simple things; if they give credits for good models, gladly."
+
+| Id | Requirement | Where |
+|---|---|---|
+| R51 | When a clerk adds a document, the system does the first pass by itself; the person only looks and approves. (Sharpens R17.) | WP-B6; [`WP-B11`](../03-plan/work-packages/WP-B11-catalogue-in-advance.md) item 11 |
+| R52 | All documents the office already publishes are loaded and given the first pass in advance by the team, without the counter clerks; a clerk only adds a new document to the shared catalogue. | WP-B11; [`research/13`](../../research/13-forms-census-and-opening-facts.md) §1; `data/forms-census.json` |
+| R53 | The presentation opens with the whole idea in half a minute (problem, solution, scale) and only then expands; it carries a hook that is unusual and large in scale. | [`storyboard-pakiet.md`](../05-hackathon/presentation/storyboard-pakiet.md) pages 1–2 and the short version |
+| R54 | The build is done with Claude Code. The product uses a strong model wherever no personal data are involved (reading blank forms); a weak local model is not the default for that step; the partner's models or credits are used if they are good; nothing may depend on credits arriving. Personal data still never go to a cloud model (`AGENTS.md` rule 9). | [`ai-layer.md`](../02-architecture/ai-layer.md) §2; STATUS "Waiting for the owner" item 2; WP-B11 item 9 |
 
 ## E. Constraints stated or implied
 

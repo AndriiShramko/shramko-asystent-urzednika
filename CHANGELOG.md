@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 — 2026-11-21 (during the event, after 11:00; the owner's fifth brief)
+
+- Requirements R51–R54: the system does the first pass on every document; all published templates are digitised in advance and a clerk only adds new ones; the presentation opens with the idea in half a minute and a large-scale hook; model policy (Claude Code for the build, a strong model for public material, no cloud model for personal data).
+- Census of the whole forms archive of the city: `tools/forms_census.py`, `data/forms-census.json`, `data/forms-census.csv`. 661 unique documents; 461 open to a first pass from geometry and text; 24 scans.
+- Research R13: the census with its limits, the French precedent of an official interface for AI assistants (verified on the platform's page), the national regulation behind the residence template, the number of communes.
+- Work package WP-B11 "the whole catalogue in advance": batch first pass, life of a description, review queue, catalogue view.
+- Reading version of the presentation rebuilt: page 1 is the idea in half a minute, page 2 "one description, three entrances"; a two-page short version with its own PDF.
+
 ## 0.2.0 — 2026-11-21 (pre-event, the owner's third brief)
 
 - Requirements R33–R43: "one visit, complete set" (data kept in advance, the whole package of forms from one stated need, check by exception, comparison with the document, intent known from the booking, first entry from saved browser data, mObywatel as the home of the profile, a reading presentation with a web page).

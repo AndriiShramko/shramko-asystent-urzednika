@@ -17,7 +17,7 @@ An assistant for clerks of a Polish city office. Module A handles access-to-publ
 | Your task | `docs/03-plan/work-packages/WP-<id>-*.md` |
 | Architecture, API, data, security, AI layer, forms engine | `docs/02-architecture/` |
 | Facts with sources | [`research/`](research/) (each file starts with a summary for builders) |
-| Forms of the city hall | [`data/forms-catalog.json`](data/forms-catalog.json), crawler in [`tools/`](tools/) |
+| Forms of the city hall | [`data/forms-catalog.json`](data/forms-catalog.json), crawler in [`tools/`](tools/); what kind of file each template is: [`data/forms-census.json`](data/forms-census.json) and `.csv` |
 | How agents cooperate | [`docs/04-orchestration/`](docs/04-orchestration/) |
 | Hackathon rules, intake of new information, jury questions | [`docs/05-hackathon/`](docs/05-hackathon/), [`research/01-hacknation-2026-task-rules-jury.md`](research/01-hacknation-2026-task-rules-jury.md) |
 

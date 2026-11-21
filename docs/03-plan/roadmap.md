@@ -26,6 +26,8 @@ Since the owner's third brief (21 November, R33–R43) the second half of the de
 
 Order inside M1 if time is short: WP-B1 and WP-B2 first (they are independent), then WP-B3. Order inside M3: WP-B7 items 1–3, WP-B8, WP-B7 items 4–5, WP-B9 item 3; drop from the end. WP-B10 starts only when the demo script of part two runs twice in a row; the owner may raise its priority after hearing the partner (ONSITE-INTAKE §3a, questions 9–10). If WP-B6 does not reach its gate, the demo uses forms with hand-made descriptors and says so; the two-sided flow is still the product.
 
+WP-B11 (the whole catalogue in advance, fifth brief): part a starts as soon as the geometry step of WP-B6 passes its golden test; it touches no screen of another package and gives the deck its largest measured numbers. Part b fills the gaps between other packages, the forms of the demo sets first.
+
 ## Timeline for Track A (alternative: the city's task)
 
 | Time | Milestone | Gate |
@@ -76,6 +78,7 @@ Module B (Track B, or optional slice in M4):
 | WP-B8 | Comparison of the document reading with the declared data; verification screen in three groups (check by exception) | WP-B3, WP-B4 | think |
 | WP-B10 | The agent door (optional): MCP and HTTP interface for residents' AI assistants; a: matter, set, slots, hold confirmed on the phone; b: permission and filling of digitised forms as a draft the person reads and submits | WP-B7, WP-B2, WP-B5 | think (security) |
 | WP-B9 | Profile start without typing: `autocomplete` tokens (also a change request to WP-B2), contact-card shortcut, document read | WP-B2 | by spec |
+| WP-B11 | The whole catalogue in advance: batch first pass over every template the office publishes, life of a description, review queue, catalogue view with a real funnel | WP-B1, WP-B6 step 1 | a: by spec; b: think |
 
 Rules: three packages at once at most; "think" packages go to the top model tier and always get an independent review; "by spec" packages go to the middle tier at medium effort. Each package has one owner branch and one status file. See [`../04-orchestration/`](../04-orchestration/).
 

@@ -20,6 +20,8 @@ Last year's task card for an "assistant for officials" required exactly these se
 
 One interface, three providers (`mock`, `local`, `cloud`), chosen per task in configuration. The default for an office is an open Polish model served inside the office.
 
+**Owner's decision of 21 November 2026, 10:56 (R54), for the forms product.** The step that reads blank templates uses the strongest model available: blank templates are public material (data class "Public" in [`security-and-privacy.md`](security-and-privacy.md)), and the owner does not want a weak local model for the hardest step. During the event the building agents do this pass themselves and commit the descriptions (WP-B11), so forms already in the catalogue need no model call at run time. The steps that touch a visitor's data (comparison with the document, checks, printing) run on rules and call no cloud model. The office default above stays as written for Module A, where the text of a request is personal data. The `local` provider remains a switch so that on-premise operation can be shown and measured on one form; whether the jury requires it is an open question for the partner's stand.
+
 | Option | Why | Limits |
 |---|---|---|
 | Open Polish model served locally (Bielik 11B v3 or PLLuM 12B; both Apache 2.0; avoid the non-commercial PLLuM variants) | Data stays in the office; no per-request fee; digital sovereignty; PLLuM is the ministry's own family of models | Needs a GPU server or runs slowly; structured output must be validated and retried by our code; quality on legal classification to be measured on the evaluation set |

@@ -1,0 +1,102 @@
+{
+  "what": "Census of the forms archive of Urzad Miasta Bydgoszczy (templates published on the city's service cards)",
+  "made_by": "tools/forms_census.py",
+  "made_at": "2026-11-21T10:57:29+0100",
+  "method_note": "Counts come from file geometry and text; no model was used. 'dotted' and 'boxes' follow a simple rule and are not approved fields.",
+  "manifest_entries": 678,
+  "files_present": 676,
+  "unique_documents": 661,
+  "service_cards": 224,
+  "by_extension": {
+    "pdf": 322,
+    "docx": 142,
+    "doc": 117,
+    "rtf": 77,
+    "xlsx": 1,
+    "xls": 1,
+    "jpg": 1
+  },
+  "by_class": {
+    "fillable_pdf": 29,
+    "vector_form": 186,
+    "word_form": 246,
+    "pdf_text_no_blanks": 83,
+    "word_no_blanks": 90,
+    "scan": 24,
+    "sheet": 2,
+    "other": 1,
+    "unreadable": 0
+  },
+  "class_meaning": {
+    "fillable_pdf": "PDF that declares its own fields: names and positions come from the file",
+    "vector_form": "PDF with a text layer and places to fill found by the simple rule",
+    "word_form": "word-processor file with places to fill found after conversion",
+    "pdf_text_no_blanks": "PDF with a text layer, no places found: information sheet, or a form made of table cells",
+    "word_no_blanks": "word-processor file, no places found: information sheet, or a form made of table cells",
+    "scan": "PDF without a text layer: needs reading from pixels",
+    "sheet": "spreadsheet",
+    "other": "not a document template (image, text, unknown type)",
+    "unreadable": "could not be opened or converted in the time limit"
+  },
+  "first_pass_from_geometry": {
+    "classes": [
+      "fillable_pdf",
+      "vector_form",
+      "word_form"
+    ],
+    "documents": 461,
+    "pages": 1310,
+    "places_found_by_rule": 18233,
+    "declared_pdf_fields": 2319
+  },
+  "needs_reading_from_pixels": 24,
+  "no_places_found": 173,
+  "pages_total": 2107,
+  "reuse": {
+    "documents_used_in_more_than_one_card": 6,
+    "card_uses_covered_by_them": 21,
+    "top": [
+      {
+        "file": "UMB53/Klauzula_informacyjna_dot_RODO.docx",
+        "used_in_cards": 7
+      },
+      {
+        "file": "UMB53/Formularz_meld._-_Zgloszenie_pobytu_czasowego_-.pdf",
+        "used_in_cards": 4
+      },
+      {
+        "file": "UMB53/Formularz_meld._-_Zgloszenie_pobytu_stalego.pdf",
+        "used_in_cards": 4
+      },
+      {
+        "file": "UMB131/PPS-1__3_.pdf",
+        "used_in_cards": 2
+      },
+      {
+        "file": "UMB132/formularz_2025_01.pdf",
+        "used_in_cards": 2
+      },
+      {
+        "file": "UMB59/klauzula_-_decyzje_meldunkowe.docx",
+        "used_in_cards": 2
+      }
+    ]
+  },
+  "name_kind": {
+    "form": 379,
+    "unknown": 181,
+    "information": 101
+  },
+  "name_kind_of_first_pass_documents": {
+    "form": 326,
+    "unknown": 118,
+    "information": 17
+  },
+  "timing_seconds": {
+    "office_conversion": 16.6,
+    "measurement": 124.9,
+    "total": 141.6,
+    "workers": 2,
+    "note": "Time to read geometry and text of the whole archive on this machine. It is not the time to produce approved form descriptions."
+  }
+}

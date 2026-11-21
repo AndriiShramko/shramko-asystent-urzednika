@@ -12,7 +12,7 @@ A second entrance to stage 2, for residents who use a personal AI assistant, and
 
 ## 1. The journey
 
-Stage 0 happens once per form, stage 1 once per person; stages 2–5 are one visit.
+Stage 0 happens once per form, stage 1 once per person; stages 2–5 are one visit. Since the fifth brief (R51–R52) stage 0 is done **in advance for the whole catalogue**: the program gives every template the office publishes its first pass, a catalogue maintainer approves each description once, and a clerk only adds a new document ([`WP-B11`](../03-plan/work-packages/WP-B11-catalogue-in-advance.md); measured worklist in `data/forms-census.csv`).
 
 | # | Stage | Who, where | What happens | Personal data leave the phone? | Built by |
 |---|---|---|---|---|---|

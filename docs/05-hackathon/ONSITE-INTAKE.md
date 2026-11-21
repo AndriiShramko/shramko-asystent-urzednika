@@ -47,6 +47,7 @@ Then tell the lead: "new intake". Nothing else is needed.
 
 | Time | Fact | Source (who, what document) | Effect: confirms / changes / new | Consequence and affected packages |
 |---|---|---|---|---|
+| Sat 10:49 | LLM credits for teams will be given "later"; no date, no list of models | the owner, after asking at the COI stand | changes: the build cannot wait for them | STATUS "Waiting for the owner" item 2; WP-B11 item 9 |
 | | | | | |
 
 ## 3. Questions to ask the city's mentor (the owner asks, in Polish)
@@ -96,4 +97,6 @@ The owner said he does not know yet what hurts clerks most. These answers decide
 
 | Time | Decision | Why | Who decided |
 |---|---|---|---|
+| Sat 10:56 | Build with Claude Code; strong model for blank forms; weak local models are not the default; partner models only if good | quality of the hardest step; blank forms are public material | the owner |
+| Sat 10:48 | All templates of the office get their first pass in advance; clerks only add new ones | the clerk should not take part in digitising at all | the owner |
 | | | | |
