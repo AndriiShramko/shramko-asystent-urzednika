@@ -151,6 +151,37 @@ def binarize(grey: Image.Image) -> Image.Image:
     return ink
 
 
+# ---------------------------------------------------------------- scale (SCAN_PREP token "scale")
+
+
+A4_W_PX = 1654      # A4 portrait at 200 dpi: the size the thresholds of this module and the OCR were tuned on
+MAX_UPSCALE = 3.0
+
+
+def normalize(grey: Image.Image, max_pixels: int) -> tuple[Image.Image, float]:
+    """A page strip -> the same page at A4 200 dpi (portrait: width 1654 px; landscape: width 2339 px) and the factor.
+
+    Within 10 % of that size the strip is returned as is (the same object, factor 1.0): a Letter page or a scan with
+    a margin at 200 dpi is not resampled. The factor is capped at MAX_UPSCALE and by the pixel budget."""
+    w, h = grey.size
+    f = 200.0 / a4_dpi(grey.size)
+    if 0.9 <= f <= 1.1:
+        return grey, 1.0
+    f = min(f, MAX_UPSCALE, (max_pixels / (w * h)) ** 0.5)
+    if 0.9 <= f <= 1.1:
+        return grey, 1.0
+    size = (max(1, round(w * f)), max(1, round(h * f)))
+    if size[0] * size[1] > max_pixels:
+        size = (max(1, int(w * f)), max(1, int(h * f)))
+    return grey.resize(size, Image.Resampling.LANCZOS), f
+
+
+def a4_dpi(size: tuple[int, int]) -> float:
+    """The resolution a page strip of this size has if the page is A4 (portrait when not wider than tall)."""
+    w, h = size
+    return 200.0 * w / (A4_W_PX if w <= h else A4_W_PX * SQRT2)
+
+
 # ---------------------------------------------------------------- cutting a tall scan
 
 

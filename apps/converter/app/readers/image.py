@@ -116,6 +116,17 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
     return page, warns
 
 
+def _scaled(grey: Image.Image, number: int, options: ReadOptions, warnings: list[Warning]) -> Image.Image:
+    """SCAN_PREP "scale": a page strip of a scan -> A4 at 200 dpi, with a warning when it was resampled."""
+    if "scale" not in options.scan_prep:
+        return grey
+    out, f = _raster.normalize(grey, options.max_pixels)
+    if out is not grey:
+        warnings.append(Warning(code="UNREADABLE_PART", page=number,
+                                detail=f"page scaled from about {round(_raster.a4_dpi(grey.size))} dpi to 200 dpi"))
+    return out
+
+
 @register("jpeg")
 def read_jpeg(data: bytes, options: ReadOptions) -> ReadResult:
     return _read(data, options)
@@ -132,6 +143,7 @@ def _read_frames(data: bytes, options: ReadOptions, kind: str) -> ReadResult:
     pages: list[Page] = []
     warnings: list[Warning] = []
     for i, grey in enumerate(_raster.decode_frames(data, options, kind), 1):
+        grey = _scaled(grey, i, options, warnings)
         page, warns = read_strip(grey, i, ids, options)
         pages.append(page)
         warnings.extend(warns)
@@ -172,7 +184,9 @@ def _read(data: bytes, options: ReadOptions) -> ReadResult:
     pages: list[Page] = []
     warnings: list[Warning] = [Warning(code="UNREADABLE_PART", detail=d) for d in drafted]
     for i in range(len(cuts) - 1):
-        page, warns = read_strip(grey.crop((0, cuts[i], grey.size[0], cuts[i + 1])), i + 1, ids, options)
+        strip = _scaled(grey.crop((0, cuts[i], grey.size[0], cuts[i + 1])), i + 1, options, warnings)
+        page, warns = read_strip(strip, i + 1, ids, options)
+        del strip
         pages.append(page)
         warnings.extend(warns)
         if i + 1 in unsnapped:
