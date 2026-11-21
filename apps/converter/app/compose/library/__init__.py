@@ -128,8 +128,10 @@ def your_data(source: str, pesel: bool) -> Sec:
     comps = [Comp("imie", "TEXT_FIELD", "Imię", "imie", read_only=True, default=f"{source}.name", default_type=EXTERNAL),
              Comp("nazwisko", "TEXT_FIELD", "Nazwisko", "nazwisko", read_only=True, default=f"{source}.surname", default_type=EXTERNAL)]
     if pesel:
+        # D8: the field states PESEL, so it names the validator like every other PESEL of the form; the value comes
+        # from the register and is read-only, the validator documents the kind of the value (VALIDATORS=off clears it).
         comps.append(Comp("numer_pesel", "TEXT_FIELD", "Numer PESEL", "numer_pesel", read_only=True, default="PESEL.pesel",
-                          default_type=EXTERNAL))
+                          default_type=EXTERNAL, validation=("PESEL",)))
     return Sec("dane/twoje_dane", "Twoje dane", "twoje_dane", comps)
 
 

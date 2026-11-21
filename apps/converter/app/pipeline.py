@@ -168,7 +168,10 @@ def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] =
     if fallback:
         warnings.append(dict(interim.NOT_READ_WARNING))
     else:
-        warnings += [w.model_dump(mode="json", exclude_none=True) for w in (*finder.warnings, *brief.warnings)]
+        # A REQUIRED the composer did not write must not keep the brief's "marked required by our rule" warning.
+        dropped = set(composed.required_dropped)
+        warnings += [w.model_dump(mode="json", exclude_none=True) for w in (*finder.warnings, *brief.warnings)
+                     if not (w.code == "REQUIRED_INFERRED" and w.field in dropped)]
     warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
     meta: dict = {"origins": composed.origins, "brief_keys": composed.brief_keys}
     if not fallback:
