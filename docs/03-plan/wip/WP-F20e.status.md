@@ -11,7 +11,7 @@ Branch `wp/F20-e-image-formats` (from main `ef9a80c`). Stage: one (core + integr
 - [x] Tests: `apps/converter/tests/readers/test_image_formats.py`
 - [x] Fast gate: 652 passed, 1 skipped (Tesseract), 1 failed (test_the_stored_briefs_cover_every_judged_set: needs the local task-set briefs, absent in a worktree; unrelated)
 - [x] Publishing check clean (scan_lines on the changed files, precheck exit 0)
-- [ ] Pushed; image run green
+- [x] Pushed; image run #26 green on 7a846ad (first run), step "Prove the image" converts png jpg jpeg odt tiff bmp gif webp with --network none; https://github.com/AndriiShramko/shramko-asystent-urzednika/actions/runs/44923156824
 
 ## Decisions
 
