@@ -21,7 +21,7 @@ def env(tmp_path: Path, **over: str) -> dict[str, str]:
 
 def test_defaults_follow_the_design(tmp_path):
     s = Settings.from_env(env(tmp_path))
-    assert (s.max_upload_bytes, s.max_pages, s.max_pixels, s.job_timeout_s) == (20971520, 60, 80000000, 120)
+    assert (s.max_upload_bytes, s.max_pages, s.max_pixels, s.job_timeout_s) == (20971520, 60, 80000000, 600)
     assert (s.concurrency, s.rate_limit_per_min, s.jwt_alg, s.jwt_leeway_s) == (2, 60, "HS256", 30)
     assert s.jwt_required_claims == ("exp",) and s.strict_extensions is False and s.auth_enabled
 
@@ -57,7 +57,45 @@ def test_inconsistent_sets_are_refused(tmp_path, over, fragment):
 
 def test_jwt_mode_without_any_key_is_refused():
     with pytest.raises(ConfigError, match="needs a key file"):
-        Settings.from_env({})
+        Settings.from_env({"AUTH_MODE": "jwt"})
+
+
+def test_the_default_auth_mode_is_auto_off_without_a_key_and_jwt_with_one(tmp_path):
+    bare = Settings.from_env({})
+    assert bare.auth_mode == "auto" and not bare.auth_enabled
+    keyed = Settings.from_env(env(tmp_path))
+    assert keyed.auth_mode == "auto" and keyed.auth_enabled
+    with pytest.raises(ConfigError, match="does not exist"):   # auto with a key that is not there fails closed
+        Settings.from_env({"JWT_SECRET_FILE": str(tmp_path / "none.key")})
+    with pytest.raises(ConfigError, match="AUTH_MODE must be one of"):
+        Settings.from_env({"AUTH_MODE": "maybe"})
+
+
+def test_serve_with_an_empty_environment_starts_and_healthz_answers(monkeypatch, caplog):
+    import logging
+
+    import uvicorn
+    from fastapi.testclient import TestClient
+
+    for name in ("AUTH_MODE", "JWT_SECRET_FILE", "JWT_PUBLIC_KEY_FILE", "JWT_JWKS_FILE"):
+        monkeypatch.delenv(name, raising=False)
+    seen: dict = {}
+    monkeypatch.setattr(uvicorn, "run", lambda app, **kw: seen.update(app=app))
+    with caplog.at_level(logging.WARNING, logger="converter"):
+        assert cli.main(["serve"]) == 0
+    assert "No JWT key configured" in caplog.text and "WITHOUT a token" in caplog.text
+    client = TestClient(seen["app"])
+    assert client.get("/healthz").status_code == 200
+    body, ctype = fx.multipart([("file", "a.pdf", fx.pdf(), "application/pdf")])
+    assert client.post("/v1/forms/convert", content=body, headers={"Content-Type": ctype}).status_code == 200
+
+
+def test_serve_with_explicit_jwt_and_no_key_exits_3(monkeypatch, capsys):
+    for name in ("JWT_SECRET_FILE", "JWT_PUBLIC_KEY_FILE", "JWT_JWKS_FILE"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("AUTH_MODE", "jwt")
+    assert cli.main(["serve"]) == 3
+    assert "AUTH_MODE=jwt needs a key file" in capsys.readouterr().err
 
 
 def test_auth_off_needs_no_key():
@@ -108,3 +146,24 @@ def test_convert_refuses_a_missing_file_and_a_bad_configuration(tmp_path, monkey
     monkeypatch.setenv("MAX_UPLOAD_BYTES", "100")
     assert cli.main(["convert", str(src)]) == 2  # TOO_LARGE, judged from the size on disk
     assert json.loads(capsys.readouterr().err.splitlines()[-1])["code"] == "TOO_LARGE"
+
+
+def test_an_output_that_cannot_be_written_is_one_line_and_exit_4(tmp_path, monkeypatch, capsys):
+    src = tmp_path / "a.pdf"
+    src.write_bytes(fx.pdf())
+    out = tmp_path / "no-such-folder" / "form.json"   # a real OSError of the file system
+    assert cli.main(["convert", str(src), "--out", str(out)]) == 4
+    captured = capsys.readouterr()
+    lines = captured.err.splitlines()
+    assert captured.out == "" and len(lines) == 1 and "Traceback" not in captured.err
+    assert lines[0].startswith(f"Cannot write {out}: ") and lines[0].endswith('On Linux add --user "$(id -u):$(id -g)"')
+
+    def denied(self, *a, **kw):   # what a folder owned by another user answers inside the container
+        raise PermissionError(13, "Permission denied")
+
+    monkeypatch.setattr(Path, "write_text", denied)
+    assert cli.main(["convert", str(src), "--out", str(tmp_path / "form.json")]) == 4
+    assert capsys.readouterr().err.splitlines() == [
+        f'Cannot write {tmp_path / "form.json"}: Permission denied. On Linux add --user "$(id -u):$(id -g)"']
+    assert cli.main(["convert", str(src), "--report", str(tmp_path / "rep")]) == 4   # the sidecar file the same way
+    assert capsys.readouterr().err.count("Cannot write") == 1
