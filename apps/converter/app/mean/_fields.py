@@ -49,6 +49,9 @@ _ATT_ITEM = re.compile(r"^\s*(?:[-–•]|\d{1,2}[.)]|[a-z]\))\s*(?=\w)")
 _ATT_SAY = re.compile(r"\b(?:należy|można|trzeba)\s+(?:dołączyć|załączyć)\s+(?!:)(.+)|\bw\s+załączeniu\s+(.+)", re.IGNORECASE)
 _ATT_BEFORE = re.compile(r"(?:^|[(,;:–-]\s*)([^(),;:–-]{6,80}?)\s+(?:należy\s+)?załączyć\s+do\s+wniosku", re.IGNORECASE)
 _ATT_IF = re.compile(r",?\s+(?:jeżeli|jeśli|w\s+przypadku|gdy)\b", re.IGNORECASE)
+# The condition of an either-or pair says the OTHER item is not required ("jeżeli nie jest wymagany X"), not just "nie".
+_NOT_REQUIRED = re.compile(r"\bnie\s+(?:jest|są|będzie|będą)\s+(?:wymagan|konieczn|potrzebn)\w*|\bnie\s+dotyczy\b|\bw\s+przypadku\s+braku\b",
+                           re.IGNORECASE)
 _ATT_MAY = re.compile(r"\bmożna\b|\bewentualn|opcjonaln|w\s+przypadku|\bjeżeli\b|\bjeśli\b", re.IGNORECASE)
 _YES_NO_ROW = re.compile(r"^\s*(?:\d{1,2}[.)]\s*)?(.+?)\s+TAK\s+NIE\s*$")
 _SENTENCE_END = (".", "!", "?")
@@ -468,7 +471,7 @@ class _Reader:
         its option and required there."""
         stem = lambda t: {w[:5] for w in re.findall(r"\w{4,}", t.casefold())}   # noqa: E731
         for b, cond in made:
-            if not re.search(r"\bnie\b", cond):
+            if not _NOT_REQUIRED.search(cond):
                 continue
             a = next((x for x, _ in made if x is not b and x.show_if is None and len(stem(x.label) & stem(cond)) >= 2), None)
             if a is None or b.show_if is not None:
@@ -556,7 +559,7 @@ class _Reader:
         boxes; set judged-09 PDF) heads a second group: each part keeps at least two options. No such line: one part."""
         doc = self.doc
         where = [[doc.pos[r] for r in [*o.runs, *(s.run for s in o.spans)] if r in doc.pos] for o in c.options]
-        if not all(where):
+        if not where or not all(where):      # an empty group cannot come from the finder; no crash if one ever does
             return [("", list(c.options))]
         parts: list[tuple[str, list[ChoiceOption]]] = [("", [c.options[0]])]
         for i in range(1, len(c.options)):

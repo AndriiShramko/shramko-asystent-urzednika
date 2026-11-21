@@ -127,7 +127,7 @@ def test_boxes_that_name_kinds_of_applicant_stay_with_the_standard_pages() -> No
 
 # -- item 2 (T2): attachments named in running text ---------------------------------------------------------------
 
-def _attach_list() -> Native:
+def _attach_list(info_if: str = "jeżeli nie jest wymagany projekt organizacji ruchu.") -> Native:
     n = Native()
     n.text(50, 40, "Załącznik nr 2 do Regulaminu korzystania z sal", 300)
     n.text(70, 70, "WNIOSEK O ZAJECIE TERENU", 300, bold=True)
@@ -137,7 +137,7 @@ def _attach_list() -> Native:
     items = [("- Plan sytuacyjny w skali 1:500 z zaznaczeniem granic i podaniem", "wymiarow zajecia."),
              ("- Harmonogram robot.", None),
              ("- Projekt organizacji ruchu, jeżeli zajecie terenu wplywa na ruch.", None),
-             ("- Informacja o zabezpieczeniu robot, jeżeli nie jest wymagany projekt organizacji ruchu.", None),
+             (f"- Informacja o zabezpieczeniu robot, {info_if}", None),
              ("- Pełnomocnictwo, gdy wystepuje pelnomocnik.", None)]
     y = 145
     for first, more in items:
@@ -167,6 +167,13 @@ def test_an_item_wanted_only_without_the_other_makes_an_either_or_pair() -> None
     assert len(choice) == 1 and choice[0].options == ["Projekt organizacji ruchu", "Informacja o zabezpieczeniu robot"]
     shown = {a.label: a.show_if for a in b.attachments if a.show_if is not None}
     assert {c.is_ for c in shown.values()} == set(choice[0].options) and {c.field for c in shown.values()} == {choice[0].key}
+
+
+def test_a_negation_that_does_not_say_the_other_item_is_not_required_is_no_either_or() -> None:
+    """Critic finding: any "nie" in the condition plus two shared word stems made an either-or pair."""
+    b = _run(_attach_list("jeżeli projekt organizacji ruchu nie przewiduje zamknięcia drogi."))
+    assert [f for f in _fields(b).values() if f.type == "RADIO"] == []
+    assert all(a.show_if is None for a in b.attachments)
 
 
 def test_a_regulation_annex_line_and_a_bare_attachments_heading_give_no_upload() -> None:
