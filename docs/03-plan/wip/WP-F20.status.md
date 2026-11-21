@@ -84,4 +84,6 @@ Native, as tests: a base without digest, a pip install without `--only-binary=:a
 - [x] Final-image inspection in container_check (row C-TECH-DOCKER): configured user not root, exactly one exposed port, no secret-like variable in the environment or in the layer history (names are reported, never values). Native tests plant a sentinel build argument, an `ENV ..._PASSWORD`, a second port, root, an `API_TOKEN` variable: each refused.
 - [x] Hostile corpus: commented placeholder step "Hostile corpus against the container (WP-F16)" in image.yml.
 - [x] paths-ignore (lead's request): `docs/**` and `research/**` on push and pull_request. `**/*.md` except `apps/converter/README.md` cannot be written (paths-ignore has no negation), so only the fallback is used.
-- [ ] Green CI run of the branch head (below).
+- [x] Green CI run on 24b1108 (code head): run actions/runs/44912213647, native, core and plus success (ready-formats checks, refusals, titles, image inspection, Grype gate all passed; sign and verify steps skipped off main). `bash tools/gate.sh fast`: 392 passed, 8 deselected.
+- Next on the first main run after the merge: the new "Verify the published image anonymously" step (cosign verify) runs for the first time; the lead extends `READY_FORMATS` as readers land.
+- Cost note: one CI run was enough because every check was first proved natively.
