@@ -43,12 +43,13 @@ Tests: `apps/converter/tests/mean/test_mean_core.py` (30, synthetic papers built
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
-| unit tests of the rules (title, addressee, applicants, habits, required, composite, negative controls) | `bash tools/gate.sh py -m pytest apps/converter/tests/mean -q` | 30 passed | core commit |
-| negative controls of the package: annex header never a title; clause never fields; "hodowanie/utrzymywanie*" one choice, "charta/chartów*" none; fee not on the paper `not_found` | same run: `test_an_annex_header_...`, `test_the_clause_never_...`, `test_grammar_alternatives_...`, `test_a_fee_that_is_not_...` | passed | core commit |
-| cheapest test 1 (another municipality and title: the fields do not change) | same run: `test_another_municipality_...` | passed | core commit |
-| fields of the matter per judged set, PDF (DOCX): smoke script, read -> find -> understand(strict) -> compose -> gate -> `tools.coi_lint.check` | scratch script (not in git), 17 files | set 2: 5 (5); set 3: 2 (2); set 4: 7 (6); set 6: 18 (16); set 7: 10 (no DOCX); set 8: 32 (24); set 9: 83 (42 with the selector); reference 1: 4 (4); reference 5: 5 (6). Gate passed 17 of 17; strict linter 0 ERROR, 7 WARN on each | core commit |
-| set 6 `ADDRESSEE_CONFLICT` | same smoke | raised from PDF and from DOCX, two quotes | core commit |
-| set 9 one selector, no second form | same smoke | DOCX: one RADIO `rodzaj_wniosku`; PDF: none yet (see Status) | core commit |
+| unit tests of the rules (title, addressee, applicants, habits, required, composite, negative controls) | `bash tools/gate.sh py -m pytest apps/converter/tests/mean -q` | 30 passed | 9004715 |
+| negative controls of the package: annex header never a title; clause never fields; "hodowanie/utrzymywanie*" one choice, "charta/chartów*" none; fee not on the paper `not_found` | same run: `test_an_annex_header_...`, `test_the_clause_never_...`, `test_grammar_alternatives_...`, `test_a_fee_that_is_not_...` | passed | 9004715 |
+| cheapest test 1 (another municipality and title: the fields do not change) | same run: `test_another_municipality_...` | passed | 9004715 |
+| fields of the matter per judged set, PDF (DOCX): smoke script, read -> find -> understand(strict) -> compose -> gate -> `tools.coi_lint.check` | scratch script (not in git), 17 files | set 2: 5 (5); set 3: 2 (2); set 4: 7 (6); set 6: 18 (16); set 7: 10 (no DOCX); set 8: 32 (24); set 9: 83 (42 with the selector); reference 1: 4 (4); reference 5: 5 (6). Gate passed 17 of 17; strict linter 0 ERROR, 7 WARN on each | 9004715 |
+| set 6 `ADDRESSEE_CONFLICT` | same smoke | raised from PDF and from DOCX, two quotes | 9004715 |
+| set 9 one selector, no second form | same smoke | DOCX: one RADIO `rodzaj_wniosku`; PDF: none yet (see Status) | 9004715 |
+| fast gate of the repository | `bash tools/gate.sh fast` | 570 passed, 21 deselected; "gate: fast PASSED" | 9004715 |
 
 The smoke is a measurement, not yet a test in git: the acceptance stage turns it into `@pytest.mark.sets` tests and `eval/briefs/`.
 
