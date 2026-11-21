@@ -41,7 +41,7 @@ Last update: 2026-11-21 09:00 CET, preparation session (before the event).
 
 ## Budget
 
-The build runs on the owner's subscription; on 2026-11-21 09:00 about one fifth of the weekly allowance was left until the reset on 26 November. This is the tightest constraint of the whole event. Check the remaining allowance at every milestone and narrow the scope before it runs out: for Track B the order of value is WP-B1, WP-B2, WP-B3, then WP-B6, then the rest. Prefer middle-tier builders. Width: three sub-agents at once.
+The build runs on the owner's subscription. On 2026-11-21 at 09:05 the weekly allowance was 84 % used (reset on 26 November) and the current five-hour window was 84 % used (reset at 13:30 local time): between 11:00 and 13:30 there is room only for the intake and the scaffold; the main build starts after 13:30. **The owner allowed spending the weekly allowance to zero ("Расходуй всё до нуля", 21 November)**, so no reserve has to be kept, but the allowance itself is still the tightest constraint of the whole event. Check the remaining allowance at every milestone and narrow the scope before it runs out: for Track B the order of value is WP-B1, WP-B2, WP-B3, then WP-B6, then the rest. Prefer middle-tier builders. Width: three sub-agents at once.
 
 ## Running now
 
