@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wniosek o zamianę formularza w e-usługę: próbka wyglądu prezentacji</title>
+<style>
+@font-face{font-family:"Courier Prime";src:url(fonts/CourierPrime-Regular.ttf);font-weight:400}
+@font-face{font-family:"Courier Prime";src:url(fonts/CourierPrime-Bold.ttf);font-weight:700}
+@font-face{font-family:"Caveat";src:url(fonts/Caveat.ttf);font-weight:400 700}
+:root{--paper:#fbfaf6;--ink:#1c1b19;--muted:#5d5a52;--pen:#1d3fa8;--stamp:#b3261e;--mark:#ffe36a;--line:#2a2925;
+--ui:Inter,"Segoe UI",system-ui,Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:#cfc9ba}
+body{font-family:"Courier Prime","Courier New",monospace;color:var(--ink)}
+.page{width:1280px;height:720px;margin:24px auto;background:var(--paper);position:relative;overflow:hidden;
+box-shadow:0 6px 24px rgba(0,0,0,.25);padding:44px 56px}
+.head{display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
+.pen{font-family:"Caveat",cursive;color:var(--pen);font-weight:600}
+h1{font-size:60px;letter-spacing:.14em;margin:22px 0 0;font-weight:700}
+.sub{font-size:25px;margin:4px 0 0;font-weight:700}
+.inst{font-size:14px;color:var(--muted);margin:10px 0 0}
+.cols{display:grid;grid-template-columns:57fr 43fr;gap:44px;margin-top:8px}
+.f{margin-top:24px}
+.f label{display:block;font-size:15px;color:var(--muted)}
+.f .v{display:block;border-bottom:2px dotted #6b675e;font-size:33px;line-height:1.05;padding:0 6px 0;min-height:38px}
+.boxes{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px;font-size:17px}
+.cb{display:inline-flex;align-items:center;gap:7px}
+.cb i{width:20px;height:20px;border:2px solid var(--line);display:inline-block;position:relative;flex:none}
+.cb.on i::after{content:"";position:absolute;left:3px;top:-9px;width:9px;height:20px;border:solid var(--pen);border-width:0 3.5px 3.5px 0;transform:rotate(38deg)}
+.strike{position:relative;display:inline-block}
+.strike::after{content:"";position:absolute;left:-6px;right:-6px;top:52%;height:3.5px;background:var(--pen);transform:rotate(-7deg);border-radius:2px}
+.mark{background:linear-gradient(transparent 12%,var(--mark) 12%,var(--mark) 88%,transparent 88%);padding:0 6px}
+.stamp{position:absolute;border:4px solid var(--stamp);color:var(--stamp);font-family:var(--ui);font-weight:800;letter-spacing:.06em;
+text-transform:uppercase;text-align:center;padding:8px 16px;border-radius:8px;opacity:.82;transform:rotate(-7deg);line-height:1.15}
+.stamp small{display:block;font-size:.5em;letter-spacing:.12em;font-weight:700}
+.note{position:absolute;font-size:27px;line-height:1}
+.foot{position:absolute;left:56px;right:56px;bottom:22px;font-size:12.5px;color:var(--muted);border-top:1px solid #a9a496;padding-top:7px}
+/* the e-service on the right */
+.screen{font-family:var(--ui);background:#fff;border:1px solid #c9c6bc;border-radius:16px;box-shadow:0 10px 30px rgba(20,30,60,.16);
+overflow:hidden;color:#152033;margin-top:18px}
+.screen .bar{background:#10418f;color:#fff;font-weight:700;font-size:17px;padding:13px 18px}
+.screen .steps{display:flex;gap:6px;padding:12px 18px 2px;font-size:11.5px;color:#56617a;font-weight:600}
+.screen .steps span{flex:1;border-top:4px solid #cfd6e6;padding-top:6px}
+.screen .steps span.on{border-color:#10418f;color:#10418f}
+.sec{margin:12px 18px 0;border:1px solid #d7dcea;border-radius:10px;padding:11px 13px 13px}
+.sec h4{margin:0 0 8px;font-size:14.5px}
+.inp label{display:block;font-size:11.5px;color:#56617a;font-weight:600}
+.inp div{background:#eef1f7;border:1px solid #cfd6e6;border-radius:7px;padding:7px 10px;font-size:14.5px;margin-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{margin:13px 18px 16px;display:inline-block;background:#10418f;color:#fff;font-weight:700;font-size:14px;border-radius:8px;padding:8px 20px}
+.cap{font-family:var(--ui);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+/* slide 10 */
+h2{font-size:31px;margin:10px 0 2px;letter-spacing:.05em}
+table{border-collapse:collapse;width:100%;margin-top:12px;font-size:17px}
+th,td{border:2px solid var(--line);padding:8px 12px;text-align:left;vertical-align:middle}
+th{font-size:13.5px;text-transform:uppercase;letter-spacing:.08em;background:#f0ede3}
+td.w{font-weight:700;font-size:23px;text-align:center;width:92px}
+td.p{font-size:27px;line-height:1.02;width:330px}
+td .boxes{margin:0;gap:6px 16px;font-size:15.5px}
+.bottom{display:grid;grid-template-columns:1.7fr 1.25fr .9fr;gap:26px;margin-top:22px;font-size:16.5px;align-items:end}
+.bottom .boxes{flex-wrap:nowrap}
+.sig{border-top:2px dotted #6b675e;text-align:center;font-size:13px;color:var(--muted);padding-top:5px}
+@page{size:13.333in 7.5in;margin:0}
+@media print{html,body{background:var(--paper)}.page{margin:0;box-shadow:none;break-after:page}.page:last-child{break-after:auto}}
+</style>
+</head>
+<body>
+
+<section class="page" aria-label="Slajd 1: nagłówek wniosku">
+  <div class="head"><span>Załącznik do zadania „Cyfryzacja formularzy” · HackNation 2026</span><span>Wzór SHR-1 · strona 1 z 10</span></div>
+  <div class="stamp" style="right:64px;top:72px;font-size:25px">Wpłynęło<small>22.11.2026 · HackNation</small></div>
+  <div class="cols">
+    <div>
+      <h1>WNIOSEK</h1>
+      <p class="sub">o zamianę formularza w&nbsp;e-usługę</p>
+      <p class="inst">Wypełnić drukowanymi literami. <span class="pen" style="font-size:27px;line-height:.5;display:inline-block;transform:rotate(-3deg);margin-left:10px">← już nie trzeba</span></p>
+      <div class="f"><label>1. Wnioskodawca (imię i nazwisko, zespół)</label><span class="v pen">Andrii Shramko, zespół Shramko</span></div>
+      <div class="f"><label>2. Adresat</label><span class="v pen">Centralny Ośrodek Informatyki</span></div>
+      <div class="f"><label>3. Wnoszę o</label><span class="v pen">zamianę każdego urzędowego druku <span class="mark">w gotową e-usługę</span></span></div>
+      <div class="f"><label>4. Postać druku (zaznaczyć właściwe)</label>
+        <div class="boxes"><span class="cb on"><i></i>PDF</span><span class="cb on"><i></i>DOC</span><span class="cb on"><i></i>DOCX</span><span class="cb on"><i></i>ODS</span><span class="cb on"><i></i>XLSX</span><span class="cb on"><i></i>skan JPG, PNG</span></div></div>
+      <div class="f"><label>5. Czas cyfryzacji jednego formularza*</label><span class="v" style="font-size:22px;padding-top:6px"><span class="strike">dni</span> / <span class="mark">sekundy</span></span></div>
+    </div>
+    <div>
+      <p class="cap" style="margin:118px 0 0">To samo po konwersji: e-usługa</p>
+      <div class="screen">
+        <div class="bar">Wniosek o zamianę formularza w e-usługę</div>
+        <div class="steps"><span class="on">1. Dane</span><span>2. Przedmiot wniosku</span><span>3. Kontakt z urzędem</span><span>4. Podgląd</span></div>
+        <div class="sec"><h4>Urząd, do którego jest składany wniosek</h4><div class="inp"><label>Nazwa urzędu</label><div>Centralny Ośrodek Informatyki</div></div></div>
+        <div class="sec"><h4>Twoje dane</h4><div class="two"><div class="inp"><label>Imię</label><div>Andrii</div></div><div class="inp"><label>Nazwisko</label><div>Shramko</div></div></div></div>
+        <span class="btn">Dalej</span>
+      </div>
+    </div>
+  </div>
+  <svg style="position:absolute;left:668px;top:398px" width="120" height="70" viewBox="0 0 120 70" aria-hidden="true"><path d="M6 52 C40 10 74 12 104 30" fill="none" stroke="#1d3fa8" stroke-width="4" stroke-linecap="round"/><path d="M90 16 L107 31 L86 40" fill="none" stroke="#1d3fa8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="foot">* Niepotrzebne skreślić. · Próbka wyglądu prezentacji z 21.11.2026: treść i zaznaczenia uzupełnimy, gdy rozwiązanie będzie działać.</div>
+</section>
+
+<section class="page" aria-label="Slajd 10: adnotacje urzędowe, wypełnia jury">
+  <div class="head"><span>Wniosek o zamianę formularza w e-usługę</span><span>Wzór SHR-1 · strona 10 z 10</span></div>
+  <h2>CZĘŚĆ J. ADNOTACJE URZĘDOWE <span style="font-weight:400;font-size:21px;letter-spacing:0">(wypełnia jury)</span></h2>
+  <table>
+    <tr><th>Kryterium</th><th>Waga</th><th>Spełniono</th><th>Gdzie dowód</th></tr>
+    <tr><td>Kompletność</td><td class="w">30%</td><td><div class="boxes"><span class="cb on"><i></i>zakres minimalny</span><span class="cb on"><i></i>słowniki i dane inicjalne</span><span class="cb on"><i></i>nowy słownik</span><span class="cb on"><i></i>zależności</span><span class="cb on"><i></i>interfejs do importu</span><span class="cb on"><i></i>walidacje</span></div></td><td class="p pen">pliki JSON, części D–F</td></tr>
+    <tr><td>Intuicyjność</td><td class="w">20%</td><td><div class="boxes"><span class="cb on"><i></i>urzędnik sprawdza tylko to, czego system nie jest pewien</span></div></td><td class="p pen">ekran kontroli, część E</td></tr>
+    <tr><td>Oryginalność</td><td class="w">10%</td><td><div class="boxes"><span class="cb on"><i></i>cały urząd naraz</span><span class="cb on"><i></i>formularz gotowy dla asystentów AI</span></div></td><td class="p pen">części F i H</td></tr>
+    <tr><td>Jakość kodu</td><td class="w">20%</td><td><div class="boxes"><span class="cb on"><i></i>testy</span><span class="cb on"><i></i>kontrola licencji</span><span class="cb on"><i></i>README</span></div></td><td class="p pen">repozytorium</td></tr>
+    <tr><td>Potencjał wdrożeniowy, w&nbsp;tym koszt</td><td class="w">20%</td><td><div class="boxes"><span class="cb on"><i></i>bez modelu i bez karty graficznej</span><span class="cb on"><i></i>Docker</span><span class="cb on"><i></i>bez połączeń na zewnątrz</span></div></td><td class="p pen">część G</td></tr>
+  </table>
+  <div class="bottom">
+    <div>Załączniki: <span class="boxes" style="display:inline-flex;margin-left:6px"><span class="cb on"><i></i>pliki JSON</span><span class="cb on"><i></i>film, 3 minuty</span><span class="cb on"><i></i>repozytorium</span></span></div>
+    <div>Decyzja: <span class="boxes" style="display:inline-flex;margin-left:6px"><span class="cb"><i></i>pozytywna</span><span class="cb"><i></i>bardzo pozytywna</span></span></div>
+    <div class="sig">(data i podpis jury)</div>
+  </div>
+  <div class="stamp" style="left:500px;bottom:64px;font-size:19px;transform:rotate(-5deg)">Próbka wyglądu<small>zaznaczenia po zbudowaniu</small></div>
+  <div class="foot">Pouczenie: ten wniosek też przejdzie przez nasz konwerter, a wynik trafi do repozytorium jako plik JSON. · Próbka wyglądu prezentacji z 21.11.2026.</div>
+</section>
+
+</body>
+</html>
