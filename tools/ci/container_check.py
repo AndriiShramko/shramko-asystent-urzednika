@@ -27,6 +27,9 @@
    processor and twice with two: all forms byte-equal, all sidecars byte-equal. Small hostile files made by
    tools/ci/hostile_inputs.py must each be refused within 10 s: exit 2 with problem JSON on the command line,
    a 4xx problem JSON over HTTP, and the service still healthy afterwards.
+6. WP-F20i. The jury's first run (tools/ci/first_run.py): the image started with nothing but a published port
+   is healthy within 30 s and two simultaneous first requests agree, on three fresh containers; AUTH_MODE=jwt
+   with no key exits 3; --out into a folder that cannot be written exits 4; JOB_TIMEOUT_S=2 gives 504 TIMEOUT.
 
 The token key is random per run, lives in a temporary folder and is never printed. Exit 1 when a check fails.
 Writes a Markdown table to $GITHUB_STEP_SUMMARY when that variable is set.
@@ -576,6 +579,11 @@ def check_http(image: str, fixtures: Path, res: Results, ready: frozenset[str] =
         failed_before = res.failed
         if http_checks(base, key, fixtures, res, ready):
             http_sidecar_check(base, token(key), fixtures, res)
+            import first_run
+
+            st, body = first_run.get(base + "/status")
+            res.add("GET /status with a key configured: 200 without a token, auth jwt",
+                    first_run.problems_of_status(st, body, "jwt"), f"{len(body)} bytes")
             if hostile is not None:
                 http_hostile_checks(base, token(key), hostile, res)
         if res.failed > failed_before:
@@ -665,6 +673,10 @@ def main() -> int:
             check_http(args.image, args.fixtures, res, ready, hostile)
     finally:
         shutil.rmtree(hostile, ignore_errors=True)
+    if not args.no_http:
+        import first_run   # imports this module by name: see the last lines of the file
+
+        first_run.run_all(args.image, args.fixtures, res)
     md = summary_markdown(args.image, res)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
@@ -677,4 +689,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    import container_check   # one copy of this module for first_run.py too, not `__main__` plus a second import
+
+    sys.exit(container_check.main())

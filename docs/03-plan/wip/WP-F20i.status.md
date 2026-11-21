@@ -1,15 +1,17 @@
 # WP-F20i the image proves the jury's first run: status
 
-Branch: wp/F20-image-checks   Stage now: core (stage 1 of 2)
+Branch: wp/F20-image-checks   Stage now: integration (stage 2 of 2)
 
 Worktree cut from main c940d03. Pushing this branch starts the image workflow (`wp/F20-**`), tag `test-<short sha>`.
+A push while a run of this branch is in progress CANCELS that run (workflow concurrency): wait for the result first.
 
 ## Status
-- [~] Stage 1 code: image environment (S3), sidecar check (V1), determinism under processor limits, hostile files; unit tests 40 passed natively; not yet run in CI
-- [ ] Stage 1 CI run green for both targets (run id here)
-- [ ] Stage 2: merge `wp/F-service-fixes` (not visible locally or on origin at 21 Nov, start of stage 1)
-- [ ] Stage 2: the jury's first run as a check (no environment: healthz and status; two simultaneous first requests on 3 fresh containers; AUTH_MODE=jwt without a key exits 3; --out into a read-only mount exits 4; JOB_TIMEOUT_S=2 gives 504 TIMEOUT and healthz after)
-- [ ] One recorded RED run on a throw-away commit, then the fix
+- [x] Stage 1 code: image environment (S3), sidecar check (V1), determinism under processor limits, hostile files; 40 unit tests (commit c97b2a5)
+- [~] Stage 1 CI run: pushed c97b2a5 on 21 Nov; waiting with `bash tools/gate.sh py tools/ci/wait_run.py c97b2a5e20badbcfdc3aa65bf380b1933cfec3c2 --timeout 1500` (log `%TEMP%/f20i_run1.log`); run id not known yet
+- [x] Stage 2: `wp/F-service-fixes` merged at dc77011 (its items 1 to 8 checked, acceptance open) (merge commit 1ae882e)
+- [x] Stage 2 code: `tools/ci/first_run.py` called by `container_check.py`; 12 unit tests, three of them the same first run against the native service (this commit)
+- [ ] Stage 2 CI run green for both targets (run id here)
+- [ ] One recorded RED run on a throw-away commit (plan: `ENV AUTH_MODE=jwt` baked into the Dockerfile, so the first run exits 3), then the fix
 - [ ] Final run of the branch head green for both targets; digests recorded
 
 ## Decisions
@@ -18,20 +20,28 @@ Worktree cut from main c940d03. Pushing this branch starts the image workflow (`
 - Processor limits: `--cpus 1 --cpuset-cpus 0` against `--cpus 2`. Why: `--cpus` alone is a quota and leaves the visible processor count unchanged; the cpuset makes the one-processor run see one. Rules out: a runner with a single processor (the row fails there with Docker's message).
 - Locale: asked, not assumed. The probe calls `setlocale(LC_ALL, "")` and `nl_langinfo(CODESET)` inside each image; a missing locale raises on glibc. Measured on the pinned bases on 21 Nov 2026: Debian trixie glibc 2.41 answers `C.UTF-8`, Alpine musl answers `C.UTF-8;C;C;C;C;C`, both `UTF-8`, offset `+0000`; a made-up locale on glibc gives `locale.Error`.
 - Hostile files: five reused from `eval/chain/hostile.py` (text named .pdf, zero bytes, truncated PDF, real 300 MB zip bomb, PNG with a 100000 x 100000 header), three added in `tools/ci/hostile_inputs.py` (entity expansion DOCX, DOCX with a declared 4 GB part, PNG cut in half). Refusal = exit 2 with a 4xx problem JSON on stderr; HTTP = 4xx `application/problem+json`; 10 s includes the start of the container.
+- First run: `docker run -d -p 127.0.0.1:PORT:8080 IMAGE` and nothing else (not even the hardening flags: a jury types the short command). Three fresh containers, a file of another reader each (PDF, DOCX, PNG for OCR); `/status` is asked AFTER the pair, because it reads the readers registry and would warm it. Rules out: a pair that is not really first.
+- Open API in the log: the check looks for "without a token" (case-insensitive) in the container log. Why: the brief asks for a warning; this is the text of `app/main.py`. Rules out: rewording that line without changing `first_run.OPEN_API_LOG`.
+- Unwritable `--out`: two folders, a tmpfs of mode 0755 (root-owned: EACCES) and a host folder mounted `:ro` (EROFS). Why: no `sudo` in the check. Rules out: nothing; both must exit 4 with the one line.
+- Time limit: `JOB_TIMEOUT_S=2` and a 40-page PDF without a text layer (the raster fixture on every page, 60 is the page limit), so every page is one OCR run. After the 504 the check asks `/healthz` and converts a DOCX. Rules out: proving it natively on the laptop (no Tesseract there: the file finishes at once).
 
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
-| Unit tests of the new checks | `bash tools/gate.sh py -m pytest tools/ci/tests/test_image_checks.py -q` | 40 passed in 19 s | working tree before the first commit |
-| C.UTF-8 exists in both bases | probe of `container_check.PROBE` in a local core image with `-e`; `docker run python:3.14-slim-trixie@sha256:9aaa47...` | see Decisions (locale) | working tree |
-| Hostile files refused natively | part of the unit tests (8 files, exit 2, about 1 s each) | passed | working tree |
+| Unit tests of the stage 1 checks | `bash tools/gate.sh py -m pytest tools/ci/tests/test_image_checks.py -q` | 40 passed | c97b2a5 |
+| All CI tool tests | `bash tools/gate.sh py -m pytest tools/ci/tests -q` | 87 passed in 118 s | c97b2a5 |
+| Fast gate before the first push | `bash tools/gate.sh fast` | 781 passed, 3 skipped, exit 0 (8 min) | c97b2a5 |
+| C.UTF-8 exists in both bases | probe of `container_check.PROBE` in a local core image with `-e`; `docker run python:3.14-slim-trixie@sha256:9aaa47...` | see Decisions (locale) | c97b2a5 |
+| Hostile files refused natively | part of the unit tests (8 files, exit 2, about 1 s each) | passed | c97b2a5 |
+| First run natively, no configuration | `bash tools/gate.sh py -m pytest tools/ci/tests/test_first_run.py tools/ci/tests/test_image_checks.py -q` | 52 passed in 49 s | merge 1ae882e plus this commit's files |
 
 ## Negative control
-Unit level (in `tools/ci/tests/test_image_checks.py`): a broken sidecar (8 kinds), a changed image variable (5), a refused locale, wrong offset, differing bytes between runs, a hostile answer that is a form, a traceback, a 500 plain text, a hang: each makes its check report a problem. The recorded RED CI run comes in stage 2.
+Unit level (in `tools/ci/tests/test_image_checks.py`, `test_first_run.py`): a broken sidecar (8 kinds), a changed image variable (5), a refused locale, wrong offset, differing bytes between runs, a hostile answer that is a form, a traceback, a 500 plain text, a hang, a first pair with one 429 or different bytes, exit 1 instead of 3 or 4, a 200 instead of 504: each makes its check report a problem. The recorded RED CI run comes next.
 
 ## Requests to lead
 - `contracts/coi/meta.schema.json` and the emitted sidecar disagree (see Decisions). Either the product moves to the contract (WP-F15 scope) or the contract gets a note that version 1 of the sidecar is the interim shape. Until then documents must not claim the sidecar is validated against `meta.schema.json`; it is validated against `tools/ci/sidecar.v1.schema.json` plus the contract's `Ledger`.
 - `docs/03-plan/ownership.md` has no line for `tools/ci/**` under WP-F20i (it names WP-F20); the brief of this package is the authority used.
+- `docker-compose.yml` is untouched: it keeps `AUTH_MODE: ${AUTH_MODE:-jwt}`. Its comment and the README still describe the old default of the service; the README is not mine.
 
 ## Cost notes
-- stage 1: (to fill at the stage end)
+- stage 1: the fast gate takes 8 minutes on this laptop and must not overlap an edit of the tree; the surprise was the sidecar contract (two probes to find out).
