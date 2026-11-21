@@ -37,7 +37,7 @@ More about this machine: [`docs/04-orchestration/machine-notes.md`](docs/04-orch
 
 ## Your first ten minutes
 
-1. Read [`AGENTS.md`](AGENTS.md), [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) and [`docs/03-plan/DECISIONS-forms-track.md`](docs/03-plan/DECISIONS-forms-track.md). Nothing else yet. The skill `track-f-lead` is the one-page version of how you work; the long version is [`docs/04-orchestration/lead-agent-playbook.md`](docs/04-orchestration/lead-agent-playbook.md).
+1. Read [`AGENTS.md`](AGENTS.md), [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) (its part "Build log" is the handoff of the previous lead; then [`docs/03-plan/LEAD-HANDOFF.md`](docs/03-plan/LEAD-HANDOFF.md): how the build is run and what was learned) and [`docs/03-plan/DECISIONS-forms-track.md`](docs/03-plan/DECISIONS-forms-track.md). Nothing else yet. The skill `track-f-lead` is the one-page version of how you work; the long version is [`docs/04-orchestration/lead-agent-playbook.md`](docs/04-orchestration/lead-agent-playbook.md).
 2. `git fetch && git status --short && git log --oneline -5`. If STATUS marks packages as running: [`docs/04-orchestration/resume-after-limit.md`](docs/04-orchestration/resume-after-limit.md).
 3. Read the mentors' answers: the owner's private artifact "Ankieta COI HackNation" (ask him for the link if the start message has none; the artifact data tool, collection `ankieta`, documents `tech` and `biz`). Write each answer into section 7 of the decisions file. The questions and what each answer decides: [`docs/05-hackathon/mentor-questions/`](docs/05-hackathon/mentor-questions/).
 4. Read the plan usage and write both numbers into STATUS (playbook, section 7).

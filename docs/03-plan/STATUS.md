@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 15:13 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 15:49 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -26,28 +26,41 @@ Last update: 2026-11-21 15:13 CET. **Track F (the forms converter) is being buil
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
 
-**Running (15:08):**
+**Running (15:49): nothing. This is the quiet point: everything that was started is merged, `main` is green and pushed.**
 
-| What | Branch | How it runs |
-|---|---|---|
-| WP-F20b the image checks meet the real pipeline; publishing and signing of the first run on `main` verified; Grype gate; `probe.yml` deleted; no image build for pushes that change only documents | `wp/F20-b-real-pipeline` (merges `wp/F0p-pipeline` first; may push only its own branch) | one builder agent (sonnet), started 15:02 |
-| WP-F14 pre-import gate, seven journeys, zero-answer canary (core on opus) | `wp/F14-gate` | wave run `wf_49caecbe-7ca`, started 15:02 |
-| WP-F3 finder (core on the session's model) | `wp/F3-finder` | wave run `wf_c0e21e37-085`, started 15:08 |
+**What happens now:** the owner installs Docker Desktop with the lead (installer already downloaded and verified: `C:\Users\<owner>\Downloads\docker-desktop-installer\`, version 4.99.0, hash checked by winget, signature of Docker Inc valid; WSL is installed first; two administrator prompts, then one reboot). **After the reboot the lead role belongs to a NEW chat** opened in this folder with the start phrase of `START_HERE.md`; the first lead session ends here on purpose (its conversation had grown too large to be affordable).
 
-**Ready but NOT merged on purpose:** `wp/F0p-pipeline` (head `a915319`, 392 tests): readers and composer behind the service instead of the stub, an interim brief that reads the title only (`app/interim.py`, warning `BRIEF_NOT_READ`), formats without a reader answer 422. It goes into `main` together with `wp/F20-b-real-pipeline`, because today's container checks on `main` demand that all eight fixtures convert and would turn red. Known weak spots of the interim title: set 6 gives only "WNIOSEK"; the PDF of set 9 may join two headings.
+**First steps of the new lead after the reboot:**
 
-**Merged since the table above:** WP-F20 image pipeline (`d576408`, 15:01): on its branch the run was green in three jobs; `core` is 274 MB, `plus` 363 MB, both on Python 3.14 with bases pinned by digest and wheels checked by hash; not root, no capability, read-only root, no network; SBOM gate with 0 findings. The first run on `main` (publishing, signing) is being verified by F20b. WP-F0c revision 1.1 of the models (`8611a0d`, 15:06): additive, 416 tests; its paragraph "For a finder author" is in `wip/WP-F0c.status.md`.
+1. Read [`LEAD-HANDOFF.md`](LEAD-HANDOFF.md): the loop, the tools in `tools/lead/`, what was learned, the order of the next packages.
+2. Check Docker: `docker version`, `wsl -l -v`. If Docker Desktop is not running, ask the owner to start it once and accept its first-run window. If `C:\Users\<owner>\.wslconfig` does not exist, create it with `[wsl2]`, `memory=4GB`, `swap=2GB` (the laptop has 16 GB and little free; three agents plus Docker must fit) and run `wsl --shutdown`.
+3. Prove the published image on the real forms (the image workflow cannot see them): pull `ghcr.io/andriishramko/shramko-asystent-urzednika` by the digest of the newest green commit on `main` (`bash tools/gate.sh py tools/ci/image_digest.py <commit>`), start it with `--network none --read-only` and convert one file of every ready format from a judged set through `python -m converter convert`; compare with the native result (`tools/lead/snapshot_results.py`). Record the outcome here.
+4. Remove the stale worktree (`git worktree remove .claude/worktrees/agent-a272afdf3fc7f8677`, `git worktree prune`), then start the next wave: **WP-F4** (understanding: the brief; core on the session's model while the top-model week is under 85 %, else `model: 'opus'`), **WP-F8** (validators), **WP-F2c** (images and OCR).
 
-**Open follow-ups for packages that are merged** (each is a small stage, to be given to a builder when a slot is free):
+**Merged since the table above** (all through `tools/lead/merge.sh`, fast gate green after each):
 
-- Composer (F5): make the attachment id from `Attachment.key`; use `page_title` and `hint` of a matter section; a yes-or-no CHECKBOX without options; the `applicant` selector in conditions (requests of F0c).
-- Readers (F2a): switch to the `safe` builders of revision 1.1; fill `leader`, `region`, `footnote`, widget values.
-- Shell (F1): every forbidden character of a file name as a parameter of one test; two starts with two size limits; rotated key, issuer and audience; a plain Polish action in every problem answer (`verification-plan.md`, sections 1 and 6).
-- Wiring (lead files): the finder and the understanding step replace `app/interim.py`; the gate behind `pipeline.run`; `assemble_ledger` gets the inverse of `ComposeResult.brief_keys`; `UploadInfo` reaches the pipeline for the sidecar.
+| When | Package | Merge commit | What it proves |
+|---|---|---|---|
+| 15:01 | WP-F20 image pipeline | `d576408` | both targets build on Python 3.14 with pinned bases and hashed wheels; not root, no capability, read-only, no network; SBOM gate |
+| 15:06 | WP-F0c revision 1.1 of the models | `8611a0d` | additive: old output byte-identical; spans, dispositions, reader facts, safe builders |
+| 15:10 | WP-F0p pipeline wiring and WP-F20b image checks for the real pipeline | `920dbf1` | **milestone (a)**; ready formats in one line of the workflow; Grype gate; image inspection; publishing and signing verified on `main` |
+| 15:20 | WP-F14 pre-import gate | `af6794f` | twelve checks each with a fixture that fails only that check; both exports pass G1 to G10; seven journeys; zero-answer canary |
+| 15:29 | WP-F0q gate behind the service and inside the image | `7be05a7` | a refused form is 500 `GATE_FAILED` without a form; the gate adds about 0.26 s per form; checked inside both images |
+| 15:39 | WP-F3 finder | `7568884` | candidates for the PDF and DOCX of the nine sets with no unhandled error and no unassigned run; combs with masks, choice groups, blanks in a sentence; drills 3, 4, 7, 8, 10 |
+| 15:47 | WP-F2b readers for XLSX, ODS and binary Word, with WP-F20d | `81e4781` | 42 of the 69 set files read (the other 27 are images); five formats convert inside both images; fast gate 540 passed |
 
-**Next:** F4 (understanding, core on the session's model while the top-model week is under 85 %) on top of F3; F2b (sheets and binary Word) and F8 (validators) when a slot is free. Lead decisions taken at 15:02: the hostile corpus runs from the CI runner against the container (the tests are not in the image); the vulnerability gate is Grype on the SBOM and fails only on a critical finding that has a fix; `tools/licence_check.py` stays with WP-F12 and may reuse `tools/ci/sbom_gate.py`.
+**Open follow-ups for packages that are merged** (small stages for a builder when a slot is free):
 
-**Budget, measured 15:06:** week 63 %, top model 75 %. In the first 72 minutes of the build the week grew by 8 points and the top model by 5. Nine packages cost about half a point each; **the lead's own conversation is the larger half** (468 thousand tokens at 15:06, re-read on every step). At this pace both numbers reach 100 % at about 21:00. Therefore: **the lead role moves to a fresh session at the next quiet point** (nothing running, everything merged); that session starts from this file. The same quiet point is the window for the owner's Docker installation, if he is at the laptop.
+- **Finder, second pass (F3b):** on sets 8 and 9 between 20 and 31 places per file have no label; the PDF of set 9 yields no section; the notes of the hosted models in `eval/silver/` were not consulted; radio groups and declared tab leaders are untested on real files. Requests of the finder to the models (additive, a revision 1.2): a role per span, a label position "below", a mark for cell candidates that are rows of one repeating table. Requests to the readers: a flow table needs a place among the paragraphs (the 26-cell comb of reference 5 as DOCX gets no label); bold is not reported for the headings of the PDF of set 9.
+- **Composer (F5):** attachment id from `Attachment.key`; `page_title` and `hint` of a matter section; a yes-or-no CHECKBOX without options; the `applicant` selector in conditions.
+- **Readers (F2a):** the `safe` builders of revision 1.1; `leader`, `region`, `footnote`, widget values.
+- **Shell (F1):** every forbidden character of a file name as a parameter of one test; two starts with two size limits; rotated key, issuer and audience; a plain Polish action in every problem answer (`verification-plan.md`, sections 1 and 6).
+- **Wiring (lead files):** the finder and the understanding step replace `app/interim.py` (the finder is merged but not called yet); `assemble_ledger` gets the inverse of `ComposeResult.brief_keys`; `UploadInfo` reaches the pipeline; the sidecar `checks` take the shape of `Meta.checks`.
+- **Standard fields carry no `REQUIRED`** (the strict linter warns on 45 fields per form; the exports carry none either): decide with WP-F8 whether the standard pages get validators (D8) or stay as in the exports.
+
+**Lead decisions:** the hostile corpus runs from the CI runner against the container; the vulnerability gate is Grype on the SBOM and fails only on a critical finding that has a fix; `tools/licence_check.py` stays with WP-F12 and may reuse `tools/ci/sbom_gate.py`; the account of set 2 is one field, not a comb (the paper draws one box).
+
+**Budget, measured 15:49:** week 68 %, top model 78 %. At 13:55 it was 55 % and 70 %. Packages are cheap (about half a point of the week each); the lead's long conversation was the larger half, which is why the lead changes here.
 
 **For the owner's next report:** D16 changes two standard conditions against the exports (docket row 18); the seven results will be delivered with the path of the statutory representative, and a second variant with `STATUTORY_REPRESENTATIVE=off` beside them.
 
