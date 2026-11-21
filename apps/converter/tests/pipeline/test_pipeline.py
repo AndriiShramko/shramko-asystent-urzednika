@@ -136,8 +136,33 @@ def test_a_broken_pdf_is_422_without_a_trace(client, caplog):
     assert "secret-name-xyz" not in caplog.text
 
 
-def test_an_xlsx_has_no_reader_yet_and_is_not_answered_with_a_form(client):
-    r = post(client, "a.xlsx", xlsx())
+def _sheet_doc_builders():
+    import sys
+    from pathlib import Path
+
+    here = str(Path(__file__).resolve().parent.parent / "readers")
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    import test_sheet_doc_readers as t
+
+    return {"xlsx": lambda: t._xlsx(t._form), "ods": t._ods_form, "doc": t._doc}
+
+
+@pytest.mark.parametrize("fmt", ["xlsx", "ods", "doc"])
+def test_a_sheet_or_binary_word_file_gives_a_form_that_passes_the_gate(client, fmt):
+    r = post(client, f"a.{fmt}", _sheet_doc_builders()[fmt]())
+    assert r.status_code == 200, r.text
+    form = r.json()
+    assert set(form) == {"title", "tabs", "flow"} and form["tabs"]
+    assert errors_of(form) == []
+
+
+def test_a_png_has_no_reader_yet_and_is_not_answered_with_a_form(client):
+    from PIL import Image
+
+    buf = io.BytesIO()
+    Image.new("RGB", (8, 8), "white").save(buf, "PNG")
+    r = post(client, "a.png", buf.getvalue())
     assert r.status_code == 422 and r.json()["code"] == "UNREADABLE"
     assert "jeszcze" in r.json()["detail"] and "tabs" not in r.json()
 
