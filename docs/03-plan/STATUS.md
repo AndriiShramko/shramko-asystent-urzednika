@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 10:55 CET, preparation session (before the event); the owner's third brief is built in.
+Last update: 2026-11-21 10:25 CET, preparation session (before the event); the owner's third brief is built in.
 
 ## Phase
 
@@ -36,7 +36,7 @@ Last update: 2026-11-21 10:55 CET, preparation session (before the event); the o
 | Third brief built in: the idea as one flow, pains table, rules of the check by exception, what is not claimed | done | `docs/01-product/one-visit-package.md`; for the owner in Russian: `docs/01-product/kak-eto-rabotaet.ru.md` |
 | Research R12: the partner's announcement (open source, on-premise, LLM credits, PDF-DOCX-XLSX), the city's booking calendar, the seven-day rule, browser pre-fill, contact picker | done; four items are search excerpts only and are labelled | `research/12-one-visit-package-addendum.md` |
 | Work packages WP-B7 (need to set), WP-B8 (comparison and check by exception), WP-B9 (profile start); two change requests to WP-B1 and WP-B2 | specified, not started | `docs/03-plan/work-packages/WP-B7-B9-one-visit.md` |
-| Reading version of the presentation for the first judging stage (ten pages, Polish) and its web page; the same in Russian for the owner | drafts; numbers and the "what works" page are placeholders until the build measures them; **not yet under `site-formularze/`**, see "Waiting for the owner" | `docs/05-hackathon/presentation/storyboard-pakiet.md`, `docs/05-hackathon/presentation/pakiet/` |
+| Reading version of the presentation for the first judging stage (ten pages, Polish) and its web page; the same in Russian for the owner | drafts; numbers and the "what works" page are placeholders until the build measures them; **not yet under `site-formularze/`**, see "Waiting for the owner" | `docs/05-hackathon/presentation/storyboard-pakiet.md`, `docs/05-hackathon/presentation/pakiet/` (pages), `docs/assets/deck-pakiet/` (PDF, contact sheet), generator `tools/build_pakiet.py` |
 
 ## Not done before the event (first tasks if time allows)
 
