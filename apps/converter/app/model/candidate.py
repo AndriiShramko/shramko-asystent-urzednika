@@ -3,14 +3,22 @@
 One document per input. Every run of the page model ends up in exactly one of: the runs of a candidate (the
 dots, the boxes), the label or an option of a candidate, a section heading, or `roles`. Groups are candidates of
 kind choice_group: their options name the member candidates, and each member points back with `group`.
+
+Revision 1.1 (additive): a candidate, a label and an option may name `spans` (run id, start, end) when they share
+one run with others ("❑ pies ❑ suka": two box candidates, two options, one run); a whole run is still named in
+`runs`. `check_spans(page_model)` refuses a span whose run does not exist or that runs past the run's text.
+A candidate may carry a box and an anchor together, never neither.
 """
 from __future__ import annotations
 
-from typing import Literal, Self
+from typing import TYPE_CHECKING, Literal, Self
 
 from pydantic import ConfigDict, Field, field_serializer, model_validator
 
-from .common import ONE_PLACE_SCHEMA, Anchor, Box, Contract, InputRef, PageNo, Unit, Warning, exactly_one_place, unique
+from .common import ONE_PLACE_SCHEMA, Anchor, Box, Contract, InputRef, PageNo, Span, Unit, Warning, omit_empty, placed, unique
+
+if TYPE_CHECKING:
+    from .page import PageModel
 
 # Design 5.2. Add a kind here with the finder rule that needs it.
 CandidateKind = Literal[
@@ -36,6 +44,7 @@ class Label(Contract):
     runs: list[str] = []
     how: LabelHow
     margin: Unit = Field(description="Score distance to the second-best label; small means doubtful.")
+    spans: list[Span] = omit_empty(description="1.1: parts of runs that hold the label, when the run holds more.")
 
 
 class Confidence(Contract):
@@ -51,6 +60,7 @@ class ChoiceOption(Contract):
     runs: list[str] = []
     mark: str | None = Field(default=None, description="Id of the box candidate that marks this option.")
     blank: str | None = Field(default=None, description='Id of the candidate written after the option ("inne ……").')
+    spans: list[Span] = omit_empty(description="1.1: parts of runs that hold the option's text, when the run holds more.")
 
 
 class Candidate(Contract):
@@ -62,6 +72,7 @@ class Candidate(Contract):
     box: Box | None = None
     anchor: Anchor | None = None
     runs: list[str] = Field(default=[], description="Runs that are the place itself (dots, box characters).")
+    spans: list[Span] = omit_empty(description="1.1: parts of runs that are the place itself (one box character of a longer run).")
     cells: int | None = Field(default=None, ge=1, description="Comb: number of boxes.")
     lines: int | None = Field(default=None, ge=1, description="line_block: number of lines.")
     mask: str | None = Field(default=None, description='Printed separators of a comb, e.g. "__-___", "DD-MM-RRRR".')
@@ -75,7 +86,7 @@ class Candidate(Contract):
 
     @model_validator(mode="after")
     def _shape(self) -> Self:
-        exactly_one_place(self, "candidate")
+        placed(self, "candidate")
         if self.kind == "choice_group" and len(self.options) < 2:
             raise ValueError(f"candidate {self.id}: a choice_group has at least two options")
         if self.kind != "choice_group" and self.options:
@@ -99,7 +110,7 @@ class Section(Contract):
 
 
 class FinderOutput(Contract):
-    finder_version: Literal[1] = 1
+    finder_version: Literal[1, 1.1] = Field(default=1.1, description="Revision of this contract; 1 (1.0) still validates.")
     input: InputRef
     order: list[str] = Field(default=[], description="Run ids in reading order (design 6.3.1).")
     sections: list[Section] = []
@@ -130,3 +141,26 @@ class FinderOutput(Contract):
                     if ref is not None and ref not in kinds:
                         raise ValueError(f"candidate {c.id}: option {o.text!r} names {ref}, which does not exist")
         return self
+
+    def all_spans(self) -> list[tuple[str, Span]]:
+        """Every span of the output with the id of its owner: candidate, its label, its options."""
+        out: list[tuple[str, Span]] = []
+        for c in self.candidates:
+            out += [(c.id, s) for s in c.spans]
+            if c.label is not None:
+                out += [(f"{c.id}/label", s) for s in c.label.spans]
+            out += [(f"{c.id}/option[{i}]", s) for i, o in enumerate(c.options) for s in o.spans]
+        return out
+
+    def check_spans(self, pages: PageModel) -> None:
+        """Refuse (ValueError) a span whose run is not in the page model or that runs past the run's text."""
+        runs = pages.run_index()
+        bad = []
+        for owner, s in self.all_spans():
+            hit = runs.get(s.run)
+            if hit is None:
+                bad.append(f"{owner}: run {s.run} is not in the page model")
+            elif s.end > len(hit[1].text):
+                bad.append(f"{owner}: span [{s.start}, {s.end}) runs past the text of run {s.run} ({len(hit[1].text)} characters)")
+        if bad:
+            raise ValueError("spans do not resolve: " + "; ".join(bad))

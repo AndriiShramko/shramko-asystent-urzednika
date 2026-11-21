@@ -28,17 +28,23 @@ BASE_ID = "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts
 
 SCHEMAS: dict[str, tuple[type[BaseModel], str]] = {
     "page-model": (PageModel, "Page model, output of every reader (design 5.1). Also checked by app.model.page: page "
-                              "numbers 1..n, source.pages equals the page count, ids unique in the document, flow "
-                              "pages use anchors and native or ocr pages use boxes, table cells name runs of their page."),
+                              "numbers 1..n, source.pages equals the page count, ids unique in the document, every "
+                              "element of a flow page has an anchor and of a native or ocr page a box (1.1: the other "
+                              "may be given too), a flow page carries lines, rects or pictures only with its size, "
+                              "table cells name runs of their page. Revision 1.1, additive."),
     "candidates": (FinderOutput, "Finder output (design 5.2). Also checked by app.model.candidate: ids unique, "
                                  "sections, groups and option marks resolve, a choice_group has two options or more, "
-                                 "a comb states its cells."),
+                                 "a comb states its cells; spans lie inside their runs (check_spans against the page "
+                                 "model). Revision 1.1, additive."),
     "brief": (Brief, "Brief, output of the understanding step (design 5.3). Also checked by app.model.brief: status "
-                     "stated or ambiguous has evidence and not_found has none, field keys and roles unique, conditions "
-                     "name existing fields and options, a required field states its basis."),
+                     "stated or ambiguous has a quote and not_found has no evidence, field keys and roles unique, "
+                     "conditions name existing fields and options (1.1: or the applicant selector and its option "
+                     "keys), a required field states its basis, dispositions name each candidate once and resolve. "
+                     "Revision 1.1, additive."),
     "meta": (Meta, "Sidecar meta keyed by form ids (design 5.4). Also checked by app.model.meta: the ledger closes "
                    "(blanks_found equals the sum of the five fates, one row per blank, counts equal rows by fate), "
-                   "coverage adds up, decisions resolve existing warnings."),
+                   "coverage adds up, decisions resolve existing warnings; app.model.ledger assembles the ledger "
+                   "from the finder's candidates and the brief's dispositions. Revision 1.1, additive."),
 }
 
 
@@ -52,6 +58,8 @@ class _NoNull(GenerateJsonSchema):
         out = super().default_schema(schema)
         if isinstance(out, dict) and out.get("default", 0) is None:
             out.pop("default")
+        if isinstance(out, dict) and isinstance(out.get("default"), dict):  # a default object leaves its absent keys out
+            out["default"] = {k: v for k, v in out["default"].items() if v is not None}
         return out
 
 

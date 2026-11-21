@@ -1,0 +1,41 @@
+{
+  "brief_version": 1.1,
+  "input": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000011", "format": "docx"},
+  "title": {"status": "stated", "value": "Wniosek o wydanie zaświadczenia",
+            "evidence": [{"page": 1, "runs": ["r2"], "quote": "Wniosek o wydanie zaświadczenia"}]},
+  "addressee": {"status": "not_found"},
+  "applicants": {"status": "stated", "self": true, "other_person": true, "capacities": ["pelnomocnik"],
+                 "evidence": [{"quote": "Imię i nazwisko"}],
+                 "options": [
+                   {"key": "osobiscie", "party": "self", "evidence": [{"quote": "Imię i nazwisko"}]},
+                   {"key": "pelnomocnik_osoby", "party": "other_person", "capacity": "pelnomocnik"}
+                 ]},
+  "matter": [
+    {"title": "Zwierzę", "role": "matter/zwierze", "page_title": "Informacje o zwierzęciu",
+     "hint": "Podaj gatunek zwierzęcia, którego dotyczy wniosek.", "fields": [
+      {"key": "gatunek", "label": "Gatunek", "type": "RADIO", "options": ["pies", "kot"], "required": true,
+       "required_basis": "paper", "candidate": "c40",
+       "evidence": [{"page": 1, "anchor": "p[4]", "quote": "Gatunek", "spans": [{"run": "r4", "start": 0, "end": 8}]}]},
+      {"key": "dotyczy_dzialki", "label": "Wniosek dotyczy działki", "type": "CHECKBOX"}]},
+    {"title": "Działka", "role": "matter/dzialka", "show_if": {"field": "dotyczy_dzialki", "is": "true"}, "fields": [
+      {"key": "numer_dzialki", "label": "Numer działki", "type": "TEXT_FIELD", "concept": "parcel_id", "required": true,
+       "required_basis": "paper", "candidate": "c50",
+       "evidence": [{"page": 1, "box": [300.0, 414.0, 540.0, 414.0], "anchor": "p[6]", "candidate": "c50"}]}]}
+  ],
+  "attachments": [{"key": "pelnomocnictwo", "label": "Pełnomocnictwo", "covered_by": "standard/pelnomocnictwo",
+                   "show_if": {"field": "applicant", "is": "pelnomocnik_osoby"}}],
+  "declarations": {"consents": [{"text": "Oświadczam, że dane podane we wniosku są zgodne z prawdą.", "kind": "declaration",
+                                 "evidence": [{"quote": "Oświadczam, że dane podane we wniosku są zgodne z prawdą."}]}],
+                   "clause": {"status": "not_found"}},
+  "fee": {"status": "not_found"},
+  "legal_basis": {"status": "not_found"},
+  "mandatory_attachments": {"status": "not_found"},
+  "proposed_fee": {"value": "17 zł", "why": "przykład syntetyczny: kwota z taryfy, do sprawdzenia przez urzędnika"},
+  "dispositions": [
+    {"candidate": "c40", "fate": "FIELD", "key": "gatunek"},
+    {"candidate": "c41", "fate": "MERGED", "into": "c40", "why": "GROUP_MEMBER"},
+    {"candidate": "c42", "fate": "MERGED", "into": "c40", "why": "GROUP_MEMBER"},
+    {"candidate": "c50", "fate": "FIELD", "key": "numer_dzialki"},
+    {"candidate": "c51", "fate": "STANDARD", "role": "standard/twoje_dane"}
+  ]
+}

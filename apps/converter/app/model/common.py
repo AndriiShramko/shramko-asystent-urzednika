@@ -1,11 +1,13 @@
 """Pieces shared by our own contracts (page model, finder output, brief, meta).
 
-Conventions of every contract of ours (decisions in docs/03-plan/wip/WP-F0b.status.md):
+Conventions of every contract of ours (decisions in docs/03-plan/wip/WP-F0b.status.md, WP-F0c.status.md):
 - unknown keys are refused (extra="forbid");
 - absent means none: a key is left out instead of written as null, and an explicit null is refused, so the
   JSON Schema written from these models (app.model.schemas) has no nullable types;
 - coordinates are points with the origin at the top left of the page: box = [x0, y0, x1, y1];
-- output is deterministic: key order is the declaration order, maps keyed by ids are sorted, no timestamps.
+- output is deterministic: key order is the declaration order, maps keyed by ids are sorted, no timestamps;
+- revision 1.1 is additive: every key it adds is optional and left out while unused (None, or an empty list
+  through `omit_empty`), so a document that does not use it is written byte for byte as in revision 1.0.
 
 Closed code lists live here. A new code is added in THIS file, with a comment naming the design section or
 acceptance list that needs it; the schema files are then regenerated (python -m app.model.schemas).
@@ -13,9 +15,11 @@ acceptance list that needs it; the schema files are then regenerated (python -m 
 from __future__ import annotations
 
 import json
+import math
 from typing import Annotated, Any, Literal, Self
 
-from pydantic import AfterValidator, BaseModel, ConfigDict, Field, model_validator
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, GetCoreSchemaHandler, model_validator
+from pydantic_core import CoreSchema
 
 
 def _check_box(b: tuple[float, float, float, float]) -> tuple[float, float, float, float]:
@@ -25,8 +29,29 @@ def _check_box(b: tuple[float, float, float, float]) -> tuple[float, float, floa
     return b
 
 
-Box = Annotated[tuple[float, float, float, float], AfterValidator(_check_box)]
-"""[x0, y0, x1, y1] in points, origin top left. A horizontal line has y0 == y1."""
+class Box(tuple):  # type: ignore[type-arg]
+    """[x0, y0, x1, y1] in points, origin top left. A horizontal line has y0 == y1.
+
+    Used as an annotation; a validated box is a plain tuple of four floats (the schema and the values are those of
+    revision 1.0). Readers turn raw coordinates into a box with `Box.from_raw` (revision 1.1).
+    """
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return handler.generate_schema(Annotated[tuple[float, float, float, float], AfterValidator(_check_box)])
+
+    @staticmethod
+    def from_raw(x0: Any, y0: Any, x1: Any, y1: Any) -> tuple[float, float, float, float] | None:
+        """Reader boundary: reversed endpoints are swapped; a coordinate that is not a finite number gives None
+        (the element cannot be placed: the caller skips it with UNREADABLE_PART and never invents a box)."""
+        try:
+            v = [float(x0), float(y0), float(x1), float(y1)]
+        except (TypeError, ValueError):
+            return None
+        if not all(math.isfinite(x) for x in v):
+            return None
+        return (min(v[0], v[2]), min(v[1], v[3]), max(v[0], v[2]), max(v[1], v[3]))
+
 
 Anchor = Annotated[str, Field(min_length=1, description='Place in a file without geometry: "p[12]", "p[12]/cell[2,3]", "Arkusz1!B7".')]
 Unit = Annotated[float, Field(ge=0.0, le=1.0)]
@@ -69,9 +94,21 @@ WarningCode = Literal[
     "COMPOSITE_UNRESOLVED",  # 6.4.4: several applications in one paper, no selector
     "INFERRED_SHAPE",        # 6.5.4, skill rule 14: a component shape no export shows
     "LOW_CONFIDENCE",        # 7.5: confidence below the review threshold
+    # revision 1.1, verification plan 5 #7: required_basis "paper" without evidence (brief.check_paper_evidence)
+    "REQUIRED_WITHOUT_EVIDENCE",
+    # revision 1.1, WP-F5 request 3: the composer's remark codes (app.compose.Remark.code), carried by F15
+    "CONDITION_NOT_WRITTEN", "SECTION_SPLIT", "REPEATING_FLATTENED", "STEP_NOTE_ADDED", "MARKUP_IN_LABEL",
+    "TITLE_MISSING", "ADDRESSEE_MISSING", "APPLICANTS_ASSUMED", "SOLE_TRADER_AS_ENTITY", "CLAUSE_LINK_MISSING",
+    "NO_MATTER", "EXTRA_NOT_PLACED",
 ]
 
 Status = Literal["stated", "not_found", "ambiguous"]
+
+# The five fates of a blank (design 5.4). The order is the order of the counts in the ledger. Revision 1.1 moved
+# both lists here from meta so that the brief's dispositions use the same words (app.model.meta re-exports them).
+Fate = Literal["FIELD", "MERGED", "STANDARD", "LEFT_OUT", "AWAITING_DECISION"]
+# Why a blank was merged into another (design 5.4 example, 6.3.3, 6.4.3). Add a code here with its rule.
+MergeWhy = Literal["COMB_CELLS", "GROUP_MEMBER", "LINE_BLOCK", "SAME_ALTERNATIVE", "TABLE_ROW"]
 
 
 def _refuse_nulls(data: Any) -> Any:
@@ -104,29 +141,64 @@ def canonical_json(obj: Any) -> bytes:
     return (json.dumps(obj, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode("utf-8")
 
 
-def exactly_one_place(obj: Any, what: str) -> None:
-    """Shared rule: an element of the page carries exactly one of box (geometry) or anchor (flow)."""
-    if (getattr(obj, "box", None) is None) == (getattr(obj, "anchor", None) is None):
-        raise ValueError(f"{what} {getattr(obj, 'id', '')!s} must carry exactly one of box or anchor")
+def _empty(v: Any) -> bool:
+    return not v
 
 
-ONE_PLACE_SCHEMA: dict[str, Any] = {"oneOf": [{"required": ["box"]}, {"required": ["anchor"]}]}
+def omit_empty(**kw: Any) -> Any:
+    """A list or map added in revision 1.1: empty by default and left out of the JSON while empty, so a document
+    that does not use it is written byte for byte as in revision 1.0."""
+    kw.setdefault("default_factory", list)
+    return Field(exclude_if=_empty, **kw)
+
+
+def placed(obj: Any, what: str) -> None:
+    """Shared rule (revision 1.1): an element carries a box, an anchor, or both (a text box anchored to a
+    paragraph); never neither. Which of the two the page demands is the page's rule (app.model.page)."""
+    if getattr(obj, "box", None) is None and getattr(obj, "anchor", None) is None:
+        raise ValueError(f"{what} {getattr(obj, 'id', '')!s} must carry a box or an anchor (or both), not neither")
+
+
+exactly_one_place = placed  # the revision 1.0 name, kept for importers
+
+ONE_PLACE_SCHEMA: dict[str, Any] = {"anyOf": [{"required": ["box"]}, {"required": ["anchor"]}]}
+
+
+class Span(Contract):
+    """Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an
+    option that shares its run with others ("❑ pies ❑ suka"). Revision 1.1. A whole run is still named by its id
+    alone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans)."""
+
+    run: str = Field(min_length=1)
+    start: int = Field(ge=0)
+    end: int = Field(ge=1)
+
+    @model_validator(mode="after")
+    def _ordered(self) -> Self:
+        if self.end <= self.start:
+            raise ValueError(f"span of run {self.run}: end {self.end} must be greater than start {self.start}")
+        return self
 
 
 class Evidence(Contract):
-    """Where a statement comes from: a quote, and the place on the paper when it is known."""
+    """Where a statement comes from: a quote, and the place on the paper when it is known.
+
+    Revision 1.1: a record may carry box and anchor together (an anchored text box), and may leave out the quote
+    when it locates a drawn blank with a box or an anchor. A Stated value still needs a quote (see Stated).
+    """
 
     page: PageNo | None = None
     box: Box | None = None
     anchor: Anchor | None = None
     runs: list[str] = []
-    quote: str = Field(min_length=1)
+    quote: str | None = Field(default=None, min_length=1)
     candidate: str | None = None
+    spans: list[Span] = omit_empty()
 
     @model_validator(mode="after")
-    def _at_most_one_place(self) -> Self:
-        if self.box is not None and self.anchor is not None:
-            raise ValueError("evidence carries box or anchor, not both")
+    def _quote_or_place(self) -> Self:
+        if self.quote is None and self.box is None and self.anchor is None:
+            raise ValueError("evidence without a quote locates the blank with a box or an anchor")
         return self
 
 
@@ -143,13 +215,23 @@ class Stated(Contract):
 
     @model_validator(mode="after")
     def _status_has_its_evidence(self) -> Self:
-        if self.status == "stated" and not self.evidence:
+        quoted = any(e.quote is not None for e in self.evidence)
+        if self.status == "stated" and not quoted:
             raise ValueError("status 'stated' needs evidence with a quote")
-        if self.status == "ambiguous" and not self.evidence:
+        if self.status == "ambiguous" and not quoted:
             raise ValueError("status 'ambiguous' needs the competing quotes as evidence")
         if self.status == "not_found" and (self.value is not None or self.evidence):
             raise ValueError("status 'not_found' carries no value and no evidence")
         return self
+
+
+class ProposedFee(Contract):
+    """1.1: a fee we propose (from a statute or a guide), kept apart from the paper's fee: it never turns a
+    `not_found` fee into `stated` (brief.proposed_fee, meta proposals.fee)."""
+
+    value: str = Field(min_length=1)
+    why: str = Field(min_length=1)
+    evidence: list[Evidence] = []
 
 
 class Warning(Contract):  # noqa: A001 - the name of the thing in the design

@@ -1,0 +1,31 @@
+{
+  "model_version": 1.1,
+  "source": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000011", "format": "docx", "reader": "docx.native", "pages": 1},
+  "pages": [
+    {
+      "number": 1,
+      "width": 595.3,
+      "height": 841.9,
+      "origin": "flow",
+      "runs": [
+        {"id": "r1", "text": "Urząd Gminy Przykładowo", "anchor": "hdr[1]/p[0]", "region": "header"},
+        {"id": "r2", "text": "Wniosek o wydanie zaświadczenia", "anchor": "p[0]", "size": 14.0, "bold": true, "region": "body"},
+        {"id": "r3", "text": "Imię i nazwisko\t", "anchor": "p[2]", "leader": "dots"},
+        {"id": "r4", "text": "Gatunek: ❑ pies ❑ kot", "anchor": "p[4]"},
+        {"id": "r5", "text": "Numer działki", "box": [300.0, 400.0, 420.0, 412.0], "anchor": "p[6]"},
+        {"id": "r6", "text": "1", "anchor": "p[7]", "footnote": "1"},
+        {"id": "r7", "text": "Wypełnić, jeżeli wniosek dotyczy działki.", "anchor": "fn[1]/p[0]", "region": "footnote", "footnote": "1"}
+      ],
+      "lines": [{"id": "l1", "box": [300.0, 414.0, 540.0, 414.0], "style": "dotted"}],
+      "widgets": [
+        {"id": "w1", "kind": "radio", "name": "Zwrot", "anchor": "p[8]", "options": ["Gotówką"], "field": "Zwrot",
+         "values": [{"display": "Gotówką", "export": "gotowka"}], "on_state": "gotowka"},
+        {"id": "w2", "kind": "radio", "name": "Zwrot", "anchor": "p[8]", "options": ["Przelewem"], "field": "Zwrot",
+         "values": [{"display": "Przelewem", "export": "przelew"}], "on_state": "przelew"}
+      ],
+      "pictures": [[450.0, 40.0, 540.0, 100.0]],
+      "ink": true
+    }
+  ],
+  "warnings": [{"code": "UNREADABLE_PART", "page": 1, "anchor": "p[9]", "detail": "run r8: size 0 is not usable, left out"}]
+}

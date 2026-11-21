@@ -1,0 +1,27 @@
+{
+  "finder_version": 1.1,
+  "input": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000011", "format": "docx"},
+  "order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7"],
+  "sections": [],
+  "candidates": [
+    {"id": "c40", "kind": "choice_group", "page": 1, "anchor": "p[4]",
+     "label": {"text": "Gatunek", "how": "question", "margin": 0.5, "spans": [{"run": "r4", "start": 0, "end": 8}]},
+     "options": [
+       {"text": "pies", "mark": "c41", "spans": [{"run": "r4", "start": 11, "end": 15}]},
+       {"text": "kot", "mark": "c42", "spans": [{"run": "r4", "start": 18, "end": 21}]}
+     ],
+     "conf": {"geometry": 0.9, "label": 0.8, "text": 1.0}},
+    {"id": "c41", "kind": "box", "page": 1, "anchor": "p[4]", "spans": [{"run": "r4", "start": 9, "end": 10}], "group": "c40",
+     "conf": {"geometry": 0.9, "label": 0.8, "text": 1.0}},
+    {"id": "c42", "kind": "box", "page": 1, "anchor": "p[4]", "spans": [{"run": "r4", "start": 16, "end": 17}], "group": "c40",
+     "conf": {"geometry": 0.9, "label": 0.8, "text": 1.0}},
+    {"id": "c50", "kind": "leader", "page": 1, "box": [300.0, 414.0, 540.0, 414.0], "anchor": "p[6]",
+     "label": {"text": "Numer działki", "runs": ["r5"], "how": "left", "margin": 0.6}, "footnotes": ["1"],
+     "conf": {"geometry": 0.85, "label": 0.8, "text": 1.0}},
+    {"id": "c51", "kind": "leader", "page": 1, "anchor": "p[2]",
+     "label": {"text": "Imię i nazwisko", "runs": ["r3"], "how": "leader", "margin": 0.7},
+     "conf": {"geometry": 0.8, "label": 0.9, "text": 1.0}}
+  ],
+  "roles": {"r1": "page_furniture", "r2": "heading", "r6": "note", "r7": "note"},
+  "warnings": []
+}

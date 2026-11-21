@@ -1,0 +1,26 @@
+{
+  "model_version": 1.1,
+  "source": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000012", "format": "xlsx", "reader": "xlsx.native", "pages": 1},
+  "pages": [
+    {
+      "number": 1,
+      "origin": "flow",
+      "name": "Arkusz1",
+      "runs": [
+        {"id": "r1", "text": "Imię i nazwisko", "anchor": "Arkusz1!A1"},
+        {"id": "r2", "text": "Adres", "anchor": "Arkusz1!A2"}
+      ],
+      "tables": [
+        {"id": "t1", "anchor": "Arkusz1!A1:B3",
+         "cells": [{"r": 0, "c": 0, "anchor": "Arkusz1!A1", "runs": ["r1"], "borders": "trbl"},
+                   {"r": 0, "c": 1, "anchor": "Arkusz1!B1", "borders": "trbl"},
+                   {"r": 1, "c": 0, "anchor": "Arkusz1!A2", "runs": ["r2"], "borders": "trbl"},
+                   {"r": 1, "c": 1, "rs": 2, "anchor": "Arkusz1!B2", "borders": "trbl"}]}
+      ],
+      "ink": true,
+      "row_heights": [15.0, 15.0, 30.0],
+      "col_widths": [48.0, 120.0]
+    }
+  ],
+  "warnings": []
+}

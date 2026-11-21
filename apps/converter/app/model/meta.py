@@ -3,6 +3,11 @@
 The ledger must close: blanks_found equals the sum of the five fates, every blank has exactly one row, and the
 counts equal the rows by fate. It is a ledger and never "accuracy": a blank the finder missed is outside it.
 `resources` is the one part that differs between runs; `to_json_bytes(deterministic=True)` leaves it out.
+
+Revision 1.1 (additive): `evidence` maps a form id to one record (1.0) or to a list of records; `evidence_of(id)`
+reads both as a list. A record may locate a drawn blank without a quote. `proposals.fee` keeps a proposed fee apart
+from `receipts.fee`. `coverage.gaps` lists the character spans of partly covered runs. The ledger is assembled
+from the brief's dispositions by app.model.ledger.assemble_ledger.
 """
 from __future__ import annotations
 
@@ -10,13 +15,28 @@ from typing import Any, Literal, Self
 
 from pydantic import Field, field_serializer, model_validator
 
-from .common import Anchor, Box, Contract, Dropped, Evidence, PageNo, ReasonCode, Sha256, Stated, Unit, Warning, canonical_json, unique
+from .common import (  # noqa: F401 - Fate and MergeWhy are re-exported (their 1.0 home)
+    Anchor,
+    Box,
+    Contract,
+    Dropped,
+    Evidence,
+    Fate,
+    MergeWhy,
+    PageNo,
+    ProposedFee,
+    ReasonCode,
+    Sha256,
+    Span,
+    Stated,
+    Unit,
+    Warning,
+    canonical_json,
+    omit_empty,
+    unique,
+)
 
 Origin = Literal["paper", "standard", "reviewer"]
-# The five fates of a blank (design 5.4). The order is the order of the counts in the ledger.
-Fate = Literal["FIELD", "MERGED", "STANDARD", "LEFT_OUT", "AWAITING_DECISION"]
-# Why a blank was merged into another (design 5.4 example, 6.3.3, 6.4.3). Add a code here with its rule.
-MergeWhy = Literal["COMB_CELLS", "GROUP_MEMBER", "LINE_BLOCK", "SAME_ALTERNATIVE", "TABLE_ROW"]
 Check = Literal["pass", "fail", "skipped"]
 # Validators the partner has not named (design 6.6, 6.8): proposals only, never in the form (D8, D9).
 ProposedValidator = Literal["NRB", "KRS", "KW", "PHONE_PL", "DATE_RANGE", "PARCEL_ID"]
@@ -38,8 +58,15 @@ class FieldEvidence(Contract):
     page: PageNo | None = None
     box: Box | None = None
     anchor: Anchor | None = None
-    quote: str = Field(min_length=1)
+    quote: str | None = Field(default=None, min_length=1, description="1.1: may be left out when box or anchor locate a drawn blank.")
     candidate: str | None = None
+    runs: list[str] = omit_empty(description="1.1: run ids of the quote or of the blank.")
+
+    @model_validator(mode="after")
+    def _quote_or_place(self) -> Self:
+        if self.quote is None and self.box is None and self.anchor is None:
+            raise ValueError("field evidence without a quote locates the blank with a box or an anchor")
+        return self
 
 
 class ConfidenceParts(Contract):
@@ -108,6 +135,7 @@ class Coverage(Contract):
     assigned: int = Field(ge=0)
     unassigned: list[str] = []
     silent_pages: list[PageNo] = Field(default=[], description="Pages with ink and no candidate (design 7.4).")
+    gaps: list[Span] = omit_empty(description="1.1: characters of partly covered runs that no span covers (such runs are unassigned).")
 
     @model_validator(mode="after")
     def _adds_up(self) -> Self:
@@ -161,6 +189,7 @@ class Proposals(Contract):
     initial_data: list[ProposedSource] = []
     validators: list[ProposedValidatorRow] = []
     other: list[ProposedOther] = Field(default=[], description="E.g. an e-Delivery field, a third capacity (design 6.6).")
+    fee: ProposedFee | None = Field(default=None, description="1.1: a proposed fee; receipts.fee stays what the paper states.")
 
 
 class LegalBasis(Stated):
@@ -200,11 +229,12 @@ class Resources(Contract):
 
 
 class Meta(Contract):
-    meta_version: Literal[1] = 1
+    meta_version: Literal[1, 1.1] = Field(default=1.1, description="Revision of this contract; 1 (1.0) still validates.")
     converter: Converter
     hashes: Hashes
     origins: dict[str, Origin] = {}
-    evidence: dict[str, FieldEvidence] = {}
+    evidence: dict[str, FieldEvidence | list[FieldEvidence]] = Field(
+        default={}, description="Form id -> one evidence record (1.0) or a non-empty list of them (1.1).")
     confidence: dict[str, FieldConfidence] = {}
     ledger: Ledger
     omissions: list[Dropped] = []
@@ -225,6 +255,9 @@ class Meta(Contract):
 
     @model_validator(mode="after")
     def _references_resolve(self) -> Self:
+        empty = sorted(k for k, v in self.evidence.items() if isinstance(v, list) and not v)
+        if empty:
+            raise ValueError(f"evidence lists are not empty, leave the id out: {empty}")
         unique([d.id for d in self.decisions], "decision ids")
         wid = [w.id for w in self.warnings if w.id is not None]
         unique(wid, "warning ids")
@@ -237,6 +270,11 @@ class Meta(Contract):
             if r.decision is not None and r.decision not in dec:
                 raise ValueError(f"ledger row {r.candidate}: decision {r.decision} does not exist")
         return self
+
+    def evidence_of(self, form_id: str) -> list[FieldEvidence]:
+        """The evidence records of one form id as a list, whichever of the two shapes was written."""
+        v = self.evidence.get(form_id)
+        return [] if v is None else list(v) if isinstance(v, list) else [v]
 
     def to_json_bytes(self, deterministic: bool = True) -> bytes:
         d = self.to_dict()
