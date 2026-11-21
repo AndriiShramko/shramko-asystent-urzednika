@@ -7,7 +7,7 @@
   },
   "counts": {
     "pages": 4,
-    "fields": 42,
+    "fields": 43,
     "source_pages": 1
   },
   "warnings": [
@@ -187,6 +187,8 @@
       "5e13357a-0c1c-51f9-ae2c-200d897456c6": "paper",
       "d5e05ddf-9638-5cfa-8cc8-17d3a9757526": "paper",
       "cc346d9f-dcda-518a-8ebc-9e3f6c5b926a": "paper",
+      "c548b981-abf4-5218-a765-ec4af57de9c0": "paper",
+      "b81ed336-c02f-59f3-9eab-24358ba492bf": "paper",
       "928b894d-3ec3-5d39-badc-2375ba5580e7": "standard",
       "f954f6f4-406e-503b-8c87-1fd57d6f0519": "standard",
       "0d95a17b-5438-5d02-b688-748db8bc6d43": "standard",
@@ -204,7 +206,8 @@
       "6f66c0b8-6070-56b9-bb21-cc08b3d7ea53": "termin_do",
       "5e13357a-0c1c-51f9-ae2c-200d897456c6": "cel_wynajecia_swietlicy",
       "d5e05ddf-9638-5cfa-8cc8-17d3a9757526": "przewidywana_ilosc_uczestnikow",
-      "cc346d9f-dcda-518a-8ebc-9e3f6c5b926a": "imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz"
+      "cc346d9f-dcda-518a-8ebc-9e3f6c5b926a": "imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz",
+      "b81ed336-c02f-59f3-9eab-24358ba492bf": "zbiorcze_oswiadczenie_tej_osoby"
     },
     "ledger": {
       "blanks_found": 11,

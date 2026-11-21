@@ -1484,10 +1484,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "452bf516-5fa0-5720-8d15-a6eb53c11748",
+                  "id": "b23a2496-b40a-516e-94ac-aa13521f2785",
                   "type": "TEXT_FIELD",
-                  "techName": "mui",
-                  "title": "Mui",
+                  "techName": "nazwa_drogi_oraz_jej_nr",
+                  "title": "Nazwa drogi oraz jej nr",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1551,10 +1551,10 @@
                 "cols": 3,
                 "field": {
                   "id": "a1827e71-8013-5e16-9f09-0d2b2b79fe80",
-                  "type": "TEXT_FIELD",
+                  "type": "TEXTAREA",
                   "techName": "w_celu_wykonania",
                   "title": "W celu wykonania",
-                  "description": "",
+                  "description": "<html><head></head><body><p>rodzaj robót i sposób wykonania</p></body></html>",
                   "options": [],
                   "validation": [
                     "REQUIRED"
@@ -1572,10 +1572,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "ed6c1679-1747-573c-a0c1-c59d1788c3fb",
-                  "type": "TEXT_FIELD",
-                  "techName": "rodzaj_robot_i_sposob_wykonania",
-                  "title": "Rodzaj robót i sposób wykonania",
+                  "id": "043309b7-3156-571d-aea1-a06242b1e109",
+                  "type": "NUMBER",
+                  "techName": "calkowita_powierzchnia_zajecia",
+                  "title": "Całkowita powierzchnia zajęcia",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1594,10 +1594,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "043309b7-3156-571d-aea1-a06242b1e109",
-                  "type": "NUMBER",
-                  "techName": "calkowita_powierzchnia_zajecia",
-                  "title": "Całkowita powierzchnia zajęcia",
+                  "id": "f7301aa1-c85b-54e0-859f-a54018bf59fc",
+                  "type": "DATEPICKER",
+                  "techName": "termin_od",
+                  "title": "Termin od",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1616,10 +1616,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "f7301aa1-c85b-54e0-859f-a54018bf59fc",
+                  "id": "e057d1ae-e4df-5dde-be2a-aa28325c803a",
                   "type": "DATEPICKER",
-                  "techName": "termin_od",
-                  "title": "Termin od",
+                  "techName": "termin_do",
+                  "title": "Termin do",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1638,10 +1638,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "e057d1ae-e4df-5dde-be2a-aa28325c803a",
-                  "type": "DATEPICKER",
-                  "techName": "termin_do",
-                  "title": "Termin do",
+                  "id": "ebf334cb-9d20-553c-ba97-d76b73d536dc",
+                  "type": "NUMBER",
+                  "techName": "liczba_dni",
+                  "title": "Liczba dni",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1660,10 +1660,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62",
+                  "id": "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c",
                   "type": "TEXT_FIELD",
-                  "techName": "tj",
-                  "title": "Tj",
+                  "techName": "wykonawca_robot_bedzie",
+                  "title": "Wykonawcą Robót będzie",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1692,7 +1692,7 @@
         {
           "x": 0,
           "y": 0,
-          "rows": 6,
+          "rows": 5,
           "cols": 3,
           "field": {
             "id": "2cf4e768-b9c9-52cd-8e7b-0c3482de1e81",
@@ -1710,10 +1710,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c",
+                  "id": "4b6a657e-d78b-5256-954c-dee1ec08d867",
                   "type": "TEXT_FIELD",
-                  "techName": "wykonawca_robot_bedzie",
-                  "title": "Wykonawcą Robót będzie",
+                  "techName": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
+                  "title": "Drogowego zgodnie z warunkami określonymi w wydanej decyzji będzie",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1732,10 +1732,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "4b6a657e-d78b-5256-954c-dee1ec08d867",
+                  "id": "fce9fe07-5cae-5e7c-a131-4164abd57fcf",
                   "type": "TEXT_FIELD",
-                  "techName": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
-                  "title": "Drogowego zgodnie z warunkami określonymi w wydanej decyzji będzie",
+                  "techName": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
+                  "title": "A osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1754,10 +1754,10 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "fce9fe07-5cae-5e7c-a131-4164abd57fcf",
+                  "id": "c67f4117-913f-59dc-8689-70aa8a58e38d",
                   "type": "TEXT_FIELD",
-                  "techName": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
-                  "title": "A osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa",
+                  "techName": "adres_zamieszkania_szczegoly_sprawy",
+                  "title": "Adres zamieszkania",
                   "description": "",
                   "options": [],
                   "validation": [
@@ -1776,28 +1776,6 @@
                 "rows": 1,
                 "cols": 3,
                 "field": {
-                  "id": "e3b55051-2708-5a90-94cb-f05d36c3a7ae",
-                  "type": "TEXT_FIELD",
-                  "techName": "zam",
-                  "title": "Zam",
-                  "description": "",
-                  "options": [],
-                  "validation": [
-                    "REQUIRED"
-                  ],
-                  "readOnly": false,
-                  "repeatingSectionGrid": [],
-                  "states": [],
-                  "questionOrder": 3,
-                  "tooltipMessage": ""
-                }
-              },
-              {
-                "x": 0,
-                "y": 4,
-                "rows": 1,
-                "cols": 3,
-                "field": {
                   "id": "7f728ec4-33cc-5c68-ad51-ebb330d3675f",
                   "type": "TEXT_FIELD",
                   "techName": "telefon",
@@ -1810,7 +1788,7 @@
                   "readOnly": false,
                   "repeatingSectionGrid": [],
                   "states": [],
-                  "questionOrder": 4,
+                  "questionOrder": 3,
                   "tooltipMessage": ""
                 }
               }
@@ -1822,7 +1800,7 @@
         },
         {
           "x": 0,
-          "y": 6,
+          "y": 5,
           "rows": 4,
           "cols": 3,
           "field": {
@@ -1903,13 +1881,215 @@
               }
             ],
             "states": [],
-            "questionOrder": 6,
+            "questionOrder": 5,
             "tooltipMessage": ""
           }
         },
         {
           "x": 0,
-          "y": 10,
+          "y": 9,
+          "rows": 2,
+          "cols": 3,
+          "field": {
+            "id": "ddbb0493-74ae-5fb0-84bd-818459bb6e0a",
+            "type": "SECTION",
+            "techName": "zalaczniki",
+            "title": "Załączniki",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "a0f8010d-c84c-584f-8549-69ef48aff3b4",
+                  "type": "RADIO",
+                  "techName": "ktory_z_dokumentow_zalaczasz",
+                  "title": "Który z dokumentów załączasz?",
+                  "description": "",
+                  "options": [
+                    {
+                      "id": "Zatwierdzony projekt organizacji ruchu",
+                      "name": "Zatwierdzony projekt organizacji ruchu",
+                      "techName": "zatwierdzony_projekt_organizacji_ruchu"
+                    },
+                    {
+                      "id": "Informację o sposobie zabezpieczenia robót",
+                      "name": "Informację o sposobie zabezpieczenia robót",
+                      "techName": "informacje_o_sposobie_zabezpieczenia_robot"
+                    }
+                  ],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 9,
+            "tooltipMessage": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "7fbfa724-0f65-5f42-ae6d-c2d6b3a2b904",
+      "title": "Załączniki",
+      "type": "MAIN",
+      "questions": [
+        {
+          "x": 0,
+          "y": 0,
+          "rows": 6,
+          "cols": 3,
+          "field": {
+            "id": "ee21c69c-35cb-5c6b-a490-f3466b40ec61",
+            "type": "SECTION",
+            "techName": "zalaczniki_zalaczniki",
+            "title": "Załączniki",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "11a98075-c1c6-53c3-af5e-fc97e597b411",
+                  "type": "FILE_UPLOADER",
+                  "techName": "ogolny_plan_orientacyjny_w_skali_1_10_000_lub_1_25_000_z",
+                  "title": "Ogólny plan orientacyjny w skali 1:10 000 lub 1:25 000 z zaznaczeniem zajmowanego odcinka pasa drogowego",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 1,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "67d52e53-522f-5d0d-9177-38c6225b91e8",
+                  "type": "FILE_UPLOADER",
+                  "techName": "szczegolowy_plan_sytuacyjny_w_skali_1_1000_lub_1_500_z",
+                  "title": "Szczegółowy plan sytuacyjny w skali 1:1000 lub 1:500 z zaznaczeniem granic i podaniem wymiarów planowanej powierzchni zajęcia pasa drogowego",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 1,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 2,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "ce42e095-b1d9-5b5c-b9f7-69f993a49d0b",
+                  "type": "FILE_UPLOADER",
+                  "techName": "szczegolowy_harmonogram_robot",
+                  "title": "Szczegółowy harmonogram robót",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 2,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 3,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "6015e51e-d564-58de-9a65-6709ba0a4156",
+                  "type": "FILE_UPLOADER",
+                  "techName": "zatwierdzony_projekt_organizacji_ruchu",
+                  "title": "Zatwierdzony projekt organizacji ruchu",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [
+                    {
+                      "type": "SHOW",
+                      "query": "(\"Zatwierdzony projekt organizacji ruchu\" in tabs['Szczegóły sprawy (część 2)' in title].questions['zalaczniki' in field.techName].field.repeatingSectionGrid['ktory_z_dokumentow_zalaczasz' in field.techName].field.__userAnswer)"
+                    }
+                  ],
+                  "questionOrder": 3,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 4,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "df0893c0-4829-58b3-806b-ad6d9f32b2c6",
+                  "type": "FILE_UPLOADER",
+                  "techName": "informacje_o_sposobie_zabezpieczenia_robot",
+                  "title": "Informację o sposobie zabezpieczenia robót",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [
+                    {
+                      "type": "SHOW",
+                      "query": "(\"Informację o sposobie zabezpieczenia robót\" in tabs['Szczegóły sprawy (część 2)' in title].questions['zalaczniki' in field.techName].field.repeatingSectionGrid['ktory_z_dokumentow_zalaczasz' in field.techName].field.__userAnswer)"
+                    }
+                  ],
+                  "questionOrder": 4,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 0,
+            "tooltipMessage": ""
+          }
+        },
+        {
+          "x": 0,
+          "y": 6,
           "rows": 3,
           "cols": 3,
           "field": {
@@ -1964,7 +2144,7 @@
               }
             ],
             "states": [],
-            "questionOrder": 10,
+            "questionOrder": 6,
             "tooltipMessage": ""
           }
         }
@@ -2156,8 +2336,13 @@
         "target": "bdf4b675-7643-529e-be49-878886710010"
       },
       {
-        "id": "177fa407-2db3-5191-a51e-294f8a4d9af2",
+        "id": "68e51aa3-b2c6-5120-9089-71640b6b5ba6",
         "source": "bdf4b675-7643-529e-be49-878886710010",
+        "target": "7fbfa724-0f65-5f42-ae6d-c2d6b3a2b904"
+      },
+      {
+        "id": "4865eeeb-25aa-5946-9323-99f8a8741cbc",
+        "source": "7fbfa724-0f65-5f42-ae6d-c2d6b3a2b904",
         "target": "1b97fedf-4804-524a-9f81-9b356236e119"
       },
       {

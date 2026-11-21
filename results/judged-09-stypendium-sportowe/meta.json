@@ -7,7 +7,7 @@
   },
   "counts": {
     "pages": 11,
-    "fields": 116,
+    "fields": 122,
     "source_pages": 16
   },
   "warnings": [
@@ -285,6 +285,14 @@
       "detail": "no text that this place belongs to"
     },
     {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "wnioskodawca",
+      "candidate": "c1",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
       "code": "AMBIGUOUS_GROUP",
       "page": 2,
       "candidate": "c8",
@@ -364,9 +372,24 @@
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
+      "code": "AMBIGUOUS_GROUP",
+      "page": 3,
+      "candidate": "c32",
+      "evidence": [],
+      "detail": "the paper does not say whether one or several options may be marked; several are allowed"
+    },
+    {
       "code": "REQUIRED_INFERRED",
       "page": 3,
       "field": "a_nastepnie_wybierz_konkretne_dyscypliny_z_listy",
+      "candidate": "c32",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 3,
+      "field": "dyscypliny_sportowe",
       "candidate": "c32",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -382,22 +405,15 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 4,
-      "field": "ocenie_wniosku",
+      "field": "opisz_najwazniejsze_osiagniecia_sportowe_kandydata_ktore",
       "candidate": "c57",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "LABEL_RAW",
-      "page": 4,
-      "candidate": "c58",
-      "evidence": [],
-      "detail": "label kept as the paper's words: 'i moralną sportowca'"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 4,
-      "field": "i_moralna_sportowca",
+      "field": "opinia_macierzystego_klubu_sportowego_potwierdzajaca",
       "candidate": "c58",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -428,7 +444,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 6,
-      "field": "rady_miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia",
+      "field": "data",
       "candidate": "c62",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -527,22 +543,15 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 8,
-      "field": "ocenie_wniosku_2",
+      "field": "opisz_najwazniejsze_osiagniecia_sportowe_kandydata_ktore_2",
       "candidate": "c99",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "LABEL_RAW",
-      "page": 8,
-      "candidate": "c100",
-      "evidence": [],
-      "detail": "label kept as the paper's words: 'i moralną sportowca'"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 8,
-      "field": "i_moralna_sportowca_2",
+      "field": "opinia_macierzystego_klubu_sportowego_potwierdzajaca_2",
       "candidate": "c100",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -573,7 +582,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 10,
-      "field": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia",
+      "field": "data_2",
       "candidate": "c105",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -621,6 +630,14 @@
       "candidate": "c110",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 11,
+      "field": "wnioskodawca_3",
+      "candidate": "c111",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "AMBIGUOUS_GROUP",
@@ -702,16 +719,9 @@
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "LABEL_RAW",
-      "page": 12,
-      "candidate": "c142",
-      "evidence": [],
-      "detail": "label kept as the paper's words: 'i moralną opiekuna sportowego.'"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 12,
-      "field": "i_moralna_opiekuna_sportowego",
+      "field": "opinia_macierzystego_klubu_sportowego_potwierdzajaca_3",
       "candidate": "c142",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -767,7 +777,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 13,
-      "field": "wniosku",
+      "field": "osiagniecia_sportowe_podopiecznego_kandydata_ktore_beda",
       "candidate": "c149",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -783,22 +793,15 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 14,
-      "field": "wniosku_2",
+      "field": "osiagniecia_sportowe_podopiecznego_kandydata_ktore_beda_2",
       "candidate": "c151",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "LABEL_RAW",
-      "page": 14,
-      "candidate": "c152",
-      "evidence": [],
-      "detail": "label kept as the paper's words: 'z zawodów), które potwierdzają osiągnięcia sportowe zawodniczek/zawodników.'"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 14,
-      "field": "z_zawodow_ktore_potwierdzaja_osiagniecia_sportowe",
+      "field": "data_sporzadzenia_wniosku",
       "candidate": "c152",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -821,7 +824,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 15,
-      "field": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia_2",
+      "field": "data_3",
       "candidate": "c155",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -844,7 +847,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 16,
-      "field": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia_3",
+      "field": "data_4",
       "candidate": "c158",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -903,7 +906,7 @@
     },
     {
       "code": "STEP_NOTE_ADDED",
-      "detail": "page 'Zgoda kandydata pełnoletniego do stypendium': every component is conditional, an unconditional note is added"
+      "detail": "page 'Osiągnięcia sportowe': every component is conditional, an unconditional note is added"
     },
     {
       "code": "STEP_NOTE_ADDED",
@@ -922,13 +925,19 @@
       "detail": "page 'Dane podopiecznych trenera': every component is conditional, an unconditional note is added"
     },
     {
-      "code": "STEP_NOTE_ADDED",
-      "detail": "page 'Zgoda kandydata do wyróżnienia': every component is conditional, an unconditional note is added"
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "d70ea7b5-faf7-510d-901b-b38a18c6880c"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "CHECKBOX: no export shows one",
+      "field": "c341b6a8-2cb3-5193-85f3-3b012a5b6838"
     },
     {
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
-      "field": "d70ea7b5-faf7-510d-901b-b38a18c6880c"
+      "field": "96ca633a-59ba-591c-9213-0a49190bf18f"
     },
     {
       "code": "INFERRED_SHAPE",
@@ -938,7 +947,27 @@
     {
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
+      "field": "a671965e-4ca2-5956-83a9-5f93d6c69980"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
       "field": "84d22576-ed79-578e-9f38-ab912f6770fc"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "d8697fbb-5f29-5f81-9912-4aa0ecffa1c8"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "71ec106f-5ee6-53bf-b8ff-b7524a66c44f"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "c3285651-6c59-5b11-82ca-58847a68f344"
     }
   ],
   "checks": [
@@ -1069,6 +1098,7 @@
       "4554ef49-16d5-57ee-84b6-bb5a21c1d183": "paper",
       "ba56ec13-0075-50f3-8929-200a9f0befa2": "paper",
       "7ffcbff2-c401-5542-8b5c-9c0e640bc37b": "paper",
+      "4bba4e36-9aaf-506a-a29b-62303767036d": "paper",
       "06f7e497-8a63-572e-9701-551554931c0f": "paper",
       "74b7b253-543d-5a47-9b2e-4cd8532f48b3": "paper",
       "ef991d94-03fd-5623-bddd-c1c1bd743f75": "paper",
@@ -1083,16 +1113,17 @@
       "90e16744-9f34-569f-98f8-b36d8a714654": "paper",
       "92d7f7b8-6722-5aa0-91d0-3de7137a81b7": "paper",
       "c341b6a8-2cb3-5193-85f3-3b012a5b6838": "paper",
+      "67af1f53-be66-570f-85db-cdc77fb69ffd": "paper",
       "704a6ce3-2be4-51c3-a463-eac9e42fc9ca": "paper",
+      "fb22b25e-034c-5d23-b799-82b1e28eb710": "standard",
+      "9c226a7d-c929-5c27-b755-1718de0c8e62": "standard",
       "56aaede3-3e12-56a5-9c75-2a189355cbea": "paper",
-      "3030585a-fc41-5954-8f73-b19b94a262e2": "paper",
-      "ccbff82f-700c-5ecd-9416-9f571c24c4e2": "paper",
+      "d80d8cf6-d834-5942-8906-4e006c1fa93b": "paper",
+      "21219afb-2eab-541c-aee6-28a9fbc2a3fb": "paper",
       "ffb4aed0-cef4-5f36-a725-530b379de806": "paper",
-      "20f48af8-470e-5a58-b880-9dd79f232bde": "standard",
-      "7cc69c1e-9906-5812-bd77-b92a65dffc3a": "standard",
       "3e3aaf45-f745-5cfa-b948-261716d47bcf": "paper",
       "83dd72c6-1990-5450-9e82-117fbad8b5b0": "paper",
-      "b9893304-d383-516e-a5ab-0c4969077114": "paper",
+      "96ca633a-59ba-591c-9213-0a49190bf18f": "paper",
       "c7ed219e-6dfa-598a-90f7-8ea0f9ac266d": "paper",
       "bcd04331-3bb8-51c9-9fd0-5bdfc5e8c7d6": "paper",
       "9e95a3de-3324-599d-8fb6-92bb24bcdb44": "standard",
@@ -1103,17 +1134,18 @@
       "72d63c84-46a2-59e2-bacf-3eff2b86c926": "paper",
       "8bd007ce-f38b-5170-bd25-60aa4a3524d5": "paper",
       "23beced0-6f96-54c1-9aa1-0e5bbe9d1507": "paper",
-      "4ee341a4-71db-5d5d-9d3a-e62ebccf49e9": "paper",
-      "8f70a78e-4c7f-5827-972b-34c4648497bb": "paper",
+      "1d9d1331-ea67-50ab-8d97-15a12710fcb1": "paper",
+      "4c952e51-f4f1-5233-9e0c-375a43acbb9d": "paper",
       "bb7d1d2d-6146-5081-b40f-98b2eba1c12f": "paper",
       "ab058304-3673-5ae7-a822-e40c696a0827": "standard",
       "005df0f9-187e-5efb-a7a1-73db630bfd03": "standard",
       "e11ba119-ff16-5cd7-89b4-a8aeecffb13f": "paper",
       "551d23fb-a49d-5cf6-85ec-72d10ec7af52": "paper",
-      "687cc9b8-8b72-5f36-a772-6a5f3f8d966c": "paper",
+      "a671965e-4ca2-5956-83a9-5f93d6c69980": "paper",
       "5881584e-932f-5637-80da-8cb12c7ed907": "paper",
       "31449a40-f0ec-56f5-a025-e602a0bc710a": "paper",
       "97fd0c44-0c57-5c5b-ac9d-77b432a71b56": "paper",
+      "df5d6b73-cc88-5324-a4f9-2d93c05a5564": "paper",
       "27553f26-3714-5d8b-b5f9-54c9ba507ae1": "paper",
       "84478251-0189-5471-8c15-2e3f4bb70659": "paper",
       "7b5c3cd4-4e0d-5954-b944-b788b42ceecf": "paper",
@@ -1126,7 +1158,7 @@
       "84d22576-ed79-578e-9f38-ab912f6770fc": "paper",
       "c2409d62-9cbe-5364-9329-86eaf6e3eb8e": "paper",
       "f67fd307-6f58-5023-8c7e-71404cf20357": "paper",
-      "9e575ba7-8600-502f-a11b-1b4c718eb9b9": "paper",
+      "d4f38af2-d8e9-5041-9f29-a231798611bc": "paper",
       "e7004428-a22c-5257-ab51-1f44759e705c": "paper",
       "62475ad0-d1c7-5bcc-902c-6e1c1a7eacd8": "standard",
       "65d709ac-67f1-5fcd-a660-1d1c04963423": "standard",
@@ -1136,21 +1168,24 @@
       "0c07d4d0-6b65-5fa2-afba-56604a9be1ad": "paper",
       "f7a6206c-58dc-5cdd-be2b-76c9fc8f3809": "paper",
       "f7d486ca-ab0f-5909-af34-98cf5ef64c58": "paper",
-      "e534613f-bf0e-56df-a5f3-d5b565ec9eb6": "paper",
+      "c61b7688-916b-5848-867e-063fadbc5f9e": "paper",
       "cb477b7e-a509-5300-9d8c-100e4da5c3cc": "paper",
       "a1d42fbf-fc54-51b4-9f04-216525776435": "paper",
-      "259d0a8e-686a-52ea-b99a-21c5c897bc26": "paper",
-      "58692e28-b203-533f-84fe-0ec8fb023279": "paper",
-      "72ee182c-ff43-5c05-945f-3f0b64f6063e": "standard",
-      "5a678a78-7f6f-5ca3-9d6c-59e98b7a05f9": "standard",
+      "ae4ef893-d83d-5c03-8dc8-42cb933de890": "paper",
+      "d8697fbb-5f29-5f81-9912-4aa0ecffa1c8": "paper",
       "0a7f4c11-9b60-5722-af40-e18f4664aa2f": "paper",
       "60223137-e6b4-52e3-9515-d65f8de36fbe": "paper",
-      "8311914d-d4c3-58d9-8bc3-a0fe705a34d3": "paper",
+      "71ec106f-5ee6-53bf-b8ff-b7524a66c44f": "paper",
       "0755e5ba-ca1b-5a16-8beb-7197f60bf617": "paper",
       "6638e002-3c0c-543b-802f-ec48ddd99050": "paper",
-      "b88413c6-efb9-507d-838f-3670c0822f07": "paper",
+      "c3285651-6c59-5b11-82ca-58847a68f344": "paper",
       "1e1ef23b-1adf-5aa5-85f9-dfa2d9e54467": "paper",
       "da5bb808-5911-5dc9-8eb1-d08d29e008cd": "paper",
+      "2911889f-8b86-5826-83e6-3d8d6914a78f": "paper",
+      "c6418470-3785-5e79-9a81-23b8d150ce14": "paper",
+      "a8d690ee-333e-5db7-b5c5-817b485b9d6c": "paper",
+      "d1fc4ef2-07fc-5241-84f9-9d8737b40728": "paper",
+      "ebc0e445-19d2-5282-a51d-529a0e6bef33": "paper",
       "17e6f64c-d9d4-5e3c-b4b5-97a4ebcfa9de": "standard",
       "699a0e36-e66a-5c49-bc92-74c93ebcad74": "standard",
       "a494773d-b129-5544-b1d9-88f0ce09cc7b": "standard",
@@ -1163,6 +1198,7 @@
     },
     "brief_keys": {
       "ba56ec13-0075-50f3-8929-200a9f0befa2": "rodzaj_wniosku",
+      "4bba4e36-9aaf-506a-a29b-62303767036d": "wnioskodawca",
       "06f7e497-8a63-572e-9701-551554931c0f": "seria_i_numer_dowodu_osobistego",
       "74b7b253-543d-5a47-9b2e-4cd8532f48b3": "korespondencja_z_urzedem",
       "ef991d94-03fd-5623-bddd-c1c1bd743f75": "korespondencja_z_urzedem_inny_adres_korespondencyjny",
@@ -1174,12 +1210,13 @@
       "90e16744-9f34-569f-98f8-b36d8a714654": "adres_zameldowania",
       "92d7f7b8-6722-5aa0-91d0-3de7137a81b7": "adres_do_korespondencji",
       "c341b6a8-2cb3-5193-85f3-3b012a5b6838": "a_nastepnie_wybierz_konkretne_dyscypliny_z_listy",
+      "67af1f53-be66-570f-85db-cdc77fb69ffd": "dyscypliny_sportowe",
       "704a6ce3-2be4-51c3-a463-eac9e42fc9ca": "dyscyplina",
-      "3030585a-fc41-5954-8f73-b19b94a262e2": "ocenie_wniosku",
-      "ccbff82f-700c-5ecd-9416-9f571c24c4e2": "i_moralna_sportowca",
+      "d80d8cf6-d834-5942-8906-4e006c1fa93b": "opisz_najwazniejsze_osiagniecia_sportowe_kandydata_ktore",
+      "21219afb-2eab-541c-aee6-28a9fbc2a3fb": "opinia_macierzystego_klubu_sportowego_potwierdzajaca",
       "ffb4aed0-cef4-5f36-a725-530b379de806": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do",
       "83dd72c6-1990-5450-9e82-117fbad8b5b0": "imie_i_nazwisko_kandydata",
-      "b9893304-d383-516e-a5ab-0c4969077114": "rady_miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia",
+      "96ca633a-59ba-591c-9213-0a49190bf18f": "data",
       "c7ed219e-6dfa-598a-90f7-8ea0f9ac266d": "imie_i_nazwisko_kandydata_2",
       "bcd04331-3bb8-51c9-9fd0-5bdfc5e8c7d6": "ja_nizej_podpisany",
       "16026941-0654-564b-8565-c26aa2f88109": "imie_2",
@@ -1187,13 +1224,14 @@
       "72d63c84-46a2-59e2-bacf-3eff2b86c926": "data_urodzenia_2",
       "8bd007ce-f38b-5170-bd25-60aa4a3524d5": "adres_zameldowania_2",
       "23beced0-6f96-54c1-9aa1-0e5bbe9d1507": "adres_do_korespondencji_2",
-      "4ee341a4-71db-5d5d-9d3a-e62ebccf49e9": "ocenie_wniosku_2",
-      "8f70a78e-4c7f-5827-972b-34c4648497bb": "i_moralna_sportowca_2",
+      "1d9d1331-ea67-50ab-8d97-15a12710fcb1": "opisz_najwazniejsze_osiagniecia_sportowe_kandydata_ktore_2",
+      "4c952e51-f4f1-5233-9e0c-375a43acbb9d": "opinia_macierzystego_klubu_sportowego_potwierdzajaca_2",
       "bb7d1d2d-6146-5081-b40f-98b2eba1c12f": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_2",
       "551d23fb-a49d-5cf6-85ec-72d10ec7af52": "imie_i_nazwisko_kandydata_3",
-      "687cc9b8-8b72-5f36-a772-6a5f3f8d966c": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia",
+      "a671965e-4ca2-5956-83a9-5f93d6c69980": "data_2",
       "5881584e-932f-5637-80da-8cb12c7ed907": "imie_i_nazwisko_kandydata_4",
       "31449a40-f0ec-56f5-a025-e602a0bc710a": "ja_nizej_podpisany_2",
+      "df5d6b73-cc88-5324-a4f9-2d93c05a5564": "wnioskodawca_3",
       "27553f26-3714-5d8b-b5f9-54c9ba507ae1": "seria_i_numer_dowodu_osobistego_3",
       "84478251-0189-5471-8c15-2e3f4bb70659": "inny_adres_korespondencyjny",
       "7b5c3cd4-4e0d-5954-b944-b788b42ceecf": "skrzynka_epuap_adres_skrzynki_3",
@@ -1203,36 +1241,40 @@
       "84d22576-ed79-578e-9f38-ab912f6770fc": "data_urodzenia_3",
       "c2409d62-9cbe-5364-9329-86eaf6e3eb8e": "adres_zameldowania_3",
       "f67fd307-6f58-5023-8c7e-71404cf20357": "adres_do_korespondencji_3",
-      "9e575ba7-8600-502f-a11b-1b4c718eb9b9": "i_moralna_opiekuna_sportowego",
+      "d4f38af2-d8e9-5041-9f29-a231798611bc": "opinia_macierzystego_klubu_sportowego_potwierdzajaca_3",
       "e7004428-a22c-5257-ab51-1f44759e705c": "ewentualne_dodatkowe_informacje_o_kandydatce_kandydacie_do_3",
       "12c8e9e8-5dfd-5c21-a590-d7b85f707688": "imie_i_nazwisko_zawodniczki_zawodnika",
       "3a081b12-8a60-583f-8fae-9ce054277711": "osiagniecia_sportowe_podopiecznego",
       "0c07d4d0-6b65-5fa2-afba-56604a9be1ad": "imie_i_nazwisko_zawodniczki_zawodnika_2",
       "f7a6206c-58dc-5cdd-be2b-76c9fc8f3809": "osiagniecia_sportowe_podopiecznego_2",
       "f7d486ca-ab0f-5909-af34-98cf5ef64c58": "imie_i_nazwisko_zawodniczki_zawodnika_3",
-      "e534613f-bf0e-56df-a5f3-d5b565ec9eb6": "wniosku",
+      "c61b7688-916b-5848-867e-063fadbc5f9e": "osiagniecia_sportowe_podopiecznego_kandydata_ktore_beda",
       "a1d42fbf-fc54-51b4-9f04-216525776435": "imie_i_nazwisko_zawodniczki_zawodnika_4",
-      "259d0a8e-686a-52ea-b99a-21c5c897bc26": "wniosku_2",
-      "58692e28-b203-533f-84fe-0ec8fb023279": "z_zawodow_ktore_potwierdzaja_osiagniecia_sportowe",
+      "ae4ef893-d83d-5c03-8dc8-42cb933de890": "osiagniecia_sportowe_podopiecznego_kandydata_ktore_beda_2",
+      "d8697fbb-5f29-5f81-9912-4aa0ecffa1c8": "data_sporzadzenia_wniosku",
       "60223137-e6b4-52e3-9515-d65f8de36fbe": "imie_i_nazwisko_kandydata_5",
-      "8311914d-d4c3-58d9-8bc3-a0fe705a34d3": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia_2",
+      "71ec106f-5ee6-53bf-b8ff-b7524a66c44f": "data_3",
       "6638e002-3c0c-543b-802f-ec48ddd99050": "imie_i_nazwisko_podopiecznego",
-      "b88413c6-efb9-507d-838f-3670c0822f07": "miasta_zgierza_i_akceptuje_wszystkie_jego_postanowienia_3",
+      "c3285651-6c59-5b11-82ca-58847a68f344": "data_4",
       "1e1ef23b-1adf-5aa5-85f9-dfa2d9e54467": "imie_i_nazwisko_podopiecznego_2",
-      "da5bb808-5911-5dc9-8eb1-d08d29e008cd": "ja_nizej_podpisany_3"
+      "da5bb808-5911-5dc9-8eb1-d08d29e008cd": "ja_nizej_podpisany_3",
+      "c6418470-3785-5e79-9a81-23b8d150ce14": "aktualny_odpis_danych_o_klubie_z_krajowego_rejestru_sadowego",
+      "a8d690ee-333e-5db7-b5c5-817b485b9d6c": "dyplomy_lub_inne_dokumenty_potwierdzajace_opisane",
+      "d1fc4ef2-07fc-5241-84f9-9d8737b40728": "dokument_z_opinia_klubu",
+      "ebc0e445-19d2-5282-a51d-529a0e6bef33": "zaswiadczenia_wydane_przez_polski_zwiazek_sportowy"
     },
     "ledger": {
       "blanks_found": 163,
-      "became_field": 57,
-      "merged": 50,
-      "covered_by_standard": 40,
+      "became_field": 59,
+      "merged": 51,
+      "covered_by_standard": 37,
       "left_out": 0,
       "awaiting_decision": 16,
       "rows": [
         {
           "candidate": "c1",
-          "fate": "STANDARD",
-          "section": "standard/twoje_dane"
+          "fate": "FIELD",
+          "field": "4bba4e36-9aaf-506a-a29b-62303767036d"
         },
         {
           "candidate": "c2",
@@ -1542,12 +1584,12 @@
         {
           "candidate": "c57",
           "fate": "FIELD",
-          "field": "3030585a-fc41-5954-8f73-b19b94a262e2"
+          "field": "d80d8cf6-d834-5942-8906-4e006c1fa93b"
         },
         {
           "candidate": "c58",
           "fate": "FIELD",
-          "field": "ccbff82f-700c-5ecd-9416-9f571c24c4e2"
+          "field": "21219afb-2eab-541c-aee6-28a9fbc2a3fb"
         },
         {
           "candidate": "c59",
@@ -1567,7 +1609,7 @@
         {
           "candidate": "c62",
           "fate": "FIELD",
-          "field": "b9893304-d383-516e-a5ab-0c4969077114"
+          "field": "96ca633a-59ba-591c-9213-0a49190bf18f"
         },
         {
           "candidate": "c63",
@@ -1596,8 +1638,9 @@
         },
         {
           "candidate": "c68",
-          "fate": "STANDARD",
-          "section": "standard/twoje_dane"
+          "fate": "MERGED",
+          "into": "c1",
+          "why": "SAME_ALTERNATIVE"
         },
         {
           "candidate": "c69",
@@ -1764,12 +1807,12 @@
         {
           "candidate": "c99",
           "fate": "FIELD",
-          "field": "4ee341a4-71db-5d5d-9d3a-e62ebccf49e9"
+          "field": "1d9d1331-ea67-50ab-8d97-15a12710fcb1"
         },
         {
           "candidate": "c100",
           "fate": "FIELD",
-          "field": "8f70a78e-4c7f-5827-972b-34c4648497bb"
+          "field": "4c952e51-f4f1-5233-9e0c-375a43acbb9d"
         },
         {
           "candidate": "c101",
@@ -1795,7 +1838,7 @@
         {
           "candidate": "c105",
           "fate": "FIELD",
-          "field": "687cc9b8-8b72-5f36-a772-6a5f3f8d966c"
+          "field": "a671965e-4ca2-5956-83a9-5f93d6c69980"
         },
         {
           "candidate": "c106",
@@ -1824,8 +1867,8 @@
         },
         {
           "candidate": "c111",
-          "fate": "STANDARD",
-          "section": "standard/twoje_dane"
+          "fate": "FIELD",
+          "field": "df5d6b73-cc88-5324-a4f9-2d93c05a5564"
         },
         {
           "candidate": "c112",
@@ -1987,7 +2030,7 @@
         {
           "candidate": "c142",
           "fate": "FIELD",
-          "field": "9e575ba7-8600-502f-a11b-1b4c718eb9b9"
+          "field": "d4f38af2-d8e9-5041-9f29-a231798611bc"
         },
         {
           "candidate": "c143",
@@ -2022,7 +2065,7 @@
         {
           "candidate": "c149",
           "fate": "FIELD",
-          "field": "e534613f-bf0e-56df-a5f3-d5b565ec9eb6"
+          "field": "c61b7688-916b-5848-867e-063fadbc5f9e"
         },
         {
           "candidate": "c150",
@@ -2032,12 +2075,12 @@
         {
           "candidate": "c151",
           "fate": "FIELD",
-          "field": "259d0a8e-686a-52ea-b99a-21c5c897bc26"
+          "field": "ae4ef893-d83d-5c03-8dc8-42cb933de890"
         },
         {
           "candidate": "c152",
           "fate": "FIELD",
-          "field": "58692e28-b203-533f-84fe-0ec8fb023279"
+          "field": "d8697fbb-5f29-5f81-9912-4aa0ecffa1c8"
         },
         {
           "candidate": "c153",
@@ -2052,7 +2095,7 @@
         {
           "candidate": "c155",
           "fate": "FIELD",
-          "field": "8311914d-d4c3-58d9-8bc3-a0fe705a34d3"
+          "field": "71ec106f-5ee6-53bf-b8ff-b7524a66c44f"
         },
         {
           "candidate": "c156",
@@ -2067,7 +2110,7 @@
         {
           "candidate": "c158",
           "fate": "FIELD",
-          "field": "b88413c6-efb9-507d-838f-3670c0822f07"
+          "field": "c3285651-6c59-5b11-82ca-58847a68f344"
         },
         {
           "candidate": "c159",

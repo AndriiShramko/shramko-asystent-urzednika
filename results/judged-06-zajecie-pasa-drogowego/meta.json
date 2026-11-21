@@ -6,8 +6,8 @@
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 5,
-    "fields": 69,
+    "pages": 6,
+    "fields": 74,
     "source_pages": 2
   },
   "warnings": [
@@ -96,7 +96,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 1,
-      "field": "mui",
+      "field": "nazwa_drogi_oraz_jej_nr",
       "candidate": "c7",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -129,14 +129,6 @@
       "page": 1,
       "field": "w_celu_wykonania",
       "candidate": "c10",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "rodzaj_robot_i_sposob_wykonania",
-      "candidate": "c11",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -189,16 +181,9 @@
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "LABEL_RAW",
-      "page": 2,
-      "candidate": "c39",
-      "evidence": [],
-      "detail": "label kept as the paper's words: 'tj'"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 2,
-      "field": "tj",
+      "field": "liczba_dni",
       "candidate": "c39",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -235,16 +220,9 @@
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "LABEL_RAW",
-      "page": 2,
-      "candidate": "c43",
-      "evidence": [],
-      "detail": "label kept as the paper's words: 'zam'"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 2,
-      "field": "zam",
+      "field": "adres_zamieszkania",
       "candidate": "c43",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -259,7 +237,7 @@
     },
     {
       "code": "SECTION_SPLIT",
-      "detail": "matter/szczegoly_sprawy: 15 fields over 2 parts of at most 10"
+      "detail": "matter/szczegoly_sprawy: 14 fields over 2 parts of at most 10"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
@@ -407,25 +385,32 @@
       "599eed2b-17f0-52c6-b2e4-6f052b000c23": "standard",
       "22a1cda6-467f-5a17-908d-798538a83018": "paper",
       "3c02cf5b-1f11-57fc-97c9-3464e3907c3c": "paper",
-      "452bf516-5fa0-5720-8d15-a6eb53c11748": "paper",
+      "b23a2496-b40a-516e-94ac-aa13521f2785": "paper",
       "65d265df-7bb8-5c29-9766-56c74957b84e": "paper",
       "e8c87bce-e907-5ba7-a1f4-df092b49183e": "paper",
       "a1827e71-8013-5e16-9f09-0d2b2b79fe80": "paper",
-      "ed6c1679-1747-573c-a0c1-c59d1788c3fb": "paper",
       "043309b7-3156-571d-aea1-a06242b1e109": "paper",
       "f7301aa1-c85b-54e0-859f-a54018bf59fc": "paper",
       "e057d1ae-e4df-5dde-be2a-aa28325c803a": "paper",
-      "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62": "paper",
-      "2cf4e768-b9c9-52cd-8e7b-0c3482de1e81": "paper",
+      "ebf334cb-9d20-553c-ba97-d76b73d536dc": "paper",
       "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c": "paper",
+      "2cf4e768-b9c9-52cd-8e7b-0c3482de1e81": "paper",
       "4b6a657e-d78b-5256-954c-dee1ec08d867": "paper",
       "fce9fe07-5cae-5e7c-a131-4164abd57fcf": "paper",
-      "e3b55051-2708-5a90-94cb-f05d36c3a7ae": "paper",
+      "c67f4117-913f-59dc-8689-70aa8a58e38d": "paper",
       "7f728ec4-33cc-5c68-ad51-ebb330d3675f": "paper",
       "b4d404fb-81ea-5be6-bcab-9b47b76930d8": "paper",
       "6ee6ab37-38f4-55ba-9372-12d88ee6a7b6": "paper",
       "5f42cf48-0a28-5501-82d6-4a4dc3498e27": "paper",
       "4438b7f1-1c5b-59c7-ad28-22684ee49a6d": "paper",
+      "ddbb0493-74ae-5fb0-84bd-818459bb6e0a": "paper",
+      "a0f8010d-c84c-584f-8549-69ef48aff3b4": "paper",
+      "ee21c69c-35cb-5c6b-a490-f3466b40ec61": "paper",
+      "11a98075-c1c6-53c3-af5e-fc97e597b411": "paper",
+      "67d52e53-522f-5d0d-9177-38c6225b91e8": "paper",
+      "ce42e095-b1d9-5b5c-b9f7-69f993a49d0b": "paper",
+      "6015e51e-d564-58de-9a65-6709ba0a4156": "paper",
+      "df0893c0-4829-58b3-806b-ad6d9f32b2c6": "paper",
       "5ed80645-a57c-5361-9a79-5f6b7c2c257f": "paper",
       "1b1ebe99-0b60-5046-b9b8-76d1b7594df0": "paper",
       "fbc4d86e-a765-5994-adbe-ae0e5f156c98": "standard",
@@ -439,28 +424,33 @@
     },
     "brief_keys": {
       "3c02cf5b-1f11-57fc-97c9-3464e3907c3c": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
-      "452bf516-5fa0-5720-8d15-a6eb53c11748": "mui",
+      "b23a2496-b40a-516e-94ac-aa13521f2785": "nazwa_drogi_oraz_jej_nr",
       "65d265df-7bb8-5c29-9766-56c74957b84e": "miejscowosc",
       "e8c87bce-e907-5ba7-a1f4-df092b49183e": "numer_ewidencyjny_dzialki",
       "a1827e71-8013-5e16-9f09-0d2b2b79fe80": "w_celu_wykonania",
-      "ed6c1679-1747-573c-a0c1-c59d1788c3fb": "rodzaj_robot_i_sposob_wykonania",
       "043309b7-3156-571d-aea1-a06242b1e109": "calkowita_powierzchnia_zajecia",
       "f7301aa1-c85b-54e0-859f-a54018bf59fc": "termin_od",
       "e057d1ae-e4df-5dde-be2a-aa28325c803a": "termin_do",
-      "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62": "tj",
+      "ebf334cb-9d20-553c-ba97-d76b73d536dc": "liczba_dni",
       "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c": "wykonawca_robot_bedzie",
       "4b6a657e-d78b-5256-954c-dee1ec08d867": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
       "fce9fe07-5cae-5e7c-a131-4164abd57fcf": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
-      "e3b55051-2708-5a90-94cb-f05d36c3a7ae": "zam",
+      "c67f4117-913f-59dc-8689-70aa8a58e38d": "adres_zamieszkania",
       "7f728ec4-33cc-5c68-ad51-ebb330d3675f": "telefon",
       "6ee6ab37-38f4-55ba-9372-12d88ee6a7b6": "dlugosc",
       "5f42cf48-0a28-5501-82d6-4a4dc3498e27": "szerokosc",
-      "4438b7f1-1c5b-59c7-ad28-22684ee49a6d": "razem"
+      "4438b7f1-1c5b-59c7-ad28-22684ee49a6d": "razem",
+      "a0f8010d-c84c-584f-8549-69ef48aff3b4": "zatwierdzony_projekt_organizacji_ruchu_lub_informacje_o",
+      "11a98075-c1c6-53c3-af5e-fc97e597b411": "ogolny_plan_orientacyjny_w_skali_1_10_000_lub_1_25_000_z",
+      "67d52e53-522f-5d0d-9177-38c6225b91e8": "szczegolowy_plan_sytuacyjny_w_skali_1_1000_lub_1_500_z",
+      "ce42e095-b1d9-5b5c-b9f7-69f993a49d0b": "szczegolowy_harmonogram_robot",
+      "6015e51e-d564-58de-9a65-6709ba0a4156": "zatwierdzony_projekt_organizacji_ruchu",
+      "df0893c0-4829-58b3-806b-ad6d9f32b2c6": "informacje_o_sposobie_zabezpieczenia_robot"
     },
     "ledger": {
       "blanks_found": 45,
-      "became_field": 18,
-      "merged": 21,
+      "became_field": 17,
+      "merged": 22,
       "covered_by_standard": 2,
       "left_out": 2,
       "awaiting_decision": 2,
@@ -498,7 +488,7 @@
         {
           "candidate": "c7",
           "fate": "FIELD",
-          "field": "452bf516-5fa0-5720-8d15-a6eb53c11748"
+          "field": "b23a2496-b40a-516e-94ac-aa13521f2785"
         },
         {
           "candidate": "c8",
@@ -517,8 +507,9 @@
         },
         {
           "candidate": "c11",
-          "fate": "FIELD",
-          "field": "ed6c1679-1747-573c-a0c1-c59d1788c3fb"
+          "fate": "MERGED",
+          "into": "c10",
+          "why": "LINE_BLOCK"
         },
         {
           "candidate": "c12",
@@ -679,7 +670,7 @@
         {
           "candidate": "c39",
           "fate": "FIELD",
-          "field": "b5c0e037-e0ab-5c09-bbf9-b2b54bf52e62"
+          "field": "ebf334cb-9d20-553c-ba97-d76b73d536dc"
         },
         {
           "candidate": "c40",
@@ -699,7 +690,7 @@
         {
           "candidate": "c43",
           "fate": "FIELD",
-          "field": "e3b55051-2708-5a90-94cb-f05d36c3a7ae"
+          "field": "c67f4117-913f-59dc-8689-70aa8a58e38d"
         },
         {
           "candidate": "c44",

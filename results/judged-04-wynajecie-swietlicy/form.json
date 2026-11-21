@@ -1157,6 +1157,47 @@
             "questionOrder": 0,
             "tooltipMessage": ""
           }
+        },
+        {
+          "x": 0,
+          "y": 8,
+          "rows": 2,
+          "cols": 3,
+          "field": {
+            "id": "c548b981-abf4-5218-a765-ec4af57de9c0",
+            "type": "SECTION",
+            "techName": "zalaczniki",
+            "title": "Załączniki",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "b81ed336-c02f-59f3-9eab-24358ba492bf",
+                  "type": "FILE_UPLOADER",
+                  "techName": "zbiorcze_oswiadczenie_tej_osoby",
+                  "title": "Zbiorcze oświadczenie tej osoby",
+                  "description": "",
+                  "options": [],
+                  "validation": [],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 8,
+            "tooltipMessage": ""
+          }
         }
       ]
     },

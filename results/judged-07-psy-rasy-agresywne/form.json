@@ -968,6 +968,100 @@
       ]
     },
     {
+      "id": "33f403bf-a329-5e10-9e79-5d05caf77396",
+      "title": "Szczegóły sprawy",
+      "type": "MAIN",
+      "questions": [
+        {
+          "x": 0,
+          "y": 0,
+          "rows": 3,
+          "cols": 3,
+          "field": {
+            "id": "b8ab57da-5418-5221-9368-3f16827d2abc",
+            "type": "SECTION",
+            "techName": "szczegoly_sprawy",
+            "title": "Szczegóły sprawy",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "a44f7c6e-2a0a-507c-b141-916dc85b80b6",
+                  "type": "RADIO",
+                  "techName": "charta_chartow_lub_mieszanca_charta_mieszancow_chartow",
+                  "title": "Charta/chartów lub mieszańca charta/mieszańców chartów",
+                  "description": "",
+                  "options": [
+                    {
+                      "id": "charta/chartów",
+                      "name": "charta/chartów",
+                      "techName": "charta_chartow"
+                    },
+                    {
+                      "id": "mieszańca charta/mieszańców chartów",
+                      "name": "mieszańca charta/mieszańców chartów",
+                      "techName": "mieszanca_charta_mieszancow_chartow"
+                    }
+                  ],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 1,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "fbe2ca76-c8b7-5ef6-9924-7563ffa0b0c5",
+                  "type": "RADIO",
+                  "techName": "hodowanie_lub_utrzymywanie",
+                  "title": "Hodowanie lub utrzymywanie",
+                  "description": "",
+                  "options": [
+                    {
+                      "id": "hodowanie",
+                      "name": "hodowanie",
+                      "techName": "hodowanie"
+                    },
+                    {
+                      "id": "utrzymywanie",
+                      "name": "utrzymywanie",
+                      "techName": "utrzymywanie"
+                    }
+                  ],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 1,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 0,
+            "tooltipMessage": ""
+          }
+        }
+      ]
+    },
+    {
       "id": "25e2bba6-ba62-5049-8b1a-5f5312cb8df3",
       "title": "Informacja o posiadanym psie",
       "type": "MAIN",
@@ -1249,13 +1343,56 @@
       ]
     },
     {
-      "id": "4b482308-2203-580b-8961-99ab9553e58d",
-      "title": "Opłata",
+      "id": "e8c2413d-59e9-5aaf-82c4-3c65b87d5c37",
+      "title": "Załączniki",
       "type": "MAIN",
       "questions": [
         {
           "x": 0,
           "y": 0,
+          "rows": 2,
+          "cols": 3,
+          "field": {
+            "id": "067d68de-d872-5fa3-9b6b-b408a5b0e48e",
+            "type": "SECTION",
+            "techName": "zalaczniki",
+            "title": "Załączniki",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "063d98ac-45fc-5803-aeb3-52cc1fa2a9d2",
+                  "type": "FILE_UPLOADER",
+                  "techName": "kopia_dla_kazdego_psa",
+                  "title": "Kopia dla każdego psa",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 0,
+            "tooltipMessage": ""
+          }
+        },
+        {
+          "x": 0,
+          "y": 2,
           "rows": 3,
           "cols": 3,
           "field": {
@@ -1310,7 +1447,7 @@
               }
             ],
             "states": [],
-            "questionOrder": 0,
+            "questionOrder": 2,
             "tooltipMessage": ""
           }
         }
@@ -1550,18 +1687,23 @@
   "flow": {
     "links": [
       {
-        "id": "6e664c33-28c7-53e9-9f21-c39b909f21f6",
+        "id": "d94b5d90-60e6-52c6-be68-53d5b94e6bb6",
         "source": "1940fb04-7de2-531f-99a0-6394ecc5b41b",
+        "target": "33f403bf-a329-5e10-9e79-5d05caf77396"
+      },
+      {
+        "id": "88bbe691-78ed-5a5c-a819-2fa6f816af7d",
+        "source": "33f403bf-a329-5e10-9e79-5d05caf77396",
         "target": "25e2bba6-ba62-5049-8b1a-5f5312cb8df3"
       },
       {
-        "id": "a9d947da-f522-56d1-9168-999a6f0be0ee",
+        "id": "2f2020d5-2160-5a52-921b-446d3f00c7dc",
         "source": "25e2bba6-ba62-5049-8b1a-5f5312cb8df3",
-        "target": "4b482308-2203-580b-8961-99ab9553e58d"
+        "target": "e8c2413d-59e9-5aaf-82c4-3c65b87d5c37"
       },
       {
-        "id": "490a8908-1226-553f-95e9-7ed338fa6df2",
-        "source": "4b482308-2203-580b-8961-99ab9553e58d",
+        "id": "038d2615-4a1e-5fb4-b595-3390cc4d7345",
+        "source": "e8c2413d-59e9-5aaf-82c4-3c65b87d5c37",
         "target": "189f8082-e79a-5fac-a1ad-1e4022c7600d"
       },
       {

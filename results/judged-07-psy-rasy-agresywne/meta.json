@@ -6,8 +6,8 @@
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 5,
-    "fields": 47,
+    "pages": 6,
+    "fields": 50,
     "source_pages": 2
   },
   "warnings": [
@@ -195,6 +195,9 @@
       "97c59852-fddc-53ea-9873-8765ab7a3d0e": "standard",
       "73123329-96b5-5827-a403-cd3eda08bd91": "standard",
       "4cc82ef0-199b-557e-8326-171a48907b50": "standard",
+      "b8ab57da-5418-5221-9368-3f16827d2abc": "paper",
+      "a44f7c6e-2a0a-507c-b141-916dc85b80b6": "paper",
+      "fbe2ca76-c8b7-5ef6-9924-7563ffa0b0c5": "paper",
       "8552af2d-505a-5904-93a3-9df4b53632a9": "paper",
       "35af5308-6e43-5f40-a9c0-c2742b7ccada": "paper",
       "88b60e54-4a75-5c04-8c9b-e99555546a64": "paper",
@@ -206,6 +209,8 @@
       "0282df60-3adc-50ea-9645-cbb0071a9d6e": "paper",
       "f8083043-0611-5fe4-bf5e-59610e7f4353": "paper",
       "c4a42446-9953-58c1-92f6-39702129414c": "paper",
+      "067d68de-d872-5fa3-9b6b-b408a5b0e48e": "paper",
+      "063d98ac-45fc-5803-aeb3-52cc1fa2a9d2": "paper",
       "756ba47b-b430-5951-8ca8-7a1258ca8b5b": "paper",
       "a8004796-4bca-5e35-b37e-a06966707c8f": "paper",
       "4d5c97d5-4911-5180-8cf1-e2cb1e9afc15": "standard",
@@ -220,6 +225,8 @@
       "9df6727b-5b07-5602-a212-8258880ef0b1": "standard"
     },
     "brief_keys": {
+      "a44f7c6e-2a0a-507c-b141-916dc85b80b6": "charta_chartow_mieszanca_charta_mieszancow_chartow",
+      "fbe2ca76-c8b7-5ef6-9924-7563ffa0b0c5": "hodowanie_utrzymywanie",
       "35af5308-6e43-5f40-a9c0-c2742b7ccada": "pochodzenie_psa",
       "88b60e54-4a75-5c04-8c9b-e99555546a64": "rasa_psa",
       "9192f5b9-70fb-564b-be3c-b7d6ee60ce26": "data_urodzenia_psa",
@@ -229,7 +236,8 @@
       "f887456a-71bf-55d4-aaa8-d1d14277f0b9": "sposob_oznakowania_psa_nr_ident_mikroprocesor",
       "0282df60-3adc-50ea-9645-cbb0071a9d6e": "sposob_oznakowania_psa_nr_ident_tatuaz",
       "f8083043-0611-5fe4-bf5e-59610e7f4353": "adres_miejsca_utrzymywania_psa_psow",
-      "c4a42446-9953-58c1-92f6-39702129414c": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza"
+      "c4a42446-9953-58c1-92f6-39702129414c": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza",
+      "063d98ac-45fc-5803-aeb3-52cc1fa2a9d2": "kopia_dla_kazdego_psa"
     },
     "ledger": {
       "blanks_found": 26,

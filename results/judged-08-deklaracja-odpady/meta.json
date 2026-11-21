@@ -7,7 +7,7 @@
   },
   "counts": {
     "pages": 8,
-    "fields": 91,
+    "fields": 92,
     "source_pages": 6
   },
   "warnings": [
@@ -451,7 +451,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 2,
-      "field": "naleznej_oplaty_za_gospodarowanie_odpadami",
+      "field": "danych_bedacych_podstawa_ustalenia_wysokosci_naleznej_oplaty",
       "candidate": "c42",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -528,25 +528,10 @@
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "AMBIGUOUS_GROUP",
-      "page": 2,
-      "candidate": "c57",
-      "evidence": [],
-      "detail": "a single box outside any group: 'Oświadczam, że nieruchomość wyposażona jest w przydomowy kompostownik, w którym '; an option or a yes-or-no question"
-    },
-    {
       "code": "REQUIRED_INFERRED",
       "page": 2,
       "field": "oswiadczenie_o_wysokosci_oplaty_za_gospodarowanie_odpadami",
       "candidate": "c58",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 2,
-      "field": "obliczenie_wysokosci_oplaty_dla_nieruchomosci",
-      "candidate": "c59",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -560,7 +545,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "nie_przekraczajacej_45_m2",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_o",
       "candidate": "c61",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -575,7 +560,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "przekraczajacej_45_m2_jednak_nie_wiekszej",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_2",
       "candidate": "c63",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -590,7 +575,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "przekraczajacej_60_m2_jednak_nie_wiekszej",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_3",
       "candidate": "c65",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -605,7 +590,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "przekraczajacej_80_m2",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_4",
       "candidate": "c67",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -620,16 +605,8 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "zwolnieniem_dochodowym",
+      "field": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowym",
       "candidate": "c69",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 3,
-      "field": "pole_15_zl_00_gr",
-      "candidate": "c70",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
@@ -643,7 +620,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "nie_przekraczajacej_45_m2_2",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_5",
       "candidate": "c72",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -658,7 +635,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "przekraczajacej_45_m2_jednak_nie_wiekszej_2",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_6",
       "candidate": "c74",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -666,7 +643,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "przekraczajacej_60_m2_jednak_nie_wiekszej_2",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_7",
       "candidate": "c75",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -688,7 +665,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "przekraczajacej_80_m2_2",
+      "field": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_8",
       "candidate": "c78",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -696,7 +673,7 @@
     {
       "code": "REQUIRED_INFERRED",
       "page": 3,
-      "field": "zwolnieniem_dochodowym_2",
+      "field": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowy_2",
       "candidate": "c79",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -770,6 +747,11 @@
       "code": "INFERRED_SHAPE",
       "detail": "CHECKBOX: no export shows one",
       "field": "3ac55d05-7c46-5efb-93c8-70daf15a00ec"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "CHECKBOX: no export shows one",
+      "field": "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9"
     },
     {
       "code": "INFERRED_SHAPE",
@@ -918,7 +900,7 @@
       "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "paper",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "paper",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "paper",
-      "a87bea2d-83ea-5502-b50b-1b39a32b7e8a": "paper",
+      "a9f90d2e-29c2-5660-bd0f-15875b8d8151": "paper",
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": "paper",
       "19e8af72-e472-56ef-a6bf-d3f4a6403647": "paper",
       "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": "paper",
@@ -927,23 +909,22 @@
       "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5": "paper",
       "38fecd9d-f3a0-5b76-aa60-63554d1ecf0d": "paper",
       "6640b303-c895-552b-a568-f1c4d8696107": "paper",
+      "7f795d50-d8fb-57b1-bf76-b6ede358cc80": "paper",
+      "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9": "paper",
       "5ebe23cb-a76b-5a03-ad42-f70481121c19": "paper",
       "13a1d715-90ae-5bad-80b1-513800a49512": "paper",
-      "02f267ad-5daf-529e-80a1-6e115345a279": "paper",
-      "88a2f489-5973-5927-aab3-11d0ae3fce4d": "paper",
       "a4afc1ef-f75b-5dee-93f8-aeb7a93a6c44": "paper",
-      "13622ef0-45b2-5399-a934-3b250617d916": "paper",
-      "92878255-6e2b-5999-a231-ea7d5b4785ad": "paper",
-      "fc048409-31d0-5426-bb1a-6e7901dd821d": "paper",
-      "894a5cc4-ff92-59c5-a1f6-6143d4b60b81": "paper",
-      "26e5de0b-9d94-5780-a06f-8c512d2874a2": "paper",
-      "b24f37d1-e372-5092-8973-4198f80e499c": "paper",
+      "de1e7d6f-f5c4-5083-9a9a-fb6cb840415a": "paper",
+      "9a5001ba-cd85-50ab-b6d8-cfde2cd1b00d": "paper",
+      "15a50fe5-fcb4-5b12-99b6-fcdba588c9c2": "paper",
+      "ac38209c-0323-5f2e-979d-2190c5833056": "paper",
+      "227c33c9-02b0-5d9e-8b51-83c9f2c9ebd9": "paper",
       "8acb409d-1e79-5253-9ac9-d3cb89f13ced": "paper",
-      "9e0c2c31-4139-5116-906c-4a386cb8b1c8": "paper",
-      "d7d26d71-a107-52ab-95cb-5f580ab10960": "paper",
-      "7d1b1d4d-a189-578a-bf5a-60902245fbd1": "paper",
-      "d3fbeb69-48a2-52fd-8cd8-29bf052dd3c6": "paper",
-      "dbc4cd36-4d69-58c9-a94d-de3b2d0cc043": "paper",
+      "38d8b926-451a-56e9-86b6-1d3aa48b6fb6": "paper",
+      "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17": "paper",
+      "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd": "paper",
+      "29588eb6-b6e2-5896-9315-170123fef399": "paper",
+      "cf055b4d-327b-508c-bed1-5b1cc352d05b": "paper",
       "8bb8f452-936f-54f4-9918-b879105f2377": "paper",
       "2335f793-aae3-5cff-b4a7-e123ec94c03f": "paper",
       "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf": "paper",
@@ -952,6 +933,8 @@
       "14989f43-1a7f-5ab7-a2e4-14e1da32ac26": "paper",
       "41773efb-68f3-5f90-abab-49cf916dc175": "paper",
       "b37838d8-13b9-5647-a3fb-ca0705f43991": "paper",
+      "431a5d04-a4eb-5e85-9e0e-4d6026325481": "paper",
+      "e3d7b9ba-ca8f-53f7-85f9-64a9c15a1cf1": "paper",
       "1e78af4c-0cbe-5e33-accf-dba4ae608005": "paper",
       "d8d52928-16b1-55d0-ae21-24c27db9140e": "paper",
       "1f645a82-7b15-550c-9ca6-93704771fbd8": "paper",
@@ -978,40 +961,41 @@
       "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "okolicznosci",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "powodujacego_ustanie_obowiazku_oplaty",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "komunalnymi_data_wystapienia_zmiany_danych",
-      "a87bea2d-83ea-5502-b50b-1b39a32b7e8a": "naleznej_oplaty_za_gospodarowanie_odpadami",
+      "a9f90d2e-29c2-5660-bd0f-15875b8d8151": "danych_bedacych_podstawa_ustalenia_wysokosci_naleznej_oplaty",
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": "wystapienia_zmiany_danych",
       "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": "numer_nieruchomosci_domu_2",
       "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f": "kod_pocztowy_2",
       "b0a3f978-5325-5554-a934-f86c4829d9d6": "ulica_2",
       "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5": "numer_lokalu_2",
       "6640b303-c895-552b-a568-f1c4d8696107": "adres_lub_opis_miejsca_lokalizacji_pojemnikow",
+      "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9": "oswiadczam_ze_nieruchomosc_wyposazona_jest_w_przydomowy",
       "13a1d715-90ae-5bad-80b1-513800a49512": "oswiadczenie_o_wysokosci_oplaty_za_gospodarowanie_odpadami",
-      "88a2f489-5973-5927-aab3-11d0ae3fce4d": "obliczenie_wysokosci_oplaty_dla_nieruchomosci",
-      "13622ef0-45b2-5399-a934-3b250617d916": "nie_przekraczajacej_45_m2",
-      "92878255-6e2b-5999-a231-ea7d5b4785ad": "przekraczajacej_45_m2_jednak_nie_wiekszej",
-      "fc048409-31d0-5426-bb1a-6e7901dd821d": "przekraczajacej_60_m2_jednak_nie_wiekszej",
-      "894a5cc4-ff92-59c5-a1f6-6143d4b60b81": "przekraczajacej_80_m2",
-      "26e5de0b-9d94-5780-a06f-8c512d2874a2": "zwolnieniem_dochodowym",
-      "b24f37d1-e372-5092-8973-4198f80e499c": "pole_15_zl_00_gr",
-      "9e0c2c31-4139-5116-906c-4a386cb8b1c8": "nie_przekraczajacej_45_m2_2",
-      "d7d26d71-a107-52ab-95cb-5f580ab10960": "przekraczajacej_45_m2_jednak_nie_wiekszej_2",
-      "7d1b1d4d-a189-578a-bf5a-60902245fbd1": "przekraczajacej_60_m2_jednak_nie_wiekszej_2",
-      "d3fbeb69-48a2-52fd-8cd8-29bf052dd3c6": "przekraczajacej_80_m2_2",
-      "dbc4cd36-4d69-58c9-a94d-de3b2d0cc043": "zwolnieniem_dochodowym_2",
+      "de1e7d6f-f5c4-5083-9a9a-fb6cb840415a": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_o",
+      "9a5001ba-cd85-50ab-b6d8-cfde2cd1b00d": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_2",
+      "15a50fe5-fcb4-5b12-99b6-fcdba588c9c2": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_3",
+      "ac38209c-0323-5f2e-979d-2190c5833056": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_4",
+      "227c33c9-02b0-5d9e-8b51-83c9f2c9ebd9": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowym",
+      "38d8b926-451a-56e9-86b6-1d3aa48b6fb6": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_5",
+      "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_6",
+      "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_7",
+      "29588eb6-b6e2-5896-9315-170123fef399": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_8",
+      "cf055b4d-327b-508c-bed1-5b1cc352d05b": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowy_2",
       "2335f793-aae3-5cff-b4a7-e123ec94c03f": "nr_tel_fax",
       "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf": "adres_e_mail",
       "c78c28da-3c2e-516f-ac11-17bfb907f225": "imie",
       "14989f43-1a7f-5ab7-a2e4-14e1da32ac26": "nazwisko",
       "41773efb-68f3-5f90-abab-49cf916dc175": "data_wypelnienia",
+      "431a5d04-a4eb-5e85-9e0e-4d6026325481": "zalacznik_a",
+      "e3d7b9ba-ca8f-53f7-85f9-64a9c15a1cf1": "zalacznik_b",
       "1e78af4c-0cbe-5e33-accf-dba4ae608005": "inne_zalaczniki"
     },
     "ledger": {
       "blanks_found": 100,
       "became_field": 39,
-      "merged": 21,
-      "covered_by_standard": 13,
-      "left_out": 3,
-      "awaiting_decision": 24,
+      "merged": 20,
+      "covered_by_standard": 14,
+      "left_out": 6,
+      "awaiting_decision": 21,
       "rows": [
         {
           "candidate": "c1",
@@ -1231,7 +1215,7 @@
         {
           "candidate": "c42",
           "fate": "FIELD",
-          "field": "a87bea2d-83ea-5502-b50b-1b39a32b7e8a"
+          "field": "a9f90d2e-29c2-5660-bd0f-15875b8d8151"
         },
         {
           "candidate": "c43",
@@ -1310,8 +1294,8 @@
         },
         {
           "candidate": "c57",
-          "fate": "AWAITING_DECISION",
-          "decision": "box_c57"
+          "fate": "FIELD",
+          "field": "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9"
         },
         {
           "candidate": "c58",
@@ -1320,8 +1304,8 @@
         },
         {
           "candidate": "c59",
-          "fate": "FIELD",
-          "field": "88a2f489-5973-5927-aab3-11d0ae3fce4d"
+          "fate": "LEFT_OUT",
+          "reason": "EXPLANATION"
         },
         {
           "candidate": "c60",
@@ -1331,7 +1315,7 @@
         {
           "candidate": "c61",
           "fate": "FIELD",
-          "field": "13622ef0-45b2-5399-a934-3b250617d916"
+          "field": "de1e7d6f-f5c4-5083-9a9a-fb6cb840415a"
         },
         {
           "candidate": "c62",
@@ -1341,7 +1325,7 @@
         {
           "candidate": "c63",
           "fate": "FIELD",
-          "field": "92878255-6e2b-5999-a231-ea7d5b4785ad"
+          "field": "9a5001ba-cd85-50ab-b6d8-cfde2cd1b00d"
         },
         {
           "candidate": "c64",
@@ -1351,7 +1335,7 @@
         {
           "candidate": "c65",
           "fate": "FIELD",
-          "field": "fc048409-31d0-5426-bb1a-6e7901dd821d"
+          "field": "15a50fe5-fcb4-5b12-99b6-fcdba588c9c2"
         },
         {
           "candidate": "c66",
@@ -1361,7 +1345,7 @@
         {
           "candidate": "c67",
           "fate": "FIELD",
-          "field": "894a5cc4-ff92-59c5-a1f6-6143d4b60b81"
+          "field": "ac38209c-0323-5f2e-979d-2190c5833056"
         },
         {
           "candidate": "c68",
@@ -1371,12 +1355,12 @@
         {
           "candidate": "c69",
           "fate": "FIELD",
-          "field": "26e5de0b-9d94-5780-a06f-8c512d2874a2"
+          "field": "227c33c9-02b0-5d9e-8b51-83c9f2c9ebd9"
         },
         {
           "candidate": "c70",
-          "fate": "FIELD",
-          "field": "b24f37d1-e372-5092-8973-4198f80e499c"
+          "fate": "LEFT_OUT",
+          "reason": "EXPLANATION"
         },
         {
           "candidate": "c71",
@@ -1386,7 +1370,7 @@
         {
           "candidate": "c72",
           "fate": "FIELD",
-          "field": "9e0c2c31-4139-5116-906c-4a386cb8b1c8"
+          "field": "38d8b926-451a-56e9-86b6-1d3aa48b6fb6"
         },
         {
           "candidate": "c73",
@@ -1396,12 +1380,12 @@
         {
           "candidate": "c74",
           "fate": "FIELD",
-          "field": "d7d26d71-a107-52ab-95cb-5f580ab10960"
+          "field": "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17"
         },
         {
           "candidate": "c75",
           "fate": "FIELD",
-          "field": "7d1b1d4d-a189-578a-bf5a-60902245fbd1"
+          "field": "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd"
         },
         {
           "candidate": "c76",
@@ -1416,12 +1400,12 @@
         {
           "candidate": "c78",
           "fate": "FIELD",
-          "field": "d3fbeb69-48a2-52fd-8cd8-29bf052dd3c6"
+          "field": "29588eb6-b6e2-5896-9315-170123fef399"
         },
         {
           "candidate": "c79",
           "fate": "FIELD",
-          "field": "dbc4cd36-4d69-58c9-a94d-de3b2d0cc043"
+          "field": "cf055b4d-327b-508c-bed1-5b1cc352d05b"
         },
         {
           "candidate": "c80",
@@ -1445,13 +1429,13 @@
         },
         {
           "candidate": "c84",
-          "fate": "FIELD",
-          "field": "1e78af4c-0cbe-5e33-accf-dba4ae608005"
+          "fate": "LEFT_OUT",
+          "reason": "EXPLANATION"
         },
         {
           "candidate": "c85",
-          "fate": "AWAITING_DECISION",
-          "decision": "attachment_c85"
+          "fate": "FIELD",
+          "field": "431a5d04-a4eb-5e85-9e0e-4d6026325481"
         },
         {
           "candidate": "c86",
@@ -1478,8 +1462,8 @@
         },
         {
           "candidate": "c90",
-          "fate": "AWAITING_DECISION",
-          "decision": "attachment_c90"
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
         },
         {
           "candidate": "c91",
@@ -1495,9 +1479,8 @@
         },
         {
           "candidate": "c93",
-          "fate": "MERGED",
-          "into": "c84",
-          "why": "LINE_BLOCK"
+          "fate": "FIELD",
+          "field": "1e78af4c-0cbe-5e33-accf-dba4ae608005"
         },
         {
           "candidate": "c94",
