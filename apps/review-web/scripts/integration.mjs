@@ -39,21 +39,37 @@ for (const name of (args.engines ?? 'chromium,firefox').split(',')) {
   for (const f of files) {
     await page.goto(base)
     await page.fill('#token', mint())
-    let formPart = null
-    page.once('response', async (r) => { if (r.url().includes('/v1/forms/convert')) formPart = { hdr: r.headers()['x-form-sha256'], len: (await r.body()).length } })
+    // The convert response is awaited as a promise (not a fire-and-forget listener), so its header is known
+    // before the comparison. Every missing input below is a FAIL, never a pass by default.
+    const answer = page.waitForResponse((r) => r.url().includes('/v1/forms/convert'), { timeout: 120000 }).catch(() => null)
     await page.setInputFiles('#file', f)
     await page.waitForSelector('#h-error, #h-done', { timeout: 120000 })
+    const resp = await answer
+    const hdr = resp ? resp.headers()['x-form-sha256'] ?? null : null
+    const raw = resp ? await resp.body().catch(() => null) : null
     const done = await page.locator('#h-done').count() === 1
     const hashOk = done && /zgadza się/.test(await page.locator('#json-status').locator('xpath=preceding-sibling::p | following-sibling::p').allInnerTexts().then((a) => a.join(' ')).catch(() => ''))
     let equal = false
+    let why = ''
     if (done) {
+      // The shown text must be the raw answer: the pretty switch must exist and start unchecked.
+      const pretty = page.locator('#json-pretty')
+      const hasPretty = await pretty.count() === 1
+      const prettyOff = hasPretty && !(await pretty.isChecked())
       const text = await page.locator('#json-text').innerText()
       const digest = createHash('sha256').update(Buffer.from(text.replace(/\r\n/g, '\n'))).digest('hex')
-      equal = !formPart?.hdr || digest === formPart.hdr || !(await page.locator('#json-pretty').isChecked())
+      const rawDigest = raw ? createHash('sha256').update(raw).digest('hex') : null
+      if (!hdr) why = 'no X-Form-SHA256 header'
+      else if (!raw) why = 'response body not readable'
+      else if (!hasPretty) why = 'no #json-pretty switch'
+      else if (!prettyOff) why = 'pretty view on by default'
+      else if (rawDigest !== hdr) why = 'header differs from the body'
+      else if (digest !== hdr) why = 'shown text differs from the body'
+      equal = why === ''
     }
     if (!done) console.log('  page says: ' + (await page.locator('#result').innerText()).replace(/\s+/g, ' ').slice(0, 300))
     const fields = done ? await page.locator('#h-matter').count() : 0
-    say(done && hashOk && equal, `${name}: ${basename(f).slice(0, 4)}***.${f.split('.').pop()} -> form shown=${done}, sha agrees=${hashOk}, matter section=${fields === 1}`)
+    say(done && hashOk && equal, `${name}: ${basename(f).slice(0, 4)}***.${f.split('.').pop()} -> form shown=${done}, sha agrees=${hashOk}, bytes equal=${equal}${why ? ' (' + why + ')' : ''}, matter section=${fields === 1}`)
   }
   await browser.close()
 }
