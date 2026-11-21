@@ -1,3 +1,7 @@
+# WP-F11a: the downloaded city archive and the per-file log of the check chain
+data/archive/
+eval/chain/last-run.jsonl
+
 # Secrets and local configuration
 .env
 .env.*

@@ -58,6 +58,7 @@ case "$mode" in
   fast)
     lint
     (cd "$ROOT/apps/converter" && "$PY" -m pytest -q --maxfail=20 -m "not slow" "$@")
+    "$PY" -m pytest -q --maxfail=20 -m "not slow" "$R/eval/chain/tests"
     echo "gate: fast PASSED on $(git -C "$ROOT" rev-parse --short HEAD)"
     ;;
   full)
