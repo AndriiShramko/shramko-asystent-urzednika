@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 23:02 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-22 00:19 CET. **To continue after a limit or to join from another subscription: [`RESUME.md`](RESUME.md) (start prompt, rules of parallel work through git, board of lanes).** Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).
 
 ## Build log (the lead's handoff; newest state on top)
 

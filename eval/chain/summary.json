@@ -17,7 +17,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 1,
-     "seconds": 0.1,
+     "seconds": 0.05,
      "warnings": {}
     },
     "ods": {
@@ -30,7 +30,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 1,
-     "seconds": 0.3,
+     "seconds": 0.26,
      "warnings": {}
     },
     "pdf": {
@@ -43,7 +43,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 3,
-     "seconds": 0.0,
+     "seconds": 0.01,
      "warnings": {}
     },
     "png": {
@@ -56,7 +56,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 1,
-     "seconds": 1.78,
+     "seconds": 0.93,
      "warnings": {
       "ADDRESSEE_MISSING": 1,
       "APPLICANTS_ASSUMED": 1,
@@ -71,7 +71,7 @@
    "lint_errors": 0,
    "no_label": 0,
    "refused": 6,
-   "seconds": 2.18,
+   "seconds": 1.25,
    "warnings": {
     "ADDRESSEE_MISSING": 1,
     "APPLICANTS_ASSUMED": 1,
@@ -98,7 +98,7 @@
      "lint_errors": 0,
      "no_label": 81,
      "refused": 0,
-     "seconds": 11.36,
+     "seconds": 12.45,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "ADDRESSEE_MISSING": 2,
@@ -125,7 +125,7 @@
      "lint_errors": 0,
      "no_label": 148,
      "refused": 0,
-     "seconds": 18.27,
+     "seconds": 17.01,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "ADDRESSEE_MISSING": 3,
@@ -151,7 +151,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 0,
-     "seconds": 1.51,
+     "seconds": 3.65,
      "warnings": {
       "ADDRESSEE_MISSING": 1,
       "APPLICANTS_ASSUMED": 1,
@@ -172,7 +172,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 0,
-     "seconds": 28.39,
+     "seconds": 26.53,
      "warnings": {
       "ADDRESSEE_MISSING": 8,
       "APPLICANTS_ASSUMED": 8,
@@ -193,7 +193,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 0,
-     "seconds": 29.7,
+     "seconds": 29.51,
      "warnings": {
       "ADDRESSEE_MISSING": 9,
       "APPLICANTS_ASSUMED": 9,
@@ -214,7 +214,7 @@
      "lint_errors": 0,
      "no_label": 20133,
      "refused": 0,
-     "seconds": 16.95,
+     "seconds": 20.6,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "APPLICANTS_ASSUMED": 1,
@@ -236,7 +236,7 @@
      "lint_errors": 0,
      "no_label": 88,
      "refused": 0,
-     "seconds": 24.83,
+     "seconds": 29.16,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "ADDRESSEE_MISSING": 1,
@@ -261,7 +261,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 0,
-     "seconds": 27.83,
+     "seconds": 33.39,
      "warnings": {
       "ADDRESSEE_MISSING": 9,
       "APPLICANTS_ASSUMED": 9,
@@ -282,7 +282,7 @@
      "lint_errors": 0,
      "no_label": 18001,
      "refused": 0,
-     "seconds": 13.09,
+     "seconds": 16.98,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "CLAUSE_LINK_MISSING": 7,
@@ -298,7 +298,7 @@
    "lint_errors": 0,
    "no_label": 38451,
    "refused": 0,
-   "seconds": 171.93,
+   "seconds": 189.28,
    "warnings": {
     "ADDRESSEE_CONFLICT": 5,
     "ADDRESSEE_MISSING": 33,
@@ -335,7 +335,7 @@
      "lint_errors": 0,
      "no_label": 87,
      "refused": 0,
-     "seconds": 37.06,
+     "seconds": 25.07,
      "warnings": {
       "ADDRESSEE_MISSING": 10,
       "AMBIGUOUS_GROUP": 2,
@@ -362,7 +362,7 @@
      "lint_errors": 0,
      "no_label": 357,
      "refused": 0,
-     "seconds": 36.04,
+     "seconds": 24.67,
      "warnings": {
       "ADDRESSEE_MISSING": 13,
       "APPLICANTS_ASSUMED": 17,
@@ -387,7 +387,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 0,
-     "seconds": 1.19,
+     "seconds": 0.98,
      "warnings": {
       "ADDRESSEE_MISSING": 1,
       "APPLICANTS_ASSUMED": 1,
@@ -408,7 +408,7 @@
      "lint_errors": 0,
      "no_label": 1635,
      "refused": 0,
-     "seconds": 162.02,
+     "seconds": 100.04,
      "warnings": {
       "ADDRESSEE_MISSING": 24,
       "AMBIGUOUS_GROUP": 47,
@@ -436,7 +436,7 @@
      "lint_errors": 0,
      "no_label": 38,
      "refused": 0,
-     "seconds": 10.52,
+     "seconds": 6.96,
      "warnings": {
       "ADDRESSEE_MISSING": 4,
       "APPLICANTS_ASSUMED": 2,
@@ -459,7 +459,7 @@
      "lint_errors": 0,
      "no_label": 2613,
      "refused": 0,
-     "seconds": 6.08,
+     "seconds": 2.56,
      "warnings": {
       "ADDRESSEE_MISSING": 1,
       "APPLICANTS_ASSUMED": 1,
@@ -482,7 +482,7 @@
      "lint_errors": 0,
      "no_label": 86,
      "refused": 0,
-     "seconds": 2.2,
+     "seconds": 2.12,
      "warnings": {
       "CLAUSE_LINK_MISSING": 1,
       "INFERRED_SHAPE": 1,
@@ -496,7 +496,7 @@
    "lint_errors": 0,
    "no_label": 4816,
    "refused": 0,
-   "seconds": 255.11,
+   "seconds": 162.4,
    "warnings": {
     "ADDRESSEE_MISSING": 53,
     "AMBIGUOUS_GROUP": 49,
@@ -525,7 +525,7 @@
   "lint_errors": 0,
   "no_label": 43267,
   "refused": 6,
-  "seconds": 429.22,
+  "seconds": 352.93,
   "warnings": {
    "ADDRESSEE_CONFLICT": 5,
    "ADDRESSEE_MISSING": 87,
