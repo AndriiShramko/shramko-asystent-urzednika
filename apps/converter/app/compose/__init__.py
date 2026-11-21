@@ -41,6 +41,7 @@ from app.model.form import (
 )
 
 from . import library as lib
+from . import required as required_rule
 from . import validators
 from .html import doc, p
 from .library import EXPORT_1, EXPORT_5, Standard, Who
@@ -64,6 +65,7 @@ _NO_VALIDATION = ("TEXT_BLOCK", "INFO_SECTION", "CONSENT_SECTION")
 class ComposeOptions:
     finish_style: str = "export"              # D5: "export" (SECTION with a TEXT_BLOCK) | "info_section"
     validators: bool = True                   # D8: False gives empty lists everywhere, as in the exports
+    required_policy: str = "inferred"         # compose.required: "inferred" (design 6.4.3) | "paper" (no inferred REQUIRED)
     repeating_style: str = "native"           # "native" (REPEATING_SECTION) | "section" (one plain section)
     statutory_representative: bool = True     # D16
     poa_exemption: bool = False               # D17
@@ -91,11 +93,17 @@ class ComposeResult:
     brief_keys: dict[str, str]
     paths: dict[str, str]
     remarks: tuple[Remark, ...]
+    # Brief keys of the fields the brief requires by inference and the composer wrote without REQUIRED
+    # (compose.required): for such a key the brief's own warning REQUIRED_INFERRED no longer describes the form.
+    required_dropped: tuple[str, ...] = ()
 
 
 def compose(brief: Brief, options: ComposeOptions | None = None) -> ComposeResult:
     o = options or ComposeOptions()
+    if o.required_policy not in required_rule.POLICIES:
+        raise ComposeError(f"required_policy {o.required_policy!r} is not one of {required_rule.POLICIES}")
     remarks: list[Remark] = []
+    dropped: list[str] = []
     title = brief.title.value.strip()[:255] if brief.title.status == "stated" and (brief.title.value or "").strip() else ""
     if not title:
         title = TITLE_MISSING
@@ -104,12 +112,12 @@ def compose(brief: Brief, options: ComposeOptions | None = None) -> ComposeResul
     std, who = _standard(brief, o, remarks)
 
     pages = [Page("dane", "Dane", _parties(brief, std, who, o, std.transfer_title or title, remarks))]
-    pages += _matter_pages(brief, o, remarks)
+    pages += _matter_pages(brief, o, remarks, dropped)
     pages.append(Page("kontakt", std.contact_page_title, _contact(brief, std, remarks)))
     pages.append(Page("koniec", "Strona końcowa", [lib.finish(std.finish_text, o.finish_style)], finish=True))
     _unique_page_titles(pages)
     _keep_pages_non_empty(pages, remarks)
-    return _emit(title, form_key, pages, o, remarks)
+    return replace(_emit(title, form_key, pages, o, remarks), required_dropped=tuple(dropped))
 
 
 def pages_without_fixed_content(form: Form) -> list[str]:
@@ -191,7 +199,7 @@ def _contact(brief: Brief, std: Standard, remarks: list[Remark]) -> list[Sec]:
 
 # -- the matter: what the paper asks ------------------------------------------------------------------------------
 
-def _brief_comp(f: BriefField, remarks: list[Remark]) -> Comp:
+def _brief_comp(f: BriefField, section_title: str, policy: str, remarks: list[Remark], unstated: list[str], dropped: list[str]) -> Comp:
     common = {"key": f.key, "type": f.type, "show": from_brief(f.show_if), "ref": f"brief:{f.key}", "origin": "paper", "brief_key": f.key}
     if f.type in ("TEXT_BLOCK", "INFO_SECTION"):
         return Comp(title="", html=doc(p(f.label), *([p(f.hint)] if f.hint else [])), **common)
@@ -202,7 +210,14 @@ def _brief_comp(f: BriefField, remarks: list[Remark]) -> Comp:
         # An honest gap (hard rule 9). The code is the nearest of the sidecar's list: we are not sure what value
         # the field takes, so the official looks at it.
         remarks.append(Remark("LOW_CONFIDENCE", f"field {f.key}: no validator of the value is written; {withheld}"))
-    validation = (("REQUIRED",) if f.required else ()) + ((named,) if named else ())
+    must, why = required_rule.written(f, section_title, policy)
+    if why is not None:
+        dropped.append(f.key)
+        if why == required_rule.UNSTATED:
+            unstated.append(f.key)     # counted, reported once for the form
+        else:
+            remarks.append(Remark("REQUIRED_INFERRED", f"field {f.key}: REQUIRED is not written; {why}"))
+    validation = (("REQUIRED",) if must else ()) + ((named,) if named else ())
     options = tuple(f.options)
     if f.type == "CHECKBOX" and not options:
         # a single yes-or-no box (brief 1.1): the partner's grammar wants options, so the box is one option "Tak"
@@ -212,13 +227,20 @@ def _brief_comp(f: BriefField, remarks: list[Remark]) -> Comp:
                 search=True if f.type == "SELECT" and len(f.options) > 15 else None, **common)
 
 
-def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark]) -> list[Page]:
+def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark], dropped: list[str]) -> list[Page]:
     secs: list[Sec] = []
+    unstated: list[str] = []
     for m in brief.matter:
         native = m.repeating and o.repeating_style == "native"
         if m.repeating and not native:
             remarks.append(Remark("REPEATING_FLATTENED", f"{m.role}: written as one plain section (REPEATING_STYLE={o.repeating_style})"))
-        secs.append(Sec(m.role, m.title, None, [_brief_comp(f, remarks) for f in m.fields], show=from_brief(m.show_if), repeating=native, origin="paper"))
+        comps = [_brief_comp(f, m.title, o.required_policy, remarks, unstated, dropped) for f in m.fields]
+        secs.append(Sec(m.role, m.title, None, comps, show=from_brief(m.show_if), repeating=native, origin="paper"))
+    if unstated:
+        n = len(unstated)
+        remarks.append(Remark("REQUIRED_INFERRED", f"{n} field{'s are' if n != 1 else ' is'} required only by our rule and the paper does not "
+                                                   f"mark {'them' if n != 1 else 'it'}: REQUIRED is not written (required policy 'paper'); "
+                                                   f"first: {', '.join(unstated[:6])}"))
     uploads = [a for a in brief.attachments if a.covered_by is None]
     if uploads:
         secs.append(Sec("matter/zalaczniki", "Załączniki", None, [
