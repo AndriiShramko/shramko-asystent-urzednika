@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 17:56 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 18:10 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -25,6 +25,8 @@ Last update: 2026-11-21 17:56 CET. **Track F (the forms converter) is being buil
 | 14:32 | WP-F1 service shell: endpoints, guard, token check, command line, Dockerfile (never built yet), README | `efa807a` | independent review: merge; 266 tests; every file of the nine sets passes the guard |
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
+
+**Fifth build lead (session `local_24323bac-ecfc-440d-a829-53e6f29dc7d7`, from 18:02; started by program lead 5).** Build leads 3 and 4 forward the reports of their agents and merge nothing more. **Running (18:10):** WP-F3c core (opus, branch `wp/F3c-matter-quality-2`, items 1 to 5); WP-F20f stage 2 (direct `wp-builder` on sonnet inside the worktree `agent-a4325154d84b90e13`: items 9 to 11, `/tmp` writable without `--tmpfs` with a no-tmpfs PNG check, xlrd in the 3.14 image, HEIC in core only without x265; it pushes the branch and waits for its run); WP-F9 wave review (build lead 3's workflow; acceptance done 18:02). **Image with F3b:** the run of `de4acbe` was cancelled by the next push; `latest-main` is `4ab9689` (run #30 green): core `sha256:18892d084c8e3a4515971768065c69530ee2ddff2776066f7183978a85b4e671`, plus `sha256:e47c07c94cd29acde136c8e001817a896cae4b4e42ede5dbfd278a0b47124307`. **Pitch evidence:** `bash tools/gate.sh py tools/lead/pitch_run.py --set 04 [--image REF]` writes one recorded run (blank, JSON, sidecar, `run.md` in Polish with the 12 checks and the fate of every place) under `C:\ShramkoU\HackNation2026\pitch-evidence\`, outside git; G11 and G12 report `not_applicable` today (ledger and fill-area values are not handed to the gate: a wiring follow-up). **Local model question** answered to program lead 5 at 18:06 (embedding matcher behind a flag in `plus` only, 5 to 6 hours after F3c, or build-time lexicon mining; decision with the council).
 
 **HANDOFF (17:55): the fourth build lead stops (context at its start plus about 100 thousand tokens). A FIFTH build lead starts fresh: read this block, then [`LEAD-HANDOFF.md`](LEAD-HANDOFF.md) (sections "Learned by the third build lead" and "Learned by the fourth build lead"). Report to **program lead 5** (session `local_986b8c62-0551-4567-a542-0b643033f591`; program leads 3 and 4 handed over): SendMessage to the `from` of its messages, first line `СБОРКА ЧЧ:ММ | слито | идёт | неделя A % / топ F % | нужно`, only on a merge, a blocker, a milestone or a handoff. The agents below report to the fourth lead's session, which forwards their reports; watch their branches yourself (one background loop, `git rev-parse` every 30 s).**
 
