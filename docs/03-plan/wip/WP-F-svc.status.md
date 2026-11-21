@@ -17,7 +17,8 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 - [x] 8. SKIPPED as the brief says: the review page does not send files in parallel. `apps/review-web/src/ui/app.ts`
       lines 84-95 (`run`): of several dropped files only `files[0]` is sent, in one request, with the notice
       `upload.multiple`. No `QUEUE_WAIT_S` was added; a full service still answers 429 BUSY at once.
-- [ ] Acceptance: shell and readers tests, fast gate, negative control, evidence table
+- [x] Acceptance: shell and readers tests, fast gate after merging main, negative control, evidence table
+- [ ] Left for the lead: the review, the image workflow on the pushed branch, the documents named in the requests
 
 ## Decisions
 - J1: explicit `AUTH_MODE=off` keeps its old log line, `auto` without a key logs the new one / the two causes differ
@@ -51,6 +52,7 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
 | Shell and readers tests | `bash tools/gate.sh py -m pytest apps/converter/tests/shell apps/converter/tests/readers -q` | 443 passed, 2 skipped (Tesseract, Linux), 410 s | 5b0d092 (code of the head) |
+| Fast gate after merging main 14170bf | `bash tools/gate.sh fast` | lint ok; 800 passed, 3 skipped, 22 deselected (522 s); chain tests 21 passed; `gate: fast PASSED` | started on b281256 (the merge); it printed 7347a23 because a status-only commit landed during the run, the code is the same |
 | J1: `{}` gives off, a key gives jwt, explicit jwt without a key refuses | `test_shell_config_cli.py`: `test_the_default_auth_mode_is_auto_off_without_a_key_and_jwt_with_one`, `test_jwt_mode_without_any_key_is_refused`, `test_serve_with_explicit_jwt_and_no_key_exits_3` | passed (exit 3 on explicit jwt) | 5b0d092 |
 | J1: the service starts with an empty environment | real process: `python -m converter serve --port 18431` with every `AUTH_*` and `JWT_*` variable removed, called on loopback by a probe script | `/healthz` 200 after 3.3 s; the log holds "No JWT key configured: the API accepts requests WITHOUT a token..."; no traceback | 5b0d092 |
 | R1: simultaneous first callers | `tests/readers/test_registry_race.py` (8 threads on a reset registry; 2 simultaneous first HTTP requests) | 4 tests passed; real process: two simultaneous first requests 200 and 200, equal bytes | 5b0d092 |
