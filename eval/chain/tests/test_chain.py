@@ -143,7 +143,17 @@ def test_summary_totals_per_corpus_and_format():
 
 # --- corpora ---------------------------------------------------------------------------------------------------
 
-def test_sample_is_seeded_capped_and_hashes_names(tmp_path):
+def test_sample_tops_up_to_the_minimum(tmp_path, monkeypatch):
+    for fmt in ("pdf", "docx"):
+        for i in range(60):
+            (tmp_path / f"n{i}.{fmt}").write_bytes(f"{fmt}-{i}".encode() * 3)
+    (tmp_path / "x.rtf").write_bytes(b"rtf")
+    s = corpora.build_sample(tmp_path, seed=3)
+    assert s["total"] == corpora.MIN_TOTAL and sum(f["format"] == "rtf" for f in s["files"]) == 1
+
+
+def test_sample_is_seeded_capped_and_hashes_names(tmp_path, monkeypatch):
+    monkeypatch.setattr(corpora, "MIN_TOTAL", 0)
     for fmt in ("pdf", "png", "xlsx"):
         for i in range(20):
             (tmp_path / f"secret-name-{i}.{fmt}").write_bytes(f"{fmt}-{i}".encode() * 3)
