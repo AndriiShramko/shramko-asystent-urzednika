@@ -1,6 +1,6 @@
 # WP-C1 REQUIRED and optional follow the paper's own words: status
 
-Claimed by: build7 (agent c1-required); heartbeat: 2026-11-22 00:47; state: running
+Claimed by: build7 (agent c1-required); heartbeat: 2026-11-22 01:10; state: running
 Branch: wp/C1-required-cues (cut from main 7fedaed)   Stage now: core
 
 Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/habits.json`,
@@ -15,25 +15,43 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
       "jeśli różni się od ..." (doc, docx, pdf) and "Ewentualne dodatkowe informacje ..." (doc, docx, pdf);
       set 08 ods/xlsx: fields of the section titled "... (pola nieobowiązkowe)" ("Nr tel./fax", the consent rows).
       NOTE: `count_sets.py` takes OUT.json as its FIRST argument: `count_sets.py tmp/x.json --all`.
-- [ ] (c) negation guard before a required cue, tests in `apps/converter/tests/mean/test_mean_c1.py`
-- [ ] (d) optional habits: `ewentualn`, "jeśli/jeżeli (są) różni", "w razie potrzeby", tests
-- [ ] (e) required and optional cues read from the field's hint and the title of its own section, tests
+- [x] (c) negation guard before a required cue (`_says_required` in `_fields.py`), tests `tests/mean/test_mean_c1_negation.py`
+- [~] (d) optional habits: `ewentualn`, "jeśli/jeżeli (są) różni", "w razie potrzeby", negated cue; the tests are WRITTEN
+      (`tests/mean/test_mean_c1_optional.py`, in git only with the code), the code is next
+- [~] (e) required and optional cues read from the field's hint and the title of its own section; the tests are WRITTEN
+      (`tests/mean/test_mean_c1_sources.py`, in git only with the code), the code is next
 - [ ] (f) counts after, list of changed fields here
 - [ ] (g) fast gate, chain compare, state `ready_to_merge`
 - [ ] (h) only if (c) to (e) are green: legend "pola oznaczone * / gwiazdką są obowiązkowe" makes starred labels required
 
 ## Decisions
-- (none yet)
+- Negation: the word "nie", "niedotyczy", or "nie" glued to the cue, within 40 characters BEFORE a required cue, blocks it /
+  the order's item 3, testable / rules out reading a negation after the cue; a glued "...nie" of a footnote blocks too (honest gap).
+- New wording goes into NEW habit rows (`optional_wording`, `required_wording`) read only by `_fields.py`, not into the row
+  `optional` / `_doc.clean_label` (not owned) would then swallow a bracket like "(jeśli różni się od ...)" as the mark and
+  the hint would vanish from the form / rules out a change of the composer's reading of `optional`.
+- Section title: an optional wording counts anywhere in the title; a required cue counts only inside a bracket of the title
+  ("(pola obowiązkowe)") / a running title like "Wymagane załączniki" must not make every field required / rules out plain-title cues.
+- In a hint or a title bracket a required cue next to a conditional word (habit `conditional`) is no cue / "wymagane w przypadku ..."
+  is a condition, not "required" / such a field stays "inferred" (not written under REQUIRED_POLICY=paper).
+- The field's own words (label, hint, footnote) outrank the section title; optional outranks required among own words (as before).
+- "należy wypełnić" is a cue only when no word follows it ("należy wypełnić drukowanymi literami" tells how, not whether).
 
 ## Evidence
 | Acceptance item | Command | Result | Commit it ran on |
 |---|---|---|---|
 
 ## Negative control
-(to record in step c: a new test that fails on the unpatched code)
+On the unpatched code (be69fa0, main's `_fields.py`) the three new test files gave "20 failed, 9 passed": every case that
+asserts new behaviour failed (for example `test_a_negated_cue_is_not_required_by_the_paper[Kolor furtki nie jest wymagany]`:
+basis was "paper"); the 9 that passed are the guards that must hold before and after. With the guard of step c:
+`bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_c1_negation.py ... test_mean_core.py test_mean_f3b.py test_mean_f3c.py -q` = 79 passed.
 
 ## Left for the next stage
-Everything from (c) on. Heartbeat of this section: 2026-11-22 00:56. Measuring tool of this package:
+Steps (d) to (h). Heartbeat of this section: 2026-11-22 01:10. The design of (d) and (e) is fixed in "## Decisions";
+if the two test files of (d) and (e) are missing in your checkout, write them from the decisions (labels of a garden: synthetic).
+Before-dump of ALL sets on main's code: `tmp/c1-brief-all-before.tsv` = 689 fields, 670 required, 10 with basis paper
+(local, not in git: re-make it from a checkout of `main` with the same tool if needed). Measuring tool of this package:
 `bash tools/gate.sh py apps/converter/tests/mean/dump_required.py tmp/c1-brief-after.tsv judged-08 judged-09`
 (about 1 minute; diff it against a run on main to list the changed fields). Facts found so far (no code changed yet):
 - `apps/converter/app/mean/_fields.py` lines 561 to 571: `optional = optional or OPTIONAL.search(low) or notes`,
