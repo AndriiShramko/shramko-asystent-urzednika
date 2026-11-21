@@ -1,4 +1,27 @@
-# Shramko Asystent Urzędnika
+# Forms converter: from a blank official form to e-service JSON
+
+A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. Access is guarded by a token. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
+
+The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. No language model runs in the product and it makes no network call at run time.
+
+**Published image** (milestone (a), commit `920dbf1`, tag `track-f-a`): `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf`. Convert without a network (from [`apps/converter/README.md`](apps/converter/README.md), which also covers `serve`, the token and all settings):
+
+```bash
+docker run --rm --network none --read-only --cap-drop ALL --user 10001 \
+  -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" \
+  ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:de661b017a6d950e9362f73ad3c49f555f59ad55a09823c5f067cab932be6acf \
+  convert /in/form.pdf --out /out/form.json
+```
+
+- **Converts today:** PDF, DOCX, XLSX, ODS, binary Word (.doc). **In progress:** JPG, JPEG, PNG (images and OCR).
+- **Not done yet:** today the produced form holds the title and the partner's standard sections; the fields of the matter of each paper arrive with the understanding step (WP-F4) and its wiring, in progress. Also not yet: validators, dictionaries, conditions, the review page and the viewer.
+- Links: state of the build [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) · [`apps/converter/README.md`](apps/converter/README.md) · [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md) · pre-event disclosure [`NOTICE`](NOTICE).
+
+---
+
+## Pre-event material (a parked vision, not built in this task)
+
+Everything below was prepared before the event (tag `pre-event`, see [`NOTICE`](NOTICE)) and describes another product.
 
 **Open brief and reference design for an AI assistant for Polish public offices (urząd): it helps clerks analyse access-to-public-information requests (wnioski o udostępnienie informacji publicznej, UDIP) and draft answers, and it pre-fills official forms from data a visitor enters once.** Prepared for HackNation 2026 (21–22 November 2026, Bydgoszcz), challenge "Inteligentny asystent urzędnika" by Miasto Bydgoszcz.
 
