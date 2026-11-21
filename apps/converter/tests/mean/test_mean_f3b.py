@@ -63,3 +63,13 @@ def test_sale_notice_keeps_buyer_pesel_vin_and_date_of_sale_in_the_matter() -> N
     assert set(got) == {"PESEL nabywcy", "Numer VIN", "Data zbycia"}
     assert got["PESEL nabywcy"].concept == "pesel" and got["Data zbycia"].type == "DATEPICKER"
     assert b.title.value == "Zawiadomienie o zbyciu pojazdu"
+
+
+def test_a_name_asked_of_a_candidate_under_the_applicant_heading_is_a_field_of_the_matter() -> None:
+    p = Paper()
+    p.text("WNIOSEK O NAGRODĘ", bold=True)
+    s = p.heading("Wnioskodawca", number="1")
+    p.blank("Imię i nazwisko", kind="cell", section=s)
+    p.blank("Imię i nazwisko kandydata", kind="cell", section=s)
+    got = {f.label for sec in p.brief().matter for f in sec.fields}
+    assert "Imię i nazwisko kandydata" in got and "Imię i nazwisko" not in got

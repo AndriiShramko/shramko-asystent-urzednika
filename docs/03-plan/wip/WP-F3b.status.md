@@ -1,6 +1,6 @@
 # WP-F3b Matter quality (finder, understanding, composer second pass): status
 
-Branch: wp/F3b-matter-quality   Stage now: core (first pass done; items 2, 4, 6, 7 left)
+Branch: wp/F3b-matter-quality   Stage now: acceptance (run on the merge of main; see Acceptance evidence)
 
 Owned for this pass: `apps/converter/app/find/**`, `app/mean/**`, `app/lexicon/**`, `app/compose/**` and their tests.
 New tests: `apps/converter/tests/find/test_find_f3b.py` (5), `apps/converter/tests/compose/test_compose_f3b.py` (3).
@@ -44,3 +44,25 @@ Measuring: `bash tools/gate.sh py eval/briefs/make_briefs.py <main checkout>/eva
 
 ## Cost notes
 - core: getting a before/after per field took the most turns (the worktree guard refuses compound git commands; a baseline had to be produced by copying the old module in and out). Cheaper: a committed `make_briefs.py --out DIR` and a `--diff OLD NEW` mode.
+
+## Acceptance evidence (stage acceptance, main merged, head before this commit 58758fa)
+| Item | Command | Result |
+|---|---|---|
+| 1 fast gate after merging main | `bash tools/gate.sh fast` | 630 passed, 2 skipped, 22 deselected; chain tests 21 passed; "gate: fast PASSED on 58758fa" (after the fix below, with the new test: 632 passed, 1 skipped, 22 deselected; chain tests 21 passed; fast PASSED) |
+| 2 check chain | `bash tools/gate.sh py -m eval.chain --compare --archive <main checkout>/data/archive` (all three corpora) | 158 files: 145 converted, 13 refused, 0 failed; gate failures 0; strict-lint errors 0. compare: 3 worse (2 fatal), 32 better. Worse lines below |
+| 3 matter fields per set, PDF (DOCX), main -> now | `make_briefs.py <silver>` | set 2: 5 (5) -> 5 (5); set 3: 2 (2) -> 3 (2); set 4: 7 (6) -> 7 (6); set 6: 18 (16) -> 18 (16); set 7: 10 -> 10; set 8: 32 (24) -> 38 (27); set 9: 83 (42) -> 58 (42). Lint errors 0 on all 13 |
+| 3 silver (claude/gemini matched), PDF (DOCX) | same | set 3: 1/0 (0/0) [main 0/0]; set 4: 4/4 (4/4); set 6: 17/18 (16/18) |
+| 4 reference 1 | scratch run of pipeline on PDF and DOCX | title "Wniosek o ustalenie numeru porządkowego" and the same 70 fields in the same order from both; Numer ewidencyjny działki, Obręb, Ulica, Numer budynku, Numer lokalu present in both. Addressee: still the open item (PDF glued "W", DOCX two-column line) |
+| 4 set 9 PDF | scratch dump | RADIO "Wybierz rodzaj wniosku" / section "Rodzaj wniosku": one selector, sections per variant |
+| 5 strict linter | chain (`strict-lint errors 0` on 145 converted files) and make_briefs (0 on 13) | 0 errors |
+| 6 negative control | `_THIRD_PERSON.search(low)` made `and False` in `app/mean/_fields.py` | new test failed (1 failed, 4 passed); restored -> 5 passed |
+
+Fix made in this stage (owned path `app/mean/_fields.py`): the first chain run had two fatal falls (set 9 ODS and XLSX 105 -> 65). Cause found by diffing unique labels against main: "Imię i nazwisko kandydata" / "... podopiecznego" under the heading "Wnioskodawca" were taken as the applicant's own name and passed to the standard block, so they vanished from the matter. A label of a third person (kandydat, podopieczn, zawodnik, sportowiec, trener, dziecko, uczestnik) is now a field of the matter. New test `test_a_name_asked_of_a_candidate_under_the_applicant_heading_is_a_field_of_the_matter`. After it ODS/XLSX 105 -> 72.
+
+Worse lines after the fix (all set 9 "Wniosek o przyznanie stypendium"; no other file is worse):
+- ODS 105 -> 72 (fatal by the 20 % rule), XLSX 105 -> 72 (fatal), PDF 133 -> 116. Reason: main copied the applicant's fields (Imię, Adres siedziby, EDoręczenia and so on) into six to nine "Szczegóły sprawy" sections, one per variant; now the heading "Wnioskodawca" routes them once to the standard sections and the variants hold only their own data. Unique labels that left the matter: "Nazwa klubu sportowego" (-> standard/dane_podmiotu) and "Telefon kontaktowy" (-> standard/dane_do_kontaktu) in ODS, XLSX and PDF; PDF "Poczta tradycyjna - ..." is now "Korespondencja z urzędem ..."; PDF gained 19 titles (selector, "Dane sportowca", "Dane trenera", consents, "Numer KRS"). DOCX unchanged (133 -> 133, no title lost or gained).
+- This is the open item above (club data: entity applicant or matter). The two fatal lines need the lead's decision to move `eval/chain/baseline.json` (not owned here).
+
+## Requests to lead (acceptance)
+2. Decide the club data of set 9 (standard entity block, as now, or matter) and, if the lower field count of set 9 ODS/XLSX/PDF stands, run `python -m eval.chain --update-baseline`; `--compare` exits 1 on those two files until then.
+3. `eval/chain` run overwrites the tracked `eval/chain/summary.json`; I restored it, did not commit it.
