@@ -6,6 +6,7 @@ Branch: wp/F14-gate   Stage now: core
 - [x] Gate module `apps/converter/app/gate/` (G1 ... G12, `check(form, profile, journeys, *, sidecar, fill_values)`), seven journeys as data in `app/gate/journeys/standard.json`, synthetic tests: twelve negative controls each failing exactly its check (commit 9e8139a)
 - [x] Tests on the partner's two exports (`@pytest.mark.sets`): tolerant G1 ... G10 pass, journey snapshots, canary, Polska then Niemcy (commit after 9e8139a)
 - [x] Merged main (00fa1fa); fast gate 488 passed; fail-closed test when the build lacks coi_lint (core stage, last commit)
+- [x] Command `python -m app.gate FILE.json [--profile] [--json]` (exit 0/1/2), 3 tests, gate dir 62 passed (integration stage)
 - [ ] Integration (lead): wire `check()` into the pipeline (500 GATE_FAILED with the check name, no form; today pipeline.py line 64 raises GATE_FAILED only for a composer exception); copy `tools/coi_lint.py` and `contracts/coi/form*.schema.json` into the image (see Requests)
 - [ ] Not automated: compare the J5/J6 visible address fields of export 1 with the partner's visualisation document by eye (it is a picture/PDF, local only)
 - [ ] Acceptance stage: re-run the fast gate on the merged result; the review
@@ -44,3 +45,4 @@ The twelve fixtures of `test_gate_core.py` (`CONTROLS` plus the ledger test) eac
 
 ## Cost notes
 - core: most turns went into reading the shape of the exports' conditions and HTML (two scratch scripts) before deciding G6, G7 and G10; a measured digest of "conditions and HTML tags per export" in the forensics file would have saved three replies.
+- integration: small stage; pipeline and image wiring belong to the lead, so only a command line was added.
