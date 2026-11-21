@@ -9,8 +9,9 @@ Branch `wp/F20-e-image-formats` (from main `ef9a80c`). Stage: one (core + integr
 - [x] Readers: TIFF (each frame a page), BMP, GIF and WEBP (first frame) in `readers/image.py` + `_raster.decode_frames`; ODT in `readers/odt.py`
 - [x] Guard: extensions, magic-number proofs, MIME, HEIC/HEIF refused with a Polish reason (JPG advice), RTF still refused
 - [x] Tests: `apps/converter/tests/readers/test_image_formats.py`
-- [ ] Fast gate green
-- [ ] Publishing check clean, push, image run green
+- [x] Fast gate: 652 passed, 1 skipped (Tesseract), 1 failed (test_the_stored_briefs_cover_every_judged_set: needs the local task-set briefs, absent in a worktree; unrelated)
+- [x] Publishing check clean (scan_lines on the changed files, precheck exit 0)
+- [ ] Pushed; image run green
 
 ## Decisions
 
