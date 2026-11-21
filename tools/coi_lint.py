@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Check a form-definition JSON against the partner's rules that a schema cannot express.
 
-    python tools/coi_lint.py FORM.json [FORM2.json ...] [--schema contracts/coi/form.schema.json]
+    python tools/coi_lint.py FORM.json [FORM2.json ...] [--profile strict|tolerant]
 
+Profiles: strict (default, contracts/coi/form.schema.json) is what we emit; tolerant
+(contracts/coi/form.tolerant.schema.json) reads the partner's own exports, and what the
+strict profile would reject there is reported as WARN "departs from strict".
 Exit code 1 when an ERROR is found. WARN marks places where the partner's own
 sample export departs from the partner's written rules, so we report without failing.
 Rules and their sources: docs/02-architecture/coi-json-format.md.
@@ -161,25 +164,44 @@ def lint(doc: dict) -> list[tuple[str, str]]:
     return out
 
 
+CONTRACTS = Path(__file__).resolve().parent.parent / "contracts" / "coi"
+PROFILES = {"strict": CONTRACTS / "form.schema.json", "tolerant": CONTRACTS / "form.tolerant.schema.json"}
+
+
+def _schema_findings(validator, doc) -> list[str]:
+    return ["schema: " + "/".join(map(str, e.absolute_path)) + ": " + e.message[:160]
+            for e in validator.iter_errors(doc)]
+
+
+def check(doc: dict, profile: str = "strict", schema: Path | None = None) -> list[tuple[str, str]]:
+    """Schema findings of the profile plus the rules of lint(); the tolerant profile turns what only the
+    strict profile rejects into WARN lines."""
+    import jsonschema
+    load = lambda p: jsonschema.Draft202012Validator(json.loads(p.read_text(encoding="utf-8")))
+    own = _schema_findings(load(schema or PROFILES[profile]), doc)
+    findings = [("ERROR", m) for m in own]
+    if profile == "tolerant":
+        findings += [("WARN", "departs from strict: " + m[len("schema: "):])
+                     for m in _schema_findings(load(PROFILES["strict"]), doc) if m not in own]
+    return findings + lint(doc)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("files", nargs="+", type=Path)
-    ap.add_argument("--schema", type=Path, default=Path(__file__).resolve().parent.parent / "contracts" / "coi" / "form.schema.json")
+    ap.add_argument("--profile", choices=sorted(PROFILES), default="strict",
+                    help="strict (default): what we emit; tolerant: the partner's own exports, whose departures are WARN")
+    ap.add_argument("--schema", type=Path, default=None, help="override the schema file of the profile")
     args = ap.parse_args()
-    validator = None
     try:
-        import jsonschema
-        validator = jsonschema.Draft202012Validator(json.loads(args.schema.read_text(encoding="utf-8")))
+        import jsonschema  # noqa: F401
     except ImportError:
-        print("jsonschema is not installed: schema check skipped", file=sys.stderr)
+        print("jsonschema is not installed: the check cannot run", file=sys.stderr)
+        return 2
     bad = False
     for path in args.files:
         doc = json.loads(path.read_text(encoding="utf-8"))
-        findings = []
-        if validator:
-            findings += [("ERROR", "schema: " + "/".join(map(str, e.absolute_path)) + ": " + e.message[:160])
-                         for e in validator.iter_errors(doc)]
-        findings += lint(doc)
+        findings = check(doc, args.profile, args.schema)
         errors = sum(1 for k, _ in findings if k == "ERROR")
         print(f"{path.name}: {errors} errors, {len(findings) - errors} warnings")
         for kind, msg in findings:

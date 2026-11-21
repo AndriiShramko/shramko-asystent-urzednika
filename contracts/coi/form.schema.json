@@ -1,22 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts/coi/form.schema.json",
-  "title": "Form definition for import (our stricter reading of the partner's format)",
-  "description": "Written by us from the partner's schema file, their description of the fields, their technical rules and one sample export. Stricter than the partner's schema: types are enumerated and required keys are named. Rules that a schema cannot express are checked by tools/coi_lint.py.",
+  "title": "Form definition for import: STRICT profile (what we emit)",
+  "description": "Profile 'strict': what our converter writes (decisions D1, D3, D4, D7 in docs/03-plan/DECISIONS-forms-track.md). Top level exactly title, tabs, flow; no key outside the documented ones (plus multiLevelTree and searchEnabled, which both partner exports carry on SELECT); every component carries options, validation (always a list), readOnly, repeatingSectionGrid, states and tooltipMessage; ids are UUIDs; every option has a techName. The partner's own exports depart from this in a few places and are read with the sibling file form.tolerant.schema.json. Rules a schema cannot express are checked by tools/coi_lint.py.",
   "type": "object",
   "required": ["title", "tabs", "flow"],
+  "additionalProperties": false,
   "properties": {
     "title": { "type": "string", "minLength": 1, "maxLength": 255 },
     "tabs": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/tab" } },
     "flow": {
       "type": "object",
       "required": ["links"],
+      "additionalProperties": false,
       "properties": {
         "links": {
           "type": "array",
           "items": {
             "type": "object",
             "required": ["id", "source", "target"],
+            "additionalProperties": false,
             "properties": {
               "id": { "$ref": "#/$defs/uuid" },
               "source": { "$ref": "#/$defs/uuid" },
@@ -32,6 +35,7 @@
     "tab": {
       "type": "object",
       "required": ["id", "title", "type", "questions"],
+      "additionalProperties": false,
       "properties": {
         "id": { "$ref": "#/$defs/uuid" },
         "title": { "type": "string", "minLength": 1 },
@@ -42,11 +46,13 @@
     "cell": {
       "type": "object",
       "required": ["x", "y", "rows", "cols", "field"],
+      "additionalProperties": false,
       "properties": {
         "x": { "type": "integer", "minimum": 0 },
         "y": { "type": "integer", "minimum": 0 },
         "rows": { "type": "integer", "minimum": 1 },
-        "cols": { "type": "integer", "minimum": 1 }
+        "cols": { "type": "integer", "minimum": 1 },
+        "field": { "type": "object" }
       }
     },
     "sectionQuestion": {
@@ -73,7 +79,7 @@
       ]
     },
     "innerQuestion": {
-      "description": "A component inside a section. Sections cannot be nested.",
+      "description": "A component inside a section. Sections cannot be nested (D4): the grid of a component is empty.",
       "allOf": [
         { "$ref": "#/$defs/cell" },
         {
@@ -86,7 +92,8 @@
                     "type": {
                       "enum": ["TEXT_FIELD", "CHECKBOX", "NUMBER", "CONSENT_SECTION", "SELECT", "TEXTAREA",
                                "FILE_UPLOADER", "RADIO", "DATEPICKER", "TEXT_BLOCK", "INFO_SECTION"]
-                    }
+                    },
+                    "repeatingSectionGrid": { "type": "array", "maxItems": 0 }
                   }
                 }
               ]
@@ -97,16 +104,19 @@
     },
     "fieldBase": {
       "type": "object",
-      "required": ["id", "type", "techName"],
+      "required": ["id", "type", "techName", "options", "validation", "readOnly", "repeatingSectionGrid", "states", "tooltipMessage"],
+      "additionalProperties": false,
       "properties": {
         "id": { "$ref": "#/$defs/uuid" },
         "type": { "type": "string" },
-        "techName": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "techName": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "maxLength": 60 },
         "title": { "type": "string" },
         "description": { "type": "string" },
         "tooltipMessage": { "type": "string" },
         "readOnly": { "type": "boolean" },
         "questionOrder": { "type": "integer", "minimum": 0 },
+        "multiLevelTree": { "type": "boolean" },
+        "searchEnabled": { "type": "boolean" },
         "options": {
           "type": "array",
           "items": {
@@ -116,11 +126,10 @@
           }
         },
         "validation": {
-          "description": "Names of predefined validators. The partner's sample export also contains an empty object in a few fields; we accept it on input and never write it.",
-          "anyOf": [
-            { "type": "array", "items": { "enum": ["REQUIRED", "EMAIL", "PESEL", "NIP", "REGON", "ZIP_CODE", "EPUAP", "ADE", "SERIAL_NUMBER_ID_CARD"] }, "uniqueItems": true },
-            { "type": "object", "maxProperties": 0 }
-          ]
+          "description": "Names of predefined validators, always a list (D3). The partner's export 1 has an empty object in three fields; we read it under the tolerant profile and never write it.",
+          "type": "array",
+          "items": { "enum": ["REQUIRED", "EMAIL", "PESEL", "NIP", "REGON", "ZIP_CODE", "EPUAP", "ADE", "SERIAL_NUMBER_ID_CARD"] },
+          "uniqueItems": true
         },
         "dictionaryName": { "type": "string" },
         "defaultValue": { "type": ["string", "array"] },
