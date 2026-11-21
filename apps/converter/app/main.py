@@ -157,7 +157,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def run_one(name: str | None, data: bytes, declared: str | None) -> tuple[UploadInfo, pipeline.PipelineResult, int]:
         t0 = time.perf_counter()
         info = inspect_upload(name, data, s, declared)
-        result = pipeline.run(data, info.name, s)
+        result = pipeline.run(data, info.name, s, **({"notes": info.warnings} if info.warnings else {}))
         if set(result.form) != FORM_KEYS:  # the shell's own gate; the full gate (WP-F14) comes behind the pipeline
             raise ProblemError("GATE_FAILED", "Wynik ma klucze inne niż title, tabs, flow.")
         return info, result, int((time.perf_counter() - t0) * 1000)

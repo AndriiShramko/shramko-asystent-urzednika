@@ -50,7 +50,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import make_fixtures  # noqa: E402
 from formcheck import problems_of_form, problems_of_pair  # noqa: E402
 
-READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp"})
+READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp",
+                          "rtf", "xls", "txt"})   # heic and heif need the decoder: the workflow adds them per target
 
 HARDENED = ["--network", "none", "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
             "--tmpfs", "/tmp:rw,size=128m", "--pids-limit", "256", "--memory", "1g"]
@@ -196,6 +197,9 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
         res.add("fixtures present", [f"no file in {fixtures}"])
         return
     mount = ["-v", f"{fixtures.resolve()}:/in:ro"]
+    have = {ext_of(p) for p in files}
+    res.add("a fixture exists for every format that must convert", [f"no fixture for .{e}" for e in sorted(ready - have)],
+            ", ".join(sorted(ready)))
     for path in files:
         if ext_of(path) not in ready:
             cp = docker("run", "--rm", *HARDENED, *mount, image, "convert", f"/in/{path.name}", timeout=180)
@@ -220,6 +224,21 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
         res.add(f"convert {path.name} with --network none", problems,
                 f"{len(cp.stdout)} bytes, sha256 {hashlib.sha256(cp.stdout).hexdigest()[:12]}, {secs:.1f} s, "
                 "keys title/tabs/flow, lint strict clean, same bytes twice")
+
+
+def check_ocr_without_tmpfs(image: str, fixtures: Path, res: Results) -> None:
+    """OCR of an image needs a writable /tmp. The documented run has --read-only and NO --tmpfs: the image itself
+    must give /tmp (a declared volume). A raster form must convert to a passing form there."""
+    png = fixtures / "wniosek.png"
+    if not png.exists():
+        return
+    cp = docker("run", "--rm", "--network", "none", "--read-only", "--cap-drop", "ALL", "--security-opt",
+                "no-new-privileges", "--pids-limit", "256", "--memory", "1g", "-v", f"{fixtures.resolve()}:/in:ro",
+                image, "convert", "/in/wniosek.png", timeout=180)
+    problems = ([f"exit {cp.returncode}; stderr: {cp.stderr.decode(errors='replace')[-300:]}"] if cp.returncode != 0
+                else problems_of_form(cp.stdout.rstrip(b"\n")))
+    res.add("PNG converts with --read-only and no --tmpfs (the image gives a writable /tmp for OCR)", problems,
+            f"{len(cp.stdout)} bytes")
 
 
 GATE_PROBE = r"""
@@ -375,7 +394,7 @@ def http_checks(base: str, key: bytes, fixtures: Path, res: Results,
         return False
     url = base + "/v1/forms/convert"
     pdf = (fixtures / "wniosek.pdf").read_bytes()
-    png = (fixtures / "wniosek.png").read_bytes()
+    junk = bytes(3) + b"junk"   # neither a known format nor text (WP-F20f: a PNG named .pdf is now read as a PNG)
     good = token(key)
     st, body = post_file(url, "wniosek.pdf", pdf, good)
     res.add("POST convert with a token: 200 and a passing form",
@@ -385,8 +404,8 @@ def http_checks(base: str, key: bytes, fixtures: Path, res: Results,
         ("expired token", "wniosek.pdf", pdf, token(key, exp=int(time.time()) - 3600), 401, "TOKEN_EXPIRED"),
         ("token with algorithm none", "wniosek.pdf", pdf, token(None, alg="none"), 401, "TOKEN_INVALID"),
         ("token signed with another key", "wniosek.pdf", pdf, token(b"x" * 64), 401, "TOKEN_INVALID"),
-        ("PNG bytes named .pdf", "wniosek.pdf", png, good, 415, "TYPE_MISMATCH"),
-        ("extension .txt", "wniosek.txt", b"Wniosek\n", good, 415, "EXTENSION"),
+        ("bytes of no known format named .pdf", "wniosek.pdf", junk, good, 415, "TYPE_MISMATCH"),
+        ("extension .exe", "wniosek.exe", b"Wniosek\n", good, 415, "EXTENSION"),
     ]
     for label, fname, data, bearer, want, code in cases:
         st, body = post_file(url, fname, data, bearer)
@@ -423,6 +442,7 @@ def main() -> int:
     check_probe(args.image, res)
     ready = frozenset(e.strip().lower() for e in args.ready.split(",") if e.strip())
     check_conversions(args.image, args.fixtures, res, ready)
+    check_ocr_without_tmpfs(args.image, args.fixtures, res)
     check_different_forms(args.image, res, ready)
     check_gate_inside(args.image, args.fixtures, res, ready)
     if not args.no_http:

@@ -15,6 +15,11 @@ Third-party material:
 - data/forms-catalog.* lists public URLs of forms and service cards published by Urząd Miasta
   Bydgoszczy (um.bydgoszcz.pl, bip.um.bydgoszcz.pl). The catalogue contains links and metadata only;
   the forms themselves are not redistributed here and remain the property of their publishers.
+- The container images carry libheif (the program heif-dec) and libde265, both LGPL-3.0-or-later, to read HEIC
+  and HEIF photos (D24). They are installed unmodified from the distribution's packages and run as a separate
+  child process; the product links to neither. The HEVC encoder x265 (GPL-2.0-or-later) is never installed in an
+  image: the image build fails if an x265 package is present. Sources: https://github.com/strukturag/libheif and
+  https://github.com/strukturag/libde265.
 - Quotations from Polish and EU legal acts are public legal texts.
 - Names of products and institutions (mObywatel, EZD RP, HackNation, Adaptive Recognition, Osmond,
   Claude and others) belong to their owners.

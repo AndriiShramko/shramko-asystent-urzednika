@@ -116,7 +116,7 @@ def test_inspect_shows_what_the_guard_sees(client):
 
 
 def test_batch_streams_one_line_per_file_and_isolates_errors(client):
-    body, ctype = fx.multipart([("file", "a.pdf", fx.pdf(), "application/pdf"), ("file", "b.pdf", fx.png(), "application/pdf"),
+    body, ctype = fx.multipart([("file", "a.pdf", fx.pdf(), "application/pdf"), ("file", "b.pdf", bytes(3) + b"junk", "application/pdf"),
                                 ("file", "c.png", broken_png(), "image/png")])
     r = client.post("/v1/batches", content=body, headers={"Content-Type": ctype, **auth()})
     lines = [json.loads(x) for x in r.text.splitlines()]
@@ -127,7 +127,7 @@ def test_batch_streams_one_line_per_file_and_isolates_errors(client):
 
 
 def test_batch_from_one_zip(client):
-    z = fx.zip_of({"one.pdf": fx.pdf(), "dir/two.png": broken_png(), "readme.txt": b"skip me"})
+    z = fx.zip_of({"one.pdf": fx.pdf(), "dir/two.png": broken_png(), "readme.exe": b"skip me"})
     r = post(client, "/v1/batches", "pack.zip", z, "application/zip")
     assert [json.loads(x)["state"] for x in r.text.splitlines()] == ["ok", "error"]  # the truncated PNG cannot be decoded
 
@@ -162,13 +162,13 @@ def problem(r, status, code):
 
 
 def test_wrong_extension_and_spoofs_through_http(client):
-    problem(post(client, "/v1/forms/convert", "a.txt", b"x"), 415, "EXTENSION")
-    problem(post(client, "/v1/forms/convert", "a.pdf", fx.png()), 415, "TYPE_MISMATCH")
-    problem(post(client, "/v1/forms/convert", "a.xlsx", fx.docx()), 415, "TYPE_MISMATCH")
-    problem(post(client, "/v1/forms/convert", "a.doc", fx.legacy_workbook()), 415, "TYPE_MISMATCH")
+    problem(post(client, "/v1/forms/convert", "a.exe", b"x"), 415, "EXTENSION")
+    problem(post(client, "/v1/forms/convert", "a.pdf", bytes(3) + b"junk"), 415, "TYPE_MISMATCH")
+    problem(post(client, "/v1/forms/convert", "a.xlsx", bytes(3) + b"junk"), 415, "TYPE_MISMATCH")
+    problem(post(client, "/v1/forms/convert", "a.doc", fx.ole("Other")), 415, "TYPE_MISMATCH")
     problem(post(client, "/v1/forms/convert", "a.pdf", fx.pdf_and_zip()), 415, "TYPE_MISMATCH")
-    problem(post(client, "/v1/forms/convert", "a%b.pdf", fx.pdf()), 400, "BAD_NAME")
-    problem(post(client, "/v1/forms/convert", "a" * 247 + ".pdf", fx.pdf()), 400, "BAD_NAME")
+    assert post(client, "/v1/forms/convert", "a%b.pdf", fx.pdf()).status_code == 200   # WP-F20f: a bad name is cleaned
+    assert post(client, "/v1/forms/convert", "a" * 247 + ".pdf", fx.pdf()).status_code == 200
 
 
 def test_upper_case_extension_and_jpe_through_http(tmp_path, secret_file):

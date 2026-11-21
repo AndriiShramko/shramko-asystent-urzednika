@@ -146,49 +146,44 @@ def test_truncated_tiff_is_a_reader_error_not_a_trace():
 # ---- negative controls: a text file with the extension never reaches a reader ---------------------------------
 
 @pytest.mark.parametrize("ext", ["tiff", "tif", "bmp", "gif", "webp", "odt"])
-def test_text_file_with_the_extension_is_refused_by_the_guard(ext, monkeypatch):
+def test_binary_garbage_with_the_extension_is_refused_by_the_guard(ext, monkeypatch):
     reached = []
     monkeypatch.setattr(readers, "read_document", lambda *a, **k: reached.append(a))
     with pytest.raises(ProblemError) as e:
-        inspect_upload(f"a.{ext}", b"To jest zwykly tekst, nie obraz.\n" * 20, S)
+        inspect_upload(f"a.{ext}", b"To nie jest obraz.\x00\x01" * 20, S)
     assert e.value.code == "TYPE_MISMATCH" and not reached
 
 
 def test_bmp_signature_alone_is_not_enough():
     with pytest.raises(ProblemError) as e:
-        inspect_upload("a.bmp", b"BM" + b"just text that starts with BM" * 5, S)
+        inspect_upload("a.bmp", b"BM" + b"\x00binary that starts with BM" * 5, S)
     assert e.value.code == "TYPE_MISMATCH"
 
 
-def test_image_named_with_the_wrong_extension_is_refused():
+def test_text_with_an_image_extension_stays_refused():
     with pytest.raises(ProblemError) as e:
-        inspect_upload("a.png", save(page_image(), "GIF"), S)
+        inspect_upload("a.tiff", b"To jest zwykly tekst, nie obraz.\n" * 20, S)
     assert e.value.code == "TYPE_MISMATCH"
 
 
-# ---- HEIC / HEIF and RTF ----------------------------------------------------------------------------------------
+def test_image_named_with_the_wrong_extension_is_read_as_what_it_is():
+    info = inspect_upload("a.png", save(page_image(), "GIF"), S)
+    assert info.kind == "gif" and "obraz GIF" in info.warnings[0]
+
+
+# ---- HEIC / HEIF (the reader comes with stage 1b of WP-F20f) ----------------------------------------------------
 
 HEIC = b"\x00\x00\x00\x18ftypheic\x00\x00\x00\x00mif1heic" + b"\x00" * 64
 
 
 @pytest.mark.parametrize("name", ["zdjecie.heic", "zdjecie.HEIF"])
-def test_heic_by_extension_is_refused_with_the_jpg_advice(name):
-    with pytest.raises(ProblemError) as e:
-        inspect_upload(name, HEIC, S)
-    assert e.value.code == "EXTENSION" and "JPG" in e.value.detail
+def test_heic_is_accepted_by_the_guard_by_extension_and_content(name):
+    assert inspect_upload(name, HEIC, S).kind == "heic"
 
 
-def test_heic_content_under_a_jpg_name_is_refused_with_the_jpg_advice():
-    with pytest.raises(ProblemError) as e:
-        inspect_upload("zdjecie.jpg", HEIC, S)
-    assert e.value.code == "TYPE_MISMATCH" and "JPG" in e.value.detail
-
-
-def test_no_reader_exists_for_heic_or_rtf():
-    assert not {"heic", "heif", "rtf"} & set(readers.formats())
-    with pytest.raises(ProblemError) as e:
-        inspect_upload("pismo.rtf", b"{\\rtf1\\ansi Wniosek}", S)
-    assert e.value.code == "EXTENSION"
+def test_heic_content_under_a_jpg_name_is_routed_as_heic_with_a_warning():
+    info = inspect_upload("zdjecie.jpg", HEIC, S)
+    assert info.kind == "heic" and "HEIC" in info.warnings[0]
 
 
 # ---- ODT ------------------------------------------------------------------------------------------------------
@@ -235,10 +230,8 @@ def test_odt_with_a_doctype_is_refused():
 
 def test_a_spreadsheet_package_is_not_an_odt_and_vice_versa():
     ods_like = odt_bytes(SIMPLE_ODT, mimetype="application/vnd.oasis.opendocument.spreadsheet")
-    with pytest.raises(ProblemError):
-        inspect_upload("a.odt", ods_like, S)
-    with pytest.raises(ProblemError):
-        inspect_upload("a.ods", odt_bytes(SIMPLE_ODT), S)
+    assert inspect_upload("a.odt", ods_like, S).kind == "ods"   # WP-F20f: read as what it is, with a warning
+    assert inspect_upload("a.ods", odt_bytes(SIMPLE_ODT), S).kind == "odt"
     with pytest.raises(ReaderError):
         readers.read_document(ods_like, "odt")
 

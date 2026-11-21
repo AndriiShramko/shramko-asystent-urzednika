@@ -40,6 +40,10 @@ def _format_of(data: bytes, settings: Settings) -> str:
 def _problem_of(exc: ReaderError) -> ProblemError:
     if exc.code == "TOO_LARGE":
         return ProblemError("TOO_LARGE", "Dokument jest większy, niż pozwala ta instalacja (strony lub pamięć).")
+    if exc.code == "NO_DECODER":   # a laptop install without heif-dec; the user is never asked to re-save the file
+        return ProblemError("UNREADABLE", "Ta instalacja nie ma dekodera HEIC.")
+    if exc.code == "ENCRYPTED" and "PDF" in exc.reason:
+        return ProblemError("UNREADABLE", "Plik PDF jest chroniony hasłem otwarcia; usługa nie zna hasła.")
     if exc.code == "ENCRYPTED":
         return ProblemError("UNREADABLE", "Plik jest zaszyfrowany lub chroniony hasłem; nie można go odczytać.")
     if exc.code == "UNSUPPORTED_FORMAT":
@@ -82,10 +86,14 @@ def _form_ids(form: dict, brief, brief_keys: dict[str, str]) -> dict[str, str]:
     return ids
 
 
-def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
-    """`filename` is not used: the format comes from the content, and a name must never reach a log."""
+def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] = ()) -> PipelineResult:
+    """`filename` is not used: the format comes from the content, and a name must never reach a log.
+    `notes` are the Polish sentences of the guard (`UploadInfo.warnings`: the extension disagreed with the content, a
+    file name was cleaned); they travel into the warnings of the sidecar as they are."""
     fmt = _format_of(data, settings)
     if fmt not in formats():
+        if fmt == "heic":   # the reader comes with WP-F20f stage 1b; the user is never asked to re-save the file
+            raise ProblemError("UNREADABLE", "Ta instalacja nie ma dekodera HEIC.")
         label = KIND_LABEL.get(fmt, fmt)
         raise ProblemError("UNREADABLE", f"Ta wersja usługi nie potrafi jeszcze czytać tego formatu ({label}).")
     try:
@@ -106,7 +114,8 @@ def run(data: bytes, filename: str, settings: Settings) -> PipelineResult:
     report = gate.check(form)
     if not report.passed:
         raise _gate_problem(report.failed[0])
-    warnings = [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]
+    warnings = [{"code": "INPUT_NOTE", "detail": n} for n in notes]
+    warnings += [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]
     if fallback:
         warnings.append(dict(interim.NOT_READ_WARNING))
     else:

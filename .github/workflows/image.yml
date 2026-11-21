@@ -38,7 +38,7 @@ env:
   # THE ONE LINE: extensions that must convert to a form. Every other synthetic fixture must be refused with a
   # typed refusal (HTTP 422 UNREADABLE; the command line exits non-zero, no traceback) and a form is a failure.
   # The lead extends this line when a reader for another format is merged.
-  READY_FORMATS: "pdf docx xlsx ods doc png jpg jpeg odt tiff bmp gif webp"
+  READY_FORMATS: "pdf docx xlsx ods doc png jpg jpeg odt tiff bmp gif webp rtf xls txt heic heif"
   GRYPE_VERSION: "0.122.1"
   GRYPE_SHA256: "f1ba7e2917ee1395618de20a98da0aa7c0fb1788927797651047c50502a37538"
   PYTHONUTF8: "1"
@@ -105,8 +105,13 @@ jobs:
       - name: Install the test environment for the fixture generator (hashes, wheels only)
         run: |
           python -m pip install --require-hashes --only-binary=:all: -r apps/converter/requirements-dev.lock
+      - name: HEIC encoder on the runner only (the HEIC fixture is made here; the image has a decoder and no encoder)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends libheif-examples libheif-plugin-x265
+          heif-enc --version
       - name: Synthetic blank forms, one per extension
-        run: python tools/ci/make_fixtures.py "$RUNNER_TEMP/fixtures"
+        run: python tools/ci/make_fixtures.py "$RUNNER_TEMP/fixtures" --require-heic
       - name: Prove the image (non-root, no capabilities, read-only, --network none conversion, HTTP path)
         run: |
           python tools/ci/container_check.py --image "converter:${{ matrix.target }}" \

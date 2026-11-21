@@ -45,7 +45,7 @@ def cmd_convert(args: argparse.Namespace) -> int:
         return 2
     try:
         info = inspect_upload(path.name, data, s)
-        result = pipeline.run(data, info.name, s)
+        result = pipeline.run(data, info.name, s, **({"notes": info.warnings} if info.warnings else {}))
     except ProblemError as exc:
         print(json.dumps(exc.body(), ensure_ascii=False), file=sys.stderr)
         return 2
