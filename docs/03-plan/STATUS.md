@@ -68,7 +68,7 @@ Last update: 2026-11-21 16:15 CET. **Track F (the forms converter) is being buil
 2. He does not test anything himself. The lead finds the right tests, covers everything the card asks and what the partner did not think of, and at every milestone walks him through plain-language proof (a page "requirement of the card, proof, how to see it").
 3. Re-think and improve the planned structure at every stage.
 4. **Docker:** do not interrupt running agents. When a quiet window comes (nothing running, work committed), tell him; the lead starts the installation itself (`winget`, WSL), he confirms the administrator prompt and reboots.
-5. **The partner's credits are limited (100 EUR; the tool stops at 60 USD):** use them, and only with the strongest models (`anthropic/claude-fable-5-2`, `openai/gpt-6.2-astra`, `google/gemini-4-neon`), for research, second opinions and the jury-style critique of the seven outputs. Never at run time of the product.
+5. **The partner's credits are limited (100 EUR; the owner lifted the 60 USD cap at 16:45: the tool stops at 115 USD, the whole grant):** use them, and only with the strongest models (`anthropic/claude-fable-5-2`, `openai/gpt-6.2-astra`, `google/gemini-4-neon`), for research, second opinions and the jury-style critique of the seven outputs. Never at run time of the product.
 
 **Done by the lead since 13:55:**
 
