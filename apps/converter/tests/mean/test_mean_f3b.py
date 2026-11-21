@@ -28,6 +28,22 @@ def test_a_paper_that_says_it_is_filed_only_in_person_loses_the_proxy_route_and_
     assert any(d.reason == "PAPER_INSTRUCTION" and "osobiście" in d.what for d in b.dropped)
 
 
+def test_in_person_only_removes_the_proxy_and_keeps_the_company_and_the_representative() -> None:
+    def run(extra: str | None):
+        p = Paper()
+        p.text("WNIOSEK O WPIS", bold=True)
+        s = p.heading("Dane podmiotu")
+        p.blank("Nazwa firmy", kind="cell", section=s)
+        p.blank("NIP", kind="cell", section=s)
+        if extra:
+            p.text(extra)
+        return p.brief().applicants
+    before, after = run(None), run("Wniosek składa się wyłącznie osobiście.")
+    assert before.entity is True and "pelnomocnik" in before.capacities
+    assert after.other_person is False and after.entity is True and after.self_ == before.self_
+    assert "pelnomocnik" not in after.capacities and "reprezentant" in after.capacities
+
+
 def test_without_the_exclusion_the_proxy_route_stays() -> None:
     a = _paper(None).brief().applicants
     assert a.other_person is True and "pelnomocnik" in a.capacities

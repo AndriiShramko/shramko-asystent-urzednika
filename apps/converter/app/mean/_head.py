@@ -234,7 +234,9 @@ def prune_by_exclusion(doc: Doc, a: Applicants) -> tuple[Applicants, list[Droppe
         m = _PERSONAL_ONLY.search(t)
         if m and doc.role(rid) in ("body", "note", "heading"):
             ev = doc.evidence([rid], t)
-            pruned = a.model_copy(update={"self_": True, "other_person": False, "entity": False, "capacities": [],
+            # only the route the sentence names goes: a proxy. A company or a statutory representative stays.
+            kept = [c for c in a.capacities if c != "pelnomocnik"]
+            pruned = a.model_copy(update={"self_": a.self_ or not a.entity, "other_person": False, "capacities": kept,
                                           "evidence": [*a.evidence, ev]})
             return pruned, [Dropped(what=f"route of a proxy or an entity: {t[:160]}", reason="PAPER_INSTRUCTION", page=doc.page(rid), runs=[rid])]
     return a, []

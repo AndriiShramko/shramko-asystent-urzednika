@@ -251,13 +251,20 @@ class Finder:
             return None, cand
         return None
 
-    @staticmethod
-    def wraps(head: TLine | None, ln: TLine) -> bool:
-        """A line of one or two words right under a heading, not left of its text and not numbered, continues it."""
+    def wraps(self, head: TLine | None, ln: TLine) -> bool:
+        """A line of one or two words right under a heading, not left of its text and not numbered, continues it,
+        when it has the heading's style (bold, about the size) or the heading line runs nearly the full width."""
         if head is None or head.role != "heading" or ln.toks or head.box is None or ln.box is None or head.page != ln.page:
             return False
         t = ln.text.strip()
         height = head.box[3] - head.box[1]
+        page = next((p.page for p in self.pages if p.page.number == head.page), None)
+        full = bool(page and page.width and head.box[2] >= 0.6 * page.width)
+        h_bold = bool(head.atoms) and all(a.run.bold for a in head.atoms)
+        l_bold = bool(ln.atoms) and all(a.run.bold for a in ln.atoms)
+        same_style = h_bold and l_bold and 0.6 * height <= ln.box[3] - ln.box[1] <= 1.3 * height
+        if not (same_style or full):
+            return False
         return (0 < len(t.split()) <= 2 and t[:1].isupper() and t[-1:] not in ".:;," and not NUM_HEAD.match(t + " X")
                 and 0 <= ln.box[1] - head.box[3] <= height and ln.box[0] >= head.box[0] - 2)
 

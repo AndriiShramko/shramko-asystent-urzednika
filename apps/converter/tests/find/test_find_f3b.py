@@ -71,6 +71,16 @@ def test_numbered_labels_lower_on_a_page_stay_labels() -> None:
     assert "Nazwisko i imię" not in [s.title for s in fo.sections]
 
 
+def test_a_plain_one_word_label_under_a_bold_heading_is_not_glued_to_it() -> None:
+    n = Native()
+    n.text(70, 100, "DANE INWESTORA", 120, bold=True)
+    n.text(70, 112, "Nazwisko", 50)
+    n.text(70, 124, DOTS, 200)
+    fo = find(model(n.page()))
+    assert [s.title for s in fo.sections] == ["DANE INWESTORA"]
+    assert any(c.label is not None and c.label.text == "Nazwisko" for c in fo.candidates)
+
+
 def test_three_numbered_variants_give_one_selector() -> None:
     pm = model(_numbered_variant(1, "I", "stypendium").page(), _numbered_variant(2, "II", "nagrody").page(),
                _numbered_variant(3, "III", "wyróżnienia").page())
