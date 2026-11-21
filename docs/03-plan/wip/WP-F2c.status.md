@@ -1,6 +1,6 @@
 # WP-F2c Reader of images (JPEG, PNG) and the image way of a PDF: status
 
-Branch: wp/F2c-images-ocr   Stage now: core done; next integration
+Branch: wp/F2c-images-ocr   Stage now: integration done; next acceptance
 
 ## Status
 - [x] `_raster.py`: decode with limits (formats restricted, size from header before decoding, `max_pixels`), metadata drop (pixels re-wrapped, EXIF orientation applied first), transparency on white, Otsu binarisation
@@ -12,7 +12,7 @@ Branch: wp/F2c-images-ocr   Stage now: core done; next integration
 - [x] unit tests `tests/readers/test_image_reader.py` (23 pass, 1 tesseract-marked skipped here)
 - [x] `eval/readers-sets.json` refreshed by the survey: 69 of 69 read (was 42 + 27 no_reader); scans give 2, 6, 16 pages
 - [x] negative control
-- [ ] integration: end to end through `pipeline.run` (no lint ERROR) for synthetic scans and the 27 set images; real Tesseract in the image workflow (marker `tesseract`)
+- [x] integration: `tests/readers/test_image_pipeline.py` end to end through `pipeline.run` (no lint ERROR) for synthetic PNG/JPEG, a 6-page scan, a fake engine, a truncated PNG, and the set images; real Tesseract runs only in the image workflow (marker `tesseract`)
 - [ ] acceptance: fast gate green after the lead's changes below; drills 1 and 2 of verification plan section 2 need the finder
 
 ## Decisions
@@ -31,6 +31,9 @@ Branch: wp/F2c-images-ocr   Stage now: core done; next integration
 | survey over the sets | `bash tools/gate.sh py -m app.readers.survey --check` | 69 files, read 69; the 27 images: pages 1 (9 files), 2 (12), 6 (3), 16 (3); slowest 2.9 s (16 pages, no OCR) | core commit |
 | 16-page scan 1654 x 37424 synthetic | test_a_sixteen_page_scan_of_37424_pixels_is_sixteen_pages | 16 pages, 0.8 s | core commit |
 
+| integration, synthetic + set images | `bash tools/gate.sh py -m pytest apps/converter/tests/readers/test_image_pipeline.py -q` | 8 passed (the sets test ran on this machine: every JPG/PNG of the sets, no crash, no lint ERROR) | 7c8bed5 |
+| fast gate after merging main | `bash tools/gate.sh fast` | 564 passed, 1 skipped, 6 failed; all 6 are stale tests outside our paths (see Requests) | 7c8bed5 |
+
 ## Negative control
 In `_raster.py` the metadata-dropping `Image.frombytes` was replaced by `return grey` and the white-row test by `False`: `test_decode_drops_metadata_and_applies_orientation` and `test_tall_scan_is_cut_into_pages_at_white_bands` failed (2 failed, 21 passed); restored, 23 passed.
 
@@ -38,7 +41,9 @@ In `_raster.py` the metadata-dropping `Image.frombytes` was replaced by `return 
 - `app/pipeline.py`: nothing to change if it refuses only `fmt not in formats()`; the list of formats without a reader (if any message names jpg/png) must drop `jpeg` and `png`. `formats()` now has jpeg and png.
 - `.github/workflows/image.yml`: `READY_FORMATS` add `jpeg png` (all seven formats ready). The image installs tesseract-ocr with pol and eng already (Dockerfile); the `tesseract` marker test runs there.
 - Stale tests outside our paths that fail now because images have a reader (fast gate, 7 failures): in `apps/converter/tests/shell/test_shell_http.py` the parametrize of `test_a_format_without_a_reader_passes_the_guard_and_is_422` (a.jpg, a.png), the batch tests `test_batch_streams_one_line_per_file_and_isolates_errors` and `test_batch_from_one_zip` (they use a tiny `fx.png()` as the "unreadable" file; a PNG now reads to a blank page, use a truncated PNG or another broken file), and `test_upper_case_extension_and_jpe_through_http` (a.jpe expects 422 UNREADABLE, now 200 for a valid JPEG).
+- Also stale: `apps/converter/tests/pipeline/test_pipeline.py::test_a_png_has_no_reader_yet_and_is_not_answered_with_a_form` (a PNG now converts; replace by a truncated PNG expecting a refusal). With it the fast-gate failures are 6 in total (the earlier note said 7).
 - Optional (WP-F1 owner): map settings onto `ReadOptions.max_pixels`, `ocr_lang`, `ocr_timeout` in `app/config.py::read_options`.
 
 ## Cost notes
+- integration: the fast gate (150 s) was the longest wait; one test module was enough, the sets test already ran locally.
 - core: most turns went to the shape detector (leader false positive on long rules, box sides) and to the knock-on PDF hook behaviour; a test with a drawn page at the start would have saved two turns.
