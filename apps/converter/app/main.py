@@ -299,6 +299,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if cand and Path(cand).is_dir():
                 app.mount("/ui", StaticFiles(directory=cand, html=True), name="ui")
                 break
+    # Warm the readers registry before the first request: /healthz does not touch it, and two simultaneous first
+    # conversions must not meet a half-filled list.
+    from app.readers import formats
+
+    formats()
     return app
 
 
