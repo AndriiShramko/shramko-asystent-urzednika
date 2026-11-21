@@ -34,8 +34,9 @@
                   "description": "",
                   "options": [],
                   "validation": [],
-                  "readOnly": false,
+                  "readOnly": true,
                   "repeatingSectionGrid": [],
+                  "defaultValue": "Urząd Gminy Stawiguda",
                   "states": [],
                   "questionOrder": 0,
                   "tooltipMessage": ""
@@ -1436,6 +1437,197 @@
       ]
     },
     {
+      "id": "53ea162b-18e4-5528-9de6-47f4eff09b95",
+      "title": "Informacje o opłacie skarbowej",
+      "type": "MAIN",
+      "questions": [
+        {
+          "x": 0,
+          "y": 0,
+          "rows": 3,
+          "cols": 3,
+          "field": {
+            "id": "43fe4d97-f228-5dc3-8490-4b3e8c4ccf4a",
+            "type": "SECTION",
+            "techName": "informacje_o_oplacie_skarbowej",
+            "title": "Informacje o opłacie skarbowej",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "3b46cff6-c6a5-5459-a4d5-dbe4affec7b0",
+                  "type": "DATEPICKER",
+                  "techName": "data_uiszczenia_oplaty",
+                  "title": "Data uiszczenia opłaty",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 1,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "6b5c7b7a-427f-5840-bfdf-e8907a801258",
+                  "type": "NUMBER",
+                  "techName": "wysokosc_oplaty",
+                  "title": "Wysokość opłaty",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 1,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 0,
+            "tooltipMessage": ""
+          }
+        },
+        {
+          "x": 0,
+          "y": 3,
+          "rows": 2,
+          "cols": 3,
+          "field": {
+            "id": "b21468e5-8531-5b44-b5e6-eea28774e83b",
+            "type": "SECTION",
+            "techName": "uzasadnienie_wniosku",
+            "title": "Uzasadnienie wniosku",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "d8c9eefa-622a-5b5c-8013-60301379f3ef",
+                  "type": "TEXTAREA",
+                  "techName": "uzasadnienie_wniosku_uzasadnienie_wniosku",
+                  "title": "Uzasadnienie wniosku",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 3,
+            "tooltipMessage": ""
+          }
+        },
+        {
+          "x": 0,
+          "y": 5,
+          "rows": 3,
+          "cols": 3,
+          "field": {
+            "id": "adb2973f-df31-5bde-b6ea-e33021b904e8",
+            "type": "SECTION",
+            "techName": "informacje_dotyczace_sposobu_zwrotu_oplaty_skarbowej",
+            "title": "Informacje dotyczące sposobu zwrotu opłaty skarbowej",
+            "description": "<html><head></head><body></body></html>",
+            "options": [],
+            "validation": [],
+            "readOnly": false,
+            "repeatingSectionGrid": [
+              {
+                "x": 0,
+                "y": 0,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "657bc5d8-387c-5e0c-970c-e57cbb79c292",
+                  "type": "RADIO",
+                  "techName": "informa_informacje_dotyczace_sposobu_zwrotu_oplaty_skarbowej",
+                  "title": "Informacje dotyczące sposobu zwrotu opłaty skarbowej",
+                  "description": "",
+                  "options": [
+                    {
+                      "id": "Gotówką w kasie organu",
+                      "name": "Gotówką w kasie organu",
+                      "techName": "gotowka_w_kasie_organu"
+                    },
+                    {
+                      "id": "Przelewem na rachunek w banku",
+                      "name": "Przelewem na rachunek w banku",
+                      "techName": "przelewem_na_rachunek_w_banku"
+                    }
+                  ],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 0,
+                  "tooltipMessage": ""
+                }
+              },
+              {
+                "x": 0,
+                "y": 1,
+                "rows": 1,
+                "cols": 3,
+                "field": {
+                  "id": "421a502b-4e80-5a2c-a444-195296dd2d74",
+                  "type": "TEXT_FIELD",
+                  "techName": "nr_rachunku",
+                  "title": "Nr rachunku",
+                  "description": "",
+                  "options": [],
+                  "validation": [
+                    "REQUIRED"
+                  ],
+                  "readOnly": false,
+                  "repeatingSectionGrid": [],
+                  "states": [],
+                  "questionOrder": 1,
+                  "tooltipMessage": ""
+                }
+              }
+            ],
+            "states": [],
+            "questionOrder": 5,
+            "tooltipMessage": ""
+          }
+        }
+      ]
+    },
+    {
       "id": "eb0c7803-62df-5da7-b332-9a451ae65594",
       "title": "Kontakt i zgody",
       "type": "MAIN",
@@ -1611,8 +1803,13 @@
   "flow": {
     "links": [
       {
-        "id": "56b7a0b4-5e42-5544-8f47-7e25fc2641be",
+        "id": "d91fa2f5-5264-517f-84dc-3132727cab1b",
         "source": "98b210e9-0554-5649-99b9-6968bae00a98",
+        "target": "53ea162b-18e4-5528-9de6-47f4eff09b95"
+      },
+      {
+        "id": "18363f93-cd24-555f-a2c4-16ffcf50b9c0",
+        "source": "53ea162b-18e4-5528-9de6-47f4eff09b95",
         "target": "eb0c7803-62df-5da7-b332-9a451ae65594"
       },
       {

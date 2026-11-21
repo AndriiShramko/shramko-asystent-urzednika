@@ -84,3 +84,6 @@ data/coi/reference-*/
 
 # Briefs quote the partner's forms: local only, like eval/silver (lead, 21 November)
 eval/briefs/*.json
+
+# Set 8 quotes the office's bank account from the paper (public, but the publishing check refuses check-digit identifiers): local only, uploaded with the submission
+results/judged-08-deklaracja-odpady/form.json

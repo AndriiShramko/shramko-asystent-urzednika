@@ -2,34 +2,124 @@
   "version": 1,
   "converter": {
     "version": "0.1.0",
-    "pipeline": "interim",
+    "pipeline": "brief",
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 3,
-    "fields": 49,
+    "pages": 4,
+    "fields": 39,
     "source_pages": 1
   },
   "warnings": [
     {
-      "code": "BRIEF_NOT_READ",
-      "detail": "Pola sprawy nie zostały jeszcze odczytane z tego dokumentu: formularz zawiera tytuł dokumentu i standardowe sekcje. Pola dotyczące sprawy trzeba uzupełnić ręcznie."
+      "code": "LABEL_NOT_FOUND",
+      "page": 1,
+      "box": [
+        107.0,
+        416.89,
+        524.0,
+        428.89
+      ],
+      "candidate": "c7",
+      "evidence": [],
+      "detail": "no text that this place belongs to"
     },
     {
-      "code": "APPLICANTS_ASSUMED",
-      "detail": "the brief does not say who may apply (not_found); the full standard block of both exports is written"
+      "code": "LABEL_NOT_FOUND",
+      "page": 1,
+      "box": [
+        89.0,
+        478.99,
+        524.0,
+        490.99
+      ],
+      "candidate": "c9",
+      "evidence": [],
+      "detail": "no text that this place belongs to"
     },
     {
-      "code": "ADDRESSEE_MISSING",
-      "detail": "the brief names no addressee (not_found); the field is left empty and editable"
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "inne",
+      "candidate": "c6",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "NO_MATTER",
-      "detail": "the brief holds no field of the matter: the form is the standard scaffold only"
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
+      "candidate": "c8",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
       "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    }
+  ],
+  "checks": [
+    {
+      "id": "G1",
+      "name": "schema",
+      "status": "passed"
+    },
+    {
+      "id": "G2",
+      "name": "partner_rules",
+      "status": "passed"
+    },
+    {
+      "id": "G3",
+      "name": "grid",
+      "status": "passed"
+    },
+    {
+      "id": "G4",
+      "name": "ids_and_links",
+      "status": "passed"
+    },
+    {
+      "id": "G5",
+      "name": "condition_references",
+      "status": "passed"
+    },
+    {
+      "id": "G6",
+      "name": "condition_values",
+      "status": "passed"
+    },
+    {
+      "id": "G7",
+      "name": "zero_answer",
+      "status": "passed"
+    },
+    {
+      "id": "G8",
+      "name": "journeys",
+      "status": "passed"
+    },
+    {
+      "id": "G9",
+      "name": "dictionaries",
+      "status": "passed"
+    },
+    {
+      "id": "G10",
+      "name": "html",
+      "status": "passed"
+    },
+    {
+      "id": "G11",
+      "name": "ledger",
+      "status": "not_applicable",
+      "reason": "no sidecar was given: the ledger and the coverage come from WP-F15"
+    },
+    {
+      "id": "G12",
+      "name": "no_paper_values",
+      "status": "not_applicable",
+      "reason": "no fill-area values were given: they come from the finder (WP-F3, WP-F17)"
     }
   ],
   "meta": {
@@ -38,11 +128,11 @@
       "1a9a5463-4f5e-5ded-8514-c5ec33f71b84": "standard",
       "693486db-c718-5f82-b472-a03795ed12d3": "standard",
       "20c568ec-26c0-5961-832c-1b006c741a7b": "standard",
-      "7f6194bc-5f0b-5b6e-a72b-357f6f3f54e3": "standard",
       "f1d15a9a-ae5d-5ea6-a440-3e4700d7d021": "standard",
       "adc05167-83a2-5877-aac1-e27efc7b0be4": "standard",
       "ba5ea207-f4b4-5386-b66a-0fa45ca65177": "standard",
       "3dd577e1-2424-5cf8-9bd5-d31d4d4ea80d": "standard",
+      "3eda0ac6-6abd-5e75-ba87-615bc5477427": "standard",
       "d17fd78c-bb34-50c2-a1a7-f6ee3af0bbd0": "standard",
       "bc62c630-691e-5e45-b956-e6e8ac845c1f": "standard",
       "177a9c97-d5f0-593e-a59f-8b3e692dda01": "standard",
@@ -53,21 +143,6 @@
       "33800f43-2624-5909-b0a1-d6ed690c3066": "standard",
       "a34109ae-64d2-5bc8-8866-834108889b77": "standard",
       "8f7928ce-a3d3-596c-8fb3-c8a13a5fe386": "standard",
-      "c05f37bb-a638-5964-b402-b27f7537598f": "standard",
-      "ca7e9e43-7bc2-5841-8aba-5c5b5bb7058f": "standard",
-      "5fede5ff-62f6-55ff-89d2-b4747bea973b": "standard",
-      "ca88419c-f46b-511e-91f3-8981a9d2b6b3": "standard",
-      "079fa926-cc70-5266-afe2-b38852365ec4": "standard",
-      "ce295f9e-3439-5154-bd68-77880f294efa": "standard",
-      "5b370644-667a-55a8-b83f-f0e9901d53a0": "standard",
-      "e81126a4-db32-579b-be63-9f2b446f95b8": "standard",
-      "83dacc9d-6e17-5e6a-a001-38adfaf1c052": "standard",
-      "bfc42ca9-bc75-5b01-a712-e10be2eab958": "standard",
-      "17042d05-f21c-5c27-834d-696ec4184940": "standard",
-      "3e884eb8-bfa5-5482-b368-ce26d48e880a": "standard",
-      "de610ee1-7e95-571b-9936-e839d9e1745f": "standard",
-      "ff9cc36a-7be5-5b18-ae34-f4cf7a82147e": "standard",
-      "900ba3f0-6deb-5a18-ad54-bd804c5160b1": "standard",
       "2aee3929-62ff-594d-adb8-595ef675e276": "standard",
       "b0de4a64-9929-5c1b-9903-5c8e268fc1f1": "standard",
       "767506bd-9850-52bc-b7d7-43176e334c5e": "standard",
@@ -89,9 +164,12 @@
       "91656fe7-0680-5bfa-b1f1-3a9068e65c8d": "standard",
       "bbdb05d2-cade-540a-82f3-001e481549ca": "standard",
       "2b76b398-0448-537f-a78b-1560d4612c55": "standard",
-      "a5656779-67ff-5782-87c0-1c23f195ce23": "standard",
-      "8e4f3fb8-5637-5b2e-a19e-b1dfeeeab848": "standard",
-      "86837814-c1e7-5b47-bbcb-47bcd2835191": "standard",
+      "ac451406-554d-5573-b10f-9a3e7590b027": "paper",
+      "193074b6-dfea-59ae-b0bf-9a9a53ae7953": "paper",
+      "182a9e81-62c4-55e8-999d-6b7688744ba1": "paper",
+      "bc584220-207b-54a6-97ab-6eb581504f41": "paper",
+      "22fe023d-bc59-5c08-ae04-f31bbfb4b384": "paper",
+      "c6d2cd95-f15d-525c-b201-2d918df8ac37": "standard",
       "408bfbcf-9a52-58c6-94fa-31131d528283": "standard",
       "c680ff78-3215-5d47-9239-82dfe3e53a23": "standard",
       "654cbbfc-5e3d-556d-b017-c76a4fa59417": "standard",
@@ -100,6 +178,71 @@
       "055ff540-550c-5d40-95f3-8a391764a992": "standard",
       "f6b558b3-fe2d-5990-8694-45f3cea2db97": "standard"
     },
-    "brief_keys": {}
+    "brief_keys": {
+      "193074b6-dfea-59ae-b0bf-9a9a53ae7953": "inne",
+      "182a9e81-62c4-55e8-999d-6b7688744ba1": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
+    },
+    "ledger": {
+      "blanks_found": 10,
+      "became_field": 2,
+      "merged": 2,
+      "covered_by_standard": 4,
+      "left_out": 2,
+      "awaiting_decision": 0,
+      "rows": [
+        {
+          "candidate": "c1",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        },
+        {
+          "candidate": "c2",
+          "fate": "STANDARD",
+          "section": "standard/twoje_dane"
+        },
+        {
+          "candidate": "c3",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c4",
+          "fate": "STANDARD",
+          "section": "standard/twoje_dane"
+        },
+        {
+          "candidate": "c5",
+          "fate": "STANDARD",
+          "section": "standard/dane_do_kontaktu"
+        },
+        {
+          "candidate": "c6",
+          "fate": "FIELD",
+          "field": "193074b6-dfea-59ae-b0bf-9a9a53ae7953"
+        },
+        {
+          "candidate": "c7",
+          "fate": "MERGED",
+          "into": "c6",
+          "why": "LINE_BLOCK"
+        },
+        {
+          "candidate": "c8",
+          "fate": "FIELD",
+          "field": "182a9e81-62c4-55e8-999d-6b7688744ba1"
+        },
+        {
+          "candidate": "c9",
+          "fate": "MERGED",
+          "into": "c8",
+          "why": "LINE_BLOCK"
+        },
+        {
+          "candidate": "c10",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        }
+      ]
+    }
   }
 }

@@ -2,34 +2,156 @@
   "version": 1,
   "converter": {
     "version": "0.1.0",
-    "pipeline": "interim",
+    "pipeline": "brief",
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 3,
-    "fields": 49,
+    "pages": 5,
+    "fields": 47,
     "source_pages": 2
   },
   "warnings": [
     {
-      "code": "BRIEF_NOT_READ",
-      "detail": "Pola sprawy nie zostały jeszcze odczytane z tego dokumentu: formularz zawiera tytuł dokumentu i standardowe sekcje. Pola dotyczące sprawy trzeba uzupełnić ręcznie."
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "pochodzenie_psa",
+      "candidate": "c11",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "APPLICANTS_ASSUMED",
-      "detail": "the brief does not say who may apply (not_found); the full standard block of both exports is written"
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "rasa_psa",
+      "candidate": "c12",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "ADDRESSEE_MISSING",
-      "detail": "the brief names no addressee (not_found); the field is left empty and editable"
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "data_urodzenia_psa",
+      "candidate": "c13",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "NO_MATTER",
-      "detail": "the brief holds no field of the matter: the form is the standard scaffold only"
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "data_szczepienia",
+      "candidate": "c14",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "plec",
+      "candidate": "c15",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "sposob_oznakowania_psa_nr_ident",
+      "candidate": "c18",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "adres_miejsca_utrzymywania_psa_psow",
+      "candidate": "c24",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza",
+      "candidate": "c25",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
       "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "9192f5b9-70fb-564b-be3c-b7d6ee60ce26"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "0ada5215-e7f4-59f4-8e11-0ab29316721a"
+    }
+  ],
+  "checks": [
+    {
+      "id": "G1",
+      "name": "schema",
+      "status": "passed"
+    },
+    {
+      "id": "G2",
+      "name": "partner_rules",
+      "status": "passed"
+    },
+    {
+      "id": "G3",
+      "name": "grid",
+      "status": "passed"
+    },
+    {
+      "id": "G4",
+      "name": "ids_and_links",
+      "status": "passed"
+    },
+    {
+      "id": "G5",
+      "name": "condition_references",
+      "status": "passed"
+    },
+    {
+      "id": "G6",
+      "name": "condition_values",
+      "status": "passed"
+    },
+    {
+      "id": "G7",
+      "name": "zero_answer",
+      "status": "passed"
+    },
+    {
+      "id": "G8",
+      "name": "journeys",
+      "status": "passed"
+    },
+    {
+      "id": "G9",
+      "name": "dictionaries",
+      "status": "passed"
+    },
+    {
+      "id": "G10",
+      "name": "html",
+      "status": "passed"
+    },
+    {
+      "id": "G11",
+      "name": "ledger",
+      "status": "not_applicable",
+      "reason": "no sidecar was given: the ledger and the coverage come from WP-F15"
+    },
+    {
+      "id": "G12",
+      "name": "no_paper_values",
+      "status": "not_applicable",
+      "reason": "no fill-area values were given: they come from the finder (WP-F3, WP-F17)"
     }
   ],
   "meta": {
@@ -38,7 +160,6 @@
       "345a5dfe-d63c-5454-8d64-9b349ccf316d": "standard",
       "9a0177b5-3297-58b3-8a85-cd6d0f66d517": "standard",
       "ebffd9f6-2e10-502a-a92b-dea935de7ae0": "standard",
-      "78b4713c-e934-55a2-becc-581188bfddc4": "standard",
       "72e60978-7e39-55e3-9845-4ad4824845bd": "standard",
       "fe8ac962-b873-5577-982b-057401d0dfd0": "standard",
       "c0b825fa-67c3-5e49-b74b-2700c6da1087": "standard",
@@ -53,21 +174,6 @@
       "f81929a5-6bd0-50c2-afef-82b08285fc42": "standard",
       "c68a4280-9b14-5051-b080-7dd846b8e460": "standard",
       "697b3fdb-f0e5-504a-a72d-042625f6d249": "standard",
-      "a9a7bbdd-34f1-57fd-99e2-c7efee52aa41": "standard",
-      "f53e8c0c-8438-5b32-a84a-ba22a3b90301": "standard",
-      "1dc2cbda-9046-5613-86cd-3d26a06a4f29": "standard",
-      "24bfff1c-1bf7-59db-9ec0-f89f96b33d56": "standard",
-      "f26b96a4-621c-5c20-8d55-5fd1cea59cb0": "standard",
-      "020cebab-ec92-52fe-bc0c-a97e9a94a7b3": "standard",
-      "e7c0e425-c0c4-5442-90d8-40e55be373ae": "standard",
-      "a3a12deb-072d-5d14-b5ec-5a2ebaf97abe": "standard",
-      "474b22e0-b9a0-5096-95e1-ea3849d500df": "standard",
-      "c1f964f5-e1f5-5659-bc88-3221de471c42": "standard",
-      "e2261346-4003-50ac-96b5-bf9f609d5bf8": "standard",
-      "e1759a4e-70e5-5887-b156-1161cc06f89e": "standard",
-      "0600bc5b-4428-5978-b6b5-583cd1977673": "standard",
-      "c8601c36-81e5-53eb-a859-595d2b3d59ed": "standard",
-      "034bcfb8-5ffa-59cb-9ebb-34a8933464e8": "standard",
       "19c8e9a9-5377-544a-ab9c-c98116ba4ca3": "standard",
       "2a8aa6e9-876b-5503-b2d1-df4599931041": "standard",
       "a9839539-699b-5783-b2e9-a7fe8b06e698": "standard",
@@ -89,17 +195,186 @@
       "97c59852-fddc-53ea-9873-8765ab7a3d0e": "standard",
       "73123329-96b5-5827-a403-cd3eda08bd91": "standard",
       "4cc82ef0-199b-557e-8326-171a48907b50": "standard",
-      "973de58e-8cc0-568d-821d-7850e0c61829": "standard",
-      "02ceead9-e68f-5e1b-aaa0-b7f3f9e80d27": "standard",
-      "02963094-0136-52ec-8a27-f602f817ac88": "standard",
+      "8552af2d-505a-5904-93a3-9df4b53632a9": "paper",
+      "35af5308-6e43-5f40-a9c0-c2742b7ccada": "paper",
+      "88b60e54-4a75-5c04-8c9b-e99555546a64": "paper",
+      "9192f5b9-70fb-564b-be3c-b7d6ee60ce26": "paper",
+      "0ada5215-e7f4-59f4-8e11-0ab29316721a": "paper",
+      "54295451-4801-5c32-af2a-37add99f72b2": "paper",
+      "a87b8a35-12f2-5b01-84e4-d514851a5d3c": "paper",
+      "f887456a-71bf-55d4-aaa8-d1d14277f0b9": "paper",
+      "0282df60-3adc-50ea-9645-cbb0071a9d6e": "paper",
+      "f8083043-0611-5fe4-bf5e-59610e7f4353": "paper",
+      "c4a42446-9953-58c1-92f6-39702129414c": "paper",
+      "756ba47b-b430-5951-8ca8-7a1258ca8b5b": "paper",
+      "a8004796-4bca-5e35-b37e-a06966707c8f": "paper",
+      "4d5c97d5-4911-5180-8cf1-e2cb1e9afc15": "standard",
       "9b73c74f-0e4f-5e4f-9362-86d9d78bffc6": "standard",
       "9fac1645-836c-5429-9c2d-6dc454180191": "standard",
       "75063d7a-f4f3-58ad-be3c-76262f7226b4": "standard",
+      "e5d8c859-8374-5117-a37f-818bcc8fdb8f": "paper",
+      "71b9b153-fd58-5edb-b167-fc22b7c6cf5a": "paper",
       "c5282d15-76f9-5a98-9cff-59a3400fef62": "standard",
       "7cb2dd34-c153-5716-a141-1c0f78befbd6": "standard",
       "1dd37bdf-afed-51dc-a9ab-ccf46852fb22": "standard",
       "9df6727b-5b07-5602-a212-8258880ef0b1": "standard"
     },
-    "brief_keys": {}
+    "brief_keys": {
+      "35af5308-6e43-5f40-a9c0-c2742b7ccada": "pochodzenie_psa",
+      "88b60e54-4a75-5c04-8c9b-e99555546a64": "rasa_psa",
+      "9192f5b9-70fb-564b-be3c-b7d6ee60ce26": "data_urodzenia_psa",
+      "0ada5215-e7f4-59f4-8e11-0ab29316721a": "data_szczepienia",
+      "54295451-4801-5c32-af2a-37add99f72b2": "plec",
+      "a87b8a35-12f2-5b01-84e4-d514851a5d3c": "sposob_oznakowania_psa_nr_ident",
+      "f887456a-71bf-55d4-aaa8-d1d14277f0b9": "sposob_oznakowania_psa_nr_ident_mikroprocesor",
+      "0282df60-3adc-50ea-9645-cbb0071a9d6e": "sposob_oznakowania_psa_nr_ident_tatuaz",
+      "f8083043-0611-5fe4-bf5e-59610e7f4353": "adres_miejsca_utrzymywania_psa_psow",
+      "c4a42446-9953-58c1-92f6-39702129414c": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza"
+    },
+    "ledger": {
+      "blanks_found": 26,
+      "became_field": 10,
+      "merged": 5,
+      "covered_by_standard": 7,
+      "left_out": 4,
+      "awaiting_decision": 0,
+      "rows": [
+        {
+          "candidate": "c1",
+          "fate": "LEFT_OUT",
+          "reason": "OFFICE_USE"
+        },
+        {
+          "candidate": "c2",
+          "fate": "LEFT_OUT",
+          "reason": "OFFICE_USE"
+        },
+        {
+          "candidate": "c3",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        },
+        {
+          "candidate": "c4",
+          "fate": "STANDARD",
+          "section": "standard/twoje_dane"
+        },
+        {
+          "candidate": "c5",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c6",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c7",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c8",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c9",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c10",
+          "fate": "STANDARD",
+          "section": "standard/dane_do_kontaktu"
+        },
+        {
+          "candidate": "c11",
+          "fate": "FIELD",
+          "field": "35af5308-6e43-5f40-a9c0-c2742b7ccada"
+        },
+        {
+          "candidate": "c12",
+          "fate": "FIELD",
+          "field": "88b60e54-4a75-5c04-8c9b-e99555546a64"
+        },
+        {
+          "candidate": "c13",
+          "fate": "FIELD",
+          "field": "9192f5b9-70fb-564b-be3c-b7d6ee60ce26"
+        },
+        {
+          "candidate": "c14",
+          "fate": "FIELD",
+          "field": "0ada5215-e7f4-59f4-8e11-0ab29316721a"
+        },
+        {
+          "candidate": "c15",
+          "fate": "FIELD",
+          "field": "54295451-4801-5c32-af2a-37add99f72b2"
+        },
+        {
+          "candidate": "c16",
+          "fate": "MERGED",
+          "into": "c15",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c17",
+          "fate": "MERGED",
+          "into": "c15",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c18",
+          "fate": "FIELD",
+          "field": "a87b8a35-12f2-5b01-84e4-d514851a5d3c"
+        },
+        {
+          "candidate": "c19",
+          "fate": "MERGED",
+          "into": "c18",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c20",
+          "fate": "FIELD",
+          "field": "f887456a-71bf-55d4-aaa8-d1d14277f0b9"
+        },
+        {
+          "candidate": "c21",
+          "fate": "MERGED",
+          "into": "c18",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c22",
+          "fate": "FIELD",
+          "field": "0282df60-3adc-50ea-9645-cbb0071a9d6e"
+        },
+        {
+          "candidate": "c23",
+          "fate": "MERGED",
+          "into": "c18",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c24",
+          "fate": "FIELD",
+          "field": "f8083043-0611-5fe4-bf5e-59610e7f4353"
+        },
+        {
+          "candidate": "c25",
+          "fate": "FIELD",
+          "field": "c4a42446-9953-58c1-92f6-39702129414c"
+        },
+        {
+          "candidate": "c26",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        }
+      ]
+    }
   }
 }

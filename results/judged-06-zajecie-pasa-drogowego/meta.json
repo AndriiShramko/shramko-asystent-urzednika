@@ -2,34 +2,347 @@
   "version": 1,
   "converter": {
     "version": "0.1.0",
-    "pipeline": "interim",
+    "pipeline": "brief",
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 3,
-    "fields": 49,
+    "pages": 5,
+    "fields": 69,
     "source_pages": 2
   },
   "warnings": [
     {
-      "code": "BRIEF_NOT_READ",
-      "detail": "Pola sprawy nie zostały jeszcze odczytane z tego dokumentu: formularz zawiera tytuł dokumentu i standardowe sekcje. Pola dotyczące sprawy trzeba uzupełnić ręcznie."
+      "code": "LABEL_NOT_FOUND",
+      "page": 1,
+      "box": [
+        75.14,
+        84.31,
+        190.57,
+        94.27
+      ],
+      "candidate": "c1",
+      "evidence": [],
+      "detail": "no text that this place belongs to"
     },
     {
-      "code": "APPLICANTS_ASSUMED",
-      "detail": "the brief does not say who may apply (not_found); the full standard block of both exports is written"
+      "code": "LABEL_NOT_FOUND",
+      "page": 1,
+      "box": [
+        334.39,
+        60.53,
+        427.24,
+        70.49
+      ],
+      "candidate": "c4",
+      "evidence": [],
+      "detail": "no text that this place belongs to"
     },
     {
-      "code": "ADDRESSEE_MISSING",
-      "detail": "the brief names no addressee (not_found); the field is left empty and editable"
+      "code": "ADDRESSEE_CONFLICT",
+      "page": 1,
+      "evidence": [
+        {
+          "page": 1,
+          "box": [
+            383.11,
+            171.74,
+            504.52,
+            197.42
+          ],
+          "runs": [
+            "r11",
+            "r12"
+          ],
+          "quote": "Urząd Miasta i Gminy Miasteczko"
+        },
+        {
+          "page": 2,
+          "box": [
+            75.14,
+            451.56,
+            535.64,
+            461.52
+          ],
+          "runs": [
+            "r137"
+          ],
+          "quote": "Urząd Miasta i Gminy w Daleszycach"
+        }
+      ],
+      "detail": "the paper names two different offices; the addressee block wins"
     },
     {
-      "code": "NO_MATTER",
-      "detail": "the brief holds no field of the matter: the form is the standard scaffold only"
+      "code": "LABEL_NOT_FOUND",
+      "page": 1,
+      "candidate": "c1",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 1,
+      "candidate": "c4",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
+      "candidate": "c6",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "mui",
+      "candidate": "c7",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "miejscowosc",
+      "candidate": "c8",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "numer_ewidencyjny_dzialki",
+      "candidate": "c9",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_RAW",
+      "page": 1,
+      "candidate": "c10",
+      "evidence": [],
+      "detail": "label kept as the paper's words: 'w celu wykonania'"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "w_celu_wykonania",
+      "candidate": "c10",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "rodzaj_robot_i_sposob_wykonania",
+      "candidate": "c11",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "dlugosc",
+      "candidate": "c12",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "szerokosc",
+      "candidate": "c13",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "razem",
+      "candidate": "c14",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 1,
+      "field": "calkowita_powierzchnia_zajecia",
+      "candidate": "c36",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "termin_od",
+      "candidate": "c37",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "termin_do",
+      "candidate": "c38",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_RAW",
+      "page": 2,
+      "candidate": "c39",
+      "evidence": [],
+      "detail": "label kept as the paper's words: 'tj'"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "tj",
+      "candidate": "c39",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "wykonawca_robot_bedzie",
+      "candidate": "c40",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
+      "candidate": "c41",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_RAW",
+      "page": 2,
+      "candidate": "c42",
+      "evidence": [],
+      "detail": "label kept as the paper's words: 'a osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa'"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
+      "candidate": "c42",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "LABEL_RAW",
+      "page": 2,
+      "candidate": "c43",
+      "evidence": [],
+      "detail": "label kept as the paper's words: 'zam'"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "zam",
+      "candidate": "c43",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "telefon",
+      "candidate": "c44",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "SECTION_SPLIT",
+      "detail": "matter/szczegoly_sprawy: 15 fields over 2 parts of at most 10"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
       "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "c4923fde-9cf0-5bfa-9a16-b41e580a8629"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "REPEATING_SECTION: no export shows one",
+      "field": "d211bc9a-7392-5545-b725-81af49c397f2"
+    }
+  ],
+  "checks": [
+    {
+      "id": "G1",
+      "name": "schema",
+      "status": "passed"
+    },
+    {
+      "id": "G2",
+      "name": "partner_rules",
+      "status": "passed"
+    },
+    {
+      "id": "G3",
+      "name": "grid",
+      "status": "passed"
+    },
+    {
+      "id": "G4",
+      "name": "ids_and_links",
+      "status": "passed"
+    },
+    {
+      "id": "G5",
+      "name": "condition_references",
+      "status": "passed"
+    },
+    {
+      "id": "G6",
+      "name": "condition_values",
+      "status": "passed"
+    },
+    {
+      "id": "G7",
+      "name": "zero_answer",
+      "status": "passed"
+    },
+    {
+      "id": "G8",
+      "name": "journeys",
+      "status": "passed"
+    },
+    {
+      "id": "G9",
+      "name": "dictionaries",
+      "status": "passed"
+    },
+    {
+      "id": "G10",
+      "name": "html",
+      "status": "passed"
+    },
+    {
+      "id": "G11",
+      "name": "ledger",
+      "status": "not_applicable",
+      "reason": "no sidecar was given: the ledger and the coverage come from WP-F15"
+    },
+    {
+      "id": "G12",
+      "name": "no_paper_values",
+      "status": "not_applicable",
+      "reason": "no fill-area values were given: they come from the finder (WP-F3, WP-F17)"
     }
   ],
   "meta": {
@@ -92,6 +405,30 @@
       "45be988e-6f29-5088-9be7-7d048f23fa01": "standard",
       "ed694188-0be0-50ff-b885-15690450a480": "standard",
       "9d5382f9-c18d-5cef-a507-5fa8af9d2e1a": "standard",
+      "9ac57ad6-35e8-5b78-b207-f488a7b89321": "paper",
+      "bb36404b-60fa-5632-b332-6350492b65fc": "paper",
+      "1040c98a-6510-58ba-a8db-fbd670532618": "paper",
+      "2b563011-7948-542c-987b-474bc38280fb": "paper",
+      "0ff4c31b-e1bb-5658-9b12-a54d740cf808": "paper",
+      "a8831cfc-9e4a-5d55-be5f-f0ab9244cd05": "paper",
+      "d27a0d32-b799-5a47-a2ac-4b35eb8321c8": "paper",
+      "1ff1e344-e8b0-503d-b27c-0733fd987e78": "paper",
+      "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6": "paper",
+      "c4923fde-9cf0-5bfa-9a16-b41e580a8629": "paper",
+      "dccd27eb-140d-5cf0-b278-4d1c1644c7ee": "paper",
+      "cc2f9172-d42c-5ec7-8455-78847dace0af": "paper",
+      "558c3fe0-2b45-55f0-8534-b3e128089a9a": "paper",
+      "876cda77-cf13-5a80-85b3-0a972297fa0e": "paper",
+      "daa199ee-7c28-5d8b-954a-8dcf92aac624": "paper",
+      "a29d20b4-1780-5c7f-9145-58cebfe1a2eb": "paper",
+      "963f187a-5a49-5a21-8e8a-9459f5ef1685": "paper",
+      "d211bc9a-7392-5545-b725-81af49c397f2": "paper",
+      "f03a9d42-09e3-537b-9179-630910774f71": "paper",
+      "1ed887cb-1d04-5bb3-8cd6-2510b97ebfb6": "paper",
+      "0eca5e14-b25d-56ff-aff4-fb1dbcacc264": "paper",
+      "5346f3e5-bfa2-5dee-b75a-69b28b1ed401": "paper",
+      "d470f458-1c61-55f2-8cb6-1a432cf657dd": "paper",
+      "488a538f-2f9e-5a9d-900e-77fe47b0d73c": "standard",
       "eff14878-322a-5454-ba91-e0e70b72a0be": "standard",
       "987428ca-3749-5e55-b8e0-266c04e41fb8": "standard",
       "42b9a1ca-9263-5e09-8ba0-daeb484feb22": "standard",
@@ -100,6 +437,281 @@
       "09c1f205-e2a4-5682-86e8-baac74a5d746": "standard",
       "d4073db7-8afb-544b-b005-0431a9fd6c13": "standard"
     },
-    "brief_keys": {}
+    "brief_keys": {
+      "bb36404b-60fa-5632-b332-6350492b65fc": "prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego",
+      "1040c98a-6510-58ba-a8db-fbd670532618": "mui",
+      "2b563011-7948-542c-987b-474bc38280fb": "miejscowosc",
+      "0ff4c31b-e1bb-5658-9b12-a54d740cf808": "numer_ewidencyjny_dzialki",
+      "a8831cfc-9e4a-5d55-be5f-f0ab9244cd05": "w_celu_wykonania",
+      "d27a0d32-b799-5a47-a2ac-4b35eb8321c8": "rodzaj_robot_i_sposob_wykonania",
+      "1ff1e344-e8b0-503d-b27c-0733fd987e78": "calkowita_powierzchnia_zajecia",
+      "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6": "termin_od",
+      "c4923fde-9cf0-5bfa-9a16-b41e580a8629": "termin_do",
+      "dccd27eb-140d-5cf0-b278-4d1c1644c7ee": "tj",
+      "558c3fe0-2b45-55f0-8534-b3e128089a9a": "wykonawca_robot_bedzie",
+      "876cda77-cf13-5a80-85b3-0a972297fa0e": "drogowego_zgodnie_z_warunkami_okreslonymi_w_wydanej_decyzji",
+      "daa199ee-7c28-5d8b-954a-8dcf92aac624": "a_osoba_odpowiedzialna_za_wykonanie_robot_zgodnie_z",
+      "a29d20b4-1780-5c7f-9145-58cebfe1a2eb": "zam",
+      "963f187a-5a49-5a21-8e8a-9459f5ef1685": "telefon",
+      "f03a9d42-09e3-537b-9179-630910774f71": "dlugosc",
+      "1ed887cb-1d04-5bb3-8cd6-2510b97ebfb6": "szerokosc",
+      "0eca5e14-b25d-56ff-aff4-fb1dbcacc264": "razem"
+    },
+    "ledger": {
+      "blanks_found": 45,
+      "became_field": 18,
+      "merged": 21,
+      "covered_by_standard": 2,
+      "left_out": 2,
+      "awaiting_decision": 2,
+      "rows": [
+        {
+          "candidate": "c1",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c1"
+        },
+        {
+          "candidate": "c2",
+          "fate": "STANDARD",
+          "section": "standard/twoje_dane"
+        },
+        {
+          "candidate": "c3",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c4",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c4"
+        },
+        {
+          "candidate": "c5",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        },
+        {
+          "candidate": "c6",
+          "fate": "FIELD",
+          "field": "bb36404b-60fa-5632-b332-6350492b65fc"
+        },
+        {
+          "candidate": "c7",
+          "fate": "FIELD",
+          "field": "1040c98a-6510-58ba-a8db-fbd670532618"
+        },
+        {
+          "candidate": "c8",
+          "fate": "FIELD",
+          "field": "2b563011-7948-542c-987b-474bc38280fb"
+        },
+        {
+          "candidate": "c9",
+          "fate": "FIELD",
+          "field": "0ff4c31b-e1bb-5658-9b12-a54d740cf808"
+        },
+        {
+          "candidate": "c10",
+          "fate": "FIELD",
+          "field": "a8831cfc-9e4a-5d55-be5f-f0ab9244cd05"
+        },
+        {
+          "candidate": "c11",
+          "fate": "FIELD",
+          "field": "d27a0d32-b799-5a47-a2ac-4b35eb8321c8"
+        },
+        {
+          "candidate": "c12",
+          "fate": "FIELD",
+          "field": "f03a9d42-09e3-537b-9179-630910774f71"
+        },
+        {
+          "candidate": "c13",
+          "fate": "FIELD",
+          "field": "1ed887cb-1d04-5bb3-8cd6-2510b97ebfb6"
+        },
+        {
+          "candidate": "c14",
+          "fate": "FIELD",
+          "field": "0eca5e14-b25d-56ff-aff4-fb1dbcacc264"
+        },
+        {
+          "candidate": "c15",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c16",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c17",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c18",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c19",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c20",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c21",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c22",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c23",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c24",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c25",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c26",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c27",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c28",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c29",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c30",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c31",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c32",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c33",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c34",
+          "fate": "MERGED",
+          "into": "c13",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c35",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "TABLE_ROW"
+        },
+        {
+          "candidate": "c36",
+          "fate": "FIELD",
+          "field": "1ff1e344-e8b0-503d-b27c-0733fd987e78"
+        },
+        {
+          "candidate": "c37",
+          "fate": "FIELD",
+          "field": "c55c285c-8d5b-53ef-a3fc-a27eca0b5cb6"
+        },
+        {
+          "candidate": "c38",
+          "fate": "FIELD",
+          "field": "c4923fde-9cf0-5bfa-9a16-b41e580a8629"
+        },
+        {
+          "candidate": "c39",
+          "fate": "FIELD",
+          "field": "dccd27eb-140d-5cf0-b278-4d1c1644c7ee"
+        },
+        {
+          "candidate": "c40",
+          "fate": "FIELD",
+          "field": "558c3fe0-2b45-55f0-8534-b3e128089a9a"
+        },
+        {
+          "candidate": "c41",
+          "fate": "FIELD",
+          "field": "876cda77-cf13-5a80-85b3-0a972297fa0e"
+        },
+        {
+          "candidate": "c42",
+          "fate": "FIELD",
+          "field": "daa199ee-7c28-5d8b-954a-8dcf92aac624"
+        },
+        {
+          "candidate": "c43",
+          "fate": "FIELD",
+          "field": "a29d20b4-1780-5c7f-9145-58cebfe1a2eb"
+        },
+        {
+          "candidate": "c44",
+          "fate": "FIELD",
+          "field": "963f187a-5a49-5a21-8e8a-9459f5ef1685"
+        },
+        {
+          "candidate": "c45",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        }
+      ]
+    }
   }
 }

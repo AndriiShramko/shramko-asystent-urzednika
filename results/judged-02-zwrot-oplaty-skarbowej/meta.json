@@ -2,34 +2,140 @@
   "version": 1,
   "converter": {
     "version": "0.1.0",
-    "pipeline": "interim",
+    "pipeline": "brief",
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 3,
-    "fields": 49,
+    "pages": 4,
+    "fields": 54,
     "source_pages": 2
   },
   "warnings": [
     {
-      "code": "BRIEF_NOT_READ",
-      "detail": "Pola sprawy nie zostały jeszcze odczytane z tego dokumentu: formularz zawiera tytuł dokumentu i standardowe sekcje. Pola dotyczące sprawy trzeba uzupełnić ręcznie."
+      "code": "LOW_CONFIDENCE",
+      "page": 2,
+      "box": [
+        196.7,
+        487.7,
+        212.55,
+        535.1
+      ],
+      "candidate": "c23",
+      "evidence": [],
+      "detail": "two texts are equally near; the label is the first of them"
     },
     {
-      "code": "APPLICANTS_ASSUMED",
-      "detail": "the brief does not say who may apply (not_found); the full standard block of both exports is written"
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "data_uiszczenia_oplaty",
+      "candidate": "c16",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "ADDRESSEE_MISSING",
-      "detail": "the brief names no addressee (not_found); the field is left empty and editable"
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "wysokosc_oplaty",
+      "candidate": "c17",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
-      "code": "NO_MATTER",
-      "detail": "the brief holds no field of the matter: the form is the standard scaffold only"
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "uzasadnienie_wniosku",
+      "candidate": "c18",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "informacje_dotyczace_sposobu_zwrotu_oplaty_skarbowej",
+      "candidate": "c19",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
+    },
+    {
+      "code": "REQUIRED_INFERRED",
+      "page": 2,
+      "field": "nr_rachunku",
+      "candidate": "c22",
+      "evidence": [],
+      "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
       "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "3b46cff6-c6a5-5459-a4d5-dbe4affec7b0"
+    }
+  ],
+  "checks": [
+    {
+      "id": "G1",
+      "name": "schema",
+      "status": "passed"
+    },
+    {
+      "id": "G2",
+      "name": "partner_rules",
+      "status": "passed"
+    },
+    {
+      "id": "G3",
+      "name": "grid",
+      "status": "passed"
+    },
+    {
+      "id": "G4",
+      "name": "ids_and_links",
+      "status": "passed"
+    },
+    {
+      "id": "G5",
+      "name": "condition_references",
+      "status": "passed"
+    },
+    {
+      "id": "G6",
+      "name": "condition_values",
+      "status": "passed"
+    },
+    {
+      "id": "G7",
+      "name": "zero_answer",
+      "status": "passed"
+    },
+    {
+      "id": "G8",
+      "name": "journeys",
+      "status": "passed"
+    },
+    {
+      "id": "G9",
+      "name": "dictionaries",
+      "status": "passed"
+    },
+    {
+      "id": "G10",
+      "name": "html",
+      "status": "passed"
+    },
+    {
+      "id": "G11",
+      "name": "ledger",
+      "status": "not_applicable",
+      "reason": "no sidecar was given: the ledger and the coverage come from WP-F15"
+    },
+    {
+      "id": "G12",
+      "name": "no_paper_values",
+      "status": "not_applicable",
+      "reason": "no fill-area values were given: they come from the finder (WP-F3, WP-F17)"
     }
   ],
   "meta": {
@@ -92,6 +198,14 @@
       "5b8dcd48-bad0-53b0-a8fc-7c9dd3506ac0": "standard",
       "efaeed2a-6b70-5460-bb0a-681d76953e10": "standard",
       "f95d7cdd-c46e-58ab-834e-365f71b7f157": "standard",
+      "43fe4d97-f228-5dc3-8490-4b3e8c4ccf4a": "paper",
+      "3b46cff6-c6a5-5459-a4d5-dbe4affec7b0": "paper",
+      "6b5c7b7a-427f-5840-bfdf-e8907a801258": "paper",
+      "b21468e5-8531-5b44-b5e6-eea28774e83b": "paper",
+      "d8c9eefa-622a-5b5c-8013-60301379f3ef": "paper",
+      "adb2973f-df31-5bde-b6ea-e33021b904e8": "paper",
+      "657bc5d8-387c-5e0c-970c-e57cbb79c292": "paper",
+      "421a502b-4e80-5a2c-a444-195296dd2d74": "paper",
       "0b5284e4-c8a6-56d4-a11f-b6dcf51a2cee": "standard",
       "878c122b-9ae9-5074-8511-b02a3c78b974": "standard",
       "6b31b606-2b5a-5285-abdb-5e3bfd1eaddf": "standard",
@@ -100,6 +214,161 @@
       "ba457d3d-4ce4-5717-8c93-ca5c29aadefc": "standard",
       "2a1cf0ad-b091-51e9-a837-56852045f187": "standard"
     },
-    "brief_keys": {}
+    "brief_keys": {
+      "3b46cff6-c6a5-5459-a4d5-dbe4affec7b0": "data_uiszczenia_oplaty",
+      "6b5c7b7a-427f-5840-bfdf-e8907a801258": "wysokosc_oplaty",
+      "d8c9eefa-622a-5b5c-8013-60301379f3ef": "uzasadnienie_wniosku",
+      "657bc5d8-387c-5e0c-970c-e57cbb79c292": "informacje_dotyczace_sposobu_zwrotu_oplaty_skarbowej",
+      "421a502b-4e80-5a2c-a444-195296dd2d74": "nr_rachunku"
+    },
+    "ledger": {
+      "blanks_found": 27,
+      "became_field": 5,
+      "merged": 4,
+      "covered_by_standard": 16,
+      "left_out": 2,
+      "awaiting_decision": 0,
+      "rows": [
+        {
+          "candidate": "c1",
+          "fate": "STANDARD",
+          "section": "standard/twoje_dane"
+        },
+        {
+          "candidate": "c2",
+          "fate": "STANDARD",
+          "section": "standard/dane_podmiotu"
+        },
+        {
+          "candidate": "c3",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c4",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c5",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c6",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c7",
+          "fate": "STANDARD",
+          "section": "standard/adres"
+        },
+        {
+          "candidate": "c8",
+          "fate": "STANDARD",
+          "section": "standard/dane_do_kontaktu"
+        },
+        {
+          "candidate": "c9",
+          "fate": "STANDARD",
+          "section": "standard/dane_do_kontaktu"
+        },
+        {
+          "candidate": "c10",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c11",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c12",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c13",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c14",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c15",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c16",
+          "fate": "FIELD",
+          "field": "3b46cff6-c6a5-5459-a4d5-dbe4affec7b0"
+        },
+        {
+          "candidate": "c17",
+          "fate": "FIELD",
+          "field": "6b5c7b7a-427f-5840-bfdf-e8907a801258"
+        },
+        {
+          "candidate": "c18",
+          "fate": "FIELD",
+          "field": "d8c9eefa-622a-5b5c-8013-60301379f3ef"
+        },
+        {
+          "candidate": "c19",
+          "fate": "FIELD",
+          "field": "657bc5d8-387c-5e0c-970c-e57cbb79c292"
+        },
+        {
+          "candidate": "c20",
+          "fate": "MERGED",
+          "into": "c19",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c21",
+          "fate": "MERGED",
+          "into": "c19",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c22",
+          "fate": "FIELD",
+          "field": "421a502b-4e80-5a2c-a444-195296dd2d74"
+        },
+        {
+          "candidate": "c23",
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
+        },
+        {
+          "candidate": "c24",
+          "fate": "MERGED",
+          "into": "c23",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c25",
+          "fate": "MERGED",
+          "into": "c23",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c26",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        },
+        {
+          "candidate": "c27",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        }
+      ]
+    }
   }
 }

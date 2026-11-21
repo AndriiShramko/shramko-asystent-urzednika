@@ -7,3 +7,5 @@ One folder per judged set of the task: `form.json` is the form in the partner's 
 The files are replaced at every milestone by the evaluation run (WP-F11). They are kept in git from the first milestone on, so that a valid set of seven always exists.
 
 Each `form.json` here passes `python tools/coi_lint.py --profile strict` and `contracts/coi/form.schema.json`.
+
+Set 8 (`judged-08-deklaracja-odpady/form.json`) is not in git: the form quotes the office's bank account for the stamp fee from the paper, and the publishing check refuses any identifier with a valid check digit. Regenerate it with `bash tools/gate.sh py tools/lead/snapshot_results.py .`; it is uploaded with the submission.
