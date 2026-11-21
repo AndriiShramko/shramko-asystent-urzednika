@@ -4,6 +4,8 @@ Answers requirements R26, R27, R28. Facts come from [`research/01-hacknation-202
 
 ## 0. Current decision (owner, 21 November 2026, morning)
 
+> **Re-opened at 11:25 after the full task cards.** The forms task asks for a converter to the partner's JSON for the official who digitises forms; it does not ask for the two-sided counter product described below, and it forbids API-only models inside the product. Module B as described here is therefore not the build for that task: see [`coi-replan.md`](coi-replan.md). The city's card matches Module A closely. The owner chooses again: [`../03-plan/STATUS.md`](../03-plan/STATUS.md), "Waiting for the owner", item 1.
+
 **Primary track: the forms product for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki).** The owner's idea fits that task directly, and he wants the jury to see a working product with two sides, visitor and clerk, not slides of theory. Therefore:
 
 - **Module B is built first** (form onboarding with AI, the phone page with the QR handoff, the clerk's counter view, the checker, the print on the original template). Timeline: [`../03-plan/roadmap.md`](../03-plan/roadmap.md), "Timeline for Track B".

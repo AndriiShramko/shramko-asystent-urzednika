@@ -1,5 +1,7 @@
 # Reading version of the presentation: "Od potrzeby do podpisu" (eleven pages)
 
+> **Superseded as the submission on 21 November, 11:30.** The task cards allow at most ten slides and describe a different product for the forms task; the owner rejected the look of this reading version. The concept that replaces it: [`concept-document-deck.md`](concept-document-deck.md). The facts, sources and the rules about true claims in this file stay valid and are reused.
+
 Answers requirement R40. The first judging stage reads the submission **without the presenter** and spends a few minutes on it ([`research/01`](../../../research/01-hacknation-2026-task-rules-jury.md)). The live deck ([`storyboard-formularze.md`](storyboard-formularze.md)) has at most six words per slide and needs a voice; this version carries its own text and infographics. It is one source with three outputs:
 
 | Output | File | Use |

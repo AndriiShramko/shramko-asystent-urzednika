@@ -1,5 +1,7 @@
 # WP-B1 … WP-B6 — Module B: data once, forms pre-filled at the counter
 
+> **After the task card (21 November, 11:25): not built for the task "Cyfryzacja formularzy".** That task asks for a converter from a form file to the partner's JSON: [`WP-F-forms-to-json.md`](WP-F-forms-to-json.md); why: [`../../01-product/coi-replan.md`](../../01-product/coi-replan.md). This file stays as the specification of the counter product (the owner's vision) and as a source of methods.
+
 Built only after the Module A gate (M2) passes, or as the main track if the owner chooses the "Cyfryzacja formularzy" task; in that case WP-B6 and WP-B1 come first and are the centre of the demo. Each package has its own branch, worktree and status file.
 
 Read first for all of them: `AGENTS.md`; `docs/02-architecture/design-notes.md` §1 and §6; `research/09-lessons-from-2022-prototype.md` (every rule there came from real use); `research/03b-form-anatomy-and-canonical-profile.md`; and, where named, `research/04-…` (identity sources) and `research/06-…` (libraries).

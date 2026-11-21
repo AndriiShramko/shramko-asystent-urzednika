@@ -1,5 +1,7 @@
 # HackTribe texts for the forms task (draft to paste by Saturday 18:00)
 
+> **Stale since 11:25 on 21 November:** written for the counter product. For the forms task rewrite it from [`../01-product/coi-replan.md`](../01-product/coi-replan.md) §1, §3 and §5 (a converter from a form file to the partner's JSON; rules first, an open model inside the container; no external calls) before pasting. The submission also needs the JSON files, a PDF of at most ten slides and a film of at most three minutes.
+
 Closes item 1 of "Not done before the event" in [`../03-plan/STATUS.md`](../03-plan/STATUS.md) for the primary track. Written before the full task card was published: **after the 11:00 gate the lead re-reads every text against the card's own words and criteria** and replaces the square brackets with what the software really does at that hour. Never paste a bracket. Fields and deadlines: [`research/01`](../../research/01-hacknation-2026-task-rules-jury.md) (draft by Sat 20:00: project name, team name, task, table number, short description, approach, progress, repository; final by Sun 11:00).
 
 Each Polish text is followed by its meaning in Russian for the owner.

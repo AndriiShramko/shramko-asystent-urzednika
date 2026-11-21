@@ -4,6 +4,8 @@ Clock times are for the event (Sat 21 – Sun 22 November 2026, local time). Gat
 
 ## Which timeline applies
 
+**After the task cards of 21 November, 11:00:** for the task "Cyfryzacja formularzy" the timeline is the clock at the end of [`work-packages/WP-F-forms-to-json.md`](work-packages/WP-F-forms-to-json.md) (Track F, a converter to the partner's JSON). The "Timeline for Track B" below is **not built for that task**; it stays as a record of the counter product. For the city's task the Track A timeline below applies, with the gaps listed in [`../05-hackathon/intake/umb-task-card.md`](../05-hackathon/intake/umb-task-card.md). Which task: STATUS, "Waiting for the owner", item 1.
+
 Since the owner's decision of 21 November the **primary track is B** (the forms product for the task "Cyfryzacja formularzy"); see [`../01-product/scope-decision.md`](../01-product/scope-decision.md) §0. Track A (the city's task) is the alternative and stays ready. The gates G0, the HackTribe draft, M5 and the pitch rehearsal are the same for both.
 
 ## Timeline for Track B (primary)

@@ -1,5 +1,7 @@
 # WP-B11 — The whole catalogue in advance
 
+> **After the task card (21 November, 11:25): this package is not built as written.** The forms task asks for a converter to the partner's JSON; the batch over a whole office lives on as the batch mode of WP-F9 and the archive run of WP-F2 and WP-F11 ([`WP-F-forms-to-json.md`](WP-F-forms-to-json.md)). Item 9 below (a cloud model reads the forms) is **forbidden inside that product**. The life of a description and the review queue remain the model for the review screen.
+
 Owner's fifth brief (21 November 2026, 10:48; requirements R51–R52): "when a clerk adds a document to make it digital, the first thing is done by the system. Better still, we load and digitise all possible documents ourselves in advance, without the clerk. Only when a new document appears does the clerk add it to the shared system."
 
 Kind: part a by spec, part b think · Model tier: middle (a), top (b) · Depends on: WP-B1 (descriptor format), WP-B6 method step 1 (geometry) · Branch: `wp/B11-catalogue`

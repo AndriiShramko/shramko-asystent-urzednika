@@ -1,6 +1,6 @@
-# Owner requirements (R1–R54)
+# Owner requirements (R1–R58)
 
-This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026, a third, a fourth and a fifth of 21 November, sections F, G and H; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
+This is the complete list of what the project owner asked for, extracted from his spoken briefs (two messages of 20 November 2026, a third to a sixth of 21 November, sections F, G, H and I; originally in Russian). Every requirement has an id that the rest of the repository refers to. "Where" points to the document that answers it. Nothing here is optional unless the scope decision ([`docs/01-product/scope-decision.md`](../01-product/scope-decision.md)) says so.
 
 Vocabulary used by the owner: *wniosek* = application form or request filed in a Polish office; *urzędnik* = clerk, the office worker at the counter; *urząd* = public office (here: Urząd Miasta Bydgoszczy, the city hall); *UDIP* = the Polish Act on Access to Public Information; *mObywatel* = the Polish government's mobile app with digital documents.
 
@@ -99,6 +99,19 @@ The owner's words in short: "when a clerk adds a document to make it digital, th
 | R52 | All documents the office already publishes are loaded and given the first pass in advance by the team, without the counter clerks; a clerk only adds a new document to the shared catalogue. | WP-B11; [`research/13`](../../research/13-forms-census-and-opening-facts.md) §1; `data/forms-census.json` |
 | R53 | The presentation opens with the whole idea in half a minute (problem, solution, scale) and only then expands; it carries a hook that is unusual and large in scale. | [`storyboard-pakiet.md`](../05-hackathon/presentation/storyboard-pakiet.md) pages 1–2 and the short version |
 | R54 | The build is done with Claude Code. The product uses a strong model wherever no personal data are involved (reading blank forms); a weak local model is not the default for that step; the partner's models or credits are used if they are good; nothing may depend on credits arriving. Personal data still never go to a cloud model (`AGENTS.md` rule 9). | [`ai-layer.md`](../02-architecture/ai-layer.md) §2; STATUS "Waiting for the owner" item 2; WP-B11 item 9 |
+
+## I. Sixth brief: the real task cards, deeper pains, a different presentation (21 November 2026, 11:08–11:11)
+
+The owner's words in short: "pull the full information they opened and put it in git; find out where the people are whom I must ask; knowing this, think what to change in the project, its structure and the presentation so that all their pains are closed, including those they forgot to say; analyse deeper, also my own ideas; prepare git so that I can start the build in Claude Code, including a new, most unusual but very clear presentation." And: "I do not like how the current presentations are made. Think how to do it more unusual and clearer, perhaps with humour if it fits."
+
+| Id | Requirement | Where |
+|---|---|---|
+| R55 | The published task information is in git as digests with sources; the places and people to ask are named. | [`../05-hackathon/intake/`](../05-hackathon/intake/README.md) |
+| R56 | The project, its structure and its plan follow the real card: every stated requirement has a package, and the pains the partner did not state are listed with our answer. | [`../01-product/coi-replan.md`](../01-product/coi-replan.md) §3; [`WP-F`](../03-plan/work-packages/WP-F-forms-to-json.md) |
+| R57 | The owner's earlier ideas are re-examined against the card: what is core, what becomes an export or one slide, what is parked. | coi-replan §2 |
+| R58 | A new presentation: unusual, very clear, with humour where it fits; it shows the stated and the unstated pains and their answers. The earlier look is rejected. | [`../05-hackathon/presentation/concept-document-deck.md`](../05-hackathon/presentation/concept-document-deck.md); WP-P1 |
+
+Note on R54 (model): the forms task forbids, inside the product, any model that is reachable only through an API. R54 therefore holds for building the code and for the city's task, not for the product of the forms task.
 
 ## E. Constraints stated or implied
 

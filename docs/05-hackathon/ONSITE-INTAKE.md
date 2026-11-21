@@ -47,6 +47,9 @@ Then tell the lead: "new intake". Nothing else is needed.
 
 | Time | Fact | Source (who, what document) | Effect: confirms / changes / new | Consequence and affected packages |
 |---|---|---|---|---|
+| Sat 11:12 | Full card of the forms task: a REST converter from a form file to the partner's JSON; API-only models and external services forbidden in the product; Docker, token, Python 3.14 or Java 21; finalists run on new files; ten slides, three-minute film | organisers' shared drive, PDF "Pełna treść zadania" (COI) | **changes** the product of the forms task | intake/coi-task-card.md; coi-replan; Track F replaces Track B |
+| Sat 11:15 | Full card of the city's task: calendar of requests, similar cases, departments, draft, anonymisation; cloud model allowed for the prototype; ten slides, three-minute film; at most three teams present | organisers' shared drive, PDF "Pełna treść zadania" (UMB) | confirms Track A; small gaps | intake/umb-task-card.md, last section |
+| Sat 11:20 | Tokens of the forms task go to the first 20 teams; materials are on the task's Discord channel | the COI card, section on resources | new | owner goes to the stand; WP-F0 |
 | Sat 10:49 | LLM credits for teams will be given "later"; no date, no list of models | the owner, after asking at the COI stand | changes: the build cannot wait for them | STATUS "Waiting for the owner" item 2; WP-B11 item 9 |
 | | | | | |
 
@@ -65,6 +68,8 @@ Each question is short on purpose; the answers change real decisions.
 9. Czy podobny problem powtarzalnych danych macie przy okienku w innych wydziałach? *(Opens the door for Module B without pushing it.)*
 
 ## 3a. Questions to ask at the stand of Centralny Ośrodek Informatyki (forms task)
+
+**Since the full card (21 November, 11:25) ask the nine questions of [`../01-product/coi-replan.md`](../01-product/coi-replan.md) §7 first.** The list below was written before the card; questions 1 to 5 of it are answered by the card itself.
 
 The owner asks in Polish; the line in italics is the meaning in Russian for him; the arrow says what the answer decides.
 
@@ -97,6 +102,7 @@ The owner said he does not know yet what hurts clerks most. These answers decide
 
 | Time | Decision | Why | Who decided |
 |---|---|---|---|
+| Sat 11:25 | For the forms task nothing in the product calls a hosted model or an external service | the task card forbids it | the card (C-TECH-NOEXT) |
 | Sat 10:56 | Build with Claude Code; strong model for blank forms; weak local models are not the default; partner models only if good | quality of the hardest step; blank forms are public material | the owner |
 | Sat 10:48 | All templates of the office get their first pass in advance; clerks only add new ones | the clerk should not take part in digitising at all | the owner |
 | | | | |

@@ -1,5 +1,7 @@
 # Pitch deck storyboard for the task "Cyfryzacja formularzy": "Od druku do usługi online"
 
+> **Superseded as the submission on 21 November, 11:30.** The task cards allow at most ten slides and describe a different product for the forms task; the owner rejected the look of this live deck. The concept that replaces it: [`concept-document-deck.md`](concept-document-deck.md). The facts, sources and the rules about true claims in this file stay valid and are reused.
+
 Second deck, for the task of Centralny Ośrodek Informatyki: "Jak sztuczna inteligencja może wspierać rozwój nowoczesnych usług publicznych? … usprawnić proces cyfryzacji i sprawić, że droga od potrzeby do wygodnej usługi online będzie prostsza i szybsza." The owner's instruction (21 November): as little theory on slides as possible; show a working product with the two sides, visitor and clerk, and how fast a form is filled and handed over.
 
 Live address: <https://formularze.flyreelstudio.eu/deck/> (served from `site-formularze/deck/`; pushing to `main` updates it within two minutes). It reuses the engine of the first deck (`site/deck/deck.js`, `deck.css`): same keys, same presenter window, same print mode.

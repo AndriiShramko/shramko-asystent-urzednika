@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — 2026-11-21 (during the event; the full task cards)
+
+- Digests of both task cards and of the task regulations with sources: `docs/05-hackathon/intake/`.
+- The forms task is a converter from a form file to the partner's JSON: analysis, the owner's ideas placed against the card, thirteen unstated pains with answers, model policy, risks, questions for mentors (`docs/01-product/coi-replan.md`).
+- Track F: fourteen work packages with acceptance lists and a clock (`docs/03-plan/work-packages/WP-F-forms-to-json.md`). Track B is parked for that task.
+- Fit of the city's card with Track A, gap by gap.
+- Requirements R55–R58. New presentation concept "the deck is an official document that the product processes" (`docs/05-hackathon/presentation/concept-document-deck.md`).
+
 ## 0.3.0 — 2026-11-21 (during the event, after 11:00; the owner's fifth brief)
 
 - Requirements R51–R54: the system does the first pass on every document; all published templates are digitised in advance and a clerk only adds new ones; the presentation opens with the idea in half a minute and a large-scale hook; model policy (Claude Code for the build, a strong model for public material, no cloud model for personal data).

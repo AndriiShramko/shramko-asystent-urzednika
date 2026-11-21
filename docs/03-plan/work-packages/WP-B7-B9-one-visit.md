@@ -1,5 +1,7 @@
 # WP-B7 … WP-B9 — One visit, complete set
 
+> **After the task card (21 November, 11:25): not built for the task "Cyfryzacja formularzy".** That task asks for a converter from a form file to the partner's JSON: [`WP-F-forms-to-json.md`](WP-F-forms-to-json.md); why: [`../../01-product/coi-replan.md`](../../01-product/coi-replan.md). This file stays as the specification of the counter product (the owner's vision) and as a source of methods.
+
 Three small packages added by the owner's brief of 21 November (R33–R43). Read first: `AGENTS.md`; [`docs/01-product/one-visit-package.md`](../../01-product/one-visit-package.md) (the whole idea, the rules of the check by exception, what is not claimed); [`research/12-one-visit-package-addendum.md`](../../../research/12-one-visit-package-addendum.md) (facts). They extend WP-B1…B5 and never replace them. None of them may delay the M1 or M2 gate: start them only when the loop of M1 runs.
 
 Two lines of this file apply to **earlier packages from their first commit** (change requests, cheap now, expensive later):

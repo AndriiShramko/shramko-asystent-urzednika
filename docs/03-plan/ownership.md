@@ -26,6 +26,21 @@ An agent edits only the paths of its own package. Everything not listed is lead-
 | `apps/visitor-pwa/src/features/profile-start/**` | WP-B9 |
 | `apps/agent-gateway/**`, `data/demo/slots.json`, `apps/visitor-pwa/src/features/confirm/**`, `apps/visitor-pwa/src/features/draft/**`, `tools/agent_door_demo.md` | WP-B10 |
 | `tools/batch_first_pass.py`, `data/descriptors/**`, `apps/api/app/modules/catalogue/**`, `apps/clerk-web/src/features/catalogue/**` | WP-B11 |
+| `apps/converter/app/main.py`, `apps/converter/app/guard/**`, `apps/converter/Dockerfile`, `docker-compose.yml`, `apps/converter/README.md` | WP-F1 |
+| `apps/converter/app/readers/**` | WP-F2 |
+| `apps/converter/app/find/**` | WP-F3 |
+| `apps/converter/app/mean/**`, `prompts/converter-*.md` | WP-F4 |
+| `apps/converter/app/compose/**` | WP-F5 |
+| `apps/converter/app/dictionaries/**` | WP-F6 |
+| `apps/converter/app/conditions/**` | WP-F7 |
+| `apps/converter/app/validation/**` | WP-F8 |
+| `apps/review-web/**` except `src/features/viewer/**` | WP-F9 |
+| `apps/review-web/src/features/viewer/**` | WP-F10 |
+| `eval/**`, `results/**` | WP-F11 |
+| `docs/02-architecture/converter.md`, `LICENCES.md`, `tools/licence_check.py` | WP-F12 |
+| `apps/converter/app/export/**` | WP-F13 |
+| `contracts/coi/**`, `docs/02-architecture/coi-json-format.md`, `data/private/coi/**` (git-ignored) | WP-F0 (lead) |
+| `tools/build_deck.py`, `docs/05-hackathon/presentation/deck/**`, `docs/assets/deck-document/**` | WP-P1 |
 | `README*`, `AGENTS.md`, `START_HERE.md`, `docs/**` except each package's own status file, `research/**` | lead |
 | `docs/03-plan/wip/WP-<id>.status.md` | the builder of that package |
 

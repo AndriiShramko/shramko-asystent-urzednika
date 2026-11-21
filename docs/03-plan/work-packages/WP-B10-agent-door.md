@@ -1,5 +1,7 @@
 # WP-B10 — The agent door (MCP and API for residents' AI assistants)
 
+> **After the task card (21 November, 11:25): not built for the task "Cyfryzacja formularzy".** That task asks for a converter from a form file to the partner's JSON: [`WP-F-forms-to-json.md`](WP-F-forms-to-json.md); why: [`../../01-product/coi-replan.md`](../../01-product/coi-replan.md). This file stays as the specification of the counter product (the owner's vision) and as a source of methods.
+
 Kind: think (security) · Model tier: top; independent review · Depends on: WP-B7 items 1–3 (bundles, resolver, recommender), WP-B2 (visitor app), WP-B5 (checker), and for `fill_draft` at least one published descriptor from WP-B1 or WP-B6 · Branch: `wp/B10-agent-door`
 
 Read first: `AGENTS.md`; [`docs/01-product/agent-door.md`](../../01-product/agent-door.md) (the idea, the two kinds of forms, the seven rules, the interface table, what is not claimed: that document is this package's specification); [`research/12`](../../../research/12-one-visit-package-addendum.md) items 14–16. Start only after the M2 gate. It is the optional third part of the demo; whatever does not reach its acceptance list is shown as "planned", never half-working. It splits naturally into two deliveries: **B10a** (items 1–7: public tools, slots, confirmation) and **B10b** (items 8–11: permission and draft filling).
