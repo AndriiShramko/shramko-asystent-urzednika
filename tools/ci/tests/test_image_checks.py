@@ -115,15 +115,15 @@ def test_a_broken_sidecar_makes_the_conversion_row_fail_and_so_the_run_red(conve
     """The row of a fixture is what turns CI red (main returns 1 when a row failed)."""
     form, sidecar = converted["wniosek.pdf"]
     good, bad = container_check.Results(), container_check.Results()
-    good.add("convert", container_check.conversion_problems(form + b"\n", b"", 0, form, sidecar))
+    good.add("convert", container_check.conversion_problems(form + b"\n", b"ENGINE: rules\n", 0, form, sidecar))
     assert good.failed == 0, good.rows
     doc = json.loads(sidecar)
     del doc["checks"]
-    bad.add("convert", container_check.conversion_problems(form + b"\n", b"", 0, form, json.dumps(doc).encode()))
+    bad.add("convert", container_check.conversion_problems(form + b"\n", b"ENGINE: rules\n", 0, form, json.dumps(doc).encode()))
     assert bad.failed == 1 and "sidecar" in bad.rows[0]["detail"]
-    for broken in (container_check.conversion_problems(form + b"\n", b"", 0, form, b""),          # no sidecar came
-                   container_check.conversion_problems(form + b"\n", b"", 2, b"", b""),            # --report failed
-                   container_check.conversion_problems(form + b"\n", b"", 0, form + b" ", sidecar)):   # other bytes
+    for broken in (container_check.conversion_problems(form + b"\n", b"ENGINE: rules\n", 0, form, b""),          # no sidecar came
+                   container_check.conversion_problems(form + b"\n", b"ENGINE: rules\n", 2, b"", b""),            # --report failed
+                   container_check.conversion_problems(form + b"\n", b"ENGINE: rules\n", 0, form + b" ", sidecar)):   # other bytes
         assert broken
 
 
