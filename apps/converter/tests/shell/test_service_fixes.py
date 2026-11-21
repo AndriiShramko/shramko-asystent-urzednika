@@ -36,6 +36,28 @@ def crash(monkeypatch, on_calls: set[int] | None = None) -> None:
     monkeypatch.setattr(pipeline, "run", run)
 
 
+# ---- J3: the status page ----------------------------------------------------------------------------------------
+
+def test_status_tells_what_runs_here_without_a_token(tmp_path):
+    from app import __version__, readers
+
+    r = make(JOB_TIMEOUT_S="77", CONCURRENCY="3", MAX_PAGES="9", MAX_UPLOAD_BYTES="12345").get("/status")
+    assert r.status_code == 200 and r.headers["content-type"] == "application/json"
+    body = r.json()
+    assert set(body) == {"service", "version", "engine", "auth", "formats", "limits"}
+    assert (body["version"], body["engine"], body["auth"]) == (__version__, "rules", "off") and body["service"]
+    assert body["formats"] == readers.formats() and {"pdf", "docx", "xlsx", "ods", "png"} <= set(body["formats"])
+    assert body["limits"] == {"job_timeout_s": 77, "concurrency": 3, "max_pages": 9, "max_upload_bytes": 12345}
+
+    key = tmp_path / "secret.key"
+    key.write_bytes(fx.SECRET)
+    guarded = TestClient(create_app(Settings.from_env({"JWT_SECRET_FILE": str(key), "UI_ENABLED": "false"})))
+    r = guarded.get("/status")   # no token, like /healthz
+    assert r.status_code == 200 and r.json()["auth"] == "jwt" and r.json()["limits"]["job_timeout_s"] == 600
+    assert "secret.key" not in r.text and str(tmp_path) not in r.text and fx.SECRET.decode() not in r.text
+    assert post(guarded).status_code == 401   # the conversion itself still needs the token
+
+
 # ---- R3: the catch-all ------------------------------------------------------------------------------------------
 
 def test_an_unexpected_exception_is_a_problem_answer_and_a_content_free_log_line(monkeypatch, caplog):

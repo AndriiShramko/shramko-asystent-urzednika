@@ -29,6 +29,7 @@ from app.auth import RateLimiter, TokenVerifier, scopes_of
 from app.config import Settings
 from app.guard import ProblemError, UploadInfo, inspect_upload
 from app.guard.checks import EXTENSIONS, check_archive, too_large
+from app.readers import formats as reader_formats
 
 log = logging.getLogger("converter")
 
@@ -268,6 +269,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def healthz() -> dict:
         return {"status": "ok", "version": __version__}
 
+    @app.get("/status")
+    async def status() -> dict:
+        """What runs here, for a person or a script before the first upload. No token, like `/healthz`, and so
+        nothing that needs one: no secret, no path, no key material; the name, the version and the limits in force."""
+        return {
+            "service": app.title,
+            "version": __version__,
+            "engine": "rules",
+            "auth": "jwt" if s.auth_enabled else "off",
+            "formats": reader_formats(),
+            "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
+                       "max_upload_bytes": s.max_upload_bytes},
+        }
+
     @app.post("/v1/forms/convert")
     async def convert(request: Request, report: int = 0) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
@@ -351,9 +366,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 break
     # Warm the readers registry before the first request: /healthz does not touch it, and two simultaneous first
     # conversions must not meet a half-filled list.
-    from app.readers import formats
-
-    formats()
+    reader_formats()
     return app
 
 

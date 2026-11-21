@@ -10,8 +10,8 @@ model-council note 3 "jury run readiness" (sections 2 and 5), both of 2026-11-21
 - [x] 2. R1 cold-start race of the readers registry (lock, flag after the imports, warm-up in `create_app`) (671ddf8)
 - [x] 3. R2 `job_timeout_s` 600; abandoned jobs count against the slots (BUSY, Retry-After 30) (e021b98); the
       time-limit test of item 7 was made robust here already, because a leaked job would now block later tests
-- [x] 4. R3 catch-all: unexpected exception and request validation as problem JSON; batch stream continues
-- [ ] 5. J3 `GET /status`
+- [x] 4. R3 catch-all: unexpected exception and request validation as problem JSON; batch stream continues  (6349e8d)
+- [x] 5. J3 `GET /status`
 - [ ] 6. J2 `convert --out` that cannot be written: one line, exit 4
 - [ ] 7. R4 PDFium lock; robust time-limit test
 - [ ] 8. Optional: wait for a free slot up to `QUEUE_WAIT_S` (only if the review page sends files in parallel)
