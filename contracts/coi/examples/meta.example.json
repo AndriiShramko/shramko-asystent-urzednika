@@ -1,0 +1,42 @@
+{
+  "meta_version": 1,
+  "converter": {"version": "0.4.0", "image": "core", "profile": "FINISH_STYLE=export;VALIDATORS=on;REPEATING_STYLE=native"},
+  "hashes": {"input_sha256": "9f2c000000000000000000000000000000000000000000000000000000000001",
+             "form_sha256": "41aa000000000000000000000000000000000000000000000000000000000002",
+             "brief_sha256": "77b0000000000000000000000000000000000000000000000000000000000003"},
+  "origins": {"00000000-0000-5000-8000-000000000026": "paper", "00000000-0000-5000-8000-000000000101": "standard"},
+  "evidence": {"00000000-0000-5000-8000-000000000026": {"page": 2, "box": [70.9, 130.2, 300.0, 144.0], "quote": "Numer rachunku", "candidate": "c26"}},
+  "confidence": {"00000000-0000-5000-8000-000000000026": {"value": 0.85, "parts": {"geometry": 0.95, "label": 0.8, "text": 1.0, "rule": 0.7}}},
+  "ledger": {
+    "blanks_found": 4,
+    "became_field": 1, "merged": 1, "covered_by_standard": 1, "left_out": 1, "awaiting_decision": 0,
+    "rows": [{"candidate": "c26", "fate": "FIELD", "field": "00000000-0000-5000-8000-000000000026"},
+             {"candidate": "c40", "fate": "MERGED", "into": "c26", "why": "COMB_CELLS"},
+             {"candidate": "c05", "fate": "STANDARD", "section": "twoje_dane"},
+             {"candidate": "c61", "fate": "LEFT_OUT", "reason": "SIGNATURE_AND_DATE"}]
+  },
+  "omissions": [{"what": "1. Instrukcja wypełnienia dokumentu", "reason": "PAPER_INSTRUCTION", "page": 1}],
+  "receipts": {
+    "fee": {"status": "not_found"},
+    "who_may_apply": {"status": "stated", "evidence": [{"quote": "Nazwa /Imię i nazwisko"}]},
+    "mandatory_attachments": {"status": "ambiguous", "evidence": [{"quote": "7. Załączniki (postaw „x” w wybranym polu)"}]}
+  },
+  "coverage": {"runs_total": 96, "assigned": 96, "unassigned": []},
+  "decisions": [{"id": "dec-1", "question": "Czy numer rachunku jest wymagany przy zwrocie przelewem?",
+                 "resolves": ["warning-3", "warning-4"], "options": ["tak", "nie"], "default": "tak"}],
+  "warnings": [{"id": "warning-3", "code": "REQUIRED_INFERRED", "field": "00000000-0000-5000-8000-000000000026", "page": 2},
+               {"id": "warning-4", "code": "REQUIRED_INFERRED", "field": "00000000-0000-5000-8000-000000000027", "page": 2}],
+  "unsupported": [],
+  "proposals": {
+    "dictionaries": [],
+    "initial_data": [{"field": "00000000-0000-5000-8000-000000000201", "source": "KRS.name", "why": "pole „Nazwa” w sekcji danych podmiotu"}],
+    "validators": [{"field": "00000000-0000-5000-8000-000000000026", "name": "NRB", "why": "26 kratek, etykieta „Nr rachunku”"}],
+    "other": []
+  },
+  "concepts": {"00000000-0000-5000-8000-000000000026": "http://data.europa.eu/m8g/Identifier"},
+  "legal_basis": {"status": "stated", "value": "Art. 9 ustawy z dnia 16 listopada 2006 r. o opłacie skarbowej",
+                  "evidence": [{"quote": "Art. 9 ustawy z dnia 16 listopada 2006 r. o opłacie skarbowej"}]},
+  "checks": {"schema": "pass", "partner_rules": "pass", "grid": "pass", "conditions": {"total": 31, "evaluated": 31, "failed": 0},
+             "journeys": {"run": 6, "passed": 6, "not_applicable": 0}, "zero_answer": "pass", "html": "pass"},
+  "resources": {"wall_ms": 840, "cpu_ms": 610, "peak_rss_mb": 142, "pages": 2, "ocr_pages": 0}
+}

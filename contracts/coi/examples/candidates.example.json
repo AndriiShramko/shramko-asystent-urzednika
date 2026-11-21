@@ -1,0 +1,30 @@
+{
+  "finder_version": 1,
+  "input": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000001", "format": "pdf"},
+  "order": ["r1", "r30", "r31", "r50", "r51", "r52", "r53", "r90"],
+  "sections": [
+    {"id": "s2", "page": 1, "title": "Dane wnioskodawcy", "number": "2", "runs": ["r30"]}
+  ],
+  "candidates": [
+    {"id": "c12", "kind": "comb", "page": 1, "box": [220.0, 228.0, 360.0, 242.0], "cells": 11,
+     "label": {"text": "PESEL", "runs": ["r31"], "how": "left", "margin": 0.42},
+     "section": "s2", "footnotes": ["*"],
+     "conf": {"geometry": 0.95, "label": 0.8, "text": 1.0}},
+    {"id": "c30", "kind": "choice_group", "page": 1, "box": [56.7, 400.0, 300.0, 414.0],
+     "label": {"text": "Wybierz sposób zwrotu opłaty", "runs": ["r50"], "how": "question", "margin": 0.6},
+     "options": [
+       {"text": "Gotówką w kasie organu", "runs": ["r51"], "mark": "c31"},
+       {"text": "Przelewem na rachunek w banku", "runs": ["r52"], "mark": "c32", "blank": "c33"}
+     ],
+     "section": "s2",
+     "conf": {"geometry": 0.9, "label": 0.85, "text": 1.0}},
+    {"id": "c31", "kind": "box", "page": 1, "box": [56.7, 400.0, 66.7, 410.0], "group": "c30", "section": "s2",
+     "conf": {"geometry": 0.95, "label": 0.85, "text": 1.0}},
+    {"id": "c32", "kind": "box", "page": 1, "box": [180.0, 400.0, 190.0, 410.0], "group": "c30", "section": "s2",
+     "conf": {"geometry": 0.95, "label": 0.85, "text": 1.0}},
+    {"id": "c33", "kind": "leader", "page": 1, "box": [320.0, 402.0, 538.6, 412.0], "runs": ["r53"], "group": "c30", "section": "s2",
+     "conf": {"geometry": 0.9, "label": 0.7, "text": 1.0}}
+  ],
+  "roles": {"r1": "page_furniture", "r90": "clause"},
+  "warnings": []
+}

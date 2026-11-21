@@ -1,0 +1,44 @@
+{
+  "brief_version": 1,
+  "input": {"sha256": "9f2c000000000000000000000000000000000000000000000000000000000001", "format": "pdf"},
+  "title": {"status": "stated", "value": "Wniosek o zwrot opłaty skarbowej",
+            "evidence": [{"page": 1, "runs": ["r3"], "quote": "Wniosek o zwrot opłaty skarbowej"}]},
+  "addressee": {"status": "stated", "kind": "office", "name": "Urząd Gminy Stawiguda",
+                "evidence": [{"page": 1, "runs": ["r2"], "quote": "Urząd Gminy Stawiguda"}]},
+  "applicants": {"status": "stated", "self": true, "other_person": true, "entity": true,
+                 "capacities": ["pelnomocnik"],
+                 "evidence": [{"quote": "Nazwa /Imię i nazwisko"}, {"quote": "NIP"},
+                              {"quote": "Adres siedziby lub miejsca zamieszkania"}, {"quote": "2.4. Dane pełnomocnika"}]},
+  "applicant_extras": [{"concept": "nip", "party": "entity", "required": false}],
+  "matter": [
+    {"title": "Informacje o opłacie skarbowej", "role": "matter/oplata", "fields": [
+      {"key": "data_uiszczenia_oplaty", "label": "Data uiszczenia opłaty", "type": "DATEPICKER",
+       "concept": "date", "required": true, "required_basis": "substance", "candidate": "c21", "conf": 0.9},
+      {"key": "wysokosc_oplaty", "label": "Wysokość opłaty", "type": "NUMBER", "concept": "amount_pln",
+       "required": true, "required_basis": "substance", "candidate": "c22", "conf": 0.85},
+      {"key": "nazwa_organu_w_ktorym_zaplacono_oplate", "label": "Nazwa organu, w którym zapłacono opłatę",
+       "type": "TEXT_FIELD", "required": true, "required_basis": "inferred", "candidate": "c23", "conf": 0.9}]},
+    {"title": "Uzasadnienie", "role": "matter/uzasadnienie", "fields": [
+      {"key": "uzasadnienie", "label": "Uzasadnienie", "type": "TEXTAREA", "required": true, "required_basis": "substance",
+       "hint": "Opisz, dlaczego opłata skarbowa została błędnie uiszczona.", "candidate": "c24", "conf": 0.9}]},
+    {"title": "Sposób zwrotu opłaty", "role": "matter/zwrot", "fields": [
+      {"key": "sposob_zwrotu", "label": "Wybierz sposób zwrotu opłaty", "type": "RADIO",
+       "options": ["Gotówką w kasie organu", "Przelewem na rachunek w banku"], "required": true, "required_basis": "paper",
+       "candidate": "c25"},
+      {"key": "numer_rachunku", "label": "Numer rachunku", "type": "TEXT_FIELD", "concept": "nrb", "length": 26,
+       "show_if": {"field": "sposob_zwrotu", "is": "Przelewem na rachunek w banku"}, "candidate": "c26"},
+      {"key": "dane_wlasciciela_rachunku", "label": "Dane właściciela rachunku", "type": "TEXT_FIELD",
+       "show_if": {"field": "sposob_zwrotu", "is": "Przelewem na rachunek w banku"}, "candidate": "c27"}]}
+  ],
+  "attachments": [{"label": "Dokument stwierdzający udzielenie pełnomocnictwa", "covered_by": "standard/pelnomocnictwo"},
+                  {"label": "Dowód uiszczenia opłaty skarbowej za pełnomocnictwo", "covered_by": "standard/oplata_skarbowa"}],
+  "declarations": {"consents": [], "clause": {"status": "not_found"}},
+  "fee": {"status": "not_found"},
+  "legal_basis": {"status": "stated", "value": "Art. 9 ustawy z dnia 16 listopada 2006 r. o opłacie skarbowej",
+                  "evidence": [{"quote": "Art. 9 ustawy z dnia 16 listopada 2006 r. o opłacie skarbowej"}]},
+  "dropped": [
+    {"what": "1. Instrukcja wypełnienia dokumentu", "reason": "PAPER_INSTRUCTION", "page": 1},
+    {"what": "2.1–2.4 dane wnioskodawcy i pełnomocnika", "reason": "COVERED_BY_STANDARD", "page": 1},
+    {"what": "8. Data i podpis wnioskodawcy", "reason": "SIGNATURE_AND_DATE", "page": 2}],
+  "warnings": [{"code": "REQUIRED_INFERRED", "page": 2, "detail": "nazwa_organu_w_ktorym_zaplacono_oplate"}]
+}
