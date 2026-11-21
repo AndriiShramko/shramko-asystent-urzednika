@@ -80,11 +80,20 @@ def test_docx_is_converted(client):
     assert post(client, "/v1/forms/convert", "a.docx", fx.docx()).status_code == 200
 
 
+def broken_png():
+    """A PNG whose header is fine (the guard passes it) and whose pixel data is cut off (the reader cannot decode it)."""
+    data = fx.png()
+    return data[:len(data) - 24]
+
+
 @pytest.mark.parametrize("name,data", [("a.jpg", fx.jpeg()), ("a.png", fx.png())])
-def test_a_format_without_a_reader_passes_the_guard_and_is_422(client, name, data):
-    # the guard accepts the eight formats; the pipeline has no reader for these yet and says so (WP-F0p)
-    body = problem(post(client, "/v1/forms/convert", name, data), 422, "UNREADABLE")
-    assert "jeszcze" in body["detail"]
+def test_an_image_passes_the_guard_and_is_read(client, name, data):
+    # images have a reader since WP-F2c: a valid one is answered with a form
+    assert post(client, "/v1/forms/convert", name, data).status_code == 200
+
+
+def test_an_unreadable_image_passes_the_guard_and_is_422(client):
+    problem(post(client, "/v1/forms/convert", "a.png", broken_png()), 422, "UNREADABLE")
 
 
 def test_report_is_multipart_mixed_with_form_and_meta(client):
@@ -108,19 +117,19 @@ def test_inspect_shows_what_the_guard_sees(client):
 
 def test_batch_streams_one_line_per_file_and_isolates_errors(client):
     body, ctype = fx.multipart([("file", "a.pdf", fx.pdf(), "application/pdf"), ("file", "b.pdf", fx.png(), "application/pdf"),
-                                ("file", "c.png", fx.png(), "image/png")])
+                                ("file", "c.png", broken_png(), "image/png")])
     r = client.post("/v1/batches", content=body, headers={"Content-Type": ctype, **auth()})
     lines = [json.loads(x) for x in r.text.splitlines()]
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/x-ndjson")
     assert [x["state"] for x in lines] == ["ok", "error", "error"] and lines[1]["code"] == "TYPE_MISMATCH"
-    assert lines[2]["code"] == "UNREADABLE"  # a PNG has no reader yet
+    assert lines[2]["code"] == "UNREADABLE"  # a truncated PNG cannot be decoded
     assert "name" not in lines[0] and len(lines[0]["name_sha256_16"]) == 16
 
 
 def test_batch_from_one_zip(client):
-    z = fx.zip_of({"one.pdf": fx.pdf(), "dir/two.png": fx.png(), "readme.txt": b"skip me"})
+    z = fx.zip_of({"one.pdf": fx.pdf(), "dir/two.png": broken_png(), "readme.txt": b"skip me"})
     r = post(client, "/v1/batches", "pack.zip", z, "application/zip")
-    assert [json.loads(x)["state"] for x in r.text.splitlines()] == ["ok", "error"]  # the PNG has no reader yet
+    assert [json.loads(x)["state"] for x in r.text.splitlines()] == ["ok", "error"]  # the truncated PNG cannot be decoded
 
 
 # ---- the seam ---------------------------------------------------------------------------------------------------
@@ -165,7 +174,7 @@ def test_wrong_extension_and_spoofs_through_http(client):
 def test_upper_case_extension_and_jpe_through_http(tmp_path, secret_file):
     c = make_client(tmp_path, secret_file)
     assert post(c, "/v1/forms/convert", "A.PDF", fx.pdf()).status_code == 200
-    problem(post(c, "/v1/forms/convert", "a.jpe", fx.jpeg()), 422, "UNREADABLE")  # accepted by the guard, no reader yet
+    assert post(c, "/v1/forms/convert", "a.jpe", fx.jpeg()).status_code == 200  # accepted by the guard, read as a JPEG
     strict = make_client(tmp_path, secret_file, STRICT_EXTENSIONS="true")
     problem(post(strict, "/v1/forms/convert", "a.jpe", fx.jpeg()), 415, "EXTENSION")
 

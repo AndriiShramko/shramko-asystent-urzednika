@@ -174,7 +174,8 @@ def read_options(s: Settings):
     """Settings -> the limits and thresholds of the readers."""
     from app.readers import ReadOptions
 
-    return ReadOptions(ocr_min_chars=s.ocr_min_chars, max_pages=s.max_pages, max_cells=s.max_cells)
+    return ReadOptions(ocr_min_chars=s.ocr_min_chars, max_pages=s.max_pages, max_cells=s.max_cells,
+                       max_pixels=s.max_pixels, ocr_lang=s.ocr_langs)  # no timeout setting exists: ocr_timeout keeps its default
 
 
 def compose_options(s: Settings):

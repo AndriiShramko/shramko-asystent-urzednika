@@ -157,14 +157,13 @@ def test_a_sheet_or_binary_word_file_gives_a_form_that_passes_the_gate(client, f
     assert errors_of(form) == []
 
 
-def test_a_png_has_no_reader_yet_and_is_not_answered_with_a_form(client):
+def test_a_truncated_png_is_not_answered_with_a_form(client):
     from PIL import Image
 
     buf = io.BytesIO()
     Image.new("RGB", (8, 8), "white").save(buf, "PNG")
-    r = post(client, "a.png", buf.getvalue())
-    assert r.status_code == 422 and r.json()["code"] == "UNREADABLE"
-    assert "jeszcze" in r.json()["detail"] and "tabs" not in r.json()
+    r = post(client, "a.png", buf.getvalue()[:-24])
+    assert r.status_code == 422 and r.json()["code"] == "UNREADABLE" and "tabs" not in r.json()
 
 
 def test_a_doc_that_holds_a_docx_is_read_as_a_docx(client):

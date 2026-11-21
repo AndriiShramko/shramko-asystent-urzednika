@@ -3,20 +3,37 @@
   "readers": [
     "doc",
     "docx",
+    "jpeg",
     "ods",
     "pdf",
+    "png",
     "xlsx"
   ],
   "summary": {
-    "no_reader": 27,
-    "read": 42
+    "read": 69
   },
   "files": [
     {
       "set": "reference-01-numer-porzadkowy",
       "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości (1).png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 12,
+      "rects": 3,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.492
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -35,7 +52,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.005
+      "seconds": 0.008
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -54,19 +71,51 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.007
+      "seconds": 0.012
     },
     {
       "set": "reference-01-numer-porzadkowy",
       "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 12,
+      "rects": 3,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.44
     },
     {
       "set": "reference-01-numer-porzadkowy",
       "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 12,
+      "rects": 3,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.425
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -85,7 +134,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.011
+      "seconds": 0.018
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -104,7 +153,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.292
+      "seconds": 0.4
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -123,7 +172,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.013
+      "seconds": 0.017
     },
     {
       "set": "reference-05-nadplata-podatku",
@@ -143,7 +192,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.008
+      "seconds": 0.01
     },
     {
       "set": "reference-05-nadplata-podatku",
@@ -162,19 +211,49 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.007
+      "seconds": 0.01
     },
     {
       "set": "reference-05-nadplata-podatku",
       "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 72,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.102
     },
     {
       "set": "reference-05-nadplata-podatku",
       "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.JPG",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 86,
+      "rects": 0,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.101
     },
     {
       "set": "reference-05-nadplata-podatku",
@@ -193,7 +272,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.006
+      "seconds": 0.008
     },
     {
       "set": "reference-05-nadplata-podatku",
@@ -212,13 +291,28 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.09
+      "seconds": 0.109
     },
     {
       "set": "reference-05-nadplata-podatku",
       "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PNG",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 84,
+      "rects": 2,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.112
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -239,7 +333,7 @@
       "warnings": [
         "UNREADABLE_PART"
       ],
-      "seconds": 0.009
+      "seconds": 0.011
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -258,19 +352,51 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.092
+      "seconds": 0.126
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
       "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 176,
+      "rects": 66,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.409
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
       "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 176,
+      "rects": 66,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.408
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -289,7 +415,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.015
+      "seconds": 0.02
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -308,13 +434,29 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.119
+      "seconds": 0.152
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
       "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 176,
+      "rects": 66,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.474
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -333,7 +475,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.008
+      "seconds": 0.013
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
@@ -354,7 +496,7 @@
       "warnings": [
         "UNREADABLE_PART"
       ],
-      "seconds": 0.002
+      "seconds": 0.004
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
@@ -373,19 +515,49 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.006
+      "seconds": 0.008
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
       "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 9,
+      "rects": 1,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.214
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
       "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 9,
+      "rects": 1,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.193
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
@@ -404,7 +576,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.002
+      "seconds": 0.003
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
@@ -423,13 +595,28 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.033
+      "seconds": 0.04
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
       "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 9,
+      "rects": 1,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.191
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
@@ -448,7 +635,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.003
+      "seconds": 0.004
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
@@ -467,7 +654,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.005
+      "seconds": 0.004
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
@@ -486,19 +673,49 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.005
+      "seconds": 0.006
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
       "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 10,
+      "rects": 4,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.199
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
       "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 9,
+      "rects": 4,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.201
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
@@ -517,7 +734,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.009
+      "seconds": 0.013
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
@@ -536,13 +753,28 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.049
+      "seconds": 0.064
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
       "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 1,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 10,
+      "rects": 4,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.202
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
@@ -561,7 +793,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.016
+      "seconds": 0.018
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
@@ -580,7 +812,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.005
+      "seconds": 0.007
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
@@ -599,19 +831,51 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.009
+      "seconds": 0.012
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
       "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 12,
+      "rects": 11,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.44
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
       "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 12,
+      "rects": 11,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.461
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
@@ -630,7 +894,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.011
+      "seconds": 0.014
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
@@ -649,13 +913,29 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.168
+      "seconds": 0.269
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
       "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 12,
+      "rects": 11,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.421
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
@@ -674,7 +954,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.012
+      "seconds": 0.014
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
@@ -694,19 +974,51 @@
       "tables": 2,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.013
+      "seconds": 0.018
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
       "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPE",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 55,
+      "rects": 66,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.453
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
       "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPG",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 55,
+      "rects": 66,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.468
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
@@ -725,7 +1037,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.05
+      "seconds": 0.032
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
@@ -744,13 +1056,29 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.23
+      "seconds": 0.287
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
       "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PNG",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 2,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 55,
+      "rects": 66,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 0.467
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -771,7 +1099,7 @@
       "warnings": [
         "UNREADABLE_PART"
       ],
-      "seconds": 0.042
+      "seconds": 0.052
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -790,19 +1118,59 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.334
+      "seconds": 0.467
     },
     {
       "set": "judged-08-deklaracja-odpady",
       "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 6,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 592,
+      "rects": 479,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 1.549
     },
     {
       "set": "judged-08-deklaracja-odpady",
       "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 6,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 592,
+      "rects": 478,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 1.502
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -821,7 +1189,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.171
+      "seconds": 0.207
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -840,13 +1208,33 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.868
+      "seconds": 1.325
     },
     {
       "set": "judged-08-deklaracja-odpady",
       "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 6,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 592,
+      "rects": 479,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 1.377
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -865,7 +1253,7 @@
       "tables": 1,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.197
+      "seconds": 0.23
     },
     {
       "set": "judged-09-stypendium-sportowe",
@@ -884,7 +1272,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.027
+      "seconds": 0.032
     },
     {
       "set": "judged-09-stypendium-sportowe",
@@ -903,19 +1291,79 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.046
+      "seconds": 0.057
     },
     {
       "set": "judged-09-stypendium-sportowe",
       "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpeg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 16,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 174,
+      "rects": 90,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 2.923
     },
     {
       "set": "judged-09-stypendium-sportowe",
       "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpg",
       "format": "jpeg",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 16,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 174,
+      "rects": 90,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 2.781
     },
     {
       "set": "judged-09-stypendium-sportowe",
@@ -934,7 +1382,7 @@
       "tables": 4,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.033
+      "seconds": 0.085
     },
     {
       "set": "judged-09-stypendium-sportowe",
@@ -953,13 +1401,43 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.743
+      "seconds": 0.787
     },
     {
       "set": "judged-09-stypendium-sportowe",
       "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.png",
       "format": "png",
-      "status": "no_reader"
+      "status": "read",
+      "reader": "image.raster",
+      "pages": 16,
+      "origins": [
+        "ocr"
+      ],
+      "runs": 0,
+      "runs_with_box": 0,
+      "lines": 174,
+      "rects": 90,
+      "tables": 0,
+      "widgets": 0,
+      "warnings": [
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART",
+        "UNREADABLE_PART"
+      ],
+      "seconds": 2.785
     },
     {
       "set": "judged-09-stypendium-sportowe",
@@ -978,7 +1456,7 @@
       "tables": 4,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.046
+      "seconds": 0.048
     }
   ]
 }
