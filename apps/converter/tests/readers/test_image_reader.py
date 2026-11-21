@@ -88,7 +88,7 @@ def test_decode_lays_transparency_on_white():
 def test_decode_refuses_other_formats_and_big_images_before_decoding():
     gif = io.BytesIO()
     Image.new("L", (5, 5)).save(gif, format="GIF")
-    with pytest.raises(ReaderError) as e:
+    with pytest.raises(ReaderError) as e:  # decode() is the JPEG/PNG door; the other formats use decode_frames()
         _raster.decode(gif.getvalue(), ReadOptions())
     assert e.value.code == "UNREADABLE"
     big = png_bytes(Image.new("L", (2000, 2000), 255))

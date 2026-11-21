@@ -19,14 +19,25 @@ NAME_FORBIDDEN = set(";:><\\/|'*%$")
 # Direction overrides, embeddings, isolates and marks: a name must never reorder its own display.
 NAME_BIDI = set("‎‏؜‪‫‬‭‮⁦⁧⁨⁩")
 
-EXTENSIONS = ("pdf", "doc", "docx", "ods", "xlsx", "jpg", "jpeg", "png")
-KIND_OF_EXT = {"jpeg": "jpeg", "jpg": "jpeg"}  # the other extensions are their own kind
+EXTENSIONS = ("pdf", "doc", "docx", "ods", "odt", "xlsx", "jpg", "jpeg", "png", "tif", "tiff", "bmp", "gif", "webp")
+KIND_OF_EXT = {"jpeg": "jpeg", "jpg": "jpeg", "tif": "tiff"}  # the other extensions are their own kind
+# Formats we recognise by content and refuse on purpose, with the reason shown to the person (WP-F20e).
+REFUSED_EXT = {
+    "heic": "heic", "heif": "heic",
+}
+HEIC_REASON = ("Zdjęcia HEIC/HEIF nie są obsługiwane (nie mamy dekodera na wolnej licencji). "
+               "Zapisz zdjęcie jako JPG (na telefonie: udostępnij lub eksportuj jako JPG) i wyślij ponownie.")
+IMAGE_KINDS = ("jpeg", "png", "tiff", "bmp", "gif", "webp")
+PILLOW_FORMAT = {"jpeg": "JPEG", "png": "PNG", "tiff": "TIFF", "bmp": "BMP", "gif": "GIF", "webp": "WEBP"}
+HEIC_BRANDS = {b"heic", b"heix", b"hevc", b"hevx", b"heim", b"heis", b"hevm", b"hevs", b"mif1", b"msf1"}
 KIND_LABEL = {
     "pdf": "dokument PDF", "docx": "dokument DOCX", "xlsx": "arkusz XLSX", "ods": "arkusz ODS",
     "doc": "dokument Word (DOC)", "jpeg": "obraz JPEG", "png": "obraz PNG", "zip": "archiwum ZIP",
+    "odt": "dokument ODT", "tiff": "obraz TIFF", "bmp": "obraz BMP", "gif": "obraz GIF", "webp": "obraz WEBP",
+    "heic": "zdjęcie HEIC/HEIF (zapisz je jako JPG)",
     "ole": "plik OLE innego typu (na przykład stary arkusz)",
 }
-ZIP_FORMATS = ("docx", "xlsx", "ods")
+ZIP_FORMATS = ("docx", "xlsx", "ods", "odt")
 MIME = {
     "pdf": {"application/pdf"},
     "docx": {"application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
@@ -35,6 +46,11 @@ MIME = {
     "doc": {"application/msword"},
     "jpeg": {"image/jpeg", "image/jpg", "image/pjpeg"},
     "png": {"image/png"},
+    "odt": {"application/vnd.oasis.opendocument.text"},
+    "tiff": {"image/tiff", "image/x-tiff"},
+    "bmp": {"image/bmp", "image/x-ms-bmp", "image/x-bmp"},
+    "gif": {"image/gif"},
+    "webp": {"image/webp"},
 }
 ZIP_MIME = {"application/zip", "application/x-zip-compressed"}
 NEUTRAL_MIME = {"", "application/octet-stream", "binary/octet-stream"}
@@ -85,6 +101,8 @@ def check_extension(name: str, strict: bool) -> tuple[str, str]:
     ext = name.rsplit(".", 1)[1].lower() if "." in name else ""
     if ext == "jpe" and not strict:
         return ext, "jpeg"
+    if ext in REFUSED_EXT:
+        raise ProblemError("EXTENSION", HEIC_REASON)
     if ext not in EXTENSIONS:
         raise ProblemError("EXTENSION", "Obsługiwane rozszerzenia: " + ", ".join(EXTENSIONS) + ".")
     return ext, ext
@@ -120,8 +138,11 @@ def _zip_kinds(zf: zipfile.ZipFile) -> set[str]:
         out.add("xlsx")
     if "mimetype" in names:
         with zf.open("mimetype") as f:
-            if f.read(100).strip() == b"application/vnd.oasis.opendocument.spreadsheet":
-                out.add("ods")
+            mime = f.read(100).strip()
+        if mime == b"application/vnd.oasis.opendocument.spreadsheet":
+            out.add("ods")
+        elif mime == b"application/vnd.oasis.opendocument.text":
+            out.add("odt")
     return out or {"zip"}
 
 
@@ -204,6 +225,16 @@ def sniff_kinds(data: bytes, settings: Settings | None = None) -> set[str]:
         kinds.add("jpeg")
     if data.startswith(b"\x89PNG\r\n\x1a\n"):
         kinds.add("png")
+    if data[:4] in (b"II*\x00", b"MM\x00*"):
+        kinds.add("tiff")
+    if data[:6] in (b"GIF87a", b"GIF89a"):
+        kinds.add("gif")
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        kinds.add("webp")
+    if data[:2] == b"BM" and len(data) >= 26 and struct.unpack_from("<I", data, 14)[0] in (12, 40, 52, 56, 64, 108, 124):
+        kinds.add("bmp")
+    if data[4:8] == b"ftyp" and data[8:12] in HEIC_BRANDS:
+        kinds.add("heic")
     if data.startswith(OLE_MAGIC):
         kinds.add(_ole_kind(data))
     if zipfile.is_zipfile(io.BytesIO(data)) and not _embedded_in_ole(data):
@@ -213,15 +244,22 @@ def sniff_kinds(data: bytes, settings: Settings | None = None) -> set[str]:
 
 
 def _check_image(kind: str, data: bytes, settings: Settings) -> None:
-    """Header only: decodable, one frame, within MAX_PIXELS. The pixels are never decoded here."""
+    """Header only: decodable, within MAX_PIXELS, one frame (a multi-page TIFF may have up to max_pages; a GIF or WEBP
+    with more frames is read at its first frame). The pixels are never decoded here."""
     from PIL import Image
 
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            with Image.open(io.BytesIO(data), formats=["JPEG" if kind == "jpeg" else "PNG"]) as im:
+            with Image.open(io.BytesIO(data), formats=[PILLOW_FORMAT[kind]]) as im:
                 w, h = im.size
                 frames = getattr(im, "n_frames", 1)
+                if kind == "tiff":
+                    over = 0
+                    for i in range(min(frames, settings.max_pages + 1)):
+                        im.seek(i)
+                        over = max(over, im.size[0] * im.size[1])
+                    w, h = over, 1
     except Image.DecompressionBombError as exc:
         raise ProblemError("TOO_MANY_PIXELS", "Obraz ma za dużo pikseli.",
                            limits={"max_pixels": settings.max_pixels}) from exc
@@ -229,7 +267,11 @@ def _check_image(kind: str, data: bytes, settings: Settings) -> None:
         raise ProblemError("UNREADABLE", "Nie udało się odczytać nagłówka obrazu.") from exc
     if w * h > settings.max_pixels:
         raise ProblemError("TOO_MANY_PIXELS", f"Obraz ma {w}x{h} pikseli.", limits={"max_pixels": settings.max_pixels})
-    if frames != 1:
+    if kind == "tiff":
+        if frames > settings.max_pages:
+            raise ProblemError("TOO_LARGE", f"Obraz ma {frames} stron, limit to {settings.max_pages}.",
+                               limits={"max_pages": settings.max_pages})
+    elif kind not in ("gif", "webp") and frames != 1:
         raise ProblemError("TYPE_MISMATCH", "Obraz z wieloma klatkami (animacja) nie jest obsługiwany.")
 
 
@@ -256,6 +298,8 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         # Measured on the partner's sets: two forms named .DOC hold a DOCX package (set 7 and reference 5). The
         # content proof is exact, so the file is read as the DOCX it is; the caller sees kind docx, ext doc.
         kind = "docx"
+    if kinds == {"heic"}:
+        raise ProblemError("TYPE_MISMATCH", HEIC_REASON)
     if len(kinds) > 1:
         raise ProblemError("TYPE_MISMATCH", "Plik spełnia dowody kilku formatów naraz (" + ", ".join(sorted(kinds)) + ").")
     if kinds != {kind}:
@@ -263,7 +307,7 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         what = f"a zawartość to {actual}" if actual else "a zawartość nie jest rozpoznanym formatem"
         raise ProblemError("TYPE_MISMATCH", f"Rozszerzenie .{written}, {what}.")
 
-    if kind in ("jpeg", "png"):
+    if kind in IMAGE_KINDS:
         _check_image(kind, data, settings)
 
     if declared_type:

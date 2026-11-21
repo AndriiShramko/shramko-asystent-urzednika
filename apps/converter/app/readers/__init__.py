@@ -33,6 +33,10 @@ from ._base import Ids, ReaderError, ReadOptions, ReadResult
 __all__ = ["read_document", "register", "register_hook", "hook", "formats", "ReaderError", "ReadOptions",
            "ReadResult", "Ids"]
 
+# The page-model contract (app.model.common.Format) names seven kinds; the formats added later are recorded under
+# the nearest one until the lead extends it (request in docs/03-plan/wip/WP-F20e.status.md). `reader` tells them apart.
+MODEL_FORMAT = {"tiff": "png", "bmp": "png", "gif": "png", "webp": "png", "odt": "docx"}
+
 ReaderFn = Callable[[bytes, ReadOptions], ReadResult]
 
 _READERS: dict[str, ReaderFn] = {}
@@ -89,7 +93,7 @@ def read_document(data: bytes, fmt: str, options: ReadOptions | Mapping[str, Any
         if len(result.pages) > opts.max_pages:
             raise ReaderError("TOO_LARGE", f"{len(result.pages)} pages, the limit is {opts.max_pages}")
         return PageModel(
-            source=Source(sha256=hashlib.sha256(data).hexdigest(), format=fmt, reader=result.reader,
+            source=Source(sha256=hashlib.sha256(data).hexdigest(), format=MODEL_FORMAT.get(fmt, fmt), reader=result.reader,
                           pages=len(result.pages)),
             pages=result.pages,
             warnings=result.warnings,

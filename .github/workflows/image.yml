@@ -37,8 +37,8 @@ env:
   IMAGE: ghcr.io/andriishramko/shramko-asystent-urzednika
   # THE ONE LINE: extensions that must convert to a form. Every other synthetic fixture must be refused with a
   # typed refusal (HTTP 422 UNREADABLE; the command line exits non-zero, no traceback) and a form is a failure.
-  # The lead extends this line when the readers for xlsx ods doc png jpg jpeg are merged.
-  READY_FORMATS: "pdf docx xlsx ods doc"
+  # The lead extends this line when a reader for another format is merged.
+  READY_FORMATS: "pdf docx xlsx ods doc png jpg jpeg odt tiff bmp gif webp"
   GRYPE_VERSION: "0.122.1"
   GRYPE_SHA256: "f1ba7e2917ee1395618de20a98da0aa7c0fb1788927797651047c50502a37538"
   PYTHONUTF8: "1"

@@ -1,4 +1,4 @@
-"""Reader of JPEG and PNG scans, and the image way of a PDF page without text (design 6.2, 6.2.2; WP-F2c).
+"""Reader of JPEG, PNG, TIFF, BMP, GIF and WEBP scans (WP-F2c, WP-F20e: the last four), and the image way of a PDF page without text (design 6.2, 6.2.2; WP-F2c).
 
     scan (1654 px wide, pages stacked) -> decode with limits -> cut into A4 pages -> per page: OCR words with boxes and
     confidence, raster lines, boxes, combs and leaders -> pages of origin "ocr", sizes in points (200 dpi).
@@ -104,6 +104,40 @@ def read_jpeg(data: bytes, options: ReadOptions) -> ReadResult:
 @register("png")
 def read_png(data: bytes, options: ReadOptions) -> ReadResult:
     return _read(data, options)
+
+
+def _read_frames(data: bytes, options: ReadOptions, kind: str) -> ReadResult:
+    """TIFF, BMP, GIF, WEBP: one frame is one page (GIF and WEBP: the first frame only), no cutting."""
+    ids = Ids()
+    pages: list[Page] = []
+    warnings: list[Warning] = []
+    for i, grey in enumerate(_raster.decode_frames(data, options, kind), 1):
+        page, warns = read_strip(grey, i, ids, options)
+        pages.append(page)
+        warnings.extend(warns)
+        del grey
+    reader = "image.ocr" if _ocr.get_engine() is not None else "image.raster"
+    return ReadResult(reader=reader, pages=pages, warnings=warnings)
+
+
+@register("tiff")
+def read_tiff(data: bytes, options: ReadOptions) -> ReadResult:
+    return _read_frames(data, options, "tiff")
+
+
+@register("bmp")
+def read_bmp(data: bytes, options: ReadOptions) -> ReadResult:
+    return _read_frames(data, options, "bmp")
+
+
+@register("gif")
+def read_gif(data: bytes, options: ReadOptions) -> ReadResult:
+    return _read_frames(data, options, "gif")
+
+
+@register("webp")
+def read_webp(data: bytes, options: ReadOptions) -> ReadResult:
+    return _read_frames(data, options, "webp")
 
 
 def _read(data: bytes, options: ReadOptions) -> ReadResult:
