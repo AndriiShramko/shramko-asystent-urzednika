@@ -279,14 +279,23 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
             number = index + 1
             chars = page.chars
             ink = sum(1 for c in chars if c.get("text") and not c["text"].isspace())
+            no_ocr: list[Warning] = []
             if ink < options.ocr_min_chars and image_way is not None:
-                pages.append(image_way(data, index, number, ids, options))
-                warnings.append(Warning(code="OCR_USED", page=number,
-                                        detail=f"{ink} characters of text; the page was read from its pixels"))
-                continue
+                got = image_way(data, index, number, ids, options)
+                page_, extra = got if isinstance(got, tuple) else (got, [])
+                if page_.runs or not extra:
+                    pages.append(page_)
+                    warnings.extend(extra)
+                    warnings.append(Warning(code="OCR_USED", page=number,
+                                            detail=f"{ink} characters of text; the page was read from its pixels"))
+                    continue
+                # the image way read nothing (no engine, a failure): the native few characters stay, the reason is told
+                no_ocr = extra
             runs = _runs(chars, ids)
             lines, rects = _vectors(page, ids)
-            if ink < options.ocr_min_chars:
+            if no_ocr:
+                warnings.extend(no_ocr)
+            elif ink < options.ocr_min_chars:
                 warnings.append(Warning(
                     code="UNREADABLE_PART", page=number,
                     detail=f"{ink} characters of text, fewer than {options.ocr_min_chars}: the page needs the image "
