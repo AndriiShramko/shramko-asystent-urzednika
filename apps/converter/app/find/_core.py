@@ -33,6 +33,12 @@ TICKED_CHARS = "☑☒"
 _I = re.IGNORECASE
 LEAD_RE = re.compile(r"[.…_\x00](?:[ \xa0]?[.…_\x00])*")
 MARK_RE = re.compile("[" + BOX_CHARS + TICKED_CHARS + "]")
+# Symbol-font glyphs (private use area) that sets 3 and 9 print before each option of a list: a mark only at the
+# start of a line and before a word. A symbol bullet (U+F0B7, U+F0A7) is not one of them.
+PUA_MARKS = ""
+TOP_LINES = 3
+PUA_RE = re.compile(r"^\s*([" + PUA_MARKS + r"])\s*(?=\w)")
+NUM_HEAD = re.compile(r"^(?:\d{1,2}(?:\.\d{1,2})*\.|[IVX]{1,4}\.|[A-Z]\.)\s+[A-ZĄĆĘŁŃÓŚŹŻ]")
 FURNITURE = re.compile(r"^(?:strona|str\.)\s*\d+\s*(?:(?:z|/)\s*\d+)?$|\bstrona\s+\d+\s+z\s+\d+\b|^wersja\b"
                        r"|^załącznik\s+nr\s+\S+\s+do\b", _I)
 PAGE_NO = re.compile(r"^-?\s*\d{1,3}\s*-?$")
@@ -166,6 +172,9 @@ class Finder:
         self.sections: list[S] = []
         self.warn: list[tuple[str, D | None, str]] = []
         self.run_lines: dict[str, list[TLine]] = {}
+        # lines of body text seen so far on each page: a numbered line that is not bold is a heading only among
+        # the first lines of its page (set 9 PDF starts every section on a new page; set 8 numbers its labels)
+        self.page_rank: dict[int, int] = {}
 
     # ------------------------------------------------------------------ 1. lines, boxes, order
 
@@ -176,6 +185,9 @@ class Finder:
             if s.count(".") + s.count("_") + 3 * s.count("…") + 8 * s.count(TAB_LEADER) >= self.o.min_leader:
                 out.append((m.start(), m.end(), "lead"))
         out += [(m.start(), m.end(), "mark") for m in MARK_RE.finditer(ln.view)]
+        pua = PUA_RE.match(ln.view)
+        if pua:
+            out.append((pua.start(1), pua.end(1), "mark"))
         return sorted(out)
 
     def read(self) -> None:
@@ -225,6 +237,12 @@ class Finder:
             m = NUM.match(lead) or LET.match(lead)
             if m and WORD.search(m.group(2)):
                 return m.group(1), m.group(2).strip()
+        top = self.page_rank.get(ln.page, 0) < TOP_LINES
+        if top and NUM_HEAD.match(full) and len(full.split()) <= 10 and full[-1] not in ".:,;":
+            # a numbered heading that is not bold (set 9 PDF): "1. Wnioskodawca", "II. Wniosek o ..."
+            m = NUM.match(full) or LET.match(full)
+            if m and WORD.search(m.group(2)):
+                return m.group(1).rstrip("."), m.group(2).strip()
         cand = lead or full
         letters = [ch for ch in cand if ch.isalpha()]
         if cand.endswith(".") or not letters or any(ch != ch.upper() for ch in letters):
@@ -233,9 +251,20 @@ class Finder:
             return None, cand
         return None
 
+    @staticmethod
+    def wraps(head: TLine | None, ln: TLine) -> bool:
+        """A line of one or two words right under a heading, not left of its text and not numbered, continues it."""
+        if head is None or head.role != "heading" or ln.toks or head.box is None or ln.box is None or head.page != ln.page:
+            return False
+        t = ln.text.strip()
+        height = head.box[3] - head.box[1]
+        return (0 < len(t.split()) <= 2 and t[:1].isupper() and t[-1:] not in ".:;," and not NUM_HEAD.match(t + " X")
+                and 0 <= ln.box[1] - head.box[3] <= height and ln.box[0] >= head.box[0] - 2)
+
     def roles(self) -> None:
         clause = instr = False
         cur: S | None = None
+        prev: TLine | None = None
         for p, ln in self.ordered():
             t = ln.text.strip()
             regions = {a.run.region for a in ln.atoms}
@@ -251,7 +280,16 @@ class Finder:
             if CLAUSE_START.search(t):
                 clause, ln.role = True, "clause"
                 continue
+            if cur is not None and cur.lines[-1] is prev and self.wraps(prev, ln):
+                # "I. Wniosek o ... Rady Miasta" / "Zgierza": the heading goes on in a short line under it
+                cur.lines.append(ln)
+                cur.title = f"{cur.title} {t}"
+                ln.role, ln.used = "heading", True
+                prev = ln
+                continue
+            prev = ln
             head = self.heading_of(ln)
+            self.page_rank[ln.page] = self.page_rank.get(ln.page, 0) + 1
             if clause:
                 # the clause lasts until a heading of the form or a line that is only a leader (a signature line);
                 # dots inside its sentences are not places to fill
