@@ -1,0 +1,421 @@
+{
+  "description": "Golden list of the converter evaluation. Paths are relative to the folder returned by tools.coi_paths.coi_dir(); the files are local only and never in git.",
+  "reference": [
+    {
+      "id": "reference-01-numer-porzadkowy",
+      "inputs": [
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości (1).png",
+          "format": "png",
+          "size": 505304
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.doc",
+          "format": "doc",
+          "size": 44032
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.docx",
+          "format": "docx",
+          "size": 21883
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpeg",
+          "format": "jpeg",
+          "size": 777577
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.jpg",
+          "format": "jpg",
+          "size": 550028
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.ods",
+          "format": "ods",
+          "size": 24611
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.pdf",
+          "format": "pdf",
+          "size": 87588
+        },
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości.xlsx",
+          "format": "xlsx",
+          "size": 12570
+        }
+      ],
+      "expected": {
+        "path": "reference-01-numer-porzadkowy/konfiguracja_form_wniosekOUstalenieNumeruPorządkowegoNieruchomości (1).json",
+        "format": "json",
+        "size": 95692
+      },
+      "visualisation": [
+        {
+          "path": "reference-01-numer-porzadkowy/Wniosek o ustalenie numeru porządkowego nieruchomości – wizualizacja formularza po cyfryzacji .docx",
+          "format": "docx",
+          "size": 547316
+        }
+      ]
+    },
+    {
+      "id": "reference-05-nadplata-podatku",
+      "inputs": [
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.DOC",
+          "format": "doc",
+          "size": 21826
+        },
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.docx",
+          "format": "docx",
+          "size": 21929
+        },
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.jpeg",
+          "format": "jpeg",
+          "size": 245575
+        },
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.JPG",
+          "format": "jpg",
+          "size": 188528
+        },
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.ODS",
+          "format": "ods",
+          "size": 18545
+        },
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PDF",
+          "format": "pdf",
+          "size": 133029
+        },
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku.PNG",
+          "format": "png",
+          "size": 886324
+        }
+      ],
+      "expected": {
+        "path": "reference-05-nadplata-podatku/konfiguracja_form_wniosekOStwierdzenieNadpłatyPodatkuHacknation (2).json",
+        "format": "json",
+        "size": 103568
+      },
+      "visualisation": [
+        {
+          "path": "reference-05-nadplata-podatku/Wniosek o stwierdzenie nadpłaty podatku - wizualizacja formularza cyfrowego (1).docx",
+          "format": "docx",
+          "size": 546353
+        }
+      ]
+    }
+  ],
+  "judged": [
+    {
+      "id": "judged-02-zwrot-oplaty-skarbowej",
+      "inputs": [
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.doc",
+          "format": "doc",
+          "size": 622080
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.docx",
+          "format": "docx",
+          "size": 53347
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpeg",
+          "format": "jpeg",
+          "size": 638690
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.jpg",
+          "format": "jpg",
+          "size": 486240
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.ods",
+          "format": "ods",
+          "size": 24953
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.pdf",
+          "format": "pdf",
+          "size": 55873
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.png",
+          "format": "png",
+          "size": 311795
+        },
+        {
+          "path": "judged-02-zwrot-oplaty-skarbowej/Wniosek o zwrot opłaty skarbowej.xlsx",
+          "format": "xlsx",
+          "size": 10006
+        }
+      ]
+    },
+    {
+      "id": "judged-03-wydanie-zaswiadczenia",
+      "inputs": [
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.doc",
+          "format": "doc",
+          "size": 35328
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.docx",
+          "format": "docx",
+          "size": 20564
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpeg",
+          "format": "jpeg",
+          "size": 380809
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.jpg",
+          "format": "jpg",
+          "size": 267868
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.ods",
+          "format": "ods",
+          "size": 4914
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.pdf",
+          "format": "pdf",
+          "size": 71891
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.png",
+          "format": "png",
+          "size": 222470
+        },
+        {
+          "path": "judged-03-wydanie-zaswiadczenia/Wniosek o wydanie zaświadczenia.xlsx",
+          "format": "xlsx",
+          "size": 13344
+        }
+      ]
+    },
+    {
+      "id": "judged-04-wynajecie-swietlicy",
+      "inputs": [
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.doc",
+          "format": "doc",
+          "size": 30720
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.docx",
+          "format": "docx",
+          "size": 19310
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpeg",
+          "format": "jpeg",
+          "size": 447406
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.jpg",
+          "format": "jpg",
+          "size": 312570
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.ods",
+          "format": "ods",
+          "size": 23629
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.pdf",
+          "format": "pdf",
+          "size": 65231
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.png",
+          "format": "png",
+          "size": 261609
+        },
+        {
+          "path": "judged-04-wynajecie-swietlicy/Wniosek o wynajęcie świetlicy.xlsx",
+          "format": "xlsx",
+          "size": 13006
+        }
+      ]
+    },
+    {
+      "id": "judged-06-zajecie-pasa-drogowego",
+      "inputs": [
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.doc",
+          "format": "doc",
+          "size": 45056
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.docx",
+          "format": "docx",
+          "size": 9105
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpeg",
+          "format": "jpeg",
+          "size": 1112264
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.jpg",
+          "format": "jpg",
+          "size": 766089
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.ods",
+          "format": "ods",
+          "size": 26941
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.pdf",
+          "format": "pdf",
+          "size": 194867
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.png",
+          "format": "png",
+          "size": 666381
+        },
+        {
+          "path": "judged-06-zajecie-pasa-drogowego/Wniosek o wydanie zezwolenia na zajęcie pasa drogowego.xlsx",
+          "format": "xlsx",
+          "size": 12162
+        }
+      ]
+    },
+    {
+      "id": "judged-07-psy-rasy-agresywne",
+      "inputs": [
+        {
+          "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.DOC",
+          "format": "doc",
+          "size": 13522
+        },
+        {
+          "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPE",
+          "format": "jpeg",
+          "size": 1471512
+        },
+        {
+          "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.JPG",
+          "format": "jpg",
+          "size": 1009090
+        },
+        {
+          "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.ODS",
+          "format": "ods",
+          "size": 40556
+        },
+        {
+          "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PDF",
+          "format": "pdf",
+          "size": 127981
+        },
+        {
+          "path": "judged-07-psy-rasy-agresywne/Wniosek o wydanie zezwolenia na hodowanie lub utrzymywanie psów ras uznawanychza agresywne.PNG",
+          "format": "png",
+          "size": 819995
+        }
+      ]
+    },
+    {
+      "id": "judged-08-deklaracja-odpady",
+      "inputs": [
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.doc",
+          "format": "doc",
+          "size": 791552
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.docx",
+          "format": "docx",
+          "size": 194571
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpeg",
+          "format": "jpeg",
+          "size": 4814119
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.jpg",
+          "format": "jpg",
+          "size": 3327126
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.ods",
+          "format": "ods",
+          "size": 70083
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.pdf",
+          "format": "pdf",
+          "size": 687466
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.png",
+          "format": "png",
+          "size": 2815351
+        },
+        {
+          "path": "judged-08-deklaracja-odpady/Deklaracja o wysokości opłaty.xlsx",
+          "format": "xlsx",
+          "size": 77046
+        }
+      ]
+    },
+    {
+      "id": "judged-09-stypendium-sportowe",
+      "inputs": [
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.doc",
+          "format": "doc",
+          "size": 82432
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.docx",
+          "format": "docx",
+          "size": 39702
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpeg",
+          "format": "jpeg",
+          "size": 6681824
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.jpg",
+          "format": "jpg",
+          "size": 4661696
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.ods",
+          "format": "ods",
+          "size": 26347
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.pdf",
+          "format": "pdf",
+          "size": 419346
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.png",
+          "format": "png",
+          "size": 3127987
+        },
+        {
+          "path": "judged-09-stypendium-sportowe/Wniosek o przyznanie stypendium.xlsx",
+          "format": "xlsx",
+          "size": 34628
+        }
+      ]
+    }
+  ]
+}
