@@ -47,6 +47,15 @@ Written by the first lead session of the build on 21 November 2026. [`STATUS.md`
 - **Context:** the first turn of a lead costs about 120 thousand tokens (prompt, tools, skills); the program lead's rule hands over at that start plus about 100 thousand. Two agent reports and one STATUS rewrite fill most of it: delegate every read over 10 KB, keep reports to 15 lines.
 - **The owner may write to the build lead directly.** Answer him in Russian (rule 13), record what he decides (D25 came this way) and tell the program lead.
 
+### Learned by the fourth build lead (21 November, 17:26 to 17:55)
+
+- **The publishing check flags password-like shapes, not only identifiers.** "second pass): status" in a status title stopped a merge with exit 4 (`secret_like`, masked as a hash with the match length). `python tools/lead/scan_lines.py FILE` gives the line; reword it, `git add`, re-run the same `merge.sh` (the merge stays staged).
+- **A branch checked out in a stopped agent's worktree cannot be moved** (`git branch -f` is refused): brief the next agent to work inside that worktree path and commit there. Restore `eval/chain/summary.json` first: every chain run overwrites it.
+- **OCR in the image needs a writable `/tmp`.** With `--read-only` and no `--tmpfs /tmp` every image is refused as UNREADABLE in 2 to 3 s; with it a set PNG converts in 10 s. CI had the flag, the README did not (fixed in `9e5638a`); the image fix (`VOLUME /tmp` or equal, plus a check without the flag) is in WP-F20f stage 2. `eval.chain --image` fails on every file because it runs `python -m converter` past the image's entry point: use `tmp/image_run_all.sh <ref>` (add `--tmpfs /tmp`) until WP-F11b fixes it.
+- **The chain counts fields, not labels.** The independent review of F3b found two regressions the chain could not see (a one-word label glued to a heading; "osobiście" turning a company applicant into a person). Keep one review per package; a direct `wp-builder` fixes such findings in 7 minutes.
+- **The wave workflow failed twice on F3b** (opus stages commit but return no structured report). Direct agents per stage work: `wp-thinker` on opus for a core, `wp-builder` on sonnet for acceptance and fixes, `wp-reviewer` for the review.
+- **Context:** this lead started at 129 thousand tokens and reached the limit in 30 minutes: two reviews, four agent launches, a dozen peer messages and notices. Answer peer messages in one line and read no report twice.
+
 ## 4. What comes next, in order
 
 1. (Second lead, 17:04) Merge WP-F3b and WP-F20e when they report; the rest of the order is in the STATUS handoff block, which wins over this list.

@@ -1,9 +1,9 @@
 {
  "corpora": {
   "hostile": {
-   "converted": 0,
+   "converted": 1,
    "failed": 0,
-   "fields": 0,
+   "fields": 49,
    "fields_matter": 0,
    "files": 7,
    "formats": {
@@ -17,7 +17,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 1,
-     "seconds": 0.04,
+     "seconds": 0.07,
      "warnings": {}
     },
     "ods": {
@@ -30,7 +30,7 @@
      "lint_errors": 0,
      "no_label": 0,
      "refused": 1,
-     "seconds": 0.08,
+     "seconds": 0.23,
      "warnings": {}
     },
     "pdf": {
@@ -47,31 +47,45 @@
      "warnings": {}
     },
     "png": {
-     "converted": 0,
+     "converted": 1,
      "failed": 0,
-     "fields": 0,
+     "fields": 49,
      "fields_matter": 0,
      "files": 2,
      "gate_failed": 0,
      "lint_errors": 0,
      "no_label": 0,
-     "refused": 2,
-     "seconds": 0.28,
-     "warnings": {}
+     "refused": 1,
+     "seconds": 1.05,
+     "warnings": {
+      "ADDRESSEE_MISSING": 1,
+      "APPLICANTS_ASSUMED": 1,
+      "BRIEF_NOT_READ": 1,
+      "CLAUSE_LINK_MISSING": 1,
+      "NO_MATTER": 1,
+      "TITLE_MISSING": 1
+     }
     }
    },
    "gate_failed": 0,
    "lint_errors": 0,
    "no_label": 0,
-   "refused": 7,
-   "seconds": 0.4,
-   "warnings": {}
+   "refused": 6,
+   "seconds": 1.35,
+   "warnings": {
+    "ADDRESSEE_MISSING": 1,
+    "APPLICANTS_ASSUMED": 1,
+    "BRIEF_NOT_READ": 1,
+    "CLAUSE_LINK_MISSING": 1,
+    "NO_MATTER": 1,
+    "TITLE_MISSING": 1
+   }
   },
   "sets": {
-   "converted": 44,
+   "converted": 71,
    "failed": 0,
-   "fields": 2794,
-   "fields_matter": 989,
+   "fields": 4044,
+   "fields_matter": 910,
    "files": 71,
    "formats": {
     "doc": {
@@ -84,7 +98,7 @@
      "lint_errors": 0,
      "no_label": 83,
      "refused": 0,
-     "seconds": 5.43,
+     "seconds": 6.77,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "ADDRESSEE_MISSING": 2,
@@ -104,14 +118,14 @@
     "docx": {
      "converted": 10,
      "failed": 0,
-     "fields": 592,
-     "fields_matter": 161,
+     "fields": 595,
+     "fields_matter": 166,
      "files": 10,
      "gate_failed": 0,
      "lint_errors": 0,
-     "no_label": 152,
+     "no_label": 150,
      "refused": 0,
-     "seconds": 7.09,
+     "seconds": 9.95,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "ADDRESSEE_MISSING": 3,
@@ -119,163 +133,195 @@
       "APPLICANTS_ASSUMED": 2,
       "CLAUSE_LINK_MISSING": 10,
       "INFERRED_SHAPE": 12,
-      "LABEL_NOT_FOUND": 142,
+      "LABEL_NOT_FOUND": 140,
       "LABEL_RAW": 10,
       "LOW_CONFIDENCE": 1,
-      "REQUIRED_INFERRED": 113,
+      "REQUIRED_INFERRED": 116,
       "SECTION_SPLIT": 1,
       "STEP_NOTE_ADDED": 4
      }
     },
     "jpe": {
-     "converted": 0,
+     "converted": 1,
      "failed": 0,
-     "fields": 0,
+     "fields": 49,
      "fields_matter": 0,
      "files": 1,
      "gate_failed": 0,
      "lint_errors": 0,
      "no_label": 0,
-     "refused": 1,
-     "seconds": 0.22,
-     "warnings": {}
+     "refused": 0,
+     "seconds": 1.4,
+     "warnings": {
+      "ADDRESSEE_MISSING": 1,
+      "APPLICANTS_ASSUMED": 1,
+      "BRIEF_NOT_READ": 1,
+      "CLAUSE_LINK_MISSING": 1,
+      "NO_MATTER": 1,
+      "TITLE_MISSING": 1,
+      "UNREADABLE_PART": 2
+     }
     },
     "jpeg": {
-     "converted": 0,
+     "converted": 8,
      "failed": 0,
-     "fields": 0,
+     "fields": 392,
      "fields_matter": 0,
      "files": 8,
      "gate_failed": 0,
      "lint_errors": 0,
      "no_label": 0,
-     "refused": 8,
-     "seconds": 1.56,
-     "warnings": {}
+     "refused": 0,
+     "seconds": 16.33,
+     "warnings": {
+      "ADDRESSEE_MISSING": 8,
+      "APPLICANTS_ASSUMED": 8,
+      "BRIEF_NOT_READ": 8,
+      "CLAUSE_LINK_MISSING": 8,
+      "NO_MATTER": 8,
+      "TITLE_MISSING": 8,
+      "UNREADABLE_PART": 31
+     }
     },
     "jpg": {
-     "converted": 0,
+     "converted": 9,
      "failed": 0,
-     "fields": 0,
+     "fields": 441,
      "fields_matter": 0,
      "files": 9,
      "gate_failed": 0,
      "lint_errors": 0,
      "no_label": 0,
-     "refused": 9,
-     "seconds": 1.84,
-     "warnings": {}
+     "refused": 0,
+     "seconds": 17.66,
+     "warnings": {
+      "ADDRESSEE_MISSING": 9,
+      "APPLICANTS_ASSUMED": 9,
+      "BRIEF_NOT_READ": 9,
+      "CLAUSE_LINK_MISSING": 9,
+      "NO_MATTER": 9,
+      "TITLE_MISSING": 9,
+      "UNREADABLE_PART": 33
+     }
     },
     "ods": {
      "converted": 9,
      "failed": 0,
-     "fields": 631,
-     "fields_matter": 261,
+     "fields": 598,
+     "fields_matter": 225,
      "files": 9,
      "gate_failed": 0,
      "lint_errors": 0,
-     "no_label": 20141,
+     "no_label": 20135,
      "refused": 0,
-     "seconds": 7.54,
+     "seconds": 10.04,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
-      "APPLICANTS_ASSUMED": 2,
+      "APPLICANTS_ASSUMED": 1,
       "CLAUSE_LINK_MISSING": 9,
       "INFERRED_SHAPE": 15,
-      "LABEL_NOT_FOUND": 20134,
+      "LABEL_NOT_FOUND": 20128,
       "LABEL_RAW": 7,
-      "REQUIRED_INFERRED": 194,
+      "REQUIRED_INFERRED": 170,
       "SECTION_SPLIT": 6
      }
     },
     "pdf": {
      "converted": 9,
      "failed": 0,
-     "fields": 577,
-     "fields_matter": 211,
+     "fields": 567,
+     "fields_matter": 199,
      "files": 9,
      "gate_failed": 0,
      "lint_errors": 0,
-     "no_label": 98,
+     "no_label": 94,
      "refused": 0,
-     "seconds": 11.43,
+     "seconds": 14.37,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
       "ADDRESSEE_MISSING": 1,
-      "AMBIGUOUS_GROUP": 12,
-      "APPLICANTS_ASSUMED": 1,
+      "AMBIGUOUS_GROUP": 11,
       "CLAUSE_LINK_MISSING": 9,
-      "INFERRED_SHAPE": 12,
-      "LABEL_NOT_FOUND": 86,
+      "INFERRED_SHAPE": 14,
+      "LABEL_NOT_FOUND": 82,
       "LABEL_RAW": 12,
       "LOW_CONFIDENCE": 2,
-      "REQUIRED_INFERRED": 150,
-      "SECTION_SPLIT": 2
+      "REQUIRED_INFERRED": 141,
+      "SECTION_SPLIT": 1,
+      "STEP_NOTE_ADDED": 7
      }
     },
     "png": {
-     "converted": 0,
+     "converted": 9,
      "failed": 0,
-     "fields": 0,
+     "fields": 441,
      "fields_matter": 0,
      "files": 9,
      "gate_failed": 0,
      "lint_errors": 0,
      "no_label": 0,
-     "refused": 9,
-     "seconds": 1.73,
-     "warnings": {}
+     "refused": 0,
+     "seconds": 16.26,
+     "warnings": {
+      "ADDRESSEE_MISSING": 9,
+      "APPLICANTS_ASSUMED": 9,
+      "BRIEF_NOT_READ": 9,
+      "CLAUSE_LINK_MISSING": 9,
+      "NO_MATTER": 9,
+      "TITLE_MISSING": 9,
+      "UNREADABLE_PART": 33
+     }
     },
     "xlsx": {
      "converted": 7,
      "failed": 0,
-     "fields": 509,
-     "fields_matter": 232,
+     "fields": 476,
+     "fields_matter": 196,
      "files": 7,
      "gate_failed": 0,
      "lint_errors": 0,
-     "no_label": 18009,
+     "no_label": 18003,
      "refused": 0,
-     "seconds": 6.48,
+     "seconds": 7.97,
      "warnings": {
       "ADDRESSEE_CONFLICT": 1,
-      "APPLICANTS_ASSUMED": 1,
       "CLAUSE_LINK_MISSING": 7,
       "INFERRED_SHAPE": 8,
-      "LABEL_NOT_FOUND": 18002,
+      "LABEL_NOT_FOUND": 17996,
       "LABEL_RAW": 7,
-      "REQUIRED_INFERRED": 175,
+      "REQUIRED_INFERRED": 151,
       "SECTION_SPLIT": 5
      }
     }
    },
    "gate_failed": 0,
    "lint_errors": 0,
-   "no_label": 38483,
-   "refused": 27,
-   "seconds": 43.32,
+   "no_label": 38465,
+   "refused": 0,
+   "seconds": 100.75,
    "warnings": {
     "ADDRESSEE_CONFLICT": 5,
-    "ADDRESSEE_MISSING": 6,
-    "AMBIGUOUS_GROUP": 25,
-    "APPLICANTS_ASSUMED": 8,
-    "BRIEF_NOT_READ": 1,
-    "CLAUSE_LINK_MISSING": 44,
-    "INFERRED_SHAPE": 52,
-    "LABEL_NOT_FOUND": 38438,
+    "ADDRESSEE_MISSING": 33,
+    "AMBIGUOUS_GROUP": 24,
+    "APPLICANTS_ASSUMED": 32,
+    "BRIEF_NOT_READ": 28,
+    "CLAUSE_LINK_MISSING": 71,
+    "INFERRED_SHAPE": 54,
+    "LABEL_NOT_FOUND": 38420,
     "LABEL_RAW": 45,
     "LOW_CONFIDENCE": 3,
-    "NO_MATTER": 1,
-    "REQUIRED_INFERRED": 715,
-    "SECTION_SPLIT": 16,
-    "STEP_NOTE_ADDED": 4,
-    "UNREADABLE_PART": 3
+    "NO_MATTER": 28,
+    "REQUIRED_INFERRED": 661,
+    "SECTION_SPLIT": 15,
+    "STEP_NOTE_ADDED": 11,
+    "TITLE_MISSING": 27,
+    "UNREADABLE_PART": 102
    }
   },
   "unseen": {
-   "converted": 72,
+   "converted": 73,
    "failed": 0,
-   "fields": 4109,
+   "fields": 4158,
    "fields_matter": 785,
    "files": 80,
    "formats": {
@@ -289,7 +335,7 @@
      "lint_errors": 0,
      "no_label": 89,
      "refused": 0,
-     "seconds": 11.99,
+     "seconds": 17.13,
      "warnings": {
       "ADDRESSEE_MISSING": 10,
       "AMBIGUOUS_GROUP": 2,
@@ -316,7 +362,7 @@
      "lint_errors": 0,
      "no_label": 357,
      "refused": 0,
-     "seconds": 13.75,
+     "seconds": 16.74,
      "warnings": {
       "ADDRESSEE_MISSING": 13,
       "APPLICANTS_ASSUMED": 17,
@@ -332,17 +378,25 @@
      }
     },
     "jpg": {
-     "converted": 0,
+     "converted": 1,
      "failed": 0,
-     "fields": 0,
+     "fields": 49,
      "fields_matter": 0,
      "files": 1,
      "gate_failed": 0,
      "lint_errors": 0,
      "no_label": 0,
-     "refused": 1,
-     "seconds": 0.18,
-     "warnings": {}
+     "refused": 0,
+     "seconds": 1.15,
+     "warnings": {
+      "ADDRESSEE_MISSING": 1,
+      "APPLICANTS_ASSUMED": 1,
+      "BRIEF_NOT_READ": 1,
+      "CLAUSE_LINK_MISSING": 1,
+      "NO_MATTER": 1,
+      "TITLE_MISSING": 1,
+      "UNREADABLE_PART": 1
+     }
     },
     "pdf": {
      "converted": 32,
@@ -354,7 +408,7 @@
      "lint_errors": 0,
      "no_label": 1460,
      "refused": 1,
-     "seconds": 45.24,
+     "seconds": 69.66,
      "warnings": {
       "ADDRESSEE_MISSING": 23,
       "AMBIGUOUS_GROUP": 65,
@@ -368,7 +422,7 @@
       "NO_MATTER": 5,
       "REQUIRED_INFERRED": 376,
       "SECTION_SPLIT": 12,
-      "TITLE_MISSING": 15,
+      "TITLE_MISSING": 14,
       "UNREADABLE_PART": 29
      }
     },
@@ -408,7 +462,7 @@
      "lint_errors": 0,
      "no_label": 86,
      "refused": 0,
-     "seconds": 0.92,
+     "seconds": 1.22,
      "warnings": {
       "CLAUSE_LINK_MISSING": 1,
       "INFERRED_SHAPE": 1,
@@ -421,54 +475,54 @@
    "gate_failed": 0,
    "lint_errors": 0,
    "no_label": 1992,
-   "refused": 8,
-   "seconds": 72.08,
+   "refused": 7,
+   "seconds": 105.9,
    "warnings": {
-    "ADDRESSEE_MISSING": 46,
+    "ADDRESSEE_MISSING": 47,
     "AMBIGUOUS_GROUP": 67,
-    "APPLICANTS_ASSUMED": 57,
-    "BRIEF_NOT_READ": 19,
-    "CLAUSE_LINK_MISSING": 72,
+    "APPLICANTS_ASSUMED": 58,
+    "BRIEF_NOT_READ": 20,
+    "CLAUSE_LINK_MISSING": 73,
     "INFERRED_SHAPE": 41,
     "LABEL_NOT_FOUND": 1875,
     "LABEL_RAW": 117,
     "LOW_CONFIDENCE": 30,
-    "NO_MATTER": 19,
+    "NO_MATTER": 20,
     "REQUIRED_INFERRED": 576,
     "SECTION_SPLIT": 16,
     "TITLE_MISSING": 19,
-    "UNREADABLE_PART": 34
+    "UNREADABLE_PART": 35
    }
   }
  },
  "total": {
-  "converted": 116,
+  "converted": 145,
   "failed": 0,
-  "fields": 6903,
-  "fields_matter": 1774,
+  "fields": 8251,
+  "fields_matter": 1695,
   "files": 158,
   "gate_failed": 0,
   "lint_errors": 0,
-  "no_label": 40475,
-  "refused": 42,
-  "seconds": 115.8,
+  "no_label": 40457,
+  "refused": 13,
+  "seconds": 208.0,
   "warnings": {
    "ADDRESSEE_CONFLICT": 5,
-   "ADDRESSEE_MISSING": 52,
-   "AMBIGUOUS_GROUP": 92,
-   "APPLICANTS_ASSUMED": 65,
-   "BRIEF_NOT_READ": 20,
-   "CLAUSE_LINK_MISSING": 116,
-   "INFERRED_SHAPE": 93,
-   "LABEL_NOT_FOUND": 40313,
+   "ADDRESSEE_MISSING": 81,
+   "AMBIGUOUS_GROUP": 91,
+   "APPLICANTS_ASSUMED": 91,
+   "BRIEF_NOT_READ": 49,
+   "CLAUSE_LINK_MISSING": 145,
+   "INFERRED_SHAPE": 95,
+   "LABEL_NOT_FOUND": 40295,
    "LABEL_RAW": 162,
    "LOW_CONFIDENCE": 33,
-   "NO_MATTER": 20,
-   "REQUIRED_INFERRED": 1291,
-   "SECTION_SPLIT": 32,
-   "STEP_NOTE_ADDED": 4,
-   "TITLE_MISSING": 19,
-   "UNREADABLE_PART": 37
+   "NO_MATTER": 49,
+   "REQUIRED_INFERRED": 1237,
+   "SECTION_SPLIT": 31,
+   "STEP_NOTE_ADDED": 11,
+   "TITLE_MISSING": 47,
+   "UNREADABLE_PART": 137
   }
  }
 }

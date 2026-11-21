@@ -7,7 +7,7 @@
   },
   "counts": {
     "pages": 4,
-    "fields": 39,
+    "fields": 40,
     "source_pages": 1
   },
   "warnings": [
@@ -20,7 +20,7 @@
         524.0,
         428.89
       ],
-      "candidate": "c7",
+      "candidate": "c13",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -33,14 +33,21 @@
         524.0,
         490.99
       ],
-      "candidate": "c9",
+      "candidate": "c15",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
     {
+      "code": "AMBIGUOUS_GROUP",
+      "page": 1,
+      "candidate": "c6",
+      "evidence": [],
+      "detail": "the paper does not say whether one or several options may be marked; several are allowed"
+    },
+    {
       "code": "REQUIRED_INFERRED",
       "page": 1,
-      "field": "inne",
+      "field": "prosze_o_wydanie_zaswiadczenia_o",
       "candidate": "c6",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
@@ -49,13 +56,18 @@
       "code": "REQUIRED_INFERRED",
       "page": 1,
       "field": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
-      "candidate": "c8",
+      "candidate": "c14",
       "evidence": [],
       "detail": "the paper does not say whether this is required; marked required by our rule"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
       "detail": "no https address of the information clause is known; the consent names the clause without a link"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "CHECKBOX: no export shows one",
+      "field": "5a940314-1163-5fd9-b119-df2c030c4c38"
     }
   ],
   "checks": [
@@ -165,7 +177,8 @@
       "bbdb05d2-cade-540a-82f3-001e481549ca": "standard",
       "2b76b398-0448-537f-a78b-1560d4612c55": "standard",
       "ac451406-554d-5573-b10f-9a3e7590b027": "paper",
-      "193074b6-dfea-59ae-b0bf-9a9a53ae7953": "paper",
+      "5a940314-1163-5fd9-b119-df2c030c4c38": "paper",
+      "33a9644e-1eb3-50c0-a160-552532087f4e": "paper",
       "182a9e81-62c4-55e8-999d-6b7688744ba1": "paper",
       "bc584220-207b-54a6-97ab-6eb581504f41": "paper",
       "22fe023d-bc59-5c08-ae04-f31bbfb4b384": "paper",
@@ -179,13 +192,14 @@
       "f6b558b3-fe2d-5990-8694-45f3cea2db97": "standard"
     },
     "brief_keys": {
-      "193074b6-dfea-59ae-b0bf-9a9a53ae7953": "inne",
+      "5a940314-1163-5fd9-b119-df2c030c4c38": "prosze_o_wydanie_zaswiadczenia_o",
+      "33a9644e-1eb3-50c0-a160-552532087f4e": "prosze_o_wydanie_zaswiadczenia_o_inne",
       "182a9e81-62c4-55e8-999d-6b7688744ba1": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
     },
     "ledger": {
-      "blanks_found": 10,
-      "became_field": 2,
-      "merged": 2,
+      "blanks_found": 16,
+      "became_field": 3,
+      "merged": 7,
       "covered_by_standard": 4,
       "left_out": 2,
       "awaiting_decision": 0,
@@ -218,27 +232,62 @@
         {
           "candidate": "c6",
           "fate": "FIELD",
-          "field": "193074b6-dfea-59ae-b0bf-9a9a53ae7953"
+          "field": "5a940314-1163-5fd9-b119-df2c030c4c38"
         },
         {
           "candidate": "c7",
           "fate": "MERGED",
           "into": "c6",
-          "why": "LINE_BLOCK"
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c8",
-          "fate": "FIELD",
-          "field": "182a9e81-62c4-55e8-999d-6b7688744ba1"
+          "fate": "MERGED",
+          "into": "c6",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c9",
           "fate": "MERGED",
-          "into": "c8",
-          "why": "LINE_BLOCK"
+          "into": "c6",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c10",
+          "fate": "MERGED",
+          "into": "c6",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c11",
+          "fate": "MERGED",
+          "into": "c6",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c12",
+          "fate": "FIELD",
+          "field": "33a9644e-1eb3-50c0-a160-552532087f4e"
+        },
+        {
+          "candidate": "c13",
+          "fate": "MERGED",
+          "into": "c12",
+          "why": "LINE_BLOCK"
+        },
+        {
+          "candidate": "c14",
+          "fate": "FIELD",
+          "field": "182a9e81-62c4-55e8-999d-6b7688744ba1"
+        },
+        {
+          "candidate": "c15",
+          "fate": "MERGED",
+          "into": "c14",
+          "why": "LINE_BLOCK"
+        },
+        {
+          "candidate": "c16",
           "fate": "LEFT_OUT",
           "reason": "SIGNATURE_AND_DATE"
         }
