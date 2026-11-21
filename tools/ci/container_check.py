@@ -21,6 +21,12 @@
    non-ready fixture HTTP 422 with code UNREADABLE.
 4. Final image: configured user not root, exactly one exposed port, no secret-like variable in the environment
    or in the history (the layer commands).
+5. WP-F20i. The image environment pins one OCR thread, the C.UTF-8 locale and UTC, and the C library inside
+   accepts that locale (asked, not assumed: glibc and musl differ). Every converted fixture also gives its
+   sidecar, checked by tools/ci/sidecarcheck.py. One OCR raster and one PDF are converted twice with one
+   processor and twice with two: all forms byte-equal, all sidecars byte-equal. Small hostile files made by
+   tools/ci/hostile_inputs.py must each be refused within 10 s: exit 2 with problem JSON on the command line,
+   a 4xx problem JSON over HTTP, and the service still healthy afterwards.
 
 The token key is random per run, lives in a temporary folder and is never printed. Exit 1 when a check fails.
 Writes a Markdown table to $GITHUB_STEP_SUMMARY when that variable is set.
@@ -47,8 +53,10 @@ import uuid
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import hostile_inputs  # noqa: E402
 import make_fixtures  # noqa: E402
 from formcheck import problems_of_form, problems_of_pair  # noqa: E402
+from sidecarcheck import differences_from_contract, problems_of_sidecar  # noqa: E402
 
 READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp",
                           "rtf", "xls", "txt"})   # heic and heif need the decoder: the workflow adds them per target
@@ -56,8 +64,12 @@ READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "j
 HARDENED = ["--network", "none", "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
             "--tmpfs", "/tmp:rw,size=128m", "--pids-limit", "256", "--memory", "1g"]
 
+REQUIRED_ENV = {"OMP_THREAD_LIMIT": "1", "OMP_NUM_THREADS": "1", "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8", "TZ": "UTC"}
+REFUSAL_SECONDS = 10.0   # a hostile file is answered within this, the start of its container included
+EXIT_REFUSED = 2         # app/cli.py: 0 done, 2 refused (problem JSON on stderr), 3 configuration, 4 disk
+
 PROBE = r"""
-import json, os, socket
+import json, os, socket, locale, time
 def writable(p):
     try:
         with open(p, 'w') as f: f.write('x')
@@ -71,10 +83,39 @@ try:
     socket.create_connection(('192.0.2.1', 80), timeout=3).close(); conn = 'connected'
 except OSError as e:
     conn = type(e).__name__
+try:
+    loc = locale.setlocale(locale.LC_ALL, '')   # the C library is asked for the locale the environment names
+    codeset = locale.nl_langinfo(locale.CODESET)
+except (locale.Error, ValueError) as e:
+    loc, codeset = 'ERROR ' + type(e).__name__, ''
 print(json.dumps({'uid': os.getuid(), 'gid': os.getgid(), 'euid': os.geteuid(), 'status': st,
     'root_writable': writable('/probe'), 'app_writable': writable(os.getcwd() + '/probe'),
-    'tmp_writable': writable('/tmp/probe'), 'ifaces': sorted(os.listdir('/sys/class/net')), 'connect': conn}))
+    'tmp_writable': writable('/tmp/probe'), 'ifaces': sorted(os.listdir('/sys/class/net')), 'connect': conn,
+    'env': {k: os.environ.get(k) for k in ('OMP_THREAD_LIMIT', 'OMP_NUM_THREADS', 'LANG', 'LC_ALL', 'TZ')},
+    'locale': loc, 'codeset': codeset, 'utc_offset': time.strftime('%z'),
+    'epoch_hour': time.localtime(0).tm_hour}))
 """
+
+
+def problems_of_image_env(cfg: dict) -> list[str]:
+    """cfg is `docker image inspect` .Config: the image itself must pin the threads, the locale and the zone."""
+    env = dict(e.partition("=")[::2] for e in cfg.get("Env") or [])
+    return [f"{name} is {env.get(name)!r} in the image environment, expected {want!r}"
+            for name, want in REQUIRED_ENV.items() if env.get(name) != want]
+
+
+def problems_of_locale(p: dict) -> list[str]:
+    """What the probe must show about the process: the variables arrive, the C library accepts the locale and
+    answers UTF-8, the clock is UTC."""
+    out = [f"{name} is {(p.get('env') or {}).get(name)!r} inside the container, expected {want!r}"
+           for name, want in REQUIRED_ENV.items() if (p.get("env") or {}).get(name) != want]
+    if str(p.get("locale", "")).startswith("ERROR") or not p.get("locale"):
+        out.append(f"the C library refused the locale of the environment ({p.get('locale')})")
+    if str(p.get("codeset", "")).upper().replace("-", "") != "UTF8":
+        out.append(f"the locale's character set is {p.get('codeset')!r}, not UTF-8")
+    if p.get("utc_offset") != "+0000" or p.get("epoch_hour") != 0:
+        out.append(f"the local time is not UTC (offset {p.get('utc_offset')}, hour of the epoch {p.get('epoch_hour')})")
+    return out
 
 
 def problems_of_probe(p: dict) -> list[str]:
@@ -160,6 +201,8 @@ def check_image_config(image: str, res: Results) -> None:
             problems_of_image_config(cfg, history),
             f"USER {cfg.get('User')}, ports {sorted((cfg.get('ExposedPorts') or {}))}, "
             f"{len(cfg.get('Env') or [])} variables, {len(history)} layers")
+    res.add("final image environment: one OCR thread, C.UTF-8, UTC", problems_of_image_env(cfg),
+            " ".join(f"{k}={v}" for k, v in REQUIRED_ENV.items()))
 
 
 def check_probe(image: str, res: Results) -> None:
@@ -171,6 +214,9 @@ def check_probe(image: str, res: Results) -> None:
     res.add("hardened container: not root, no capabilities, read-only root, no network", problems_of_probe(probe),
             f"uid={probe['uid']} gid={probe['gid']} CapEff={probe['status'].get('CapEff')} "
             f"ifaces={probe['ifaces']} connect={probe['connect']}")
+    res.add("inside the container: the C library accepts the locale (UTF-8), the clock is UTC, one OCR thread",
+            problems_of_locale(probe),
+            f"setlocale -> {probe.get('locale')}, codeset {probe.get('codeset')}, offset {probe.get('utc_offset')}")
 
 
 def ext_of(path: Path) -> str:
@@ -207,23 +253,134 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
                     problems_of_refusal(cp.returncode, cp.stdout, cp.stderr),
                     f"exit {cp.returncode}, {len(cp.stdout)} bytes on stdout")
             continue
-        outs = []
-        for _ in range(2):
-            t0 = time.monotonic()
-            cp = docker("run", "--rm", *HARDENED, *mount, image, "convert", f"/in/{path.name}", timeout=180)
-            outs.append((cp, time.monotonic() - t0))
-        cp, secs = outs[0]
+        t0 = time.monotonic()
+        cp = docker("run", "--rm", *HARDENED, *mount, image, "convert", f"/in/{path.name}", timeout=180)
+        secs = time.monotonic() - t0
         if cp.returncode != 0:
             res.add(f"convert {path.name} with --network none", [
                 f"exit {cp.returncode}; stderr: {cp.stderr.decode(errors='replace')[-300:]}"])
             continue
-        problems = problems_of_form(cp.stdout.rstrip(b"\n"))
-        problems += problems_of_pair(cp.stdout, outs[1][0].stdout)
-        if cp.stderr.strip():
-            problems.append(f"stderr not empty: {cp.stderr.decode(errors='replace')[-200:]}")
+        # the second conversion also asks for the sidecar: the same command line, plus --report
+        second, form2, sidecar = convert_with_sidecar(image, mount, path.name)
+        problems = conversion_problems(cp.stdout, cp.stderr, second.returncode, form2, sidecar)
         res.add(f"convert {path.name} with --network none", problems,
                 f"{len(cp.stdout)} bytes, sha256 {hashlib.sha256(cp.stdout).hexdigest()[:12]}, {secs:.1f} s, "
-                "keys title/tabs/flow, lint strict clean, same bytes twice")
+                f"keys title/tabs/flow, lint strict clean, same bytes twice; sidecar {len(sidecar)} bytes valid "
+                f"({differences_from_contract(sidecar)} rules of the full contract not met yet)")
+
+
+SIDECAR_SCRIPT = 'python -m converter convert "/in/$0" --report /tmp/report && cat "/tmp/report/$1.meta.json"'
+
+
+def convert_with_sidecar(image: str, mount: list[str], name: str, extra: tuple[str, ...] = ()
+                         ) -> tuple[subprocess.CompletedProcess, bytes, bytes]:
+    """One hardened conversion through the command line that also writes the sidecar (--report into the tmpfs)
+    and prints it after the form. Returns the process, the form bytes and the sidecar bytes."""
+    cp = docker("run", "--rm", *HARDENED, *extra, *mount, "--entrypoint", "sh", image, "-c", SIDECAR_SCRIPT,
+                name, Path(name).stem, timeout=180)
+    form, _, sidecar = cp.stdout.partition(b"\n")   # the form is one line of compact JSON
+    return cp, form, sidecar
+
+
+def conversion_problems(first_stdout: bytes, first_stderr: bytes, second_exit: int, second_form: bytes,
+                        sidecar: bytes) -> list[str]:
+    """What two conversions of one fixture must show: a passing form, the same bytes twice, a valid sidecar."""
+    form = first_stdout.rstrip(b"\n")
+    problems = problems_of_form(form)
+    if first_stderr.strip():
+        problems.append(f"stderr not empty: {first_stderr.decode(errors='replace')[-200:]}")
+    if second_exit != 0:
+        return problems + [f"the conversion with --report exits {second_exit}"]
+    return problems + problems_of_pair(form, second_form) + problems_of_sidecar(sidecar, second_form)
+
+
+CPU_LIMITS = (("one processor", ("--cpus", "1", "--cpuset-cpus", "0")), ("two processors", ("--cpus", "2")))
+
+
+def problems_of_runs(runs: list[tuple[str, int, bytes, bytes]]) -> list[str]:
+    """runs: (label, exit code, form bytes, sidecar bytes) of the same input under different processor limits."""
+    out = [f"{label}: exit {code}" for label, code, _, _ in runs if code != 0]
+    if out:
+        return out
+    if len({form for _, _, form, _ in runs}) != 1:
+        out.append("the form bytes differ between runs: " + ", ".join(
+            f"{label} {hashlib.sha256(form).hexdigest()[:8]}" for label, _, form, _ in runs))
+    if len({side for _, _, _, side in runs}) != 1:
+        out.append("the sidecar bytes differ between runs: " + ", ".join(
+            f"{label} {hashlib.sha256(side).hexdigest()[:8]}" for label, _, _, side in runs))
+    if not runs or not runs[0][2] or not runs[0][3]:
+        out.append("a run gave no form or no sidecar")
+    return out
+
+
+def check_determinism(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
+    """One OCR raster and one PDF, each converted twice with one processor (--cpus 1 on one core) and twice with
+    two: eight conversions, the form and the sidecar must be the same bytes in all four of a file."""
+    mount = ["-v", f"{fixtures.resolve()}:/in:ro"]
+    for name in ("wniosek.png", "wniosek.pdf"):
+        if not (fixtures / name).exists() or ext_of(Path(name)) not in ready:
+            continue
+        runs = []
+        for label, flags in CPU_LIMITS:
+            for n in (1, 2):
+                cp, form, sidecar = convert_with_sidecar(image, mount, name, flags)
+                if cp.returncode != 0:
+                    print(cp.stderr.decode(errors="replace")[-300:])
+                runs.append((f"{label} run {n}", cp.returncode, form, sidecar))
+        res.add(f"deterministic {name}: twice with one processor, twice with two, form and sidecar byte-equal",
+                problems_of_runs(runs) + (problems_of_form(runs[0][2]) if runs[0][1] == 0 else []),
+                f"form sha256 {hashlib.sha256(runs[0][2]).hexdigest()[:12]}, "
+                f"sidecar sha256 {hashlib.sha256(runs[0][3]).hexdigest()[:12]}, {len(runs)} conversions")
+
+
+def problem_of(text: bytes) -> dict | None:
+    """The problem JSON of a refusal (the last line of stderr, or an HTTP body); None when it is not one."""
+    try:
+        doc = json.loads(text.decode("utf-8").strip().splitlines()[-1])
+    except (UnicodeDecodeError, ValueError, IndexError):
+        return None
+    ok = isinstance(doc, dict) and isinstance(doc.get("code"), str) and isinstance(doc.get("status"), int)
+    return doc if ok else None
+
+
+def problems_of_hostile_cli(returncode: int | None, stdout: bytes, stderr: bytes, seconds: float) -> list[str]:
+    """A hostile file on the command line: refused with exit 2 and problem JSON, in time. None = it never ended."""
+    if returncode is None:
+        return [f"no answer in {seconds:.0f} s: the conversion hangs"]
+    out = problems_of_refusal(returncode, stdout, stderr)
+    if returncode not in (0, EXIT_REFUSED):
+        out.append(f"exit {returncode}, not the refusal code {EXIT_REFUSED} (a crash, not a refusal)")
+    doc = problem_of(stderr)
+    if returncode != 0 and (doc is None or not 400 <= doc["status"] < 500):
+        out.append("stderr does not end with a problem JSON of a 4xx refusal")
+    if seconds > REFUSAL_SECONDS:
+        out.append(f"answered in {seconds:.1f} s, over {REFUSAL_SECONDS:.0f} s")
+    return out
+
+
+def check_hostile_cli(image: str, res: Results) -> Path:
+    """Every hostile file through the command line in a hardened container. Returns the folder (the HTTP half
+    reuses the files; the caller removes it)."""
+    tmp = Path(tempfile.mkdtemp(prefix="convhostile"))
+    files = hostile_inputs.build(tmp)
+    os.chmod(tmp, 0o755)
+    for f in files.values():
+        os.chmod(f, 0o644)
+    for fname in sorted(files):
+        cname = "convhostile-" + uuid.uuid4().hex[:8]
+        t0 = time.monotonic()
+        try:
+            cp = docker("run", "--rm", "--name", cname, *HARDENED, "-v", f"{tmp}:/in:ro", image, "convert",
+                        f"/in/{fname}", timeout=60)
+            code, out, err = cp.returncode, cp.stdout, cp.stderr
+        except subprocess.TimeoutExpired:
+            docker("rm", "-f", cname)
+            code, out, err = None, b"", b""
+        secs = time.monotonic() - t0
+        doc = problem_of(err) or {}
+        res.add(f"hostile {fname} on the command line: refused in time, exit {EXIT_REFUSED}, problem JSON",
+                problems_of_hostile_cli(code, out, err, secs), f"exit {code}, {doc.get('code')}, {secs:.1f} s")
+    return tmp
 
 
 def check_ocr_without_tmpfs(image: str, fixtures: Path, res: Results) -> None:
@@ -322,6 +479,13 @@ def token(key: bytes | None, alg: str = "HS256", **claims) -> str:
 
 
 def post_file(url: str, name: str, data: bytes, bearer: str | None) -> tuple[int, bytes]:
+    status, body, _, _ = post_file_full(url, name, data, bearer)
+    return status, body
+
+
+def post_file_full(url: str, name: str, data: bytes, bearer: str | None, timeout: float = 60
+                   ) -> tuple[int, bytes, str, float]:
+    """Status, body, content type and seconds. Status 0 = no HTTP answer (time-out or a dropped connection)."""
     boundary = "b" + uuid.uuid4().hex
     body = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{name}\"\r\n"
             "Content-Type: application/octet-stream\r\n\r\n").encode() + data + f"\r\n--{boundary}--\r\n".encode()
@@ -329,11 +493,53 @@ def post_file(url: str, name: str, data: bytes, bearer: str | None) -> tuple[int
     if bearer:
         headers["Authorization"] = "Bearer " + bearer
     req = urllib.request.Request(url, data=body, headers=headers, method="POST")
+    t0 = time.monotonic()
     try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            return r.status, r.read()
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.status, r.read(), r.headers.get("Content-Type", ""), time.monotonic() - t0
     except urllib.error.HTTPError as exc:
-        return exc.code, exc.read()
+        return exc.code, exc.read(), exc.headers.get("Content-Type", ""), time.monotonic() - t0
+    except (urllib.error.URLError, OSError):
+        return 0, b"", "", time.monotonic() - t0
+
+
+def problems_of_hostile_http(status: int, body: bytes, content_type: str, seconds: float) -> list[str]:
+    """A hostile file over HTTP: a 4xx problem JSON in time; never a form, a 5xx, plain text or silence."""
+    if status == 0:
+        return [f"no HTTP answer after {seconds:.1f} s (a hang or a dropped connection)"]
+    out = []
+    if not 400 <= status < 500:
+        out.append(f"status {status}, not a 4xx refusal")
+    if not content_type.startswith("application/problem+json"):
+        out.append(f"content type {content_type!r}, not application/problem+json")
+    doc = problem_of(body)
+    if doc is None:
+        out.append("the body is not a problem JSON with a code and a status")
+    elif doc["status"] != status:
+        out.append(f"the body says status {doc['status']}, the answer is {status}")
+    if seconds > REFUSAL_SECONDS:
+        out.append(f"answered in {seconds:.1f} s, over {REFUSAL_SECONDS:.0f} s")
+    return out
+
+
+def http_hostile_checks(base: str, bearer: str | None, folder: Path, res: Results) -> None:
+    """Every hostile file posted to the running service, then the service must still be healthy."""
+    for path in sorted(p for p in folder.iterdir() if p.is_file()):
+        st, body, ctype, secs = post_file_full(base + "/v1/forms/convert", path.name, path.read_bytes(), bearer,
+                                               timeout=30)
+        res.add(f"hostile {path.name} over HTTP: 4xx problem JSON in time",
+                problems_of_hostile_http(st, body, ctype, secs), f"{st} {_code(body)}, {secs:.1f} s")
+    status = wait_healthy(base, seconds=10)
+    res.add("GET /healthz after the hostile files", [] if status == 200 else [f"status {status}"], "200")
+
+
+def http_sidecar_check(base: str, bearer: str | None, fixtures: Path, res: Results) -> None:
+    """POST /v1/forms/report answers with the sidecar: the same check as on the command line (no digest pair:
+    the endpoint does not add form_sha256)."""
+    st, body, _, _ = post_file_full(base + "/v1/forms/report", "wniosek.pdf", (fixtures / "wniosek.pdf").read_bytes(),
+                                    bearer)
+    res.add("POST report with a token: 200 and a valid sidecar",
+            [f"status {st} code {_code(body)}"] if st != 200 else problems_of_sidecar(body), f"{len(body)} bytes")
 
 
 def _code(body: bytes) -> str:
@@ -349,7 +555,8 @@ def free_port() -> int:
         return s.getsockname()[1]
 
 
-def check_http(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT) -> None:
+def check_http(image: str, fixtures: Path, res: Results, ready: frozenset[str] = READY_DEFAULT,
+               hostile: Path | None = None) -> None:
     key = secrets.token_urlsafe(48).encode()
     secdir = Path(tempfile.mkdtemp(prefix="convkey"))
     name = "convcheck-" + uuid.uuid4().hex[:8]
@@ -365,7 +572,13 @@ def check_http(image: str, fixtures: Path, res: Results, ready: frozenset[str] =
         if cp.returncode != 0:
             res.add("HTTP container starts", [cp.stderr.decode(errors="replace")[-300:]])
             return
-        if not http_checks(f"http://127.0.0.1:{port}", key, fixtures, res, ready):
+        base = f"http://127.0.0.1:{port}"
+        failed_before = res.failed
+        if http_checks(base, key, fixtures, res, ready):
+            http_sidecar_check(base, token(key), fixtures, res)
+            if hostile is not None:
+                http_hostile_checks(base, token(key), hostile, res)
+        if res.failed > failed_before:
             logs = docker("logs", "--tail", "40", name)
             print((logs.stdout + logs.stderr).decode(errors="replace")[-3000:])
     finally:
@@ -445,8 +658,13 @@ def main() -> int:
     check_ocr_without_tmpfs(args.image, args.fixtures, res)
     check_different_forms(args.image, res, ready)
     check_gate_inside(args.image, args.fixtures, res, ready)
-    if not args.no_http:
-        check_http(args.image, args.fixtures, res, ready)
+    check_determinism(args.image, args.fixtures, res, ready)
+    hostile = check_hostile_cli(args.image, res)
+    try:
+        if not args.no_http:
+            check_http(args.image, args.fixtures, res, ready, hostile)
+    finally:
+        shutil.rmtree(hostile, ignore_errors=True)
     md = summary_markdown(args.image, res)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
