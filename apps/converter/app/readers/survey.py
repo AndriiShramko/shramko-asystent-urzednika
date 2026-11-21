@@ -73,7 +73,7 @@ def main(argv: list[str]) -> int:
         "summary": dict(sorted(counts.items())),
         "files": files,
     }
-    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"written {OUT.name}: {len(files)} files, " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))
     if "--check" in argv and counts.get("unhandled"):
         return 1

@@ -38,7 +38,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.008
+      "seconds": 0.009
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -75,7 +75,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.286
+      "seconds": 0.31
     },
     {
       "set": "reference-01-numer-porzadkowy",
@@ -143,7 +143,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.084
+      "seconds": 0.086
     },
     {
       "set": "reference-05-nadplata-podatku",
@@ -174,7 +174,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.09
+      "seconds": 0.094
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -211,7 +211,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.123
+      "seconds": 0.131
     },
     {
       "set": "judged-02-zwrot-oplaty-skarbowej",
@@ -285,7 +285,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.032
+      "seconds": 0.033
     },
     {
       "set": "judged-03-wydanie-zaswiadczenia",
@@ -359,7 +359,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.049
+      "seconds": 0.052
     },
     {
       "set": "judged-04-wynajecie-swietlicy",
@@ -433,7 +433,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.165
+      "seconds": 0.174
     },
     {
       "set": "judged-06-zajecie-pasa-drogowego",
@@ -488,7 +488,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.263
+      "seconds": 0.289
     },
     {
       "set": "judged-07-psy-rasy-agresywne",
@@ -519,7 +519,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.331
+      "seconds": 0.345
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -556,7 +556,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.853
+      "seconds": 0.873
     },
     {
       "set": "judged-08-deklaracja-odpady",
@@ -593,7 +593,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.046
+      "seconds": 0.047
     },
     {
       "set": "judged-09-stypendium-sportowe",
@@ -630,7 +630,7 @@
       "tables": 0,
       "widgets": 0,
       "warnings": [],
-      "seconds": 0.733
+      "seconds": 0.741
     },
     {
       "set": "judged-09-stypendium-sportowe",
