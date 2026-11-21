@@ -1,0 +1,76 @@
+TITLE Wniosek o ustalenie numeru porządkowego nieruchomości
+PAGE MAIN Dane
+  SECTION organ_do_ktorego_jest_skladany_wniosek | Organ, do którego jest składany wniosek | y=0 rows=2
+    TEXT_FIELD nazwa_organu | Nazwa organu | ro def=Wójt Gminy Elbląg
+  SECTION podmiot_wniosku | Podmiot wniosku | y=2 rows=4
+    RADIO wybierz_w_czyim_imieniu_wnioskujesz | Wybierz, w czyim imieniu wnioskujesz | opts=3
+    RADIO wybierz_jako_kto_wnioskujesz | Wybierz, jako kto wnioskujesz | cond opts=2
+    RADIO wybierz_jako_kto_wnioskujesz_inna_osoba | Wybierz, jako kto wnioskujesz w imieniu innej osoby | cond opts=2
+  SECTION twoje_dane | Twoje dane | y=6 rows=3
+    TEXT_FIELD imie | Imię | ro def=MLPZ.name
+    TEXT_FIELD nazwisko | Nazwisko | ro def=MLPZ.surname
+  SECTION adres_zamieszkania | Adres zamieszkania | y=9 rows=10
+    SELECT kraj | Kraj | def=['Polska'] dict=Kraje
+    TEXT_FIELD miejscowosc_zagranica | Miejscowość | cond
+    TEXT_FIELD kod_pocztowy_zagranica | Kod pocztowy | cond
+    TEXT_FIELD ulica_zagranica | Ulica | cond
+    SELECT wojewodztwo | TERYT_4G_DOWODOWY | cond def=[] dict=TERYT_4G_DOWODOWY
+    TEXT_FIELD kod_pocztowy | Kod pocztowy | cond def=MLPZ.postCode val=ZIP_CODE
+    TEXT_FIELD ulica | Ulica | cond def=MLPZ.street
+    TEXT_FIELD numer_budynku | Numer budynku | def=MLPZ.building
+    TEXT_FIELD numer_lokalu | Numer lokalu | def=MLPZ.apartment
+  SECTION dane_podmiotu | Dane podmiotu | y=19 rows=3 | cond
+    TEXT_FIELD nazwa | Nazwa
+    TEXT_FIELD nip | NIP | val=NIP
+  SECTION adres_siedziby | Adres siedziby | y=22 rows=10 | cond
+    SELECT kraj_siedziba | Kraj | def=['Polska'] dict=Kraje
+    TEXT_FIELD miejscowosc_siedziba_zagranica | Miejscowość | cond
+    TEXT_FIELD kod_pocztowy_siedziba_zagranica | Kod pocztowy | cond
+    TEXT_FIELD ulica_siedziba_zagranica | Ulica | cond
+    SELECT wojewodztwo_siedziba | TERYT_4G_DOWODOWY | cond def=[] dict=TERYT_4G_DOWODOWY
+    TEXT_FIELD kod_pocztowy_siedziba | Kod pocztowy | cond val=ZIP_CODE
+    TEXT_FIELD ulica_siedziba | Ulica | cond
+    TEXT_FIELD numer_budynku_siedziba | Numer budynku
+    TEXT_FIELD numer_lokalu_siedziba | Numer lokalu
+  SECTION potwierdzenie_ze_jestes_reprezentantem | Potwierdzenie, że jesteś reprezentantem | y=32 rows=2 | cond
+    FILE_UPLOADER plik_z_odpisem_danych | Plik z odpisem danych
+  SECTION dane_innej_osoby | Dane innej osoby | y=34 rows=3 | cond
+    TEXT_FIELD imie_inna_osoba | Imię
+    TEXT_FIELD nazwisko_inna_osoba | Nazwisko
+  SECTION adres_zamieszkania_osoby_ktorej_jestes_pelnomocnikiem | Adres zamieszkania innej osoby | y=37 rows=10 | cond
+    SELECT kraj_inna_osoba | Kraj | def=['Polska'] dict=Kraje
+    TEXT_FIELD miejscowosc_inna_osoba_zagranica | Miejscowość | cond
+    TEXT_FIELD kod_pocztowy_inna_osoba_zagranica | Kod pocztowy | cond
+    TEXT_FIELD ulica_inna_osoba_zagranica | Ulica | cond
+    SELECT wojewodztwo_inna_osoba | TERYT_4G_DOWODOWY | cond def=[] dict=TERYT_4G_DOWODOWY
+    TEXT_FIELD kod_pocztowy_inna_osoba | Kod pocztowy | cond val=ZIP_CODE
+    TEXT_FIELD ulica_inna_osoba | Ulica | cond
+    TEXT_FIELD numer_budynku_inna_osoba | Numer budynku
+    TEXT_FIELD numer_lokalu_inna_osoba | Numer lokalu
+  SECTION potwierdzenie_ze_jestes_przedstawicielem_ustawowym | Potwierdzenie, że jesteś przedstawicielem ustawowym | y=47 rows=2 | cond
+    FILE_UPLOADER plik_z_dokumentem_przedstawiciela_ustawowego | Plik z dokumentem potwierdzającym
+  SECTION pelnomocnictwo | Pełnomocnictwo | y=49 rows=2 | cond
+    FILE_UPLOADER plik_dokumentu_z_pelnomocnictwem | Plik dokumentu z pełnomocnictwem
+  SECTION oplata_skarbowa_pelnomocnictwo_1 | Opłata skarbowa | y=51 rows=4 | cond
+    RADIO czy_zlozenie_pelnomocnictwa_wymaga_oplaty_skarbowej | Czy złożenie pełnomocnictwa wymaga opłaty skarbowej? | opts=2
+    TEXT_BLOCK oplata_info_1 |  | cond html
+    FILE_UPLOADER plik_z_potwierdzeniem_przelewu | Plik z potwierdzeniem przelewu | cond
+  SECTION oplata_skarbowa_pelnomocnictwo_2 | Opłata skarbowa za pełnomocnictwo | y=55 rows=3 | cond
+    TEXT_BLOCK oplata_info |  | html
+    FILE_UPLOADER plik_z_potwierdzeniem_przelewu_2 | Plik z potwierdzeniem przelewu
+PAGE MAIN Lokalizacja budynku
+  SECTION lokalizacja_budynku | Lokalizacja budynku | y=0 rows=5
+    TEXT_FIELD miejscowosc | Miejscowość | val=REQUIRED
+    TEXT_FIELD ulica_lokalizacja_budynku | Ulica
+    TEXT_FIELD numer_ewidencyjny_dzialki | Numer ewidencyjny działki | val=REQUIRED
+    TEXT_FIELD obreb | Obręb | val=REQUIRED
+PAGE MAIN Kontakt i zgody
+  SECTION dane_do_kontaktu | Dane do kontaktu | y=0 rows=3
+    TEXT_FIELD numer_telefonu | Numer telefonu | def=MLPZ.phoneNumber
+    TEXT_FIELD adres_e_mail | Adres e-mail | def=MLPZ.email val=EMAIL
+  SECTION zgoda_wyrazenie | Zgoda | y=3 rows=2
+    CONSENT_SECTION zgoda
+PAGE FINISH Strona końcowa
+  SECTION podglad_uzupelnionego_wniosku | Podgląd uzupełnionego wniosku | y=0 rows=2
+    TEXT_BLOCK podglad_1 |  | html
+sha256 cdfb6917abc4d513121682067f5cf1a62724cc0ea618e66921c9dd34996c6f42

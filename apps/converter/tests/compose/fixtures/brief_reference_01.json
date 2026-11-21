@@ -1,0 +1,32 @@
+{
+  "brief_version": 1,
+  "input": {"sha256": "1111111111111111111111111111111111111111111111111111111111111111", "format": "pdf"},
+  "title": {"status": "stated", "value": "Wniosek o ustalenie numeru porządkowego nieruchomości",
+            "evidence": [{"page": 1, "quote": "WNIOSEK O USTALENIE NUMERU PORZĄDKOWEGO"}]},
+  "addressee": {"status": "stated", "kind": "body", "name": "Wójt Gminy Elbląg",
+                "evidence": [{"page": 1, "quote": "Wójt Gminy Elbląg"}]},
+  "applicants": {"status": "stated", "self": true, "other_person": true, "entity": true,
+                 "capacities": ["pelnomocnik", "reprezentant"],
+                 "evidence": [{"page": 1, "quote": "(imię i nazwisko/nazwa wnioskodawcy)"}]},
+  "matter": [
+    {"title": "Lokalizacja budynku", "role": "matter/lokalizacja_budynku", "fields": [
+      {"key": "miejscowosc", "label": "Miejscowość", "type": "TEXT_FIELD", "required": true, "required_basis": "substance",
+       "evidence": [{"page": 1, "quote": "w miejscowości"}]},
+      {"key": "ulica", "label": "Ulica", "type": "TEXT_FIELD",
+       "evidence": [{"page": 1, "quote": "przy ulicy1)"}, {"page": 1, "quote": "1 ) Dane nieobowiązkowe."}]},
+      {"key": "numer_ewidencyjny_dzialki", "label": "Numer ewidencyjny działki", "type": "TEXT_FIELD", "concept": "parcel_id",
+       "required": true, "required_basis": "substance", "evidence": [{"page": 1, "quote": "nr ewidencyjny działki"}]},
+      {"key": "obreb", "label": "Obręb", "type": "TEXT_FIELD", "required": true, "required_basis": "substance",
+       "evidence": [{"page": 1, "quote": "w obrębie"}]}
+    ]}
+  ],
+  "declarations": {"consents": [], "clause": {"status": "stated", "evidence": [{"page": 2, "quote": "KLAUZULA INFORMACYJNA"}]}},
+  "fee": {"status": "not_found"},
+  "legal_basis": {"status": "not_found"},
+  "dropped": [
+    {"what": "(data)", "reason": "SIGNATURE_AND_DATE", "page": 1},
+    {"what": "Wnioskodawca: imię i nazwisko/nazwa, adres, nr telefonu/adres e-mail", "reason": "COVERED_BY_STANDARD", "page": 1},
+    {"what": "(podpis wnioskodawcy)", "reason": "SIGNATURE_AND_DATE", "page": 1},
+    {"what": "KLAUZULA INFORMACYJNA", "reason": "CLAUSE_LINKED", "page": 2}
+  ]
+}
