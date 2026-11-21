@@ -42,6 +42,8 @@ Branch: wp/F20-image-pipeline   Stage now: integration (SBOM + licence gate, liv
 | HTTP path with a token and its negative controls (step 3) | `container_check.py` http part | healthz 200, convert 200 passing; no token 401 TOKEN_MISSING, expired 401 TOKEN_EXPIRED, alg none 401 TOKEN_INVALID, other key 401 TOKEN_INVALID, PNG named .pdf 415 TYPE_MISMATCH, .txt 415 EXTENSION | run 44910300706 |
 | Pull by digest and start (branch test tag) | push `test-b2fd0a1[-plus]`, `docker pull IMAGE@sha256`, convert with `--network none`, `formcheck.py` | core `sha256:ca3000acd221226fa41ef6c4557e8f289b3e0d044653c74ee247cdb151947d2e`, plus `sha256:292d36898a141895edfc59941f4f344cdb408b82ca8a0226a2dac518c0cf2989`: pulled.json passes | run 44910300706 |
 
+| SBOM + licence gate on both targets; live pin control | CI steps `sbom_gate.py`, "Live negative control" | all jobs success (native, core, plus); the SBOM step passed with 0 findings; the unpinned-base Dockerfile was refused in CI | run on 907b989 |
+
 ## Negative control
 Native, as tests: a base without digest, a pip install without `--only-binary=:all:`, an action by tag, a fourth top-level key, a form failing lint strict, two different outputs, and each probe weakness (uid 0, capability, writable root, extra interface, a connect) are refused. The live ones in CI are left (see Status).
 
