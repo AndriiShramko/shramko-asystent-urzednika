@@ -114,7 +114,7 @@ Not said by the mentor but noted by the owner at J8: **by 19:00 today he must re
 
 ## 6b. Answers of the business side (21 November, about 14:10)
 
-Noted by the owner at the meeting, in his own words; read from the questionnaire store (`biz`, version 41) at 14:50. The questions are in `docs/05-hackathon/mentor-questions/README.md` (ids `P…`). P17 was not answered.
+Noted by the owner at the meeting, in his own words; read from the questionnaire store (`biz`, version 41) at 14:13. The questions are in `docs/05-hackathon/mentor-questions/README.md` (ids `P…`). P17 was not answered.
 
 | Id | Answer as noted | What follows |
 |---|---|---|
@@ -143,5 +143,5 @@ Noted by the owner at the meeting, in his own words; read from the questionnaire
 | Time | Change | Why |
 |---|---|---|
 | 21 Nov 13:50 | D9 relaxed (own dictionaries may be named), `META=inline` option added to D2, LibreOffice allowed, image publishing moved into the minimum, partner materials removed from the repository | answers J5, J6, J9, J8, J11 above |
-| 21 Nov 14:55 | Section 6b added. New decisions D15 (a fee amount only as a marked proposal), D16 (path of the statutory representative, on by default, seventh journey), D17 (reason of exemption from stamp duty, behind a switch), D18 (a sole trader takes the entity path). Three dictionary proposals come first: identity document, street type, offices and authorities | answers P3, P19, P20, P7, P11 of the business side |
-| 21 Nov 14:55 | Fact for every package: the image is published to `ghcr.io/andriishramko/shramko-asystent-urzednika` and is public (probe run on commit `d64c001`); nothing of the partner's sets is in git, so the image workflow proves itself on synthetic fixtures only | the probe workflow; `git ls-files data/coi` |
+| 21 Nov 14:17 | Section 6b added. New decisions D15 (a fee amount only as a marked proposal), D16 (path of the statutory representative, on by default, seventh journey), D17 (reason of exemption from stamp duty, behind a switch), D18 (a sole trader takes the entity path). Three dictionary proposals come first: identity document, street type, offices and authorities | answers P3, P19, P20, P7, P11 of the business side |
+| 21 Nov 14:17 | Fact for every package: the image is published to `ghcr.io/andriishramko/shramko-asystent-urzednika` and is public (probe run on commit `d64c001`); nothing of the partner's sets is in git, so the image workflow proves itself on synthetic fixtures only | the probe workflow; `git ls-files data/coi` |

@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 14:50 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
+Last update: 2026-11-21 14:32 CET. **Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).**
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -19,21 +19,21 @@ Last update: 2026-11-21 14:50 CET. **Track F (the forms converter) is being buil
 
 | When | Package | Merge commit | What it proves |
 |---|---|---|---|
-| 15:05 | WP-F0a form schema profiles, tolerant linter, golden list, contradiction docket (13 rows) | `1430f0a` | both exports pass the tolerant profile with zero errors and fail the strict one for the listed reasons; six negative controls |
-| 15:22 | WP-F0b data contracts and shared models (`apps/converter/app/model/`, four generated schema files, examples) | `4bb8854` | 54 model tests; both exports load and dump back with nothing lost; fast gate 71 passed. No independent agent review: a second opinion of a hosted model was asked instead (`research/eden/e7-…`) |
+| 14:21 | WP-F0a form schema profiles, tolerant linter, golden list, contradiction docket (13 rows) | `1430f0a` | both exports pass the tolerant profile with zero errors and fail the strict one for the listed reasons; six negative controls |
+| 14:28 | WP-F0b data contracts and shared models (`apps/converter/app/model/`, four generated schema files, examples) | `4bb8854` | 54 model tests; both exports load and dump back with nothing lost; fast gate 71 passed. No independent agent review: a second opinion of a hosted model was asked instead (`research/eden/e7-…`) |
 
-**Running (15:25):**
+**Running (14:32):**
 
 | What | Branch | How it runs |
 |---|---|---|
 | WP-F1 service shell (core stage done: 121 tests; integration stage writes the Dockerfile, README, environment check) | `wp/F1-service-shell` | wave run `wf_39a455e5-4cc` (saved workflow `wp-wave`; the stage hand-over of the wave script works on real agents) |
-| WP-F2a readers for PDF and DOCX (core on opus) | `wp/F2a-readers-pdf-docx` | second wave, started 15:25; its run id is in the lead's conversation and in `.claude/worktrees/` names |
+| WP-F2a readers for PDF and DOCX (core on opus) | `wp/F2a-readers-pdf-docx` | second wave, run `wf_b4e50fbd-788`, started 14:30 |
 | WP-F5 composer (core on the session's model) | `wp/F5-composer` | the same wave |
 | Audit of the plan by three hosted models (coverage of every card requirement, failure modes on new files, proof for a non-programmer) | files `research/eden/e6-coverage-audit.*.md` | a background command on the partner's credits; raw reports, unverified by design |
 
 **Next:** WP-F20 (image pipeline) the moment F1 is merged or its Dockerfile is on its branch; then WP-F3 (finder) on top of F2a, WP-F14 (gate).
 
-**Standing instructions of the owner (21 November, 15:05):**
+**Standing instructions of the owner (21 November, 14:22):**
 
 1. Involve him only in extreme cases; when something truly cannot be done by an agent, say exactly what he has to download or click.
 2. He does not test anything himself. The lead finds the right tests, covers everything the card asks and what the partner did not think of, and at every milestone walks him through plain-language proof (a page "requirement of the card, proof, how to see it").
@@ -49,9 +49,9 @@ Last update: 2026-11-21 14:50 CET. **Track F (the forms converter) is being buil
 - Skeleton (commit `66e040c`): `apps/converter/pyproject.toml`, two lock files with hashes, the shared environment `.venv` in the main checkout (made by `bash tools/env_setup.sh`; PyPI is slow on the event's network, the script retries), `tools/gate.sh` (`py`, `fast`, `full`, `lock`), test markers, packages `app` and `converter`.
 - Facts that change the plan: (1) **nothing of the partner's sets is in git**, so the image workflow can convert only synthetic fixtures; every module needs tests on fixtures built from code, and tests on the sets carry the marker `sets`. (2) The publishing check refuses literal identifiers with valid check digits: tests build them from a stem and a computed check digit (`AGENTS.md`, section Commands).
 
-**Budget:** 13:55: week 55 %, top model 70 %. Rule of this session: builders on sonnet, reviews and most think cores on opus, the session's model only for the lead and the cores of the finder, the understanding step and the composer.
+**Budget:** 13:55: week 55 %, top model 70 %. 14:31: 59 % and 73 % (the first 37 minutes of the build cost 4 and 3 points, with three agents running and the lead very active). Rule of this session: builders on sonnet, reviews and most think cores on opus, the session's model only for the lead and the cores of the finder, the understanding step and the composer.
 
-**Waiting for the owner:** (1) Docker on the laptop: yes or no (not blocking). (2) **Register the task with the partner by 19:00.** (3) **Send the HackTribe draft by 20:00** (`docs/05-hackathon/hacktribe-draft-formularze.md`; the lead re-reads it against the build by 17:45). (4) The answers of the business meeting (`biz` in the questionnaire store): not there at 14:50.
+**Waiting for the owner:** (1) Docker on the laptop: yes or no (not blocking). (2) **Register the task with the partner by 19:00.** (3) **Send the HackTribe draft by 20:00** (`docs/05-hackathon/hacktribe-draft-formularze.md`; the lead re-reads it against the build by 17:45). (4) Nothing else: the answers of the business side arrived at 14:10 and are in section 6b of the decisions.
 
 ## Prepared before the build (21 November, 13:45)
 

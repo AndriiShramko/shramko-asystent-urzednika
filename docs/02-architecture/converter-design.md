@@ -157,7 +157,7 @@ Every value comes from the environment or from a file named by the environment; 
 
 ## 5. Data contracts
 
-**Binding shape since 21 November, 15:20:** the pydantic models in `apps/converter/app/model/` and the examples in `contracts/coi/examples/` (the four schema files are generated from the models; a test fails on drift). The examples printed below are the first sketch and differ in three ways: our contracts never write `null` (a missing key means none), every stated value has one shape `{status, value, evidence[]}`, and the ledger closes by total, by row and by fate. The reasons are the nineteen decisions in [`../03-plan/wip/WP-F0b.status.md`](../03-plan/wip/WP-F0b.status.md). A step that needs a field the models lack asks the lead; it never adds a key of its own.
+**Binding shape since 21 November, 14:28:** the pydantic models in `apps/converter/app/model/` and the examples in `contracts/coi/examples/` (the four schema files are generated from the models; a test fails on drift). The examples printed below are the first sketch and differ in three ways: our contracts never write `null` (a missing key means none), every stated value has one shape `{status, value, evidence[]}`, and the ledger closes by total, by row and by fate. The reasons are the nineteen decisions in [`../03-plan/wip/WP-F0b.status.md`](../03-plan/wip/WP-F0b.status.md). A step that needs a field the models lack asks the lead; it never adds a key of its own.
 
 Schemas live in `contracts/coi/`. All coordinates are in points with the origin at the top left of the page.
 
