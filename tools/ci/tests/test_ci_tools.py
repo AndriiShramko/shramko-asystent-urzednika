@@ -97,6 +97,8 @@ def test_one_fixture_per_extension_each_accepted_by_the_guard_as_its_own_kind(fi
     kinds = {p.suffix[1:]: inspect_upload(p.name, p.read_bytes(), s).kind for p in fixtures.iterdir()}
     assert kinds["doc"] == "doc" and kinds["docx"] == "docx" and kinds["ods"] == "ods" and kinds["xlsx"] == "xlsx"
     assert kinds["pdf"] == "pdf" and kinds["png"] == "png" and kinds["jpg"] == kinds["jpeg"]
+    assert kinds["odt"] == "odt" and kinds["tiff"] == "tiff" and kinds["bmp"] == "bmp"
+    assert kinds["gif"] == "gif" and kinds["webp"] == "webp"
     assert all(p.stat().st_size < 400_000 for p in fixtures.iterdir())
 
 
@@ -148,7 +150,15 @@ def test_other_fixtures_are_refused_with_a_typed_refusal_and_no_traceback(fixtur
         cp = _convert(path)
         assert container_check.problems_of_refusal(cp.returncode, cp.stdout, cp.stderr) == [], path.name
         refused += 1
-    assert refused == 3
+    assert refused == 0   # every fixture has a reader now (WP-F20e); the refusal is proven below on a HEIC photo
+
+
+def test_a_heic_photo_is_refused_with_a_typed_refusal_and_no_traceback(tmp_path):
+    path = tmp_path / "wniosek.heic"
+    path.write_bytes(b"\x00\x00\x00\x18ftypheic\x00\x00\x00\x00mif1heic" + b"\x00" * 64)
+    cp = _convert(path)
+    assert cp.returncode != 0
+    assert container_check.problems_of_refusal(cp.returncode, cp.stdout, cp.stderr) == []
 
 
 def test_gate_probe_reports_g1_and_g2_passed_for_a_converted_pdf(tmp_path):
@@ -275,7 +285,7 @@ def test_http_checks_pass_against_the_native_service(fixtures, tmp_path):
         res = container_check.Results()
         assert container_check.http_checks(f"http://127.0.0.1:{port}", key, fixtures, res)
         assert res.failed == 0, [r for r in res.rows if not r["ok"]]
-        assert len(res.rows) == 8 + 3  # 8 as before, 3 refusals over HTTP
+        assert len(res.rows) == 8  # no non-ready fixture is left to refuse over HTTP (WP-F20e)
     finally:
         proc.terminate()
         proc.wait(timeout=10)

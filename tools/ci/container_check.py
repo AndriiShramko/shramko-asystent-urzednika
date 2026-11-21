@@ -50,7 +50,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import make_fixtures  # noqa: E402
 from formcheck import problems_of_form, problems_of_pair  # noqa: E402
 
-READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc"})
+READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp"})
 
 HARDENED = ["--network", "none", "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
             "--tmpfs", "/tmp:rw,size=128m", "--pids-limit", "256", "--memory", "1g"]

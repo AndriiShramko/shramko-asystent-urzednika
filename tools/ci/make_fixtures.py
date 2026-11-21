@@ -5,7 +5,7 @@
 
 Nothing of the partner's task sets is in git, so CI converts these. Each file is a blank application with a
 title, labelled places to fill (dotted leaders, empty cells, comb boxes) and no value filled in. The words are
-generic and invented; no person, office or number is real. Writes wniosek.{pdf,docx,xlsx,ods,doc,png,jpg,jpeg}
+generic and invented; no person, office or number is real. Writes wniosek.{pdf,docx,xlsx,ods,doc,png,jpg,jpeg,odt,tiff,bmp,gif,webp}
 and prints one line per file.
 
 Needs the test environment (reportlab, python-docx, openpyxl, Pillow from requirements-dev.lock). The .doc is a
@@ -26,7 +26,7 @@ FIELDS = ["Imię", "Nazwisko", "Numer PESEL", "Adres zamieszkania", "Kod pocztow
           "Numer telefonu", "Adres e-mail", "Cel wydania zaświadczenia"]
 CLOSING = ["Data", "Podpis wnioskodawcy"]
 ASCII = str.maketrans("ąćęłńóśźżĄĆĘŁŃÓŚŹŻ", "acelnoszzACELNOSZZ")
-EXTENSIONS = ("pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg")
+EXTENSIONS = ("pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "jpeg", "odt", "tiff", "bmp", "gif", "webp")
 
 
 def pdf(title: str = TITLE) -> bytes:
@@ -247,7 +247,77 @@ def jpeg() -> bytes:
     return buf.getvalue()
 
 
-BUILDERS = {"pdf": pdf, "docx": docx, "xlsx": xlsx, "ods": ods, "doc": doc, "png": png, "jpg": jpeg, "jpeg": jpeg}
+def tiff() -> bytes:
+    """Two frames: the form, then a second page that carries the closing lines only (each frame is a page)."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    second = Image.new("L", (1240, 1754), 255)
+    d = ImageDraw.Draw(second)
+    try:
+        font = ImageFont.load_default(size=28)
+    except TypeError:
+        font = ImageFont.load_default()
+    d.text((120, 120), "Strona druga: oświadczenia", font=font, fill=0)
+    d.text((120, 200), "Podpis wnioskodawcy:", font=font, fill=0)
+    d.line((520, 232, 1120, 232), fill=0, width=3)
+    buf = io.BytesIO()
+    _page().save(buf, "TIFF", save_all=True, append_images=[second], compression="tiff_lzw")
+    return buf.getvalue()
+
+
+def bmp() -> bytes:
+    buf = io.BytesIO()
+    _page().convert("1").save(buf, "BMP")  # 1 bit: a grey BMP of this size would be 2 MB
+    return buf.getvalue()
+
+
+def gif() -> bytes:
+    buf = io.BytesIO()
+    _page().save(buf, "GIF")
+    return buf.getvalue()
+
+
+def webp() -> bytes:
+    buf = io.BytesIO()
+    _page().save(buf, "WEBP", lossless=True)
+    return buf.getvalue()
+
+
+def odt() -> bytes:
+    def esc(s: str) -> str:
+        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    rows = "".join(
+        f'<table:table-row><table:table-cell office:value-type="string"><text:p>{esc(label)}:</text:p>'
+        '</table:table-cell><table:table-cell><text:p/></table:table-cell></table:table-row>'
+        for label in FIELDS + CLOSING)
+    content = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" '
+        'xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" '
+        'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" office:version="1.3">'
+        f'<office:body><office:text><text:h text:outline-level="1">{esc(TITLE)}</text:h>'
+        f'<text:p>{esc(NOTE)}</text:p>'
+        f'<table:table table:name="Tabela1"><table:table-column table:number-columns-repeated="2"/>{rows}</table:table>'
+        '</office:text></office:body></office:document-content>')
+    manifest = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.3">'
+        '<manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.text"/>'
+        '<manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>'
+        "</manifest:manifest>")
+    buf = io.BytesIO()
+    stamp = (2026, 11, 21, 12, 0, 0)
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr(zipfile.ZipInfo("mimetype", stamp), "application/vnd.oasis.opendocument.text",
+                   compress_type=zipfile.ZIP_STORED)
+        z.writestr(zipfile.ZipInfo("content.xml", stamp), content, compress_type=zipfile.ZIP_DEFLATED)
+        z.writestr(zipfile.ZipInfo("META-INF/manifest.xml", stamp), manifest, compress_type=zipfile.ZIP_DEFLATED)
+    return buf.getvalue()
+
+
+BUILDERS = {"pdf": pdf, "docx": docx, "xlsx": xlsx, "ods": ods, "doc": doc, "png": png, "jpg": jpeg, "jpeg": jpeg,
+            "odt": odt, "tiff": tiff, "bmp": bmp, "gif": gif, "webp": webp}
 
 
 def write_all(out: Path) -> list[Path]:

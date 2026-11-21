@@ -12,6 +12,7 @@ import re
 import warnings
 from dataclasses import dataclass, field
 from functools import lru_cache
+from typing import Iterator
 from statistics import median
 
 from PIL import Image, ImageOps
@@ -52,19 +53,57 @@ def decode(data: bytes, options: ReadOptions) -> Image.Image:
             im.load()
         except Image.DecompressionBombError:
             raise ReaderError("TOO_LARGE", "the image has more pixels than the decoder may open") from None
+        return _to_grey(im)
+
+
+_FRAME_FORMATS = {"tiff": "TIFF", "bmp": "BMP", "gif": "GIF", "webp": "WEBP"}
+
+
+def _to_grey(im: Image.Image) -> Image.Image:
+    """A loaded frame -> 8-bit grey with no metadata: orientation applied, transparency on white."""
+    try:
+        im = ImageOps.exif_transpose(im) or im
+    except Exception:  # noqa: BLE001 - a broken EXIF block is metadata we drop anyway
+        pass
+    if im.mode in ("I;16", "I;16L", "I;16B", "I"):
+        im = im.convert("I").point(lambda v: v * (1 / 256), "L")
+    elif im.mode in ("RGBA", "LA", "PA") or (im.mode == "P" and "transparency" in im.info):
+        rgba = im.convert("RGBA")
+        white = Image.new("RGBA", rgba.size, (255, 255, 255, 255))
+        im = Image.alpha_composite(white, rgba)
+    grey = im.convert("L")
+    # a new image from the raw pixels carries no `info`, no EXIF, no ICC profile, no text chunks
+    return Image.frombytes("L", grey.size, grey.tobytes())
+
+
+def decode_frames(data: bytes, options: ReadOptions, kind: str) -> Iterator[Image.Image]:
+    """TIFF (every frame), BMP, GIF and WEBP (the first frame only) -> one grey image per page, one at a time.
+
+    The same limits as `decode`: Pillow is restricted to the one format the guard proved, the size of EVERY frame is
+    read from its header and checked against `options.max_pixels` before its pixels are decoded, and the number of
+    frames is checked against `options.max_pages` before the first is decoded. Only one frame is in memory at once."""
+    fmt = _FRAME_FORMATS[kind]
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
         try:
-            im = ImageOps.exif_transpose(im) or im
-        except Exception:  # noqa: BLE001 - a broken EXIF block is metadata we drop anyway
-            pass
-        if im.mode in ("I;16", "I;16L", "I;16B", "I"):
-            im = im.convert("I").point(lambda v: v * (1 / 256), "L")
-        elif im.mode in ("RGBA", "LA", "PA") or (im.mode == "P" and "transparency" in im.info):
-            rgba = im.convert("RGBA")
-            white = Image.new("RGBA", rgba.size, (255, 255, 255, 255))
-            im = Image.alpha_composite(white, rgba)
-        grey = im.convert("L")
-        # a new image from the raw pixels carries no `info`, no EXIF, no ICC profile, no text chunks
-        return Image.frombytes("L", grey.size, grey.tobytes())
+            im = Image.open(io.BytesIO(data), formats=[fmt])
+        except Image.DecompressionBombError:
+            raise ReaderError("TOO_LARGE", "the image declares more pixels than the decoder may open") from None
+        frames = getattr(im, "n_frames", 1) if kind == "tiff" else 1
+        if frames > options.max_pages:
+            raise ReaderError("TOO_LARGE", f"{frames} pages, the limit is {options.max_pages}")
+        for i in range(frames):
+            im.seek(i)
+            w, h = im.size
+            if w < 1 or h < 1:
+                raise ReaderError("UNREADABLE", "the image has no pixels")
+            if w * h > options.max_pixels:
+                raise ReaderError("TOO_LARGE", f"{w} x {h} pixels, the limit is {options.max_pixels} pixels")
+            try:
+                im.load()
+            except Image.DecompressionBombError:
+                raise ReaderError("TOO_LARGE", "the image has more pixels than the decoder may open") from None
+            yield _to_grey(im)
 
 
 def otsu(grey: Image.Image) -> int:
