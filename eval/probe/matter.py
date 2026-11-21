@@ -5,7 +5,7 @@
 Per PDF and DOCX of each judged set (paths only through tools.coi_paths) the converter runs natively (reader,
 finder, understanding, composer) and the probe prints: fields of the matter; RADIO and CHECKBOX of the matter with
 their option counts; FILE_UPLOADER of the matter (attachments not covered by a standard page, plus uploader fields);
-REQUIRED fields of the matter; labels that start lower-case; labels shorter than four letters; strict-linter errors.
+REQUIRED fields of the matter; labels whose printed words (the evidence quote) start lower-case; labels shorter than four letters; strict-linter errors.
 
 --labels DIR   writes one file per input with section role, key, type, required and label, for a before/after diff.
                The labels are text of the partner's forms: DIR must lie outside the repository (the scratch folder).
@@ -35,6 +35,12 @@ CHOICE = ("RADIO", "CHECKBOX")
 
 def letters(label: str) -> int:
     return sum(1 for c in label if c.isalpha())
+
+
+def raw_label(x: object) -> str:
+    """The label as the paper prints it (the evidence quote; the brief label is sentence-cased), numbering removed."""
+    quote = next((e.quote for e in x.evidence if e.quote), None) or x.label  # type: ignore[attr-defined]
+    return re.sub(r"^\s*(?:[A-Z]?\d+(?:\.\d+)*[.)]?|[IVX]+\.)\s+", "", quote).lstrip(" -–•*□")
 
 
 def tech_names(node: object, out: set[str]) -> set[str]:
@@ -78,7 +84,7 @@ def probe(f: Path) -> tuple[dict, list[str], set[str]]:
         "CHECKBOX": choices["CHECKBOX"],
         "uploaders": len(uploads) + sum(1 for _, x in fields if x.type == "FILE_UPLOADER"),
         "required": sum(1 for _, x in fields if x.required) + sum(1 for a in uploads if a.required),
-        "lower": sum(1 for _, x in fields if x.label[:1].islower()),
+        "lower": sum(1 for _, x in fields if raw_label(x)[:1].islower()),
         "short": sum(1 for _, x in fields if letters(x.label) < 4),
         "lint": sum(1 for k, _ in coi_lint.check(form, "strict") if k == "ERROR"),
     }

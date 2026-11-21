@@ -38,6 +38,11 @@ _YES_NO = {"tak", "nie"}
 # A name asked of a third person (the candidate, the ward) is a field of the matter, never the applicant's own name
 # (set judged-09 ODS/XLSX: "Imię i nazwisko kandydata" under the heading "Wnioskodawca").
 _THIRD_PERSON = re.compile(r"(kandydat|podopieczn|zawodnik|sportowc|trener|dzieck|uczestnik)\w*")
+# "A/B* lub C D/E F*" with "niepotrzebne skreślić": two starred alternatives joined by "lub" are one choice of two
+# phrases (set judged-07 PDF); each side keeps its own words.
+_ALT_OR = re.compile(r"(\w[\w-]*(?:\s*/\s*\w[\w-]*)+)\s*\*+\s+lub\s+((?:[\w-]+\s+){0,3}\w[\w-]*(?:\s*/\s*\w[\w-]*)+(?:\s+[\w-]+){0,2})\s*\*+")
+_DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
+_SENTENCE_END = (".", "!", "?")
 
 
 @dataclass
@@ -146,6 +151,12 @@ class _Reader:
                     in_section, sec_role = True, sec_role or row.get("role")
         if not (before or in_section):
             return False
+        if c.kind == "choice_group" and c.label is not None and not all(any(rx.search(o.text) for rx, _ in lexicon.compiled("applicants", table="wording"))
+                                                for o in c.options):
+            # Boxes under the applicant heading whose options are not kinds of applicant the standard pages ask
+            # ("Prezydent Miasta" / "Klub sportowy", set judged-09): the paper's own question, a field of the matter.
+            # Only a group with a label of its own: an unlabelled group would be asked under the bare heading.
+            return False
         for rx, row in lexicon.compiled("applicants", table="label"):
             if rx.search(low):
                 if row.get("role") == "standard/twoje_dane" and not row.get("concept") and _THIRD_PERSON.search(low):
@@ -228,11 +239,23 @@ class _Reader:
 
     # -- a field of the matter ----------------------------------------------------------------------------------------
 
-    def _field(self, c: Candidate, raw: str, label: str, hint: str | None, optional: bool) -> None:
+    def _field(self, c: Candidate, raw: str, label: str, hint: str | None, optional: bool, opts: list[ChoiceOption] | None = None) -> None:
         doc, low = self.doc, label.casefold()
+        if c.kind == "choice_group" and opts is None:
+            parts = self._split_group(c)
+            if len(parts) > 1:
+                for i, (sub, part) in enumerate(parts):
+                    self._field(c, raw if i == 0 else sub, label if i == 0 else sub, hint if i == 0 else None, optional, part)
+                    if i == 0:
+                        first = self.disp.get(c.id)
+                if first is not None:
+                    self.disp[c.id] = first
+                return None
         options: list[str] = []
         concept = length = None
         shown = sentence_case(label)
+        if c.kind == "box" and _DECLARE.match(label):
+            return self._declared_box(c, label, optional)
         if c.kind == "box":
             # One box outside any group: an option of a question the finder could not group, or a yes-or-no
             # question. Reading it as a field would look right and may be wrong; the official decides.
@@ -241,7 +264,7 @@ class _Reader:
                                              detail=f"a single box outside any group: {label[:80]!r}; an option or a yes-or-no question"))
             return None
         if c.kind == "choice_group":
-            for o in c.options:
+            for o in (c.options if opts is None else opts):
                 text = clean_option(o.text)
                 if text and text not in options:
                     options.append(text)
@@ -268,6 +291,61 @@ class _Reader:
             self.out.dropped.append(Dropped(what=f"{label}: printed arithmetic, the value is typed", reason="COMPUTED_VALUE", page=c.page))
         self._add(c, f, self._section(c)["role"])
         return None
+
+    def _split_group(self, c: Candidate) -> list[tuple[str, list[ChoiceOption]]]:
+        """A free line ending in ":" printed between the options of one group ("Rodzaje ...:" boxes, "Dyscypliny:"
+        boxes; set judged-09 PDF) heads a second group: each part keeps at least two options. No such line: one part."""
+        doc = self.doc
+        where = [[doc.pos[r] for r in [*o.runs, *(s.run for s in o.spans)] if r in doc.pos] for o in c.options]
+        if not all(where):
+            return [("", list(c.options))]
+        parts: list[tuple[str, list[ChoiceOption]]] = [("", [c.options[0]])]
+        for i in range(1, len(c.options)):
+            head = next((doc.text(doc.order[p]) for p in range(max(where[i - 1]) + 1, min(where[i]))
+                         if doc.role(doc.order[p]) == "body" and doc.text(doc.order[p]).endswith(":")
+                         and 1 <= len(doc.text(doc.order[p]).split()) <= 6), None)
+            if head and len(parts[-1][1]) >= 2 and len(c.options) - i >= 2:
+                parts.append((head.rstrip(" :"), []))
+            parts[-1][1].append(c.options[i])
+        return parts
+
+    def _declared_box(self, c: Candidate, label: str, optional: bool) -> None:
+        """One box beside "Oświadczam, że ..." (set judged-08 PDF, the composter): the applicant ticks it to declare.
+        A CHECKBOX of the matter whose label is the whole sentence; never required, the paper asks it only of some."""
+        doc = self.doc
+        runs = list(c.label.runs) if c.label else []
+        text = label
+        for rid in self._below(runs, 3) if not text.endswith(_SENTENCE_END) else []:
+            text += " " + doc.text(rid)
+            runs.append(rid)
+            if text.endswith(_SENTENCE_END):
+                break
+        text = text.rstrip(" .")
+        f = BriefField(key=self.keys.unique(key_of(text)), label=text, type="CHECKBOX", required=False, candidate=c.id,
+                       conf=self._conf(c), evidence=[doc.evidence(runs, text, c.id)])
+        self._add(c, f, self._section(c)["role"])
+
+    def _below(self, runs: list[str], limit: int) -> list[str]:
+        """Free body lines printed right under the last of these runs, starting near its left edge: the rest of a
+        wrapped sentence. Geometry only; a flow document gives none."""
+        doc = self.doc
+        boxed = [(doc.runs[r][0], doc.runs[r][1].box) for r in runs if r in doc.runs and doc.runs[r][1].box is not None]
+        if not boxed:
+            return []
+        page, first = boxed[0]
+        out: list[str] = []
+        last = boxed[-1][1]
+        for _ in range(limit):
+            h = max(4.0, last[3] - last[1])
+            near = [r for r in doc.order if doc.page(r) == page and doc.role(r) == "body" and r not in runs and r not in out
+                    and doc.runs[r][1].box is not None and 0 <= doc.runs[r][1].box[1] - last[1] <= 2.2 * h
+                    and doc.runs[r][1].box[1] > last[1] + 0.5 * h and abs(doc.runs[r][1].box[0] - first[0]) <= 30]
+            if not near:
+                break
+            r = min(near, key=lambda x: doc.runs[x][1].box[1])
+            out.append(r)
+            last = doc.runs[r][1].box
+        return out
 
     def _typing(self, c: Candidate, label: str, low: str, shown: str) -> tuple[str, str | None, int | None, str]:
         """Type, concept, length and wording of a plain place (design 6.4.3 rows 1 and 2, the label rules)."""
@@ -350,22 +428,58 @@ class _Reader:
             return
         seen: list[list[str]] = []
         grammar: set[str] = set()
-        for rid in doc.order:
-            if doc.fo.roles.get(rid) in ("clause", "page_furniture"):
-                continue
-            for m in ALT.finditer(doc.text(rid)):
+        lines = self._lines()
+        skip = 0                      # offset in this line up to which a pair that began on the line above reaches
+        for i, (rids, text) in enumerate(lines):
+            nxt = lines[i + 1] if i + 1 < len(lines) and doc.page(lines[i + 1][0][0]) == doc.page(rids[0]) else None
+            window = text + " " + nxt[1] if nxt else text
+            taken: list[tuple[int, int]] = [(0, skip)] if skip else []
+            skip = 0
+            for m in _ALT_OR.finditer(window):
+                if m.start() >= len(text) or any(a <= m.start() < b for a, b in taken):
+                    continue
+                taken.append(m.span())
+                skip = max(skip, m.end() - len(text) - 1)
+                words = [re.sub(r"\s*/\s*", "/", m.group(k)).strip() for k in (1, 2)]
+                if not any(same_choice(words, s) for s in seen):
+                    seen.append(words)
+                    self._alt_field(words, rids + (nxt[0] if nxt and m.end() > len(text) else []), m.group(0))
+            for m in ALT.finditer(text):
+                if any(a <= m.start() < b for a, b in taken):
+                    continue
                 words = alt_words(m)
                 if is_grammar(words):
                     if m.group(1).casefold() not in grammar:
                         grammar.add(m.group(1).casefold())
-                        self.out.dropped.append(Dropped(what=m.group(1), reason="GRAMMAR_VARIANT", page=doc.page(rid), runs=[rid]))
+                        self.out.dropped.append(Dropped(what=m.group(1), reason="GRAMMAR_VARIANT", page=doc.page(rids[0]), runs=rids))
                     continue
                 if any(same_choice(words, s) for s in seen):
                     continue
                 seen.append(words)
-                f = BriefField(key=self.keys.unique(key_of("_".join(words))), label=sentence_case(" lub ".join(words)), type="RADIO",
-                               options=words, required=True, required_basis="paper", evidence=[doc.evidence([rid], doc.text(rid))])
-                self._section(None)["fields"].append(f)
+                self._alt_field(words, rids, text)
+
+    def _alt_field(self, words: list[str], rids: list[str], quote: str) -> None:
+        f = BriefField(key=self.keys.unique(key_of("_".join(words))), label=sentence_case(" lub ".join(words)), type="RADIO",
+                       options=words, required=True, required_basis="paper", evidence=[self.doc.evidence(rids, quote)])
+        self._section(None)["fields"].append(f)
+
+    def _lines(self) -> list[tuple[list[str], str]]:
+        """Runs of one printed line joined in reading order (a PDF splits "utrzymywanie" and its "*" into two runs);
+        a run without a box (a flow document) is a line of its own. Clauses and page furniture are left out."""
+        doc = self.doc
+        out: list[tuple[list[str], str]] = []
+        for rid in doc.order:
+            if doc.fo.roles.get(rid) in ("clause", "page_furniture"):
+                continue
+            page, run = doc.runs[rid]
+            if out and run.box is not None:
+                prev = doc.runs[out[-1][0][-1]]
+                pb, b = prev[1].box, run.box
+                if prev[0] == page and pb is not None and abs(pb[1] - b[1]) <= 3 and b[0] >= pb[2] - 2:
+                    out[-1] = (out[-1][0] + [rid], out[-1][1] + (" " if b[0] - pb[2] > 1.5 else "") + run.text)
+                    continue
+            out.append(([rid], run.text))
+        return [(r, re.sub(r"\s+", " ", t).strip()) for r, t in out]
 
     def _table_rows(self) -> dict[str, str]:
         """A table of equal rows (design 6.4.3): the same run of labels three or more times in one section. The
