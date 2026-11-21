@@ -8,7 +8,13 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 
 ## Status
 - [x] (a) status file
-- [ ] (b) counts before (`tmp/c1-before.json`, not committed), numbers here
+- [x] (b) counts before on main 7fedaed (`tmp/c1-before.json` with `--all`, `tmp/c1-brief-before.tsv`; not committed).
+      Form REQUIRED (policy paper): judged-08 0 in all 8 formats; judged-09 doc 2, docx 3, pdf 3, ods 2, xlsx 2.
+      Brief of sets 08 and 09 (`dump_required.py`, 5 text formats): 479 fields, 468 required, 0 with basis paper.
+      Targets seen in the brief, all "required, inferred" today: set 09 "Adres do korespondencji" with the hint
+      "jeśli różni się od ..." (doc, docx, pdf) and "Ewentualne dodatkowe informacje ..." (doc, docx, pdf);
+      set 08 ods/xlsx: fields of the section titled "... (pola nieobowiązkowe)" ("Nr tel./fax", the consent rows).
+      NOTE: `count_sets.py` takes OUT.json as its FIRST argument: `count_sets.py tmp/x.json --all`.
 - [ ] (c) negation guard before a required cue, tests in `apps/converter/tests/mean/test_mean_c1.py`
 - [ ] (d) optional habits: `ewentualn`, "jeśli/jeżeli (są) różni", "w razie potrzeby", tests
 - [ ] (e) required and optional cues read from the field's hint and the title of its own section, tests
@@ -27,7 +33,9 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 (to record in step c: a new test that fails on the unpatched code)
 
 ## Left for the next stage
-Everything from (b) on. Facts found so far (no code changed yet):
+Everything from (c) on. Heartbeat of this section: 2026-11-22 00:56. Measuring tool of this package:
+`bash tools/gate.sh py apps/converter/tests/mean/dump_required.py tmp/c1-brief-after.tsv judged-08 judged-09`
+(about 1 minute; diff it against a run on main to list the changed fields). Facts found so far (no code changed yet):
 - `apps/converter/app/mean/_fields.py` lines 561 to 571: `optional = optional or OPTIONAL.search(low) or notes`,
   `marked = REQUIRED.search(low) or notes`, `required = not optional`, `basis = "paper" if marked else "inferred"`.
 - `OPTIONAL` and `REQUIRED` are compiled in `apps/converter/app/mean/_doc.py` (NOT owned) from the rows `optional`
@@ -36,7 +44,7 @@ Everything from (b) on. Facts found so far (no code changed yet):
 - The habit `optional` is also read by `app/compose/required.py` (label, hint, section title): a wider pattern widens it there too.
 - `_NOT_REQUIRED` at line 57 of `_fields.py` already holds the negation wording of either-or attachments; reuse its idea.
 Exact next commands (from the worktree root):
-1. `mkdir -p tmp && bash tools/gate.sh py apps/converter/tests/validators/count_sets.py tmp/c1-before.json` (add `--all` for every format)
+1. (done) `mkdir -p tmp && bash tools/gate.sh py apps/converter/tests/validators/count_sets.py tmp/c1-before.json --all`
 2. write `apps/converter/tests/mean/test_mean_c1.py` (look at `test_mean_core.py` for how a brief is built from synthetic candidates)
 3. `bash tools/gate.sh py -m pytest apps/converter/tests/mean -q`
 4. after the code: `bash tools/gate.sh py apps/converter/tests/validators/count_sets.py tmp/c1-after.json`, then `--diff tmp/c1-before.json tmp/c1-after.json`
