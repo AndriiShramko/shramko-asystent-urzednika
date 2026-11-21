@@ -150,3 +150,7 @@ Confirmed with a probe and fixed: either-or from any "nie"; "X należy załączy
 Not confirmed (reasons): "_split_group ValueError on out-of-order runs" (empty range is no error); "UnboundLocalError first" (parts > 1 guarantees the loop runs and first is set at i == 0); "empty group crash" (the finder never builds a group of fewer than two options).
 Left open, not fixed tonight (rare or design choices): "Kopii dowodu nie należy załączyć do wniosku" reads as an upload (negation before "należy"); an either-or radio when both documents are optional; a numbered list "Załączniki:" does not stop at the next numbered section heading ("5. Oświadczenie"); split choice groups share one candidate id; `_heading_edge` may drop a real one-line field under a heading.
 Not done: REQUIRED by explicit phrase (item 6), SHOW conditions, the partner's dictionaries.
+
+## Review fix (seventh build lead, 21 Nov 22:50)
+- [x] `review-F3c-fable-fix.patch` of the independent Fable review applied on branch `wp/F3c-review-fix` (findings 1 to 5: a stack of lines with bracketed captions no longer collapses into one field; the judged-06 ODS/XLSX regression): `app/mean/_fields.py`, four tests in `tests/mean/test_mean_f3c.py`; `pytest apps/converter/tests/mean`: 79 passed, 1 skipped.
+- [ ] fast gate and `eval.chain --compare` on the branch (running), then merge.
