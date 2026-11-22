@@ -230,12 +230,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def convert_request(request: Request, scope: str) -> tuple[UploadInfo, pipeline.PipelineResult, int, str]:
         job = uuid.uuid4().hex[:12]
         authorize(request, scope)
+        # The body is read before a slot is taken: a slow upload must not hold a processing slot (audit-8 VC-10,
+        # 06-F4); BodyLimit caps what is read.
+        part = (await read_parts(request))[0]
+        data = await part.read()
+        await part.close()
         if gate.locked():
             raise ProblemError("BUSY", "Wszystkie stanowiska przetwarzania są zajęte.", headers={"Retry-After": "5"})
         async with gate:
-            part = (await read_parts(request))[0]
-            data = await part.read()
-            await part.close()
             try:
                 info, result, ms = await run_in_threadpool(run_one, part.filename, data, part.content_type)
             except ProblemError as exc:
