@@ -264,6 +264,82 @@ def _note(res: PipelineResult, code: str, detail: str, cfg, pages: list[int], ad
     return PipelineResult(form=res.form, sidecar=side)
 
 
+# BL13 DATE-D (decision D10): the places only the paper has. The partner's exports carry no signature and no date of
+# filing (the e-service signs after the preview), so they are left out; each one is named here with its place and words.
+PAPER_ONLY = {
+    "SIGNATURE_AND_DATE": ("paper_only.signature_and_date", "Podpis i datę złożenia dodaje e-usługa przy wysyłce."),
+    "OFFICE_USE": ("paper_only.office_use", "Część „wypełnia urząd” zostaje na papierze; e-usługa jej nie pokazuje."),
+}
+
+
+def paper_only_notes(finder, brief, model=None) -> list[dict]:
+    """One INPUT_NOTE with an `applied` fix per left-out signature, place and date of filing, or office-use place:
+    page, box (or anchor) and the paper's words. Only the sidecar changes; the form is not touched."""
+    by_id = {c.id: c for c in finder.candidates}
+    out: list[dict] = []
+    for d in brief.dispositions:
+        c = by_id.get(d.candidate)
+        if d.fate != "LEFT_OUT" or d.reason not in PAPER_ONLY or c is None:
+            continue
+        rule, text = PAPER_ONLY[d.reason]
+        quote = (c.label.text if c.label else "")[:200] or ("podpis" if c.kind == "signature" else "")
+        where = {"page": c.page}
+        if c.box is not None:
+            where["box"] = [float(v) for v in c.box]
+        elif c.anchor is not None:
+            where["anchor"] = c.anchor
+        source = {"type": "paper", **where, **({"quote": quote} if quote else {})}
+        out.append({"code": "INPUT_NOTE", **where, "candidate": c.id,
+                    "detail": f"paper-only place left out ({d.reason}): {quote or c.kind}"[:300],
+                    "fix": {"kind": "applied", "rule": rule, "text": text, "source": source}})
+    if model is not None:
+        out += _paper_only_words(model, finder, out)
+    return out
+
+
+# The words of a paper-only place whose blank the finder did not find (a signature line with its caption under the
+# dots, "Data wpływu do organu" in an office box). Short runs only, whole caption; a bare "Data" counts only when a
+# signature caption stands on the same line.
+_OFFICE_WORDS = re.compile(r"(wype[łl]nia\s+(urz[ąa]d|organ|pracownik)|adnotacj\w*\s+(organu|urz[ęe]du)|data\s+wp[łl]ywu"
+                           r"|podpis\s+i\s+piecz[ęe][ćc]\s+przyjmuj)", re.I)
+_SIGN_WORDS = re.compile(r"^\(?\s*(\d+\.\s*)?(czytelny\s+|w[łl]asnor[ęe]czny\s+)?podpis\b"
+                         r"(?!\s+(osobist|zaufan|elektroniczn|kwalifikowan))", re.I)   # not the e-signature kinds
+_FILING_WORDS = re.compile(r"^\(?\s*(\d+\.\s*)?(miejscowo[śs][ćc],?\s*(i\s+)?data|data\s+(sporz[ąa]dzenia|z[łl]o[żz]enia)(\s+\w+)?"
+                           r"|data\s+i\s+podpis.*)\s*\)?\s*:?\s*$", re.I)
+_BARE_DATE = re.compile(r"^\(?\s*data\s*\)?\s*:?\s*$", re.I)
+
+
+def _paper_only_words(model, finder, noted: list[dict]) -> list[dict]:
+    used = {r for c in finder.candidates for r in [*c.runs, *(c.label.runs if c.label else [])]}
+    out: list[dict] = []
+    for page in model.pages:
+        runs = [r for r in page.runs if r.id not in used and 0 < len(r.text.strip()) <= 70]
+        signs = [r.box for r in runs if r.box is not None and _SIGN_WORDS.search(r.text.strip())]
+        for r in runs:
+            t = re.sub(r"\s+", " ", r.text).strip()
+            if _OFFICE_WORDS.search(t):
+                reason = "OFFICE_USE"
+            elif _SIGN_WORDS.search(t) or _FILING_WORDS.search(t):
+                reason = "SIGNATURE_AND_DATE"
+            elif _BARE_DATE.search(t) and r.box is not None and any(abs(b[1] - r.box[1]) <= 15 for b in signs):
+                reason = "SIGNATURE_AND_DATE"
+            else:
+                continue
+            rule, text = PAPER_ONLY[reason]
+            if r.box is not None:
+                if any(n.get("page") == page.number and "box" in n and abs(n["box"][1] - r.box[1]) <= 40 for n in noted):
+                    continue        # the place itself is named already
+                where = {"page": page.number, "box": [float(v) for v in r.box]}
+            else:
+                if any(n["fix"]["rule"] == rule for n in noted) or any(n["fix"]["source"]["quote"] == t for n in out):
+                    continue
+                where = {"page": page.number, **({"anchor": r.anchor} if r.anchor else {})}
+            out.append({"code": "INPUT_NOTE", **where,
+                        "detail": f"paper-only words, no place found ({reason}): {t}"[:300],
+                        "fix": {"kind": "applied", "rule": rule, "text": text, "source": {"type": "paper", **where, "quote": t}}})
+    return out
+
+
 def _finish(model, finder, settings: Settings, notes: tuple[str, ...] = ()) -> PipelineResult:
     """Finder output -> brief -> form -> gate -> sidecar (the rules' path after reading)."""
     progress.phase("meaning")
@@ -299,7 +375,9 @@ def _finish(model, finder, settings: Settings, notes: tuple[str, ...] = ()) -> P
     hints.update({len(warnings) + i: r.fix for i, r in enumerate(composed.remarks) if r.fix})
     warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
     warnings = fixes.attach(form, warnings, hints, composed.paths, composed.brief_keys)
-    meta: dict = {"origins": composed.origins, "brief_keys": composed.brief_keys}
+    if not fallback:
+        warnings += paper_only_notes(finder, brief, model)
+    meta: dict ={"origins": composed.origins, "brief_keys": composed.brief_keys}
     # A8 VB-4 (B16): where each field of the matter stands on the paper (page, box, quote), keyed by form id, as
     # meta.schema.json `evidence` 1.1 has it; the review page shows the snippet from here.
     try:   # evidence is a courtesy of the review page: a slip here must never cost the form
