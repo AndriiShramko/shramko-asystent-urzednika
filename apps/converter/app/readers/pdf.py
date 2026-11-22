@@ -311,6 +311,9 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
             if (ink < options.ocr_min_chars or scan >= SCAN_COVER) and image_way is not None:
                 got = image_way(data, index, number, ids, options)
                 page_, extra = got if isinstance(got, tuple) else (got, [])
+                if page_.ink is False and not extra:   # AUDIT-8 VE-2: a measured blank page was not "read from its pixels"
+                    pages.append(page_)
+                    continue
                 if page_.runs or not extra:
                     pages.append(page_)
                     warnings.extend(extra)

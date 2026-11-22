@@ -53,6 +53,24 @@ def _runs(words: list[_ocr.Word], ids: Ids, page: int, s: float = S) -> tuple[li
     return runs, warns
 
 
+CONFIDENT = 0.6      # a word the engine is fairly sure of
+MIN_CONFIDENT_SHARE = 0.5  # AUDIT-8 VE-2, measured in V0: partner scans 58 % and more, rotated pages 30 to 45 %
+
+
+def _quality(words: list[_ocr.Word], number: int) -> list[Warning]:
+    """A page with ink that OCR read as nothing, or as mostly unconfident words (rotated, blurred, too small), is told
+    to the user per page; the words are kept."""
+    if not words:
+        return [Warning(code="UNREADABLE_PART", page=number,
+                        detail="page not read: the scan has marks but OCR found no words; its lines and boxes are kept")]
+    share = sum(1 for w in words if w.conf >= CONFIDENT) / len(words)
+    if share < MIN_CONFIDENT_SHARE:
+        return [Warning(code="UNREADABLE_PART", page=number,
+                        detail=f"page read poorly: only {round(share * 100)} % of {len(words)} OCR words are confident; "
+                               "the scan may be rotated, blurred or too small, check this page against the paper")]
+    return []
+
+
 def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s: float = S) -> tuple[Page, list[Warning]]:
     """One page strip (mode L) -> page of origin "ocr" and its warnings."""
     w, h = grey.size
@@ -73,6 +91,7 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
             else:
                 runs, bad = _runs(words, ids, number, s)
                 warns.extend(bad)
+                warns.extend(_quality(words, number))
     shapes = _raster.detect(ink)
     lines: list[Line] = []
     rects: list[Rect] = []
