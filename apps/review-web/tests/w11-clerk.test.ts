@@ -122,7 +122,10 @@ describe('W11 remarks on the document', () => {
     expect(rawCard.querySelector('.clerk-crop-mark')).not.toBeNull()
     expect(rawCard.querySelector('.clerk-card-cap')!.textContent).toBe('Na oryginale, strona 1:')
     expect(rawCard.querySelector('.clerk-card-field')!.textContent).toBe('NIP') // candidate c4 became the field f-nip
-    expect(blankCard.querySelector('.clerk-card-field')!.textContent).toBe('Z tego miejsca nie powstało pole w e-formularzu.')
+    // BL13 CLERK-T: the sentence says plainly why there is no field; no separate "not in the e-form" line
+    expect(blankCard.querySelector('.clerk-card-what')!.textContent).toContain('Program nie zrobił tu pola, bo druk nie mówi, co tu wpisać.')
+    expect(blankCard.querySelector('.clerk-card-field')).toBeNull()
+    expect(blankCard.querySelector('.clerk-fix button')!.textContent).toBe('Pomiń to miejsce (nie będzie polem)')
     // the same numbers on the cards, on the original and on the e-form field
     expect(all('#fp-papers .clerk-mark').map((m) => m.textContent)).toEqual(['1', '2'])
     expect(q('[id="fpw-f-nip"] .clerk-flag').textContent).toBe('1do sprawdzenia')

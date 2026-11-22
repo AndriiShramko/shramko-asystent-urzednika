@@ -8,7 +8,7 @@ import { setView } from '../src/ui/clerk-view'
 import { sessionOf } from '../src/ui/clerk-remarks'
 import { readForm } from '../src/lib/fp/form'
 import { ledgerRows, parsePreview } from '../src/lib/fp/places'
-import { answers, attrsOfLabel, boxTargets } from '../src/lib/fp/targets'
+import { answers, attrsOfLabel, boxTargets, stackedOn } from '../src/lib/fp/targets'
 import { pl } from '../src/i18n/pl'
 import { en } from '../src/i18n/en'
 import { es } from '../src/i18n/es'
@@ -72,6 +72,41 @@ describe('BL13 box targets', () => {
     box.click()
     expect(q('.clerk-boxnote').textContent).toBe('To wypełnia urząd, nie wnioskodawca, dlatego nie ma tego w e-formularzu.')
     expect(q('#fp-where-boxlive').textContent).toContain('wypełnia urząd')
+  })
+})
+
+describe('BL13 owner round two', () => {
+  it('an unlabelled line right under a labelled place is part of it: its click leads there and it has no card', async () => {
+    expect(stackedOn([55, 198, 539, 224], [60, 228, 530, 240])).toBe(true)
+    expect(stackedOn([55, 198, 539, 224], [60, 300, 530, 312])).toBe(false)
+    expect(stackedOn([55, 198, 200, 224], [300, 228, 530, 240])).toBe(false)
+    const pv = fpPreview() as { places: Record<string, unknown> }
+    pv.places.u1 = { page: 1, kind: 'leader', box: [60, 228, 530, 236] }
+    const blank = (box: number[] | null) => ({ code: 'LABEL_NOT_FOUND', page: 1, candidate: 'u1', ...(box ? { box } : {}), evidence: [], detail: 'x' })
+    await page([blank([60, 228, 530, 236]), blank(null)], pv, [{ candidate: 'u1', fate: 'AWAITING_DECISION' }])
+    expect(document.querySelector('.clerk-card')).toBeNull()
+    q('.fp-box[data-cid="u1"]').click()
+    expect(q('[id="fpw-f-imie"]').classList.contains('clerk-hl')).toBe(true)
+  })
+
+  it('two remarks of one kind on the same place make one card', async () => {
+    const at = (c: string) => ({ code: 'LABEL_NOT_FOUND', page: 1, candidate: c, box: [80, 600, 300, 612], evidence: [], detail: 'x' })
+    await page([at('x1'), at('x2')])
+    expect(all('.clerk-card').length).toBe(1)
+    expect(q('#clerk-remarks h3').textContent).toBe('Do sprawdzenia (1)')
+  })
+
+  it('the name of a field is edited in its own place: no second copy, Escape gives it back', async () => {
+    const { fill } = await page([])
+    const label = q('[id="fpw-f-nip"] > label')
+    fill.eform.edit('f-nip', () => {})
+    const inp = q<HTMLInputElement>('[id="fpw-f-nip"] .clerk-edit-input')
+    expect(inp.getAttribute('aria-label')).toBe('Nazwa pola')
+    expect(label.hidden).toBe(true)
+    expect(document.querySelectorAll('[id="fpw-f-nip"] .clerk-edit label').length).toBe(0)
+    inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    expect(document.querySelector('[id="fpw-f-nip"] .clerk-edit')).toBeNull()
+    expect(label.hidden).toBe(false)
   })
 })
 

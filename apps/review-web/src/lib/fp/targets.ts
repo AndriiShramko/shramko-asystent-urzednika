@@ -20,6 +20,19 @@ export interface BoxTarget {
   reason: string | null
   /** the server's own plain sentence for a paper-only place (sidecar INPUT_NOTE, rule paper_only.*), Polish */
   text?: string
+  /** an unlabelled line stacked on a labelled place: the candidate of that place (it has no card of its own) */
+  stacked?: string
+}
+
+/** Is the unlabelled box `b` a line of the same block as the labelled box `a`: same column (x overlap of most of
+ * the width of `b`), right above or below within about 1.5 line heights. */
+export function stackedOn(a: [number, number, number, number], b: [number, number, number, number]): boolean {
+  const ov = Math.min(a[2], b[2]) - Math.max(a[0], b[0])
+  const wb = Math.max(1, b[2] - b[0])
+  if (ov < 0.6 * wb) return false
+  const line = Math.max(12, Math.min(a[3] - a[1], 24))
+  const gap = b[1] >= a[3] ? b[1] - a[3] : a[1] >= b[3] ? a[1] - b[3] : 0
+  return gap <= 1.5 * line
 }
 
 export interface PaperOnly { reason: string; text: string }
@@ -133,6 +146,13 @@ export function boxTargets(rows: LedgerRow[], pv: Preview, model: FormModel, not
       const m = o.mark ? pv.places[o.mark] : undefined
       if (o.mark && m && !out.has(o.mark)) out.set(o.mark, { cid: o.mark, place: m, ...t })
     }
+  }
+  // an unlabelled line stacked right above or below a labelled place that leads somewhere is part of that place
+  for (const t of [...out.values()]) {
+    if (t.fields.length || t.kind === 'out' || t.place.label?.trim() || !t.place.box) continue
+    const host = [...out.values()].find((o) => o !== t && o.fields.length && o.place.label?.trim() && o.place.box &&
+      o.place.page === t.place.page && stackedOn(o.place.box, t.place.box!))
+    if (host) out.set(t.cid, { ...t, kind: 'merged', fields: host.fields, stacked: host.cid })
   }
   // the server's paper-only notes win over our own wording; a place that became a field keeps its field
   for (const [cid, n] of notes) {

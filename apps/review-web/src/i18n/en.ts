@@ -333,7 +333,7 @@ export const en: Dict = {
   'clerk.card.notOnPaper': "This remark is not about one place on the original.",
   'clerk.card.inForm': "Field in the e-form:",
   'clerk.card.wholeForm': "the e-form as a whole",
-  'clerk.card.notInForm': "This place did not become a field of the e-form.",
+  'clerk.card.notInForm': "The software made no field of the e-form from this place.",
   'clerk.card.places': "({n} place)|({n} places)|({n} places)",
   'clerk.card.prev': "Previous place",
   'clerk.card.next': "Next place",
@@ -483,4 +483,5 @@ export const en: Dict = {
   'clerk.rest.mixed': "{n} remark points to no place on the original and no field of the e-form:|{n} remarks point to no place on the original and no field of the e-form:|{n} remarks point to no place on the original and no field of the e-form:",
   'clerk.rest.whyMixed': "There is nothing here to show or to choose. If something is missing in the e-form, compare it with the file.",
   'clerk.rest.okMixed': "Understood, close this remark|Understood, close these {n} remarks|Understood, close these {n} remarks",
+  'clerk.blank.noField': "The original has an empty place to fill in without any description. The software made no field here, because the paper does not say what goes here.",
 }

@@ -228,6 +228,7 @@ function makeSession(sidecar: Sidecar | null): Session {
 
   /** The sentence on the card: for the "which fields are required" choice it names the fields. */
   function cardText(r: Remark): string {
+    if (r.code === 'LABEL_NOT_FOUND' && !fieldsOf(r).length) return t('clerk.blank.noField')
     if (isRequiredChoice(r)) {
       const ids = fieldsOf(r)
       if (ids.length && ef) return t('clerk.req.what', { fields: nameList(ids) })
@@ -455,7 +456,7 @@ function makeSession(sidecar: Sidecar | null): Session {
         return b
       })
       side = h('div', { class: 'clerk-card-fields' }, ...btns, uniq.length > shown.length ? h('span', { class: 'muted' }, ' ' + t('clerk.card.moreFields', { n: uniq.length - shown.length })) : null)
-    } else if (onPaper || words) {
+    } else if ((onPaper || words) && r.code !== 'LABEL_NOT_FOUND') {
       side = h('span', { class: 'clerk-card-field clerk-card-whole' }, t('clerk.card.notInForm'))
     }
     const many = r.items.length > 1
@@ -499,7 +500,7 @@ function makeSession(sidecar: Sidecar | null): Session {
 
   function repaint(): void {
     clear(host)
-    const open0 = remarks.filter((r) => !r.done)
+    const open0 = visible()
     // BL13 CLERK-T: remarks with nothing to show or to decide share one card at the end
     const rest = open0.filter((r) => empty(r))
     const open = open0.filter((r) => !rest.includes(r))
@@ -551,12 +552,35 @@ function makeSession(sidecar: Sidecar | null): Session {
     return h('p', { class: 'clerk-signature-note', id: 'clerk-signature-note' }, t('clerk.signature.note'))
   }
 
+  /** BL13 CLERK-T: open remarks a card is drawn for: never two for one place, none for a line that belongs to a
+   * labelled place right above or below it (its box leads to that place's fields). */
+  function visible(): Remark[] {
+    const out: Remark[] = []
+    const seen: { code: string; page: number; box: Box }[] = []
+    const iou = (a: Box, b: Box): number => {
+      const ix = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])); const iy = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]))
+      const inter = ix * iy; const area = (x: Box): number => Math.max(0.5, (x[2] - x[0]) * Math.max(0.5, x[3] - x[1]))
+      return inter / Math.min(area(a), area(b))
+    }
+    for (const r of remarks) {
+      if (r.done) continue
+      const w = cur(r)
+      const tg = typeof w.candidate === 'string' ? paper?.targets?.()?.get(w.candidate) : undefined
+      if (r.code === 'LABEL_NOT_FOUND' && tg?.stacked && r.items.length === 1) continue
+      const at = r.items.length === 1 ? boxOf(r) : null
+      if (at && seen.some((x) => x.code === r.code && x.page === at.page && iou(x.box, at.box) > 0.5)) continue
+      if (at) seen.push({ code: r.code, page: at.page, box: at.box })
+      out.push(r)
+    }
+    return out
+  }
+
   const session: Session = {
     host,
     remarks,
     applied,
     notes,
-    openCount: () => remarks.reduce((a, r) => a + (r.done ? 0 : r.items.length), 0),
+    openCount: () => visible().reduce((a, r) => a + r.items.length, 0),
     attach(e, p) {
       ef = e
       paper = p

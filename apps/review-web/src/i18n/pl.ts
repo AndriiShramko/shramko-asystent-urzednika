@@ -335,7 +335,7 @@ export const pl = {
   'clerk.card.notOnPaper': "Ta uwaga nie dotyczy jednego miejsca na oryginale.",
   'clerk.card.inForm': "Pole w e-formularzu:",
   'clerk.card.wholeForm': "e-formularz jako całość",
-  'clerk.card.notInForm': "Z tego miejsca nie powstało pole w e-formularzu.",
+  'clerk.card.notInForm': "Program nie zrobił z tego miejsca pola w e-formularzu.",
   'clerk.card.places': "({n} miejsce)|({n} miejsca)|({n} miejsc)",
   'clerk.card.prev': "Poprzednie miejsce",
   'clerk.card.next': "Następne miejsce",
@@ -485,6 +485,7 @@ export const pl = {
   'clerk.rest.mixed': "{n} uwaga nie wskazuje miejsca na oryginale ani pola w e-formularzu:|{n} uwagi nie wskazują miejsca na oryginale ani pola w e-formularzu:|{n} uwag nie wskazuje miejsca na oryginale ani pola w e-formularzu:",
   'clerk.rest.whyMixed': "Nie ma tu nic do pokazania ani do wybrania. Jeśli w e-formularzu czegoś brakuje, porównaj go z plikiem.",
   'clerk.rest.okMixed': "Rozumiem, zamknij tę uwagę|Rozumiem, zamknij te {n} uwagi|Rozumiem, zamknij te {n} uwag",
+  'clerk.blank.noField': "Na oryginale jest puste miejsce do wpisania bez żadnego opisu. Program nie zrobił tu pola, bo druk nie mówi, co tu wpisać.",
 } as const
 
 export type Key = keyof typeof pl

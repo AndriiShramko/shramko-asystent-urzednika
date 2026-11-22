@@ -439,3 +439,7 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 .clerk-card-flat .clerk-card-body { grid-template-columns: minmax(0, 1fr); }
 .clerk-card-fields { display: flex; flex-direction: column; gap: 0.3rem; width: 100%; }
 .clerk-rest-kinds { margin: 0.25rem 0 0.25rem 1.25rem; padding: 0; }
+/* a hit area of at least 24 px around a thin box over a dotted line (WCAG 2.5.8); the visible frame stays thin */
+.fp-box::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: max(100%, 24px); transform: translateY(-50%); }
+.clerk-edit-inline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; padding: 0.3rem; margin: 0 0 0.3rem; }
+.clerk-edit-inline .clerk-edit-input { flex: 1 1 14rem; min-width: 0; font: inherit; font-weight: 600; padding: 0.3rem 0.4rem; }

@@ -333,7 +333,7 @@ export const es: Dict = {
   'clerk.card.notOnPaper': "Esta observación no se refiere a un solo lugar del original.",
   'clerk.card.inForm': "Campo en el formulario electrónico:",
   'clerk.card.wholeForm': "el formulario electrónico en conjunto",
-  'clerk.card.notInForm': "De este lugar no surgió ningún campo del formulario electrónico.",
+  'clerk.card.notInForm': "El programa no creó ningún campo del formulario electrónico a partir de este lugar.",
   'clerk.card.places': "({n} lugar)|({n} lugares)|({n} lugares)",
   'clerk.card.prev': "Lugar anterior",
   'clerk.card.next': "Lugar siguiente",
@@ -483,4 +483,5 @@ export const es: Dict = {
   'clerk.rest.mixed': "{n} observación no señala ningún lugar del original ni ningún campo del formulario electrónico:|{n} observaciones no señalan ningún lugar del original ni ningún campo del formulario electrónico:|{n} observaciones no señalan ningún lugar del original ni ningún campo del formulario electrónico:",
   'clerk.rest.whyMixed': "Aquí no hay nada que mostrar ni que elegir. Si falta algo en el formulario electrónico, compáralo con el archivo.",
   'clerk.rest.okMixed': "Entendido, cerrar esta observación|Entendido, cerrar estas {n} observaciones|Entendido, cerrar estas {n} observaciones",
+  'clerk.blank.noField': "El original tiene un espacio vacío para rellenar sin ninguna descripción. El programa no creó aquí ningún campo, porque el impreso no dice qué se escribe aquí.",
 }
