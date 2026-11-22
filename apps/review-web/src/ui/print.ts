@@ -182,9 +182,16 @@ export function buildEformPrint(ef: EForm): HTMLElement {
 
 export interface PrintStep { el: HTMLElement; refresh(): void }
 
+/** BL13 PRINT-MAP: the line above the preview. A blank that comes out empty is never shown without a word. */
+export function printNote(s: Pick<Sheets, 'extra' | 'placed'> | null): string {
+  if (!s) return ''
+  if (s.placed === 0) return s.extra.length ? FP.blankEmptyExtra(s.extra.length) : FP.blankEmptyNothing
+  return s.extra.length ? FP.noPlace(s.extra.length) : ''
+}
+
 export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | null): PrintStep {
   const note = h('p', { id: 'fp-print-note', class: 'muted' })
-  const extraNote = h('p', { id: 'fp-print-extra' })
+  const extraNote = h('p', { id: 'fp-print-extra', role: 'status' })
   const live = h('p', { id: 'fp-print-live', role: 'status', class: 'fp-next' })
   const preview = h('div', { id: 'fp-print-preview', class: 'fp-print-preview', hidden: true })
   const pvBtn = h('button', { type: 'button', class: 'btn', id: 'fp-print-preview-btn', hidden: true, 'aria-expanded': 'false', 'aria-controls': 'fp-print-preview' }, FP.printPreview)
@@ -192,7 +199,7 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
   const eBtn = h('button', { type: 'button', class: 'btn', id: 'fp-print-eform' }, FP.printEform)
 
   function fillNotes(s: Sheets | null): void {
-    extraNote.textContent = s && s.extra.length ? FP.noPlace(s.extra.length) : ''
+    extraNote.textContent = printNote(s)
   }
 
   // the ink of the places, measured once on the page pictures after the preview arrived (a browser with canvas)
