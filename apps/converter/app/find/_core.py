@@ -580,6 +580,14 @@ class Finder:
                                 self.cands.remove(made)
                     lab: Lab | None = None
                     left = grid.get((cell.r, cell.c - 1))
+                    if left is None or not WORD.search(text(left)):
+                        # a merged place spans several rows (a page drawn as a grid of thin rows): the words left of
+                        # it may begin on any row it covers, not only on its top row
+                        for rr in range(cell.r + 1, cell.r + cell.rs):
+                            o = grid.get((rr, cell.c - 1))
+                            if o is not None and o is not cell and WORD.search(text(o)):
+                                left = o
+                                break
                     if (own or cont) and WORD.search(heads[cell.c]):
                         hc = grid.get((0, cell.c)) if own else None
                         hparts = [(r, 0, len(self.runs[r][1].text)) for r in hc.runs] if hc is not None else []
