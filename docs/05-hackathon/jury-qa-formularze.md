@@ -8,11 +8,11 @@ How to use it: the owner reads the Polish answer aloud or says it in his own wor
 
 ### 1. „Czy zaimportowali Państwo te pliki do Generatora Formularzy?”
 
-> Nie mieliśmy dostępu do importera, więc nie twierdzimy, że import przechodzi. Każdy plik przechodzi naszą kontrolę zgodną z Państwa schematem, regułami i dwoma eksportami wzorcowymi, a w raporcie odróżniamy „sprawdzone w Generatorze” od „zgodne ze wzorcem”.
+> Nie mieliśmy dostępu do importera, więc nie twierdzimy, że import przechodzi. Każdy wynik sprawdza nasza bramka zgodna z Państwa schematem i regułami: cztery kontrole (schemat, reguły, siatka, identyfikatory i połączenia) blokują wynik, a pozostałe trafiają do raportu jako ostrzeżenia.
 
-*(Доступа к их импортёру у нас не было, поэтому не утверждаем, что импорт проходит. Каждый файл проходит нашу проверку по их схеме, правилам и двум эталонным экспортам, а в отчёте мы различаем «проверено в Генераторе» и «соответствует образцу».)*
+*(Доступа к их импортёру у нас не было, поэтому не утверждаем, что импорт проходит. Каждый результат проверяет наш шлюз по их схеме и правилам: четыре проверки (схема, правила, сетка, идентификаторы и связи) блокируют результат, остальные попадают в отчёт как предупреждения.)*
 
-True only if: the pre-import gate runs on every output. If a mentor imported a file with us (question J13), say instead: „Tak: jeden plik zaimportowaliśmy z mentorem w sobotę, wynik jest w repozytorium. Pozostałe przechodzą tę samą kontrolę, którą przeszedł tamten.”
+True only if: the pre-import gate runs on every output (`app/pipeline.py` `BLOCKING_CHECKS` = G1 to G4; a failed G5 to G10 is a warning of a 200; G11 and G12 report `not_applicable` in the service: run of `/v1/forms/report` on the V0 image). If a mentor imported a file with us (question J13), say instead: „Tak: jeden plik zaimportowaliśmy z mentorem w sobotę, wynik jest w repozytorium. Pozostałe przechodzą tę samą kontrolę, którą przeszedł tamten.”
 
 ### 2. „Dlaczego z jednej strony papieru powstały cztery strony e-usługi?”
 
@@ -24,11 +24,11 @@ True only if: origin tags and the toggle exist. Fallback: show the tree of the p
 
 ### 3. „Co chroni firmę przed pytaniem o PESEL obywatela?”
 
-> Rozróżniamy zalogowanego człowieka, stronę, w której imieniu działa, i jego rolę: pole należy do roli, nie do strony formularza. Sześć odtwarzanych ścieżek sprawdza, które sekcje widzi każda rola i które dane inicjalne są zablokowane.
+> Rozróżniamy zalogowanego człowieka, stronę, w której imieniu działa, i jego rolę: pole należy do roli, nie do strony formularza. Siedem odtwarzanych ścieżek sprawdza, które sekcje widzi każda rola i które dane inicjalne są zablokowane; niezaliczona ścieżka jest ostrzeżeniem w raporcie, nie blokadą wyniku.
 
-*(Мы различаем вошедшего человека, сторону, от имени которой он действует, и его роль: поле принадлежит роли, а не странице. Шесть воспроизводимых маршрутов проверяют, какие секции видит каждая роль и какие начальные данные заблокированы.)*
+*(Мы различаем вошедшего человека, сторону, от имени которой он действует, и его роль: поле принадлежит роли, а не странице. Семь воспроизводимых маршрутов проверяют, какие секции видит каждая роль и какие начальные данные заблокированы; непройденный маршрут это предупреждение в отчёте, а не блокировка результата.)*
 
-True only if: the journeys test runs. Fallback: the conditions of the standard sections are taken from the partner's own export, unchanged.
+True only if: the journeys test runs (`app/gate/journeys/standard.json` holds seven journeys; check G8 does not block). Fallback: the conditions of the standard sections are taken from the partner's own export, unchanged.
 
 ### 4. „Które źródło wygrywa, gdy schemat i oba eksporty mówią co innego?”
 
@@ -56,35 +56,35 @@ True only if: declarations are copied verbatim into the consent section and carr
 
 ### 7. „Jak obsługują Państwo sześciostronicową deklarację odpadową z tabelami i wyliczeniami?”
 
-> Rozpoznajemy składniki wyliczenia, jednostki oraz nagłówki wierszy i kolumn, a tabele o równych wierszach zamieniamy na sekcje powtarzalne. Wzoru nie zapisujemy w JSON-ie, bo w znanych nam eksportach nie ma pola obliczanego: trafia do raportu jako brakujące zachowanie.
+> Deklarację czytamy na zwykłe pola, część z nich jako pola liczbowe; tabel tej deklaracji w tej wersji nie zamieniamy na sekcje powtarzalne. Wzoru nie zapisujemy w JSON-ie, bo w znanych nam eksportach nie ma pola obliczanego.
 
-*(Распознаём слагаемые расчёта, единицы и заголовки строк и столбцов, а таблицы с одинаковыми строками превращаем в повторяющиеся секции. Формулу в JSON не пишем: в известных нам экспортах нет вычисляемого поля, она попадает в отчёт как недостающее поведение.)*
+*(Декларацию читаем как обычные поля, часть из них как числовые; таблицы этой декларации в этой версии не превращаем в повторяющиеся секции. Формулу в JSON не пишем: в известных нам экспортах нет вычисляемого поля.)*
 
-True only if: judged set 8 converts with a report. If repeating sections were not built: „Tabele zapisujemy jako zwykłe pola i oznaczamy w raporcie, że powinny być sekcją powtarzalną.”
+True only if: judged set 8 converts with a report (run on the V0 image: PDF and DOCX answer 200 with `NUMBER` fields and no `REPEATING_SECTION`; no warning says a table was flattened). Never say that tables become repeating sections before a run of set 8 shows one.
 
 ### 8. „A szesnastostronicowy wniosek sportowy, w którym są trzy wnioski?”
 
-> Wykrywamy powtórzone tytuły i zakresy stron, czyli trzy wnioski w jednym pliku. Urzędnik podejmuje jedną decyzję: jedna e-usługa z wyborem rodzaju wniosku i rozłącznymi sekcjami albo informacja, że plik trzeba podzielić na trzy usługi.
+> Trzy wnioski w jednym pliku stają się jedną e-usługą: na początku wnioskodawca wybiera rodzaj wniosku, a sekcje danego rodzaju pokazują się dopiero po tym wyborze. Podziału pliku na trzy osobne usługi konwerter sam nie proponuje.
 
-*(Находим повторяющиеся заголовки и диапазоны страниц, то есть три заявления в одном файле. Чиновник принимает одно решение: одна услуга с выбором вида заявления и раздельными секциями или сообщение, что файл нужно разделить на три услуги.)*
+*(Три заявления в одном файле становятся одной услугой: в начале заявитель выбирает вид заявления, а секции этого вида появляются только после выбора. Разделить файл на три отдельные услуги конвертер сам не предлагает.)*
 
-True only if: judged set 9 converts and the split is detected. Fallback: „Dziś traktujemy go jako jedną usługę z trzema stronami sprawy i mówimy to w raporcie.”
+True only if: judged set 9 converts with the selector (run on the V0 image: PDF answers 200, page „Rodzaj wniosku” with one `RADIO` of three kinds, 13 `SHOW` conditions name it).
 
 ### 9. „Co się stanie, gdy plik zawiesi parser albo okaże się złośliwy?”
 
-> Każdy plik czyta osobny, krótko żyjący proces z limitem czasu, pamięci i rozmiaru wyniku, bez dostępu do klucza i do sieci. Zawieszone zadanie jest przerywane z kodem przyczyny, a następny plik przechodzi normalnie: mamy na to test.
+> Plik czyta proces usługi w osobnym wątku z limitem czasu, a wejście ma limity rozmiaru, liczby stron i pikseli. Po przekroczeniu czasu odpowiadamy kodem 504 TIMEOUT (mamy na to test), ale porzucone zadanie kończy się w tle samo: izolacja w osobnym procesie to pierwszy krok przed wdrożeniem.
 
-*(Каждый файл читает отдельный короткоживущий процесс с лимитом времени, памяти и размера результата, без доступа к ключу и к сети. Зависшее задание прерывается с кодом причины, а следующий файл проходит нормально: на это есть тест.)*
+*(Файл читает процесс сервиса в отдельном потоке с лимитом времени, а у входа есть лимиты размера, числа страниц и пикселей. При превышении времени отвечаем кодом 504 TIMEOUT (на это есть тест), но брошенное задание само доходит до конца в фоне: изоляция в отдельном процессе это первый шаг перед внедрением.)*
 
-True only if: the worker process and the over-budget test exist. Fallback: say honestly that parsing runs in the service process with a time limit, and that isolation is the first step before any deployment.
+True only if: always for this version (`app/pipeline.py` `run_limited`: a daemon thread; `WORKER_MEMORY_MB` is read by nothing; test `tests/shell/test_d19.py`). Never say „osobny proces” or „limit pamięci” before a worker process exists.
 
 ### 10. „Ile kosztuje wdrożenie w skali kraju?”
 
-> Mierzymy osobno pliki tekstowe i skany na nazwanym sprzęcie: sekundy procesora i pamięć na formularz, bez GPU. Do tego doliczamy czas urzędnika na decyzje i pokazujemy założenia; nie mnożymy najlepszego wyniku przez liczbę gmin.
+> Nie mierzyliśmy tego na nazwanym sprzęcie, więc nie podajemy kosztu w skali kraju. Ścieżka domyślna działa na samym procesorze, bez GPU i bez płatnego API; do kosztu trzeba doliczyć czas urzędnika na decyzje, a najlepszego wyniku nie mnożymy przez liczbę gmin.
 
-*(Меряем отдельно текстовые файлы и сканы на названном железе: секунды процессора и память на форму, без видеокарты. К этому добавляем время чиновника на решения и показываем допущения; лучший результат на число гмин не умножаем.)*
+*(Мы не мерили это на названном железе, поэтому не называем стоимость в масштабе страны. Путь по умолчанию работает на одном процессоре, без видеокарты и без платного API; к стоимости надо добавить время чиновника на решения, а лучший результат на число гмин мы не умножаем.)*
 
-True only if: `eval/metrics.json` holds the measurements. Have the two numbers ready (median seconds for a text file, for a scan).
+True only if: always while `eval/metrics.json` does not exist (it is absent at `c9bd241`). When it holds the measurements, replace the first sentence by the two numbers (median seconds for a text file, for a scan) and the machine.
 
 ### 11. „Dlaczego nie lokalny model językowy albo wizyjny?”
 
@@ -104,37 +104,37 @@ True only if: the offline run (command 1 of the README) passed on the submitted 
 
 ### 13. „Jakie licencje mają zależności i jak czytają Państwo pliki DOC bez LibreOffice?”
 
-> Bramka licencji przepuszcza tylko licencje bez copyleft i tworzy listę wszystkich zależności; odrzuciliśmy między innymi PyMuPDF (AGPL) i python-stdnum (LGPL). Stary format DOC czyta nasz własny czytnik binarnego tekstu Worda, a LibreOffice (MPL 2.0) jest tylko opcją w drugim obrazie, jeśli Państwo ją dopuszczą.
+> Bramka licencji przepuszcza tylko licencje bez copyleft i tworzy listę wszystkich zależności; odrzuciliśmy między innymi PyMuPDF (AGPL) i python-stdnum (LGPL). Stary format DOC czyta nasz własny czytnik binarnego tekstu Worda; LibreOffice nie ma w żadnym z naszych obrazów.
 
-*(Проверка лицензий пропускает только лицензии без копилефта и строит список всех зависимостей; мы отказались, в частности, от PyMuPDF (AGPL) и python-stdnum (LGPL). Старый формат DOC читает наш собственный читатель двоичного текста Word, а LibreOffice (MPL 2.0) это только опция во втором образе, если вы её допустите.)*
+*(Проверка лицензий пропускает только лицензии без копилефта и строит список всех зависимостей; мы отказались, в частности, от PyMuPDF (AGPL) и python-stdnum (LGPL). Старый формат DOC читает наш собственный читатель двоичного текста Word; LibreOffice нет ни в одном из наших образов.)*
 
 True only if: the licence gate ran and the own DOC reader converts the DOC files of the judged sets. If the DOC reader is not ready: „Pliki DOC odrzucamy dziś z jasnym komunikatem; czytnik jest w planie, bo nie chcieliśmy sięgać po bibliotekę z licencją copyleft.” A follow-up may come about the base image (Alpine ships GPL tools such as BusyBox): „Mówimy o bibliotekach produktu; obraz bazowy to oficjalny Alpine, który karta sama wskazuje.”
 
 ### 14. „Co ze skanami i zdjęciami, gdy OCR się pomyli?”
 
-> Każdy odczytany wyraz ma poziom pewności, a pola z niską pewnością trafiają na początek listy do sprawdzenia, z wycinkiem skanu obok. W obrazie rozszerzonym drugi, niezależny silnik OCR potwierdza odczyt, a rozbieżność pokazujemy, zamiast wybierać po cichu.
+> Każdy wyraz z OCR ma poziom pewności, który wchodzi do oceny pola, a miejsca niepewne raport oznacza ostrzeżeniem `LOW_CONFIDENCE` ze stroną i prostokątem na druku; ekran przeglądu prosi, by sprawdzić je na papierze. Drugiego silnika OCR w tej wersji nie ma: odczytuje jeden Tesseract.
 
-*(У каждого распознанного слова есть уровень уверенности, и поля с низкой уверенностью идут в начало списка на проверку, с вырезкой скана рядом. В расширенном образе второй, независимый движок OCR подтверждает чтение, а расхождение мы показываем, а не выбираем молча.)*
+*(У каждого слова из OCR есть уровень уверенности, который входит в оценку поля, а неуверенные места отчёт отмечает предупреждением `LOW_CONFIDENCE` со страницей и прямоугольником на бланке; экран проверки просит сверить их с бумагой. Второго движка OCR в этой версии нет: читает один Tesseract.)*
 
-True only if: the image reader works on the JPG and PNG files of the judged sets. The second sentence only if the `plus` image was built.
+True only if: the image reader works on the JPG and PNG files of the judged sets (run on the V0 image, set 8: JPG and PNG answer 200, `reader: image.ocr`, `LOW_CONFIDENCE` warnings with `page` and `box`). `OCR_SECOND_ENGINE` is read by nothing, and the review screen draws no crop of the scan: never promise either.
 
 ### 15. „Ministerstwo zmienia wzór. Czy urzędnik zaczyna od zera?”
 
-> Identyfikatory powstają ze znaczenia pola, a nie z pliku, więc zmiana jednego zdania nie zmienia stu identyfikatorów. Dwie konwersje dwóch wersji druku dają listę zmian: kwota, obowiązek, załącznik, brzmienie albo sam układ.
+> Identyfikatory powstają z tytułu formularza i ze znaczenia pola, więc ten sam druk przy powtórnej konwersji daje te same identyfikatory, a nowy tytuł zmienia wszystkie, chyba że ustawimy stały klucz `FORM_KEY`. Porównanie dwóch wersji druku jest następnym krokiem.
 
-*(Идентификаторы строятся из смысла поля, а не из файла, поэтому изменение одной фразы не меняет сотню идентификаторов. Две конвертации двух версий бланка дают список изменений: сумма, обязанность, приложение, формулировка или только вёрстка.)*
+*(Идентификаторы строятся из заголовка формы и смысла поля, поэтому тот же бланк при повторной конвертации даёт те же идентификаторы, а новый заголовок меняет все, если не задать постоянный ключ `FORM_KEY`. Сравнение двух версий бланка это следующий шаг.)*
 
-True only if: the first sentence needs the test "one changed label, ids of the other fields unchanged"; the second needs the comparison of two conversions. If only the first exists, say only the first and add: „Porównanie wersji jest następnym krokiem.”
+True only if: always for this version (`app/compose/__init__.py`: the form key is the slug of the title; run on synthetic DOCX: same title, 68 of 68 ids equal; new title, 0 of 68; with `FORM_KEY`, 68 of 68). There is no diff route and no diff command.
 
 ## Reserve questions
 
 ### R1. „Co, gdy urzędnik wgra wypełniony wniosek z danymi osobowymi?”
 
-> Rozpoznajemy wypełnienie (poprawny PESEL w rubryce, wpisane wartości, ślady pisma) i ostrzegamy; niczego nie zapisujemy, a wartości z rubryk nie trafiają do JSON-u. Zdarzenia audytowe zawierają tylko skróty i kody przyczyn, bez treści.
+> Ostrzeżenia o wypełnionym druku w tej wersji nie ma; wykrywanie wypełnionych druków jest w planie. Pliku nie zapisujemy na stałe (OCR używa plików tymczasowych w `/tmp` kontenera), a logi usługi nie zawierają nazwy ani treści pliku.
 
-*(Распознаём заполнение (верный PESEL в графе, вписанные значения, следы почерка) и предупреждаем; ничего не сохраняем, значения из граф в JSON не попадают. События аудита содержат только хеши и коды причин, без содержимого.)*
+*(Предупреждения о заполненном бланке в этой версии нет; распознавание заполненных бланков в плане. Файл мы не сохраняем навсегда (OCR использует временные файлы в `/tmp` контейнера), а логи сервиса не содержат ни имени, ни содержимого файла.)*
 
-True only if: the filled-form alarm exists. Fallback: „Plik żyje tylko w pamięci, a treść nie trafia do logów; wykrywanie wypełnionych druków jest w planie.”
+True only if: always for this version (`FILLED_FORM` is declared in `app/model/common.py` and emitted nowhere; `FILLED_FORM=reject` is read by nothing; the Dockerfile says OCR writes to `/tmp`; the V0 container log after eight conversions holds no file name). When the alarm exists, say what it detects, from its test.
 
 ### R2. „Czy tekst z druku może wstrzyknąć skrypt do Generatora?”
 
