@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from app.mean._fields import _PHRASES, _leader_token, ocr_mend
+from app.mean._fields import _PHRASES, _leader_token, ocr_mend, ocr_vocab
 
 REAL = ["przeterminowane", "Wierzbięcice", "ewentualnie", "deklaracje", "zezwolenie", "rezerwacje", "eksperci",
         "cesarzowa", "seksrecesja", "Szczecinek", "osiedle", "przedsiębiorcę", "wnioskodawca", "Rzeczpospolitej",
@@ -31,10 +31,21 @@ def test_misspelled_lead_in():
 
 
 def test_far_text_stays():
-    # within three edits of "nr ewidencyjny działki": the same wording comes out of the lexicon
-    assert _PHRASES[ocr_mend("Numer ewidencyjny działki")] == "Numer ewidencyjny działki"
+    assert ocr_mend("Numer ewidencyjny działki") == "Numer ewidencyjny działki"   # a known wording stays as printed
     assert ocr_mend("Obręb") == "Obręb"
     assert ocr_mend("w miasteczku") == "w miasteczku"
+
+
+def test_dictionary_is_the_lexicon_without_stems():
+    v = ocr_vocab()
+    assert "w miejscowości" in v and "kod pocztowy" in v and "wójta gminy" in v and "miejscowość, data" in v
+    assert not {"siedzib", "pełnomocni", "ewentualn", "wnioskodawc"} & set(v)
+    assert all(k in v for k in _PHRASES if len(k) >= 6)
+
+
+def test_misspelt_lexicon_words():
+    assert ocr_mend("Kod pocztcwy") == "kod pocztowy" or ocr_mend("Kod pocztcwy").casefold() == "kod pocztowy"
+    assert ocr_mend("Wojewodztwo").casefold() == "województwo"
 
 
 def test_only_leader_kept_as_is():

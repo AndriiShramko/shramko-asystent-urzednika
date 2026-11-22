@@ -59,6 +59,45 @@ def _distance(a: str, b: str, cap: int) -> int:
     return row[-1]
 
 
+_WORD = re.compile(r"[^\W\d_][^\W\d_ .,-]*(?:[ .,-]+[^\W\d_]+)*\.?")
+_vocab: dict[str, str] | None = None
+
+
+def ocr_vocab() -> dict[str, str]:
+    """BL13 SCAN-L: the known words of forms, from the project's own lexicon: the lead-in phrases (kept as keys, so
+    the label rules map them), the wordings phrases and concepts write, the whole-word alternatives of the applicant
+    labels and of the place-and-date habit, the names of offices. Casefolded key -> the words a mended label takes."""
+    global _vocab
+    if _vocab is None:
+        v: dict[str, str] = {}
+        def add(t: str, as_is: bool = False) -> None:
+            t = re.sub(r"\s+", " ", t).strip()
+            k = t.casefold()
+            if len(k) >= 6 and _WORD.fullmatch(t) and k not in v:
+                v[k] = k if as_is else t
+        for key in _PHRASES:
+            add(key, as_is=True)
+        for name in ("phrases", "concepts"):
+            for row in lexicon.rows(name):
+                if row.get("label"):
+                    add(row["label"])
+        # only patterns whose alternatives are whole words closed by a word boundary or the end ("^(miejscowość|ulica|
+        # nr domu ...)\b"); the other patterns hold stems ("pełnomocni", "ewentualn") that are no words to mend into
+        whole = [r for r in lexicon.rows("applicants") if r.get("table") == "label"] + \
+            [r for r in lexicon.rows("habits") if r.get("habit") == "date_place"]
+        for row in whole:
+            pat = re.sub(r"\b|\^|\$|\(\?:", "", row["pattern"]).replace(r"\s+", " ").replace(r"\s", " ")
+            for part in re.split(r"[()|]", pat):
+                closed = r"(?:\\b|\$|\)(?:\\b|\$)|\|[^()]*\)(?:\\b|\$))"   # the alternative ends at a word boundary
+                if part.strip() and re.search(re.escape(part.strip()) + closed, row["pattern"]):
+                    add(part)   # a bare "siedzib" (a stem) is no word to mend into
+        for row in lexicon.rows("offices"):
+            for t in [row.get("base") or "", *(row.get("forms") or [])]:
+                add(t)
+        _vocab = v
+    return _vocab
+
+
 def ocr_mend(label: str) -> str:
     """BL13 SCAN-L: a label read by OCR loses the tokens a dotted leader became; a label then within one edit per
     six letters of a lead-in phrase of the lexicon ("W micjscowOŚCI", "przy ulicy?") is that phrase. Callers give
@@ -68,14 +107,20 @@ def ocr_mend(label: str) -> str:
     if kept and len(kept) < len(toks):
         label = " ".join(kept).strip(" .:;,/")
     low = label.casefold().rstrip(" ?.:")
-    if low in _PHRASES:
-        return low
+    vocab = ocr_vocab()
+    if low in vocab:
+        return vocab[low] if low in _PHRASES or low != label.casefold() else label
     best = None
-    for key in _PHRASES:
+    for key, words in vocab.items():
         cap = len(key) // 6
         if cap and (d := _distance(low, key, cap)) <= cap and (best is None or d < best[0]):
-            best = (d, key)
-    return best[1] if best else label
+            best = (d, words)
+    if best is None:
+        return label
+    words = best[1]
+    if words not in _PHRASES and label[:1].isupper():
+        words = words[:1].upper() + words[1:]   # "Kod pocztcwy" -> "Kod pocztowy"; a phrase key is worded by the rules
+    return words
 
 
 _YES_NO = {"tak", "nie"}
