@@ -74,9 +74,32 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       if (!page || !layer) continue
       const mark = h('button', { type: 'button', class: 'clerk-mark clerk-only', 'data-remark': m.key, style: place(m.box, page) },
         h('span', { class: 'clerk-num' }, String(m.n)))
-      mark.addEventListener('click', (e) => { e.stopPropagation(); session.pick({ key: m.key }); spot(m.page, m.box) })
+      mark.addEventListener('click', (e) => {
+        e.stopPropagation()
+        session.pick({ key: m.key })
+        spot(m.page, m.box)
+        // BL13 CLERK-T: the mark of a remark sits on a box; that box's explanation shows too
+        const same = (b?: number[]): boolean => !!b && b.every((x, i) => Math.abs(x - m.box[i]) < 1)
+        const tg = targets ? [...targets.values()].find((x) => x.place.page === m.page && same(x.place.box)) : undefined
+        if (tg && !tg.fields.length) showNote(tg, layer)
+      })
       layer.append(mark)
     }
+  }
+
+  /** BL13 CLERK-T: the plain note of a box that is no field, under the box and for the screen reader. */
+  function showNote(tg: BoxTarget, layer: HTMLElement | null): void {
+    const note = boxNote(tg)
+    if (!note) return
+    for (const x of papersEl?.querySelectorAll('.clerk-boxnote') ?? []) x.remove()
+    const page = pv?.pages.find((p) => p.n === tg.place.page)
+    const b = tg.place.box
+    if (page && b && layer) {
+      const top = Math.min(b[3] + 4, page.h - 40)
+      layer.append(h('div', { class: 'clerk-boxnote', style: `left:${pct(Math.min(b[0], page.w * 0.55), page.w)};top:${pct(top, page.h)}` }, note))
+    }
+    const live = el.querySelector('#fp-where-boxlive')
+    if (live) live.textContent = note
   }
 
   /** Light a place of the original (a box in pt on a page) and bring it into view. */
@@ -192,18 +215,8 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
           session.pick({ fieldId: ids[0] })
           return
         }
-        const note = tg ? boxNote(tg) : tr('clerk.box.none')
-        if (note) {
-          const page = pv?.pages.find((p) => p.n === tg?.place.page)
-          const b = tg?.place.box
-          const layer = t.parentElement
-          if (page && b && layer) {
-            const top = Math.min(b[3] + 4, page.h - 40)
-            layer.append(h('div', { class: 'clerk-boxnote', style: `left:${pct(Math.min(b[0], page.w * 0.55), page.w)};top:${pct(top, page.h)}` }, note))
-          }
-          const live = el.querySelector('#fp-where-boxlive')
-          if (live) live.textContent = note
-        }
+        if (tg) showNote(tg, t.parentElement)
+        else { const live = el.querySelector('#fp-where-boxlive'); if (live) live.textContent = tr('clerk.box.none') }
         return
       }
       btn?.focus()

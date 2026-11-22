@@ -443,3 +443,4 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 .fp-box::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: max(100%, 24px); transform: translateY(-50%); }
 .clerk-edit-inline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; padding: 0.3rem; margin: 0 0 0.3rem; }
 .clerk-edit-inline .clerk-edit-input { flex: 1 1 14rem; min-width: 0; font: inherit; font-weight: 600; padding: 0.3rem 0.4rem; }
+.fp-field [hidden], .fp-section > h4[hidden] { display: none !important; }
