@@ -268,7 +268,7 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
                 f"exit {cp.returncode}; stderr: {cp.stderr.decode(errors='replace')[-300:]}"])
             continue
         # the second conversion also asks for the sidecar: the same command line, plus --report
-        second, form2, sidecar = convert_with_sidecar(image, mount, path.name)
+        second, form2, sidecar = convert_with_sidecar(image, mount, path.name, tuple(ALL_FORMATS))
         problems = conversion_problems(cp.stdout, cp.stderr, second.returncode, form2, sidecar)
         res.add(f"convert {path.name} with --network none", problems,
                 f"{len(form2)} bytes, sha256 {hashlib.sha256(form2).hexdigest()[:12]}, {secs:.1f} s, "
