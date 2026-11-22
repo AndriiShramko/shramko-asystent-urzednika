@@ -129,6 +129,29 @@ def _checks_of(report: gate.GateReport) -> list[dict]:
             for c in report.checks]
 
 
+_EVIDENCE_KEYS = ("page", "box", "anchor", "quote", "candidate", "runs")
+
+
+def _field_evidence(brief, brief_keys: dict[str, str]) -> dict[str, list[dict]]:
+    """A8 VB-4: form id -> where the field of the matter stands on the paper, in the shape of meta FieldEvidence.
+
+    Only the keys FieldEvidence knows are kept (no `spans`), and a record that locates nothing (no quote, box or
+    anchor) is left out, so the sidecar keeps its contract (sidecar.schema.json).
+    """
+    by_key = {f.key: f.evidence for s in brief.matter for f in s.fields if f.key}
+    by_key.update({a.key: a.evidence for a in brief.attachments if a.key and a.key not in by_key})
+    out: dict[str, list[dict]] = {}
+    for fid, key in brief_keys.items():
+        recs = []
+        for e in by_key.get(key) or ():
+            d = {k: v for k, v in e.model_dump(mode="json", exclude_none=True).items() if k in _EVIDENCE_KEYS and v != []}
+            if "quote" in d or "box" in d or "anchor" in d:
+                recs.append(d)
+        if recs:
+            out[fid] = recs
+    return out
+
+
 def _form_ids(form: dict, brief, brief_keys: dict[str, str]) -> dict[str, str]:
     """Brief key -> form id: the inverse of `ComposeResult.brief_keys`. The composer does not carry the key of an
     attachment (request to lead), so an upload is found by its title among the uploaders of the form."""
@@ -186,6 +209,14 @@ def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] =
                      if not (w.code == "REQUIRED_INFERRED" and w.field in dropped)]
     warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
     meta: dict = {"origins": composed.origins, "brief_keys": composed.brief_keys}
+    # A8 VB-4 (B16): where each field of the matter stands on the paper (page, box, quote), keyed by form id, as
+    # meta.schema.json `evidence` 1.1 has it; the review page shows the snippet from here.
+    try:   # evidence is a courtesy of the review page: a slip here must never cost the form
+        evidence = _field_evidence(brief, composed.brief_keys)
+    except Exception:  # noqa: BLE001
+        evidence = {}
+    if evidence:
+        meta["evidence"] = evidence
     if not fallback:
         try:
             ledger = assemble_ledger(finder, brief.dispositions, _form_ids(form, brief, composed.brief_keys))

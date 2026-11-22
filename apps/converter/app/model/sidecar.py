@@ -11,7 +11,7 @@ from typing import Literal
 from pydantic import Field
 
 from .common import Contract, Warning
-from .meta import Ledger, Proposals
+from .meta import FieldEvidence, Ledger, Proposals
 
 
 class RunConverter(Contract):
@@ -45,6 +45,7 @@ class DictionaryLink(Contract):
 class RunMeta(Contract):
     origins: dict[str, Literal["paper", "standard", "reviewer"]] = {}
     brief_keys: dict[str, str] = Field(default={}, description="Form id -> key of the brief field it was composed from.")
+    evidence: dict[str, list[FieldEvidence]] = Field(default={}, description="Form id -> where the field stands on the paper (A8 VB-4); fields of the matter only.")
     ledger: Ledger | None = Field(default=None, description="Absent on the interim path and when it does not close (LEDGER_NOT_CLOSED).")
     # A8 DX-1, DX-2 (`compose.dictionaries.sidecar_extras`): each key is written only when it has something to say.
     proposals: Proposals | None = Field(default=None, description="Proposed dictionaries; absent when there are none.")

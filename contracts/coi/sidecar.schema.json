@@ -105,6 +105,62 @@
       "title": "Evidence",
       "type": "object"
     },
+    "FieldEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "quote": {
+          "description": "1.1: may be left out when box or anchor locate a drawn blank.",
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "runs": {
+          "description": "1.1: run ids of the quote or of the blank.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        }
+      },
+      "title": "FieldEvidence",
+      "type": "object"
+    },
     "Ledger": {
       "additionalProperties": false,
       "properties": {
@@ -573,6 +629,18 @@
           "default": {},
           "description": "Form id -> key of the brief field it was composed from.",
           "title": "Brief Keys",
+          "type": "object"
+        },
+        "evidence": {
+          "additionalProperties": {
+            "items": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "type": "array"
+          },
+          "default": {},
+          "description": "Form id -> where the field stands on the paper (A8 VB-4); fields of the matter only.",
+          "title": "Evidence",
           "type": "object"
         },
         "ledger": {
