@@ -25,6 +25,8 @@ export interface AiState {
   keyOrigin: 'environment-variable' | 'environment-file' | 'session' | ''
   /** the last four characters of the key, or '' when the service does not show them */
   keyTail: string
+  /** the whole key of the service, only when its operator set VISION_KEY_REVEAL=on; '' otherwise */
+  keyFull: string
   /** the code of what is wrong in a fallback (bad_key, no_credit, ...), or '' */
   problem: string
 }
@@ -72,6 +74,7 @@ export function parseState(raw: unknown): AiState | null {
     keySet: key.set === true,
     keyOrigin: (ORIGINS.includes(origin) ? origin : '') as AiState['keyOrigin'],
     keyTail: /^[\x21-\x7e]{1,4}$/.test(tail) ? tail : '',
+    keyFull: typeof key.full === 'string' && /^[\x21-\x7e]{1,512}$/.test(key.full) ? key.full : '',
     problem: codeOf(r.problem, '')
   }
 }

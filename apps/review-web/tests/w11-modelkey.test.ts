@@ -9,9 +9,9 @@ import { attachModelKey, mountModelKey, type ModelKeyDeps } from '../src/ui/mode
 
 const PAGE_KEY = 'FAKE-PAGE-KEY-do-not-show-tailP'
 const ENV: AiState = { state: 'on', source: 'environment', pageConfig: true, model: 'open-lab/Open-Model-3B',
-  address: 'https://models.example.test/v1', used: false, keySet: true, keyOrigin: 'environment-variable', keyTail: 'ailE', problem: '' }
+  address: 'https://models.example.test/v1', used: false, keySet: true, keyOrigin: 'environment-variable', keyTail: 'ailE', keyFull: '', problem: '' }
 const OFF: AiState = { state: 'off', source: 'none', pageConfig: true, model: '', address: '', used: false, keySet: false,
-  keyOrigin: '', keyTail: '', problem: '' }
+  keyOrigin: '', keyTail: '', keyFull: '', problem: '' }
 
 const tick = async (): Promise<void> => { for (let i = 0; i < 6; i++) await Promise.resolve() }
 const $ = <T extends HTMLElement>(root: HTMLElement, sel: string): T => root.querySelector(sel) as T
@@ -307,5 +307,16 @@ describe('the badge of the header knows the open-model step (/status key `vision
     expect(modeOf({ ...base, vision: 'ON' })).toBe('rules')
     expect(modeOf({ ...base, vision: { state: 'OFF' } })).toBe('rules')
     expect(modeOf({ ...base, vision: { state: 7 } })).toBe('rules')
+  })
+})
+
+describe('W11 BL12: the whole key only when the operator allows it', () => {
+  it('reads key.full only as a printable string, else empty', async () => {
+    const { parseState } = await import('../src/lib/aimodel')
+    const base = { state: 'on', source: 'environment', page_config: true, model: 'm', used: false }
+    expect(parseState({ ...base, key: { set: true, origin: 'environment-variable', tail: 'abcd' } })?.keyFull).toBe('')
+    expect(parseState({ ...base, key: { set: true, origin: 'environment-variable', full: 'FAKE-full-key-0000abcd' } })?.keyFull)
+      .toBe('FAKE-full-key-0000abcd')
+    expect(parseState({ ...base, key: { set: true, full: 'two words' } })?.keyFull).toBe('')
   })
 })

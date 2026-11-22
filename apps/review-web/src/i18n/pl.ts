@@ -272,6 +272,7 @@ export const pl = {
   'ai.key.hint.typed': "Ten klucz jest tylko w pamięci tej karty. Po kliknięciu „Użyj w tej sesji” dostanie go także usługa, do pamięci; nie trafia na dysk ani do logów.",
   'ai.key.hint.applied': "Ten klucz jest już używany przez usługę (trzyma go tylko w pamięci) i jest w pamięci tej karty, dlatego można go tutaj podejrzeć.",
   'ai.key.hint.none': "Klucz nie jest ustawiony. Wpisz klucz do swojego serwera modelu.",
+  'ai.key.hint.full': "Operator tej usługi zezwolił na podgląd klucza (VISION_KEY_REVEAL=on), dlatego widać go w całości. Kliknij „Ukryj klucz”, aby znów pokazać kropki.",
   'ai.show': "Pokaż klucz",
   'ai.hide': "Ukryj klucz",
   'ai.check': "Sprawdź połączenie",

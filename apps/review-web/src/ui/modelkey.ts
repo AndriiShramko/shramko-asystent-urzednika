@@ -102,13 +102,14 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
     // The key field: what the person typed, or dots for a key that only the service knows.
     const serverKey = s.keySet && !key.value
     key.type = revealed && key.value ? 'text' : 'password'
-    key.placeholder = serverKey ? masked(revealed ? s.keyTail : '') : ''
+    key.placeholder = serverKey ? (revealed && s.keyFull ? s.keyFull : masked(revealed ? s.keyTail : '')) : ''
     key.classList.toggle('ai-key-server', serverKey)
     reveal.textContent = t(revealed ? 'ai.hide' : 'ai.show')
     reveal.setAttribute('aria-pressed', revealed ? 'true' : 'false')
     reveal.disabled = !key.value && !s.keySet
     keyHint.textContent = key.value ? t(key.value.trim() === applied ? 'ai.key.hint.applied' : 'ai.key.hint.typed')
       : !s.keySet ? t('ai.key.hint.none')
+        : revealed && s.keyFull ? t('ai.key.hint.full')
         : revealed ? t(s.keyTail ? 'ai.key.hint.tail' : 'ai.key.hint.notail', { tail: s.keyTail })
           : t('ai.key.hint.' + (s.keyOrigin || 'environment-variable'))
     const dirty = isTyped(typed())

@@ -319,8 +319,15 @@ def _post(settings: Mapping[str, str]) -> tuple[int, bytes]:
 
 # ---- the public state ------------------------------------------------------------------------------------------------
 
+def reveal_allowed(env: Mapping[str, str] | None = None) -> bool:
+    """VISION_KEY_REVEAL=on: the operator lets the page show the whole key of the service (default off)."""
+    env = os.environ if env is None else env
+    return (env.get("VISION_KEY_REVEAL") or "").strip().lower() in ("on", "1", "true", "yes")
+
+
 def public_state(authorized: bool) -> dict:
-    """For the page: no key, ever. The address and the tail of the key only for a caller who may convert."""
+    """For the page: no key by default. The address and the tail of the key only for a caller who may convert;
+    the whole key only when the operator set VISION_KEY_REVEAL=on, and only for such a caller."""
     from app import vision
     from app.engine import host_class
 
@@ -348,6 +355,10 @@ def public_state(authorized: bool) -> dict:
         out["address"] = shown_address(cfg.base_url)
         if len(cfg.key) >= TAIL_MIN_KEY:
             key["tail"] = cfg.key[-TAIL:]
+        # The operator's explicit choice (default off): the eye button of the page may show the whole key of the
+        # service. Meant for a container on the operator's own machine (127.0.0.1); never set it on a shared host.
+        if reveal_allowed() and _KEY_RE.fullmatch(cfg.key or ""):
+            key["full"] = cfg.key
     out["key"] = key
     return out
 

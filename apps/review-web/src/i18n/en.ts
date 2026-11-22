@@ -270,6 +270,7 @@ export const en: Dict = {
   'ai.key.hint.typed': "This key is only in the memory of this tab. After “Use in this session” the service gets it too, in memory; it is not written to disk or to logs.",
   'ai.key.hint.applied': "This key is already used by the service (kept in its memory only) and is in the memory of this tab, so it can be looked at here.",
   'ai.key.hint.none': "No key is set. Type the key of your model server.",
+  'ai.key.hint.full': "The operator of this service allowed the key to be shown (VISION_KEY_REVEAL=on), so it is visible in full. Click “Hide key” to show the dots again.",
   'ai.show': "Show key",
   'ai.hide': "Hide key",
   'ai.check': "Check connection",

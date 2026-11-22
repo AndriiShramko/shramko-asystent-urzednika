@@ -270,6 +270,7 @@ export const es: Dict = {
   'ai.key.hint.typed': "Esta clave está solo en la memoria de esta pestaña. Tras «Usar en esta sesión» la recibe también el servicio, en memoria; no se escribe en disco ni en registros.",
   'ai.key.hint.applied': "Esta clave ya la usa el servicio (solo en su memoria) y está en la memoria de esta pestaña, por eso se puede ver aquí.",
   'ai.key.hint.none': "No hay clave definida. Escriba la clave de su servidor del modelo.",
+  'ai.key.hint.full': "El operador de este servicio permitió mostrar la clave (VISION_KEY_REVEAL=on), por eso se ve completa. Pulse «Ocultar clave» para volver a ver los puntos.",
   'ai.show': "Mostrar clave",
   'ai.hide': "Ocultar clave",
   'ai.check': "Comprobar conexión",

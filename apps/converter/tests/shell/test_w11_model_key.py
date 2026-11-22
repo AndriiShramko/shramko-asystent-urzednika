@@ -177,6 +177,23 @@ def test_a_key_of_the_environment_is_named_by_its_origin_and_its_last_four_chara
     assert body["key"] == {"set": True, "origin": "environment-variable", "tail": ENV_KEY[-4:]}
 
 
+def test_the_whole_key_is_shown_only_when_the_operator_allows_it(monkeypatch, server):
+    configured(monkeypatch, server)
+    monkeypatch.delenv("VISION_KEY_REVEAL", raising=False)
+    assert "full" not in make().get("/v1/model").json()["key"]
+    monkeypatch.setenv("VISION_KEY_REVEAL", "off")
+    assert "full" not in make().get("/v1/model").json()["key"]
+    monkeypatch.setenv("VISION_KEY_REVEAL", "on")
+    assert make().get("/v1/model").json()["key"]["full"] == ENV_KEY
+
+
+def test_with_tokens_on_and_reveal_on_a_stranger_still_gets_no_key(monkeypatch, server, tmp_path):
+    configured(monkeypatch, server)
+    monkeypatch.setenv("VISION_KEY_REVEAL", "on")
+    assert session.public_state(authorized=False)["key"] == {"set": True, "origin": "environment-variable"}
+    assert session.public_state(authorized=True)["key"]["full"] == ENV_KEY
+
+
 def test_a_short_key_shows_no_tail(monkeypatch, server):
     configured(monkeypatch, server, key=SHORT_KEY)
     assert make().get("/v1/model").json()["key"] == {"set": True, "origin": "environment-variable"}
