@@ -2,10 +2,10 @@
 
 Написано 22.11.2026 около 06:15 для финальной сдачи задания COI «Cyfryzacja formularzy». Дедлайн HackTribe **11:00**; последний Save **не позже 10:45**. Польский текст в блоках вставлять как есть; русская строка над блоком только для вас.
 
-Метки, которые главный агент заменит перед сдачей (если он не успеет, замените сами):
-- `<<FINAL_DIGEST>>` — дайджест финального образа (строка `sha256:...` из `docs/03-plan/RESUME.md`, верхний блок, «verified»). Пока финального нет, годится последний проверенный: на 05:44 это `sha256:82cab5c3e798a167b7bead7d2c3d908b0959629ca8f722a684658cfeafbd0445`.
+**Финальные значения уже вписаны (07:40):** образ `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a` (код `a9fef20`, проверен: приёмка жюри‑скриптом 9 из 9), релиз со всеми 7 JSON: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.0-hacknation, презентация: `C:\ShramkoU\HackNation2026\deck-final\Shramko-Asystent-Urzednika-COI.pdf`.
+Осталась одна метка, которую вписываете вы:
 - `<<FILM_LINK>>` — ссылка на фильм YouTube (публичный или «по ссылке»).
-- `<<TIME>>` — время состояния, по часам (например `10:10`).
+
 
 Строки с пометкой **«проверить после финальной сборки»** описывают то, что на 06:15 ещё сливается (вид урзендника, блок ключа модели, подсказки адреса TERYT). Если к 08:30 это не вошло в образ, удалите эти строки.
 
@@ -80,7 +80,7 @@ Model pomocniczy, domyślnie wyłączony: dla słabych stron skanów administrat
 ### 7. What's done so far and goal of your project
 *Что сделано. Числа только измеренные, с указанием, на чём мерили. Источники для вас: перепись — `data/forms-census.json`; точность — `quality-gate/VJ1-vision-judge.md` в хранилище; время — README, раздел «Koszt i wymagania»; тесты — журнал лида 10, 02:14; цепочка 158 файлов — `docs/03-plan/RESUME.md`.*
 ```text
-Stan na 22.11.2026, godz. <<TIME>>. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>> (linux/amd64, publiczny, bez logowania).
+Stan na 22.11.2026, godz. 07:40. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a (linux/amd64, publiczny, bez logowania).
 
 Przed wydarzeniem (oznaczone w repozytorium jako materiał sprzed hackathonu): analiza obu eksportów wzorcowych partnera pole po polu, spis 661 dokumentów-formularzy Bydgoszczy, badania i specyfikacja. Na wydarzeniu: cały kod produktu.
 
@@ -126,10 +126,10 @@ https://github.com/AndriiShramko/shramko-asystent-urzednika
 ### 15. [Opcjonalne] Instrukcje jak otworzyć projekt
 *Команды для жюри. Совпадают с README; перед вставкой сверить с README на GitHub после финальной сборки.*
 ```text
-Potrzebny tylko Docker. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>>
+Potrzebny tylko Docker. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a
 
 1) Usługa i strona dla urzędnika (Linux, macOS, Windows):
-docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>>
+docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a
 Potem w przeglądarce: http://127.0.0.1:8080/ui/ (wczytaj pusty formularz). Stan usługi: http://127.0.0.1:8080/status
 
 2) REST z drugiego okna:
@@ -137,7 +137,7 @@ curl -F "file=@formularz.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.jso
 (w PowerShell: curl.exe)
 
 3) Bez sieci, wynik na standardowe wyjście (dowód, że nic nie wychodzi z kontenera); formularz w folderze forms/:
-docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>> convert /in/form.pdf > form.json
+docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a convert /in/form.pdf > form.json
 (Git Bash: dodaj MSYS_NO_PATHCONV=1 na początku; PowerShell: polecenie w README, sekcja „For the jury”.)
 
 Pliki konwertujcie po kolei: usługa pracuje na dwóch plikach naraz i na więcej odpowiada 429. Limit: 20 MiB i 60 stron na plik (zmienne środowiskowe w README).
@@ -162,7 +162,7 @@ Shramko
 
 ### 19. [Opcjonalne] Dodatkowe pole na materiały
 ```text
-Film: <<FILM_LINK>> | Kod: https://github.com/AndriiShramko/shramko-asystent-urzednika | Wyniki JSON wszystkich 7 formularzy (także zestaw 08) i archiwum obrazu: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.0-hacknation | Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>>
+Film: <<FILM_LINK>> | Kod: https://github.com/AndriiShramko/shramko-asystent-urzednika | Wyniki JSON wszystkich 7 formularzy (także zestaw 08) i archiwum obrazu: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.0-hacknation | Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a
 ```
 
 ### Файлы JSON семи оцениваемых форм (требование карточки)

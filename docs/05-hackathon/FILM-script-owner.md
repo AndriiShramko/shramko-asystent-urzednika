@@ -99,18 +99,18 @@
 ### Команды для сцены 9 (PowerShell, из папки, где лежат `forms` и `out`)
 
 ```powershell
-docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>> convert /in/form.pdf --out /out/a.json
+docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a convert /in/form.pdf --out /out/a.json
 ```
 
 ```powershell
-docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>> convert /in/form.pdf --out /out/b.json
+docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a convert /in/form.pdf --out /out/b.json
 ```
 
 ```powershell
 Get-FileHash out\a.json, out\b.json
 ```
 
-`<<FINAL_DIGEST>>` — строка `sha256:...` финального образа (из `docs/03-plan/RESUME.md`). Перед записью прогнать один раз: хэши должны совпасть (с `--network none` модель не вызывается). Проверить после финальной сборки.
+`sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a` — строка `sha256:...` финального образа (из `docs/03-plan/RESUME.md`). Перед записью прогнать один раз: хэши должны совпасть (с `--network none` модель не вызывается). Проверить после финальной сборки.
 
 ### Откуда числа (не читать вслух)
 - 661 формуляр одного города: `data/forms-census.json` (перепись 21.11.2026: 661 уникальный документ на 224 карточках услуг).

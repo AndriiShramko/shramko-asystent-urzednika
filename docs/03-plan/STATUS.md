@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-22 06:45 CET by build lead 12 (BL12, the only writer of `main`): `main` code = `ff69663` (wave 11 stack and CLERK-S step 1 and the strict-jury fixes); its image is being verified; the last verified image is `sha256:5b86367f296956e0c1a7fa4ecae7b36607eba353af1f5458378926355a774c04` of `23552d5` (jury acceptance ALL PASS 06:34), running on 127.0.0.1:8080. Everything else: the BL12 block at the top of `docs/03-plan/RESUME.md`.
+Last update: 2026-11-22 07:45 CET by build lead 12 (BL12): FROZEN. Hand-in image `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a` (code `a9fef20`, jury acceptance ALL PASS 07:35, fast gate PASSED), README and results point at it (`f470394`), release `v1.0-hacknation` published with all seven result JSON and the image archive. Everything else: the BL12 07:45 block of `docs/03-plan/RESUME.md`.
 
 ## Build log (the lead's handoff; newest state on top)
 
