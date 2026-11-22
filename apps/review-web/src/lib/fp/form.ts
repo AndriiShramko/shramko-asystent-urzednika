@@ -74,6 +74,10 @@ interface Raw {
 
 const str = (x: unknown): string => (typeof x === 'string' ? x : '')
 
+/** The service writes UUID ids. An id goes into element ids and into selectors of the page, so one that is not a
+ * plain token (a quote, a bracket, a space) never reaches them: the node gets a neutral id and still works. */
+const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$/
+
 export function readForm(form: unknown): FormModel {
   const f = (form ?? {}) as { title?: unknown; tabs?: { title?: unknown; questions?: { field?: Raw }[] }[] }
   const all: ENode[] = []
@@ -84,8 +88,9 @@ export function readForm(form: unknown): FormModel {
   const build = (raw: Raw, tab: string, tabIndex: number, top: string | null, depth: number, parent: ENode | null): ENode => {
     const techName = str(raw.techName)
     const own = top ?? techName
+    const rawId = str(raw.id)
     const node: ENode = {
-      id: str(raw.id),
+      id: !rawId || SAFE_ID.test(rawId) ? rawId : `fp-node-${all.length}`,
       type: str(raw.type),
       techName,
       title: str(raw.title),

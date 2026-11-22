@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Second line of defence (the first: every text of a document is set as text). Only this origin's own script
+         and requests; no inline script, no eval, no plug-in, no form post, no base change. Inline style stays
+         allowed: the print and "where on the paper" views place elements by style attributes. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
     <title>Przegląd formularza</title>
   </head>
   <body>
