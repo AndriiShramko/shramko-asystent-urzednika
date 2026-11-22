@@ -2,11 +2,11 @@
 
 A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. A shared deployment guards access with a JWT token; started alone on one computer the service is open and says so in its log. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
 
-The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. No language model runs in the product and it makes no network call at run time.
+The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. As started by the commands below, no language model runs in the product and it makes no network call at run time. One optional step for weak scan pages can be pointed by the operator at their own server with an open-weight model; it is off unless configured ([`apps/converter/README.md`](apps/converter/README.md), "Optional step").
 
 ## For the jury: three commands
 
-How it works inside: local OCR, layout analysis and rules, without a language model, without an API key and without a GPU.
+How it works inside: local OCR, layout analysis and rules. The commands below run without a language model, without an API key and without a GPU.
 
 The image (the same reference in every command below):
 
