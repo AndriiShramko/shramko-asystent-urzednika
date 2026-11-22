@@ -10,6 +10,8 @@ import { doneStatus, renderConverted, renderProblem } from './result'
 const STORE_KEY = 'review.lang'
 /** After this long the page says the wait is unusual and offers to stop. */
 export const LONG_MS = 90_000
+// UX2: a separate import line, so the import block above stays as the fill-and-print patches (FP-2..FP-6) expect it.
+import { acceptOf, formatsOf, formatsText } from '../lib/verdict'
 
 export interface AppDeps {
   convert: (file: File, token: string, hooks?: ConvertHooks) => Promise<Outcome>
@@ -53,6 +55,9 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   let statusMode: Mode | null = null
   let lastEngine: Engine | null = null
   let statusCall = 0
+  // What /status said about the service besides the mode: accepted formats, the job time limit in seconds.
+  let formats: string[] = []
+  let jobLimitS: number | null = null
 
   const status = h('p', { id: 'status', role: 'status', 'aria-live': 'polite', class: 'status' })
   // The result itself is not a live region (it is long); the status line above announces it, an error is role=alert.
@@ -74,18 +79,20 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
       h('div', { class: 'lang' }, i18nEl('label', 'lang.label', { for: 'lang' }), select)))
 
   // ---- upload panel
-  const fileInput = h('input', { type: 'file', id: 'file', class: 'sr-only', tabindex: -1, 'aria-hidden': 'true',
-    accept: '.pdf,.doc,.docx,.ods,.xlsx,.jpg,.jpeg,.png' })
+  // No `accept` until /status names the formats: the page does not invent the list, the service decides.
+  const fileInput = h('input', { type: 'file', id: 'file', class: 'sr-only', tabindex: -1, 'aria-hidden': 'true' })
   const pick = i18nEl('button', 'upload.button', { type: 'button', class: 'btn btn-main', id: 'pick' })
   const chosen = h('p', { class: 'muted', id: 'chosen' })
   const token = h('input', { type: 'password', id: 'token', name: 'token', autocomplete: 'off', spellcheck: 'false',
     'aria-describedby': 'token-hint' })
+  // The formats line comes from GET /status (`formats`); hidden while the page does not know them.
+  const formatsLine = h('p', { class: 'muted', id: 'formats', hidden: true })
   const zone = h('div', { class: 'drop', id: 'drop' },
     i18nEl('p', 'upload.drop'), pick, fileInput, chosen)
   const upload = h('section', { 'aria-labelledby': 'h-upload', class: 'panel' },
     i18nEl('h2', 'upload.heading', { id: 'h-upload' }),
     zone,
-    i18nEl('p', 'upload.formats', { class: 'muted' }),
+    formatsLine,
     h('div', { class: 'field-row' },
       i18nEl('label', 'upload.token.label', { for: 'token' }), token,
       i18nEl('p', 'upload.token.hint', { id: 'token-hint', class: 'muted' })))
@@ -144,7 +151,8 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     bar.setAttribute('aria-label', t('progress.label'))
     elapsed.textContent = t('progress.elapsed', { s: secs })
     const long = Date.now() - started >= LONG_MS
-    longText.textContent = long ? t('progress.long') : ''
+    longText.textContent = !long ? ''
+      : jobLimitS ? t('progress.long.limit', { min: Math.max(1, Math.round(jobLimitS / 60)) }) : t('progress.long')
     cancelBtn.textContent = t('progress.cancel')
     longBox.hidden = !long
     // The live line changes only with the stage, never every second: the seconds sit in the role=timer line,
@@ -215,7 +223,7 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
       resultBox.append(renderProblem(outcome, {
         retry: () => { if (lastFile) void run([lastFile]) },
         pickOther: () => { if (!busy) fileInput.click() }
-      }))
+      }, { fileSize: lastFile?.size, formats }))
       status.textContent = t('status.refused')
       if (moveFocus) resultBox.querySelector<HTMLElement>('#h-error')?.focus()
     }
@@ -250,7 +258,20 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     try { answer = await getStatus() } catch { answer = null }
     if (call !== statusCall) return // a later request is on its way: this answer is the older one
     statusMode = modeOf(answer)
+    const known = formatsOf(answer)
+    if (known.length) formats = known // a failed /status later does not erase what the service said before
+    const limit = (answer as { limits?: { job_timeout_s?: unknown } } | null)?.limits?.job_timeout_s
+    if (typeof limit === 'number' && limit > 0 && Number.isFinite(limit)) jobLimitS = limit
     paintMode()
+    paintFormats()
+  }
+
+  function paintFormats(): void {
+    formatsLine.hidden = formats.length === 0
+    formatsLine.textContent = formats.length ? t('upload.formats', { list: formatsText(formats) }) : ''
+    const accept = acceptOf(formats)
+    if (accept) fileInput.setAttribute('accept', accept)
+    else fileInput.removeAttribute('accept')
   }
 
   function refresh(): void {
@@ -260,6 +281,7 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     for (const opt of select.options) opt.textContent = t('lang.' + opt.value)
     setChosen(fileName ? t('upload.chosen', { name: fileName }) : '')
     paintMode()
+    paintFormats()
     if (busy) paintProgress()
     else renderOutcome(false)
   }

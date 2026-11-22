@@ -41,7 +41,7 @@ describe('ORDER UI 1: the headline', () => {
     const h2 = root.querySelector('#h-done') as HTMLElement
     expect(h2.dataset.kind).toBe('ok')
     expect(h2.classList.contains('result-ok')).toBe(true)
-    expect(h2.querySelector('.headline')!.textContent).toBe('Formularz przetworzony: 4 pola w 2 sekcjach')
+    expect(h2.querySelector('.headline')!.textContent).toBe('Formularz przetworzony: 4 pola w 2 sekcjach (z druku: 2, standardowych: 2)')
     expect(h2.textContent).toContain('Wniosek próbny')
     expect(h2.querySelector('[lang="pl"]')!.textContent).toBe('„Wniosek próbny”') // lang only on the form's title
     expect(h2.getAttribute('lang')).toBeNull()
@@ -55,7 +55,7 @@ describe('ORDER UI 1: the headline', () => {
     expect(h2.classList.contains('result-partial')).toBe(true)
     expect(h2.classList.contains('result-ok')).toBe(false)
     expect(h2.querySelector('.headline')!.textContent).toBe(
-      'Formularz przetworzony częściowo: odczytano 0 pól z druku, dodano 2 pola standardowe. Sprawdź druk ręcznie.')
+      'Formularz przetworzony częściowo: 4 pola w 2 sekcjach (z druku: 0, standardowych: 2). Z druku nie odczytano żadnego pola. Sprawdź druk ręcznie.')
     expect(root.textContent).not.toContain('Gotowe')
     expect(root.textContent).not.toContain('Formularz przetworzony: ')
   })
@@ -110,13 +110,13 @@ describe('ORDER UI 2: progress', () => {
     expect(file.disabled).toBe(true)
     expect(document.getElementById('drop')!.getAttribute('aria-disabled')).toBe('true')
     hooks!.onUploaded!()
-    expect(document.getElementById('status')!.textContent).toBe('Przetwarzanie pliku „wniosek.pdf” (skany i zdjęcia mogą potrwać do 60 s).')
+    expect(document.getElementById('status')!.textContent).toBe('Przetwarzanie pliku „wniosek.pdf”. Zwykle trwa to kilka sekund; duże skany mogą potrwać kilka minut.')
     vi.advanceTimersByTime(3000)
     expect(document.getElementById('progress-elapsed')!.textContent).toBe('Czas: 3 s')
     expect(document.getElementById('progress-longbox')!.hidden).toBe(true)
     vi.advanceTimersByTime(LONG_MS - 3000)
     expect(document.getElementById('progress-longbox')!.hidden).toBe(false)
-    expect(document.getElementById('progress-long')!.textContent).toBe('To trwa dłużej niż zwykle. Możesz poczekać albo przerwać.')
+    expect(document.getElementById('progress-long')!.textContent).toBe('To trwa dłużej niż zwykle: duże skany mogą potrwać kilka minut. Możesz poczekać albo przerwać.')
     // the live line says it once and keeps it; it does not flip back every second
     const line = document.getElementById('status')!.textContent
     expect(line).not.toContain('To trwa dłużej') // said once, by the panel's own live text, not twice on screen
@@ -142,14 +142,14 @@ describe('ORDER UI 3-5, 8: remarks', () => {
     const root = renderConverted(await answer(syntheticSidecar(), '3; LABEL_NOT_FOUND, SOMETHING_NEW'))
     const box = root.querySelector('details.remarks-box') as HTMLDetailsElement
     expect(box.open).toBe(false)
-    expect(box.querySelector('summary')!.textContent).toBe('Uwagi do sprawdzenia przez urzędnika (3)')
+    expect(box.querySelector('summary')!.textContent).toBe('Uwagi do sprawdzenia przez urzędnika (2 rodzaje)') // UX2: kinds, not occurrences
     expect(root.querySelectorAll('details.remarks-box').length).toBe(1)
     const text = root.textContent ?? ''
     expect(text).not.toContain('X-Converter-Warnings')
     expect(text).not.toContain('Ostrzeżenia')
     expect(text).not.toContain('×')
     expect(text).not.toContain('po polsku')
-    expect(text).toContain('Uwagi: 3')
+    expect(text).toContain('Uwagi: 2 rodzaje (3 miejsca)')
     expect(text).toContain('Uzupełnij nazwę pola ręcznie w edytorze.')
     const first = box.querySelector('.remark')!
     expect(first.querySelector('.code-line')!.textContent).toBe('(2 miejsca; strona 1) · kod: LABEL_NOT_FOUND')
@@ -165,7 +165,7 @@ describe('ORDER UI 3-5, 8: remarks', () => {
     const s = syntheticSidecar()
     s.meta.evidence = {} as typeof s.meta.evidence
     const root = renderConverted(await answer(s))
-    expect(root.querySelector('#matter-nosource')!.textContent).toBe('Dla części pól (2 z 2) nie ustalono miejsca na druku.')
+    expect(root.querySelector('#matter-nosource')!.textContent).toBe('Dla żadnego z tych pól nie ustalono miejsca na druku.') // UX2: never "(2 z 2)"
     for (const li of root.querySelectorAll('.fields .field')) expect(li.textContent).not.toContain('nie ustalono')
   })
 
