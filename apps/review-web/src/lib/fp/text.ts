@@ -32,7 +32,7 @@ export const FP = {
   refused: 'Ten kod nie zawiera danych demonstracyjnych w znanym formacie. Strona przyjmuje tylko kody oznaczone jako demonstracyjne.',
   fillOne: 'Wypełnij formularz jednym kliknięciem',
   filled: (n: number, k: number, m: number, r: number): string =>
-    `Wypełniono ${n} pól: ${k} z rejestru (tylko do odczytu), ${m} jako propozycja do sprawdzenia. Do uzupełnienia ręcznie: ${r}.`,
+    `Wypełniono ${n} pól danymi przykładowej osoby: ${k} z rejestru (tylko do odczytu), ${m} jako propozycja do sprawdzenia. Do uzupełnienia ręcznie: ${r}. Wypełnione pola są podświetlone w e-formularzu poniżej. Następny krok: sprawdź poprawność.`,
   tag: {
     pesel: 'Z rejestru PESEL – tylko do odczytu',
     mlpz: 'Z danych zalogowanego użytkownika – tylko do odczytu',
@@ -72,5 +72,7 @@ export const FP = {
   scanDone: 'Kod QR zeskanowany (symulacja).',
   scanAgain: 'Zeskanuj ponownie',
   changePerson: 'Zmień osobę',
-  printNext: 'Formularz sprawdzony. Następny krok: wydruk.'
+  printNext: 'Formularz sprawdzony. Następny krok: wydruk.',
+  fixNext: 'Uzupełnij brakujące pola (odnośniki powyżej prowadzą do nich) i sprawdź ponownie albo przejdź do wydruku.',
+  previewShown: 'Podgląd wydruku jest poniżej. Następny krok: drukuj na blankiecie.'
 }

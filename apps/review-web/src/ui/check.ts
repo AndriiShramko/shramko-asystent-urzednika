@@ -67,6 +67,7 @@ export function renderCheck(ef: EForm, extra?: () => HTMLElement | null, onRun?:
         h('ul', { class: 'plain fp-missing' }, ...r.missing.map((n) => h('li', {}, go(n)))))
     }
     if (r.ok) out.append(h('p', { class: 'fp-ok' }, FP.allGood))
+    out.append(h('p', { class: 'fp-next', id: 'fp-check-next' }, r.ok ? FP.printNext : FP.fixNext))
     const more = extra?.()
     if (more) out.append(more)
     return r

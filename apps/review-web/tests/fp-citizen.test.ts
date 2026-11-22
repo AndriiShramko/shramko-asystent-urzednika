@@ -87,7 +87,7 @@ describe('FP one-click fill', () => {
     q('[data-person="0"]').click()
     expect(q('#fp-scan-status').textContent).toBe('Wczytano dane demonstracyjne: Tomasz Przykładowski.')
     q('#fp-fill').click()
-    expect(q('#fp-fill-result').textContent).toMatch(/^Wypełniono \d+ pól: \d+ z rejestru \(tylko do odczytu\), \d+ jako propozycja do sprawdzenia\. Do uzupełnienia ręcznie: \d+\.$/)
+    expect(q('#fp-fill-result').textContent).toMatch(/^Wypełniono \d+ pól danymi przykładowej osoby: \d+ z rejestru \(tylko do odczytu\), \d+ jako propozycja do sprawdzenia\. Do uzupełnienia ręcznie: \d+\. Wypełnione pola są podświetlone w e-formularzu poniżej\. Następny krok: sprawdź poprawność\.$/)
     expect(q('[id="fpt-f-imie"]').textContent).toBe('Z rejestru PESEL – tylko do odczytu')
     expect(q('[id="fpt-f-nip"]').textContent).toBe('Propozycja z danych demonstracyjnych – sprawdź')
     expect(q<HTMLInputElement>('[id="fpf-f-pesel"]').readOnly).toBe(true)

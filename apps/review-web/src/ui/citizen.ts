@@ -112,7 +112,21 @@ export function renderCitizen(ef: EForm, onCleared?: () => void, onStage?: (s: S
       h('details', { open: empty.length > 0, id: 'fp-empty-list' }, h('summary', {}, `${FP.emptyList} (${empty.length})`),
         h('ul', { class: 'plain' }, ...empty.map((n) => h('li', {}, goButton(n))))))
     go('filled', false)
+    showFilled(plan.map((p) => p.id))
   })
+
+  /** The filled fields light up for a few seconds; the e-form panel scrolls (inside itself) to the first of them,
+   * so the page stays where the next button is. */
+  function showFilled(ids: string[]): void {
+    const boxes = ids.map((id) => ef.el.querySelector<HTMLElement>(`[id^="fpf-${id}"]`)?.closest<HTMLElement>('.fp-field'))
+      .filter((b): b is HTMLElement => !!b)
+    for (const b of boxes) b.classList.add('fp-just-filled')
+    setTimeout(() => { for (const b of boxes) b.classList.remove('fp-just-filled') }, 4000)
+    const first = boxes[0]
+    if (first && ef.el.scrollHeight > ef.el.clientHeight) {
+      ef.el.scrollTop += first.getBoundingClientRect().top - ef.el.getBoundingClientRect().top - 80
+    }
+  }
 
   clearBtn.addEventListener('click', () => {
     ef.reset()

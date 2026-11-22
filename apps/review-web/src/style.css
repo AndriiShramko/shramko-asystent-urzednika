@@ -430,6 +430,10 @@ html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
 /* a link button in a list sits in its own line box (on the baseline it reached into the next line) */
 .fp-step li > .linkish { vertical-align: top; }
 #fp-check-result:focus { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+/* after the one-click fill the filled fields light up for a few seconds; the line under each step says what next */
+.fp-field.fp-just-filled { outline: 3px solid var(--c-ok-edge); outline-offset: 1px; background: var(--c-ok-bg); }
+.fp-next { font-weight: 700; margin: 0.5rem 0 0; }
+.fp-next:empty { display: none; }
 /* in the trial fill the bottom bar is one low line: the hint about the download is not needed there */
 .result[data-try] .clerk-final-hint { display: none; }
 .result[data-try] .clerk-final { padding-top: 0.35rem; padding-bottom: 0.35rem; }

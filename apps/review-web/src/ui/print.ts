@@ -185,6 +185,7 @@ export interface PrintStep { el: HTMLElement; refresh(): void }
 export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | null): PrintStep {
   const note = h('p', { id: 'fp-print-note', class: 'muted' })
   const extraNote = h('p', { id: 'fp-print-extra' })
+  const live = h('p', { id: 'fp-print-live', role: 'status', class: 'fp-next' })
   const preview = h('div', { id: 'fp-print-preview', class: 'fp-print-preview', hidden: true })
   const pvBtn = h('button', { type: 'button', class: 'btn', id: 'fp-print-preview-btn', hidden: true, 'aria-expanded': 'false', 'aria-controls': 'fp-print-preview' }, FP.printPreview)
   const sheetBtn = h('button', { type: 'button', class: 'btn btn-main', id: 'fp-print-sheet', hidden: true }, FP.printSheet)
@@ -220,6 +221,8 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
     if (open) showPreview()
     preview.hidden = !open
     pvBtn.setAttribute('aria-expanded', String(open))
+    live.textContent = open ? FP.previewShown : ''
+    if (open) leadTo(pvBtn.parentElement, sheetBtn.hidden ? null : sheetBtn)
   })
   sheetBtn.addEventListener('click', () => {
     const go = (): void => {
@@ -253,7 +256,19 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
     note,
     h('div', { class: 'actions' }, pvBtn, sheetBtn, eBtn),
     extraNote,
+    live,
     preview)
   refresh()
   return { el, refresh }
+}
+
+/** BL13 TRY-F: lead the clerk after a step. The result of the step comes to the top of the view, the one next
+ * button gets the focus; when the result is too long for both, the button wins (it says where to go on). */
+export function leadTo(result: HTMLElement | null, next: HTMLElement | null): void {
+  result?.scrollIntoView?.({ block: 'start' })
+  if (!next) return
+  next.focus({ preventScroll: true })
+  const r = next.getBoundingClientRect()
+  const bar = document.querySelector<HTMLElement>('.clerk-final')?.getBoundingClientRect().height ?? 0
+  if (r.bottom > window.innerHeight - bar - 8 || r.top < 0) next.scrollIntoView?.({ block: 'center' })
 }

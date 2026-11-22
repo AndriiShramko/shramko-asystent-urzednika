@@ -108,8 +108,12 @@ describe('BL13 the trial fill opens one step at a time', () => {
     expect(ids()).toEqual(['fp-scan-again', 'fp-change', 'fp-clear', 'fp-check'])
     expect(document.activeElement?.id).toBe('fp-check')
     expect((document.querySelector('#fp-print-step') as HTMLElement).hidden).toBe(true)
+    expect(document.querySelectorAll('.fp-field.fp-just-filled').length).toBeGreaterThan(0) // what was filled lights up
+    expect(document.querySelector('#fp-fill-result')?.textContent).toMatch(/Następny krok: sprawdź poprawność\.$/)
     click('#fp-check')
     expect((document.querySelector('#fp-print-step') as HTMLElement).hidden).toBe(false)
+    expect(document.querySelector('#fp-check-next')?.textContent).toMatch(/wydruk/)
+    expect(document.activeElement?.closest('#fp-print-step')).not.toBeNull() // the next action has the focus
     expect(ids()).toContain('fp-print-sheet')
     for (const b of shown()) expect(b.disabled, b.id).toBe(false)
     click('#fp-clear')
