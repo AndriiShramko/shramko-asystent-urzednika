@@ -121,7 +121,6 @@ def _refs():
 
 
 @pytest.mark.sets
-@pytest.mark.slow
 @pytest.mark.parametrize("paper,partner,floor,total", list(_refs()) or [pytest.param(None, None, 0, 0, id="absent")])
 def test_reference_recall_does_not_drop_and_no_partner_date_is_missing(paper, partner, floor, total) -> None:
     if paper is None:

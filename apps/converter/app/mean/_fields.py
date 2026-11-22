@@ -46,6 +46,7 @@ _DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
 # C6: a printed date mask after a place ("DD-MM-RRRR", "D D - M M - R R R R", one letter per cell), and the parts of a
 # mask that box glyphs stand in front of ("□ D D -", "□ M M -", "□ R R R R")
 _DATE_MASK = re.compile(r"^DD[-./]?MM[-./]?(?:RRRR|YYYY)")
+_DASH_DATE = re.compile(r"\s[-–]\s*data(\s+(zdarzenia|wyst[ąa]pienia|zmiany)\b.*)?\s*:?$")
 _UNDERSIGNED = re.compile(r"ni[żz]ej\s+podpisan", re.I)
 _DMY = re.compile(r"DD[-./]?MM[-./]?(?:RRRR|YYYY)")
 _MASK_PART = re.compile(r"^(?:D\s?D|M\s?M|R\s?R(?:\s?R\s?R)?|Y\s?Y\s?Y\s?Y)\s*[-./]?$", re.IGNORECASE)
@@ -716,6 +717,8 @@ class _Reader:
         if c.kind == "comb" and c.mask and re.search(r"[DMR]{2}", c.mask):
             return "DATEPICKER", "date", None, shown
         if self._mask_after(c):
+            return "DATEPICKER", "date", None, shown
+        if _DASH_DATE.search(low):   # BL13 DATE-D: "1. pierwsza deklaracja - data zdarzenia ..." asks for a date
             return "DATEPICKER", "date", None, shown
         for rx, row in lexicon.compiled("concepts"):
             if rx.search(low) or (hint and row["type"] == "DATEPICKER" and rx.search(hint.casefold())):   # "(DD-MM-RRRR)"
