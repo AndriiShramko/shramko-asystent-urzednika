@@ -33,7 +33,7 @@ def run_native(item: Item, timeout: int = TIMEOUT_S, env: dict | None = None) ->
 
 
 def docker_command(ref: str, item: Item) -> list[str]:
-    return ["docker", "run", "--rm", "--network", "none", "--read-only", "--tmpfs", "/tmp",
+    return ["docker", "run", "--rm", "--network", "none", "--read-only", "--tmpfs", "/tmp", "-e", "STRICT_EXTENSIONS=false",
             "-v", f"{item.path.resolve()}:/work/in/{item.name}:ro", ref,
             "python", "-m", "converter", "convert", f"/work/in/{item.name}"]
 

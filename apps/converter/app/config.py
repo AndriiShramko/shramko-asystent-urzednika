@@ -61,7 +61,8 @@ class Settings:
     statutory_representative: bool = True
     poa_exemption: bool = False
     ocr_min_chars: int = 20
-    strict_extensions: bool = False
+    # true: only the eight formats of the task card (`.jpe` counts as JPEG); false: also the other formats with a reader
+    strict_extensions: bool = True
     doc_reader: str = "native"
     ocr_langs: str = "pol+eng"
     ocr_dpi: int = 300

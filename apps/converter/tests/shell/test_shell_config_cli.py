@@ -23,12 +23,12 @@ def test_defaults_follow_the_design(tmp_path):
     s = Settings.from_env(env(tmp_path))
     assert (s.max_upload_bytes, s.max_pages, s.max_pixels, s.job_timeout_s) == (20971520, 60, 80000000, 600)
     assert (s.concurrency, s.rate_limit_per_min, s.jwt_alg, s.jwt_leeway_s) == (2, 60, "HS256", 30)
-    assert s.jwt_required_claims == ("exp",) and s.strict_extensions is False and s.auth_enabled
+    assert s.jwt_required_claims == ("exp",) and s.strict_extensions is True and s.auth_enabled
 
 
 def test_values_come_from_the_environment(tmp_path):
-    s = Settings.from_env(env(tmp_path, MAX_UPLOAD_BYTES="1000", STRICT_EXTENSIONS="TRUE", JWT_REQUIRED_CLAIMS="exp, sub"))
-    assert s.max_upload_bytes == 1000 and s.strict_extensions and s.jwt_required_claims == ("exp", "sub")
+    s = Settings.from_env(env(tmp_path, MAX_UPLOAD_BYTES="1000", STRICT_EXTENSIONS="FALSE", JWT_REQUIRED_CLAIMS="exp, sub"))
+    assert s.max_upload_bytes == 1000 and not s.strict_extensions and s.jwt_required_claims == ("exp", "sub")
 
 
 @pytest.mark.parametrize("over,fragment", [

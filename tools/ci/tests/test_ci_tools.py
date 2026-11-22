@@ -37,6 +37,7 @@ def env_with_paths() -> dict:
     sep = os.pathsep
     env["PYTHONPATH"] = sep.join([str(ROOT / "apps" / "converter"), str(ROOT), env.get("PYTHONPATH", "")])
     env["PYTHONUTF8"] = "1"
+    env["STRICT_EXTENSIONS"] = "false"   # the fixtures cover every reader, not only the card's eight (a10 STRICT)
     return env
 
 
@@ -91,7 +92,7 @@ def test_one_fixture_per_extension_each_accepted_by_the_guard_as_its_own_kind(fi
     from app.config import Settings
     from app.guard import inspect_upload
 
-    s = Settings.from_env({"AUTH_MODE": "off"})
+    s = Settings.from_env({"AUTH_MODE": "off", "STRICT_EXTENSIONS": "false"})
     names = sorted(p.name for p in fixtures.iterdir())
     plain = [e for e in make_fixtures.EXTENSIONS if e not in make_fixtures.NEEDS_HEIF_ENC]   # heif-enc is not here
     assert names == sorted([f"wniosek.{e}" for e in plain] + list(make_fixtures.EXTRA_BUILDERS))

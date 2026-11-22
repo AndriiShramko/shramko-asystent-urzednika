@@ -11,7 +11,8 @@ from app.guard import ProblemError, inspect_upload, sniff_kinds
 from app.readers import ReaderError, read_document
 from app.readers import rtf as rtf_module
 
-S = Settings(auth_mode="off", max_upload_bytes=5_000_000)
+# every reader, not only the eight formats of the card (a10 STRICT)
+S = Settings(auth_mode="off", max_upload_bytes=5_000_000, strict_extensions=False)
 HEIC = b"\x00\x00\x00\x18ftypheic\x00\x00\x00\x00mif1heic" + b"\x00" * 64
 
 

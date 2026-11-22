@@ -206,13 +206,11 @@ def test_the_shell_follows_a_model_step_without_being_changed(monkeypatch, caplo
 def test_status_with_no_model_configured_is_byte_for_byte_what_it_was():
     """The first-run check of the image (`tools/ci/first_run.py`) fixes the six keys; main 9e095ab answered exactly
     this body. The engine is in it already: `"engine":"rules"`."""
-    from app import readers
-
     client = make()
     s = Settings.from_env({"AUTH_MODE": "off"})
     before = client.get("/status")
     expected = {"service": "Konwerter formularzy", "version": __version__, "engine": "rules", "auth": "off",
-                "formats": readers.formats(),
+                "formats": ["pdf", "doc", "docx", "ods", "xlsx", "jpg", "jpeg", "png"],   # a10 STRICT
                 "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
                            "max_upload_bytes": s.max_upload_bytes}}
     assert before.content == json.dumps(expected, ensure_ascii=False, separators=(",", ":")).encode("utf-8")

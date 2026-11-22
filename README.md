@@ -1,6 +1,6 @@
 # Forms converter: from a blank official form to e-service JSON
 
-A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. A shared deployment guards access with a JWT token; started alone on one computer the service is open and says so in its log. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
+A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG, exactly the formats of the task card; `STRICT_EXTENSIONS=false` also accepts ODT, XLS, RTF, TXT and more image formats); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. A shared deployment guards access with a JWT token; started alone on one computer the service is open and says so in its log. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
 
 The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. As started by the commands below, no language model runs in the product and it makes no network call at run time. One optional step for weak scan pages can be pointed by the operator at their own server with an open-weight model; it is off unless configured ([`apps/converter/README.md`](apps/converter/README.md), "Optional step").
 
@@ -74,7 +74,7 @@ curl -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
 curl.exe -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
 ```
 
-(In PowerShell `curl` is another command, `Invoke-WebRequest`; write `curl.exe`.) The review page: <http://127.0.0.1:8080/ui/>. The state of the service (name, version, `engine: "rules"`, the token mode, the readable formats, the limits): <http://127.0.0.1:8080/status>.
+(In PowerShell `curl` is another command, `Invoke-WebRequest`; write `curl.exe`.) The review page: <http://127.0.0.1:8080/ui/>. The state of the service (name, version, `engine: "rules"`, the token mode, the accepted formats, the limits): <http://127.0.0.1:8080/status>.
 
 Started without settings and without a key file, the service is open and writes a warning about it into its log; that is why the example publishes on `127.0.0.1` only. For a shared network use [`docker-compose.yml`](docker-compose.yml), which runs with a JWT token. A REST server under `--network none` cannot be reached from the host, so the offline proof is command 1, not the REST one. All settings: [`apps/converter/README.md`](apps/converter/README.md).
 

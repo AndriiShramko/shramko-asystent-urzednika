@@ -66,6 +66,8 @@ READY_DEFAULT = frozenset({"pdf", "docx", "xlsx", "ods", "doc", "png", "jpg", "j
 
 HARDENED = ["--network", "none", "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
             "--tmpfs", "/tmp:rw,size=128m", "--pids-limit", "256", "--memory", "1g"]
+# The default accepts only the card's eight formats; the fixture checks measure every reader of the build.
+ALL_FORMATS = ["-e", "STRICT_EXTENSIONS=false"]
 
 REQUIRED_ENV = {"OMP_THREAD_LIMIT": "1", "OMP_NUM_THREADS": "1", "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8", "TZ": "UTC"}
 REFUSAL_SECONDS = 10.0   # a hostile file is answered within this, the start of its container included
@@ -251,13 +253,15 @@ def check_conversions(image: str, fixtures: Path, res: Results, ready: frozenset
             ", ".join(sorted(ready)))
     for path in files:
         if ext_of(path) not in ready:
-            cp = docker("run", "--rm", *HARDENED, *mount, image, "convert", f"/in/{path.name}", timeout=180)
+            cp = docker("run", "--rm", *HARDENED, *ALL_FORMATS, *mount, image, "convert", f"/in/{path.name}",
+                        timeout=180)
             res.add(f"refuse {path.name}: typed refusal, no form (no reader yet)",
                     problems_of_refusal(cp.returncode, cp.stdout, cp.stderr),
                     f"exit {cp.returncode}, {len(cp.stdout)} bytes on stdout")
             continue
         t0 = time.monotonic()
-        cp = docker("run", "--rm", *HARDENED, *mount, image, "convert", f"/in/{path.name}", timeout=180)
+        cp = docker("run", "--rm", *HARDENED, *ALL_FORMATS, *mount, image, "convert", f"/in/{path.name}",
+                    timeout=180)
         secs = time.monotonic() - t0
         if cp.returncode != 0:
             res.add(f"convert {path.name} with --network none", [

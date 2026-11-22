@@ -175,8 +175,7 @@ def test_upper_case_extension_and_jpe_through_http(tmp_path, secret_file):
     c = make_client(tmp_path, secret_file)
     assert post(c, "/v1/forms/convert", "A.PDF", fx.pdf()).status_code == 200
     assert post(c, "/v1/forms/convert", "a.jpe", fx.jpeg()).status_code == 200  # accepted by the guard, read as a JPEG
-    strict = make_client(tmp_path, secret_file, STRICT_EXTENSIONS="true")
-    problem(post(strict, "/v1/forms/convert", "a.jpe", fx.jpeg()), 415, "EXTENSION")
+    problem(post(c, "/v1/forms/convert", "a.rtf", b"{\rtf1 x}"), 415, "EXTENSION")   # a10 STRICT: the card's eight only
 
 
 def test_a_file_one_byte_over_the_limit(client):

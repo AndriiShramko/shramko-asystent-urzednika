@@ -14,7 +14,8 @@ from app.guard import ProblemError, inspect_upload
 from app.readers import _ocr
 from app.readers._base import ReaderError, ReadOptions
 
-S = Settings(auth_mode="off", max_upload_bytes=5_000_000)
+# every reader, not only the eight formats of the card (a10 STRICT)
+S = Settings(auth_mode="off", max_upload_bytes=5_000_000, strict_extensions=False)
 
 
 @pytest.fixture(autouse=True)
@@ -118,7 +119,7 @@ def test_transparent_webp_is_laid_on_white():
 def test_tiff_with_more_frames_than_the_page_limit_is_refused_by_guard_and_reader():
     data = tiff_bytes(4)
     with pytest.raises(ProblemError) as e:
-        inspect_upload("a.tiff", data, Settings(auth_mode="off", max_pages=3))
+        inspect_upload("a.tiff", data, Settings(auth_mode="off", max_pages=3, strict_extensions=False))
     assert e.value.code == "TOO_LARGE"
     with pytest.raises(ReaderError) as r:
         readers.read_document(data, "tiff", ReadOptions(max_pages=3))
@@ -130,7 +131,7 @@ def test_pixel_limit_is_checked_before_decoding(key):
     make, _, kind = FORMATS[key]
     data = make()
     with pytest.raises(ProblemError) as e:
-        inspect_upload(f"a.{kind}", data, Settings(auth_mode="off", max_pixels=1_000_000))
+        inspect_upload(f"a.{kind}", data, Settings(auth_mode="off", max_pixels=1_000_000, strict_extensions=False))
     assert e.value.code == "TOO_MANY_PIXELS"
     with pytest.raises(ReaderError) as r:
         readers.read_document(data, kind, ReadOptions(max_pixels=1_000_000))

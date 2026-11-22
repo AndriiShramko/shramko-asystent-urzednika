@@ -29,7 +29,7 @@ from app import __version__, engine, pipeline, preview
 from app.auth import RateLimiter, TokenVerifier, scopes_of
 from app.config import Settings
 from app.guard import ProblemError, UploadInfo, inspect_upload
-from app.guard.checks import EXTENSIONS, check_archive, too_large
+from app.guard.checks import accepted_extensions, check_archive, too_large
 from app.readers import formats as reader_formats
 
 log = logging.getLogger("converter")
@@ -311,7 +311,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "version": __version__,
             **engine_state.status(),
             "auth": "jwt" if s.auth_enabled else "off",
-            "formats": reader_formats(),
+            "formats": list(accepted_extensions(s.strict_extensions)),   # the extensions accepted here, nothing more
             "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
                        "max_upload_bytes": s.max_upload_bytes},
         }
@@ -455,7 +455,7 @@ def _zip_items(data: bytes, s: Settings) -> list[tuple[str | None, bytes, str | 
         if info.is_dir():
             continue
         base = info.filename.rsplit("/", 1)[-1]
-        if base.rsplit(".", 1)[-1].lower() in EXTENSIONS + ("jpe",):
+        if base.rsplit(".", 1)[-1].lower() in accepted_extensions(s.strict_extensions) + ("jpe",):
             out.append((base, zf.read(info), None))
         if len(out) > BATCH_MAX_FILES:
             raise ProblemError("BAD_REQUEST", f"Co najwyżej {BATCH_MAX_FILES} plików w jednym żądaniu.")
