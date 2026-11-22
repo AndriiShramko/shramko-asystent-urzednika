@@ -219,11 +219,15 @@ def test_a_cleaned_name_reaches_the_upload_info_and_the_sidecar():
     assert [w["detail"] for w in notes] == list(info.warnings)
 
 
-def test_a_name_without_an_extension_is_read_by_its_content():
+def test_a_name_without_an_extension_is_read_by_its_content_only_with_strict_off():
     data = pdf_bytes(draw_form)
+    loose = Settings(auth_mode="off", max_upload_bytes=20_000_000, strict_extensions=False)
     for raw in (None, "", "wniosek", "pdf"):
-        info = inspect_upload(raw, data, S)
+        info = inspect_upload(raw, data, loose)
         assert info.kind == "pdf" and info.ext == "pdf" and info.warnings
+        with pytest.raises(ProblemError) as e:        # BL13: the default refuses a file with no extension
+            inspect_upload(raw, data, S)
+        assert e.value.code == "EXTENSION"
     with pytest.raises(ProblemError) as e:            # no content proof: still refused, the extension rule stays
         inspect_upload("wniosek.exe", data, S)
     assert e.value.code == "EXTENSION"
