@@ -25,7 +25,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app import __version__, engine, pipeline
+from app import __version__, engine, pipeline, preview
 from app.auth import RateLimiter, TokenVerifier, scopes_of
 from app.config import Settings
 from app.guard import ProblemError, UploadInfo, inspect_upload
@@ -337,6 +337,43 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         info, result, ms, _ = await convert_request(request, "convert")
         form_body = canonical(result.form)
         return Response(canonical(result.sidecar), media_type="application/json", headers=headers_for(info, form_body, ms, result))
+
+    @app.post("/v1/forms/preview", openapi_extra=UPLOAD_ONE, summary="Page pictures and field places (read only)", responses={200: {
+        "description": "`{version, input_sha256, format, units, origin, page_images, pages[{n,w,h,source,img?}], "
+                       "places{candidate id: {page, kind, box|anchor, label?, cells?, group?, options?}}, counts}`; "
+                       "page_images is OK, OMITTED (images=0) or NO_PAGE_IMAGE (DOCX, DOC, XLSX, ODS: anchors only).",
+        "content": {"application/json": {"example": {"version": 1, "format": "pdf", "units": "pt", "origin": "top-left",
+                    "page_images": "OMITTED", "pages": [{"n": 1, "w": 595.32, "h": 842.04, "source": "native"}],
+                    "places": {"c12": {"page": 1, "kind": "leader", "box": [257.81, 429.65, 365.32, 437.69], "label": "Rasa psa"}},
+                    "counts": {"pages": 1, "places": 1, "boxed": 1, "anchored": 0}}}}}})
+    async def preview_pages(request: Request, images: int = 1, dpi: int = preview.DPI_DEFAULT) -> Response:
+        """Read only (wave 10, fill and print): page pictures and the place of every field candidate, with the ids of
+        the ledger rows of `/convert?report=1`. The same token, guard, slots and time limit as `/convert`."""
+        job = uuid.uuid4().hex[:12]
+        authorize(request, "convert")
+        if images not in (0, 1) or not preview.DPI_MIN <= dpi <= preview.DPI_MAX:
+            raise ProblemError("BAD_REQUEST", f"Parametr images to 0 lub 1, dpi od {preview.DPI_MIN} do {preview.DPI_MAX}.")
+        part = (await read_parts(request))[0]
+        data = await part.read()
+        await part.close()
+        if gate.locked():
+            raise ProblemError("BUSY", "Wszystkie stanowiska przetwarzania są zajęte.", headers={"Retry-After": "5"})
+
+        def work() -> tuple[UploadInfo, dict, int]:
+            t0 = time.perf_counter()
+            info = inspect_upload(part.filename, data, s, part.content_type)
+            body = preview.preview_limited(data, s, bool(images), dpi)
+            return info, body, int((time.perf_counter() - t0) * 1000)
+
+        async with gate:
+            try:
+                info, body, ms = await run_in_threadpool(work)
+            except ProblemError as exc:
+                _event("preview", exc.code, job, len(data))
+                raise
+        _event("preview", "ok", job, info.size)
+        return Response(canonical(body), media_type="application/json", headers={
+            "X-Input-SHA256": info.sha256, "X-Converter-Version": __version__, "Server-Timing": f"total;dur={ms}"})
 
     @app.post("/v1/forms/inspect", openapi_extra=UPLOAD_ONE)
     async def inspect(request: Request) -> JSONResponse:
