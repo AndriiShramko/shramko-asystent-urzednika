@@ -67,6 +67,8 @@ CAPTION = re.compile(r"^\s*[(/]")
 NUM = re.compile(r"^(\d{1,2}(?:\.\d{1,2})*)\.?\s+(\S.*)$")
 LET = re.compile(r"^([A-Z]|[IVX]{1,4})[.)]\s+(\S.*)$")
 LONE = re.compile(r"^([A-Z]|\d{1,2})\.?$")
+LONE_MARK = re.compile(r"^([A-Z]|[IVX]{1,4}|\d{1,2})[.)]?$")
+LIST_LEAD = re.compile(r"^\W*(?:\d{1,2}[.)]\s*)?(?:załącznik|wykaz|lista|oświadczam)", re.IGNORECASE)
 FOOT = re.compile(r"(?<=[^\s\d])\s?(\d{1,2}\)|\*{1,3})$")
 BULLET = re.compile(r"^[\s•·▪■●○◦‣\-–—*]+")
 PATTERN = re.compile(r"^[A-Za-z]+(?:[-./ ][A-Za-z]+)+$")
@@ -132,6 +134,7 @@ class S:
     lines: list[TLine]
     instr: bool = False
     id: str = ""
+    table_title: bool = False
 
 
 @dataclass(eq=False)
@@ -183,6 +186,10 @@ class Finder:
         # lines of body text seen so far on each page: a numbered line that is not bold is a heading only among
         # the first lines of its page (set 9 PDF starts every section on a new page; set 8 numbers its labels)
         self.page_rank: dict[int, int] = {}
+        # C4: title rows of tables ("B | INFORMACJA O ..."): line -> (number, title), line -> the line of its letter
+        self.titled: dict[int, tuple[str, str]] = {}
+        self.letter_of: dict[int, TLine] = {}
+        self.title_cells: set[int] = set()
 
     # ------------------------------------------------------------------ 1. lines, boxes, order
 
@@ -225,6 +232,42 @@ class Finder:
                     p.boxpos[obj] = pos  # type: ignore[index]
                 pos += 1
             self.pages.append(p)
+        self.title_rows()
+
+    def cell_text(self, cell) -> str:  # noqa: ANN001
+        return " ".join(self.runs[r][1].text for r in cell.runs).strip() if cell is not None else ""
+
+    def title_rows(self) -> None:
+        """C4: a table row of a lone letter or number and one text cell across most of the width ("B | INFORMACJA
+        O POSIADANYM PSIE (...)") is a section title (Word tables, sheets drawn as a page): never the column header
+        of the places under it, never their label. The words in brackets after the title stay out of it."""
+        for p in self.pages:
+            for t in p.page.tables:
+                if not t.cells:
+                    continue
+                ncols = max(c.c + c.cs for c in t.cells)
+                texts = [c for c in t.cells if WORD.search(self.cell_text(c))]
+                for big in texts:
+                    rows = range(big.r, big.r + big.rs)
+                    if big.c + big.cs < ncols and big.cs < 0.6 * ncols:
+                        continue   # the title reaches the right edge of the table or covers most of its width
+                    beside = [c for c in texts if c is not big and any(r in rows for r in range(c.r, c.r + c.rs))]
+                    if len(beside) != 1 or beside[0].c + beside[0].cs > big.c:
+                        continue
+                    num = LONE_MARK.match(self.cell_text(beside[0]))
+                    title = re.split(r"\s+\(", self.cell_text(big), maxsplit=1)[0].strip().rstrip(":.").strip()
+                    letters = [ch for ch in title if ch.isalpha()]
+                    if num is None or len(title.split()) < 2 or not letters or any(not ch.isupper() for ch in letters):
+                        continue   # a title row is printed in capitals: "1 | Imię i nazwisko" is a numbered label
+                    blines = [ln for r in big.runs for ln in self.run_lines.get(r, [])]
+                    llines = [ln for r in beside[0].runs for ln in self.run_lines.get(r, [])]
+                    if not blines or not llines:
+                        continue
+                    self.title_cells.update((id(big), id(beside[0])))
+                    self.titled[id(blines[0])] = (num.group(1), title)
+                    self.letter_of[id(blines[0])] = llines[0]
+                    for ln in blines[1:]:
+                        self.titled[id(ln)] = ("", "")   # a wrapped title line: part of the heading, nothing else
 
     def ordered(self) -> list[tuple[P, TLine]]:
         return sorted(((p, ln) for p in self.pages for ln in p.lines), key=lambda t: t[1].pos)
@@ -232,6 +275,8 @@ class Finder:
     # ------------------------------------------------------------------ 2. roles and sections
 
     def heading_of(self, ln: TLine) -> tuple[str | None, str] | None:
+        if self.titled.get(id(ln), ("", ""))[1]:
+            return self.titled[id(ln)]
         if ln.toks:
             return None
         full = ln.text.strip()
@@ -303,6 +348,10 @@ class Finder:
                 prev = ln
                 continue
             prev = ln
+            if self.titled.get(id(ln)) == ("", "") and cur is not None:
+                cur.lines.append(ln)   # C4: a wrapped line of a table title row
+                ln.role, ln.used = "heading", True
+                continue
             head = self.heading_of(ln)
             self.page_rank[ln.page] = self.page_rank.get(ln.page, 0) + 1
             if clause:
@@ -316,13 +365,18 @@ class Finder:
                     ln.role = "clause"
                     continue
             bold_start = ln.atoms[0].run.bold
-            if INSTR.search(t) and not bold_start and not OFFICE.search(t) and (
+            if INSTR.search(t) and not bold_start and not OFFICE.search(t) and id(ln) not in self.titled and (
                     not ln.toks or all(k == "mark" and ln.view[a] in TICKED_CHARS for a, _, k in ln.toks)):
                 ln.role = "instruction"
                 continue
             if head is not None:
                 cur = S(title=head[1], number=head[0], page=ln.page, pos=ln.pos, lines=[ln])
                 cur.instr = instr = bool(INSTR_HEAD.search(head[1]))
+                cur.table_title = id(ln) in self.titled
+                letter = self.letter_of.get(id(ln))
+                if letter is not None and not letter.used:
+                    cur.lines.insert(0, letter)   # C4: the letter of a table title row belongs to the heading
+                    letter.role, letter.used = "heading", True
                 if cur.number is None and p.geo:
                     for o in p.lines:
                         ob, hb = o.box, ln.box
@@ -552,6 +606,8 @@ class Finder:
 
                 heads = [text(grid.get((0, c))) for c in range(ncols)]
                 own = nrows >= 2 and sum(bool(WORD.search(h)) for h in heads) >= 2 and all(WORD.search(h) for h in heads)
+                if any(id(grid.get((0, c))) in self.title_cells for c in range(ncols)):
+                    own = False   # C4: a title row "B | INFORMACJA O ..." is not a header of columns
                 cont = (not own and carried is not None and ti == 0 and carried[0] == p.page.number - 1
                         and carried[1] == ncols)
                 if cont:
@@ -567,6 +623,7 @@ class Finder:
                     if all(sum(c.r == r for c in t.cells) >= 3 for r in range(nrows)):
                         carried = None
                         continue
+                placed: list[tuple[D, Any, Any]] = []   # place, its cell, the cell its label came from (left only)
                 for cell in sorted(t.cells, key=lambda c: (c.r, c.c)):
                     lines = [ln for r in cell.runs for ln in self.run_lines.get(r, [])]
                     at = max([at] + [ln.pos for ln in lines])
@@ -595,7 +652,8 @@ class Finder:
                         for r in (hc.runs if hc is not None else []):
                             for ln in self.run_lines.get(r, []):
                                 ln.used = True
-                    elif left is not None and left is not cell and WORD.search(text(left)):
+                    elif left is not None and left is not cell and WORD.search(text(left)) \
+                            and id(left) not in self.title_cells:
                         tx, foot = clean(text(left))
                         if tx:
                             lab = Lab(tx, [(r, 0, len(self.runs[r][1].text)) for r in left.runs], "left", 0.8, 0.8, foot)
@@ -604,13 +662,66 @@ class Finder:
                                     ln.used = True
                     base = carried[4] if cont and carried else 0  # rows of the same table on earlier pages
                     pos = (carried[3] if cont and carried else at) + ((base + cell.r) * 100 + cell.c + 1) / 100000
-                    self.add(D("cell", p.page.number, pos, box=cell.box, anchor=cell.anchor, parts=parts, label=lab,
-                               table=True, geom=0.9 if cell.box else 0.7))
+                    d = self.add(D("cell", p.page.number, pos, box=cell.box, anchor=cell.anchor, parts=parts, label=lab,
+                                   table=True, geom=0.9 if cell.box else 0.7))
+                    placed.append((d, cell, left if lab is not None and lab.how == "left" else None))
+                self.one_place_per_label(placed, grid, text)
                 if own or cont:
                     carried = (p.page.number, ncols, heads, carried[3] if cont and carried else at,
                                (carried[4] if cont and carried else 0) + nrows)
                 else:
                     carried = None
+
+    def one_place_per_label(self, made: list[tuple[D, Any, Any]], grid: dict, text: Any) -> None:
+        """C4, places of one table. (1) A label cell merged over several rows names one place, the largest of the
+        places right of it (the first on a tie); the others keep no label. (2) A place still without a label takes a
+        caption printed right under it ("/ PESEL /", "(imię i nazwisko)"), else a lead-in ending in ":" right above it;
+        one place per text here too. Title rows, headings, notes and clauses never name a place."""
+        def area(c: Any) -> int:
+            return c.rs * c.cs
+
+        by: dict[int, list[tuple[D, Any]]] = {}
+        for d, cell, src in made:
+            if src is not None:
+                by.setdefault(id(src), []).append((d, cell))
+        for group in by.values():
+            keep = max(group, key=lambda g: area(g[1]))[0]
+            for d, _cell in group:
+                if d is not keep:
+                    d.label = None
+        taken = set(by) | self.title_cells
+        texts = list({id(c): c for c in grid.values() if WORD.search(text(c))}.values())
+        offers: dict[int, list[tuple[D, Any, Any, str]]] = {}
+        for d, cell, _src in made:
+            if d.label is not None:
+                continue
+            cols = range(cell.c, cell.c + cell.cs)
+            reach = max(3, 2 * cell.rs)
+            near = [c for c in texts if id(c) not in taken and any(x in cols for x in range(c.c, c.c + c.cs))]
+            below = sorted((c for c in near if 0 <= c.r - (cell.r + cell.rs) <= reach), key=lambda c: c.r)
+            above = sorted((c for c in near if 0 <= cell.r - (c.r + c.rs) <= reach), key=lambda c: -(c.r + c.rs))
+            hit = None
+            if below and CAPTION.match(text(below[0])):
+                hit = (below[0], "leader")
+            elif above and text(above[0]).rstrip().endswith(":") and len(text(above[0]).split()) <= 14 \
+                    and not LIST_LEAD.match(text(above[0])):
+                hit = (above[0], "above")   # a short lead-in, not the head of a list ("Załączniki do wniosku:")
+            if hit is None:
+                continue
+            src_lines = [ln for r in hit[0].runs for ln in self.run_lines.get(r, [])]
+            if not src_lines or any(ln.role is not None or ln.toks or ln.used for ln in src_lines) \
+                    or len(text(hit[0])) > 160:
+                continue
+            offers.setdefault(id(hit[0]), []).append((d, cell, hit[0], hit[1]))
+        for group in offers.values():
+            d, _cell, src, how = max(group, key=lambda g: area(g[1]))
+            tx, foot = clean(text(src))
+            if not tx:
+                continue
+            d.label = Lab(tx, [(r, 0, len(self.runs[r][1].text)) for r in src.runs], how, 0.75, 0.75, foot)
+            for r in src.runs:
+                for ln in self.run_lines.get(r, []):
+                    ln.used = True
 
     def widgets(self) -> None:
         for p in self.pages:
@@ -789,6 +900,14 @@ class Finder:
 
     def flow_label(self, p: P, d: D) -> tuple[TLine, str, float, float] | None:
         first, last = d.line, d.last or d.line
+        if first is not None and first not in p.col0 and d.kind in ("leader", "line_block") \
+                and not WORD.search(first.text):
+            # C4: a line of dots alone in a table cell, right under its lead-in "Pochodzenie psa (...):"
+            prv = next((o for o in p.lines if o.pos == first.pos - 1), None)
+            if prv is not None and not prv.used and prv.role is None and not prv.toks \
+                    and prv.text.rstrip().endswith(":") and len(prv.text) <= 160:
+                return prv, "above", 0.6, 0.6
+            return None
         if first is None or last is None or first not in p.col0 or last not in p.col0:
             return None
         i, j = p.col0.index(first), p.col0.index(last)
@@ -798,8 +917,8 @@ class Finder:
             return nxt, "leader", 0.85, 0.85
         prv = p.col0[i - 1] if i > 0 else None
         if prv is not None and not prv.used and prv.role is None and not prv.toks and WORD.search(prv.text) \
-                and len(prv.text) <= 90:
-            return prv, "above", 0.6, 0.6
+                and (len(prv.text) <= 90 or (prv.text.rstrip().endswith(":") and len(prv.text) <= 160)):
+            return prv, "above", 0.6, 0.6   # C4: a long lead-in ending in ":" ("Pochodzenie psa (metryka, ...):")
         return None
 
     def labels(self) -> None:
@@ -819,8 +938,9 @@ class Finder:
                         if margin < 0.05:
                             self.warn.append(("LOW_CONFIDENCE", d, "two texts are equally near; the label is the first of them"))
             if d.label is None and d.group is None and not (d.kind == "box" and d in self.marks):
-                if s is not None and id(s) not in seen:
-                    # the first place under a heading that has no text of its own answers to the heading
+                if s is not None and id(s) not in seen and not s.table_title:
+                    # the first place under a heading that has no text of its own answers to the heading (C4: not
+                    # under the title row of a table, which names a part of the form, never a field)
                     d.label = Lab(s.title, [], "header", 0.5, 0.0)
                 else:
                     self.warn.append(("AMBIGUOUS_GROUP" if d.kind == "choice_group" else "LABEL_NOT_FOUND", d,
