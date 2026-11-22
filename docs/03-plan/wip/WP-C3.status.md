@@ -1,7 +1,7 @@
 # WP-C3 the DOCX reader gives the list numbers and bullets the paper shows: status
-Claimed by: build7 (agent c3-docx); heartbeat: 2026-11-22 01:35; state: running
+Claimed by: build7 (agent c3-docx); heartbeat: 2026-11-22 01:50; state: ready_to_merge
 
-Branch: wp/C3-docx-numbering   Stage now: core
+Branch: wp/C3-docx-numbering   Stage now: acceptance (done)
 
 ## Status
 - [x] (a) status file
@@ -17,7 +17,7 @@ Branch: wp/C3-docx-numbering   Stage now: core
   - 06 DOCX: **FILE_UPLOADER 6 -> 11, RADIO 4 -> 5**, MAIN 4 -> 5, SECTION 19 -> 21, SHOW 31 -> 33 (the six "-" bulleted attachments)
   - markers found (tmp/c3_markers.py): 03: 5 bullets + 3 numbers; 04: 6 numbers; 06: 6 dashes
 - [x] (e) readers tests 240 passed on 28199e2; `gate: fast PASSED on 6c364a5` (849 passed, 3 skipped, 22 deselected; 21 passed)
-- [ ] (f) eval.chain --compare, WORSE lines explained, state ready_to_merge
+- [x] (f) eval.chain --compare on 573cb4e: 158 files, 152 converted, 6 refused (hostile), 0 failed, gate failures 0, strict-lint errors 0; **compare: 0 worse, 4 better** (sets e4aef6da 39 -> 40, a6f5f41e 67 -> 73, b0665d0f 102 -> 105, unseen c4a4ae01 80 -> 81); eval/chain/summary.json restored, not committed
 
 ## Decisions
 - Counters per numId (as the brief says), not per abstractNum / simple and deterministic / Word's sharing of counters between nums of one abstract is not reproduced.
@@ -34,7 +34,7 @@ Branch: wp/C3-docx-numbering   Stage now: core
 Replaced `out.text = f"{marker} {text}" if marker else text` by `out.text = text` in `_Reader.para`: test_docx_numbering.py 7 failed, 1 passed (the no-numbering test); restored: 8 passed.
 
 ## Left for the next stage
-(f) only. Next commands (in the worktree):
+Nothing left in this package: ready to merge (lead: review, merge `wp/C3-docx-numbering`, then the 04 consents request below). Commands used, for a re-run:
 - `bash tools/gate.sh py tmp/c3_counts.py` (scratch, not committed: for judged sets 03, 04, 06 DOCX found through tools/coi_paths.py, run pipeline.run with Settings.from_env({}), print Counter of every dict "type" in the form; recreate if missing)
 - `bash tools/gate.sh py -m pytest apps/converter/tests/readers -q`
 - `bash tools/gate.sh fast > tmp/fast.log 2>&1`
@@ -44,3 +44,4 @@ Replaced `out.text = f"{marker} {text}" if marker else text` by `out.text = text
 - Set 04 DOCX: the four consents are now read as "1) zapoznałem/am się ...", "2) ...", "3) ...", "4) ..." but no consent appears. Probable cause (not verified): `NOTE = re.compile(r"^/?\s*(?:\d{1,2}\s?\)|\*{1,3}\)?)\s*\S")` in app/find/_core.py takes a line starting "1) " as a footnote; and no rule turns a numbered list of first-person declarations into consents. Needs an owner of app/find or app/mean.
 
 ## Cost notes
+- core: waiting on the long gate runs (readers 4 min, fast 7 min, chain) took the most turns; pgrep is missing on this machine, wait on the log line instead.
