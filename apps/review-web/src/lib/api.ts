@@ -4,6 +4,18 @@ import { boundaryOf, parseMultipart } from './multipart'
 import { parseWarningsHeader, type HeaderWarnings } from './warnings'
 import type { Sidecar } from './model'
 
+// BL12: the service refuses a name the task card forbids (over 250 characters, or holding ; : > < / \ | ' * % $) with
+// 400 BAD_NAME. The page never asks the clerk to rename a file: it sends a cleaned copy of the name; the bytes are the same.
+const NAME_FORBIDDEN = /[;:><\\/|'*%$\u0000-\u001f\u007f\u200e\u200f\u202a-\u202e\u2066-\u2069]/g
+export function uploadName(raw: string): string {
+  let name = raw.normalize('NFC').replace(NAME_FORBIDDEN, '').trim()
+  const dot = name.lastIndexOf('.')
+  const ext = dot > 0 && name.length - dot <= 11 ? name.slice(dot) : ''
+  if (name.length > 250) name = name.slice(0, 250 - ext.length) + ext
+  if (!name || !name.replace(/\./g, '')) name = 'plik' + ext
+  return name
+}
+
 export interface Problem {
   kind: 'error'
   code: string
@@ -133,7 +145,7 @@ export type Fetcher = (input: string, init: RequestInit) => Promise<Response>
 
 export async function convertFile(file: File, token: string, fetcher: Fetcher = (u, i) => fetch(u, i)): Promise<Outcome> {
   const body = new FormData()
-  body.append('file', file, file.name)
+  body.append('file', file, uploadName(file.name))
   const headers: Record<string, string> = {}
   if (token.trim()) headers['Authorization'] = 'Bearer ' + token.trim()
   let res: Response
@@ -175,7 +187,7 @@ export function convertWithProgress(file: File, token: string, hooks: ConvertHoo
       return
     }
     const body = new FormData()
-    body.append('file', file, file.name)
+    body.append('file', file, uploadName(file.name))
     const xhr = new XMLHttpRequest()
     xhr.open('POST', CONVERT_URL)
     xhr.responseType = 'arraybuffer'
@@ -221,7 +233,7 @@ export const PREVIEW_URL = '../v1/forms/preview?images=1&dpi=150'
 export async function previewFile(file: File, token: string, fetcher: Fetcher = (u, i) => fetch(u, i)): Promise<unknown> {
   try {
     const body = new FormData()
-    body.append('file', file, file.name)
+    body.append('file', file, uploadName(file.name))
     const headers: Record<string, string> = {}
     if (token.trim()) headers['Authorization'] = 'Bearer ' + token.trim()
     const res = await fetcher(PREVIEW_URL, { method: 'POST', body, headers })
@@ -307,7 +319,7 @@ function authHeaders(token: string): Record<string, string> {
 function xhrSubmit(file: File, token: string, onSent: (loaded: number, total: number) => void, signal?: AbortSignal): Promise<Answer> {
   return new Promise<Answer>((resolve, reject) => {
     const body = new FormData()
-    body.append('file', file, file.name)
+    body.append('file', file, uploadName(file.name))
     const xhr = new XMLHttpRequest()
     xhr.open('POST', JOBS_URL)
     xhr.responseType = 'arraybuffer'

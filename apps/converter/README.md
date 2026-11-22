@@ -68,6 +68,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `CONCURRENCY` | `2` | uploads processed at once; more get `429 BUSY` at once |
 | `RATE_LIMIT_PER_MIN` | `60` | per token subject; over it `429 BUSY` with `Retry-After` |
 | `STRICT_EXTENSIONS` | `true` | `true` accepts exactly the eight extensions of the task card (`.jpe` is read as JPEG: the partner's judged set 7 ships one), any other answers 415 `EXTENSION`; `false` also accepts the other formats this build reads (ODT, XLS, RTF, TXT, TIF, TIFF, BMP, GIF, WEBP, HEIC, HEIF) |
+| `NAME_POLICY` | `refuse` | the task card's name rule: a name over 250 characters or holding `; : > < / \ | ' * % $` is `400 BAD_NAME` with the reason in Polish; `clean` removes such characters and says so in the report instead. The review page always sends a cleaned copy of the name, so a clerk is never asked to rename a file |
 | `DOC_READER` | `native` | `off` refuses binary Word with `415 DOC_READER_OFF` |
 | `ACTIVE_CONTENT` | `warn` | `strict` refuses files with macros |
 | `MAX_PAGES` | `60` | pages per document; more is `413 TOO_LARGE` |

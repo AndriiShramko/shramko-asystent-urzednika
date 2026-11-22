@@ -63,6 +63,9 @@ class Settings:
     ocr_min_chars: int = 20
     # true: only the eight formats of the task card (`.jpe` counts as JPEG); false: also the other formats with a reader
     strict_extensions: bool = True
+    # "refuse" (task card, "Walidacja nazwy pliku"): a name over 250 characters or holding ; : > < / \ | ' * % $ is
+    # 400 BAD_NAME; "clean": such characters are removed and the report says so (the page cleans names itself)
+    name_policy: str = "refuse"
     doc_reader: str = "native"
     ocr_langs: str = "pol+eng"
     ocr_dpi: int = 300
@@ -107,6 +110,7 @@ class Settings:
             "doc_reader": ("native", "libreoffice", "off"),
             "ocr_second_engine": ("on", "off"),
             "active_content": ("warn", "strict"),
+            "name_policy": ("refuse", "clean"),
             "filled_form": ("warn", "reject"),
             "sign_output": ("off", "jws"),
             "model_step": ("auto", "off"),
