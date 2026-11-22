@@ -1,0 +1,4341 @@
+#ULIC|06|2026-11-20|GUS eteryt.stat.gov.pl
+N|ul.;ppłk.;"Konrada"
+N|rondo;;"Rondo 13 września 1939"
+N|rondo;;1 Dywizji Pancernej gen. Stanisława Maczka
+N|ul.;;100-lecia Kolei Nadwiślańskiej
+N|rondo;;100-lecia KUL
+N|pl.;;100-Lecia Niepodległości
+N|rondo;;100-lecia Odzyskania Niepodległości
+N|ul.;;100-lecia Odzyskania Niepodległości
+N|skwer;;100-lecia praw wyborczych Polek
+N|rondo;;2 Pułku Strzelców Konnych
+N|ul.;;600-lecia
+N|rondo;;600-lecia Bełżyc
+N|ul.;;700-lecia
+N|ul.;;Abelarda
+N|ul.;Czesława;Aborowicza "Azji"
+N|ul.;;Abramowicka
+N|ul.;Juliana;Abramowicza
+N|ul.;ks. Zygmunta;Adamczewskiego
+N|ul.;;Adamki
+N|ul.;;Adamówka
+N|ul.;;Agamemnona
+N|ul.;;Agatowa
+N|ul.;;Agrestowa
+N|ul.;;Agronomiczna
+N|ul.;Chrystiana Piotra;Aignera
+N|ul.;;Akacjowa
+N|ul.;;Akademicka
+N|ul.;;Aksamitna
+N|ul.;;Aksini
+N|ul.;;Al. 100-lecia Niepodległości
+N|ul.;;al. Armii Krajowej
+N|ul.;;Al. generała Władysława Sikorskiego
+N|ul.;;Al. Grunwaldzkie
+N|ul.;;al. Marszałka Józefa Piłsudskiego
+N|ul.;;Al. NSZZ "Solidarność"
+N|ul.;;Al. Spacerowa
+N|ul.;;Al. Sportowa
+N|ul.;;Al. Wincentego Witosa
+N|ul.;;al. Władysława Andersa
+N|ul.;;Al. Wojska Polskiego
+N|ul.;Brata;Alberta
+N|ul.;św. Brata;Alberta
+N|ul.;;Albrechtówka
+N|ul.;;Alei Róż
+N|ul.;;Aleja 3-go Maja
+N|ul.;;Aleja 400-lecia
+N|ul.;;Aleja 500-lecia
+N|ul.;;Aleja 600-lecia
+N|ul.;;Aleja Armii Krajowej
+N|;;Aleja Clubu Weteranów Szos
+N|ul.;;Aleja gen. Ryszarda Kuklińskiego
+N|ul.;;Aleja Grabowa
+N|al.;;Aleja im. Doktora Wacława Szczepińskiego
+N|ul.;;Aleja Jana Długosza
+N|ul.;;Aleja Jana Pawła II
+N|ul.;;aleja Józefa Piłsudskiego
+N|ul.;;Aleja Józefa Piłsudskiego
+N|ul.;;Aleja Kasztanowa
+N|ul.;;Aleja Kasztanowa - Drzewce
+N|ul.;;Aleja Katyńska
+N|ul.;;Aleja Kompozytorów Polskich
+N|ul.;;Aleja Kraśnicka
+N|ul.;;Aleja ks. Jana Rozwadowskiego
+N|ul.;;Aleja ks. Władysława Zakrzewskiego
+N|ul.;;Aleja księdza Józefa Żyszkiewicza
+N|ul.;;Aleja Lotników Polskich
+N|ul.;;Aleja Marzeń
+N|ul.;;aleja Mieczysława Smorawińskiego
+N|ul.;;Aleja Młodości
+N|ul.;;Aleja Najświętszej Marii Panny
+N|ul.;;Aleja Niepodległości
+N|ul.;;Aleja Odrodzenia
+N|ul.;;Aleja Południowa
+N|ul.;;Aleja Powstańców Styczniowych
+N|al.;;Aleja Przyjaźni
+N|ul.;;Aleja Riada Haidara
+N|ul.;;Aleja Róż
+N|ul.;;Aleja Sąsiedzka
+N|ul.;;Aleja Solidarności
+N|ul.;;Aleja Spacerowa
+N|ul.;;Aleja Spółdzielczości Pracy
+N|al.;;aleja Stanisława Jasińskiego
+N|ul.;;aleja Tadeusza Mazowieckiego
+N|ul.;;Aleja Tysiąclecia
+N|ul.;;aleja Unii Lubelskiej
+N|ul.;;Aleja Warszawska
+N|ul.;;Aleja Władysława Smutniaka
+N|ul.;;Aleja Wspomnień
+N|al.;;Aleja Żołnierzy I Armii Wojska Polskiego
+N|ul.;;Aleje 1-go Maja
+N|ul.;;Aleje 1000-lecia
+N|ul.;;Aleje Armii Krajowej
+N|al.;;Aleje Jana Pawła II
+N|ul.;;Aleje Jana Pawła II
+N|ul.;;Aleje Króla Władysława Jagiełły
+N|ul.;;Aleje Lecha i Marii Kaczyńskich
+N|ul.;;Aleje Niepodległości
+N|ul.;;aleje Racławickie
+N|ul.;;Aleje Ryszarda Kaczorowskiego
+N|ul.;;Aleje Tysiąclecia
+N|ul.;;Aleje Zwycięstwa
+N|ul.;;Aleje Zygmuntowskie
+N|ul.;;Aliny
+N|ul.;;Altanowa
+N|ul.;;Amarantowa
+N|ul.;Antoniego;Amborskiego
+N|ul.;Wiktora;Ambroziewicza
+N|ul.;;Amelin
+N|ul.;;Ametystowa
+N|ul.;;Ananasowa
+N|ul.;;Andersa
+N|ul.;gen. Władysława;Andersa
+N|ul.;Gen. Władysława;Andersa
+N|ul.;Generała;Andersa
+N|ul.;Generała Władysława;Andersa
+N|ul.;Hansa Christiana;Andersena
+N|ul.;Michała Elwira;Andriollego
+N|ul.;Karola;Andrzejuka
+N|ul.;;Annoborska
+N|ul.;Św.;Anny
+N|ul.;;Anny Jagiellonki
+N|ul.;św.;Antoniego
+N|ul.;;Antonin
+N|ul.;;Antonówka
+N|ul.;;Antygony
+N|ul.;;Anyżowa
+N|ul.;;Apteczna
+N|ul.;Feliksa;Araszkiewicza
+N|ul.;;Archidiakońska
+N|ul.;Henryka;Arciucha
+N|ul.;Stanisława;Arcta
+N|ul.;;Argentyna
+N|ul.;;Ariańska
+N|ul.;;Armatnia Góra
+N|ul.;;Armii Hallera
+N|ul.;;Armii Krajowej
+N|ul.;;Armii Kraków
+N|ul.;Franciszki;Arnsztajnowej
+N|ul.;;Aroniowa
+N|ul.;;Artyleryjska
+N|ul.;;Artystyczna
+N|ul.;;Asnyka
+N|ul.;Adama;Asnyka
+N|ul.;;Asów Lotnictwa
+N|ul.;;Astronautów
+N|ul.;;Astrowa
+N|ul.;hr.;Augusta
+N|ul.;;Augustówka
+N|ul.;ks. Tomasza;Augustynowicza
+N|ul.;;Azaliowa
+N|ul.;;Babia
+N|ul.;Waldemara;Babinicza
+N|ul.;Stanisława;Baca
+N|ul.;;Bacha
+N|ul.;;Baczyńskiego
+N|ul.;K. K.;Baczyńskiego
+N|ul.;Krzysztofa;Baczyńskiego
+N|ul.;Krzysztofa Kamila;Baczyńskiego
+N|ul.;;Badowskiego
+N|ul.;;Bagatela
+N|ul.;;Bagienna
+N|ul.;;Bagno
+N|ul.;Jerzego;Bajana
+N|ul.;;Bajeczna
+N|ul.;;Bajkowa
+N|ul.;Wacława;Bajkowskiego
+N|ul.;;Bakaliowa
+N|ul.;;Balladyny
+N|ul.;;Balonna
+N|ul.;Aleksandra;Bałasza
+N|ul.;Stefana;Banacha
+N|ul.;;Bandosa
+N|ul.;;Bandtkich
+N|ul.;;Bankowa
+N|ul.;;Baranowska
+N|ul.;ks. Edmunda;Barbasiewicza
+N|ul.;;Barbórki
+N|ul.;Jana;Barcickiego
+N|ul.;Stefanii i Tadeusza;Barców
+N|ul.;ks. Władysława;Bargieła
+N|ul.;Józefata;Barszczewskiego
+N|ul.;płk. Piotra;Bartaka
+N|ul.;;Bartka Las
+N|ul.;;Bartłomieja
+N|ul.;mjra Franciszka;Bartłomowicza "Grzmota"
+N|ul.;;Bartnia
+N|ul.;;Bartnicza
+N|ul.;Joachima;Bartoszewicza
+N|ul.;;Bartoszewskiego
+N|ul.;"Wira";Bartoszewskiego
+N|skwer;Władysława;Bartoszewskiego
+N|ul.;;Barwinkowa
+N|ul.;;Barwna
+N|ul.;Feliksa;Bary
+N|ul.;;Basaja "Rysia"
+N|ul.;;Baśniowa
+N|rondo;;Batalionów Chłopskich
+N|ul.;;Batalionów Chłopskich
+N|ul.;Waleriana;Batki
+N|ul.;;Batorego
+N|ul.;;Bazarowa
+N|ul.;;Bazowa
+N|ul.;;Bazylany
+N|ul.;;Bazylianówka
+N|ul.;;Bazyliańska
+N|ul.;;Bazyliowa
+N|ul.;;Bażantowa
+N|ul.;;Beatrycze
+N|ul.;Ks. dr Mariana;Bednarczyka
+N|ul.;;Bednarska
+N|ul.;;Bednarzówka
+N|ul.;Józefa;Beka
+N|ul.;;Belgijska
+N|ul.;;Beliniaków
+N|ul.;Płk.;Beliny-Prażmowskiego
+N|ul.;;Bełska
+N|ul.;;Bełżycka
+N|ul.;;Bema
+N|ul.;gen. Józefa;Bema
+N|ul.;Gen. Józefa;Bema
+N|ul.;Generała;Bema
+N|ul.;Józefa;Bema
+N|ul.;Juliana;Benia
+N|ul.;;Beniowskiego
+N|ul.;;Berberysowa
+N|ul.;Księdza Zygfryda;Berezeckiego
+N|ul.;;Berezowska
+N|ul.;prof. Józefa;Bergiera
+N|ul.;mjr. Mariana;Bernaciaka "Orlika"
+N|ul.;;Bernardyńska
+N|ul.;;Bernatówka
+N|ul.;;Berylowa
+N|ul.;;Beskidzka
+N|ul.;;Betonowa
+N|ul.;;Bezwolska
+N|ul.;;Bialska
+N|ul.;;Biała
+N|ul.;;Biała Droga
+N|ul.;;Białka
+N|ul.;;Białkowska Góra
+N|ul.;;Białostocka
+N|ul.;;Białowieska
+N|ul.;;Biały Słup
+N|ul.;;Białych Brzóz
+N|ul.;Feliksa;Bieczyńskiego
+N|ul.;;Biedronki
+N|ul.;;Bieleszy
+N|ul.;ks. Prałata Edwarda;Bielińskiego
+N|ul.;Konrada;Bielskiego
+N|ul.;Romualda;Bielskiego
+N|ul.;;Bieławin
+N|ul.;Ks. Zbigniewa;Bieńkowskiego
+N|ul.;;Biernackiego
+N|ul.;Mieczysława;Biernackiego
+N|ul.;;Biernata z Lublina
+N|ul.;;Biesiadna
+N|ul.;;Bieszczadzka
+N|ul.;;Bilskie
+N|ul.;;Biłgorajska
+N|ul.;;Biskupie
+N|ul.;;Biskupińska
+N|ul.;;Biskupów Płockich
+N|skwer;Jurka;Bitschana
+N|ul.;gen. Ludwika;Bittnera
+N|ul.;;Bitwy pod Gręzówką
+N|rondo;;Bitwy Warszawskiej
+N|ul.;;Biwakowa
+N|ul.;;Blacharska
+N|ul.;Księdza Franciszka;Blachnickiego
+N|ul.;;Blich
+N|ul.;;Bliska
+N|ul.;;Blizocka
+N|ul.;;Bluszczowa
+N|ul.;;Bławatkowa
+N|ul.;;Bławatna
+N|ul.;;Błękitna
+N|ul.;;Błocie
+N|ul.;;Błoga
+N|ul.;;Błonie
+N|ul.;;Błońska
+N|ul.;Tadeusza;Błońskiego
+N|ul.;;Błotków
+N|ul.;;Błotna
+N|ul.;Józefata;Błyskosza
+N|rondo;Św. Andrzeja;Boboli
+N|ul.;Świętego Andrzeja;Boboli
+N|ul.;;Bobrowska
+N|ul.;;Bobrzan
+N|ul.;;Bochotnica
+N|ul.;;Bociania
+N|ul.;;Boczna
+N|ul.;;Boczna Browarnej
+N|ul.;;Boczna Lubomelskiej
+N|ul.;;Boczna Łęczyńskiej
+N|ul.;;Boczna Rusałki
+N|ul.;;Boczna Siewnej
+N|ul.;;Bogdanowicza
+N|ul.;Kazimierza;Bogdanowicza
+N|ul.;;Bogdanówka
+N|ul.;Wojciecha;Bogusławskiego
+N|ul.;Księdza;Boguty
+N|ul.;;Bohaterów
+N|ul.;;Bohaterów Monte Cassino
+N|ul.;;Bohaterów Porytowego Wzgórza
+N|rondo;;Bohaterów Powstania Styczniowego
+N|ul.;;Bohaterów Powstania Styczniowego
+N|skwer;;Bohaterów Powstania Zamojskiego
+N|rondo;;Bohaterów Strajku w Zakładach Azotowych Puławy z 1981 roku
+N|ul.;;Bohaterów Westerplatte
+N|ul.;;Bohaterów Września
+N|ul.;gen. Zygmunta;Bohusz-Szyszko
+N|ul.;;Bojanowska
+N|ul.;;Bojarczuka
+N|ul.;Michała;Bojarczuka
+N|ul.;;Bojarska
+N|ul.;;Bojarskiego
+N|ul.;Jakuba;Bojki
+N|ul.;;Bolesława Chrobrego
+N|ul.;;Bolesława Krzywoustego
+N|ul.;;Bolesława Śmiałego
+N|ul.;ppor. Jana;Bołbotta
+N|ul.;Gen. Mikołaja;Bołtucia
+N|rondo;Alfreda;Bondosa
+N|ul.;Królowej;Bony
+N|ul.;;Borek
+N|ul.;Lelewela;Borelowskiego
+N|ul.;płk Marcina;Borelowskiego
+N|ul.;Marcina;Borelowskiego "Lelewela"
+N|ul.;;Borki
+N|ul.;;Borowa
+N|ul.;;Borowikowa
+N|ul.;;Borowinka
+N|ul.;;Borowinowa
+N|ul.;Księdza Jana;Borowskiego
+N|ul.;T.;Borowskiego
+N|ul.;;Borówki
+N|ul.;;Borówkowa
+N|ul.;;Boryny
+N|ul.;Anny;Boskiej
+N|ul.;;Botaniczna
+N|ul.;Władysława;Bownika
+N|ul.;;Boya-Żeleńskiego
+N|ul.;Tadeusza;Boya-Żeleńskiego
+N|ul.;Olgi;Boznańskiej
+N|ul.;;Bożniczna
+N|ul.;;Bór
+N|ul.;gen. Tadeusza;Bór-Komorowskiego
+N|ul.;;Bóźniczna
+N|rondo;;Braci Pomarańskich
+N|ul.;;Bracka
+N|ul.;;Brama Korchowska
+N|ul.;;Bramowa
+N|ul.;;Branicka
+N|ul.;Świętego;Brata Alberta
+N|ul.;;Braterstwa Broni
+N|ul.;;Bratkowa
+N|ul.;Marii;Bratkowskiej
+N|ul.;;Bratnia
+N|ul.;Felicji;Brejdygant
+N|rondo;;Bressuire
+N|ul.;Tadeusza;Brezy
+N|ul.;Feliksa;Brodowskiego
+N|ul.;;Broniewskiego
+N|ul.;Władysława;Broniewskiego
+N|ul.;;Bronowicka
+N|ul.;Zdzisława;Brońskiego "Uskoka"
+N|ul.;;Browarna
+N|ul.;;Brygady
+N|ul.;;Brygady Pościgowej
+N|ul.;;Brylantowa
+N|al.;;Bryńskiego
+N|ul.;;Brzechwy
+N|ul.;Jana;Brzechwy
+N|ul.;;Brzegowa
+N|ul.;;Brzeska
+N|ul.;Magdaleny;Brzeskiej
+N|ul.;;Brzezina
+N|ul.;;Brzezinka
+N|ul.;;Brzezinki
+N|ul.;;Brzezińska
+N|ul.;;Brzoskwiniowa
+N|ul.;;Brzostówiecka
+N|ul.;;Brzozowa
+N|ul.;;Brzozowe Zacisze
+N|ul.;Księdza Mieczysława;Brzozowskiego
+N|ul.;Stanisława;Brzozowskiego
+N|ul.;;Brzozówka
+N|ul.;;Brzozy
+N|ul.;ks. Stanisława;Brzóski
+N|ul.;Księdza Stanisława;Brzóski
+N|ul.;St.;Brzóski
+N|ul.;Stanisława;Brzóski
+N|ul.;;Buczyńskiego Stanisława
+N|ul.;;Budki
+N|ul.;Konstantego Romualda;Budkiewicza
+N|ul.;Antoniego;Budnego
+N|ul.;Ignacego Bonawentury;Budnego
+N|ul.;;Budowlana
+N|ul.;;Budowlanych
+N|rondo;;Budowniczych Centralnego Okręgu Przemysłowego
+N|ul.;;Budrysów
+N|ul.;;Budziszewska
+N|ul.;;Budzyń
+N|ul.;;Budzyńska
+N|ul.;;Bukietowa
+N|ul.;;Bukowa
+N|ul.;;Bukszpanowa
+N|ul.;;Bulwar
+N|bulw.;;Bulwar 100-lecia Odzyskania Niepodległości
+N|bulw.;;Bulwar im. Stanisława Zalewskiego
+N|ul.;;Bulwarowa
+N|ul.;;Bulwary
+N|bulw.;;Bulwary Miast Partnerskich - Bulwar Loughborough
+N|bulw.;;Bulwary Miast Partnerskich - Bulwar Schwäbisch Hall
+N|bulw.;;Bulwary Miast Partnerskich - Bulwar Sighisoary
+N|bulw.;;Bulwary Miast Partnerskich - Bulwar Żółkwi
+N|ul.;;Bursaki
+N|ul.;;Bursztynowa
+N|ul.;;Burtynówka
+N|ul.;;Burzecka
+N|ul.;;Burzowa
+N|ul.;Zbigniewa;Burzyńskiego
+N|ul.;;Butlerowska
+N|ul.;;Buźniczna
+N|ul.;;Bużan
+N|ul.;;Bychawska
+N|ul.;;Bydgoska
+N|ul.;;Bylicowa
+N|ul.;;Bystrzycka
+N|ul.;;Calineczki
+N|ul.;;Cedrowa
+N|ul.;;Cegielnia
+N|ul.;;Cegielniana
+N|ul.;;Ceglana
+N|ul.;;Celna
+N|ul.;;Celników Polskich
+N|ul.;;Cementowa
+N|ul.;;Centralna
+N|ul.;;Ceramiczna
+N|ul.;;Cerkiewna
+N|ul.;;Cetnarskich
+N|ul.;;Chabrowa
+N|ul.;;Chałubińskiego
+N|ul.;;Charz A
+N|os.;Bronisława;Chącińskiego
+N|ul.;Józefa;Chełmońskiego
+N|ul.;;Chełmska
+N|ul.;;Chemiczna
+N|ul.;Jana;Chęcińskiego
+N|ul.;por. Mieczysława;Chilińskiego
+N|ul.;;Chłodna
+N|ul.;Józefa;Chłopickiego
+N|ul.;Maksymiliana;Chmielarczyka
+N|ul.;Gracjana;Chmielewskiego
+N|ul.;ks. Józefa;Chmielewskiego
+N|ul.;Zygmunta;Chmielewskiego
+N|ul.;;Chmielińska
+N|ul.;;Chmielna
+N|ul.;;Chmielowa
+N|ul.;Adama;Chmielowskiego
+N|ul.;Alberta;Chmielowskiego
+N|ul.;Świętego Brata Alberta;Chmielowskiego
+N|ul.;;Chocimska
+N|ul.;Jana Karola;Chodkiewicza
+N|ul.;;Chodorowskiego
+N|ul.;Dra Witolda;Chodźki
+N|ul.;;Choiny
+N|ul.;;Chojeniecka
+N|;;Cholewianka
+N|ul.;Władysława;Cholewy
+N|rondo;Wojewody Lubelskiego Władysława;Cholewy
+N|ul.;Michała;Chomentowskiego
+N|ul.;;Chomiczewskiego
+N|ul.;;Chopina
+N|pl.;Fryderyka;Chopina
+N|ul.;Fryderyka;Chopina
+N|ul.;Kazimierza;Chorzewskiego
+N|ul.;;Chryzantemowa
+N|ul.;;Chudowska
+N|ul.;;Chutecka
+N|ul.;ks. Bartłomieja;Chwały
+N|ul.;;Chwuszczka
+N|ul.;;Ciasna
+N|ul.;;Cicha
+N|ul.;Teofila;Cichockiego
+N|ul.;;Cichy Zakątek
+N|ul.;;Ciemna
+N|ul.;;Cienista
+N|ul.;Jana;Ciepielewskiego
+N|ul.;;Ciepła
+N|ul.;;Ciepłownicza
+N|ul.;;Ciesielczuka
+N|ul.;;Cieszkowizna
+N|ul.;Kajetana;Cieszkowskiego
+N|ul.;Kajetana;Cieszkowskiego "Ćwieka"
+N|ul.;Zbysława;Ciołkosza
+N|ul.;;Ciołkowskiego
+N|ul.;K.;Ciołkowskiego
+N|ul.;;Cisowa
+N|ul.;;Cmentarna
+N|ul.;;Cudowna
+N|ul.;;Cukrowa
+N|ul.;;Cukrownicza
+N|ul.;Marii;Curie-Skłodowskiej
+N|rondo;Por. Henryka;Cybulskiego
+N|ul.;;Cyda
+N|ul.;;Cynamonowa
+N|ul.;;Cynkowska
+N|ul.;;Cyprysowa
+N|ul.;;Cyranki
+N|ul.;;Cyrkoniowa
+N|ul.;;Cyrulicza
+N|ul.;;Cytrynowa
+N|ul.;Stanisława;Cywińskiego
+N|ul.;Dyonizego;Czachowskiego
+N|ul.;Tadeusza;Czackiego
+N|ul.;;Czajki
+N|ul.;Izabeli;Czajki-Stachowicz
+N|ul.;;Czajkowskiego
+N|ul.;;Czapla
+N|ul.;;Czapli
+N|ul.;Emila;Czaplińskiego
+N|ul.;Józefa;Czapskiego
+N|ul.;Władysława;Czarkowskiego
+N|ul.;;Czarnieckiego
+N|ul.;Hetmana;Czarnieckiego
+N|ul.;Hetmana Stefana;Czarnieckiego
+N|ul.;Stefana;Czarnieckiego
+N|ul.;;Czarowna
+N|ul.;;Czartoryskich
+N|ul.;Izabelli i Adama;Czartoryskich
+N|ul.;Księcia Adama Kazimierza;Czartoryskiego
+N|ul.;Izabeli;Czartoryskiej
+N|ul.;Bronisława;Czecha
+N|ul.;;Czechowicza
+N|ul.;Józefa;Czechowicza
+N|ul.;;Czechowska
+N|ul.;Aleksandra;Czekanowskiego
+N|ul.;;Czeremchowa
+N|ul.;;Czereśniowa
+N|ul.;;Czerkasy
+N|ul.;;Czerniawy
+N|ul.;Kazimierza;Czernickiego
+N|ul.;;Czernicowa
+N|ul.;;Czerniejowska
+N|ul.;14;Czerwca
+N|ul.;30;Czerwca
+N|ul.;;Czerwcowa
+N|ul.;Jana;Czerwińskiego
+N|ul.;;Czerwonego Kapturka
+N|ul.;;Czerwonego Krzyża
+N|ul.;;Czeska
+N|ul.;;Czołgistów
+N|ul.;;Czołnowska
+N|ul.;;Czuby
+N|ul.;Ignacego;Czumy
+N|ul.;;Czwartaków
+N|ul.;;Czwartek
+N|ul.;;Czworobok
+N|ul.;;Czysta
+N|ul.;Mieczysławy;Ćwiklińskiej
+N|ul.;;Daktylowa
+N|ul.;;Daleka
+N|ul.;;Dalekie I
+N|ul.;;Dalekie II
+N|ul.;;Daliowa
+N|ul.;Stanisława;Damrosza
+N|ul.;Marii;Daniec
+N|ul.;Księdza Wojciecha;Danielskiego
+N|ul.;Jana;Danieluka
+N|ul.;Gustawa;Daniłowskiego
+N|ul.;Ignacego;Daszyńskiego
+N|ul.;;Dawida
+N|ul.;Pułkownika Stanisława;Dąbka
+N|ul.;;Dąbrowicka
+N|ul.;;Dąbrowiecka
+N|ul.;;Dąbrowska
+N|ul.;gen. Henryka;Dąbrowskiego
+N|ul.;Henryka;Dąbrowskiego
+N|ul.;Jana Henryka;Dąbrowskiego
+N|ul.;Jarosława;Dąbrowskiego
+N|ul.;ks. Józefa;Dąbrowskiego
+N|ul.;Marii;Dąbrowskiej
+N|;;Dąbrówka
+N|ul.;;Dąbrówki
+N|ul.;Jana;Dąbskiego
+N|ul.;Jerzego;de Tramecourta
+N|ul.;Jana;Dekerta
+N|ul.;Hieronima;Dekutowskiego
+N|ul.;Hieronima;Dekutowskiego "Zapory"
+N|ul.;mjr Hieronima;Dekutowskiego "Zapory"
+N|ul.;Edwarda;Dembowskiego
+N|ul.;;Deotymy
+N|ul.;Mirosława;Dereckiego
+N|ul.;;Dereniowa
+N|ul.;;Derlatki
+N|ul.;Bronisława;Deskura
+N|pl.;Pułkownika Jerzego;Deskura
+N|ul.;;Deszczowa
+N|ul.;Kazimierza;Deyny
+N|ul.;;Dębina
+N|ul.;;Dęblińska
+N|ul.;;Dębniak
+N|ul.;;Dębowa
+N|ul.;;Dębowe Góry
+N|ul.;;Dębowy Las
+N|ul.;;Diamentowa
+N|ul.;;Ditty
+N|ul.;;Dłotlice
+N|ul.;;Długa
+N|ul.;;Długosza
+N|ul.;Jana;Długosza
+N|ul.;Jakuba;Dłuto
+N|ul.;dr. Władysława;Dmocha
+N|ul.;Romana;Dmochowskiego
+N|rondo;Romana;Dmowskiego
+N|ul.;Romana;Dmowskiego
+N|ul.;;Do Dysa
+N|ul.;;Dobra
+N|ul.;;Dobrego Pasterza
+N|ul.;;Dobropolska
+N|ul.;Bohdana;Dobrzańskiego
+N|ul.;Mjr.;Dobrzańskiego
+N|ul.;mjr. Henryka;Dobrzańskiego "Hubala"
+N|ul.;;Dojazdowa
+N|ul.;;Doktora Judyma
+N|ul.;;Dokudowska
+N|ul.;;Dolina Ciemięgi
+N|ul.;Dra Gustawa;Dolińskiego
+N|ul.;;Dolna
+N|ul.;;Dolna 3 Maja
+N|ul.;;Dolna Panny Marii
+N|ul.;;Doły
+N|ul.;;Domaniż
+N|ul.;;Domaszewska
+N|ul.;Ignacego;Domeyki
+N|ul.;;Dominikańska
+N|ul.;;Dominowska
+N|ul.;;Dorohuska
+N|ul.;;Doświadczalna
+N|ul.;;Dożynkowa
+N|ul.;;Dragonów
+N|ul.;;Drągowska
+N|ul.;Gen. Gustawa Orlicz;Dreszera
+N|ul.;;Drewniana
+N|ul.;;Droga Akacjowa
+N|ul.;;Droga Jaśminowa
+N|ul.;;Droga Męczenników
+N|ul.;;Droga Męczenników Majdanka
+N|ul.;;Droga Męczenników Rotundy
+N|ul.;;Droga prof. Tadeusza Pruszkowskiego
+N|ul.;;Droga Straceń 1941-1944
+N|ul.;;Droga Wojskowa
+N|ul.;;Drohicka
+N|ul.;Księdza;Drozdowskiego
+N|ul.;Kazimiery;Dryi
+N|ul.;Stefana;Drzewieckiego
+N|ul.;;Drzymały
+N|ul.;Michała;Drzymały
+N|ul.;;Dubickiego
+N|ul.;Mariana;Dubieckiego
+N|ul.;Stanisława;Dubois
+N|ul.;Gen. Bolesława;Ducha
+N|ul.;Juliusza;Dudzińskiego
+N|ul.;Heleny i Kazimierza;Dulębów
+N|ul.;;Dulęby
+N|ul.;Kazimierza;Dulęby
+N|ul.;Ksawerego;Dunikowskiego
+N|ul.;;Dwa Dęby
+N|ul.;;Dwernickiego
+N|ul.;gen.;Dwernickiego
+N|ul.;gen. Józefa;Dwernickiego
+N|ul.;Gen. Józefa;Dwernickiego
+N|ul.;Józefa;Dwernickiego
+N|ul.;;Dwie Topole
+N|ul.;Kazimierza Juliusza;Dworaka
+N|ul.;;Dworcowa
+N|ul.;;Dworkowa
+N|ul.;;Dworska
+N|ul.;Adolfa;Dygasińskiego
+N|ul.;Tadeusza;Dymowskiego
+N|ul.;Wawrzyńca;Dyrki
+N|ul.;III;Dywizji Piechoty
+N|ul.;;Dywizjonu 303
+N|ul.;;Dywizjonu 315
+N|ul.;;Dzbenin
+N|ul.;;Działki
+N|ul.;;Działkowa
+N|ul.;;Działkowca
+N|ul.;;Działkowców
+N|rondo;;Dzieci Wołynia
+N|ul.;;Dzieci Zamojszczyzny
+N|ul.;Mikołaja;Dziedzickiego
+N|ul.;;Dziekanowska
+N|ul.;Józefa Piusa;Dziekońskiego
+N|ul.;;Dzielna
+N|ul.;;Dzierżawna
+N|ul.;;Dziesiąta
+N|ul.;;Dziesięciozagony
+N|ul.;;Dziewanny
+N|ul.;;Dziewicza Góra
+N|ul.;;Dzika
+N|ul.;;Dzikiej Róży
+N|ul.;Błażeja;Dzikowskiego
+N|ul.;Heleny;Dziubińskiej
+N|ul.;Jadwigi;Dziubińskiej
+N|ul.;;Dzwonkowa
+N|ul.;mjr.;Eborowicza
+N|ul.;Karola Ferdynanda;Eichlera
+N|ul.;;Ekologiczna
+N|ul.;;Elekcyjna
+N|ul.;;Elektryczna
+N|ul.;Leszka;Eliaszczuka
+N|ul.;;Elizówka
+N|ul.;Józefa;Elsnera
+N|ul.;;Emancypantek
+N|ul.;;Energetyczna
+N|ul.;;Energetyków
+N|ul.;;Estery
+N|;;Europejskiej Stolicy Młodzieży Lublin 2023
+N|ul.;Stanisława;Eustachiewicza
+N|ul.;;Ewangelicka
+N|ul.;;Fabryczna
+N|ul.;;Fabryka
+N|ul.;;Faceliowa
+N|ul.;Juliana;Fałata
+N|ul.;;Fantastyczna
+N|ul.;;Fantazego
+N|ul.;;Faraona
+N|ul.;;Farbiarska
+N|ul.;Zofii;Farbiszewskiej
+N|ul.;;Farfak
+N|ul.;;Farmaceutyczna
+N|ul.;;Farna
+N|ul.;św.;Faustyny
+N|ul.;Świętej;Faustyny
+N|ul.;;Fazowa
+N|ul.;Aliny;Fedorowicz
+N|ul.;;Felin
+N|ul.;;Festiwalowa
+N|ul.;Augusta;Fieldorfa
+N|ul.;Generała Augusta;Fieldorfa
+N|ul.;gen.;Fieldorfa "Nila"
+N|ul.;;Figowa
+N|ul.;Prof. Włodzimierza;Fijałkowskiego
+N|ul.;;Filaretów
+N|ul.;;Filipińska
+N|ul.;;Filomatów
+N|ul.;;Filona
+N|ul.;;Filtrowa
+N|ul.;;Finezyjna
+N|ul.;;Fiołkowa
+N|ul.;Jana;Firleja
+N|ul.;Piotra;Firleja
+N|ul.;;Firlejowska
+N|ul.;Jana Jerzego;Flemminga
+N|ul.;Jerzego;Flemminga
+N|ul.;Pułkownika pilota Romana;Florera
+N|ul.;św.;Floriana
+N|ul.;;Floriańska
+N|ul.;;Folwarczna
+N|ul.;;Folwark
+N|ul.;;Folwarki
+N|ul.;Franciszka;Fornalskiego
+N|ul.;;Forsycjowa
+N|ul.;;Forteczna
+N|ul.;;Frampolska
+N|ul.;;Franciszkańska
+N|ul.;;Francuska
+N|ul.;sierż. Józefa;Franczaka
+N|ul.;Józefa;Franczaka "Lalka"
+N|rondo;Józefa;Franczaka ps. "Laluś"
+N|ul.;Leona;Frankowskiego
+N|ul.;por. Bolesława;Frańczaka "Argila"
+N|ul.;;Fredry
+N|ul.;Aleksandra;Fredry
+N|ul.;;Frezerów
+N|ul.;;Frezjowa
+N|ul.;Andrzeja;Frycza Modrzewskiego
+N|ul.;Andrzeja;Frycza-Modrzewskiego
+N|ul.;;Fuksjowa
+N|ul.;Biskupa Mariana;Fulmana
+N|ul.;Józefa;Furmana
+N|ul.;;Furmańska
+N|ul.;;Gagarina
+N|ul.;Tadeusza;Gajcego
+N|ul.;;Gajowa
+N|skwer;Franciszka;Galery
+N|ul.;;Gałczyńskiego
+N|ul.;Konstantego;Gałczyńskiego
+N|ul.;Konstantego Ildefonsa;Gałczyńskiego
+N|ul.;;Gałęzowskich
+N|ul.;;Garażowa
+N|ul.;;Garbarska
+N|ul.;;Gardzienicka
+N|ul.;;Garncarska
+N|ul.;;Garnizonowa
+N|ul.;;Gawareckich
+N|ul.;;Gawronia
+N|ul.;;Gawryłowa
+N|ul.;;Gazowa
+N|ul.;;Gdańska
+N|rondo;;Geodetów
+N|ul.;;Gerberowa
+N|ul.;Józefa;Geresza
+N|ul.;;Gerwazego
+N|ul.;Romana;Gesinga
+N|ul.;Prof. Antoniego;Gębali
+N|ul.;;Gęsia
+N|ul.;Braci;Gierymskich
+N|ul.;Aleksandra;Gierymskiego
+N|ul.;;Gietki
+N|ul.;Jana;Gilasa
+N|ul.;;Gilowa
+N|ul.;;Gimnazjalna
+N|ul.;Józefa Krzysztofa;Gizy
+N|ul.;;Glazurowa
+N|ul.;;Gliniana
+N|ul.;;Glinianki
+N|ul.;;Glinki
+N|ul.;Kazimierza;Glińskiego
+N|ul.;Jana;Glogera
+N|ul.;Zygmunta;Glogera
+N|ul.;;Głębocznica
+N|ul.;;Głęboka
+N|ul.;;Głogowa
+N|ul.;;Głowackiego
+N|ul.;Bartosza;Głowackiego
+N|ul.;Władysława;Głowackiego
+N|ul.;Wojciecha;Głowackiego
+N|ul.;Wojciecha Bartosza;Głowackiego
+N|ul.;;Główna
+N|ul.;;Głuska
+N|ul.;;Gminna
+N|ul.;;Gnieźnieńska
+N|ul.;Cypriana;Godebskiego
+N|ul.;;Godowska
+N|ul.;Poli;Gojawiczyńskiej
+N|ul.;Antoniego;Gojdana
+N|ul.;;Gołaszówiec
+N|ul.;;Gołębia
+N|ul.;mjr Mariana;Gołębiewskiego
+N|ul.;;Gołębna
+N|ul.;;Gołębska
+N|ul.;Henryka;Gontarza
+N|ul.;;Goplan
+N|ul.;;Goplany
+N|ul.;;Gorajska
+N|ul.;Adama;Gorajskiego
+N|ul.;Dymitra;Gorajskiego
+N|ul.;Biskupa Władysława;Gorala
+N|ul.;;Gorczańska
+N|ul.;;Gorczycowa
+N|ul.;;Gosławskiego
+N|ul.;;Gospodarcza
+N|ul.;;Gospodarska
+N|ul.;;Gościniec
+N|ul.;;Gościnna
+N|ul.;;Gościńczyk
+N|ul.;Księdza Józefa;Gozdalskiego
+N|ul.;;Goździkowa
+N|ul.;;Górka
+N|ul.;;Górki
+N|ul.;Hetmana;Górki
+N|ul.;;Górna
+N|ul.;;Górna Niwa
+N|ul.;;Górne
+N|ul.;;Górnicza
+N|ul.;;Górska
+N|ul.;Michała;Górskiego
+N|skwer;prof. Kazimierza;Górskiego
+N|;;Góry
+N|ul.;;Góry
+N|ul.;gen. Tadeusza;Góry
+N|ul.;;Grabarska
+N|al.;;Grabowa
+N|ul.;;Grabowa
+N|ul.;;Grabowiecka
+N|ul.;Franciszka;Grabowskiego
+N|ul.;;Grabówka
+N|ul.;Władysława;Grabskiego
+N|ul.;Emanuela;Graffa
+N|ul.;;Grafitowa
+N|ul.;Wacława;Gralewskiego
+N|ul.;;Gramowskiego
+N|ul.;Ks. Wincentego;Granata
+N|ul.;;Granatowa
+N|ul.;;Graniczna
+N|ul.;;Granitowa
+N|ul.;;Grańska
+N|ul.;dr. Władysława;Grażewicza
+N|ul.;;Grażyny
+N|ul.;Marka;Grechuty
+N|ul.;;Grecka
+N|ul.;;Grenadierów
+N|ul.;;Grobelka
+N|ul.;;Grobelna
+N|ul.;;Grobla
+N|ul.;;Grobla Paradna
+N|ul.;Alojzego;Grochowskiego
+N|ul.;;Grodzany
+N|ul.;Stefana;Grodzickiego
+N|ul.;Tadeusza;Grodzickiego
+N|ul.;;Grodzka
+N|ul.;;Gromadzka
+N|ul.;;Grondowa
+N|ul.;por. Romana;Grońskiego "Żbika"
+N|ul.;gen.;Grota-Roweckiego
+N|ul.;gen. Stefana;Grota-Roweckiego
+N|ul.;Generała Stefana;Grota-Roweckiego
+N|ul.;Artura;Grottgera
+N|ul.;;Grotthusów
+N|ul.;;Gródecka
+N|ul.;25;Grudnia
+N|ul.;Józefa;Grudzińskiego
+N|ul.;Prezydenta Teodora;Gruella
+N|ul.;;Gruntowa
+N|ul.;;Grunwaldzka
+N|ul.;Antoniego;Gruszczyńskiego
+N|ul.;;Gruszkowa
+N|ul.;Antoniny;Grygowej
+N|ul.;Bolesława;Grzebalskiego
+N|ul.;Marii;Grzegorzewskiej
+N|ul.;;Grzybowa
+N|ul.;Księdza Szymona;Grzybowskiego
+N|ul.;Księdza Kanonika Szymona;Grzymały
+N|ul.;;Guliwera
+N|ul.;;Gumienna
+N|ul.;;Gutanowska
+N|ul.;;Gwardii
+N|ul.;;Gwarków
+N|ul.;;Gwarna
+N|ul.;;Gwiaździsta
+N|ul.;;Gwiezdna
+N|ul.;;Gwieździsta
+N|ul.;;Hajdowska
+N|ul.;Henryka;Halickiego
+N|ul.;;Hallera
+N|ul.;gen. J.;Hallera
+N|rondo;gen. Józefa;Hallera
+N|ul.;Generała Józefa;Hallera
+N|ul.;Józefa;Hallera
+N|ul.;Jakuba;Hałasa
+N|ul.;;Hamleta
+N|ul.;;Handlowa
+N|ul.;;Harcerska
+N|ul.;;Harnasie
+N|ul.;gen. Józefa;Hauke-Bosaka
+N|ul.;Józefa;Hauke-Bosaka
+N|ul.;Gen. Maurycego;Haukego
+N|ul.;;Hebanowa
+N|ul.;Michała;Heidenreicha Kruka
+N|ul.;;Heloizy
+N|ul.;Marii;Hempel
+N|ul.;Jana Mariana;Hempla
+N|ul.;;Henin
+N|ul.;;Herbaciana
+N|ul.;Zbigniewa;Herberta
+N|ul.;;Herbowa
+N|ul.;Stanisława;Herbsta
+N|ul.;Wilhelma;Hessa
+N|ul.;;Hetmańska
+N|ul.;;Hevelke
+N|ul.;;Heweliusza
+N|ul.;Jana;Heweliusza
+N|ul.;;Hiacyntowa
+N|ul.;;Hipoteczna
+N|ul.;Ludwika;Hirszfelda
+N|ul.;Księdza Stanisława;Hładuniaka
+N|ul.;;Hłaski
+N|ul.;Jadwigi;Hollakowej
+N|skwer;Zbigniewa;Hołdy
+N|ul.;Pauliny;Hołyszowej
+N|rondo;;Honorowych Dawców Krwi
+N|rondo;;Honorowych Krwiodawców
+N|ul.;Braci;Horaczyńskich
+N|ul.;;Horbowska
+N|ul.;Hrabiego;Horeszki
+N|ul.;;Horodek
+N|ul.;;Horodelska
+N|ul.;;Hortensji
+N|ul.;;Hotelowa
+N|ul.;;Hoża
+N|ul.;;Hrubieszowska
+N|ul.;księdza kanonika Jana;Hryniewicza
+N|ul.;Kajetana;Hryniewieckiego
+N|ul.;;Hubala
+N|ul.;;Hubalczyków
+N|ul.;Józefa Jana;Hudaszka
+N|ul.;;Husarska
+N|ul.;;Hutnicza
+N|ul.;;Iglasta
+N|ul.;Jana;Iglatowskiego
+N|ul.;;Imbirowa
+N|rondo;;imienia por. Antoniego Wszelakiego
+N|ul.;;Infułacka
+N|ul.;;Inwalidów Wojennych
+N|ul.;;Inwestorska
+N|ul.;;Inżynierska
+N|ul.;;Irydiona
+N|ul.;;Irysowa
+N|ul.;;Iski
+N|ul.;Wacława;Iwaniuka
+N|ul.;Jarosława;Iwaszkiewicza
+N|ul.;Księżnej;Izabelli
+N|ul.;;Izerska
+N|ul.;;Izoldy
+N|ul.;;J. III Sobieskiego
+N|ul.;;J. Sobieskiego
+N|ul.;;Jabłoniowa
+N|ul.;;Jabłonkowa
+N|ul.;Stanisława;Jachowicza
+N|ul.;;Jachtowa
+N|ul.;Zenona;Jachymka "Wiktora"
+N|ul.;Tadeusza;Jacyny-Onyszkiewicza
+N|ul.;Dra Kazimierza;Jaczewskiego
+N|ul.;Królowej;Jadwigi
+N|ul.;św.;Jadwigi Królowej
+N|ul.;;Jagiellońska
+N|ul.;;Jagiełka
+N|ul.;;Jagodowa
+N|ul.;;Jaksy z Miechowa
+N|ul.;Stanisława;Jakubickiego
+N|ul.;;Jakubowicka
+N|ul.;;Jałowcowa
+N|ul.;Zdzisława;Jamrożka
+N|ul.;Ojca;Jana
+N|ul.;Świętego;Jana Chrzciciela
+N|ul.;;Jana II Kazimierza
+N|ul.;;Jana III Sobieskiego
+N|ul.;Króla;Jana III Sobieskiego
+N|ul.;;Jana Kazimierza
+N|rondo;;Jana Pawła II
+N|skwer;;Jana Pawła II
+N|ul.;;Jana Pawła II
+N|ul.;Papieża;Jana Pawła II
+N|skwer;św.;Jana Pawła II
+N|ul.;św.;Jana Pawła II
+N|ul.;Św.;Jana Pawła II
+N|ul.;Świętego;Jana Pawła II
+N|ul.;;Jana Sobieskiego
+N|ul.;Czesława;Janczarskiego
+N|ul.;Kazimierza;Janczykowskiego
+N|ul.;ks. Marka;Jandołowicza
+N|ul.;;Janiszewska
+N|ul.;;Jankiela
+N|ul.;Józefa;Jankowskiego
+N|ul.;ks. Walentego;Jankowskiego
+N|rondo;Ryszarda;Jankowskiego
+N|ul.;;Jankowszczyzna
+N|ul.;;Janowicka
+N|ul.;;Janowiecka
+N|ul.;;Janowska
+N|ul.;Aleksandra;Janowskiego
+N|ul.;Mikołaja;Janowskiego
+N|ul.;;Janówek
+N|ul.;;Janówka
+N|ul.;;Jantarowa
+N|ul.;;Japońska
+N|ul.;Stefana;Jaracza
+N|ul.;Elżbiety;Jaraczewskiej
+N|ul.;;Jarczewska
+N|ul.;;Jarmarczna
+N|ul.;Stanisława;Jarmuła
+N|pl.;Jana;Jaroszewicza
+N|ul.;Braci;Jaroszów
+N|ul.;Feliksa;Jaroszyńskiego
+N|ul.;;Jarowa
+N|ul.;;Jarzębinowa
+N|ul.;Leona;Jasielskiego
+N|ul.;gen. Jakuba;Jasińskiego
+N|ul.;Jakuba;Jasińskiego
+N|ul.;Tadzia;Jasińskiego
+N|ul.;;Jaskółcza
+N|ul.;;Jaskrawa
+N|ul.;;Jasna
+N|ul.;;Jaspisowa
+N|ul.;Mieczysława;Jastruna
+N|ul.;;Jastrzębia
+N|ul.;;Jastrzębskiego
+N|ul.;Franciszka;Jaszczołda
+N|ul.;;Jaszki
+N|rondo;Romualda;Jaśkiewicza
+N|ul.;;Jaśminowa
+N|ul.;;Jatkowa
+N|ul.;Hieronima;Jawłowskiego
+N|ul.;;Jaworowa
+N|ul.;dr Aleksandra;Jaworowskiego
+N|ul.;Kazimierza Andrzeja;Jaworskiego
+N|ul.;Kazimierza-Andrzeja;Jaworskiego
+N|rondo;;Jaworzniacy
+N|ul.;Wacława;Jawoszka
+N|ul.;Stanisława;Jednacza
+N|ul.;;Jedności
+N|ul.;;Jedność
+N|ul.;;Jelnicka
+N|ul.;;Jemiołowa
+N|ul.;;Jemiołuszki
+N|ul.;;Jesienna
+N|ul.;;Jesionowa
+N|ul.;Franciszka Salezego;Jezierskiego
+N|ul.;Romana;Jeziora
+N|ul.;Antoniego;Jeziorańskiego
+N|ul.;;Jeziorna
+N|;;Jeziorszczyzna
+N|ul.;;Jezuicka
+N|rondo;;Jezuickie
+N|ul.;;Jeżynowa
+N|ul.;;Jodłowa
+N|rondo;Mariana;Jonkajtysa
+N|ul.;Henryka;Jordana
+N|ul.;Berka;Joselewicza
+N|ul.;;Józefowska
+N|ul.;;Jóźwiakowskiego
+N|ul.;;Judyma
+N|ul.;Dr;Judyma
+N|ul.;;Julii
+N|ul.;;Julin
+N|ul.;;Juliusza Cezara
+N|ul.;;Junacka
+N|ul.;Klemensa;Junoszy
+N|ul.;;Jurajska
+N|rondo;por. Józefa;Jurałomskiego
+N|ul.;;Juranda
+N|ul.;;Jurdyka
+N|ul.;Kazimierza;Jurkiewicza
+N|ul.;;Jurydyka
+N|ul.;;Jutrzenki
+N|ul.;;Kacza
+N|ul.;;Kaczeńcowa
+N|ul.;Jacka;Kaczmarskiego
+N|ul.;Prezydenta Ryszarda;Kaczorowskiego
+N|pl.;Ryszarda;Kaczorowskiego
+N|ul.;Ryszarda;Kaczorowskiego
+N|ul.;Bogusława;Kaczyńskiego
+N|ul.;Lecha;Kaczyńskiego
+N|ul.;Prezydenta Lecha;Kaczyńskiego
+N|ul.;Wincentego;Kadłubka
+N|ul.;;Kaflarska
+N|ul.;;Kajetanówka
+N|ul.;;Kaktusowa
+N|ul.;Mieczysława;Kalenika
+N|ul.;;Kalinowa
+N|ul.;;Kalinowszczyzna
+N|ul.;;Kalinówka
+N|ul.;;Kaliska
+N|ul.;;Kaliszańska
+N|ul.;;Kameliowa
+N|ul.;;Kameralna
+N|ul.;;Kamieniak
+N|ul.;;Kamienista
+N|ul.;;Kamienna
+N|ul.;Henryka;Kamieńskiego
+N|ul.;;Kamieńskiej
+N|ul.;ks. Stanisława;Kamińskiego
+N|ul.;Stanisława;Kamińskiego
+N|ul.;;Kanałowa
+N|ul.;;Kandydaty
+N|ul.;;Kaniowczyków
+N|ul.;;Kaprysowa
+N|rondo;Marii;Kapturkiewicz-Szewczyk
+N|ul.;;Kapucyńska
+N|ul.;;Karasia
+N|ul.;;Kardamonowa
+N|ul.;;Karkonoska
+N|ul.;Mieczysława;Karłowicza
+N|ul.;;Karmelicka
+N|ul.;;Karmelowa
+N|ul.;;Karminowa
+N|ul.;;Karpacka
+N|ul.;;Karpińskiego
+N|ul.;Franciszka;Karpińskiego
+N|ul.;Jana;Karskiego
+N|rondo;Tadeusza;Karszo-Siedlewskiego
+N|ul.;;Kaskadowa
+N|ul.;Janusza;Kasperka
+N|ul.;;Kasprowicza
+N|ul.;Jana;Kasprowicza
+N|rondo;pilota Eugeniusza;Kasprzaka
+N|ul.;;Kaszmirowa
+N|al.;;Kasztanowa
+N|ul.;;Kasztanowa
+N|ul.;;Kasztelańska
+N|ul.;;Kaszubska
+N|ul.;Ryszarda;Kaszubskiego
+N|ul.;;Katedralna
+N|ul.;;Katowska
+N|ul.;Laury;Kaufman
+N|ul.;;Kawaleryjska
+N|ul.;;Kawalerzystów
+N|ul.;;Kawia
+N|ul.;;Kawowa
+N|ul.;;Kazimierska
+N|ul.;;Kazimierza Jagiellończyka
+N|ul.;Króla;Kazimierza Jagiellończyka
+N|ul.;;Kazimierza Odnowiciela
+N|ul.;;Kazimierza Wielkiego
+N|ul.;Lucjana;Kaznowskiego
+N|ul.;;Kąkolowa
+N|ul.;;Kąpieliskowa
+N|ul.;;Kąpielowa
+N|ul.;;Kątek
+N|ul.;Adama;Kerstena
+N|ul.;;Kębelska
+N|skwer;arch. Ignacego;Kędzierskiego
+N|ul.;Haliny;Kędzierskiej
+N|ul.;;Kępa
+N|ul.;;Kickiego
+N|ul.;;Kielecka
+N|ul.;Jana;Kiepury
+N|ul.;;Kiernickich
+N|ul.;Grażyny;Kierszniewskiej
+N|ul.;;Kierzki
+N|ul.;;Kijańska
+N|rondo;Wojciecha;Kilara
+N|ul.;;Kilińskiego
+N|ul.;Jana;Kilińskiego
+N|ul.;Michała;Kińczyka
+N|ul.;;Kirkora
+N|ul.;;Kirkucka
+N|ul.;Stefana;Kisielewskiego
+N|ul.;gen. Jana W.;Kiwerskiego
+N|ul.;Wojciecha;Kiwerskiego
+N|ul.;Sofroniusza;Kizewetera
+N|ul.;dr. Sz. M.;Klarnera
+N|ul.;;Klarowska
+N|ul.;;Klasztorna
+N|ul.;;Kleeberga
+N|ul.;Franciszka;Kleeberga
+N|ul.;gen.;Kleeberga
+N|ul.;gen. Franciszka;Kleeberga
+N|ul.;Generała;Kleeberga
+N|ul.;Generała Franciszka;Kleeberga
+N|ul.;Juliusza;Kleinera
+N|ul.;;Kleniewskich
+N|ul.;;Kleopatry
+N|ul.;Witolda;Klepackiego
+N|ul.;;Kleszczowska
+N|os.;Leona;Klimeckiego
+N|ul.;Księdza;Klingera
+N|ul.;;Klinkierniana
+N|ul.;;Klinkierowa
+N|ul.;;Klinowa
+N|ul.;;Klitne
+N|ul.;;Klonowa
+N|ul.;Sebastiana;Klonowica
+N|ul.;Sebastiana;Klonowicza
+N|ul.;;Klubowa
+N|ul.;Jana Krzysztofa;Kluka
+N|ul.;D-ra Zygmunta;Klukowskiego
+N|ul.;Zygmunta;Klukowskiego
+N|ul.;;Kłodzka
+N|ul.;bł. ks. Ignacego;Kłopotowskiego
+N|ul.;;Kłosowa
+N|ul.;;Kłosowskiego
+N|ul.;Karola i Zdzisława;Kłossowskich
+N|ul.;gen. Ludwika;Kmicic-Skrzyńskiego
+N|ul.;;Kmicica
+N|ul.;Andrzeja;Kmicica
+N|ul.;;Kmieca
+N|ul.;;Kminkowa
+N|ul.;Stefana;Knappa
+N|ul.;;Kniazie
+N|ul.;Franciszka Dionizego;Kniaźnina
+N|ul.;;Kobaltowa
+N|ul.;płk. pil. Tadeusza;Koca
+N|ul.;;Kochanowskiego
+N|pl.;Jana;Kochanowskiego
+N|ul.;Jana;Kochanowskiego
+N|ul.;;Kocka
+N|ul.;;Kodeńska
+N|ul.;;Kogucia
+N|ul.;;Kokosowa
+N|ul.;Oskara;Kolberga
+N|ul.;;Kolegiacka
+N|ul.;;Kolejarzy
+N|ul.;;Kolejarzy Południe
+N|ul.;;Kolejowa
+N|ul.;;Kolonia
+N|ul.;;Kolonia Dąbrowa I
+N|ul.;;Kolonia Dąbrowa II
+N|ul.;;Kolonia Dąbrowa III
+N|ul.;;Kolonia Francuska
+N|ul.;;Kolonia Gąszcze
+N|ul.;;Kolonia Kock
+N|ul.;;Kolonia Krakowskie Przedm.
+N|ul.;;Kolonia Rowiny
+N|ul.;;Kolonia Szczepaniec
+N|os.;;Kolonia Trębaczów
+N|ul.;;Kolonijna
+N|ul.;;Kolorowa
+N|ul.;Edwarda;Kołaczkowskiego
+N|rondo;im. Jana;Kołkowicza
+N|ul.;;Kołłątaja
+N|ul.;Hugo;Kołłątaja
+N|ul.;Hugona;Kołłątaja
+N|ul.;;Koło
+N|ul.;Mieczysława;Kołodzieja
+N|ul.;;Kołowa
+N|ul.;;Kołowrót
+N|ul.;;Kołychawa
+N|ul.;;Komarowska
+N|ul.;;Kombatantów
+N|ul.;;Komety
+N|ul.;;Komisji Edukacji Narodowej
+N|ul.;gen.;Komorowskiego
+N|ul.;Generała Tadeusza "Bora";Komorowskiego
+N|ul.;;Komunalna
+N|ul.;Stanisława;Konarskiego
+N|ul.;Szymona;Konarskiego
+N|ul.;;Koncertowa
+N|ul.;Bronisława;Kondrackiego
+N|ul.;;Konfederacji Tyszowieckiej
+N|ul.;;Konna
+N|ul.;Zenona;Kononowicza
+N|ul.;Haliny;Konopackiej
+N|ul.;;Konopiankowa
+N|ul.;;Konopna
+N|ul.;;Konopnicka
+N|ul.;;Konopnickiej
+N|ul.;Marii;Konopnickiej
+N|ul.;Pawła;Konrada
+N|ul.;;Konstantynów
+N|ul.;;Konstruktorów
+N|pl.;;Konstytucji 3 Maja
+N|ul.;;Konstytucji 3 Maja
+N|pl.;;Konstytucji 3-go Maja
+N|ul.;;Konwaliowa
+N|ul.;;Konwiktorska
+N|ul.;;Końcowa
+N|ul.;Stefana;Kopecia
+N|ul.;Bartłomieja;Kopera
+N|ul.;;Koperkowa
+N|ul.;;Kopernika
+N|ul.;M.;Kopernika
+N|ul.;Mikołaja;Kopernika
+N|ul.;;Kopińska
+N|ul.;;Koralowa
+N|ul.;;Korczaka
+N|ul.;Janusza;Korczaka
+N|ul.;;Kordiana
+N|ul.;;Korea Południowa
+N|ul.;;Korea Północna
+N|ul.;Wojciecha;Korfantego
+N|ul.;Eugeniusza;Kornasa
+N|ul.;Księdza Aleksandra;Kornilaka
+N|ul.;;Korolowska
+N|ul.;;Korpusu Ochrony Pogranicza
+N|ul.;Marii;Koryznowej
+N|ul.;Józefa;Korzeniowskiego
+N|ul.;;Korzenna
+N|ul.;Stanisława;Kosmali
+N|ul.;;Kosmiczna
+N|ul.;;Kosmonautów
+N|ul.;Ireny;Kosmowskiej
+N|ul.;Zofii;Kossak
+N|ul.;Juliusza;Kossaka
+N|ul.;Wojciecha;Kossaka
+N|ul.;Tadeusza;Kossakowskiego
+N|ul.;;Kossaków
+N|ul.;;Kosynierów
+N|ul.;;Koszarowa
+N|ul.;;Koszary
+N|ul.;;Koszykowa
+N|ul.;;Kościelna
+N|ul.;;Kościelnisko
+N|ul.;ks. Ryszarda;Kościka
+N|pl.;;Kościuszki
+N|ul.;;Kościuszki
+N|ul.;T.;Kościuszki
+N|al.;Tadeusza;Kościuszki
+N|pl.;Tadeusza;Kościuszki
+N|ul.;Tadeusza;Kościuszki
+N|ul.;Franciszka;Kotarasińskiego
+N|ul.;Józefa;Kotarby
+N|ul.;Stanisława;Kotera
+N|ul.;;Kotlarska
+N|ul.;;Kowalska
+N|ul.;;Kowalskiego
+N|ul.;dr. Mieczysława;Kowalskiego
+N|ul.;dra Jana;Kowalskiego
+N|ul.;Generała pilota Józefa;Kowalskiego
+N|ul.;Wacława;Kowalskiego
+N|ul.;;Kozia
+N|rondo;Podharcmistrza Fryderyka;Koziarza
+N|ul.;;Kozienicka
+N|ul.;;Koziogórska
+N|ul.;;Kozłowiecka
+N|ul.;;Kozłowska
+N|ul.;Wincentego;Kozłowskiego
+N|ul.;;Kozłówka
+N|ul.;;Koźmiana
+N|ul.;Kajetana;Koźmiana
+N|ul.;Bł. Ojca Honorata;Koźmińskiego
+N|ul.;Błogosławionego Honorata;Koźmińskiego
+N|ul.;;Kółkowa
+N|ul.;;Kraczewicka
+N|ul.;Krystyny;Krahelskiej
+N|ul.;Rafała;Krajewskiego
+N|ul.;;Krajobrazowa
+N|ul.;;Krakowska
+N|ul.;;Krakowskie Przedmieście
+N|ul.;;Krańcowa
+N|ul.;;Krasickiego
+N|ul.;abp Ignacego;Krasickiego
+N|ul.;Ignacego;Krasickiego
+N|ul.;Zygmunta;Krasińskiego
+N|ul.;;Kraski
+N|ul.;;Krasnobrodzka
+N|ul.;;Krasnoglińska
+N|ul.;;Krasnystawska
+N|ul.;;Krasowska
+N|ul.;;Kraszewskiego
+N|ul.;Ignacego;Kraszewskiego
+N|ul.;Józefa Ignacego;Kraszewskiego
+N|ul.;;Kraśnicka
+N|ul.;Stanisława;Kraussa
+N|ul.;Braci;Krausse
+N|ul.;kmdr ppor. Bogusława;Krawczyka
+N|ul.;kmdr.;Krawczyka
+N|ul.;;Kredowa
+N|ul.;;Kremowa
+N|ul.;;Kresowa
+N|ul.;;Kresów Wschodnich
+N|ul.;Ks. Antoniego;Kresy
+N|ul.;;Krępiecka
+N|ul.;;Kręta
+N|ul.;;Krężnicka
+N|ul.;;Krochmalna
+N|ul.;;Krokusowa
+N|ul.;dr. Maksymiliana;Kronlanda
+N|ul.;;Kropiatki
+N|ul.;;Kropla Rosy
+N|ul.;;Króla Pole
+N|al.;;Królewska
+N|ul.;;Królewska
+N|ul.;;Królik
+N|ul.;;Królów Polskich
+N|ul.;;Krótka
+N|ul.;;Krucza
+N|ul.;Kazimierza;Kruczkowskiego
+N|ul.;Gen.;Kruka
+N|ul.;gen. Michała;Kruka
+N|ul.;gen.;Kruka-Heydenreicha
+N|ul.;Franciszka;Krupińskiego
+N|rondo;Janusza;Krupskiego
+N|ul.;;Kruszynowa
+N|ul.;Tadeusza;Krwawicza
+N|ul.;;Kryka "Topoli"
+N|ul.;;Kryłowska
+N|ul.;Nikifora;Krynickiego
+N|ul.;;Kryniczna
+N|ul.;;Krynoczki
+N|ul.;Adama Antoniego;Kryńskiego
+N|ul.;Karola;Krysińskiego
+N|ul.;Płk. Jana;Krysińskiego
+N|ul.;;Krystaliczna
+N|ul.;Czesława;Kryszkiewicza
+N|ul.;;Kryształowa
+N|ul.;ks. Janusza;Krzaka
+N|ul.;;Krzemieniecka
+N|ul.;;Krzemienna
+N|ul.;;Krzemionki
+N|ul.;;Krzeszowska
+N|ul.;Marcelego;Krzychowca
+N|ul.;Aleja Andrzeja;Krzyształowicza
+N|ul.;;Krzywa
+N|ul.;;Krzywe Koło
+N|ul.;;Krzywie
+N|ul.;;Krzywy Dąb
+N|park;im. Augusta;Krzyżanowskiego
+N|ul.;Juliusza;Krzyżanowskiego
+N|ul.;;Książęca
+N|ul.;;Księżycowa
+N|ul.;;Ku Farze
+N|ul.;;Ku Słońcu
+N|ul.;;Kubusia Puchatka
+N|ul.;Józefa;Kudełki ps. "Czarny"
+N|rondo;Zdzisława;Kudyka
+N|ul.;;Kuflowa
+N|ul.;;Kujawska
+N|ul.;płk. Janusza;Kujawskiego
+N|ul.;gen. Ryszarda;Kuklińskiego
+N|ul.;Jerzego;Kukuczki
+N|ul.;;Kukułcza
+N|ul.;;Kulbickich
+N|ul.;;Kulikowa
+N|ul.;;Kumowska
+N|ul.;mjr T.;Kuncewicza
+N|ul.;Władysława;Kuncewicza
+N|ul.;Tadeusza;Kuncewicza "Podkowy"
+N|ul.;Marii;Kuncewiczowej
+N|ul.;Leona;Kunickiego
+N|ul.;Władysława;Kunickiego
+N|ul.;;Kupały
+N|ul.;;Kupiecka
+N|ul.;;Kurantowa
+N|rondo;prof. Władysława;Kuraszkiewicza
+N|ul.;;Kurobie
+N|ul.;Jacka;Kuronia
+N|ul.;;Kurowska
+N|ul.;Karola;Kurpińskiego
+N|ul.;;Kurpiowska
+N|ul.;;Kusocińskiego
+N|ul.;Janusza;Kusocińskiego
+N|ul.;Józefa;Kustronia
+N|ul.;Tadeusza;Kutrzeby
+N|ul.;Tadeusza;Kuźmińskiego
+N|ul.;;Kuźnicza
+N|ul.;;Kwarcowa
+N|ul.;;Kwaskowa Góra
+N|ul.;;Kwiatkowicka
+N|ul.;Eugeniusza;Kwiatkowskiego
+N|ul.;księdza Antoniego;Kwiatkowskiego
+N|ul.;;Kwiatowa
+N|ul.;;Kwiatów Polnych
+N|ul.;;Kwiatów Polskich
+N|ul.;Jerzego;Kwiecińskiego
+N|ul.;24;Kwietnia
+N|ul.;;Kwietniowa
+N|ul.;;Kwitnąca
+N|ul.;Rudolfa;Langa
+N|ul.;Anny;Langfus
+N|ul.;;Langiewicza
+N|ul.;gen. Mariana;Langiewicza
+N|ul.;Generała Mariana;Langiewicza
+N|ul.;Mariana;Langiewicza
+N|ul.;;Laserowa
+N|ul.;;Laski
+N|ul.;;Laskowa
+N|ul.;;Laskowska
+N|ul.;Ignacego;Laskowskiego
+N|ul.;Tadeusza;Laskowskiego
+N|ul.;dr Wacława;Lasockiego
+N|ul.;Wacława;Lasockiego
+N|ul.;;Laurowa
+N|ul.;;Laury
+N|ul.;;Lawendowa
+N|ul.;;Lawendowe Wzgórze
+N|ul.;;Lawinowa
+N|ul.;;Lazurowa
+N|ul.;płk. Tadeusza;Lechnickiego
+N|ul.;;Legendarna
+N|ul.;;Legendy
+N|ul.;;Legionistów
+N|ul.;;Legionowa
+N|ul.;;Legionów
+N|ul.;;Legionów Polskich
+N|ul.;;Legionu Puławskiego
+N|ul.;;Lelewela
+N|ul.;Joachima;Lelewela
+N|ul.;Stefana;Lelka - Sowy
+N|ul.;Stefana;Lelka-Sowy
+N|ul.;Stanisława;Lema
+N|ul.;;Lendzinek I
+N|ul.;;Lendzinek II
+N|ul.;;Leonarda
+N|ul.;;Leonów
+N|ul.;Franciszka;Lessla
+N|ul.;;Leszczowa
+N|ul.;;Leszczynowa
+N|ul.;Ks. Tadeusza;Leszczyńskiego
+N|ul.;Teodora;Leszetyckiego
+N|ul.;;Leszka
+N|ul.;;Leszka Czarnego
+N|ul.;Księdza Wacława;Leszkiewicza
+N|ul.;Wojciecha;Leśki
+N|ul.;;Leśmiana
+N|ul.;Bolesława;Leśmiana
+N|ul.;;Leśna
+N|ul.;;Leśne Zacisze
+N|ul.;;Leśniczówka
+N|park;;Leśny
+N|ul.;;Leśny Zakątek
+N|ul.;;Letnia
+N|ul.;;Letniskowa
+N|ul.;Stanisława;Lewickiego
+N|ul.;Stefana;Lewickiego
+N|ul.;Michała;Lewoncewicza
+N|ul.;;Lędzian
+N|ul.;;Libiszowska
+N|ul.;Ludwika Stanisława;Licińskiego
+N|ul.;ks. Walentego;Ligaja
+N|ul.;;Ligi Obrony Kraju
+N|ul.;Juliusza;Ligonia
+N|ul.;;Ligowskiego
+N|ul.;;Liliowa
+N|ul.;;Limbowa
+N|ul.;;Limonkowa
+N|ul.;15;Lipca
+N|ul.;Teodora;Lipeckiego
+N|ul.;;Lipice
+N|ul.;Karola;Lipińskiego
+N|ul.;;Lipka
+N|ul.;;Lipniak
+N|al.;;Lipowa
+N|ul.;;Lipowa
+N|ul.;;Lipska
+N|ul.;Jana;Lisa
+N|ul.;;Lisa-Błońskiego
+N|ul.;Płk.;Lisa-Kuli
+N|ul.;Pułkownika Leopolda;Lisa-Kuli
+N|ul.;;Lisia
+N|ul.;Stefana;Lisowskiego
+N|ul.;11;Listopada
+N|ul.;29-go;Listopada
+N|ul.;;Listopadowa
+N|ul.;Bolesława;Liszkowskiego
+N|ul.;;Literacka
+N|ul.;;Litewska
+N|ul.;Kazimiery;Litwiniukowej
+N|ul.;;Lniana
+N|ul.;Eugeniusza;Lokajskiego
+N|ul.;Józefa;Lompy
+N|ul.;;Lotna
+N|ul.;;Lotnicza
+N|ul.;61;Lotniczego Pułku Szkolno-Bojowego
+N|ul.;23;Lotniczej Eskadry Szkolnej
+N|ul.;;Lotników
+N|ul.;;Lotników Podlaskich
+N|ul.;;Lotników Polskich
+N|ul.;;Lotnisko
+N|ul.;;Lubaczowska
+N|ul.;;Lubartowska
+N|ul.;;Lubczykowa
+N|ul.;Kazimierza;Lubeckiego
+N|ul.;;Lubelska
+N|ul.;;Lubelskich Olimpijczyków
+N|rondo;;Lubelskie
+N|ul.;;Lubelskiego Lipca '80
+N|rondo;;Lubelskiego Lipca 1980
+N|ul.;;Lubelskiego Lipca 1980
+N|ul.;;Lubomelska
+N|ul.;Zofii;Lubomirskiej
+N|ul.;;Lubuszan
+N|ul.;;Ludmiłowska
+N|ul.;;Ludna
+N|ul.;;Ludowa
+N|ul.;Kazimierza;Ludwika
+N|ul.;;Ludwinów
+N|ul.;14-go;Lutego
+N|ul.;2;Lutego
+N|ul.;;Lutosławskiego
+N|ul.;Witolda;Lutosławskiego
+N|ul.;;Lutowa
+N|ul.;;Lwowska
+N|ul.;;Lwowska B
+N|rondo;;Lwowskie
+N|ul.;;Łabędzia
+N|ul.;;Łachy
+N|ul.;;Ładna
+N|ul.;;Łagiewnicka
+N|ul.;Edwarda;Łahody
+N|ul.;;Łanowa
+N|ul.;;Łany
+N|ul.;;Łańcuchowska
+N|ul.;;Łapiguz
+N|ul.;;Łastowieckiego
+N|pl.;Aleksandra;Łaszcza
+N|ul.;Aleksandra;Łaszcza
+N|ul.;;Łaszczowiecka
+N|ul.;;Ławecka
+N|ul.;;Łazienkowska
+N|ul.;;Łazienna
+N|ul.;;Łączna
+N|ul.;;Łąkowa
+N|ul.;I.;Łęckiej
+N|ul.;Izabeli;Łęckiej
+N|ul.;;Łęczna
+N|ul.;;Łęczyńska
+N|ul.;;Łęgowa
+N|ul.;Józefa;Łobodowskiego
+N|ul.;Stanisława i Witolda;Łokuciewskich
+N|ul.;;Łomaska
+N|ul.;;Łomżyńska
+N|ul.;Hieronima;Łopacińskiego
+N|ul.;;Łosicka
+N|ul.;Biskupa Jana;Łosowicza
+N|ul.;;Łowicka
+N|ul.;;Łowiecka
+N|ul.;;Łożyskowa
+N|ul.;;Łubiarska
+N|ul.;;Łubinowa
+N|ul.;Haliny;Łuczyckiej
+N|ul.;;Ługowa
+N|ul.;Barbary;Łukasiewicz
+N|ul.;;Łukasińskiego
+N|ul.;Waleriana;Łukasińskiego
+N|ul.;Antoniego;Łukaszewskiego
+N|ul.;;Łukaszyńska
+N|ul.;;Łukowska
+N|ul.;;Łukówiecka
+N|ul.;;Łuszczowska
+N|ul.;;Łużyczan
+N|ul.;;Łysa Góra
+N|ul.;;Łysakowska
+N|ul.;;Machnika
+N|ul.;Józefa;Maciąga
+N|ul.;;Maciejki
+N|ul.;Bernarda;Maciejowskiego
+N|ul.;;Macierzanki
+N|ul.;Józefa;Mackiewicza
+N|ul.;gen.;Maczka
+N|ul.;gen. S.;Maczka
+N|ul.;gen. Stanisława;Maczka
+N|ul.;Generała;Maczka
+N|ul.;Generała Stanisława;Maczka
+N|ul.;Stanisława;Maczka
+N|ul.;Zdzisława;Maćkowskiego
+N|ul.;gen. Antoniego Józefa;Madalińskiego
+N|ul.;;Madejów
+N|ul.;Wandy;Madler
+N|rondo;Wandy;Madlerowej
+N|ul.;Św.;Magdaleny
+N|ul.;;Magiczna
+N|ul.;Stanisława;Magierskiego
+N|ul.;;Magnacka
+N|ul.;;Magnoliowa
+N|ul.;;Mahoniowa
+N|ul.;1;Maja
+N|ul.;1-go;Maja
+N|ul.;3;Maja
+N|ul.;Księdza Dominika;Maja
+N|ul.;;Majdan
+N|ul.;;Majdan Tatarski
+N|ul.;;Majdanek
+N|ul.;;Majdańska
+N|ul.;;Majerankowa
+N|ul.;Jana Stanisława;Majewskiego
+N|ul.;Zygmunta;Majewskiego
+N|rondo;Pelagii;Majewskiej
+N|ul.;;Majowa
+N|ul.;;Makarewicka
+N|ul.;Jana;Makaruka
+N|ul.;Piotra;Makaruka
+N|ul.;;Makowa
+N|ul.;Tadeusza;Makowskiego
+N|ul.;;Makuszyńskiego
+N|ul.;Kornela;Makuszyńskiego
+N|ul.;;Malarska
+N|ul.;Henryka;Malarskiego
+N|ul.;Ignacego;Malca
+N|ul.;Jacka;Malczewskiego
+N|ul.;;Maliniec
+N|ul.;;Malinowa
+N|ul.;Bronisława;Malinowskiego
+N|ul.;Maksymiliana;Malinowskiego
+N|ul.;;Malowane
+N|ul.;;Malownicza
+N|ul.;;Malwowa
+N|al.;;Mała
+N|ul.;;Mała
+N|ul.;Aleja Stanisława;Małachowskiego
+N|ul.;Juliusza;Małachowskiego
+N|ul.;Stanisława;Małachowskiego
+N|ul.;;Małobrzeska
+N|ul.;;Małopolska
+N|ul.;;Mały Rynek
+N|ul.;29;Marca
+N|ul.;;Marcowa
+N|ul.;;Mariańska
+N|ul.;św.;Marii Magdaleny
+N|skwer;Jana;Markowskiego
+N|ul.;Stanisława;Marusarza
+N|ul.;Królowej;Marysieńki
+N|ul.;;Marysin
+N|ul.;;Marzanny
+N|ul.;;Marzeń
+N|ul.;;Masarska
+N|ul.;;Masowska
+N|ul.;;Maszynowa
+N|ul.;;Matejki
+N|ul.;Jana;Matejki
+N|al.;;Matki Bożej Fatimskiej
+N|ul.;;Matłoska
+N|ul.;ks. Stanisława;Matrasia
+N|ul.;Antoniego;Matuszkiewicza
+N|ul.;;Matysiaka
+N|ul.;;Maziarnia
+N|ul.;;Mazowiecka
+N|rondo;Tadeusza;Mazowieckiego
+N|rondo;Biskupa Jana;Mazura
+N|rondo;ks. Biskupa Jana;Mazura
+N|ul.;Kazimierza;Mazurczaka
+N|ul.;;Mazurska
+N|ul.;Barbary;Mączyńskiej
+N|ul.;;Meblowa
+N|ul.;;Mechaniczna
+N|ul.;;Medalionów
+N|ul.;Jadwigi;Medyńskiej
+N|ul.;Janusza;Meissnera
+N|ul.;;Melomanów
+N|ul.;;Mełgiewska
+N|ul.;Ludwika;Meresty
+N|ul.;;Metalowa
+N|ul.;;Metalowców
+N|ul.;;Metalurgiczna
+N|ul.;;Męczenników Getta
+N|ul.;;Męczenników Katynia
+N|ul.;;Męczenników Majdanka
+N|ul.;;Męczenników Podlaskich
+N|rondo;Błogosławionych;Męczenników Podlaskich
+N|ul.;Błogosławionych;Męczenników Podlaskich
+N|ul.;;Męczenników Unickich
+N|ul.;;Mgielna
+N|ul.;Hieronima;Miąca ps. "Korsarz"
+N|ul.;;Michalinowska
+N|ul.;Piotra;Michałowskiego
+N|ul.;;Michałówka
+N|ul.;;Michowska
+N|ul.;;Mickiewicza
+N|ul.;Adama;Mickiewicza
+N|ul.;;Mieczykowa
+N|ul.;Tadeusza;Mieczyńskiego
+N|ul.;;Miedziana
+N|ul.;;Mielczarskiego
+N|ul.;;Miernicza
+N|ul.;Ludwika;Mierosławskiego
+N|ul.;;Mierzejewskich
+N|ul.;;Mieszczańska
+N|ul.;;Mieszka I
+N|;;Mięćmierz
+N|ul.;;Międzyrzecka
+N|ul.;;Miętowa
+N|ul.;;Migdałowa
+N|ul.;Celestyna;Miklasińskiego
+N|ul.;Franciszka Maksymiliana;Miklińskiego
+N|ul.;Świętego;Mikołaja
+N|skwer;Stanisława;Mikołajczyka
+N|ul.;Stanisława;Mikołajczyka
+N|ul.;;Mikulińska
+N|ul.;Józefa;Milcarka
+N|ul.;;Milczan
+N|ul.;;Milejowska
+N|ul.;;Milenijna
+N|ul.;Stefana;Milera
+N|ul.;;Militarna
+N|ul.;;Miła
+N|ul.;Stanisława;Miłkowskiego
+N|ul.;;Miłorzębowa
+N|ul.;;Miłosna
+N|ul.;Czesława;Miłosza
+N|ul.;;Miły Zakątek
+N|ul.;;Mimozy
+N|ul.;;Mineralna
+N|ul.;Jana;Minora
+N|ul.;;Miodowa
+N|ul.;;Mirabelkowa
+N|ul.;;Mirecka
+N|ul.;Franciszka;Mireckiego
+N|ul.;;Mirtowa
+N|ul.;;Misjonarska
+N|ul.;ks. kpt. Aleksandra;Miszczuka
+N|ul.;;Mleczarska
+N|ul.;;Mleczna
+N|ul.;;Młodej Polski
+N|ul.;Jadwigi;Młodowskiej
+N|ul.;Stanisława;Młodożeńca
+N|ul.;;Młodzieżowa
+N|ul.;;Młynarska
+N|ul.;;Młynki
+N|ul.;;Młyńska
+N|ul.;;Mniszkowa
+N|ul.;Maurycego;Mochnackiego
+N|ul.;;Modra
+N|ul.;Heleny;Modrzejewskiej
+N|ul.;;Modrzewiowa
+N|ul.;;Modrzewskiego
+N|ul.;;Modrzycka
+N|ul.;;Mokra
+N|ul.;Józefa;Molickiego
+N|ul.;;Moniuszki
+N|ul.;St.;Moniuszki
+N|ul.;Stanisława;Moniuszki
+N|ul.;;Monopolowa
+N|ul.;;Montażowa
+N|ul.;;Monte Cassino
+N|ul.;;Montwiłła
+N|ul.;Bernarda;Moranda
+N|ul.;;Morawian
+N|ul.;Gustawa;Morcinka
+N|ul.;;Morelowa
+N|ul.;Wacława;Moritza
+N|ul.;;Morskie Oko
+N|ul.;Jana Andrzeja;Morsztyna
+N|ul.;;Morsztynów
+N|ul.;;Morwowa
+N|ul.;Faustyny;Morzyckiej
+N|ul.;Stanisława;Moskalewskiego
+N|;;Most 700-lecia Lublina
+N|;;Most im. Edwarda Wojtasa
+N|;;Most im. płk. Aleksandra Nowaczyńskiego
+N|;;Most im. Prezydenta RP Ryszarda Kaczorowskiego
+N|;;Most Mariana Lutosławskiego
+N|ul.;;Mostowa
+N|ul.;;Mostowska
+N|ul.;bp. K.;Moszyńskiego
+N|ul.;;Mościcka
+N|ul.;Ignacego;Mościckiego
+N|ul.;;Motorowa
+N|ul.;;Motylowa
+N|ul.;;Mozarta
+N|ul.;ks. Marcelego;Mrozka
+N|ul.;;Mrówcza
+N|ul.;Agaty;Mróz
+N|ul.;Bolesława;Mucharskiego
+N|ul.;;Murarska
+N|ul.;;Muzyczna
+N|ul.;płk Władysława;Muzyki
+N|ul.;Czesława;Mużacza "Selima"
+N|ul.;;Mydlarska
+N|ul.;;Myśliwska
+N|ul.;;Na Skarpie
+N|ul.;;Na Stawy
+N|ul.;;Na Stoku
+N|ul.;;Na Wspólnej
+N|ul.;;Na Wzgórzu
+N|ul.;Jakuba;Nachmana z Bełżyc
+N|ul.;;Nad Bugiem
+N|ul.;;Nad Ciemięgą
+N|ul.;;Nad Stawami
+N|ul.;;Nad Zalewem
+N|ul.;;Nadatki
+N|ul.;;Nadbrzeżna
+N|ul.;;Nadbużańska
+N|ul.;;Nadbużna
+N|ul.;;Nadbystrzycka
+N|ul.;;Nadedworce
+N|ul.;;Nadjeziorna
+N|ul.;;Nadleśna
+N|ul.;;Nadłączna
+N|ul.;;Nadrzeczna
+N|ul.;;Nadstawna
+N|ul.;;Nadtorowa
+N|ul.;;Nadwalna
+N|ul.;;Nadwieprzańska
+N|ul.;;Nadwisznicka
+N|ul.;;Nadwiślańska
+N|ul.;;Nadwitnie
+N|ul.;;Naftowa
+N|ul.;;Nagietkowa
+N|ul.;Jana;Nagórskiego
+N|skwer;;Najświętszej Maryi Panny
+N|ul.;;Nałęczowska
+N|ul.;;Nałkowskich
+N|ul.;Wacława;Nałkowskiego
+N|ul.;;Nałkowskiej
+N|ul.;Zofii;Nałkowskiej
+N|ul.;Karola;Namysłowskiego
+N|ul.;;Narciarska
+N|ul.;;Narcyzowa
+N|rondo;;Narodowych Sił Zbrojnych
+N|ul.;Wacława;Nartowskiego
+N|ul.;Adama;Naruszewicza
+N|ul.;;Narutowicza
+N|pl.;Gabriela;Narutowicza
+N|ul.;Gabriela;Narutowicza
+N|ul.;Prezydenta Gabriela;Narutowicza
+N|ul.;;Narzędziowa
+N|ul.;;Nasienna
+N|ul.;Jana;Nassuta
+N|ul.;;Nastrojowa
+N|ul.;;Nasturcjowa
+N|ul.;;Nasutowska
+N|ul.;;Nataszy
+N|ul.;;Natury
+N|rondo;;Nauczycieli Tajnego Nauczania
+N|ul.;;Nawłociowa
+N|ul.;;Nawojki
+N|ul.;;Nefrytowa
+N|ul.;;Nektarowa
+N|ul.;;Niebiańska
+N|ul.;;Niecała
+N|ul.;;Nieczaja
+N|ul.;Józefa;Niećki
+N|ul.;Janiny;Niedźwiedzkiej
+N|ul.;Juliana Ursyna;Niemcewicza
+N|skwer;;Niepodległości
+N|ul.;;Niepodległości
+N|pl.;Pl.;Niepodległości
+N|ul.;;Niesieckiego
+N|ul.;Piotra;Niewęgłowskiego
+N|ul.;;Niezapominajki
+N|ul.;;Niezgody
+N|ul.;;Niska
+N|ul.;;Niwa
+N|ul.;;Nizinna
+N|ul.;Tomasza;Nocznickiego
+N|ul.;Piotra;Norblina
+N|ul.;;Norowy Dół
+N|ul.;;Norwida
+N|ul.;Cypriana Kamila;Norwida
+N|ul.;Apolinarego;Nosalskiego
+N|ul.;Zygmunta;Noskowskiego
+N|ul.;;Notarialna
+N|ul.;;Nowa
+N|ul.;;Nowa Droga
+N|ul.;Stanisława;Nowakowskiego
+N|ul.;;Nowatorska
+N|ul.;;Nowe Osiedle
+N|ul.;Fortunata;Nowickiego
+N|ul.;płk Stanisława;Nowickiego
+N|ul.;;Nowinki
+N|ul.;;Nowodworska
+N|ul.;;Nowogródek
+N|ul.;;Nowogródzka
+N|ul.;;Nowokopińska
+N|ul.;;Nowokościelna
+N|ul.;;Nowomiejska
+N|ul.;;Nowopijarska
+N|ul.;;Nowoprojektowana
+N|ul.;;Noworybna
+N|ul.;;Nowowiejska
+N|ul.;Feliksa;Nowowiejskiego
+N|ul.;Jana;Nowowiejskiego
+N|ul.;;Nowy Janowiec
+N|ul.;;Nowy Plac Targowy
+N|ul.;;Nowy Rynek
+N|ul.;;Nowy Świat
+N|rondo;;NSZZ "Solidarność"
+N|rondo;;NSZZ Solidarność
+N|ul.;;Objazdowa
+N|ul.;;Obłonie
+N|ul.;;Obłońska
+N|ul.;;Oboźna
+N|ul.;;Obronna
+N|ul.;;Obrońców Lublina
+N|ul.;;Obrońców Pokoju
+N|ul.;;Obrońców Westerplatte
+N|ul.;;Obwodowa
+N|ul.;;Obywatelska
+N|ul.;Juliana;Ochockiego
+N|ul.;;Ochotnicza
+N|ul.;;Ochotników Węgierskich
+N|ul.;Wojciecha;Oczki
+N|ul.;;Odległa
+N|ul.;;Odlewnicza
+N|ul.;;Odrodzenia
+N|ul.;;Ofelii
+N|ul.;;Ofiar Bełżca
+N|rondo;;Ofiar Katynia
+N|ul.;;Ofiar Katynia
+N|ul.;;Ofiar Majdanka
+N|pl.;;Ofiar niemieckiego Obozu "Budzyń"
+N|ul.;;Ofiar Obozu Zagłady
+N|skwer;;Ofiar Zbrodni Katyńskiej
+N|ul.;;Oficerska
+N|ul.;Michała Kleofasa;Ogińskiego
+N|ul.;;Ogórkowa
+N|ul.;;Ogrodnicza
+N|ul.;;Ogrodowa
+N|ul.;;Ogrody
+N|ul.;;Ogródkowa
+N|;;Okale
+N|ul.;;Okopowa
+N|ul.;;Okopowa Boczna
+N|ul.;;Okólna
+N|ul.;;Okrężna
+N|ul.;;Okrzei
+N|ul.;Stefana;Okrzei
+N|ul.;;Okszowska
+N|ul.;;Okszówek
+N|ul.;gen.;Okulickiego
+N|ul.;gen. L.;Okulickiego
+N|ul.;gen. Leopolda;Okulickiego
+N|ul.;Generała Leopolda;Okulickiego
+N|ul.;Leopolda;Okulickiego
+N|ul.;;Okunińska
+N|ul.;;Olchowa
+N|ul.;;Oleandra
+N|ul.;Władysława;Olechnowicza
+N|ul.;;Olejarnia
+N|ul.;;Olejna
+N|ul.;;Oleńki
+N|ul.;;Oleszczyńskiego
+N|ul.;Biskupa Zbigniewa;Oleśnickiego
+N|ul.;;Olimpijczyków
+N|ul.;;Oliwkowa
+N|ul.;;Olszana
+N|ul.;Karola;Olszewskiego
+N|ul.;prof. Edwarda;Olszewskiego
+N|ul.;;Olszowa
+N|ul.;;Olsztyńska
+N|ul.;;Olszynki
+N|ul.;;Olszynowa
+N|ul.;Doktora;Onanowa
+N|ul.;;Oniegina
+N|ul.;św.;Onufrego
+N|ul.;;Onyksowa
+N|ul.;Tadeusza;Onyszkiewicza
+N|ul.;;Opalowa
+N|ul.;Juliana;Opani
+N|ul.;;Operowa
+N|ul.;;Opieńkowa
+N|ul.;;Opłotki
+N|ul.;;Opolan
+N|ul.;;Opolska
+N|ul.;;Oratoryjna
+N|ul.;;Orbitalna
+N|ul.;;Orchidei
+N|ul.;;Orchowska
+N|ul.;Juliana;Ordona
+N|ul.;Hanki;Ordonówny
+N|rondo;;Ordynacji Zamojskiej
+N|ul.;;Ordynacji Zamojskiej
+N|ul.;;Ordynacka
+N|ul.;;Organowa
+N|ul.;;Oriona
+N|ul.;Władysława;Orkana
+N|ul.;;Orkiszowa
+N|ul.;;Orla
+N|ul.;;Orlanda
+N|pl.;;Orląt Dęblińskich
+N|ul.;;Orląt Lwowskich
+N|ul.;gen.;Orlicz-Dreszera
+N|ul.;Generała Gustawa;Orlicz-Dreszera
+N|ul.;;Orlik
+N|ul.;Wilhelma;Orlika Ruckemana
+N|ul.;Wandy;Orlińskiej
+N|ul.;Aleksandra;Orłowskiego
+N|ul.;;Ormiańska
+N|ul.;;Orna
+N|ul.;;Orzechowa
+N|ul.;Stanisława;Orzechowskiego
+N|ul.;;Orzeszkowej
+N|ul.;E.;Orzeszkowej
+N|ul.;Elizy;Orzeszkowej
+N|ul.;Franciszka;Osiaka
+N|ul.;Stanisława;Osieckiego
+N|ul.;;Osiedle 400-lecia
+N|ul.;;Osiedle Cukrowni
+N|ul.;;Osiedle Grójec
+N|os.;;Osiedle POM
+N|ul.;;Osiedle POM Bezwola
+N|ul.;;Osiedle Sitnickie
+N|ul.;;Osiedle Słoneczne
+N|os.;;Osiedle Stawy
+N|ul.;;Osiedle Szkolne
+N|os.;;Osiedle Wiślana
+N|ul.;;Osiedlowa
+N|ul.;;Osikowa
+N|ul.;;Osiny
+N|ul.;Ludwika;Osińskiego
+N|ul.;Mariana;Osińskiego
+N|ul.;;Osmolicka
+N|ul.;;Osowiec
+N|ul.;;Osterwy
+N|ul.;Juliusza;Osterwy
+N|ul.;;Ostoi
+N|os.;kpt.;Ostoi
+N|ul.;;Ostrobramska
+N|ul.;;Ostrowiecka
+N|ul.;Jana Tadeusza;Ostrowskiego
+N|ul.;;Ostróżki
+N|ul.;;Ośrednia
+N|ul.;;Oświatowa
+N|ul.;;Otella
+N|ul.;;Owocowa
+N|ul.;ks. Konstantego;Pabisiewicza
+N|ul.;;Paderewskiego
+N|ul.;I.;Paderewskiego
+N|ul.;Ignacego;Paderewskiego
+N|park;Ignacego Jana;Paderewskiego
+N|ul.;Ignacego Jana;Paderewskiego
+N|ul.;gen. Zygmunta;Padlewskiego
+N|ul.;Niccolo;Paganiniego
+N|ul.;Lesława;Pagi
+N|ul.;Mikołaja;Pajdowskiego
+N|ul.;;Palmowa
+N|ul.;dr. n. med. Andrzeja;Paluszkiewicza
+N|ul.;;Pałacowa
+N|ul.;;Pałacowe Wzgórze
+N|ul.;Franciszka;Pałki
+N|ul.;;Pałuby
+N|skwer;;Pamięci Ofiar Rzezi Wołyńskiej
+N|rondo;;Pamięci Ofiar Zbrodni Wołyńskiej
+N|ul.;;Pana Balcera
+N|ul.;;Pana Tadeusza
+N|ul.;;Pana Wołodyjowskiego
+N|ul.;por. Zbigniewa;Panasia
+N|ul.;;Pancerniaków
+N|ul.;Józefa;Pankiewicza
+N|ul.;;Pańska
+N|ul.;Zdzisława;Papierkowskiego
+N|ul.;Mieczysława;Papiernika
+N|ul.;Wandy;Papiewskiej
+N|ul.;;Paproci
+N|ul.;;Paprociowa
+N|ul.;Pawła;Parady
+N|ul.;;Parafialna
+N|ul.;;Parcelowa
+N|ul.;;Parczewska
+N|park;;Park Anny Jagiellonki
+N|park;;Park im. Rodzin Budnych i Łosiów
+N|park;;Park im. Sylwestra Chęcińskiego
+N|park;;Park Jana Pawła II
+N|park;;Park Miejski imienia Książąt Sanguszków
+N|park;;Park Miejski w Lubyczy Królewskiej
+N|park;;Park Pałacowy Rożnówka
+N|park;;Park Rury im. urbanisty Romualda Dylewskiego
+N|park;;Park Solidarności
+N|park;;Park Świętego Jana Pawła II
+N|park;;Park Zdzisława Śpiewaka
+N|ul.;;Parkanowa
+N|ul.;;Parkowa
+N|ul.;;Partyzancka
+N|al.;;Partyzantów
+N|ul.;;Partyzantów
+N|ul.;;Parysa
+N|ul.;;Paryska
+N|ul.;Jana;Pasiaka
+N|ul.;;Pasieczna
+N|ul.;;Pastelowa
+N|ul.;;Pasternik
+N|ul.;;Pasterska
+N|ul.;;Pasteura
+N|ul.;;Pastewnik
+N|ul.;;Pastownie
+N|ul.;Baltazara;Paśnikowskiego
+N|ul.;;Patoki
+N|ul.;;Patriotów Polskich
+N|ul.;;Pawia
+N|ul.;Stefanii;Pawlak
+N|ul.;Iwana;Pawłowa
+N|ul.;;Pawłówka
+N|ul.;Antoniego;Pączka
+N|ul.;;Pąkowa
+N|ul.;;Pąsowa
+N|ul.;;PCK
+N|ul.;;Pejzażowa
+N|ul.;Zofii;Pelczarskiej
+N|ul.;;Peoniowa
+N|ul.;;Peowiaków
+N|ul.;;Pereca
+N|ul.;;Perełki
+N|ul.;;Pergolowa
+N|ul.;;Perlicza
+N|ul.;;Perłowa
+N|ul.;dr. Janusza;Petera
+N|ul.;Władysława;Petrykiewicza
+N|ul.;Michała;Pękalskiego
+N|ul.;;Piasecka
+N|ul.;Eugeniusza;Piaseckiego
+N|ul.;;Piasecznica
+N|ul.;;Piaski
+N|ul.;;Piaskowa
+N|ul.;;Piastowska
+N|ul.;Św.;Piątka
+N|ul.;Stanisława;Piątkowskiego
+N|ul.;Józefa;Piechoty
+N|ul.;Szymona;Piechowicza
+N|ul.;;Piekarska
+N|ul.;;Piekarskiego
+N|ul.;;Pielęgniarek
+N|ul.;;Pielgrzymia
+N|ul.;;Pienińska
+N|ul.;Kazimiery;Pierackiej
+N|ul.;Michała;Pieszki
+N|ul.;;Pietnicka
+N|ul.;;Piękna
+N|ul.;;Pigwowa
+N|ul.;Ojców;Pijarów
+N|ul.;;Pijarska
+N|ul.;;Pilarki
+N|ul.;Mariana;Pilarskiego
+N|ul.;Mikołaja;Pileckiego
+N|ul.;rotmistrza Witolda;Pileckiego
+N|rondo;Rotmistrza Witolda;Pileckiego
+N|ul.;Rotmistrza Witolda;Pileckiego
+N|ul.;rtm. Witolda;Pileckiego
+N|ul.;Witolda;Pileckiego
+N|ul.;;Piłsudskiego
+N|rynek;im. Józefa;Piłsudskiego
+N|ul.;J.;Piłsudskiego
+N|ul.;Józefa;Piłsudskiego
+N|ul.;marsz. Józefa;Piłsudskiego
+N|ul.;Marszałka;Piłsudskiego
+N|ul.;Marszałka J.;Piłsudskiego
+N|ul.;Marszałka Józefa;Piłsudskiego
+N|ul.;;Piłsudskiego Józefa
+N|ul.;Ojca;Pio
+N|ul.;;Pionierska
+N|ul.;Szymona;Piotrowskiego
+N|ul.;Grzegorza;Piramowicza
+N|ul.;ks. Grzegorza;Piramowicza
+N|ul.;gen. T.;Piskora
+N|ul.;gen. Tadeusza;Piskora
+N|ul.;Tadeusza;Piskora
+N|ul.;;Pistacjowa
+N|ul.;;Piszczacka
+N|ul.;;Piwna
+N|ul.;;Piwonia
+N|ul.;;Piwoniowa
+N|pl.;;pl. Doktora Edwarda Łuczkowskiego
+N|ul.;;Pl. T. Kościuszki
+N|pl.;;Plac 3 Maja
+N|pl.;;Plac Anny Jabłonowskiej
+N|pl.;;Plac Bankowy
+N|pl.;;Plac Baranowicki
+N|pl.;;Plac Boboli
+N|pl.;;Plac Bychawski
+N|pl.;;Plac Dworcowy
+N|pl.;;Plac Dworcowy im. Zygmunta Rumla
+N|pl.;;Plac Gdański
+N|pl.;;Plac Ignacego Potockiego
+N|pl.;;Plac im. 100-lecia Odzyskania Niepodległości
+N|pl.;;Plac im. Jana Pawła II
+N|pl.;;Plac im. Ks. Edwarda Kołszuta
+N|pl.;;Plac im. Marii Curie-Skłodowskiej
+N|pl.;;Plac im. Powstańców Styczniowych
+N|pl.;;Plac Izaaka Singera
+N|ul.;;Plac Jagielloński
+N|pl.;;Plac Jakuba Konińskiego
+N|pl.;;Plac Jana Pawła II
+N|pl.;;Plac Józefa Czechowicza
+N|ul.;;Plac Kanałowy
+N|pl.;;Plac Konfederacji Tyszowieckiej
+N|pl.;;Plac Konstytucji 3-go Maja
+N|ul.;;Plac Kościelny
+N|pl.;;Plac Króla Władysława Łokietka
+N|pl.;;Plac Księdza Józefa Benedykta Kownackiego
+N|pl.;;Plac Kupiecki
+N|pl.;;Plac Lecha Kaczyńskiego
+N|pl.;;Plac Litewski
+N|pl.;;Plac M. Siekluckiego
+N|pl.;;Plac Marii i Lecha Kaczyńskich
+N|pl.;;Plac Marszałka Józefa Piłsudskiego
+N|pl.;;Plac Mieczysława Alberta Krąpca
+N|pl.;;Plac Mikołaja Kopernika
+N|pl.;;Plac Niepodległości
+N|pl.;;Plac Obrońców Lublina
+N|pl.;;Plac Ofiar Getta
+N|pl.;;Plac Partnerskiego Miasta Staufen
+N|pl.;;Plac Partyzantów
+N|pl.;;Plac Po Farze
+N|pl.;;Plac Profesora Stefana du Chateau
+N|ul.;;Plac Różany
+N|pl.;;Plac Rubina
+N|pl.;;Plac Stary Rynek
+N|ul.;;Plac Staszica
+N|ul.;;Plac Strażacki
+N|ul.;;Plac Szkolny Dwór
+N|pl.;;Plac Św. Faustyny
+N|pl.;;Plac św. Marka
+N|pl.;;Plac Tadeusza Kościuszki
+N|pl.;;Plac Towarzystwa Przyjaciół Nałęczowa
+N|pl.;;Plac Trzech Krzyży
+N|pl.;;Plac Wielgoska Stanisława
+N|pl.;;Plac Wojska Polskiego
+N|pl.;;Plac Wolności
+N|ul.;;Plac Wolności
+N|pl.;;Plac Zamkowy
+N|pl.;;Plac Zbawiciela
+N|pl.;;Plac Zdrojowy
+N|ul.;;Plac Zwycięstwa
+N|pl.;;Plac Zygmunta Balickiego
+N|pl.;;Plac Żołnierzy Wyklętych
+N|ul.;;Placowa
+N|ul.;;Plagego i Laśkiewicza
+N|ul.;;Planetarna
+N|ul.;;Planterska
+N|ul.;;Platanowa
+N|ul.;E.;Plater
+N|ul.;Emilii;Plater
+N|ul.;Stanisława;Platera
+N|ul.;;Platerów
+N|ul.;;Platynowa
+N|ul.;;Plażowa
+N|ul.;;Plebanka
+N|ul.;;Plebańska
+N|ul.;ks. Adolfa;Pleszczyńskiego
+N|ul.;Erazma;Plewińskiego
+N|ul.;;Pliszczyńska
+N|ul.;;Pliszki
+N|ul.;Henryka;Płońskiego
+N|ul.;;Płudzińska
+N|ul.;;Pływacka
+N|ul.;;Pobereżańska
+N|ul.;;Pochyła
+N|ul.;Antoniego;Pocieja
+N|ul.;Ludwika Konstantego;Pocieja
+N|ul.;Jana;Pocka
+N|ul.;Włodzimierza;Poczatko
+N|ul.;;Początkowa
+N|ul.;;Poczekajka
+N|ul.;;Pocztowa
+N|ul.;;Pod Borkiem
+N|ul.;;Pod Cyprysami
+N|ul.;;Pod Dębami
+N|ul.;;Pod Gajem
+N|ul.;;Pod Lasem
+N|ul.;;Pod Lipami
+N|ul.;;Pod Lipą
+N|ul.;;Pod Sosnami
+N|ul.;;Pod Świerkami
+N|ul.;;Pod Wycinkami
+N|ul.;;Podbełżec
+N|ul.;;Podborcze
+N|ul.;;Podborna
+N|ul.;;Podchorążych
+N|ul.;;Podchylinie
+N|ul.;;Podgajna
+N|ul.;;Podgórna
+N|ul.;;Podgórze
+N|ul.;;Podgrabowa
+N|ul.;;Podgroble
+N|ul.;;Podhajce
+N|ul.;;Podhalańska
+N|ul.;;Podkomorska
+N|ul.;;Podkomorzego
+N|ul.;;Podkowa
+N|ul.;;Podlaska
+N|ul.;;Podleska
+N|ul.;;Podleśna
+N|ul.;;Podlipie
+N|ul.;;Podłączna
+N|ul.;;Podłęczna
+N|ul.;;Podmiejska
+N|ul.;;Podróżna
+N|ul.;;Podrzeczna
+N|ul.;;Poduchańka
+N|ul.;;Podwal
+N|ul.;;Podwale
+N|ul.;;Podwalna
+N|ul.;;Podwierzbie
+N|ul.;;Podzamcze
+N|ul.;;Pogodna
+N|ul.;;Pogodne Wzgórze
+N|ul.;;Pogorzały Staw
+N|ul.;dr. Stanisława;Pojaska
+N|ul.;;Pokoju
+N|ul.;Wincentego;Pola
+N|ul.;;Polan
+N|ul.;;Polany
+N|ul.;;Polarna
+N|ul.;;Poległych
+N|ul.;;Polesie
+N|ul.;;Poleska
+N|ul.;;Poleśna
+N|ul.;;Polewana
+N|ul.;;Poligonowa
+N|ul.;;Polna
+N|ul.;;Polnych Kwiatów
+N|ul.;;Poloniusza
+N|ul.;;Polskie Kwiaty
+N|ul.;;Polskiego Czerwonego Krzyża
+N|ul.;;Polskiej Organizacji Wojskowej
+N|ul.;;Polubicka
+N|ul.;;Połabian
+N|ul.;;Połaniecka
+N|ul.;;Południowa
+N|ul.;;Południowa Kolonia
+N|ul.;;Pomiarowa
+N|ul.;;Pomorska
+N|ul.;;Pompy
+N|ul.;;Poniatowskiego
+N|ul.;J.;Poniatowskiego
+N|ul.;Józefa;Poniatowskiego
+N|ul.;Księcia Józefa;Poniatowskiego
+N|ul.;Stanisława Augusta;Poniatowskiego
+N|ul.;;Ponikwoda
+N|ul.;ks. Jerzego;Popiełuszki
+N|ul.;Ks. Jerzego;Popiełuszki
+N|ul.;księdza Jerzego;Popiełuszki
+N|rondo;Księdza Jerzego;Popiełuszki
+N|ul.;Księdza Jerzego;Popiełuszki
+N|skwer;bł. ks. Jerzego;Popiełuszki patrona NSZZ "Solidarność"
+N|ul.;;Popijarska
+N|ul.;;Popław
+N|ul.;Jana Ludwika;Popławskiego
+N|ul.;;Poprzeczna
+N|ul.;;Poranna
+N|ul.;;Porannej Rosy
+N|ul.;Janiny;Porazińskiej
+N|ul.;;Porcelanowa
+N|ul.;;Portowa
+N|ul.;;Porucznika Zręba
+N|ul.;;Porzeczkowa
+N|ul.;Ignacego i Stanisława;Potockich
+N|ul.;;Potok
+N|ul.;;Poturzyńska
+N|ul.;;Poważe
+N|ul.;;Powiatowa
+N|ul.;;Powiśle
+N|ul.;;Powojowa
+N|ul.;;Powstania Styczniowego
+N|ul.;;Powstania Warszawskiego
+N|pl.;;Powstań Narodowych
+N|ul.;;Powstańców
+N|ul.;;Powstańców 1863 r.
+N|ul.;;Powstańców Listopadowych
+N|rondo;;Powstańców Styczniowych
+N|ul.;;Powstańców Styczniowych
+N|ul.;;Powstańców Śląskich
+N|ul.;;Powstańców Warszawy
+N|pl.;;Powstańców Warszawy 1944
+N|ul.;;Poziomkowa
+N|ul.;;Poznańska
+N|ul.;;Pozytywistów
+N|ul.;;Pozytywna
+N|ul.;;Pożowska
+N|ul.;;Półankowa
+N|ul.;;Północna
+N|ul.;;Północna Kolonia
+N|ul.;;Pradnik
+N|ul.;;Praga
+N|ul.;;Prawiednicka
+N|ul.;;Prądowa
+N|ul.;Ignacego;Prądzyńskiego
+N|ul.;;Prebendarska
+N|ul.;Kazimierza;Prejznera
+N|ul.;;Probostwo
+N|ul.;;Projektowa
+N|ul.;;Projektowana
+N|ul.;;Promenada
+N|ul.;;Promienista
+N|ul.;;Promienna
+N|ul.;;Promyk
+N|ul.;;Promykowa
+N|ul.;;Prosta
+N|pl.;Władysława;Próchniewicza
+N|ul.;;Próżna
+N|ul.;;Prusa
+N|ul.;B.;Prusa
+N|ul.;Bolesława;Prusa
+N|ul.;Podpułkownika;Prusa
+N|ul.;ks. Józefa;Pruszkowskiego
+N|ul.;Ksawerego;Pruszyńskiego
+N|ul.;;Pryma
+N|ul.;;Prząśniczki
+N|ul.;;Przechodnia
+N|ul.;;Przeciętka
+N|ul.;;Przecznica
+N|ul.;;Przedmieście
+N|ul.;;Przedmieście Błonie
+N|ul.;;Przedmieście Bukowskie
+N|ul.;;Przedmieście Płuskie Wschód
+N|ul.;;Przedmieście Płuskie Zachód
+N|ul.;;Przedmieście Różanieckie
+N|ul.;;Przedmieście Szperówka
+N|ul.;;Przedszkolna
+N|ul.;;Przedwiośnie
+N|ul.;;Przejazd
+N|ul.;;Przejazdowa
+N|ul.;;Przejrzysta
+N|ul.;;Przelot
+N|ul.;;Przelotna
+N|ul.;;Przelotowa
+N|ul.;;Przemysłowa
+N|rondo;;Przemysłowców Lubelskich
+N|ul.;;Przepiórcza
+N|ul.;;Przerwana
+N|ul.;Kazimierza;Przerwy-Tetmajera
+N|ul.;;Przeskok
+N|ul.;Zenona;Przesmyckiego
+N|ul.;;Przesmyk
+N|ul.;;Prześwit
+N|ul.;;Przy Bocznicy
+N|ul.;;Przy Lesie
+N|ul.;;Przy Piekiełku
+N|ul.;;Przy Stawach
+N|ul.;;Przy Stawie
+N|ul.;;Przyborowie
+N|ul.;Juliana;Przybosia
+N|ul.;Jacka;Przybylskiego
+N|ul.;;Przydawki
+N|ul.;;Przygodna
+N|ul.;;Przyjacielska
+N|ul.;;Przyjazna
+N|ul.;;Przyjaźni
+N|ul.;;Przylesie
+N|ul.;;Przymiarki
+N|ul.;;Przymieszczańska
+N|ul.;;Przytulna
+N|ul.;;Pstrągowa
+N|ul.;;Pszczela
+N|ul.;;Pszeniczna
+N|ul.;;Pszenna
+N|ul.;;Pszonka
+N|ul.;;Pszowian
+N|ul.;;Ptasia
+N|ul.;Stanisława;Ptaszyckiego
+N|ul.;;Puchacza
+N|ul.;gen. Kazimierza;Pułaskiego
+N|ul.;Gen. Kazimierza;Pułaskiego
+N|ul.;Kazimierza;Pułaskiego
+N|ul.;;Puławska
+N|ul.;Zygmunta;Puławskiego
+N|ul.;2;Pułku "Kraków"
+N|ul.;9;Pułku Artylerii Ciężkiej
+N|ul.;34;Pułku Piechoty
+N|ul.;15;Pułku Piechoty "Wilków"
+N|ul.;4;Pułku Piechoty Liniowej - Czwartaków
+N|ul.;15;Pułku Piechoty Wilków AK
+N|ul.;4;Pułku Piechoty Wojska Polskiego
+N|ul.;1;Pułku Szwoleżerów
+N|ul.;;Purpurowa
+N|ul.;;Pusta
+N|ul.;Anny Henryki;Pustowójtówny
+N|ul.;;Puszcza Solska
+N|ul.;Rektora Henryka;Raabego
+N|ul.;;Racławicka
+N|ul.;Władysława;Raczkiewicza
+N|ul.;Franciszka;Raczkowskiego
+N|ul.;Edwarda;Raczyńskiego
+N|ul.;;Radecka
+N|ul.;;Radomska
+N|ul.;;Radosna
+N|ul.;;Radości
+N|ul.;;Radość
+N|rondo;;Rady Europy
+N|ul.;;Radziecka
+N|ul.;;Radzięcka
+N|ul.;Antoniego "Orkisza";Radzika
+N|ul.;;Radzikowska
+N|ul.;Idziego;Radziszewskiego
+N|ul.;;Radziwiłłowska
+N|ul.;;Radzyńska
+N|ul.;kpt. Władysława;Raginisa
+N|ul.;;Rajska
+N|ul.;;Rakowa
+N|ul.;;Rampa Brzeska
+N|ul.;Mariana;Rapackiego
+N|ul.;;Raszyńska
+N|ul.;Macieja;Rataja
+N|ul.;Bronisława;Ratajczaka
+N|ul.;;Ratoszyńska
+N|ul.;;Ratowników
+N|ul.;;Ratuszowa
+N|ul.;Konstantego Józefa;Rayskiego
+N|ul.;;Rąblowska
+N|rondo;Prezydenta Ronalda;Reagana
+N|ul.;;Redutowa
+N|ul.;;Reformacka
+N|ul.;;Regatowa
+N|ul.;;Reja
+N|ul.;Mikołaja;Reja
+N|ul.;;Reja Mikołaja
+N|ul.;;Rejkowizna
+N|rondo;ppłk Wacława;Rejmaka pseud. Ostoja
+N|ul.;;Rejowiecka
+N|ul.;;Rejsowa
+N|ul.;;Rejtana
+N|ul.;Tadeusza;Rejtana
+N|ul.;;Rejtmanówka
+N|ul.;;Rekreacyjna
+N|ul.;;Relaksowa
+N|ul.;prof. Zbigniewa;Religi
+N|ul.;Anny;Renet-Jursz
+N|rondo;;Represjonowanych Żołnierzy Górników
+N|ul.;;Resorowa
+N|ul.;Augustyna;Respondka
+N|ul.;Henryka;Rewakowicza
+N|ul.;;Reymonta
+N|ul.;Władysława;Reymonta
+N|ul.;Władysława Stanisława;Reymonta
+N|ul.;Tadeusza;Reytana
+N|ul.;;Rezedowa
+N|ul.;Jana;Riabinina
+N|ul.;Henryka;Rick-Wiśniewskiego
+N|ul.;;Robotnicza
+N|ul.;św.;Rocha
+N|ul.;Łukasza;Rodakiewicza
+N|ul.;Marii;Rodziewiczówny
+N|ul.;;Rodzinna
+N|ul.;;Rodziny Kowerskich
+N|ul.;;Rodziny Kucharskich
+N|skwer;ks. prałata Stanisława;Roga
+N|ul.;Doktora Andrzeja;Rogalińskiego
+N|ul.;Króla;Rogera
+N|ul.;Romana;Rogińskiego
+N|ul.;Wacława;Rogińskiego
+N|ul.;;Rogowe Kopce
+N|ul.;Ludomira Michała;Rogowskiego
+N|ul.;Pułkownika pilota Jerzego;Rogowskiego
+N|ul.;;Rogózieńska
+N|ul.;;Rokicka
+N|ul.;płk. Władysława;Rokickiego
+N|ul.;;Rokiczany
+N|ul.;ks. Feliksa;Rokity
+N|ul.;;Rokosz
+N|ul.;;Rolna
+N|ul.;;Rolna Osada
+N|ul.;;Rolnicza
+N|ul.;;Romanowskiego
+N|ul.;Mieczysława;Romanowskiego
+N|ul.;;Romantyczna
+N|ul.;;Romea
+N|ul.;Eugeniusza;Romera
+N|ul.;;Romów
+N|rondo;;Rondo 27 Wołyńskiej Dywizji Piechoty AK
+N|rondo;;Rondo 58. Lotniczego Pułku Szkolnego
+N|rondo;;Rondo Armii Krajowej
+N|rondo;;Rondo Bialczanek
+N|rondo;;Rondo Biskupa Tomasza Wilczyńskiego
+N|rondo;;Rondo Bitwy Warszawskiej
+N|rondo;;Rondo bł. ks. bp. Władysława Gorala
+N|rondo;;Rondo bł. ks. Emiliana Kowcza
+N|rondo;;Rondo bł. ks. Jerzego Popiełuszki
+N|rondo;;Rondo Błogosławionego Księdza Jerzego Popiełuszki
+N|rondo;;Rondo Dęblińskich Saperów
+N|rondo;;Rondo gen. Leona Berbeckiego
+N|rondo;;Rondo gen. pil. Tadeusza Góry
+N|rondo;;Rondo generała Franciszka Kamińskiego
+N|rondo;;Rondo hm. Kazimierza Odrzygoździa
+N|rondo;;Rondo Honorowych Dawców Krwi
+N|rondo;;Rondo Honorowych Dawców Krwi PCK
+N|rondo;;Rondo I Brygady Komendanta Józefa Piłsudskiego
+N|rondo;;rondo im. 27 Wołyńskiej Dywizji Piechoty AK
+N|rondo;;Rondo im. Aleksandra Golińskiego
+N|rondo;;Rondo im. Bogumiła Brodzisza
+N|rondo;;Rondo im. Bogusława Mikusa
+N|rondo;;Rondo im. gen. Tadeusza Rozwadowskiego
+N|rondo;;Rondo im. Henryka Kosińskiego
+N|rondo;;Rondo im. Jeńców Stalagu 319
+N|rondo;;Rondo im. Józefa Skrobiszewskiego
+N|rondo;;Rondo im. Karola Levittoux
+N|rondo;;Rondo im. Ks. Biskupa Ignacego Świrskiego
+N|rondo;;Rondo im. ks. kan. Franciszka Salezego Jezierskiego
+N|rondo;;Rondo im. Łęczyńskich Bohaterów Września
+N|rondo;;Rondo im. Marii i Lecha Kaczyńskich
+N|rondo;;Rondo im. Marii Kownackiej
+N|rondo;;Rondo im. Marszałka Józefa Piłsudskiego
+N|rondo;;Rondo im. mjr. Hieronima Dekutowskiego ps. "Zapora" i Jego żołnierzy
+N|rondo;;Rondo im. Nauczycieli Tajnego Nauczania
+N|rondo;;Rondo im. NSZZ "Solidarność"
+N|rondo;;Rondo im. Ochotniczych Straży Pożarnych
+N|rondo;;Rondo im. Papieża Jana Pawła II
+N|rondo;;Rondo im. płk Zieleniewskiego
+N|rondo;;Rondo im. por. Henryka Lewczuka ps. "Młot"
+N|rondo;;Rondo im. Powstańców Styczniowych
+N|rondo;;Rondo im. Premiera Jana Olszewskiego
+N|rondo;;Rondo im. Rotmistrza Witolda Pileckiego
+N|rondo;;Rondo im. rtm. Witolda Pileckiego
+N|rondo;;Rondo im. Świętego Jana Pawła II
+N|rondo;;Rondo im. Teresy Grodzińskiej
+N|rondo;;Rondo im. Towarzystwa Przyjaciół Stężycy
+N|rondo;;Rondo im. Wielkiej Orkiestry Świątecznej Pomocy
+N|rondo;;Rondo im. Wincentego Piątaka
+N|rondo;;Rondo im. Zdzisława Brońskiego "Uskoka"
+N|rondo;;Rondo im. Żołnierzy Niezłomnych
+N|rondo;;Rondo imienia cichociemnego mjra Zapory
+N|rondo;;Rondo Jana Dębskiego
+N|rondo;;Rondo Józefata Budnego
+N|rondo;;Rondo Karola Lipińskiego
+N|rondo;;Rondo Kolejarzy Dęblińskich
+N|rondo;;Rondo Koła Bialczan
+N|rondo;;Rondo Kontruderzenia znad Wieprza 1920
+N|rondo;;Rondo ks. Jana Mroza
+N|rondo;;Rondo ks. Stanisława Wierzejskiego
+N|rondo;;Rondo Lubelskiego Lipca '80
+N|rondo;;Rondo Lubelskiego Lipca 1980
+N|rondo;;Rondo Majora Mariana Bernaciaka "Orlika"
+N|rondo;;Rondo Marszałka Sejmu RP Macieja Płażyńskiego
+N|rondo;;Rondo Metropolity Piotra Mohyły
+N|rondo;;Rondo Narodowych Sił Zbrojnych
+N|rondo;;Rondo Nauczycieli Tajnego Nauczania
+N|rondo;;Rondo Niepodległości
+N|rondo;;Rondo Niezależnego Zrzeszenia Studentów
+N|rondo;;Rondo NSZZ "Solidarność"
+N|rondo;;Rondo NSZZ Solidarność
+N|rondo;;Rondo Ofiar Krwawej Środy 1942 r.
+N|rondo;;Rondo Pamięci Ofiar Ludobójstwa na Wołyniu
+N|rondo;;Rondo Pamięci Ofiar Wołynia
+N|rondo;;Rondo Pamięci Żydów Łukowskich
+N|rondo;;Rondo pil. Pelagii Majewskiej
+N|rondo;;Rondo płk. Ryszarda J. Kuklińskiego
+N|rondo;;Rondo Podlaskiej Wytwórni Samolotów
+N|rondo;;Rondo por. Mariana Mokrskiego
+N|rondo;;Rondo Prezydenta Lecha Kaczyńskiego
+N|rondo;;Rondo Prezydenta RP Lecha Kaczyńskiego
+N|rondo;;Rondo Rotmistrza Witolda Pileckiego
+N|rondo;;Rondo Stanisława Kostki Potockiego
+N|rondo;;Rondo Stanisława Różyczki de Rosenwertha
+N|rondo;;Rondo Stefana Kardynała Wyszyńskiego
+N|rondo;;Rondo św. Jozafata Kuncewicza
+N|rondo;;Rondo Świdnicki Lipiec 80
+N|rondo;;Rondo Świętego Jana Pawła II
+N|rondo;;Rondo Tomasza Józefa Zamoyskiego
+N|rondo;;Rondo Ułanów 1920
+N|rondo;;Rondo Unii Europejskiej
+N|rondo;;Rondo Urszuli Radek
+N|rondo;;Rondo Wielkiej Orkiestry Świątecznej Pomocy
+N|rondo;;Rondo Wincentego Pola
+N|rondo;;Rondo Zakładów Przemysłowych H. B. Raabe
+N|rondo;;Rondo Zofii Kossak
+N|rondo;;Rondo Zrzeszenia Wolność i Niezawisłość
+N|rondo;;Rondo Zygmunta Puławskiego
+N|rondo;;Rondo Żołnierzy Wyklętych
+N|ul.;Marii;Ronikierowej
+N|ul.;;Rosiczki
+N|ul.;;Rosowska
+N|ul.;;Rosy
+N|ul.;;Roślinna
+N|ul.;"Grota";Roweckiego
+N|ul.;gen. Grota;Roweckiego
+N|ul.;Stefana;Roweckiego
+N|ul.;gen. S.;Roweckiego "Grota"
+N|ul.;;Rowerowa
+N|ul.;;Rowińska
+N|ul.;;Rozdroże
+N|ul.;;Rozdzielcza
+N|ul.;;Rozmarynowa
+N|ul.;;Rozstajna
+N|ul.;;Roztocze
+N|ul.;;Rozwojowa
+N|ul.;;Rożnówka Stawy
+N|ul.;;Równa
+N|ul.;;Rózin
+N|ul.;;Różana
+N|ul.;;Różaniecka
+N|ul.;;Różnych
+N|ul.;;Róży
+N|ul.;;Róży Wiatrów
+N|ul.;;Rubinowa
+N|ul.;;Ruchu Oporu
+N|ul.;;Ruciana
+N|ul.;Władysława;Ruckiego
+N|ul.;;Rudka
+N|ul.;;Rudki
+N|ul.;Jerzego;Rudlickiego
+N|ul.;;Rudnicka
+N|ul.;ks. Jana;Rudnickiego
+N|ul.;;Rudnik
+N|ul.;;Rudzka
+N|ul.;;Rumiana
+N|ul.;;Rumiankowa
+N|ul.;;Rurowa
+N|ul.;;Rusałka
+N|ul.;;Rusałki
+N|ul.;Adama i Hieronima;Rusieckich
+N|ul.;;Ruska
+N|ul.;Wandy;Rutkiewicz
+N|ul.;;Rybacka
+N|ul.;;Rybia
+N|ul.;Doktora Józefa;Rybickiego
+N|ul.;;Rybitwy
+N|ul.;;Rybna
+N|ul.;;Rybołówstwo
+N|ul.;;Rycerska
+N|ul.;Tadeusza;Rychtera-Żegoty
+N|ul.;Lucjana;Rydla
+N|ul.;;Rydza Śmigłego
+N|rondo;Braci;Rylskich
+N|ul.;;Rymarska
+N|ul.;;Rymwida
+N|pl.;;Rynek
+N|ul.;;Rynek
+N|ul.;;Rynek 600-lecia
+N|ul.;;Rynek I
+N|ul.;;Rynek II
+N|ul.;;Rynek III
+N|ul.;;Rynek Jabłonowskich
+N|ul.;;Rynek Solny
+N|ul.;;Rynek Stary
+N|ul.;;Rynek Sutki
+N|ul.;;Rynek Wielki
+N|pl.;;Rynek Żydowski
+N|ul.;;Rynkowa
+N|ul.;;Rysia
+N|ul.;;Rzeckiego
+N|ul.;Ignacego;Rzeckiego
+N|ul.;;Rzeczna
+N|ul.;;Rzeczpospolitej Józefowskiej
+N|ul.;;Rzeczycka
+N|ul.;;Rzemieślnicza
+N|ul.;;Rzepakowa
+N|ul.;;Rzeszowska
+N|ul.;Wacława;Rzewuskiego
+N|ul.;;Rzeźniana
+N|ul.;H. M.;Sachsów
+N|ul.;;Sadowa
+N|ul.;;Sadowisko
+N|ul.;;Salnicze
+N|ul.;;Samodzielnej Grupy Operacyjnej "Polesie"
+N|ul.;Księdza Jana;Samoleja
+N|ul.;;Samotna
+N|ul.;Jana;Samsonowicza
+N|ul.;;Samsonówka
+N|ul.;;Sanatoryjna
+N|ul.;;Sandomierska
+N|ul.;księcia Andrzeja;Sanguszki
+N|ul.;;Sanitariuszek Polskich
+N|ul.;;Saperów
+N|ul.;;Saperów Kaniowskich
+N|ul.;;Saperska
+N|ul.;Jana;Sapiehy
+N|ul.;;Sapieżyńska
+N|ul.;;Sarmacka
+N|ul.;;Sarnia
+N|os.;;Sarnów
+N|ul.;Zofii;Sas-Jaworskiej
+N|ul.;;Sasanki
+N|ul.;;Sasankowa
+N|ul.;;Sasankowy Zakątek
+N|ul.;Ewalda;Sasimowskiego
+N|ul.;;Saska
+N|ul.;;Satelitarna
+N|ul.;Kajetana;Sawczuka
+N|ul.;;Sawki
+N|ul.;Jana;Sawy
+N|ul.;;Sądecka
+N|ul.;;Sądowa
+N|ul.;;Sąsiedzka
+N|ul.;;Sejmowa
+N|ul.;;Sejmu Czteroletniego
+N|ul.;Bolesława;Sekutowicza
+N|ul.;;Sekwojowa
+N|ul.;;Seledynowa
+N|ul.;;Semki
+N|ul.;Stefanii;Sempołowskiej
+N|ul.;;Senatorska
+N|pl.;;Senatorski
+N|ul.;Ireny;Sendlerowej
+N|skwer;Stefana;Sendłaka
+N|rondo;;Serce Polskiego Szkółkarstwa
+N|ul.;;Serdeczna
+N|ul.;;Serocka
+N|ul.;Stanisława;Serwaczyńskiego
+N|ul.;;Sezamkowa
+N|ul.;;Sezamowa
+N|ul.;Janusza;Sidło
+N|ul.;;Sidorska
+N|ul.;Wojciecha;Sieciecha
+N|ul.;;Sieciechowska
+N|ul.;;Sieciowa
+N|ul.;;Siedlecka
+N|ul.;;Sielanki
+N|ul.;;Sielankowa
+N|ul.;;Sielczyk
+N|ul.;;Sielska
+N|ul.;;Siemieńska
+N|ul.;Henryka;Siemiradzkiego
+N|ul.;Mikołaja;Sienickiego
+N|ul.;;Sienkiewicza
+N|ul.;Henryka;Sienkiewicza
+N|ul.;;Sienna
+N|ul.;Zygmunta;Sierakowskiego
+N|skwer;Izabelli;Sierakowskiej
+N|ul.;;Sieroca
+N|ul.;Wacława;Sieroszewskiego
+N|ul.;Prof. Zbigniewa;Sierpińskiego
+N|ul.;Seweryna;Sierpińskiego
+N|ul.;15;Sierpnia
+N|ul.;6;Sierpnia
+N|ul.;;Sierpniowa
+N|ul.;;Siewierzan
+N|ul.;;Siewna
+N|ul.;;Sikorskiego
+N|ul.;gen.;Sikorskiego
+N|ul.;Gen.;Sikorskiego
+N|ul.;gen. Władysława;Sikorskiego
+N|ul.;Gen. Władysława;Sikorskiego
+N|ul.;Generała;Sikorskiego
+N|ul.;Generała W.;Sikorskiego
+N|ul.;Generała Władysława;Sikorskiego
+N|ul.;Władysława;Sikorskiego
+N|ul.;;Siłaczki
+N|ul.;I. B.;Singera
+N|ul.;;Sitarska
+N|ul.;;Sitarska II
+N|ul.;;Siteńska
+N|ul.;;Sitkowskiego
+N|ul.;;Sitnicka
+N|ul.;;Siwa Dolina
+N|ul.;;Skalista
+N|ul.;Gen. Stanisława;Skalskiego
+N|ul.;Generała Stanisława;Skalskiego
+N|ul.;Stanisława;Skalskiego
+N|ul.;Walentego;Skalskiego
+N|ul.;;Skałka
+N|ul.;;Skarbka
+N|ul.;;Skargi
+N|ul.;ks. Piotra;Skargi
+N|ul.;Piotra;Skargi
+N|ul.;;Skarpa
+N|ul.;Stanisława;Skarżyńskiego
+N|ul.;;Skautów
+N|ul.;;Skibińska
+N|ul.;Stanisława;Skibińskiego
+N|ul.;;Skierbieszowska
+N|ul.;;Skierki
+N|ul.;;Składnicowa
+N|ul.;;Składowa
+N|ul.;;Składowska
+N|ul.;Józefa;Skłodowskiego
+N|ul.;M. C.;Skłodowskiej
+N|ul.;;Skłodowskiej Curie
+N|ul.;Marii;Skłodowskiej-Curie
+N|ul.;Stefana;Skoczylasa
+N|ul.;Kamili;Skolimowskiej
+N|ul.;;Skołuby
+N|ul.;;Skorupki
+N|ul.;ks.;Skorupki
+N|ul.;ks. Ignacego;Skorupki
+N|ul.;Księdza;Skorupki
+N|ul.;Księdza Ignacego;Skorupki
+N|ul.;Aleksandra;Skorupy
+N|ul.;;Skośna
+N|ul.;Czesława;Skotnickiego
+N|ul.;Jana;Skotnickiego
+N|ul.;;Skowieszyńska
+N|ul.;;Skowronkowa
+N|ul.;;Skrajna
+N|ul.;;Skromna
+N|ul.;;Skryta
+N|ul.;;Skrzatów
+N|ul.;;Skrzetuskiego
+N|ul.;Jana;Skrzetuskiego
+N|ul.;;Skrzydlata
+N|ul.;;Skrzynicka
+N|ul.;;Skrzyniecka
+N|ul.;;Skrzypcowa
+N|ul.;Feliksa;Skubiszewskiego
+N|rondo;Premiera II RP Leopolda;Skulskiego
+N|skwer;;Skwer 100-lecia Niepodległości
+N|skwer;;Skwer 100-lecia Odzyskania Niepodległości
+N|skwer;;Skwer 1050-lecia Chrztu Polski
+N|skwer;;Skwer adw. Stanisława Kalinowskiego
+N|skwer;;Skwer arch. T. Witkowskiego
+N|skwer;;Skwer Arcybiskupa Józefa Życińskiego
+N|skwer;;Skwer Armii Krajowej
+N|skwer;;Skwer Błogosławionego Kardynała Stefana Wyszyńskiego
+N|skwer;;Skwer Borowiczan
+N|skwer;;Skwer Borysa Słowickiego
+N|skwer;;Skwer Dzieci z Pahiatua
+N|skwer;;Skwer Grażyny Chrostowskiej
+N|skwer;;Skwer Gryfa
+N|skwer;;Skwer im. 27 Wołyńskiej Dywizji Piechoty Armii Krajowej
+N|skwer;;Skwer im. Armii Krajowej
+N|skwer;;Skwer im. Danuty i Witolda Danielewiczów
+N|pl.;;Skwer im. Gen. Dyw. Franciszka Krajowskiego
+N|skwer;;Skwer im. Księcia Daniela
+N|skwer;;Skwer im. prof. Zyty Gilowskiej
+N|skwer;;Skwer im. Romana Muchy
+N|skwer;;Skwer im. św. Jana Pawła II
+N|skwer;;Skwer imienia Marii i Jerzego Kuncewiczów
+N|skwer;;Skwer Konstytucji 3 Maja
+N|skwer;;Skwer ks. Stanisława Zielińskiego
+N|pl.;;Skwer Niepodległej
+N|skwer;;Skwer Niepodległości
+N|skwer;;Skwer Ofiar Wołynia
+N|skwer;;Skwer Rodziny Eichlerów
+N|skwer;;Skwer Rotmistrza Witolda Pileckiego
+N|skwer;;Skwer Saint-Varent
+N|skwer;;Skwer Saski
+N|skwer;;Skwer Św. Jana Pawła II
+N|skwer;;Skwer Tarasa Szewczenki
+N|ul.;;Skwerkowa
+N|ul.;;Sławacińska
+N|ul.;;Sławatycka
+N|ul.;;Sławin
+N|ul.;;Sławinek
+N|ul.;;Sławinkowska
+N|ul.;Floriana;Słąki
+N|ul.;;Słodka
+N|ul.;;Słodowa
+N|ul.;;Słomkowa
+N|ul.;Antoniego;Słomkowskiego
+N|ul.;;Słoneczna
+N|ul.;;Słoneczne Wzgórze
+N|ul.;;Słonecznikowa
+N|ul.;;Słoneczny Stok
+N|ul.;;Słowackiego
+N|ul.;Juliusza;Słowackiego
+N|ul.;;Słowian
+N|ul.;;Słowiańska
+N|ul.;;Słowicza
+N|ul.;;Słowikowa
+N|ul.;ks. Michała;Słowikowskiego
+N|ul.;;Słowików
+N|ul.;;Słupian
+N|ul.;;Słupkowa
+N|ul.;Józefa Bogusława;Słuszki
+N|ul.;;Smolna
+N|ul.;Mariana;Smoluchowskiego
+N|ul.;gen. M.;Smorawińskiego
+N|ul.;;Smugowa
+N|ul.;;Smyczkowa
+N|ul.;;Snopkowska
+N|ul.;;Sobieskiego
+N|ul.;Marka;Sobieskiego
+N|ul.;;Sobolowa
+N|ul.;;Sobótki
+N|ul.;dr. Augusta;Sochackiego
+N|ul.;;Sochacz
+N|ul.;Kazimierza;Sochaniewicza
+N|ul.;;Sokalska
+N|ul.;;Sokola
+N|ul.;;Sokole
+N|ul.;;Sokolec
+N|ul.;;Sokolniki
+N|ul.;;Sokołowa
+N|ul.;;Sokołowskiego
+N|ul.;Alfreda;Sokołowskiego
+N|ul.;Józefa;Sokołowskiego
+N|ul.;;Sokulska
+N|ul.;Ignacego;Solarza
+N|rondo;;Solidarności
+N|ul.;;Solidarności
+N|ul.;;Solna
+N|ul.;Ludwika;Solskiego
+N|ul.;Tadeusza;Sołdka
+N|ul.;;Sołecka
+N|ul.;Księdza Stanisława;Sonnego
+N|ul.;Królowej;Sońki
+N|ul.;Jacka;Soplicy
+N|ul.;Księży;Sopyłów
+N|ul.;;Sosnowa
+N|ul.;;Sosnowe Wzgórze
+N|ul.;;Sosnowe Zacisze
+N|ul.;;Sowia
+N|ul.;doktora Jeremiasza;Sowiakowskiego
+N|ul.;;Sowińskiego
+N|ul.;Gen.;Sowińskiego
+N|ul.;gen. Józefa;Sowińskiego
+N|ul.;Generała Józefa;Sowińskiego
+N|ul.;Józefa;Sowińskiego
+N|ul.;Wincentego;Sowy "Visa"
+N|ul.;;Sójki
+N|ul.;;Spacerowa
+N|ul.;;Spadek
+N|ul.;;Spadochroniarzy
+N|ul.;;Spadowa
+N|ul.;;Spełnionych Marzeń
+N|ul.;Ludwika;Spiessa
+N|ul.;;Spokojna
+N|ul.;;Społeczna
+N|ul.;;Sporniak
+N|ul.;;Sportowa
+N|rondo;;Sportowców
+N|ul.;Braci;Spozów
+N|ul.;;Spółdzielców
+N|ul.;;Spółdzielcza
+N|ul.;Mikołaja;Spóza
+N|skwer;;Sprawiedliwych Wśród Narodów Świata
+N|ul.;;Srebrna
+N|ul.;;Srebrzysta
+N|ul.;Bolesława;Stachonia
+N|ul.;Edwarda;Stachury
+N|ul.;;Stacja Kolejowa
+N|ul.;;Stacyjna
+N|ul.;Konrada;Staczyńskiego
+N|ul.;;Stadionowa
+N|ul.;;Staffa
+N|ul.;Leopolda;Staffa
+N|ul.;Mieczysława;Stagrowskiego
+N|ul.;;Stalowa
+N|ul.;;Stanisława Leszczyńskiego
+N|ul.;;Stanisława Poniatowskiego
+N|ul.;Anny;Stanisławskiej
+N|ul.;Ireny;Stanisławskiej
+N|ul.;Ryszarda;Stankiewicza
+N|ul.;Jana;Stapińskiego
+N|ul.;;Stara
+N|ul.;;Stara Rozłopska
+N|ul.;;Stara Wieś
+N|ul.;;Starej Baśni
+N|ul.;;Starocerkiewna
+N|ul.;;Staroklasztorna
+N|ul.;;Staromiejska
+N|ul.;;Staropijarska
+N|ul.;;Starościńska
+N|ul.;;Starowiejska
+N|ul.;;Starowieś
+N|ul.;;Starozamojska
+N|ul.;;Startowa
+N|ul.;;Stary Gaj
+N|ul.;;Stary Rynek
+N|ul.;;Stary Trakt
+N|ul.;;Starzeńska
+N|ul.;;Starzyńska
+N|ul.;;Stasia i Nel
+N|ul.;Jakuba;Staszewskiego
+N|ul.;;Staszica
+N|ul.;St.;Staszica
+N|ul.;Stanisława;Staszica
+N|ul.;;Stawisko
+N|ul.;;Stawki
+N|ul.;;Stawowa
+N|ul.;;Stawska
+N|ul.;;Stawy
+N|ul.;;Stefana Batorego
+N|pl.;Melchiora;Stefanidesa
+N|ul.;;Stefanów
+N|ul.;Franciszka;Stefczyka
+N|ul.;Józefa;Steglińskiego "Corda"
+N|ul.;Mieczysława;Stelmasiaka
+N|ul.;Jana;Stelmaszczyka
+N|ul.;George'a;Stephensona
+N|ul.;Abrahama;Sterna
+N|ul.;Marcina;Stępnia
+N|ul.;;Stężycka
+N|ul.;;Stodolna
+N|ul.;;Stodoły
+N|ul.;;Stokowa
+N|ul.;;Stokrotki
+N|ul.;;Stokrotki Polnej
+N|ul.;;Stolarska
+N|ul.;;Storczykowa
+N|ul.;;Strażacka
+N|ul.;;Strefowa
+N|ul.;Feliksa;Strojnowskiego
+N|ul.;;Stroma
+N|ul.;;Struga
+N|ul.;Andrzeja;Struga
+N|ul.;Henryka;Strumińskiego
+N|ul.;;Strumykowa
+N|ul.;;Strusia
+N|ul.;;Strzelecka
+N|ul.;Wandy;Strzeleckiej
+N|ul.;;Strzelnicza
+N|ul.;Tomasza;Strzembosza
+N|ul.;Michała;Strzemskiego
+N|ul.;Czesława;Strzeszewskiego
+N|ul.;Marii;Stuart
+N|ul.;;Studencka
+N|ul.;;Studzienna
+N|ul.;Michała;Studzińskiego
+N|ul.;Wita;Stwosza
+N|ul.;1;Stycznia
+N|ul.;;Styczniowa
+N|ul.;Jana;Styki
+N|ul.;;Sucha
+N|ul.;;Sucharskiego
+N|ul.;Henryka;Sucharskiego
+N|ul.;majora Henryka;Sucharskiego
+N|ul.;;Suchawska
+N|ul.;Eligiusza;Suchodolskiego
+N|ul.;;Suchowola Kolonia
+N|ul.;;Suchowolska
+N|ul.;;Suchyńska
+N|ul.;;Sudecka
+N|ul.;;Suffczyńskich
+N|ul.;;Sukiennicza
+N|rondo;Anastazego;Suligowskiego
+N|ul.;;Sulisławicka
+N|pl.;Stanisława;Surdackiego
+N|ul.;;Swatowska
+N|ul.;;Swobodna
+N|ul.;;Sworska
+N|ul.;;Syberia
+N|ul.;;Sybiraków
+N|ul.;Tadeusza;Sygietyńskiego
+N|ul.;;Symborówka
+N|ul.;;Symfoniczna
+N|ul.;;Sympatyczna
+N|ul.;;Synchroniczna
+N|ul.;;Syndykacka
+N|ul.;;Synów Pułku
+N|ul.;Józefa;Sypniewskiego
+N|ul.;;Szafirkowa
+N|ul.;;Szafirowa
+N|ul.;;Szafranowa
+N|ul.;Haliny;Szalkiewiczowej
+N|ul.;;Szałwiowa
+N|ul.;;Szambelańska
+N|ul.;;Szamotowa
+N|ul.;Rodzeństwa;Szanajców
+N|ul.;Jana Marcina;Szancera
+N|ul.;Felicjana;Szaniawskiego
+N|ul.;Jerzego;Szaniawskiego
+N|ul.;Klemensa Junoszy;Szaniawskiego
+N|ul.;;Szańcowa
+N|ul.;Floriana;Szarego
+N|ul.;;Szarotki
+N|ul.;;Szarotkowa
+N|ul.;;Szarugi
+N|ul.;;Szarych Szeregów
+N|ul.;;Szaserów
+N|ul.;;Szczebrzeska
+N|ul.;;Szczecińska
+N|ul.;;Szczepankiewicza
+N|ul.;Wilhelma;Szczepankiewicza "Drugaka"
+N|ul.;Czesława;Szczepańskiego
+N|ul.;Romana;Szczerbakiewicza
+N|ul.;Antoniego;Szczerbowskiego
+N|ul.;;Szczetowa
+N|ul.;;Szczęśliwa
+N|ul.;;Szczygla
+N|rondo;prof. Aleksandra;Szczygła
+N|ul.;Władysława;Szczypy
+N|ul.;;Szczytowa
+N|ul.;Piotra;Szedla
+N|ul.;Ewy;Szelburg-Zarembiny
+N|ul.;;Szelest
+N|ul.;;Szelestna
+N|ul.;Tadeusza;Szeligowskiego
+N|ul.;Tadeusza;Szenejki
+N|ul.;;Szeroka
+N|ul.;;Szerokie
+N|ul.;Siostry Bożeny;Szerwentke
+N|ul.;Małgorzaty;Szewczyk
+N|ul.;;Szewska
+N|ul.;;Szklana
+N|ul.;;Szklarniana
+N|ul.;;Szklarniowa
+N|ul.;;Szklarska
+N|ul.;;Szkoci Dół
+N|ul.;;Szkolna
+N|ul.;;Szkolna I
+N|ul.;;Szkolna II
+N|ul.;;Szkoły Podchorążych Lotnictwa
+N|ul.;;Szkółkarska
+N|ul.;;Szlachecka
+N|ul.;;Szlachetna
+N|;;Szlak im. Józefa Łukasiewicza
+N|ul.;;Szlendaków
+N|ul.;;Szmaragdowa
+N|ul.;;Szopena
+N|ul.;Fryderyka;Szopena
+N|ul.;;Szosowa
+N|ul.;;Szpacza
+N|ul.;;Szpakowa
+N|ul.;Stanisława;Szpinalskiego
+N|ul.;;Szpitalna
+N|ul.;Kazimierza;Szpotańskiego
+N|ul.;;Sztabowa
+N|ul.;Dr Józefa;Sztajna
+N|ul.;dr Barbary;Sztembis
+N|ul.;Alojzego;Szubartowskiego
+N|ul.;ks. Aleksandra;Szulca
+N|ul.;;Szumiąca
+N|ul.;;Szumowa
+N|ul.;;Szwajcarska
+N|ul.;;Szwedzka
+N|ul.;;Szwejka
+N|ul.;kpt. Władysława;Szwendera
+N|ul.;;Szwoleżerów
+N|ul.;;Szybowcowa
+N|ul.;gen. Antoniego;Szyllinga
+N|ul.;;Szymanowskiego
+N|ul.;Karola;Szymanowskiego
+N|ul.;Wisławy;Szymborskiej
+N|ul.;Zygmunta;Szymczakowskiego
+N|ul.;Szymona;Szymonowica
+N|ul.;;Szymonowicza
+N|ul.;Ks. Ludwika;Szyszki
+N|ul.;ks. Ludwika;Szyszko
+N|ul.;Eleonory;Szyszkowicz
+N|ul.;;Ścianka
+N|ul.;Pułkownika pilota Szczepana;Ścibiora
+N|ul.;Ks.;Ściegiennego
+N|ul.;ks. Piotra;Ściegiennego
+N|ul.;Księdza;Ściegiennego
+N|ul.;Piotra;Ściegiennego
+N|ul.;Romana;Ślaskiego
+N|ul.;;Śląska
+N|ul.;;Ślężan
+N|ul.;;Śliska
+N|ul.;Wandy;Śliwiny
+N|ul.;Józefa;Śliwińskiego
+N|ul.;;Śliwkowa
+N|ul.;;Śliwna
+N|ul.;;Ślusarska
+N|ul.;Jana;Śniadeckiego
+N|pl.;;Śniegockich
+N|ul.;;Śniegówka
+N|ul.;Jana;Śnieżyńskiego
+N|ul.;;Śpiewna
+N|ul.;;Średnia
+N|ul.;;Środkowa
+N|ul.;;Śródmiejska
+N|ul.;;Śródpole
+N|ul.;pilota Witolda;Świadka
+N|ul.;;Światowida
+N|rondo;;Światowych Dni Młodzieży 2016
+N|ul.;;Świderska
+N|ul.;;Świdnicka
+N|ul.;;Świdówka
+N|ul.;;Świeciechowska
+N|ul.;;Świerdzowa
+N|ul.;;Świergotka
+N|ul.;;Świerkowa
+N|ul.;;Świetlista
+N|ul.;;Świeża
+N|ul.;;Święta
+N|ul.;;Święta Droga
+N|skwer;;Świętego Krzyża
+N|ul.;Aleksandra;Świętochowskiego
+N|ul.;;Świętoduska
+N|ul.;;Świętojańska
+N|ul.;;Świętojurska
+N|ul.;;Świętokrzyska
+N|ul.;Franciszka;Świgosta
+N|ul.;;Świt
+N|ul.;Marii;Świtalskiej
+N|ul.;;Świtezianka
+N|ul.;;Świtezianki
+N|rondo;;Tajnej Organizacji Nauczycielskiej
+N|ul.;Czesława;Tańskiego
+N|ul.;;Tarasiuki
+N|ul.;;Tarasowa
+N|ul.;;Targowa
+N|ul.;Sędziego Michała;Tarki
+N|ul.;Stanisława;Tarło
+N|ul.;Jana;Tarły
+N|ul.;;Tarninowa
+N|ul.;;Tarnogrodzka
+N|ul.;Stanisława;Tarnowskiego
+N|ul.;;Tartaczna
+N|ul.;;Tatarakowa
+N|ul.;;Tatarska
+N|ul.;;Tatiany
+N|pl.;;Teatralny
+N|ul.;;Techniczna
+N|ul.;;Telimeny
+N|ul.;;Teosińska
+N|ul.;;Terebelska
+N|ul.;;Teresówka
+N|ul.;;Terespolska
+N|ul.;Matki;Teresy z Kalkuty
+N|ul.;Stanisława;Tessaro
+N|ul.;Kazimierza Przerwy;Tetmajera
+N|ul.;Kazimierza;Tetmajera-Przerwy
+N|os.;;Tęcza
+N|ul.;;Tęczowa
+N|ul.;;Tęczyńskich
+N|rondo;Margaret;Thatcher
+N|ul.;;Tkacka
+N|ul.;Czesława;Toczyńskiego
+N|ul.;Józefa;Toczyskiego
+N|ul.;;Tokarska
+N|ul.;Jadwigi;Tokarskiej
+N|ul.;;Tokarzewskiego
+N|ul.;Ojca;Tomasza
+N|ul.;;Tomaszowska
+N|ul.;dr. Zygmunta;Tomaszunasa
+N|ul.;;Topazowa
+N|ul.;;Topolowa
+N|ul.;Macieja;Topornickiego
+N|ul.;;Torfiarki
+N|ul.;;Torfowa
+N|ul.;;Torowa
+N|ul.;;Toruńska
+N|ul.;;Towarowa
+N|ul.;;Trakt Lwowski
+N|ul.;;Trapezowa
+N|ul.;;Traugutta
+N|ul.;Romualda;Traugutta
+N|ul.;Stanisława;Trembeckiego
+N|ul.;Bronisława;Trentowskiego
+N|ul.;;Trębacka
+N|ul.;;Tristana
+N|ul.;;Trubakowska
+N|ul.;;Truskawkowa
+N|ul.;Janiny i Antoniego;Tryboniów
+N|ul.;Antoniego;Tryjarskiego
+N|ul.;;Trzaskoniec
+N|ul.;Antoniego;Trzaskowskiego
+N|ul.;hr. Dionizego;Trzcińskiego
+N|ul.;;Trzech Stawów
+N|ul.;;Trzeciakowska
+N|ul.;Józefa;Trześniaka
+N|ul.;;Trześniowska
+N|ul.;;Trzydnicka
+N|ul.;;Tuliłowska
+N|ul.;;Tulipanowa
+N|ul.;Kazimierza;Tumidajskiego
+N|ul.;Jana;Turczynowicza
+N|ul.;Franciszki i Feliksa;Turewiczów
+N|ul.;;Turkusowa
+N|ul.;;Turniowa
+N|ul.;;Turowskiego "Norberta"
+N|ul.;;Turystyczna
+N|ul.;;Turzyniec
+N|ul.;;Tuwima
+N|ul.;Juliana;Tuwima
+N|ul.;;Tuzinek
+N|ul.;;Twarda
+N|ul.;;Twardowskiego
+N|ul.;Ks. Jana;Twardowskiego
+N|ul.;Czesława;Twardzika
+N|ul.;Jana Antoniego;Tyczyńskiego
+N|ul.;;Tygrysia
+N|ul.;;Tylna
+N|ul.;;Tymiankowa
+N|ul.;Benedykta;Tynelskiego
+N|al.;;Tysiąclecia
+N|ul.;;Tysiąclecia
+N|rondo;;Tysiąclecia Korony Polskiej
+N|al.;;Tysiąclecia Państwa Polskiego
+N|pl.;;Tysiąclecia Państwa Polskiego
+N|ul.;;Tysiąclecia PP
+N|ul.;dr. Tadeusza;Tyszkiewicza
+N|ul.;;Tyszowiecka
+N|ul.;;Tytoniowa
+N|ul.;;Uchańska
+N|ul.;Franciszka;Uhorczaka
+N|ul.;Franciszka;Ujmy
+N|ul.;;Ukośna
+N|ul.;;Ulanowska
+N|ul.;;Ulany
+N|ul.;;Ułanów
+N|ul.;;Ułańska
+N|ul.;;Unicka
+N|rondo;;Unii Europejskiej
+N|ul.;;Unii Horodelskiej
+N|ul.;;Unijna
+N|os.;;Unitów Podlaskich
+N|ul.;;Unitów Podlaskich
+N|ul.;;Uniwersytecka
+N|ul.;;Uprawna
+N|skwer;Marii;Urban-Mieszkowskiej
+N|ul.;Generała pilota Witolda;Urbanowicza
+N|ul.;Generała Witolda;Urbanowicza
+N|ul.;Leona;Urmowskiego
+N|ul.;;Urocza
+N|ul.;;Urodzajna
+N|ul.;;Urszulki
+N|ul.;;Urwańska
+N|ul.;;Urzędowska
+N|ul.;;Usługowa
+N|ul.;;Ustronie
+N|ul.;;Ustronna
+N|ul.;;Ustrzewska
+N|ul.;;Uście
+N|ul.;;Uściługska
+N|ul.;;Uścimowska
+N|ul.;;Uśmiechu
+N|ul.;;Uzdrowiskowa
+N|ul.;;Vetterów
+N|ul.;;W Dolinie
+N|ul.;;Wachniewskiej
+N|ul.;Księdza Stanisława;Wachowskiego
+N|ul.;księdza Jana;Wadowskiego
+N|ul.;;Wagnera
+N|ul.;;Wajdeloty
+N|ul.;;Wakacyjna
+N|ul.;prof. Andrzeja;Waksmundzkiego
+N|ul.;Stanisławy;Walasiewiczówny
+N|ul.;Marii;Walciszewskiej
+N|ul.;Konstantego;Walczuka
+N|ul.;;Walecznych
+N|ul.;Zofii;Walencow
+N|ul.;Anny;Walentynowicz
+N|ul.;Anieli;Walewskiej
+N|ul.;;Waligóry
+N|ul.;K.;Wallenroda
+N|ul.;Konrada;Wallenroda
+N|ul.;;Wałowa
+N|ul.;;Wały Jagiellońskie
+N|ul.;;Wały Tarnogrodzkie
+N|ul.;;Wandy
+N|ul.;;Wandzin
+N|ul.;;Waniliowa
+N|ul.;Melchiora;Wańkowicza
+N|ul.;;Wapienna
+N|ul.;Bernarda;Wapowskiego
+N|ul.;;Waręckich
+N|ul.;;Warmińska
+N|ul.;;Warszawka
+N|al.;;Warszawska
+N|ul.;;Warszawska
+N|ul.;;Warsztatowa
+N|ul.;Ludwika;Waryńskiego
+N|ul.;;Warzywna
+N|ul.;Edmunda;Wasilewskiego
+N|ul.;;Wasilewskiej-"Wacek"
+N|ul.;Zenona;Waśniewskiego
+N|ul.;;Watykańska
+N|ul.;;Wawrzynowa
+N|rondo;św.;Wawrzyńca
+N|ul.;św.;Wawrzyńca
+N|ul.;Michała;Wazowskiego
+N|ul.;;Wądolna
+N|ul.;;Wąska
+N|ul.;;Wąskie Ścianki
+N|ul.;;Wąwozowa
+N|;;Wąwóz Bractwa Św. Łukasza - "Łukaszowców"
+N|;;Wąwóz Modesta Sękowskiego
+N|ul.;;Wczasowa
+N|ul.;;Wełnianka
+N|ul.;;Wenecka
+N|ul.;;Werbenowa
+N|ul.;Maryli;Wereszczakówny
+N|ul.;Aleksandra;Wereszki
+N|ul.;;Wertera
+N|ul.;;Weselna
+N|ul.;;Wesoła
+N|ul.;;Wesslów
+N|ul.;;Westerplatte
+N|ul.;;Weteranów
+N|ul.;;Wędkarska
+N|ul.;;Wędrowna
+N|ul.;;Węgierska
+N|ul.;;Węglarza
+N|ul.;Stanisława;Węglarza
+N|ul.;;Węglinek
+N|ul.;;Węglowa
+N|ul.;;Wiatraczna
+N|ul.;;Wiatraki
+N|ul.;;Wiązowa
+N|ul.;;Wichrowa
+N|ul.;;Wichrowe Wzgórze
+N|ul.;;Wiciokrzew
+N|ul.;Józefa;Widerlika
+N|ul.;;Widna
+N|ul.;;Widok
+N|ul.;;Widokowa
+N|ul.;;Wiejska
+N|ul.;;Wielka
+N|rondo;;Wielkiej Orkiestry Świątecznej Pomocy
+N|ul.;;Wielkopolska
+N|ul.;;Wieluńska
+N|ul.;;Wieniawska
+N|ul.;Braci;Wieniawskich
+N|ul.;;Wieniawskiego
+N|ul.;Henryka;Wieniawskiego
+N|ul.;Henryka;Wiercieńskiego
+N|ul.;;Wiertnicza
+N|ul.;;Wierzbicka
+N|ul.;;Wierzbina
+N|ul.;;Wierzbowa
+N|ul.;;Wierzchowicka
+N|ul.;;Wierzchowska
+N|ul.;;Wigilijna
+N|ul.;;Wiklinowa
+N|ul.;;Wiktoryn
+N|ul.;;Wilcza
+N|ul.;;Wilcza Wola
+N|ul.;;Wilczopolska
+N|ul.;;Wilczyńska
+N|rondo;Franciszka;Wilczyńskiego
+N|ul.;Franciszka;Wilczyńskiego
+N|ul.;ks. bp. Tomasza;Wilczyńskiego
+N|ul.;;Wileńska
+N|ul.;;Willowa
+N|ul.;ks. Krzysztofa;Wilskiego-Ciborowicza
+N|ul.;;Winiarska
+N|ul.;ks. Jakuba;Winiarza
+N|ul.;;Winogronowa
+N|ul.;;Wiosenna
+N|ul.;;Wirowa
+N|ul.;Bolesława;Wirskiego
+N|ul.;Stanisława;Wirskiego
+N|ul.;;Wiskowska
+N|ul.;;Wisznicka
+N|ul.;;Wiślan
+N|ul.;;Wiślana
+N|ul.;;Wiśniowa
+N|ul.;;Wiśniowe Wzgórze
+N|rondo;ppor. Stanisława;Witeszczaka
+N|ul.;Ignacego;Witkiewicza
+N|ul.;Jana;Witkiewicza
+N|ul.;Jana Koszczyca;Witkiewicza
+N|ul.;Stanisława;Witkiewicza
+N|ul.;Księcia;Witolda
+N|ul.;;Witoroska
+N|ul.;;Witosa
+N|ul.;Wincentego;Witosa
+N|ul.;Czesława;Witoszyńskiego
+N|ul.;;Wjazdowa
+N|ul.;Króla;Wł. Jagiełły
+N|ul.;Króla;Wł. Łokietka
+N|ul.;;Władysława I Łokietka
+N|ul.;;Władysława Jagiełły
+N|ul.;Króla;Władysława Jagiełły
+N|ul.;;Władysława Łokietka
+N|ul.;;Władysława Warneńczyka
+N|ul.;;Własna
+N|ul.;;Włodawska
+N|ul.;;Włosiankarska
+N|ul.;;Włoska
+N|ul.;;Włostowicka
+N|ul.;;Włościańska
+N|ul.;;Włóki
+N|ul.;;Wodna
+N|ul.;;Wodniczki
+N|ul.;;Wodociągowa
+N|ul.;;Wodopojna
+N|ul.;św.;Wojciecha
+N|ul.;Św.;Wojciecha
+N|ul.;;Wojciechowska
+N|ul.;;Wojenna
+N|ul.;;Wojewodzińska
+N|al.;;Wojska Polskiego
+N|ul.;;Wojska Polskiego
+N|ul.;;Wojskiego
+N|ul.;;Wojskowa
+N|ul.;;Wojsławicka
+N|ul.;;Wojsławska
+N|rondo;Edwarda;Wojtasa
+N|ul.;Edwarda;Wojtasa
+N|ul.;Antoniego;Wojtkowiaka
+N|ul.;Emilii i Karola;Wojtyłów
+N|ul.;Karola;Wojtyły
+N|ul.;;Wokulskiego
+N|ul.;Stanisława;Wokulskiego
+N|ul.;;Wola
+N|ul.;Henryka;Wolińskiego
+N|ul.;Marty;Wolińskiej
+N|pl.;;Wolności
+N|ul.;;Wolności
+N|ul.;;Wolność
+N|ul.;;Wolska
+N|ul.;Feliksa;Wolskiego
+N|ul.;Maryli;Wolskiej
+N|ul.;;Wolwinów
+N|ul.;Michała;Wołodyjowskiego
+N|ul.;;Wołynian
+N|ul.;;Wołyńska
+N|ul.;27;Wołyńskiej Dywizji AK
+N|ul.;27;Wołyńskiej Dywizji Piechoty AK
+N|ul.;Jana Pawła;Woronicza
+N|ul.;Jacka;Woronieckiego
+N|ul.;prof. Ignacego;Wośki
+N|ul.;prof.;Wośko
+N|ul.;Zygmunta;Woźnego
+N|ul.;Braci;Wójcickich
+N|ul.;Grzegorza;Wójcika
+N|ul.;;Wójta Stanisława
+N|ul.;;Wójtostwo
+N|ul.;;Wójtowicza
+N|ul.;Stanisława;Wójtowicza
+N|ul.;;Wólczańska
+N|ul.;;Wólka Profecka
+N|ul.;;Wrocławska
+N|ul.;Czesława;Wroczyńskiego
+N|ul.;;Wrońska
+N|ul.;;Wrotkowska
+N|ul.;;Wrotyczowa
+N|ul.;;Wróbla
+N|ul.;gen. Walerego;Wróblewskiego
+N|ul.;Walerego;Wróblewskiego
+N|ul.;Zygmunta;Wróblewskiego
+N|ul.;;Wróżki
+N|ul.;8;Września
+N|pl.;9;Września 1939r.
+N|ul.;Księży;Wrześniewskich
+N|ul.;;Wrzosowa
+N|ul.;;Wrzosowe Wzgórze
+N|ul.;;Wschodnia
+N|ul.;;Wspaniała
+N|ul.;;Wspólna
+N|ul.;;Wybickiego
+N|ul.;Gen. Józefa;Wybickiego
+N|ul.;Józefa;Wybickiego
+N|ul.;;Wyboista
+N|ul.;Leona;Wyczółkowskiego
+N|ul.;;Wygodna
+N|ul.;;Wygon
+N|;;Wylągi
+N|ul.;;Wylot
+N|ul.;;Wylotowa
+N|ul.;;Wymarzona
+N|ul.;;Wypoczynkowa
+N|ul.;;Wyrykowska
+N|ul.;S.;Wyrzykowskiego-"Zenona"
+N|ul.;;Wysada
+N|rondo;;Wysiedlonych Mieszkańców Zamojszczyzny
+N|ul.;Piotra;Wysockiego
+N|ul.;;Wysockiej
+N|ul.;;Wysoka
+N|ul.;;Wyspiańskiego
+N|ul.;Stanisława;Wyspiańskiego
+N|ul.;kard. Stefana;Wyszyńskiego
+N|ul.;Kardynała;Wyszyńskiego
+N|ul.;Kardynała Stefana;Wyszyńskiego
+N|ul.;ks. kard. Stefana;Wyszyńskiego
+N|ul.;Ks. Kardynała Stefana;Wyszyńskiego
+N|ul.;księdza Kardynała Stefana;Wyszyńskiego
+N|rondo;Prymasa Stefana;Wyszyńskiego
+N|ul.;Prymasa Stefana;Wyszyńskiego
+N|ul.;Stefana Kardynała;Wyszyńskiego
+N|ul.;;Wyścigowa
+N|pl.;;Wyzwolenia
+N|ul.;;Wyzwolenia
+N|ul.;;Wyżynna
+N|ul.;;Wzgórze
+N|ul.;;Wzgórze Kamień
+N|ul.;;Za Rzeką
+N|ul.;;Za Torami
+N|ul.;;Zabagonie
+N|ul.;;Zabaszta
+N|ul.;;Zabielska
+N|pl.;Księdza Piotra;Zabielskiego
+N|ul.;Franciszka;Zabłockiego
+N|ul.;;Zaborska
+N|ul.;;Zabrowarna
+N|ul.;;Zabuże
+N|ul.;;Zabytkowa
+N|ul.;;Zachodnia
+N|os.;;Zachód
+N|ul.;Jana;Zachwatowicza
+N|ul.;;Zacisze
+N|ul.;;Zaciszna
+N|ul.;;Zaczarowana
+N|ul.;;Zadębie
+N|ul.;;Zadworna
+N|ul.;;Zagajnikowa
+N|ul.;;Zagłoby
+N|ul.;Onufrego;Zagłoby
+N|ul.;;Zagonowa
+N|ul.;;Zagóra
+N|ul.;;Zagórze
+N|ul.;Zofii;Zagrobskiej
+N|ul.;;Zagrodna
+N|ul.;;Zagrodowa
+N|ul.;;Zagrody
+N|ul.;Kazimierza;Zagrodzkiego
+N|ul.;;Zagrządki
+N|ul.;;Zagumienna
+N|ul.;;Zahajkowska
+N|ul.;;Zajazd
+N|ul.;gen. Józefa;Zajączka
+N|ul.;Gen. Józefa;Zajączka
+N|ul.;;Zajezierze
+N|ul.;;Zakamarek
+N|ul.;;Zakącina
+N|ul.;;Zakątek
+N|ul.;;Zakątna
+N|ul.;;Zaklikowska
+N|ul.;;Zakładowa
+N|ul.;;Zakole
+N|ul.;;Zakolejna
+N|ul.;;Zakopiańska
+N|ul.;;Zakościele
+N|ul.;;Zakościelna
+N|ul.;;Zakościelne
+N|ul.;;Zakręt
+N|ul.;;Zakrzowiecka
+N|ul.;;Zalesie
+N|ul.;;Zaleska
+N|ul.;Wiktoryna;Zaleskiego
+N|ul.;Ks. Ludwika;Zalewskiego
+N|ul.;;Zamczysko
+N|ul.;Ludwika;Zamenhofa
+N|ul.;;Zamknięta
+N|ul.;;Zamkowa
+N|ul.;;Zamłynie
+N|ul.;;Zamojska
+N|ul.;Tomasza;Zamojskiego
+N|ul.;;Zamoyskich
+N|rondo;Róży i Jana;Zamoyskich
+N|ul.;Augusta;Zamoyskiego
+N|rondo;Hetmana Jana;Zamoyskiego
+N|ul.;Hetmana Jana;Zamoyskiego
+N|ul.;Jana;Zamoyskiego
+N|ul.;Maurycego Klemensa;Zamoyskiego
+N|ul.;Róży Marii;Zamoyskiej
+N|ul.;;Zamożna
+N|ul.;Tomasza;Zana
+N|ul.;;Zaokręgiem
+N|ul.;;Zaolzie
+N|ul.;;Zapiasek
+N|ul.;Gabrieli;Zapolskiej
+N|ul.;Majora;Zapory
+N|ul.;;Zapowiednik
+N|ul.;Tadeusza;Zaremby
+N|ul.;;Zaródki
+N|ul.;;Zarówie
+N|ul.;;Zarwanica
+N|ul.;;Zarzecze
+N|ul.;;Zarzeczna
+N|ul.;;Zasadnia
+N|ul.;;Zastawek
+N|ul.;;Zastawie
+N|ul.;;Zastawna
+N|ul.;;Zastodolna
+N|ul.;;Zaszkolna
+N|ul.;;Zatylna
+N|ul.;;Zaułek
+N|;;Zaułek Hartwigów
+N|ul.;;Zaułek Nadrzeczny
+N|ul.;;Zaułek Napoleona Ordy
+N|;;Zaułek Władysława Panasa
+N|ul.;;Zawadki
+N|ul.;;Zawadówka
+N|ul.;;Zawadzka
+N|ul.;;Zawadzkich
+N|ul.;Feliksa;Zawadzkiego
+N|ul.;Władysława;Zawadzkiego
+N|ul.;Tadeusza;Zawadzkiego "Zośki"
+N|ul.;;Zawale
+N|ul.;;Zawalna
+N|ul.;;Zawieprze
+N|ul.;;Zawieprzycka
+N|ul.;;Zawilcowa
+N|skwer;bł. ks. Antoniego;Zawistowskiego
+N|ul.;Księdza Franciszka;Zawiszy
+N|ul.;;Zawiszy Czarnego
+N|ul.;;Zbożowa
+N|ul.;;Zbulitowska
+N|ul.;Franciszka;Zdanowskiego
+N|ul.;Stefana;Zdanowskiego
+N|ul.;Jana;Zdebika
+N|ul.;;Zdrojowa
+N|ul.;;Zdrowa
+N|ul.;;Zdrowotna
+N|ul.;Emila;Zegadłowicza
+N|ul.;Aleksandra;Zelwerowicza
+N|ul.;;Zemborska
+N|ul.;;Zemborzycka
+N|pl.;;Zesłańców Sybiru
+N|ul.;;Zesłańców Sybiru
+N|ul.;;Zgoda
+N|ul.;;Zgodna
+N|ul.;Czesława;Zgorzelskiego
+N|ul.;Księdza Stanisława;Zielińskiego
+N|ul.;;Zielna
+N|ul.;;Zielona
+N|ul.;;Zielone Wzgórza
+N|ul.;;Zielone Wzgórze
+N|ul.;;Zielonki
+N|ul.;;Zielony Zakątek
+N|ul.;;Ziemiańska
+N|ul.;Jadwigi;Ziemięckiej
+N|ul.;;Ziemowita
+N|ul.;;Ziemska
+N|ul.;;Zimna
+N|ul.;;Zimna Woda
+N|ul.;;Zimowa
+N|ul.;Włodzimierza;Zinkiewicza
+N|ul.;;Ziołowa
+N|ul.;Wiktora;Ziółkowskiego
+N|ul.;;Złocista
+N|ul.;;Złota
+N|ul.;;Złota Róża
+N|ul.;;Złote Piaski
+N|ul.;;Złotej Rosy
+N|ul.;;Złotnicza
+N|ul.;;ZOR
+N|ul.;;Zorza
+N|rondo;;Zrzeszenia Wolność i Niezawisłość
+N|skwer;Leonarda;Zub-Zdanowicza
+N|ul.;;Zuchów
+N|ul.;;Związkowa
+N|ul.;;Związku Strzeleckiego
+N|ul.;;Zwierzyniecka
+N|ul.;Stanisława;Zwierzyńskiego
+N|ul.;Edwarda;Zwolskiego
+N|ul.;;Zwycięska
+N|ul.;;Zwycięstwa
+N|ul.;Króla;Zygmunta
+N|ul.;Wincentego;Zygmunta
+N|ul.;;Zygmunta Augusta
+N|ul.;Króla;Zygmunta Augusta
+N|ul.;;Zygmunta I Starego
+N|ul.;;Zygmunta II Augusta
+N|ul.;;Zygmunta Starego
+N|ul.;;Zyndrama z Maszkowic
+N|ul.;;Źródlana
+N|ul.;;Żabia
+N|ul.;Kapitana;Żabickiego
+N|ul.;;Żaków
+N|ul.;Jana;Żardeckiego
+N|ul.;;Żarnowiecka
+N|ul.;Dr Stefana;Żarnowskiego
+N|ul.;;Żdanowska
+N|ul.;Mariana;Żebrowskiego
+N|ul.;;Żeglarska
+N|ul.;;Żelazna
+N|ul.;;Żelazowej Woli
+N|ul.;;Żelechowska
+N|ul.;"Studenta" Henryka;Żelezika
+N|ul.;;Żeromskiego
+N|ul.;St.;Żeromskiego
+N|ul.;Stefana;Żeromskiego
+N|ul.;Narcyzy;Żmichowskiej
+N|ul.;;Żmigród
+N|ul.;;Żniwna
+N|ul.;;Żołnierska
+N|ul.;;Żołnierzy I AWP
+N|ul.;;Żołnierzy II AWP
+N|ul.;;Żołnierzy Korpusu Ochrony Pogranicza
+N|ul.;;Żołnierzy Niepodległej
+N|rondo;;Żołnierzy WiN
+N|ul.;;Żołnierzy WiN
+N|ul.;;Żołnierzy Wojska Polskiego
+N|ul.;;Żołnierzy Września
+N|rondo;;Żołnierzy Wyklętych
+N|skwer;;Żołnierzy Wyklętych
+N|ul.;;Żonkilowa
+N|ul.;Hetmana;Żółkiewskiego
+N|rondo;im. Stanisława;Żółkiewskiego
+N|ul.;Stanisława;Żółkiewskiego
+N|ul.;Joanny;Żubrowej
+N|ul.;;Żulinki
+N|ul.;Romana;Żulińskiego
+N|ul.;;Żuławy
+N|ul.;;Żurawia
+N|ul.;;Żurawinowa
+N|ul.;;Żurka
+N|ul.;;Żużlowa
+N|pl.;;Żwirki i Wigury
+N|ul.;;Żwirki i Wigury
+N|ul.;;Żwirowa
+N|ul.;;Życzliwa
+N|rondo;płk. Zygmunta;Żyłki-Żebrackiego ps. Żeliwa
+N|ul.;;Żyrzyńska
+N|ul.;;Żytnia
+N|ul.;;Żywiecka
+N|ul.;Wojciecha;Żywnego
+L|0010553|p,5u,5f,26,2n,7l,3p,25,d,9,21,1r,3c,46,1j,r,d4,4p,o7,g,6x,1k,8d
+L|0010599|3w,n,75,28,2q,58,19,q,3g,7w,4t,b3,gd,3y,13,27,4w,1i,dw,2j,37,50,56
+L|0010872|p,2a,1,79,d,j,g,o,4l,41,3s,3e,b,1r,6s,2u,t,33,ik,5p,a7,5,c,1v,8f,1k,1k,49,4z,2i,4
+L|0010949|iu,9,2r,us,2t,1j,4a,5t,s,by,58,1d,c,c1,1b,45
+L|0010961|11w,8d,d6,f4,ag,6o
+L|0011179|aj,4g,7h,2g,35,4s,2g,d7,3t,8m,78,19,7,36,6e,gm,5f,59
+L|0011216|d2
+L|0011274|aj,1p3
+L|0011328|4w,6p,1u,3f,6z,21,f,73,8q,1j,b,g,6p,l,94,51,1n,78,3k,6t,1p,6,3c,6,4k,1c,da
+L|0011340|2ck
+L|0011653|p,3e,q,e1,5v,2h,5n,as,r,2q,2y,3f,20,1j,11,5u,4t,i8,4t,22,5q,49,1e
+L|0012180|gx,k,1d,6t,76,bj,8r,d,7,79,65,4n,7f,79,c,6,4t,9,1t,1k,2b,2g,11,o,1z
+L|0012799|u3,4h,3c,8,1u,2r,1n,3h,jl,f,h6,1d,5b,22,1e,bg,1u
+L|0012960|4m,5,1s,2a,1l,31,2e,1o,7,4d,b4,7,3c,1g,1u,r,1d,47,c,16,2k,1q,1m,m,3,13,1j,24,26,1n,f,1j,1t,f,s,r,1k,6,i,8w,1m,9,y,2n,2m,1,3w,2j,13,4q,1,6d
+L|0012990|zi
+L|0013110|zi
+L|0013729|18c,nh,18,pp
+L|0013758|6j,27,7g,1b,8r,k6,1d,4n,11,x,2m,av,6q,2u,1q,12,1,4k,2b,4m,33,4c,85
+L|0014255|5i,o,78,h,8w,h7,4m,m,5g,6c,2h,5v,2j,al,9u,aq,22,15
+L|0014456|dv,4x,ag,5c,2j,11,5h,48,2i,q,4e,1j,4a,22,1z,f,3u,51,6r,3p,1v,3,4q,2m,56,4z,3z,j
+L|0014640|6j,m7,dc,2a,1x,b,64,2r,1j,2h,7m,om,8d,4c
+L|0014769|24l
+L|0015361|ae,s,29,g,3j,79,10,88,49,g,n,4e,1l,b,s,2i,87,79,2u,6,m,t,26,34,n,ag,1y,4,4m,15,1o,t,46,10,m,7c
+L|0016142|am,65,71,91,2o,4h,s,2m,eh,98,s,26,c,2e,dn
+L|0016290|am,51,1,va,nd,hl
+L|0016337|ae,zv,96,j4,3u
+L|0016478|zh,17,g,s,5p,bu,3j,h,1t,pt,4m,ai
+L|0016857|1wm
+L|0016952|m,bn,6u,f3,e,3c,8,4a,4,n,17,44,3t,33,3m,fj,qn,a
+L|0016975|18c
+L|0017006|am,1e,1f,3c,79,1v,8w,q,59,5j,4s,4e,40,1t,15,18,fx,ey,4z,y,5u,26
+L|0017124|6j,43,2s,h,1r,38,cj,37,q,4o,4e,1v,2,1k,3h,d,3v,1g,6o,47,t,5a,n,4j,c,5l,1d,l,4,1o,3a,1d,x,h,j,3t,x,1q,1z,1i,5l
+L|0018721|5h,59,mn,6l,58,8m,e1,6,29,hs,39,40,5s,3t,b
+L|0019330|wt,53,5p,1l,a9,ce,5f,dg,1n,l,aj,25
+L|0019689|gx,gv,1i,40,4b,6q,2e,dk,1k,ba,7r,3,6s,7c,o,21,x
+L|0020066|1sm
+L|0020652|2f,9m,1e,fb,1a,1g,1,5q,2r,3n,89,87,39,2d,fw,3g,1d,7d,50,5p,40
+L|0020681|on,iy,dd,65,lw,1p,ie
+L|0020770|wt,2h,8b,82,aq,15d
+L|0020824|t8,1lp,4
+L|0020830|1u,jf,15i,o6
+L|0020847|82,5c,1,3i,cy,5k,1,2g,22,3n,7g,4e,1j,4a,1j,4a,s,63,b3,1p,6,f,c6,l,3m,4
+L|0020853|13y,4e,p6,fh,dq
+L|0020860|c2,n8,4o,4x,nw,ty,51,3e
+L|0020907|11w,22,3n,6x,2y,7s,6l,bp,8l,t,5u
+L|0021730|di,7m,1,1m,16,q,d9,8d,ap,3x,g,6i,1s,9i,5w,g2,1l,2a,1h
+L|0022013|df,6n,9t,81,1e,o,s,7g,79,1j,4d,6i,2z,6z,1c,79,c,9,4q,72,30,5v,t,16
+L|0022020|k2,zd,ce,2z,6z,8l,fd,5v,t
+L|0022119|o2,d,3e,8c,n4,6b,58,3o,bw,1c
+L|0022467|2hp,cl
+L|0022527|6i,3a,2w,r,np,1u,c,o,6b,t,r,2i,3c,n,1c,4,19,3w,2b,2e,29,t,43,cf,1q,22,u,3m,4b,5x,3o,15
+L|0023053|p,g2,7l,b,2h,as,12,10,s,5j,1k,2h,6o,a3,s,1p,fh,2w,i,3a,72
+L|0100983|98,36,4a,an,5i,53,4,5l,k,24,1k,df,6l,kd,5f,o,5d,1r,17,7j
+L|0101215|4k,6h,15,4h,2g,bk,57,et,n,a6,p,7,73,a3,9a,6k,6d
+L|0101238|iu,m,30,n,hw,kh,5a,2p,4l,p2,2n
+L|0101244|3y,p,cq,3c,19,f,15,4d,16,5w,b,1g,k,5x,f,1m,15,40,u,9c,1,9m,34,i,5r,22,m,o,r,1k,16,6b,1j,i,1p,16,u,45,2v,4n
+L|0101391|p,3g,5q,r,n,10,5,1g,2x,a2,3a,3,m,21,1r,2b,57,20,a,3v,3n,2c,62,ht,h,6h,1d,2j,4u,1k,54,4,n
+L|0101400|ak,1u,8h,76,3p,fz,r,3t,57,1i,jk,5t,o,6o,4e,4c
+L|0101416|4k,9i,91,4i,8w,b5,61,7l,14,4e,8,yr,3i
+L|0101445|5m,7t,9q,6j,dx,2c,c,1p,5,3p,u,se,5u,3,ci,1h,1c,2y,37
+L|0101505|df,3i,ad,2l,72,ay,j6,4,47,26,8d,di,22,l,17,8n,i,h
+L|0101528|hq,e9,5x,22,6a,d7,v,7j,1f,59,c7,6,3,gt
+L|0101681|2u8
+L|0101706|17l,1mn
+L|0101847|df,q,2m,6,dm,hc,36,4e,7c,4n,2i,gs,6,6v,17,53,5v,2l
+L|0101853|81,64,7,4,1p,p,6b,6t,1f,ef,7l,ck,3z,8w,4m,1t,1,go,8p
+L|0101860|7n,8i,p,bi,1k,am,1f,s,3,72,cj,3d,46,1m,x,hx,q,u,3c,8e,4
+L|0101936|am,1s,11,bp,7p,53,22,3e,9,1l,55,1m,3i,5t,a9,32,70,3l,1k,6,7o,5i
+L|0102404|am,1s,4j,dl,7e,22,3n,2o,4s,2o,8o,5g,a8,12,o,73,3,4q,22,6o,r,2k
+L|0102462|82,ko,96,50,ak,139,1y,86
+L|0102500|kv,3s,5g,1n,3r,1e,11,8,3y,20,3p,g,9,50,7,1b,20,4a,6l,a8,au,2s,8q,j,8d
+L|0102924|df,fb,96,5p,84,1s,6,3b,4a,3,12,3w,1k,fm,88
+L|0103131|3r,3x,4j,7,z,1x,bx,ap,8,1a,47,48,bc,26,11,4w,l,ba,6q,df,14,4n,1,29,e
+L|0103390|3n,7a,bt,4s,ae,22,n,30,4v,cr,16,5g,7k,25,7h,1v,3,4,4k,2,3m,2,3c,32
+L|0103527|p,9x,1s,11,5f,b9,6s,11,46,1j,h,14,31,b8,1g,d,3,63,f,2z,e7,1d,i,4t,22,6a,1q
+L|0103993|gu,ah,11,1r,f,18,2u,3p,1p,1d,r,1o,4q,iy,1y,hi,3,4q,5,94,2u,4y
+L|0104410|1n6
+L|0104604|124,n4,6l,l3,2r
+L|0105667|ce,3o,40,5v,c7,1u,z,6u,2,6z,6g,9k,2g,2z,2w,5w,1y,4a,g,4h,91,13,2y
+L|0105934|p,cq,bi,cz,46,kb,74,3v,cr,u,4q,3r,4z,1i,1t,5u
+L|0105986|5t,29,e1,m,f7,3e,w,1f,1l,12,fd,68,iv,6,4t,3p
+L|0106388|ce,pi,8c,7f,1b,cv,nu,2m,8x,57
+L|0106885|bl,101,k3,ah,am,cx,1t,7,1i,z
+L|0107175|8h,1x,2,1y,x,2s,ha,16,3d,m,1g,24,e,1w,u,12,7f,27,b,1,s,2n,6p,e,4,11,2h,8t,q,6v,6,1w,6j,8h,7,38,18
+L|0107821|4p,c,31,4c,l,g,3i,25,8s,21,8,2q,53,22,l,e,2o,r,u,2m,1r,r,6o,5f,51,f,2z,8b,5w,v,u,9,4q,g,n,dn,35,1
+L|0108393|gx,7e,2e,63,5b,1v,24,4b,3y,1e,3q,h,12,3x,6y,t,gd,1p,6,3,9b,45,1s,2i
+L|0109027|ce,rk,24,1j,1l,6o,3l,au,15,b,ha,1d,5b
+L|0109777|4k,2l,9,n,1a,12,a,2w,63,28,1z,4b,1p,5,cu,v,2r,83,2o,q,h,3q,54,2o,1h,14,c,8,7,7,4,1,40,20,1t,5t,3y,2q,f,21,1s,17,d,25,6,26,1,14,4,3j,y,11
+L|0109790|17,26,p,3l,52,20,6b,2,2,bq,6o,1e,n,4q,1f,2v,2k,7,65,1t,4w,x,k,co,5v,5o,5b,21,a,73,7,1
+L|0109850|m,3,3g,1k,46,p,p,2z,1h,12,71,1r,22,7,2b,3,m,j,f,13,27,4p,56,2b,t,8,2g,17,5w,18,z,72,q,4f,5q,8,g,2m,7o,3,1i,1q,11,l,1k,s,j,1x,1w,j,2u,4n,d
+L|0109949|5c,1r,3j,5i,2q,21,16,3m,9l,9,4b,2a,n,w,5,22,1x,3c,2f,1z,2d,4l,3e,1n,dy,n,4d,c,28,2r,2l,o,9,4a,k,3n,1j,p
+L|0110289|ce,bz,et,13x,hs
+L|0110645|1z,63,2k,1s,11,3c,q,1b,3u,1e,5v,4p,x,4h,s,2v,r,3f,5p,3i,20,2a,15,5g,26,s,e8,1d,c,6,3,4q,4l,3r,x,2q,1j,25,13,15
+L|0111047|df,oh,2u,2v,2n,ll,9,im
+L|0111107|am,1s,11,u6,7p,ey,km,22,2r,7s,5q
+L|0111283|81,4d,v7,35,4z
+L|0111337|bl,59,19b,g1,c6,1k,gx
+L|0111432|9v,r,67,a0,i,4h,53,2u,30,50,r,3c,24,a,8m,51,a8,h,ae,2r,g3
+L|0111484|p,9x,jh,g,2a,bj,16c,71
+L|0378052|82,5d,g,tq,1i,16,6u,86,14,5g,j8,4m
+L|0378253|7u,3x,1o,g,1i,1k,n1,5,3i,6o,c4,5g,9,k,f,h,1z,d,79,5w,1v,7,1a,3c,1q,13,4m,c,4a,1h,e,2u
+L|0378626|5g
+L|0378885|p,c0,g1,1d,5f,8u,u,2j,5y,7l,bh,ec,f4
+L|0379063|kq,3a,b9,9,5a,2t,bu,5t,6l,v9,d
+L|0379850|dv,6b,32,eo,5p,3m,5f,11,15,3g,33,12,t,4n,t,4c,65,5w,1y,1z,2r,1a,1c,1l,7u,37
+L|0379867|23c
+L|0380540|p,71,2w,2c,h,g,58,dq,1r,p,2n,j,1j,3n,1i,3,13,q,4q,1v,3e,4b,6k,t,w,9l,1y,5n,9,9m,z,i,17,8,1c,5b
+L|0380669|2cz
+L|0380824|p,bk,58,5f,2w,3w,35,53,1,10,1,4n,r,1g,h,1g,i,9,39,9j,x,8,51,o,1g,8j,h,6h,8,15,c,1n,3c,2u,48,1a,20,1r,y,h,2o,m
+L|0380971|p,9x,2t,f,3,aq,43,1d,p,y,2u,5e,24,34,8i,3a,av,j1,6v,1k,5v,79
+L|0380988|5f,25,8y,2b,2f,d,3,6,2s,7a,q,8b,2f,e,4q,4,5m,2s,4i,52,x,7,3v,z,5q,27,4i,4,1p,h,73,o,53,56,34,j
+L|0380994|5b,3v,33,76,3i,2q,4g,o,64,11,46,1,1i,3n,h,qb,4i,6h,2,3r,3,7p,1c,1w,z,2v
+L|0381002|30,2q,1x,2m,1c,8l,4h,19,1c,4q,36,13,4b,f,5c,2u,8x,38,1j,2z,1o,24,e,14,4,1n,5d,z,16,r,1d,2n,1d,3z,q,r,1x,3p,20,e,59,4,39,e
+L|0381025|90,et,1nm,lv
+L|0381031|m,3,3g,23,d,41,n,p,b,g,15,a,2,2,r,1s,3,1q,6,25,t,6,4k,6,9,s,7,1w,f,3,d,9,y,5,g,i,1r,s,1j,2u,1a,1i,6,10,f,2,8,f,1z,i,h,1,h,9,5,22,1,f,r,f,5,24,k,2e,9,w,7,6,1a,j,1e,1f,21,33,o,8p,h,1v,1,p,9,3p,1b,2j,8,18,2,1j,1t,20,c,2g,t,1l,1,8,2i,4,4n
+L|0381048|ak,2v,4,1f,4k,n7,33,5i,k,6h,b,8f,4i,2y,aq,ay,3q,i,7h
+L|0381054|tv,lz,1i0
+L|0381060|24,q8,hi,e3,6h,d8
+L|0381083|r,3s,b8,o7,2u,x,7c,3n,go,13,ef,5x,50,5,1w,2,p
+L|0381090|p,5q,47,o,ji,j,14,25,2l,3s,10,1o,i,3j,l,3n,1d,1,1d,4,30,24,6i,6,15,7,1j,46,4n,59,1l,1g,p,6l,65,5,15,3k,3p,d
+L|0381108|1z2,3k,fk
+L|0381114|sg,11w,4
+L|0381120|3u,q,4s,l6,29,aw,6r,bz,6g,mp,5y,b8
+L|0381137|e2,1j,u9,60,aj,f,yu,d0
+L|0381143|164,l,7n,dc,ed,h
+L|0381373|8z,by,33,5a,5y,2o,22,58,6h,20,2c,3e,1y,3z,d,3c,m,2t,6p,x,6x,4,7a,c2
+L|0381456|am,8h,1s,3,7f,7h,11,2n,g,24,v,1f,1x,1g,i,9,4,5f,2z,2z,20,5w,23,3,1d,8,6h,5e,1k,1p,4z,1q,3l,u,27,e,j,8,2i,2c,3a,j
+L|0381462|1v1
+L|0381479|5f,11b,v,9n,j7,v8
+L|0381491|2ru
+L|0381522|p,2,25,2g,2b,2z,23,86,3n,4,1y,3a,2l,1,n,21,4d,3b,5f,d,2q,8,1h,4q,19,2i,f,a,3l,6e,5x,5,b,2b,45,5u,45,19,c7,9,7
+L|0381539|1hz
+L|0381568|1hz
+L|0381580|45,aj,66,54,4u,6s,7a,2s,48,2x,3j,9,70,1i,4b,95,34,1e,6b,10,z,2,fa
+L|0381605|cq,s7,1s,7,2a,7m,v,6o,5y,2d,1o,ep,22,35,1h,71,bg
+L|0381628|2rz
+L|0381663|cp,ex,qd
+L|0381723|14x
+L|0381752|k4,eg,3c,4t,e7,4c,8,6m,cq,av,8c
+L|0381781|1hz
+L|0381812|46,3d,b,2c,ay,9j,79,dt,59,do,83,e,jm
+L|0382036|df,al,fy,dv,1m,2t,30,3,4g,3d,sf,51,5t
+L|0382480|a,9w,39,4f,72,82,1m,p,2n,22,v,1a,1i,r,d,e,3,13,1k,2g,3e,1h,b,m,cl,ah,5w,1d,c,6,4j,a,72,d,d,8y
+L|0382830|c5,nc,m,1t,3q,g,34,8h,1i,1t,1a,1p,4s,13,1m,o,bp,58,1v,11,11,2r,2t,dx
+L|0382852|l5,1r,f0,22,58,er,5v,21,5n,bj,2w,b4,g,49,9
+L|0383024|x4,kv,de,4h,4v,tp
+L|0383656|65,4d,2p,7,h,27,v,n,5c,15,65,6x,t,8,1u,s,y,e,n,1n,u,13,42,1e,3u,1f,ag,f,t,u,2,8j,f,d,a,o,1s,1h,1z,5,1q,11,3i,4,7l,22,1,2j,2,1c,v,4x
+L|0383716|1w6
+L|0383739|on,1b7
+L|0383745|p,m7,j6,zz
+L|0383774|1ve
+L|0383780|28z,hq
+L|0383797|fz,y,1yi
+L|0383834|2,b7,jj,y,1zw
+L|0383840|gr,y3,hs,rd
+L|0383863|1ho
+L|0383892|hh,5f,14,5n,11d
+L|0383969|19f,ec,7z
+L|0383998|df,3c,mk,95,a1,ar,tb
+L|0384035|p,9x,23,4s,1d,pi,9c,3a,2h,7z,an,6y,1p,71,1k
+L|0384041|1hn,1,dh,mm
+L|0384443|7h,2e,3j,6o,2u,3,1o,95,4c,5,1p,s,1c,34,8h,1s,m,x,4d,12,12,1j,2v,t,26,12,56,2r,4m,m,1v,bv,2f,11,30,38,16
+L|0385187|1gi
+L|0385550|23a
+L|0385715|7r,5e,q,90,f1,12,68,n,5,4a,6q,av,36,84,6i,3b,15,3c,w,2a
+L|0385773|p,bk,6,6o,1s,22,5p,1h,e9,u,31,8r,ag,f,79,1r,18,h,6h,1v,4j,a,4,1y,bg,5l
+L|0385780|3h,6e,dt,3x,9f,5n,2,2h,2j,2y,13,26,10h,2,65,6t,9
+L|0385827|3y,av,6,6n,31,3p,1c,1x,b,4s,2e,j,26,b,2a,7d,n,1c,18,1u,y,1e,37,4s,s,2b,3m,b9,1d,c,6,4t,y,18,59,1c,3x,2j
+L|0385862|1s,mv,1l,bo,7a,2n,34,2p,2,1r,1j,2h,1u,10,5k,b1,h2,7u
+L|0385916|cp,63,b,dq,2o,44,d,24,9n,1x,3c,i,3s,9k,79,59,1r,1n,4p,e,db
+L|0386181|4u,38,5d,l5,3b,13,10,1q,e,1j,2o,1g,i,d2,14,4y,1b,w,s,26,6p,1,3q,23,1v,3,1e,l,2s,1,4y,33,5f,1y
+L|0386241|13y,4e,1x,g4,69,i2,8l,4v,3m
+L|0386488|1w,s,5e,2k,n,1g,7d,4l,5w,17,13,18,1g,4h,24,2a,8,39,95,2h,1u,6k,iv,9,4q,3m,46,l,8d
+L|0386650|1m
+L|0386844|p,4w,9,6,4m,17,1m,5d,b,4v,p,t,a1,2f,12,d,n,s,7,2o,1l,2j,3c,1x,7,i,1,1r,1j,4b,14,5g,1p,s,i,3,2,o,65,79,1d,i,7,1t,2t,22,4s,1i,15,2i,8,y,1l,36,15
+L|0386873|5l,9v,6e,1w,6d,g,1m,6r,36,v,o,r,17,bx,3d,f,1y,ev,8n,1s,61,s,1t,94,10
+L|0387453|p,3v,1u,48,n,2v,3b,1f,30,1s,11,5g,7,24,1o,i,6d,15,2a,o,6,3a,2u,2d,3b,av,9,k,w,1u,76,1g,3c,4,1l,1p,6,8f,3v,v,15,6q,j,g,p
+L|0387499|31,t,1h,29,1s,2j,3,b,1t,1j,x,3b,43,3p,7,k,4,1n,d,b,49,c,7b,2,1f,10,5j,o,y,1n,r,32,53,6k,fn,5e,2,65,1x,c5
+L|0387507|p,5j,j,3v,n,p,1w,a,2k,h,6n,31,3z,21,87,32,14,31,3n,54,j,1h,5a,u,mt,6,u,2s,22,6a,e,39,44
+L|0387513|m,ec,5x,8t,f,1n,2u,2b,5u,2h,3a,2l,1d,x,2l,9p,1t,an,6z,3s,b2,5,85,b
+L|0387625|82,2y,15,1,j,q,9h,1r,au,2f,1q,2g,17,c,1l,bs,20,1z,b,6u,1x,t,79,6y,1p,6,4q,3,3m,5i,13,6j
+L|0388228|255
+L|0388642|p,7d,43,1a,g,32,5z,14,n,3p,5c,48,22,s,2v,r,8a,4c,1a,45,5p,k,ah,ea,2,3j,84,3b
+L|0389386|1a,2h,6v,1s,4l,1,4r,b,u,6p,38,1r,3v,m,x,4e,u,q,1x,b,27,4n,20,21,2c,12,x,1m,2k,d,20,3f,5v,m,7a,2,1v,2l,ey,1f,j
+L|0389759|24q
+L|0389794|89,56,42,6m,fv,q,2x,1l,2l,2k,b0,5z,j,ba,1s,26,3n,9z,2s,8y
+L|0389920|7u,8,5d,17,6k,4i,9t,26,33,4b,3j,8e,5f,3w,13,2,f,16,2v,6h,64,k,1p,9,b,4f,5s,20,1p,5b,45
+L|0389943|j,g8,6,7q,4k,5d,3c,l,1h,t,2u,4v,u,1r,4e,1j,4a,1j,1p,2u,1c,d,2v,k,cl,8q,20,3f,2v,1r,4p
+L|0390018|p,cq,3i,7f,a8,91,a2,3b,9s,o,4g,f0,gw
+L|0390053|2x5
+L|0390449|ci,47,ho,4s,a0,6a,ce,2h,1k,79,41,5k,b2,5l
+L|0390573|da,4w,m,gp,84,o8,9q,7g,1d,c,6,c8,d,8y
+L|0390633|257
+L|0391041|17l,nt,f,h6,9x
+L|0391638|6v,w,b,5d,3a,s,3u,at,1y,3u,8,1r,3,s,1c,1j,b7,n,1j,9,c,1y,2w,4x,j,3,13,1r,7,2k,v,1o,33,1s,1,c,3r,1d,1a,1r,3s,5x,o,2,l,52,2y,i
+L|0392106|dv,116,5x,68,43,k,ba,kx,55
+L|0392572|1xi,65,b7,d5
+L|0392684|25,8h,2t,3b,1,2s,4f,2s,1i,4,w,v,1k,58,11,4,w,12,z,1s,w,r,u,3a,43,14,3b,1a,33,60,3,f,9,77,2s,2,10,5w,1d,c,1i,2w,9u,8,r,14,26,y,3g
+L|0393117|60,ch,58,9q,br,2n,di,aj,79,2g,ou
+L|0394097|p,5j,34,1a,n,2l,2x,7l,40,4,18,f,3,d,8,1,y,2u,2b,6h,10,44,3e,5m,bw,h0,7d,1k,4j,l,39,44,2w
+L|0394312|wt,40,17,iy,4d,3b,gw,7e,5d,8w,16,r,4u
+L|0394418|c5,w7,gw,pg,4z
+L|0394499|o0,jl,2o,51,5o,3c,y,3,u,3o,20,18,hn,9z,2t,8x,2i
+L|0667891|5h,78,q,g,29,7r,1u,3a,4t,e,31,p,8,5h,2o,1r,g,11,h,1c,45,1j,30,7v,k,3g,6t,18,1p,3g,1p,6,7,4m,1l,11,m,y,5l,28,q,10
+L|0674247|44,9b,3i,k,76,4u,53,5e,24,1j,2o,96,1n,2d,2y,3w,q,u,26,82,6y,1p,6,26,2n,2m,4t,o,6o,1z,15
+L|0677100|c1,4w,9b,1a,cg,3n,7g,4e,6y,5p,dh,3g,1p,6,7,c1,60,v,3x,x,4
+L|0677151|am,wz,6,37,kv,2z,a3,5t,4z,bz,g
+L|0677180|3r,s,7e,1i,1u,28,1d,fb,o,o,4h,3n,2o,p,1i,16,1o,45,1j,n,1h,d,1w,12,e,52,t,1d,t,4t,5y,3g,1d,i,3,1z,2r,3s,3n,y,1v,w,v,1p,7,3r,l,x,4
+L|0677257|dv,gi,56,1,1,2,3,1,2d,1g,e,fh,1j,2x,1d,3,6r,1g,c1,3g,1y,1s,2y,5x,1i
+L|0677317|23y
+L|0677412|am,oc,j,84,4v,8i,5f,5g,9,16,cb,55,6,cl,3c,x,1n
+L|0679345|2vq
+L|0679380|am
+L|0679411|ji
+L|0679457|7c,3g,5z,6z,au,91,3d,8h,1j,ag,o,1g,1a,2j,14,bw,1,l,4f,b,c1,2,11,b
+L|0679629|16p
+L|0679687|c9,49,2c,n8,65,9,2l,gs,h6,65
+L|0679799|ov,1kg
+L|0679813|1up,43,tv
+L|0679871|1uc,12,144
+L|0679931|2vq
+L|0680058|1c7,12n
+L|0680153|1jg
+L|0680176|2cz
+L|0680207|1vt,zx
+L|0686440|p,d6,5j,40,2d,4c,3f,q,3o,46,34,8i,3a,9l,8,4i,6,7e,a,6e,1d,4t,72,e,6c,7
+L|0689651|p,gd,1r,os,r,em,lc,6e,6,22,bl,39,54
+L|0691398|is,op,4,hq,11e
+L|0693003|2eu
+L|0695367|bn,d,1v,as,i,91,12,1g,18,5h,8,q,60,6n,4,20,26,3,4e,24,27,4,bf,3l,1x,25,ks
+L|0786213|wt,5b,4v,m,r,u,bs,2d,20,5q,s,2z,12,k,6p,79,5b,1z,n
+L|0791993|am,jh,4h,91,r,7i,54,2a,ks,8w,s,41,be
+L|0794483|2xx
+L|0794520|k2,7n,hh,15g,jb
+L|0794690|9c,j0,2f,hp,kw,ha,7n,2q,dn
+L|0794773|am,1ok,uz
+L|0799760|3r,43,5l,3i,6f,4y,f,j,3,7d,18,d,5c,z,5r,4h,26,1o,4k,1u,2e,f,by,58,jf,k,1f
+L|0803905|1n7
+L|0807932|am,sp,4a,1l,iv,3d,hl,3x,2r,a8
+L|0885470|df,l5,x9,h6,eg
+L|0885599|3r,9o,18,a0,u,18,1w,27,4g,9,17,f,11,5h,r,1d,4m,6h,6,2h,1w,z,54,f,2b,34,6f,3n,i,17,1v,1h,2q,2o,5d,y,1j,23,2t,1y
+L|0886239|2vm
+L|0886794|7u,9n,6j,21,1a,ga,ch,56,3,12,5g,1p,fh,1v,7,4m,5x
+L|0887196|1,2a,4v,3g,14,1p,g,68,3g,14,4l,8o,5p,2o,1k,7m,1j,20,8v,10,p,1a,1s,6j,9r,2t,2m,q,4g,6m,e
+L|0887693|5t,82,7b,4,2b,5n,8o,22,dp,e6,4k,24,4n,bq,n,6,2m
+L|0888333|df,9o,uk,1s,5w,i3
+L|0888528|c,dj,a5,3b,2t,7s,j,1x,7z,cx,3,2u,ey,f,3a,gn,2u,1h,4n
+L|0888787|bm,fp,x,32,6u,6g,gm,1k,g,4n,ba,e9,51,38,61
+L|0888965|o0,17,4o,lf,qm,a6,e3,64
+L|0888988|3g,b,3v,z,i1,1o,47,7h,c6,7,15,3i,1o,2m,5i,i9,8y,77,52
+L|0889700|df,6n,33,bb,11,49,2c,1j,1l,13,26,8j,m5,3k,2f,1v,1u,2w,2m,e3
+L|0889858|cp,48,lc,o,9q,m5,kv,8e,63
+L|0890040|5h,i,v2,70,3s,fd,4n,2z,kv,2m,x,68,63
+L|0890382|t,2mn
+L|0890420|1r6,v3,x
+L|0890465|2eu
+L|0890502|2wq
+L|0890726|3r,5g,st,9t,fe,3k,12,ba
+L|0891157|2rz
+L|0891281|1x,15,ad,49,37,1o,3p,2o,17,1n,4x,1d,42,z,k,h,1z,8,1k,17,1a,1f,5,s,11,7o,39,4o,4p,44,12,w,1x,33,1d,i,4t,22,k,x,41,s,15,1h,3u,e
+L|0891387|94,2e2
+L|0891499|1x,yr,1mi,13
+L|0892228|p,6h,9r,68,6y,7t,12,10,2r,1n,1x,5l,1t,5s,7z,f,2z,e7,1d,l,7h,9c,1f,38
+L|0892369|76,k,19x,7l,66,f,h6,1v,cl
+L|0892748|s0,am
+L|0892850|1b4
+L|0892889|4y,34,5d,42,6j,3g,15,5,1g,5b,16,e,10,1x,3n,r,5,o,1z,37,1p,3b,4,1j,43,7,3,1u,1y,2q,9,5p,b8,5,1q,3,1b,3f,7f,y,u,r,23,v,1w,1y,2d
+L|0892978|su,5q,5e,bc,5o,av,2z,8t,9b,a6,19
+L|0893127|gx,qo,ch,br,j7,4n
+L|0893216|p,32,4b,2k,2t,3i,68,v,ak,3c,22,3n,r,1,1w,ap,20,h,1t,3,6i,nu,22,6o,62
+L|0893742|p,1u,5j,3j,w,o,a,1l,1r,u,17,2q,3v,3d,22,4p,2f,4,1y,3n,24,d,1,6,1k,2h,10,5o,4a,3,1g,f,3o,k,o,2q,1n,5m,u,64,1d,c,6,3,1e,5y,x,3w,22,39,t,19
+L|0895014|df,oh,dg,5m
+L|0895050|rb,cn,dj,3h,ag,f,26,94,5w,s,x,lp
+L|0895161|82,fy,3b,al,2d,3c,r,1x,2e,32,1n,3m,av,h6,1d,i,11,26,48,c6
+L|0895296|82,8v,k,76,2o,cn,3n,1ju
+L|0895327|hh,17r
+L|0896717|df,42,6j,d9,1,2o,s,g8,4d,6i,bs,5e,jo
+L|0897421|df,cg,87,5w,5j,s,ez,6l,2a,ew,cp,8r,1k,e
+L|0898768|dv,xw,5w,5l,20,hv,52,ex,7d,1y
+L|0899673|cp,14y,3b,20,h,1t,1b5
+L|0899874|5
+L|0900494|gx,ik,2f,5p,hd,d,12,19,47,h6,22,85,12,96
+L|0900577|30y
+L|0901140|8c,lj,24,u,29,2u,7a,3e,35,9j,6l,1p,gu,5b,86,2o
+L|0901170|k2,bo,bv,2o,96,1j,mt,58,1v,8c,3,46,k,53,3b
+L|0901849|p,2m,7b,2l,3z,92,2i,5u,9s,1x,l5,f,4m,ck,8q,k,a5,2e,1l
+L|0902004|gx,ik,2f,5p,is,5g,nu
+L|0902091|mq,mz,b9,9m,7o,vd
+L|0902228|p,9x,2t,b8,58,93,10,2u,t,2d,b0,ag,f,9,1u,3,14,80,5w,1y,4,6w,c,x,43,6,l,3o,4p
+L|0902234|1ys,fm
+L|0902240|gr,6,7q,86,1r,5e,4b,aw,cj,53,fk,dk,3y,3p
+L|0902330|a7,xe,6p
+L|0902487|hh,3e,9x,fy,1h,3n,42,3j,bz,6n,8b,l,6s,1h,8g
+L|0902493|m,j,6w,64,32,37,q,8u,y,87,o,1h,4k,h,27,8i,1o,10,b5,90,2l,t,6x,1i,24,7g,11,2i,1s,21,25
+L|0902524|11w,12,4n,dv,9y,f,j1,4t,3j,2f,1u,5q
+L|0902576|bz
+L|0903200|gb,7o,6w,71,22,dp,p,8u,4n,t,1o,8t,f,14,4d,22,17,2m,3f,43,81,2,4g
+L|0903676|1r,20,at,c5,3e,17,23,e,2p,1g,90,x,u,50,1g,1v,4d,2s,9,2f,12,ba,5w,1y,4k,6,q,z,x,5s,54
+L|0903788|jn,2e,2ce
+L|0904233|od,6x,6m,4,5l,dd,4d,5g,41,8b,93,37,a,am,44
+L|0904641|n5,33,bo,8d,ap,2h,34,3q,15,f,2z,8z,58,1y,y,11,4k,t,x,8i,2
+L|0905280|7,ap,hu,5p,12,16,e,z,1y,k,f,6w,2h,6o,4a,3,20,43,f,t,1g,q,2h,89,j,j,2f,1v,1c,3h,ai,1l,2p
+L|0905646|fj,d4,99,22,3n,1l,5v,o,3q,1j,3c,11,8z,8y,9o,2r,72
+L|0906640|on,5c,ga,ao,1k,y,2y,h8,eo
+L|0907510|3r,1q,v6,1m,1p,7t,2j,ay,3,6i,hr,3c,2r,ir
+L|0922018|g,9,1,s,l,3,5,11,f,4,3,k,d,7,5,4,6,e,a,6,b,d,c,k,7,e,c,1,c,1,6,4,g,7,3,6,1,1,8,8,4,3,8,g,c,2,a,5,1,6,3,3,c,7,1,4,8,3,1,e,4,a,c,9,c,2,4,a,9,o,2,4,1,2,8,3,n,4,h,j,9,4,4,2,b,3,c,3,k,8,4,a,8,5,f,9,2,3,3,d,o,a,2,b,e,3,a,2,1,6,i,3,v,g,p,4,4,4,1,i,5,7,9,5,2,3,5,1,2,d,9,q,8,k,3,c,4,c,7,g,c,g,o,9,5,d,3,2,a,a,f,4,e,1,3,3,4,8,a,c,b,9,c,c,1,1,q,5,x,a,c,o,a,10,6,6,7,1,3,7,b,q,2,8,6,4,1,5,8,7,7,m,5,4,4,5,c,9,m,4,d,8,a,2,7,n,5,7,8,e,h,z,5,4,i,1,1,b,4,4,y,l,4,2,1,2,h,5,c,8,l,4,2,6,d,g,o,h,15,e,b,8,k,13,4,5,2,1,e,4,9,9,s,2,2,9,4,b,g,d,g,2,8,6,6,b,5,2,4,g,2,7,8,6,g,5,q,4,d,3,7,9,3,5,a,d,a,2,3,9,13,7,e,3,3,2,5,2,2,4,6,f,s,p,7,2,g,2,4,5,c,c,7,6,j,9,b,9,5,1,1o,a,5,3,f,e,1,4,7,3,4,5,6,3,4,8,c,t,b,c,b,6,4,e,3,p,e,h,o,9,b,h,1,c,h,3,f,4,2,2,d,4,6,p,3,2,k,b,w,4,h,2,b,a,3,d,6,a,5,e,1,1,b,7,1,2,1,5,7,w,n,6,6,4,3,b,7,1,b,j,4,8,v,h,w,3,3,7,5,5,5,2,9,j,4,3,3,c,n,5,1,4
+L|0922159|i,7,y,2b,p,1n,1s,21,9,2,8,1f,8,4,1h,1p,18,1e,e,15,2d,b,1e,a,c,b,n,d,l,3n,9,b,d,r,6,14,1r,x,f,s,k,h,7,8,1u,g,1e,a,1a,9,r,a,k,13,b,e,v,u,l,13,z,7,6,7,18,d,o,9,4,c,9,e,1j,6,1,1t,1h,t,3,1v,9,7,b,c,f,o,f,3,f,v,3,7,18,1i,6,a,11,8,w,j,4r,2,z,i,21,l,5,1o,l,h,5,18,p,c,f,g,h,7,9,a,30,1a,k,7,t,r,2p,q,i,3,d,r,2k,2,j,a,j,7,e,n,p,g,u,4,1f,z,4
+L|0922254|m,3,1w,7,z,j,17,k,z,2z,3,k,n,10,1,x,8,d,2u,5,21,b,76,c,3l,m,3b,h,x,16,e,k,b,4,y,a,q,s,1c,9,7,n,17,8,j,16,1i,p,1l,9,10,z,1e,3,c,18,2,3,h,12,20,2,28,3,8,d,1r,z,o,24,f,t,1d,3,q,2x,s,d,1j,k,4i,3,1c,5,20,4,19,e,4,3,4,1v,2h,a,g,1m,r,g,b,13,1w,j,2f,9,7,5,8,8,28,3h,f,4,16,d
+L|0922277|p,w,26,m,3k,g,1q,9,9,h,d,y,g,b,1,a,1k,15,g,7,87,v,2x,t,2j,m,i,12,c,o,1,1f,5,e,n,a,2a,26,m,1,e,n,b,1,b,b,13,25,2,s,u,9,b,1d,a,1e,7,1h,4,1j,24,d,c,8,a,z,3,2p,19,q,a,q,u,b,p,8,7,4,e,e,o,6,2a,i,19,5,n,6,b,g,2f,2g,l,6,1j,1b,1q,7,d,55,1q,r,j,6,x,23,1i,u,3,6,4,r,1m,k,9,b,1i,l,x,i,1l,9
+L|0922343|p,15,1f,i,7,3v,4e,18,1b,k,5p,3o,t,3a,i,5c,q,1e,1g,2,f,p,o,3e,10,1x,1k,2a,11,j,2p,k,j,1j,7,1x,48,2t,1q,m,1p,n,6,u,20,s,3i,3i,g,28,s,5,9,1h,3,c,4e,3m,4r,d,1s,1j,2,r,5h
+L|0929902|u,3,b,u,e,i,8,8,k,3,4,2,6,19,7,c,4,b,5,9,13,1,7,4,9,7,m,7,9,8,3,6,a,3,4,8,d,7,9,a,2,7,2,3,l,4,n,5,c,c,4,b,8,n,7,4,7,f,9,9,e,9,14,p,2,8,8,l,o,b,f,8,d,6,10,3,k,m,1,7,10,j,b,7,a,h,1,6,5,2,1,a,b,3,4,f,8,1,2,3,5,4,a,2,5,n,4,9,1,d,g,2,2,a,1,3,h,1,r,c,c,5,4,h,q,7,8,4,5,d,3,1,2,e,m,3,3,8,7,9,9,1,r,e,c,9,d,b,m,m,5,m,8,5,6,b,h,2,1,2,g,f,r,h,c,9,3,7,i,7,5,3,2,5,h,5,4,7,a,4,2,d,3,7,3,4,p,4,6,3,k,2,h,6,g,4,3,5,7,m,5,5,q,1,a,1,3,1d,2,3,8,z,d,u,3,12,1,5,5,3,3,2,j,7,3,9,1,3,f,n,j,m,c,6,4,g,3,9,2,4,8,1,3,5,7,5,8,g,8,m,6,d,5,r,2,9,9,6,k,c,3,4,e,2,7,k,m,6,3,6,9,8,20,5,f,8,v,3,y,8,d,9,8,d,a,7,6,f,3,5,q,4,r,5,3,11,4,8,4,9,4,c,6,b,e,6,7,9,1,1,p,h,7,3,d,3,a,g,5,e,2,1,3,d,1,1,d,q,k,n,d,6,4,5,d,a,1,4,a,b,e,a,13,3,7,y,3,5,1,4,d,6,2,6,a,6,5,6,d,d,4,1,3,t,2,2,3,4,e,8,j,3,k,5,l,f,m,w,c,5,7,4,7,7,1,5,3,7,4,3,b,5,4,1
+L|0930070|3c,f,i,18,1d,s,4,b,k,3,3,8,6,11,5,1p,6,j,g,a,z,g,k,5,6o,r,e,e,x,a,k,2l,6,n,y,w,1,m,p,14,e,8,13,v,e,k,j,q,4,r,6,1,1,j,g,15,z,1j,r,d,j,e,3,2,i,l,1d,2,14,x,d,n,i,7,n,7,y,o,e,7,1l,l,g,13,1a,1c,l,h,7,o,j,1p,t,w,5,h,2,e,l,20,5,m,5,1j,5,2c,2d,p,s,1z,1,e,33,8,d,d,c,f,23,21,v,w,5,8,28,5,4,x,k,8,2,b,j,n,h,22,9,7,1j,n,i,6,r,18,8,r,c,l,4,z,1b
+L|0930176|2e,5o,42,a,t,8,5d,b,z,2x,3w,1v,6r,u,d,f,11,u,c,o,24,1j,1l,55,41,4m,4,26,15,51,f,1p,m,34,o,94,y,2,j,g,5,1q,7,4m,2m,2e,g,2x,3o,2,53,15
+L|0930294|1i,2,27,7,44,21,1i,e,2,5,3,5,11,1v,2,6,1c,3,b,1x,t,1l,8,d,k,1,11,x,3p,1c,7,6,17,2u,f,3,1d,e,c,8,6,4,9,f,3,4,8,10,q,s,s,3,2r,8,b,b,14,26,1u,5,18,8,e,d,11,1,14,21,5,h,1n,1i,r,u,8,1,3v,e,q,g,x,m,6,l,7,i,15,1b,h,p,3n,5,u,3,d,5,6,a,2,d,3,5,5,p,7,3a,4,t,2,4,s,1c,1h,f,a,5,16,9,7,2,1c,s,7,16,3,g,m,9,k,p,t,2,v,1,14,a,r,a,1b,d,q,1j,i,1c,6,8,1c,6,6,4,f,4
+L|0954700|4,4,5,2,6,1,1,2,1,2,3,6,1,2,d,2,5,1,5,1,1,8,2,2,1,1,2,1,c,2,2,2,5,j,1,2,5,2,1,4,7,a,5,1,2,3,2,5,3,6,4,1,1,3,2,6,3,1,6,3,5,3,5,2,1,1,3,3,1,4,1,3,5,1,2,2,1,1,2,5,1,2,2,1,2,5,7,2,3,1,1,1,2,1,1,3,7,8,2,1,3,3,a,1,2,3,3,6,6,3,1,2,1,1,1,3,1,5,5,2,2,7,6,3,4,1,1,3,1,6,1,7,4,2,3,5,1,2,4,1,1,1,2,2,1,4,6,2,1,3,6,7,1,4,1,1,1,3,5,1,3,1,1,1,1,2,2,1,8,2,1,1,4,5,4,1,1,1,4,1,3,4,4,1,1,2,1,1,4,3,2,1,3,2,8,2,2,3,2,1,4,5,3,1,1,1,6,1,1,1,3,3,4,2,1,4,1,1,2,1,1,3,4,c,1,1,1,3,1,6,3,2,1,1,3,2,2,4,5,1,2,5,7,3,1,2,2,2,1,3,1,2,1,3,6,3,2,1,1,3,3,3,5,1,4,6,2,3,1,5,2,3,1,2,2,2,2,2,1,2,1,1,1,4,1,2,2,1,4,3,4,1,2,4,1,1,1,1,2,3,1,4,6,3,3,3,4,4,2,6,2,2,1,2,2,1,1,1,3,3,5,3,1,7,5,2,2,1,3,3,9,1,5,1,1,1,1,1,2,4,5,1,2,1,4,1,1,4,3,9,2,2,2,1,2,1,5,1,1,3,2,1,3,2,3,1,1,2,2,3,1,1,9,6,6,2,4,5,5,6,3,2,2,1,1,1,5,2,1,1,1,2,6,1,1,1,1,2,3,2,1,6,2,2,2,1,2,4,1,1,d,1,2,2,1,3,8,2,3,1,1,3,3,1,1,3,1,3,1,1,4,1,2,3,3,2,2,2,2,4,1,4,1,2,4,2,6,5,1,1,1,9,5,2,1,4,2,1,3,4,1,3,2,h,1,3,2,c,2,4,4,3,1,1,4,8,2,2,4,4,1,1,1,3,1,2,4,4,8,4,1,6,9,6,3,1,3,1,8,3,3,2,3,1,1,1,1,6,3,1,3,3,1,1,4,5,2,2,2,b,1,1,5,4,7,2,2,1,3,3,3,1,3,3,2,1,2,2,1,2,4,3,4,2,1,1,2,1,3,2,7,1,3,4,2,1,1,4,1,5,1,4,5,2,1,3,2,2,2,1,1,4,2,3,3,3,2,8,1,3,2,3,2,3,7,1,3,3,2,9,3,4,2,1,2,1,3,4,5,3,2,1,2,5,1,6,6,2,2,2,2,3,1,2,3,5,3,4,2,5,7,3,1,2,4,2,2,2,7,5,4,3,1,4,8,3,4,1,2,2,3,1,3,1,1,4,3,2,3,2,5,2,3,1,1,4,3,3,2,1,1,1,4,3,2,4,1,1,1,3,1,1,1,1,3,1,5,1,1,3,4,7,7,5,4,1,1,7,1,3,1,4,2,7,1,4,1,1,5,1,2,4,2,4,2,2,5,2,1,7,4,3,3,2,3,1,1,8,1,3,1,1,2,1,1,2,3,9,2,2,2,3,7,2,2,2,5,2,3,2,2,2,2,2,3,1,1,5,4,2,2,1,2,4,2,2,1,1,3,1,d,4,c,1,6,2,1,1,1,8,1,1,2,1,2,2,2,1,1,2,4,4,5,3,1,1,2,3,4,3,2,2,3,1,1,1,1,3,1,1,2,6,1,2,1,2,2,1,1,4,1,7,1,e,5,1,b,1,1,7,2,4,5,3,1,4,3,1,3,f,2,4,2,1,3,2,4,2,2,1,6,3,2,2,4,a,8,1,3,2,9,3,1,6,8,1,2,5,1,1,3,4,3,3,7,1,2,4,2,1,4,1,8,1,2,1,1,4,4,5,1,3,4,2,3,3,2,1,2,9,1,2,1,3,1,1,2,1,2,2,4,3,2,1,2,3,1,2,2,2,1,1,1,3,1,c,2,2,1,1,2,2,6,1,1,1,1,1,3,1,1,5,1,1,5,7,3,1,2,1,5,2,1,2,2,5,2,2,2,4,4,1,3,1,1,1,2,6,1,4,2,1b,4,1,1,2,8,2,f,3,3,3,1,3,2,2,2,1,1,3,2,4,1,2,1,3,1,5,2,3,6,2,4,2,2,c,2,4,2,3,1,5,1,3,6,3,4,2,5,1,1,1,3,1,3,3,3,2,5,5,2,2,3,1,2,1,1,2,3,1,1,i,2,a,1,3,2,6,2,7,4,1,1,1,1,1,3,2,1,5,1,1,3,2,1,f,6,4,1,1,3,2,1,2,3,1,2,2,2,1,2,1,3,1,4,5,3,6,3,3,5,3,6,2,1,2,1,2,1,3,1,3,2,4,3,1,2,2,1,2,g,1,9,6,3,2,3,6,2,1,1,2,1,2,2,1,1,3,2,5,4,9,3,1,6,2,1,1,6,1,3,5,2,3,2,1,2,3,2,2,1,3,2,3,3,1,1,1,1,1,4,9,4,2,4,6,1,1,2,4,3,a,1,1,1,1,2,1,2,1,3,3,4,1,2,5,1,1,4,1,3,3,1,5,1,4,4,1,1,1,1,6,5,2,3,1,6,1,4,2,4,4,2,9,3,1,1,2,1,2,3,9,9,3,5,2,6,1,1,2,1,1,1,3,2,1,5,2,4,2,2,2,2,2,4,1,3,4,1,2,a,1,4,3,2,7,2,2,1,2,3,1,1,3,6,2,1,2,2,1,3,1,3,3,1,1,1,2,5,1,5,1,5,2,g,3,6,2,3,2,1,1,1,8,2,2,3,5,5,1,4,1,9,2,2,1,2,2,6,2,2,5,1,1,a,2,2,8,2,2,1,9,4,1,4,2,2,1,2,3,1,9,4,3,1,2,4,5,2,2,2,b,4,h,3,b,1,1,3,5,1,2,1,2,2,2,1,2,1,2,3,2,2,2,2,1,2,6,2,1,1,4,1,4,4,2,5,4,1,1,5,1,1,1,1,4,7,3,3,2,1,4,5,1,1
+L|0955555|b,4o,u,60,1m,6b,b,1,33,1l,3b,53,w,k,2j,11,s,q,c,24,34,12,1j,w,2b,3,28,3p,20,2d,33,1v,1k,1i,7,7,12,1,5,3m,1m,2y,f,9,3w,1c,1v,3,4,1v,1a,1b,6,g,1c,38,2s,1a,1g,2k,t,v,20,2,1j,x
+L|0955621|33,o,m,14,5i,28,2x,2,5d,3h,7,bh,f,11,k,3d,2j,m,2l,3,g,r,1a,6n,24,29,1g,6,d,40,3,g,1h,u,2s,c,i,5d,2g,g,35,1q,3,1h,2e,v,1a,5j,5v,x,15,3l
+L|0955740|3,m,1c,1x,k,6,5,35,11,19,e,z,o,z,7,3f,3,2,1t,7,1,21,m,3u,1f,1c,2,1t,32,24,8,i,p,f,11,9,o,u,3,s,6,1,15,1g,3,r,l,3,2s,1g,i,g,5,1d,8,1i,9,a,p,6,6,d,4,1j,6,3,1h,e,a,2,1x,l,9,9,w,3d,n,j,26,5,6,g,13,3,3,19,i,k,h,9,19,2u,10,1g,15,7,h,1n,5,k,10,6,s,6,g,4,c,32,6,7,q,6,e,t,19,2,2,14,p,1d,d,d,b,a,13,8,9,3,y,2l,2n,k,13,1,2,f,s
+L|0955905|16,90,15,1p,v,16,16,l,s,d,1,4,2r,3e,1,6g,3e,4u,1v,17,38,3j,4,1s,2y,4,6,1g,1s,7r,10,y,n,4h,79,o,14,3h,n,6o,55,2d,24,2p,2f,1h
+L|0956069|3i,6,3l,6m,71,7n,7,25,3c,1h,a,26,1x,52,1v,u,1,2i,6n,2k,3o,m,2h,15,f,4,p,1i,6,i,1x,3m,58,5e,1q,2,a0,2v,l,p,4d,1,5
+L|0956112|2,n,p,i,2,d,1g,7,j,6,u,f,20,6,l,10,z,h,4,t,6,c,p,8,g,9,22,7,8,6,6,k,1a,4,11,6,d,4,6,n,i,4,2,2n,g,3,b,s,1f,m,y,n,1e,5,11,a,4,19,i,o,9,h,a,3,1,c,7,8,q,b,s,2,3,1,8,o,s,19,1,9,g,e,i,3,2,m,u,5,y,f,15,e,3,d,3,i,n,g,3,6,g,1,4,5,7,8,5,7,l,12,f,9,g,j,4,t,5,e,7,4,i,1e,4,l,4,b,13,3,15,1,s,23,1r,b,3,f,o,s,9,m,6,i,11,g,6,l,8,i,2t,5,3,8,h,g,5,5,c,b,2,p,12,x,k,17,14,l,5,1k,6,3,4,c,c,j,c,c,3,2,h,9,6,f,15,6,g,y,o,18,i,w,r,h,t,q,d,6,b,2,f,e,5,19,2,1h,n,3,o,s,2,9,8,a,y,n,3,2,1l,s,5
+L|0956313|p,1t,a,8,3,7,g,1,9,d,1s,1i,r,f,2,18,16,c,o,g,i,8,e,1,1,13,i,1b,3m,k,v,g,12,2n,c,i,o,3,q,d,5,15,8,g,2,a,b,k,13,8,7,p,a,d,x,p,x,h,1,j,f,6,9,2,m,b,1,t,6,15,n,9,n,c,1,e,8,e,8,13,13,d,2,2,e,24,9,1h,l,b,q,20,r,k,4,e,1a,q,l,9,q,8,1,14,e,2s,q,1d,2,5,h,7,t,8,2,k,6,i,2g,20,2t,5,c,n,1,x,1f,1d,24,4,1l,1q,j,1f,a,11,9,d,t,n,k,n,d,w,9,o,1p,b,g,q,5,r,g,2,j,1h,2,2,1c,3a,1,11,1,i,5,o
+L|0956388|p,t,29,1t,2o,1c,p,1r,e,11,2,3d,c,3p,38,k,17,2h,1s,8,1t,q,2y,27,17,s,z,1z,p,u,5,5,h,t,1q,4,s,o,12,m,4,2m,4,20,k,n,z,s,1x,n,8,7,2,f,13,13,33,f,k,q,f,s,i,4r,5,8,7,1,b,1m,15,1,e,2g,i,18,18,1p,6,3,4,a,u,1,p,y,1u,9,1g,2,i,d,n,15,m,2s,y,4,f,19,w,k,1,s,56
+L|0956454|1f,1,5,1n,h,1s,2j,2r,1k,c,k,n,9,4d,4f,4,16,i,1m,5o,2n,x,p,1y,4i,z,r,1x,1j,w,2s,e,l,35,4h,c,y,12,2s,8,2g,i,u,z,v,4n,4,2b,3i,29,17,8,z,i,d,20,27,2u,8,5q,9,z,t,11,6w
+L|0956550|1b,1s,o,1q,2l,1w,5,3c,g,2j,j,k,1m,z,1f,k,1z,6w,y,3n,v,r,t,8,x,8,p,t,1b,1j,r,u,4,3,w,3o,2h,1a,1r,f,7,x,24,d,i,1b,1,g,o,6,n,33,14,g,9,3,5,9,1a,k,f,12,12,5t,t,3,2e,30,5,18,c,1c,w,1c,1f,g,s,1e,3,17,4h,r,n,r,29,15,8,23,j
+L|0956690|5h,2,24,7,2s,2t,1v,1n,46,1,x,f,37,z,1o,2,e,9a,1v,3,z,15,1j,6,y,e,3,m,l,3x,r,3r,1a,w,4,l,38,g,12,e,3f,9,z,f,e,f,w,1a,2v,2,s,4e,1d,1a,2m,v,1d,c,6,7,1v,2r,5,1x,5,12,z,18,n,1c,d,4,17,2w,g,10,3,6,3z,9
+L|0956744|z,4,3h,v,n,4k,2t,3c,3b,1y,49,a,3c,8,5e,1e,1x,x,9,2r,5,r,2,x,m,2j,2,3v,2,6,25,2z,1a,17,1w,32,11,4w,i,75,4,65,t,1d,k,4r,2m,56,4b,a,12,3b,1l,q
+L|0956810|0,h,7,29,o,6,h,5,10,4,o,7,l,g,2,14,v,1,o,3,g,g,z,4,m,f,9,1,o,6,f,4,19,4,j,2,6,1a,g,1d,2,k,7,k,3,d,5,b,n,6,d,b,4,6,g,s,d,1,n,2,4,j,u,4,5,d,e,m,8,4,d,3,6,h,1d,2,b,l,5,8,b,s,j,5,9,i,2,5,5,d,a,5,g,7,8,6,1,2,2,2,d,5,5,3,1,8,2,i,4,s,c,3,1,7,f,8,2,a,o,a,b,1,7,j,g,e,2b,c,2,g,1,4,6,17,i,2,4,k,9,f,5,3,4,p,8,8,x,6,n,1,5,6,3,1n,9,7,d,c,m,d,q,c,8,7,p,2,4,g,h,2,e,a,6,8,28,1r,f,4,1,3,1,g,4,5,8,7,1,b,m,o,r,g,3,3,4,z,c,6,w,3,3c,o,12,d,q,p,2,3,4,7,m,a,5,d,1m,5,18,9,3,6,3,5,16,m,f,t,4,4,4,r,13,5,i,b,7,c,b,5,r,6,d,4,1,d,4,a,6,8,q,f,x,b,5,n,6,w,7,1,o,d,e,d,4,8,9,5,l,b,f,n,1h,t,4,f,6,6,8,t,8,d,7,b,1
+L|0956980|k,16,h,n,1t,1f,5,4a,5,f,26,8,42,1t,s,5,3t,n,43,a,5,1i,e,13,1q,c,e,o,9,1m,5,w,6,r,u,3,m,1i,1j,r,u,13,p,1i,1v,1c,1g,y,24,t,4,2h,1s,12,2x,d,26,2b,6,i,19,4f,2u,h,1s,g,11,b,1o,5,18,i,3,k,r,3,10,n,u,v,22,1u,10,26,d,y,w,8,a,2,y,1c,5,4,3u,k,g,15,x
+L|0957146|p,9,5,2,7,6,b,1o,i,e,g,j,e,1v,2,x,e,1f,9,f,8,c,d,b,6,u,6,f,5,5,p,5,1,1h,b,d,2,6,k,d,j,7,5,b,c,b,t,k,f,13,2,h,a,3,g,3,16,d,7,7,s,8,3,10,a,2,10,4,b,3,d,8,1,j,2,7,6,d,k,6,z,e,e,3,d,8,9,c,1,4,2,d,b,6,1,4,4,p,c,u,n,1,7,1e,l,4,6,1,m,3,7,d,8,1,r,j,1d,13,e,4,8,6,9,1,6,c,9,f,5,2,2,e,d,e,5,4,f,5,k,17,r,2,e,6,d,4,1f,4,d,5,8,1a,4,z,t,e,3,u,4,i,7,c,3,46,9,1,k,9,q,s,6,i,a,a,j,e,8,g,b,2,f,x,2i,5,6,1,9,c,5,2,a,6,1z,d,5,e,g,h,8,e,8,5,u,q,2,3,6,6,w,c,2,4,3,4,3,2,12,l,2,1,5,1,14,6,n,e,6,4,9,2,j,e,i,c,c,8,8,f,d,a,m,3,3,7,2,2,k,9,12,9,c,d,j,1,1,r,5,8,a,6,22,4,l,3,r,2p,j,g,9,1o
+L|0975530|c,2a,1,3,11,l,t,c,b,l,1q,q,p,l,3,g,6,h,3,o,8,1,3,d,i,8,9,7,10,f,6,q,o,7,l,16,15,e,2,3,9,2,17,f,e,k,7,9,9,n,4,1r,k,3,13,i,6,5,1q,1d,l,7,9,3,e,6,7,7,8,6,4,k,9,i,9,4,3,9,5,3,b,p,6,d,1,m,8,9,d,2,6,9,w,r,f,4,12,6,1,2,i,8,1g,5,4,k,p,i,7,9,12,t,9,2,31,k,4,l,s,5,5,6,1,s,1,9,z,w,n,1,r,r,3,9,3,q,e,2,d,a,6,34,7,4,d,f,9,b,g,4,l,5,h,6,i,f,e,14,j,n,5,4,f,x,1,1,c,c,m,11,8,5,d,2q,1,9,g,y,n,1f,5,l,f,6,2,i,3,4,c,7,9,b,4,2,4,b,c,6,7,t,5,8,13,8,1o,c,a,b,6,r,8,5,1,1,g,3,4,s,14,e,m,g,x,2,9,5,r,9,2,l,d,i,2,2,c,d,k,3,3,d,h,s,5,y,3,g,a,t,2,c,4
+L|0975813|p,o,2e,71,2n,3c,1v,6,45,7m,1l,p,1r,x,13,1c,22,3n,5,m,18,27,2k,1j,19,1,2q,3u,6,1h,l,g,u,k,1h,2m,9,k,1o,i,2y,7t,e,37,3l,2y,22,6,e,2c,35,a,k,k,a,r,2i,f,4w
+L|0980493|p,2g,m,e,1t,6,f,12,u,m,u,r,n,1y,8,f,1b,k,12,j,1v,1q,o,4p,l,z,q,8,y,f,3,m,w,b,u,y,t,m,r,q,8,6,6,t,1p,9,s,23,s,h,i,m,13,14,g,e,1e,p,2,1i,24,e,g,1p,h,4,1,2y,17,3,12,q,9,3q,r,t,1d,3,14,22,i,r,18,3,29,h,b,5,5,1a,16,f,19,1w,19,4,6,5,3,1x,4,z,w,r,6,7,q,13,2,k,1a,i,7,r,1d,13,l,d,1s,1e,3,r,1i,r,27
+L|0987510|6,j,1,1r,3,b,9,n,6,g,14,7,f,1n,o,4,7,4,1,3,c,6,4,5,5,1,9,9,a,f,8,7,1,1,1,q,4,5,7,q,6,9,r,d,w,1,9,2,9,c,8,4,3,b,e,6,9,e,f,3,1,4,r,11,4,4,8,f,i,2,7,8,4,4,v,c,4,7,5,1,a,7,7,m,6,4,8,2,5,9,a,c,5,g,p,9,e,5,6,7,1,3,c,1,9,2,9,8,3,c,9,q,4,f,d,2,5,g,c,2,4,5,2,b,6,j,g,8,3,7,8,4,i,3,2,a,j,f,2,6,8,4,c,1,b,5,b,z,d,1,m,3,6,4,9,9,1,5,m,1,3,4,2,k,b,6,2,5,3,c,3,e,5,j,2,4,b,c,1,2,4,2,4,3,l,13,9,8,7,2,4,5,b,1,3,5,3,4,4,1,k,d,k,g,1,2,6,3,j,6,7,2,2,i,4,1,1,5,1,2,a,3,7,2,1,4,5,9,l,c,2,5,2,3,7,1,1,4,d,m,e,t,3,e,3,8,1,c,1,1,3,7,k,1c,o,e,f,7,e,6,8,9,4,5,3,7,h,4,2,6,3,9,6,8,6,e,3,4,7,i,l,7,8,8,f,3,1,h,4,4,j,5,5,i,3g,2,6,q,c,3,f,1,k,i,4,l,h,10,a,g,w,d,2,3,3,j,2,c,8,3,3,7,5,1,6,c,i,d,6,1,i,g,4,i,3,1,9,7,5,4,2,q,3,b,f,7,3,a,2,q,o,3,2,b,3,d,1,9,s,d,x,r,f,9,2,d,3,3,f,2,6,5,j,8,2,1,7,6,2,7,c,j,r,7,4,2,3,b,5,7,1,l,1,6,7,6,4,j,1,1,5,2,1,9,3,3,s,7,9,5,b,e,1,2,b,2,1,2,4,9,j,4,a
+L|0987673|p,k,9,e,17,4,b,9,1,6,d,5,4,9,g,8,1p,h,2,p,c,3,6,4,2,5,12,a,s,m,9,9,4,q,3,b,1k,r,7,p,9,x,p,5,z,1n,f,g,t,d,y,5,k,g,m,d,19,d,4,k,c,n,8,3,m,3,v,6,x,f,1c,h,5,7,4,p,3,a,5,7,8,4,k,d,8,16,g,1,o,a,v,3,7,n,3,s,1,e,d,8,m,c,c,f,g,l,f,4,e,3,n,2,9,3,1,y,a,3,3,b,4,5,k,7,q,5,7,k,1,m,g,l,4,2,1h,c,1s,y,12,2,4,3,x,5,e,f,c,1r,10,15,3,c,9,8,3,9,w,e,8,o,k,5,q,d,1,6,5,c,a,k,f,4,7,e,16,q,u,2,3,h,6,8,h,i,s,g,b,5,e,9,1,1,s,1g,5,e,5,3,s,d,c,6,3,e,2,11,4,d,1,2l,g,f,9,1o,5,i,g,1,y,r,d,7,g,g,c,8,d,j,2,d,4,a,5,8,a,6,2,2,2,1w,2,2,1c,3,1a,f,8,1b,s,e,c,3,b,d
+L|0987800|6,3,36,c,1c,b,3,55,z,g,d,b,q,8,1n,1h,3,4,d,1a,7,b,6,1m,1l,1k,d,y,1,5,2r,1w,o,3,2w,t,m,b,16,8,6,v,4,11,e,7,d,3k,o,5,a,3,r,i,9,2,1k,e,10,11,3,3z,15,4,1f,23,23,7,1v,1p,4,b,r,1c,1,f,26,5,o,2f,28,k,3,1z,5,x,8,2n,31,4,h,7,2g,o,1h,11,4,28,k,g,7,d,s,u,a,2a,1p,g,b,10,v,l,c,1s,22,w,j,j
+L|0987897|t,2y,1h,9,1p,2w,3d,ao,7w,61,1y,13,2k,59,1b,1i,1e,n,1r,1j,3q,n,1t,2,33,15,17,27,3s,2m,2d,5g,1d,p,3h,3r,17,24,4l,2h,3r,15
+L|0987934|7q,c,2a,33,g,21,1l,3t,29,h,5v,4n,7,s,16,a,z,22,a,i,o,27,r,u,12,7f,i,1a,1j,2h,1t,3,2b,1i,2p,26,b,9,98,k,b,49,4,l,14,9,4,m,b,1f,2a,1q,w,1d,l,46,60,2,v,13,g,a,2
+L|0988069|76,2k,2h,18,1r,2b,56,3l,2l,12,8,4h,24,14,4,8,2d,9,1z,2d,2p,2,26,c,3c,1,1r,1k,4c,5z,4,f,24,h,1,1,1,1,38,5d,2g,2k,r,5,1v,7,1v,3,h,27,2m,6,3z,11,2q,z,21,38
+L|0988075|e,i,4,10,16,l,6,g,r,d,3c,o,8,e,4,2n,3c,s,6,d,1h,26,s,12,2c,u,1a,h,4,6,3,j,25,j,5,y,1a,a,24,4,e,4,a,5,p,4,18,n,4,v,y,17,m,g,b,9,3,11,f,q,14,f,u,7,w,z,r,12,2,1u,d,10,1,b,b,f,14,j,11,1a,v,d,n,b,25,c,13,d,f,f,1o,8,2b,h,b,7,c,6,f,8,1c,s,10,9,v,9,3,6,c,h,1g,h,d,9,d,a,12,p,4,4,1a,d,i,e,7,a,2,r,k,i,q,5,p,b,l,1,b,14,y,m,s,20,8,b,m,l,j,l,a,3,1,n,7,1c,m,6,7,i,1a,1,l,i,u,x,o,c,1,3,c
+L|0988253|3r,n,13,19,g,30,g,n,1n,3n,8,q,u,2t,3g,2d,2r,7,8,3,d,9,5,3n,m,b,5v,29,r,19,26,1p,1u,s,1l,2y,1v,2s,3,4g,22,2c,7v,a,s,5m,f,19,1u,2q,r,22,1o,2i,17,7d,v,r,1h
+L|0989465|p,g2,21,aw,5t,84,r,u,13,5l,54,av,h6,1d,c,71,9z,1e,3b
+L|0990830|82,4c,4j,cr,35,75,24,1j,r,u,bs,4a,66,f,25,f1,6o,22,4u,36,1x,4r
+L|1027350|17n,1dq
+L|1064634|124,5h,p,2,u,ds,2d,cf,5o,34,2h,7,16,i,7,1v,2m,5,22,9f,6u
+L|1064640|p,9x,n,2l,a,2t,dm,9,3q,2,2t,6z,u,a9,3j,2a,6u,1g,8j,e,7x,c,4z,22,6o,3b
