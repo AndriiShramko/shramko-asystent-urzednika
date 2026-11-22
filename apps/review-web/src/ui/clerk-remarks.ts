@@ -219,7 +219,12 @@ function makeSession(sidecar: Sidecar | null): Session {
   }
 
   const isRequiredChoice = (r: Remark): boolean => r.fix.kind === 'choice' && (r.code === 'REQUIRED_INFERRED' || r.fix.rule === 'required.paper_is_silent')
-  const nameList = (ids: string[]): string => ids.map((id) => { const n = ef?.model.byId.get(id); return n ? '„' + nameOf(n) + '”' : '' }).filter(Boolean).join(', ')
+  /** The names of the fields, each once, at most five; the rest as a number. */
+  const nameList = (ids: string[]): string => {
+    const names = [...new Set(ids.map((id) => { const n = ef?.model.byId.get(id); return n ? nameOf(n) : '' }).filter(Boolean))]
+    const head = names.slice(0, 5).map((x) => '„' + x + '”').join(', ')
+    return names.length > 5 ? head + ' ' + t('clerk.card.moreFields', { n: names.length - 5 }) : head
+  }
 
   /** The sentence on the card: for the "which fields are required" choice it names the fields. */
   function cardText(r: Remark): string {
@@ -438,14 +443,18 @@ function makeSession(sidecar: Sidecar | null): Session {
     main.addEventListener('click', () => go(r))
     let side: HTMLElement | null = null
     if (ids.length) {
-      const shown = ids.slice(0, 6)
+      // each name once (repeated sections carry the same names); the rest as a number of names
+      const byName = new Map<string, string>()
+      for (const id of ids) { const node = ef?.model.byId.get(id); const nm = node ? nameOf(node) : r.fix.target?.label ?? id; if (!byName.has(nm)) byName.set(nm, id) }
+      const uniq = [...byName.values()]
+      const shown = uniq.slice(0, 6)
       const btns = shown.map((id) => {
         const node = ef?.model.byId.get(id)
         const b = h('button', { type: 'button', class: 'clerk-card-field', lang: 'pl' }, node ? nameOf(node) : r.fix.target?.label ?? id)
         b.addEventListener('click', () => go(r))
         return b
       })
-      side = h('div', { class: 'clerk-card-fields' }, ...btns, ids.length > shown.length ? h('span', { class: 'muted' }, ' ' + t('clerk.card.moreFields', { n: ids.length - shown.length })) : null)
+      side = h('div', { class: 'clerk-card-fields' }, ...btns, uniq.length > shown.length ? h('span', { class: 'muted' }, ' ' + t('clerk.card.moreFields', { n: uniq.length - shown.length })) : null)
     } else if (onPaper || words) {
       side = h('span', { class: 'clerk-card-field clerk-card-whole' }, t('clerk.card.notInForm'))
     }
@@ -477,12 +486,14 @@ function makeSession(sidecar: Sidecar | null): Session {
   function restCard(list: Remark[], n: number): HTMLElement {
     const places = list.reduce((a, r) => a + r.items.length, 0)
     const kinds = [...new Set(list.map((r) => remarkText(r)))]
-    const ok = h('button', { type: 'button', class: 'btn clerk-fix-btn', 'data-done': '1' }, tn('clerk.rest.ok', places))
+    // only blanks without a description: one plain sentence; a mix of kinds: the kinds listed under a general one
+    const blanks = list.every((r) => r.code === 'LABEL_NOT_FOUND')
+    const ok = h('button', { type: 'button', class: 'btn clerk-fix-btn', 'data-done': '1' }, blanks ? tn('clerk.rest.ok', places) : tn('clerk.rest.okMixed', places))
     ok.addEventListener('click', () => { for (const r of list) { r.done = true; r.answer = null }; if (active && list.some((r) => r.key === active)) active = null; repaint(); session.onChange?.() })
     return h('li', { class: 'clerk-card clerk-card-flat clerk-card-rest', 'data-remark': 'rest', 'data-fix': 'rest' },
-      h('p', { class: 'clerk-card-what' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), ' ', tn('clerk.rest.what', places)),
-      h('ul', { class: 'clerk-rest-kinds' }, ...kinds.map((k) => h('li', {}, k))),
-      h('p', { class: 'muted' }, t('clerk.rest.why')),
+      h('p', { class: 'clerk-card-what' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), ' ', blanks ? tn('clerk.rest.what', places) : tn('clerk.rest.mixed', places)),
+      !blanks ? h('ul', { class: 'clerk-rest-kinds' }, ...kinds.map((k) => h('li', {}, k))) : null,
+      h('p', { class: 'muted' }, blanks ? t('clerk.rest.why') : t('clerk.rest.whyMixed')),
       h('div', { class: 'clerk-card-side' }, h('div', { class: 'clerk-fix' }, ok)))
   }
 

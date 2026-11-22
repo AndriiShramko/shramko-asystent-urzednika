@@ -480,4 +480,7 @@ export const en: Dict = {
   'clerk.warn.EXTRA_NOT_PLACED': "Part of the text of the original did not reach the e-form. Check whether it is needed.",
   'clerk.warn.APPLICANTS_ASSUMED': "The original does not say who may apply. The software assumed the standard list of applicants.",
   'clerk.warn.REQUIRED_WITHOUT_EVIDENCE': "This field is required although the original does not mark it. Check that this is right.",
+  'clerk.rest.mixed': "{n} remark points to no place on the original and no field of the e-form:|{n} remarks point to no place on the original and no field of the e-form:|{n} remarks point to no place on the original and no field of the e-form:",
+  'clerk.rest.whyMixed': "There is nothing here to show or to choose. If something is missing in the e-form, compare it with the file.",
+  'clerk.rest.okMixed': "Understood, close this remark|Understood, close these {n} remarks|Understood, close these {n} remarks",
 }

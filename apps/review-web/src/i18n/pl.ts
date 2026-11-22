@@ -482,6 +482,9 @@ export const pl = {
   'clerk.warn.EXTRA_NOT_PLACED': "Część tekstu oryginału nie trafiła do e-formularza. Sprawdź, czy jest potrzebna.",
   'clerk.warn.APPLICANTS_ASSUMED': "Oryginał nie mówi, kto może złożyć wniosek. Program przyjął standardową listę wnioskodawców.",
   'clerk.warn.REQUIRED_WITHOUT_EVIDENCE': "To pole jest obowiązkowe, choć oryginał tego nie oznacza. Sprawdź, czy tak ma być.",
+  'clerk.rest.mixed': "{n} uwaga nie wskazuje miejsca na oryginale ani pola w e-formularzu:|{n} uwagi nie wskazują miejsca na oryginale ani pola w e-formularzu:|{n} uwag nie wskazuje miejsca na oryginale ani pola w e-formularzu:",
+  'clerk.rest.whyMixed': "Nie ma tu nic do pokazania ani do wybrania. Jeśli w e-formularzu czegoś brakuje, porównaj go z plikiem.",
+  'clerk.rest.okMixed': "Rozumiem, zamknij tę uwagę|Rozumiem, zamknij te {n} uwagi|Rozumiem, zamknij te {n} uwag",
 } as const
 
 export type Key = keyof typeof pl

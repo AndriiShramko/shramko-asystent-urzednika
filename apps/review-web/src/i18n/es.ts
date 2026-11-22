@@ -480,4 +480,7 @@ export const es: Dict = {
   'clerk.warn.EXTRA_NOT_PLACED': "Parte del texto del original no llegó al formulario electrónico. Comprueba si hace falta.",
   'clerk.warn.APPLICANTS_ASSUMED': "El original no dice quién puede presentar la solicitud. El programa asumió la lista estándar de solicitantes.",
   'clerk.warn.REQUIRED_WITHOUT_EVIDENCE': "Este campo es obligatorio aunque el original no lo marca. Comprueba que sea correcto.",
+  'clerk.rest.mixed': "{n} observación no señala ningún lugar del original ni ningún campo del formulario electrónico:|{n} observaciones no señalan ningún lugar del original ni ningún campo del formulario electrónico:|{n} observaciones no señalan ningún lugar del original ni ningún campo del formulario electrónico:",
+  'clerk.rest.whyMixed': "Aquí no hay nada que mostrar ni que elegir. Si falta algo en el formulario electrónico, compáralo con el archivo.",
+  'clerk.rest.okMixed': "Entendido, cerrar esta observación|Entendido, cerrar estas {n} observaciones|Entendido, cerrar estas {n} observaciones",
 }
