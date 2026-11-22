@@ -940,7 +940,8 @@ class Finder:
                 roles[r.id] = found[0] if found else "body"
 
         order = list(dict.fromkeys(a.run.id for _p, ln in self.ordered() for a in ln.atoms))
-        order += [r.id for pg in self.pm.pages for r in pg.runs if r.id not in set(order)]
+        seen = set(order)
+        order += [r.id for pg in self.pm.pages for r in pg.runs if r.id not in seen]
 
         warnings: list[Warning] = []
         for code, d, detail in self.warn:
