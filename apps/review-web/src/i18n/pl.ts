@@ -72,12 +72,6 @@ export const pl = {
   'json.hash.unchecked': 'Sumy SHA-256 nie sprawdzono (przeglądarka nie udostępnia tej funkcji lub brak nagłówka).',
   'json.bytes': 'Rozmiar: {n} B',
 
-  'engine.label': 'Silnik konwersji:',
-  'engine.rules': 'same reguły, bez modelu językowego.',
-  'engine.model': 'reguły oraz krok modelu językowego.',
-  'engine.fallback': 'reguły w trybie awaryjnym: model nie odpowiedział, wynik jest taki sam jak bez modelu.',
-  'engine.unknown': "usługa nie podała silnika.",
-
   'sidecar.missing.heading': 'Brakuje raportu towarzyszącego',
   'sidecar.missing.body': "Usługa nie przysłała raportu (meta.json). Formularz jest pokazany w całości, ale brakuje: pochodzenia pól (druk czy sekcje standardowe), stron i cytatów z druku oraz listy uwag.",
 

@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountApp, LONG_MS } from '../src/ui/app'
 import { renderConverted, renderProblem } from '../src/ui/result'
 import { setLang, pluralIndex } from '../src/lib/i18n'
-import { modeOf, adviceKey, causeOf } from '../src/lib/verdict'
+import { badgeMode, modeOf, modeOfEngine, adviceKey, causeOf } from '../src/lib/verdict'
 import { interpretResponse, type Converted, type Outcome } from '../src/lib/api'
 import type { ConvertHooks } from '../src/lib/api'
 import { pl } from '../src/i18n/pl'
@@ -272,6 +272,156 @@ describe('ORDER UI 7: the mode badge from GET /status', () => {
     await new Promise((r) => setTimeout(r, 0))
     expect(document.getElementById('mode')!.hidden).toBe(true)
     expect(document.getElementById('mode')!.textContent).toBe('')
+  })
+})
+
+describe('one badge: the engine of the last conversion and GET /status', () => {
+  const ON = { engine: 'rules+model', model: { state: 'ON' } }
+  const RULES = { engine: 'rules' }
+  const tick = (): Promise<void> => new Promise((r) => setTimeout(r, 0))
+  const badge = (): HTMLElement => document.getElementById('mode')!
+  const seen = (): (string | null)[] => [badge().hidden ? null : badge().getAttribute('data-mode'), badge().getAttribute('data-engine')]
+
+  async function send(name = 'wniosek.pdf'): Promise<void> {
+    const file = document.getElementById('file') as HTMLInputElement
+    Object.defineProperty(file, 'files', { value: [new File([new Uint8Array([1])], name)], configurable: true })
+    file.dispatchEvent(new Event('change'))
+    await tick()
+  }
+
+  /** A page whose conversions and /status answers come from two queues the test fills. */
+  async function page(statuses: unknown[], outcomes: Outcome[]): Promise<void> {
+    mountApp(document.getElementById('app')!, {
+      store: null,
+      status: async () => { const s = statuses.shift(); if (s instanceof Error) throw s; return s ?? null },
+      convert: async () => outcomes.shift()!
+    })
+    await tick()
+  }
+
+  it('maps the three engines of the header and decides between the two sources', () => {
+    expect([modeOfEngine('rules'), modeOfEngine('rules+model'), modeOfEngine('rules-fallback'), modeOfEngine(null)])
+      .toEqual(['rules', 'model-on', 'model-fallback', null])
+    // a conversion that fell back wins over every /status
+    for (const st of ['rules', 'model-on', 'model-fallback', null] as const) expect(badgeMode('rules-fallback', st)).toBe('model-fallback')
+    // otherwise the later /status decides, and without it the engine of the conversion
+    expect(badgeMode('rules', 'model-on')).toBe('model-on')
+    expect(badgeMode('rules+model', 'model-fallback')).toBe('model-fallback')
+    expect(badgeMode('rules+model', null)).toBe('model-on')
+    expect(badgeMode('rules', null)).toBe('rules')
+    expect(badgeMode(null, 'rules')).toBe('rules')
+    expect(badgeMode(null, null)).toBeNull()
+  })
+
+  it('follows the conversion at once for each of the three engines, before /status answers again', async () => {
+    const base = await answer(syntheticSidecar())
+    // engine of the conversion, the badge it gives, its words, and what /status said BEFORE the conversion
+    const cases: [NonNullable<Converted['engine']>, string, string, unknown, string | null][] = [
+      ['rules', 'rules', 'Tryb: reguły i lokalny OCR, bez modelu AI', ON, 'model-on'],
+      ['rules+model', 'model-on', 'Model AI: włączony', RULES, 'rules'],
+      ['rules-fallback', 'model-fallback', 'Model AI: niedostępny, działają reguły', null, null]
+    ]
+    for (const [engine, mode, words, before, modeBefore] of cases) {
+      document.body.innerHTML = '<div id="app"></div>'
+      let release: (v: unknown) => void = () => undefined
+      let calls = 0
+      mountApp(document.getElementById('app')!, {
+        store: null,
+        // the first /status (at start) answers; the one after the conversion hangs until the test lets it go
+        status: () => (++calls === 1 ? Promise.resolve(before) : new Promise((r) => { release = r })),
+        convert: async () => ({ ...base, engine })
+      })
+      await tick()
+      expect(seen()).toEqual([modeBefore, null])
+      await send() // the old answer of /status is older than this conversion and no longer shown
+      expect(calls).toBe(2)
+      expect(seen(), engine).toEqual([mode, engine])
+      expect(badge().textContent).toBe(words)
+      expect(badge().classList.contains(`mode-${mode}`)).toBe(true)
+      // "nothing is sent outside" is said only on the word of /status, never on one conversion alone
+      expect(badge().hasAttribute('title')).toBe(false)
+      release(null) // /status failed: the engine the conversion stated is still a fact, the badge stays
+      await tick()
+      expect(seen(), engine).toEqual([mode, engine])
+    }
+  })
+
+  it('a conversion that fell back wins over a /status that says ON, until the next conversion', async () => {
+    const base = await answer(syntheticSidecar())
+    const outcomes: Outcome[] = [{ ...base, engine: 'rules-fallback' }, { ...base, engine: 'rules+model' }]
+    await page([ON, ON, ON], outcomes)
+    expect(seen()).toEqual(['model-on', null]) // before any conversion: /status alone
+    await send()
+    expect(seen()).toEqual(['model-fallback', 'rules-fallback']) // /status said ON after it, and lost
+    expect(badge().textContent).toBe('Model AI: niedostępny, działają reguły')
+    // a change of language repaints the same fact
+    const select = document.getElementById('lang') as HTMLSelectElement
+    select.value = 'en'
+    select.dispatchEvent(new Event('change'))
+    expect(badge().textContent).toBe('AI model: unavailable, rules are working')
+    expect(seen()).toEqual(['model-fallback', 'rules-fallback'])
+    await send() // the next conversion ran with the model: the badge is free again
+    expect(seen()).toEqual(['model-on', 'rules+model'])
+    expect(badge().textContent).toBe('AI model: on')
+  })
+
+  it('a refusal after a fallback tells nothing about the engine: the badge goes back to /status', async () => {
+    const base = await answer(syntheticSidecar())
+    await page([ON, ON, ON], [{ ...base, engine: 'rules-fallback' }, { kind: 'error', code: 'UNREADABLE', status: 422, detail: null, title: null }])
+    await send()
+    expect(seen()).toEqual(['model-fallback', 'rules-fallback'])
+    await send()
+    expect(seen()).toEqual(['model-on', null])
+  })
+
+  it('without a fallback the later /status decides; the engine of the conversion stays readable', async () => {
+    const base = await answer(syntheticSidecar())
+    // a model is on but this conversion did not need it: the service is not "without a model"
+    await page([ON, ON, { engine: 'rules', model: { state: 'UNAVAILABLE' } }, RULES],
+      [{ ...base, engine: 'rules' }, { ...base, engine: 'rules+model' }, { ...base, engine: 'rules' }])
+    await send()
+    expect(seen()).toEqual(['model-on', 'rules'])
+    expect(badge().hasAttribute('title')).toBe(false)
+    await send() // the model answered in this conversion and stopped right after it
+    expect(seen()).toEqual(['model-fallback', 'rules+model'])
+    await send() // rules, and /status confirms a service without a model: now the local sentence is true
+    expect(seen()).toEqual(['rules', 'rules'])
+    expect(badge().getAttribute('title')).toBe('Plik przetwarza tylko ta usługa; nic nie jest wysyłane do usług zewnętrznych.')
+  })
+
+  it('no engine header and no /status: no badge, never a guess', async () => {
+    const base = await answer(syntheticSidecar())
+    expect(base.engine).toBeNull() // the fixture answer carries no X-Converter-Engine
+    await page([new Error('down'), null, 'not json', RULES, new Error('down')], [base, base, base, base])
+    expect(seen()).toEqual([null, null])
+    for (let i = 0; i < 2; i++) {
+      await send()
+      expect(seen()).toEqual([null, null])
+      expect(badge().textContent).toBe('')
+      expect(badge().className).toBe('mode')
+      expect(badge().hasAttribute('title')).toBe(false)
+    }
+    await send() // no header, but /status answers: the badge is the service's own word
+    expect(seen()).toEqual(['rules', null])
+    await send() // and it is taken back when /status stops answering
+    expect(seen()).toEqual([null, null])
+    expect(document.getElementById('result')!.textContent).toContain('Wniosek próbny') // the result itself is shown
+  })
+
+  it('an older /status answer that arrives late does not overwrite a newer one', async () => {
+    const base = await answer(syntheticSidecar())
+    const waiting: ((v: unknown) => void)[] = []
+    mountApp(document.getElementById('app')!, {
+      store: null, status: () => new Promise((r) => { waiting.push(r) }), convert: async () => base
+    })
+    await send()
+    expect(waiting.length).toBe(2)
+    waiting[1](RULES) // the answer asked for after the conversion
+    await tick()
+    expect(seen()).toEqual(['rules', null])
+    waiting[0](ON) // the answer asked for at start, late
+    await tick()
+    expect(seen()).toEqual(['rules', null])
   })
 })
 

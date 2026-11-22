@@ -21,7 +21,7 @@ const TEXT_PAIRS: [string, string][] = [
   ['text', 'bg'], ['text', 'surface'], ['muted', 'bg'], ['muted', 'surface'], ['accent', 'bg'], ['on-accent', 'accent'],
   ['chip-text', 'chip-bg'], ['req-text', 'req-bg'], ['bad', 'bg'], ['notice-text', 'notice-bg'], ['error-text', 'error-bg'],
   ['text', 'chip-bg'], ['accent', 'chip-bg'],
-  // the engine band (WP-H4): grey rules, green rules+model, amber rules-fallback
+  // the mode badge of the header (#mode, the one engine indicator): grey rules, green model on, amber fallback
   ['engine-rules-text', 'engine-rules-bg'], ['engine-model-text', 'engine-model-bg'], ['engine-fallback-text', 'engine-fallback-bg']
 ]
 const UI_PAIRS: [string, string][] = [['border', 'bg'], ['border', 'surface'], ['focus', 'bg'], ['accent', 'surface'], ['bad', 'error-bg'],
@@ -37,4 +37,11 @@ describe('contrast tokens', () => {
     it(`component ${fg} against ${bg} is at least 3:1`, () => expect(ratio(tokens[fg], tokens[bg])).toBeGreaterThanOrEqual(3))
   }
   it('negative control: a pair that fails is measured as failing', () => expect(ratio('#999999', '#ffffff')).toBeLessThan(4.5))
+  it('the mode badge is painted with the checked tokens, and no rule of the removed engine band is left', () => {
+    for (const [cls, kind] of [['mode-rules', 'rules'], ['mode-model-on', 'model'], ['mode-model-fallback', 'fallback']]) {
+      const rule = css.match(new RegExp(`\\.${cls} \\{([^}]*)\\}`))?.[1] ?? ''
+      for (const part of ['bg', 'text', 'edge']) expect(rule, cls).toContain(`var(--c-engine-${kind}-${part})`)
+    }
+    expect(css).not.toMatch(/\.engine\b|\.engine-/)
+  })
 })

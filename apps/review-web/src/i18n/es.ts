@@ -70,12 +70,6 @@ export const es: Dict = {
   'json.hash.unchecked': 'No se comprobó la suma SHA-256 (el navegador no la ofrece o falta la cabecera).',
   'json.bytes': 'Tamaño: {n} B',
 
-  'engine.label': 'Motor de conversión:',
-  'engine.rules': 'solo reglas, sin modelo de lenguaje.',
-  'engine.model': 'reglas y el paso del modelo de lenguaje.',
-  'engine.fallback': 'reglas en modo de reserva: el modelo no respondió, el resultado es el mismo que sin el modelo.',
-  'engine.unknown': "el servicio no indicó el motor.",
-
   'sidecar.missing.heading': 'Falta el informe adjunto',
   'sidecar.missing.body': 'El servicio no envió el informe (meta.json). El formulario se muestra completo, pero faltan: el origen de los campos (papel o estándar), las páginas y los fragmentos del papel, y la lista de avisos del informe.',
 

@@ -1,5 +1,7 @@
 // Small pure decisions of the page, kept apart from the DOM so they can be tested on canned answers:
-// the headline of a result, the advice after a failure, the service mode badge fed from GET /status.
+// the headline of a result, the advice after a failure, the mode badge fed from GET /status and from the engine
+// of the last conversion.
+import type { Engine } from './api'
 import type { ViewModel } from './model'
 import type { HeaderWarnings, RawWarning } from './warnings'
 
@@ -59,8 +61,8 @@ export function adviceKey(code: string, has: (key: string) => boolean): string {
   return cause === 'file' ? 'todo.file' : cause === 'token' ? 'todo.token' : 'todo.service'
 }
 
-/** The badge in the header. Only what /status says: no answer, or an answer the page does not understand, is no
- * badge at all (null), never a guess. */
+/** The badge in the header: the one indicator of the engine on the page. `modeOf` reads /status: no answer, or an
+ * answer the page does not understand, is no mode at all (null), never a guess. */
 export type Mode = 'rules' | 'model-on' | 'model-fallback'
 
 export function modeOf(status: unknown): Mode | null {
@@ -78,4 +80,23 @@ export function modeOf(status: unknown): Mode | null {
   if (state === 'ON' || engine === 'rules+model') return 'model-on'
   if (engine === 'rules' && (state === null || state === 'OFF')) return 'rules'
   return null
+}
+
+/** The mode one engine token of `X-Converter-Engine` stands for; a conversion that did not state it is null. */
+export function modeOfEngine(engine: Engine | null): Mode | null {
+  if (engine === 'rules') return 'rules'
+  if (engine === 'rules+model') return 'model-on'
+  if (engine === 'rules-fallback') return 'model-fallback'
+  return null
+}
+
+/** The one badge of the page, from two sources: the engine of the last conversion and the answer of /status that
+ * came after it (`statusMode` is null until that answer arrives, and when it failed).
+ * - a conversion that fell back wins over any /status, until the next conversion: the page never says "on" right
+ *   after a result that the model did not take part in;
+ * - otherwise /status, the later fact about the service, decides;
+ * - with no /status the engine of the conversion is shown; with neither there is no badge (null), never a guess. */
+export function badgeMode(lastEngine: Engine | null, statusMode: Mode | null): Mode | null {
+  if (lastEngine === 'rules-fallback') return 'model-fallback'
+  return statusMode ?? modeOfEngine(lastEngine)
 }

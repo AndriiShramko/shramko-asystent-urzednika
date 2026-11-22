@@ -7,7 +7,7 @@ import { getLang, hasKey, t, tn } from '../lib/i18n'
 import { buildView, type FieldRow, type ViewModel } from '../lib/model'
 import { groupWarnings, placeOf, type HeaderWarnings, type RawWarning } from '../lib/warnings'
 import { adviceKey, causeOf, chooseHeadline, type Headline } from '../lib/verdict'
-import type { Converted, Engine, Problem } from '../lib/api'
+import type { Converted, Problem } from '../lib/api'
 import { h } from './dom'
 
 const PL = { lang: 'pl' }
@@ -136,16 +136,6 @@ function jsonSection(res: Converted): HTMLElement {
     area)
 }
 
-/** The engine of this conversion as a band with words: the label, the token of the header, what it means. The
- * colour (grey, green, amber) only repeats what the text already says. */
-export function engineBadge(engine: Engine | null): HTMLElement {
-  const kind = engine === 'rules+model' ? 'model' : engine === 'rules-fallback' ? 'fallback' : engine === 'rules' ? 'rules' : 'unknown'
-  return h('p', { id: 'engine', class: `engine engine-${kind}`, 'data-engine': engine ?? 'unknown' },
-    h('span', { class: 'engine-label' }, t('engine.label')), ' ',
-    engine ? h('code', { class: 'engine-token' }, engine) : null, engine ? ' — ' : null,
-    h('span', { class: 'engine-meaning' }, t(`engine.${kind}`)))
-}
-
 /** The words of the headline: a success only when fields were read from the form; never "Gotowe". */
 export function headlineText(hl: Headline): string {
   const fields = tn('count.fields', hl.fields)
@@ -170,7 +160,7 @@ export function renderConverted(res: Converted): HTMLElement {
   root.append(h('h2', { id: 'h-done', tabindex: -1, class: `result-title result-${hl.kind}`, 'data-kind': hl.kind },
     h('span', { class: 'headline' }, headlineText(hl)),
     h('span', { class: 'form-name' }, t('result.formName') + ' ', h('span', PL, '„' + view.title + '”'))))
-  root.append(engineBadge(res.engine))
+  // The engine of this conversion is not repeated here: the badge in the header (#mode) is its one indicator.
   if (!view.hasSidecar) {
     root.append(h('section', { class: 'notice', role: 'note', 'aria-labelledby': 'h-nosidecar' },
       h('h2', { id: 'h-nosidecar' }, t('sidecar.missing.heading')),

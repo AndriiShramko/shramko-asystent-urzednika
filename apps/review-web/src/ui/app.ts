@@ -1,9 +1,9 @@
 // The page: header with the mode badge and the language switch, the upload panel, a progress panel, a live status
 // line, the result. The upload panel is built once (so a typed token and the focus survive a change of language);
 // its texts are refreshed through data-i18n attributes. The result is rebuilt from the kept outcome.
-import { CANCELLED, convertWithProgress, fetchStatus, type ConvertHooks, type Outcome } from '../lib/api'
+import { CANCELLED, convertWithProgress, fetchStatus, type ConvertHooks, type Engine, type Outcome } from '../lib/api'
 import { LANGS, getLang, initialLang, setLang, t, type Lang } from '../lib/i18n'
-import { modeOf, type Mode } from '../lib/verdict'
+import { badgeMode, modeOf, type Mode } from '../lib/verdict'
 import { h, clear } from './dom'
 import { doneStatus, renderConverted, renderProblem } from './result'
 
@@ -49,13 +49,16 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   let abort: AbortController | null = null
   let cancelled = false
   let several = false
-  let mode: Mode | null = null
+  // The badge has two sources (see badgeMode): what /status said last, and the engine of the last conversion.
+  let statusMode: Mode | null = null
+  let lastEngine: Engine | null = null
+  let statusCall = 0
 
   const status = h('p', { id: 'status', role: 'status', 'aria-live': 'polite', class: 'status' })
   // The result itself is not a live region (it is long); the status line above announces it, an error is role=alert.
   const resultBox = h('div', { id: 'result', class: 'result-box' })
 
-  // ---- header: the mode of the service (from GET /status) and the language switch
+  // ---- header: the mode badge (from GET /status and from the engine of the last conversion), the language switch
   const modeBadge = h('span', { id: 'mode', class: 'mode', hidden: true })
   const select = h('select', { id: 'lang', name: 'lang' },
     ...LANGS.map((l) => h('option', { value: l, lang: l }, t('lang.' + l))))
@@ -191,8 +194,14 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
       pick.focus()
       return
     }
+    // The badge follows this conversion at once. Its stated engine is newer than the kept answer of /status, so
+    // that answer is dropped; a conversion that did not state an engine (a refusal, no header) tells nothing and
+    // leaves the badge to /status.
+    lastEngine = outcome.kind === 'ok' ? outcome.engine : null
+    if (lastEngine !== null) statusMode = null
+    paintMode()
     renderOutcome(true)
-    void loadMode() // the engine may have changed (a model that stopped answering)
+    void loadMode() // the service may have changed since (a model that stopped answering)
   }
 
   function renderOutcome(moveFocus: boolean): void {
@@ -213,20 +222,34 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   }
 
   function paintMode(): void {
-    if (mode === null) { modeBadge.hidden = true; modeBadge.textContent = ''; return }
+    const mode = badgeMode(lastEngine, statusMode)
+    // For tests and scripts: data-mode is what the badge says, data-engine the raw token of the last conversion.
+    if (lastEngine === null) modeBadge.removeAttribute('data-engine')
+    else modeBadge.setAttribute('data-engine', lastEngine)
+    if (mode === null) {
+      modeBadge.hidden = true
+      modeBadge.textContent = ''
+      modeBadge.className = 'mode'
+      modeBadge.removeAttribute('data-mode')
+      modeBadge.removeAttribute('title')
+      return
+    }
     modeBadge.hidden = false
     modeBadge.className = `mode mode-${mode}`
     modeBadge.setAttribute('data-mode', mode)
     modeBadge.textContent = t('mode.' + mode)
-    // Only in the rules mode is it true that nothing leaves this service.
-    if (mode === 'rules') modeBadge.setAttribute('title', t('mode.local'))
+    // "Nothing leaves this service" is a claim about the service, so it needs the service's own word: /status.
+    // One conversion that ran on rules alone does not prove it.
+    if (mode === 'rules' && statusMode === 'rules') modeBadge.setAttribute('title', t('mode.local'))
     else modeBadge.removeAttribute('title')
   }
 
   async function loadMode(): Promise<void> {
+    const call = ++statusCall
     let answer: unknown = null
     try { answer = await getStatus() } catch { answer = null }
-    mode = modeOf(answer)
+    if (call !== statusCall) return // a later request is on its way: this answer is the older one
+    statusMode = modeOf(answer)
     paintMode()
   }
 

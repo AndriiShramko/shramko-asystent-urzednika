@@ -70,12 +70,6 @@ export const en: Dict = {
   'json.hash.unchecked': 'The SHA-256 sum was not checked (the browser does not offer it, or the header is missing).',
   'json.bytes': 'Size: {n} B',
 
-  'engine.label': 'Conversion engine:',
-  'engine.rules': 'rules only, no language model.',
-  'engine.model': 'rules and the language model step.',
-  'engine.fallback': 'rules in fallback mode: the model did not answer, the result is the same as without the model.',
-  'engine.unknown': "the service did not state the engine.",
-
   'sidecar.missing.heading': 'The accompanying report is missing',
   'sidecar.missing.body': 'The service did not send a report (meta.json). The form is shown in full, but these are absent: the origin of fields (paper or standard), pages and snippets of the paper, and the warnings list of the report.',
 

@@ -121,14 +121,6 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .notice { background: var(--c-notice-bg); color: var(--c-notice-text); border: 2px solid var(--c-notice-text); border-radius: 6px; padding: 0.5rem 1rem; margin-top: 1.5rem; }
 .notice h2 { margin-top: 0.5rem; }
 
-/* The engine of the last conversion. The words carry the meaning; the colour repeats it (WCAG 1.4.1). */
-.engine { margin: 0.5rem 0 0; padding: 0.4rem 0.75rem; border: 1px solid var(--c-border); border-left-width: 0.5rem; border-radius: 4px; }
-.engine-label, .engine-token { font-weight: 600; }
-.engine-token { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1rem; }
-.engine-rules { background: var(--c-engine-rules-bg); color: var(--c-engine-rules-text); border-color: var(--c-engine-rules-edge); }
-.engine-model { background: var(--c-engine-model-bg); color: var(--c-engine-model-text); border-color: var(--c-engine-model-edge); }
-.engine-fallback { background: var(--c-engine-fallback-bg); color: var(--c-engine-fallback-text); border-color: var(--c-engine-fallback-edge); }
-.engine-unknown { border-style: dashed; }
 .error { background: var(--c-error-bg); color: var(--c-error-text); border: 2px solid var(--c-bad); border-radius: 6px; padding: 0.5rem 1rem; margin-top: 1.5rem; }
 .error h2 { margin-top: 0.5rem; }
 .error .muted { color: var(--c-error-text); }
@@ -145,6 +137,8 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 
 /* ---- ORDER UI (a8 UX) ---- */
 .top-right { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; flex: 0 1 auto; }
+/* The mode badge: the one indicator of the engine. The words carry the meaning; the colour (the engine-* tokens:
+   grey rules, green model on, amber fallback) only repeats it (WCAG 1.4.1). */
 .mode { display: inline-block; padding: 0.3rem 0.75rem; border: 1px solid var(--c-border); border-left-width: 0.4rem; border-radius: 4px; font-size: 0.9rem; font-weight: 600; }
 .mode[hidden] { display: none; }
 .mode-rules { background: var(--c-engine-rules-bg); color: var(--c-engine-rules-text); border-color: var(--c-engine-rules-edge); }
@@ -179,7 +173,6 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .tech > summary { font-size: 0.9rem; font-weight: 400; color: var(--c-code); }
 .error .code-line, .error .small { color: var(--c-error-text); }
 .error .todo { margin-top: 0.75rem; }
-.engine-token { font-size: 0.85rem; font-weight: 400; }
 
 @media (max-width: 30rem) {
   h1 { font-size: 1.3rem; }
