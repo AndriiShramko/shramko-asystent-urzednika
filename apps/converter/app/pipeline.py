@@ -183,6 +183,83 @@ def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] =
     except ReaderError as exc:
         raise _problem_of(exc) from None
     finder = find(model)
+    rules = _finish(model, finder, settings, notes)
+    if not vision_on(settings):
+        return rules
+    return _with_vision(model, finder, settings, notes, rules)
+
+
+def vision_on(settings: Settings | None = None) -> bool:
+    """The weak page reader is configured (VISION_MODE auto with a URL and a key, MODEL_STEP not off). Nothing
+    configured: the model path never runs and the output is byte-identical to the rules."""
+    from app.vision import VisionConfig
+
+    if settings is not None and getattr(settings, "model_step", "auto") == "off":
+        return False
+    return VisionConfig.from_env().configured
+
+
+def _with_vision(model, finder, settings: Settings, notes: tuple[str, ...], rules: PipelineResult,
+                 cfg=None, post=None) -> PipelineResult:
+    """ORDER M2 P1: weak OCR pages -> the model names label, option and heading lines by number -> synthetic
+    marks -> the same finder, brief, composer and gate. All or nothing: any failure returns the rules' result with
+    one FALLBACK warning in the sidecar; the form bytes are the rules' bytes."""
+    from app import vision
+    from app.vision import merge as vmerge
+
+    cfg = cfg or vision.VisionConfig.from_env()
+    # the model can never cause a 504: its whole budget stays well inside the job's time limit
+    budget = min(cfg.deadline_s, max(5.0, settings.job_timeout_s / 2))
+    if budget < cfg.deadline_s:
+        from dataclasses import replace
+
+        cfg = replace(cfg, deadline_s=budget)
+    try:
+        pages = vmerge.weak_pages(model, finder, cfg.max_pages, cfg.trigger)
+        if not pages:
+            vision._set_state("ON", "", cfg.model)
+            return rules
+        by_no = {p.number: p for p in model.pages}
+        jobs = {n: vmerge.numbered(by_no[n]) for n in pages}
+        jobs = {n: ls for n, ls in jobs.items() if 0 < len(ls) <= vision.MAX_LINES}
+        if not jobs:
+            vision._set_state("ON", "", cfg.model)
+            return rules
+        answers = vision.ask_pages(cfg, jobs, post=post)
+        merged, added = vmerge.merge(model, answers)
+        if not added:
+            vision._set_state("ON", "", cfg.model)
+            return _note(rules, "MODEL_USED", f"model {cfg.model}: pages {sorted(jobs)}, nothing added", cfg, sorted(jobs), 0)
+        finder2 = find(merged)
+        if len(finder2.candidates) < len(finder.candidates):
+            raise vision.VisionError("fewer_places")
+        result = _finish(merged, finder2, settings, notes)
+    except Exception as exc:   # noqa: BLE001 - the model path never fails a request
+        reason = getattr(exc, "reason", None) or ("gate" if isinstance(exc, ProblemError) else type(exc).__name__)
+        vision._set_state("FALLBACK", reason, cfg.model)
+        return _note(rules, "MODEL_FALLBACK", f"model step skipped ({reason}); the result comes from the rules", cfg, [], 0,
+                     state="FALLBACK", reason=reason)
+    vision._set_state("ON", "", cfg.model)
+    return _note(result, "MODEL_USED",
+                 f"model {cfg.model} read {len(jobs)} weak page(s) and marked {added} line(s); fields added there come "
+                 "from the open model and should be checked", cfg, sorted(jobs), added)
+
+
+def _note(res: PipelineResult, code: str, detail: str, cfg, pages: list[int], added: int, state: str = "ON",
+          reason: str = "") -> PipelineResult:
+    from app.vision import PROMPT_VERSION, prompt_hash
+
+    side = dict(res.sidecar)
+    side["warnings"] = [*side["warnings"], {"code": code, "detail": detail[:300]}]
+    meta = dict(side["meta"])
+    meta["vision"] = {"state": state, "model": cfg.model, "pages": pages, "added": added,
+                      "prompt": f"{PROMPT_VERSION}:{prompt_hash(cfg.model)}", **({"reason": reason} if reason else {})}
+    side["meta"] = meta
+    return PipelineResult(form=res.form, sidecar=side)
+
+
+def _finish(model, finder, settings: Settings, notes: tuple[str, ...] = ()) -> PipelineResult:
+    """Finder output -> brief -> form -> gate -> sidecar (the rules' path after reading)."""
     fallback = not finder.candidates
     if fallback:
         brief = interim.brief_from_pages(model)
