@@ -586,6 +586,12 @@ class Finder:
     def widgets(self) -> None:
         for p in self.pages:
             for w in p.page.widgets:
+                n = p.page.number
+                if w.box is not None and any(o.box is not None and o.page == n and o.kind != "widget"
+                                             and sh.inter(o.box, w.box) > 0.5 * sh.area(o.box) for o in self.cands):
+                    # the widget lies over a place the paper draws (a box, a cell, a dotted line): that place is
+                    # already a candidate with the paper's own label; a second one would duplicate the field
+                    continue
                 pos = float(p.first)
                 if p.geo and w.box is not None and p.lines:
                     near = min(p.lines, key=lambda ln: abs(ln.box[1] - w.box[1]) + abs(ln.box[0] - w.box[0]) / 10)  # type: ignore[index]
