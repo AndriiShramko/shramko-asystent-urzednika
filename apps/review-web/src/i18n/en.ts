@@ -260,6 +260,7 @@ export const en: Dict = {
   'ai.source.session': "The settings were typed on this page. They work until the service is restarted.",
   'ai.url.label': "Address of the model server",
   'ai.url.hint': "A server compatible with the OpenAI API, for example your own vLLM or Ollama. The address usually ends with /v1.",
+  'ai.preset.note': "The address and the model are already filled in for the Eden AI gateway (the key from the HackNation organiser). Paste the key and press “Use in this session”. You can also type the address of your own server.",
   'ai.model.label': "Model name (as the server names it)",
   'ai.key.label': "Key of the model server",
   'ai.key.hint.environment-variable': "The key is set on the server (environment variable VISION_API_KEY). The page does not know it, so you see dots. To replace it, type another key here.",

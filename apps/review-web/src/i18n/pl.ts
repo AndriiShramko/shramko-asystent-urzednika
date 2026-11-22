@@ -262,6 +262,7 @@ export const pl = {
   'ai.source.session': "Ustawienia wpisano na tej stronie. Działają do ponownego uruchomienia usługi.",
   'ai.url.label': "Adres serwera modelu",
   'ai.url.hint': "Serwer zgodny z API OpenAI, na przykład własny vLLM lub Ollama. Adres zwykle kończy się na /v1.",
+  'ai.preset.note': "Adres i model są już wpisane dla bramki Eden AI (klucz od organizatora HackNation). Wystarczy wkleić klucz i nacisnąć „Użyj w tej sesji”. Możesz też wpisać adres własnego serwera.",
   'ai.model.label': "Nazwa modelu (taka, jaką podaje serwer)",
   'ai.key.label': "Klucz do serwera modelu",
   'ai.key.hint.environment-variable': "Klucz jest ustawiony na serwerze (zmienna środowiskowa VISION_API_KEY). Strona go nie zna, dlatego widać kropki. Aby go zastąpić, wpisz tutaj inny klucz.",

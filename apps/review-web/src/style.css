@@ -439,6 +439,8 @@ html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
 .result[data-try] .clerk-final { padding-top: 0.35rem; padding-bottom: 0.35rem; }
 /* the bottom bar reads as a layer above the page: what scrolls under its edge is plainly the rest of the page */
 .clerk-final { box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.12); }
+/* BL13 PRINT-MAP: the line of a picked field that has no place on the original */
+.fp-noplace { margin: 0.25rem 0 0; font-size: 0.9rem; }
 /* BL13 TRY-F end */
 
 /* W11 FLOW */
