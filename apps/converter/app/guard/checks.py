@@ -8,6 +8,7 @@ import struct
 import unicodedata
 import warnings
 import zipfile
+import zlib
 from dataclasses import dataclass
 
 from app.config import Settings
@@ -250,7 +251,7 @@ def check_archive(data: bytes, settings: Settings, office_members: bool = False)
                         raise ProblemError("ARCHIVE_LIMIT", "Rozpakowana zawartość przekracza limit.")
                     if count > ZIP_RATIO_FLOOR and count > ZIP_MAX_RATIO * max(info.compress_size, 1):
                         raise ProblemError("ARCHIVE_LIMIT", f"Stopień kompresji przekracza {ZIP_MAX_RATIO}:1.")
-        except (zipfile.BadZipFile, OSError, ValueError, NotImplementedError, EOFError, RuntimeError) as exc:
+        except (zipfile.BadZipFile, zlib.error, OSError, ValueError, NotImplementedError, EOFError, RuntimeError) as exc:
             raise ProblemError("UNREADABLE", "Archiwum jest uszkodzone.") from exc
         total += count
     return zf
