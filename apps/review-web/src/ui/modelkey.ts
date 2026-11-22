@@ -44,6 +44,8 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
   let revealed = false
   let touched = false            // has the person edited the address or the model name since the last answer
   let call = 0
+  let hadKey = false           // was there a typed key before this keystroke
+  let applied = ''             // the typed key the service already took ("Użyj w tej sesji"); it is not sent twice
   /** the last result line: a key of the dictionaries with its parameters, so a change of language repaints it */
   let result: { key: string; params: Record<string, string | number>; bad: boolean; still: boolean; lead?: string } | null = null
 
@@ -76,7 +78,7 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
     stateLine, sourceLine, form)
   const el = h('section', { class: 'panel ai', id: 'ai', 'aria-labelledby': 'h-ai', hidden: true }, details)
 
-  const typed = (): Typed => typedOf(state, url.value, model.value, key.value)
+  const typed = (): Typed => typedOf(state, url.value, model.value, key.value.trim() === applied ? '' : key.value)
 
   function paint(): void {
     el.hidden = !loaded || state === null   // a service without this block (an older build): nothing is shown
@@ -105,7 +107,7 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
     reveal.textContent = t(revealed ? 'ai.hide' : 'ai.show')
     reveal.setAttribute('aria-pressed', revealed ? 'true' : 'false')
     reveal.disabled = !key.value && !s.keySet
-    keyHint.textContent = key.value ? t('ai.key.hint.typed')
+    keyHint.textContent = key.value ? t(key.value.trim() === applied ? 'ai.key.hint.applied' : 'ai.key.hint.typed')
       : !s.keySet ? t('ai.key.hint.none')
         : revealed ? t(s.keyTail ? 'ai.key.hint.tail' : 'ai.key.hint.notail', { tail: s.keyTail })
           : t('ai.key.hint.' + (s.keyOrigin || 'environment-variable'))
@@ -174,6 +176,7 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
     if (!res.ok) { show({ ok: false, code: res.code }); return }
     // The key stays in the field (this tab's memory), so it can be looked at; the service got it once, just now.
     touched = false
+    if (sent.key) applied = sent.key
     call++
     state = res.state ?? (await getState(token())) ?? state
     fill()
@@ -185,6 +188,8 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
     const res = await forget(token())
     if (!res.ok) { show({ ok: false, code: res.code }); return }
     key.value = ''
+    applied = ''
+    hadKey = false
     revealed = false
     touched = false
     call++
@@ -195,7 +200,13 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
 
   reveal.addEventListener('click', () => { revealed = !revealed; paint() })
   for (const input of [url, model]) input.addEventListener('input', () => { touched = true; result = null; paint() })
-  key.addEventListener('input', () => { result = null; paint() })
+  key.addEventListener('input', () => {
+    // "Show" pressed for the dots of a server key must not uncover a key the person starts to type afterwards.
+    if (!hadKey && key.value) revealed = false
+    hadKey = Boolean(key.value)
+    result = null
+    paint()
+  })
 
   void reload()
   return { el, refresh: paint, reload }

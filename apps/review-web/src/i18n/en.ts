@@ -268,6 +268,7 @@ export const en: Dict = {
   'ai.key.hint.tail': "The service never sends a whole key to the browser. It shows only the last 4 characters ({tail}), enough to recognise which key is in use.",
   'ai.key.hint.notail': "The service never sends a key to the browser; of this key it shows no part at all.",
   'ai.key.hint.typed': "This key is only in the memory of this tab. After “Use in this session” the service gets it too, in memory; it is not written to disk or to logs.",
+  'ai.key.hint.applied': "This key is already used by the service (kept in its memory only) and is in the memory of this tab, so it can be looked at here.",
   'ai.key.hint.none': "No key is set. Type the key of your model server.",
   'ai.show': "Show key",
   'ai.hide': "Hide key",

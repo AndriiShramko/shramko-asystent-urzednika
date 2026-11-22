@@ -315,7 +315,21 @@ def test_a_failure_of_the_step_is_shown_as_a_fallback_with_its_meaning(monkeypat
     assert client.get("/v1/model").json()["state"] == "on"
 
 
+def test_a_failed_check_of_the_settings_in_use_is_shown_at_once_and_a_check_of_typed_ones_is_not(monkeypatch, server):
+    configured(monkeypatch, server, key="empty-wallet")
+    client = make()
+    assert client.get("/v1/model").json()["state"] == "on"
+    assert client.post("/v1/model/check", json={"key": "wrong"}).json()["code"] == "bad_key"   # typed, not in use
+    assert client.get("/v1/model").json()["state"] == "on"
+    assert client.post("/v1/model/check", json={}).json()["code"] == "no_credit"               # the settings in use
+    body = client.get("/v1/model").json()
+    assert (body["state"], body["reason"], body["problem"]) == ("fallback", "check_no_credit", "no_credit")
+    assert client.get("/status").json()["vision"]["state"] == "FALLBACK"
+    assert convert(client).status_code == 200   # and conversion goes on
+
+
 @pytest.mark.parametrize("reason, code", [
+    ("check_rate_limit", "rate_limit"), ("check_unknown", "server_error"),
     ("http_401", "bad_key"), ("http_403", "bad_key"), ("http_402", "no_credit"), ("http_429", "rate_limit"),
     ("http_404", "model_not_found"), ("connect", "unreachable"), ("network", "unreachable"), ("timeout", "timeout"),
     ("deadline", "timeout"), ("not_json", "not_api"), ("http_500", "server_error"), ("breaker_open", "server_error"),

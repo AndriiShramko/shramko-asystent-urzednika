@@ -268,6 +268,7 @@ export const es: Dict = {
   'ai.key.hint.tail': "El servicio nunca envía la clave completa al navegador. Muestra solo los 4 últimos caracteres ({tail}), suficiente para reconocer qué clave está en uso.",
   'ai.key.hint.notail': "El servicio nunca envía la clave al navegador; de esta clave no muestra ninguna parte.",
   'ai.key.hint.typed': "Esta clave está solo en la memoria de esta pestaña. Tras «Usar en esta sesión» la recibe también el servicio, en memoria; no se escribe en disco ni en registros.",
+  'ai.key.hint.applied': "Esta clave ya la usa el servicio (solo en su memoria) y está en la memoria de esta pestaña, por eso se puede ver aquí.",
   'ai.key.hint.none': "No hay clave definida. Escriba la clave de su servidor del modelo.",
   'ai.show': "Mostrar clave",
   'ai.hide': "Ocultar clave",

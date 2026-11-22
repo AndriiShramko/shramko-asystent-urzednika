@@ -98,7 +98,10 @@ def mount(app, authorize: Callable[[Any, str], str], auth_enabled: bool) -> None
         finally:
             session._CHECK_LOCK.release()
         same = (settings["base_url"], settings["model"], settings["key"]) == (current.base_url, current.model, current.key)
-        if result["ok"] and same and current.configured:
-            session._fresh_start()   # the settings in use answer again: a fallback of before is over
+        if same and current.configured:
+            if result["ok"]:
+                session._fresh_start()   # the settings in use answer again: a fallback of before is over
+            else:   # the settings in use do not answer: the state says so at once, not only after the next scan
+                session.mark_failed(result["code"], current.model)
         log.info("stage=model-check result=%s host=%s", result["code"], host_class(settings["base_url"]))
         return answer({**result, "message": message(result["code"])})

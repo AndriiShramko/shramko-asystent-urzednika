@@ -282,7 +282,7 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 
 /* W11 KEY: the block "Model AI (opcjonalnie)" (state, key in dots, connection check) */
 .ai { border: 1px solid var(--c-border); border-radius: 6px; padding: 0.25rem 1rem; background: var(--c-bg); }
-.ai[hidden] { display: none; }
+.ai[hidden], .ai [hidden] { display: none; }
 .ai-details > summary { font-size: 1.05rem; }
 .ai-badge { display: inline-block; border-radius: 999px; padding: 0.1rem 0.7rem; font-size: 0.9rem; font-weight: 600; border: 1px solid var(--c-engine-rules-edge); background: var(--c-engine-rules-bg); color: var(--c-engine-rules-text); }
 .ai-badge.ai-on { border-color: var(--c-engine-model-edge); background: var(--c-engine-model-bg); color: var(--c-engine-model-text); }

@@ -156,6 +156,16 @@ describe('the block', () => {
     expect(key.type).toBe('password')
   })
 
+  it('"show" pressed for the dots of a server key does not uncover a key typed afterwards', async () => {
+    const { el } = await mounted(ENV)
+    const key = $<HTMLInputElement>(el, '#ai-key')
+    $(el, '#ai-reveal').click()
+    expect(key.placeholder).toContain('ailE')
+    type(key, PAGE_KEY)
+    expect(key.type).toBe('password')
+    expect($(el, '#ai-reveal').textContent).toBe('Pokaż klucz')
+  })
+
   it('a failure of the step: what is wrong, what to do, and that conversion goes on', async () => {
     const { el } = await mounted({ ...ENV, state: 'fallback', used: true, problem: 'no_credit' })
     expect($(el, '#ai-badge').textContent).toBe('awaria: działa bez modelu')
@@ -213,6 +223,10 @@ describe('the block', () => {
     expect(calls.check).toEqual([{}])   // the service checks what it now uses; the key is not sent a second time
     expect($(el, '#ai-result').textContent).toContain('Ustawienia przyjęte. Połączenie działa')
     expect($(el, '#ai-source').textContent).toContain('wpisano na tej stronie')
+    // the key stays in the field of this tab (it can be looked at), is not "new" any more and is not sent again
+    expect($<HTMLInputElement>(el, '#ai-key').value).toBe(PAGE_KEY)
+    expect($(el, '#ai-key-hint').textContent).toContain('jest już używany przez usługę')
+    expect(use.disabled).toBe(true)
     expect(el.dataset.source).toBe('session')
     const reset = $<HTMLButtonElement>(el, '#ai-reset')
     expect(reset.hidden).toBe(false)

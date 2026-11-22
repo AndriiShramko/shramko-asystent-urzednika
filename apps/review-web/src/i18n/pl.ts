@@ -270,6 +270,7 @@ export const pl = {
   'ai.key.hint.tail': "Usługa nigdy nie wysyła całego klucza do przeglądarki. Pokazuje tylko 4 ostatnie znaki ({tail}), żeby dało się rozpoznać, który klucz jest w użyciu.",
   'ai.key.hint.notail': "Usługa nigdy nie wysyła klucza do przeglądarki; tego klucza nie pokazuje nawet we fragmencie.",
   'ai.key.hint.typed': "Ten klucz jest tylko w pamięci tej karty. Po kliknięciu „Użyj w tej sesji” dostanie go także usługa, do pamięci; nie trafia na dysk ani do logów.",
+  'ai.key.hint.applied': "Ten klucz jest już używany przez usługę (trzyma go tylko w pamięci) i jest w pamięci tej karty, dlatego można go tutaj podejrzeć.",
   'ai.key.hint.none': "Klucz nie jest ustawiony. Wpisz klucz do swojego serwera modelu.",
   'ai.show': "Pokaż klucz",
   'ai.hide': "Ukryj klucz",

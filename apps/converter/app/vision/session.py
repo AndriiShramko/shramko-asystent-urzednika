@@ -211,9 +211,19 @@ def set_override(body: Mapping[str, Any]) -> str:
 
 # ---- what a failure means --------------------------------------------------------------------------------------------
 
+def mark_failed(code: str, model: str) -> None:
+    """A connection check of the settings in use failed: the state becomes FALLBACK with the reason `check_<code>`.
+    The breaker is not touched: the next weak scan still tries the model, and its own outcome replaces this."""
+    from app import vision
+
+    vision._set_state("FALLBACK", "check_" + code, model)
+
+
 def problem_of(reason: str) -> str:
     """A short reason of the step (`VisionError.reason`, kept in the state) -> the code of MESSAGES."""
     r = reason or ""
+    if r.startswith("check_") and r[6:] in MESSAGES:
+        return r[6:]
     if r in ("http_401", "http_403"):
         return "bad_key"
     if r == "http_402":
