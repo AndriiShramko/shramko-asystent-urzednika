@@ -42,9 +42,10 @@ def test_wrong_extension(name):
     refused(name, fx.pdf(), "EXTENSION")
 
 
-def test_jpe_is_accepted_by_default_and_refused_when_strict():
+def test_jpe_is_read_as_jpeg_in_both_modes():
+    # a10 STRICT: the default is the card's eight; `.jpe` stays a JPEG spelling (the partner's judged set 7 ships one)
     assert inspect_upload("scan.jpe", fx.jpeg(), S).kind == "jpeg"
-    refused("scan.jpe", fx.jpeg(), "EXTENSION", Settings(auth_mode="off", strict_extensions=True))
+    assert inspect_upload("scan.jpe", fx.jpeg(), Settings(auth_mode="off", strict_extensions=False)).kind == "jpeg"
 
 
 # ---- names ------------------------------------------------------------------------------------------------------
