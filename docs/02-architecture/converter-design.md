@@ -143,7 +143,7 @@ Every value comes from the environment or from a file named by the environment; 
 | `FINISH_STYLE` | `export` | `export`: `SECTION` with `TEXT_BLOCK` (D5); `info_section` |
 | `VALIDATORS` | `on` | `off` writes empty lists as in the exports (D8) |
 | `REPEATING_STYLE` | `native` | `native`: `REPEATING_SECTION`; `flat`: one plain section and a warning, for an importer that refuses the inferred shape |
-| `STRICT_EXTENSIONS` | `false` | `false` accepts `.jpe` as JPEG when the content is JPEG (set 7 holds such a file); `true` accepts exactly the eight extensions of the card |
+| `STRICT_EXTENSIONS` | `true` | `true` accepts exactly the eight extensions of the card (and `.jpe` as JPEG when the content is JPEG: set 7 holds such a file); `false` also accepts the other formats with a reader (odt, xls, rtf, txt, tif, tiff, bmp, gif, webp, heic, heif) |
 | `DOC_READER` | `native` | `native`, `libreoffice` (image `plus` only, D4 of the stack table), `off`. `libreoffice` has no effect today (no image installs it; it reads like `native`); `off` refuses DOC with `415 DOC_READER_OFF` |
 | `OCR_LANGS` | `pol+eng` | Tesseract languages |
 | `OCR_DPI` | `300` | rendering resolution of pages without text; no effect today (the readers do not read it) |
@@ -296,7 +296,7 @@ Rules: the ledger must close (`blanks_found` equals the sum of the five fates) o
 ### 6.1 Guard (API process, before any parsing)
 
 1. File name: normalise to NFC; at most 250 characters; none of `; : > < / \ | ' * % $`; no control, NUL or direction-override characters. The name is never a path, never logged; only its hash and extension are kept.
-2. Extension, case-insensitive (the sets contain `.PDF`, `.DOC`, `.ODS`, `.PNG`, `.JPG`): `pdf doc docx ods xlsx jpg jpeg png`. `.jpe` is treated as `jpeg` unless `STRICT_EXTENSIONS=true`.
+2. Extension, case-insensitive (the sets contain `.PDF`, `.DOC`, `.ODS`, `.PNG`, `.JPG`): `pdf doc docx ods xlsx jpg jpeg png`. `.jpe` is treated as `jpeg`. `STRICT_EXTENSIONS=false` adds `odt xls rtf txt tif tiff bmp gif webp heic heif`.
 3. Size: `Content-Length` first, then bytes counted while reading.
 4. Content proof, so that content matches the extension (C-TECH-MIME). A generic sniffer says "zip" for three of our formats, so each has its own proof:
 

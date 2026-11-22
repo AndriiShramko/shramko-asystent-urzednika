@@ -67,7 +67,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `MAX_UPLOAD_BYTES` | `20971520` | largest upload |
 | `CONCURRENCY` | `2` | uploads processed at once; more get `429 BUSY` at once |
 | `RATE_LIMIT_PER_MIN` | `60` | per token subject; over it `429 BUSY` with `Retry-After` |
-| `STRICT_EXTENSIONS` | `false` | `false` accepts `.jpe` as JPEG by content; `true` accepts exactly the eight extensions |
+| `STRICT_EXTENSIONS` | `true` | `true` accepts exactly the eight extensions of the task card (`.jpe` is read as JPEG: the partner's judged set 7 ships one), any other answers 415 `EXTENSION`; `false` also accepts the other formats this build reads (ODT, XLS, RTF, TXT, TIF, TIFF, BMP, GIF, WEBP, HEIC, HEIF) |
 | `DOC_READER` | `native` | `off` refuses binary Word with `415 DOC_READER_OFF` |
 | `ACTIVE_CONTENT` | `warn` | `strict` refuses files with macros |
 | `MAX_PAGES` | `60` | pages per document; more is `413 TOO_LARGE` |
@@ -103,7 +103,7 @@ Token in `Authorization: Bearer ...`, scope `convert`, when the service runs wit
 
 ```bash
 curl -s http://127.0.0.1:8080/healthz
-curl -s http://127.0.0.1:8080/status       # no token: name, version, engine "rules", auth mode, readable formats, limits
+curl -s http://127.0.0.1:8080/status       # no token: name, version, engine "rules", auth mode, accepted formats, limits
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" "http://127.0.0.1:8080/v1/forms/convert?report=1"   # multipart/mixed: form.json and meta.json
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/report              # the sidecar alone
