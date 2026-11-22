@@ -49,6 +49,7 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 | Set 08: matter fields not above the paper-cued ones | same | ods and xlsx: "Nr tel./fax" and four consent rows of the section titled "... (pola nieobowiązkowe)" went to optional (10 fields); no field gained REQUIRED | 6d5e675 |
 | A field REQUIRED by the paper stays so | same, all sets, 5 text formats | 689 fields; basis "paper" 10 before, 10 after; 0 changed lines held "paper"; required 670 -> 642; the 28 changed fields are exactly the two rows above, no other set changed | 6d5e675 |
 | No judged set loses an element or a validator in any format | `count_sets.py tmp/c1-after.json --all`, then `--diff tmp/c1-before.json tmp/c1-after.json` | 70 inputs (every set, every format): `--diff` prints nothing; inputs and REQUIRED per form equal; only "required in the brief" drops: set 08 ods and xlsx 105 -> 100, set 09 doc 51 -> 45, docx 44 -> 38, pdf 62 -> 56 (sum 28) | 6d5e675 |
+| Fast gate | `bash tools/gate.sh fast > tmp/fast.log 2>&1` | "gate: fast PASSED on d0d7bc6": 870 passed, 3 skipped, 22 deselected; then 21 passed | d0d7bc6 |
 | Unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` | 122 passed, 1 skipped (29 new cases in three files) | 6d5e675 |
 
 ## Negative control
@@ -58,10 +59,16 @@ basis was "paper"); the 9 that passed are the guards that must hold before and a
 `bash tools/gate.sh py -m pytest apps/converter/tests/mean/test_mean_c1_negation.py ... test_mean_core.py test_mean_f3b.py test_mean_f3c.py -q` = 79 passed.
 
 ## Left for the next stage
-Step (g), then (e2) and (h) if time is left. Heartbeat of this section: 2026-11-22 01:15. Steps (c) to (f) are committed;
-tests 122 passed and both measurements ran on 6d5e675 (see "## Evidence"). NEXT: command 5 below (fast gate, then the chain
-compare; read the tails of `tmp/fast.log` and `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write both results
-into "## Evidence", set the state in line 3 to `ready_to_merge`. The package is mergeable without (e2) and (h): they only add cues.
+The chain compare of (g), then (e2) and (h) if time is left. Heartbeat of this section: 2026-11-22 01:30. Steps (c) to (f)
+are committed; the fast gate PASSED on d0d7bc6 (code equal to 6d5e675). NEXT: the chain compare of command 5 below (read the
+tail of `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write the result into "## Evidence", set the state in
+line 3 to `ready_to_merge`. `main` has two newer commits (STATUS and results, documents only): `git merge --no-edit main` before
+the hand-over. The package is mergeable without (e2) and (h): they only add cues, and no field of any set holds the words of (e2)
+(0 of 689 fields have "należy wypełnić" or "musi zawierać" in label, hint or section title).
+(e2) is half done: its test file `apps/converter/tests/mean/test_mean_c1_wording.py` is written but NOT in git (4 of its 8
+cases fail until the code exists). Code of (e2): a row `{"habit": "required_wording", "pattern": "należy\\s*wypełnić(?!\\s*\\w)|musi\\s*zawierać"}`
+in `habits.json`, and `_says_required` in `_fields.py` iterating over `REQUIRED` and `_habit("required_wording")`; after it
+re-run the mean tests, the dump tool (expect no change) and the fast gate.
 `field_of(label, title=..., footnote=...)` of `test_mean_c1_negation.py` builds a synthetic one-field paper for new tests.
 Before-dump of ALL sets on main's code: `tmp/c1-brief-all-before.tsv` = 689 fields, 670 required, 10 with basis paper
 (local, not in git: re-make it from a checkout of `main` with the same tool if needed). Measuring tool of this package:
