@@ -73,6 +73,12 @@ export const es: Dict = {
   'json.hash.unchecked': 'No se comprobó la suma SHA-256 (el navegador no la ofrece o falta la cabecera).',
   'json.bytes': 'Tamaño: {n} B',
 
+  'engine.label': 'Motor de conversión:',
+  'engine.rules': 'solo reglas, sin modelo de lenguaje.',
+  'engine.model': 'reglas y el paso del modelo de lenguaje.',
+  'engine.fallback': 'reglas en modo de reserva: el modelo no respondió, el resultado es el mismo que sin el modelo.',
+  'engine.unknown': 'el servicio no indicó el motor (falta la cabecera X-Converter-Engine).',
+
   'sidecar.missing.heading': 'Falta el informe adjunto',
   'sidecar.missing.body': 'El servicio no envió el informe (meta.json). El formulario se muestra completo, pero faltan: el origen de los campos (papel o estándar), las páginas y los fragmentos del papel, y la lista de avisos del informe.',
 
@@ -135,6 +141,9 @@ export const es: Dict = {
   'warn.CLAUSE_LINK_MISSING': 'Un consentimiento o cláusula del papel no tiene un enlace que lo señale.',
   'warn.NO_MATTER': 'No se encontraron campos del asunto; el formulario solo contiene secciones estándar.',
   'warn.EXTRA_NOT_PLACED': 'Un contenido adicional del papel no se colocó en ningún sitio.',
+  'warn.MODEL_USED': 'En esta conversión se ejecutó el paso del modelo de lenguaje; el informe indica qué cambió.',
+  'warn.MODEL_FALLBACK': 'El modelo de lenguaje no respondió correctamente; el resultado procede solo de las reglas y es el mismo que sin el modelo.',
+  'warn.MODEL_SKIPPED': 'Hay un modelo de lenguaje configurado, pero no hizo falta en esta conversión; el resultado procede solo de las reglas.',
   'warn.BRIEF_NOT_READ': 'El asunto del papel aún no se ha leído; el resultado solo contiene el título y las secciones estándar.',
   'warn.LEDGER_NOT_CLOSED': 'La cuenta de todos los lugares del papel no cerró. Los números del informe pueden estar incompletos.',
   'warn.PIPELINE_STUB': 'Es un resultado provisional: el lector del papel aún no está conectado.'

@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { mountApp } from '../src/ui/app'
-import { renderConverted, renderProblem } from '../src/ui/result'
+import { engineBadge, renderConverted, renderProblem } from '../src/ui/result'
+
+/** The engine band comes right after the title of the result, before everything else. */
+function root_h2_then_badge(root: HTMLElement): boolean {
+  return root.children[0]?.id === 'h-done' && root.children[1]?.id === 'engine'
+}
 import { setLang, t, LANGS, dictionaryKeys } from '../src/lib/i18n'
 import { interpretResponse, type Converted, type Outcome } from '../src/lib/api'
 import { canonical, multipartBody, syntheticForm, syntheticSidecar } from './helpers'
@@ -55,6 +60,33 @@ describe('result page', () => {
     }
     const unknown = renderProblem({ kind: 'error', code: 'NEW_ONE', status: 422, detail: null, title: null })
     expect(unknown.textContent).toContain(t('problem.UNKNOWN'))
+  })
+
+  it('shows the engine of the conversion in words, with the token of the header, in every language', async () => {
+    const base = await converted(true)
+    const cases: [Converted['engine'], string, string][] = [
+      ['rules', 'engine-rules', 'engine.rules'], ['rules+model', 'engine-model', 'engine.model'],
+      ['rules-fallback', 'engine-fallback', 'engine.fallback'], [null, 'engine-unknown', 'engine.unknown']
+    ]
+    for (const lang of LANGS) {
+      setLang(lang)
+      for (const [engine, cls, key] of cases) {
+        const root = renderConverted({ ...base, engine })
+        const badge = root.querySelector('#engine') as HTMLElement
+        expect(badge.classList.contains(cls)).toBe(true)
+        // the meaning is text, not colour alone: label, token and the sentence are all readable
+        expect(badge.textContent).toContain(t('engine.label'))
+        expect(badge.textContent).toContain(t(key))
+        expect(t(key)).not.toBe(key)
+        expect(badge.querySelector('code')?.textContent ?? null).toBe(engine)
+        // not a control: nothing to focus, the keyboard order of the page is unchanged
+        expect(badge.querySelector('a, button, input, [tabindex]')).toBeNull()
+        expect(badge.hasAttribute('tabindex')).toBe(false)
+      }
+    }
+    setLang('pl')
+    expect(engineBadge('rules').textContent).toBe('Silnik konwersji: rules — same reguły, bez modelu językowego.')
+    expect(root_h2_then_badge(renderConverted({ ...base, engine: 'rules' }))).toBe(true)
   })
 
   it('renders without a leaked dictionary key in every language', async () => {

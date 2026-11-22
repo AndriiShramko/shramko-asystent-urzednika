@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import os
 import uuid
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 from typing import Mapping
 
@@ -66,7 +66,15 @@ class Settings:
     id_namespace: str = ""
     sign_output: str = "off"
     signing_key_file: str = ""
-    model_step: str = "off"
+    # The model step (WP-H4 names, WP-H1 behaviour). `auto`: the step runs when a model is configured and answers,
+    # otherwise the rules; `off`: rules only. This build has no model step: the names are read and reported by
+    # `app.engine`, nothing is called. The URL and the key file path are kept out of `repr`; the key itself is
+    # never stored: `model_api_key_set` only says that the variable MODEL_API_KEY holds something.
+    model_step: str = "auto"
+    model_base_url: str = field(default="", repr=False)
+    model_name: str = ""
+    model_api_key_file: str = field(default="", repr=False)
+    model_api_key_set: bool = False
     ui_enabled: bool = True
     ui_dir: str = ""
     log_level: str = "info"
@@ -91,10 +99,13 @@ class Settings:
             "active_content": ("warn", "strict"),
             "filled_form": ("warn", "reject"),
             "sign_output": ("off", "jws"),
-            "model_step": ("off",),
+            "model_step": ("auto", "off"),
             "log_level": ("debug", "info", "warning", "error"),
         }
         for f in fields(cls):
+            if f.name == "model_api_key_set":   # presence of MODEL_API_KEY only: the value never enters the settings
+                values[f.name] = bool((env.get("MODEL_API_KEY") or "").strip())
+                continue
             name = f.name.upper()
             raw = env.get(name)
             default = getattr(defaults, f.name)
