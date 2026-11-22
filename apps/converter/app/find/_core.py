@@ -52,8 +52,16 @@ INSTR_HEAD = re.compile(r"instrukcj|pouczeni|objaśnieni|sposób\s+wypełni", _I
 LEGAL = re.compile(r"^(?:na\s+podstawie|zgodnie\s+z)\s+(?:art|§|ustaw|rozporz)|^art\.\s*\d+.*\b(?:ustaw|rozporządz|kodeks)"
                    r"|\bDz\.\s?U\.", _I)
 SIGN = re.compile(r"podpis|pieczę[ćc]|pieczątk", _I)
-OFFICE = re.compile(r"wypełnia\s+(?:organ|urząd|pracownik)|adnotacj\w+\s+(?:urzęd|organu)|miejsce\s+na\s+piecz"
+# a blank inside a sentence: not "niżej podpisany", which names the person
+SIGN_WORD = re.compile(r"\bpodpis(?:y|em)?\b|pieczę[ćc]|pieczątk", _I)
+SIGN_DATE = re.compile(r"^(?:data|dnia|miejscowość(?:,|\s+i)\s+data|data\s+i\s+miejscowość)$", _I)
+OFFICE = re.compile(r"wypełnia\s+(?:organ|urząd|pracownik)|wypełnian\w*\s+przez\s+(?:organ|urząd|pracownik)"
+                    r"|adnotacj\w+\s+(?:urzęd|organu)|miejsce\s+na\s+piecz"
                     r"|n(?:r|umer)\s+sprawy|znak\s+sprawy|data\s+wpływu|potwierdzenie\s+(?:przyjęcia|wpływu)", _I)
+# a heading that gives its whole part to the office: word ends, so "wypełnia organizator" (the applicant of an event)
+# and "wypełnia pracownik" (the employee on a staff form) keep their part
+OFFICE_HEAD = re.compile(r"wypełnia\w*\s+(?:przez\s+)?(?:organ\b|urz[ąę]d|pracownik\w*\s+urzęd)"
+                         r"|adnotacj\w+\s+(?:urzęd|organu)", _I)
 NOTE = re.compile(r"^/?\s*(?:\d{1,2}\s?\)|\*{1,3}\)?)\s*\S")
 CAPTION = re.compile(r"^\s*[(/]")
 NUM = re.compile(r"^(\d{1,2}(?:\.\d{1,2})*)\.?\s+(\S.*)$")
@@ -484,12 +492,25 @@ class Finder:
                     self.add(D("cell", n, ln.pos, box=b, label=lab, geom=0.85))
 
     def kinds(self) -> None:
+        signed: set[int] = set()
         for d in self.cands:
             if d.label is not None and d.kind in ("leader", "line_block", "cell", "blank_in_sentence"):
-                if OFFICE.search(d.label.text):
+                s = self.sec(d.pos)
+                if OFFICE.search(d.label.text) or (s is not None and OFFICE_HEAD.search(s.title)):
+                    # an office-use place: by its own label, or under a heading that gives the part to the office
                     d.kind = "office_use"
-                elif SIGN.search(d.label.text) and d.kind != "blank_in_sentence":
+                elif SIGN.search(d.label.text) and (d.kind != "blank_in_sentence" or (
+                        len(d.label.text.split()) <= 4 and SIGN_WORD.search(d.label.text))):
+                    # a blank inside a sentence is a signature only when its own label is short ("Data ... Podpis
+                    # ...", "...... (podpis)"); a long sentence that names a signature asks something else
                     d.kind = "signature"
+                    if d.line is not None:
+                        signed.add(id(d.line))
+        for d in self.cands:
+            # the date (or place and date) blank on the line of a signature is the date of the signature
+            if d.kind == "blank_in_sentence" and d.label is not None and d.line is not None and id(d.line) in signed \
+                    and SIGN_DATE.match(d.label.text.strip()):
+                d.kind = "signature"
 
     def drawn_mark(self, p: P, b: Box) -> None:
         d = self.add(D("box", p.page.number, p.boxpos[b], box=b, geom=0.95))
