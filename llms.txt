@@ -1,6 +1,6 @@
 # Shramko Asystent Urzędnika
 
-> Open brief and reference design by Andrii Shramko for an AI assistant for Polish public offices: it helps clerks analyse access-to-public-information requests (UDIP, wnioski o udostępnienie informacji publicznej) and draft answers with a verified legal basis, and it pre-fills official forms from data a visitor enters once. Prepared for HackNation 2026 (Bydgoszcz), challenge "Inteligentny asystent urzędnika". Research is dated 2026-11-20 and labelled verified, secondary or unverified. MIT (code) and CC BY 4.0 (documents): https://github.com/AndriiShramko/shramko-asystent-urzednika
+> A REST service in Docker by Andrii Shramko for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026, Bydgoszcz): one blank Polish official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG) and the JSON configuration of an electronic form in the partner's structure comes out, with a sidecar of evidence beside it. No language model runs in the product. The pre-event material below is a parked vision, not built: an open brief and reference design for an AI assistant for Polish public offices that helps clerks analyse access-to-public-information requests (UDIP, wnioski o udostępnienie informacji publicznej) and draft answers with a verified legal basis, and it pre-fills official forms from data a visitor enters once. Prepared for HackNation 2026 (Bydgoszcz), challenge "Inteligentny asystent urzędnika". Research is dated 2026-11-20 and labelled verified, secondary or unverified. MIT (code) and CC BY 4.0 (documents): https://github.com/AndriiShramko/shramko-asystent-urzednika
 
 ## Key facts
 - UDIP deadline: without undue delay, at most 14 days from filing; one extension only if announced within those 14 days, at most 2 months from filing (art. 13 of the Act of 6 September 2001).
@@ -15,6 +15,7 @@
 
 ## Documents
 - [README](https://github.com/AndriiShramko/shramko-asystent-urzednika#readme): overview, questions answered, limits
+- [Converter](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/apps/converter/README.md): routes, settings, error codes and commands of the forms service
 - [Scope decision](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/docs/01-product/scope-decision.md): what to build for the jury, the wider platform, one database for many institutions
 - [UDIP law and process](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/02-udip-law-process-taxonomy.md): statute, decision tree of the clerk, response documents, data sources
 - [HackNation rules and judging](https://github.com/AndriiShramko/shramko-asystent-urzednika/blob/main/research/01-hacknation-2026-task-rules-jury.md): schedule, deliverables, criteria of 2025, jury questions
