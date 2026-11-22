@@ -1,5 +1,5 @@
 # WP-H4 the engine is always visible: status
-Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 03:15; state: stopped at the reply limit, built and proven up to 6115de9; on the head two checks were still running and are not read (see "Left for the next stage")
+Claimed by: build7 (agent h4-engine); heartbeat: 2026-11-22 03:45; state: done, ready for review; every check of the brief is read and green on the merged head (see "## Evidence", last rows)
 
 Branch: wp/H4-engine-visible   Stage now: core
 
@@ -21,7 +21,7 @@ Branch: wp/H4-engine-visible   Stage now: core
 - [x] merge of main 2837867 (97af238), pushed
 - [x] on 6115de9: byte comparison against main a7f2cee 158 of 158 and 79 of 79 (fake model configured)
 - [x] on the head (dc877c6, code of 97af238): the package's own tests, the first-run check and the model contract tests, 184 passed
-- [~] NOT READ, the builder's reply limit came first: on 97af238 the fast gate (at 40 percent at 03:14, no failure so far), `tools/ci/tests`, and the byte comparison against main 2837867 (80 of 158 hashed on both sides at 03:14). The last complete fast gate is on 2af59a7 (PASSED); a gate started on 6115de9 was at 88 percent with no failure. The head's code under `apps/converter/app` differs from the proven 6115de9 by one line of `pipeline.py`, and that line is main's own (2837867 against a7f2cee: the same single file)
+- [x] READ after all (03:45): on the merged head the byte comparison against main 2837867 is 158 of 158 and 79 of 79, the fast gate PASSED, `tools/ci/tests` 100 passed on 3d880f5; request 1 (stderr check of the image) was applied by the lead in 3d880f5. What follows in this item is the state at 03:14, kept as written: on 97af238 the fast gate (at 40 percent at 03:14, no failure so far), `tools/ci/tests`, and the byte comparison against main 2837867 (80 of 158 hashed on both sides at 03:14). The last complete fast gate is on 2af59a7 (PASSED); a gate started on 6115de9 was at 88 percent with no failure. The head's code under `apps/converter/app` differs from the proven 6115de9 by one line of `pipeline.py`, and that line is main's own (2837867 against a7f2cee: the same single file)
 
 ## Decisions
 - `serve` gives the logger `converter` the server's own handler (a copy of uvicorn's log configuration with one
@@ -78,7 +78,10 @@ Branch: wp/H4-engine-visible   Stage now: core
 | the checks of the image that run without Docker | `bash tools/gate.sh py -m pytest tools/ci/tests -q` | 100 passed | 6115de9 |
 | after the merge of main 2837867: the package's tests, the first-run check, the model contract tests | `bash tools/gate.sh py -m pytest apps/converter/tests/shell/test_engine_visible.py apps/converter/tests/shell/test_service_fixes.py apps/converter/tests/shell/test_shell_config_cli.py tools/ci/tests/test_first_run.py apps/converter/tests/model -q` | 184 passed | dc877c6 |
 | after the merge of main 2837867: what differs from main under `apps/converter/app` | `diff -rq` of `git archive 2837867` and `git archive 97af238` | five files: `cli.py`, `config.py`, `engine.py` (new), `main.py`, `model/common.py`; against 6115de9 the head adds only main's one line in `pipeline.py` | 97af238 |
-| NOT READ: fast gate, `tools/ci/tests` and the 158 and 79 comparison against main 2837867 on the head | started 02:57, the reply limit came first | no result; re-run as "Left for the next stage" says | 97af238 |
+| HARD, on the merged head: form and sidecar byte-identical to main 2837867 | same script, `git archive 2837867 apps/converter/app` against `git archive 97af238 apps/converter/app`, both outside the checkout | 158 of 158 (152 converted, 6 refused, 0 errors); 79 of 79 with a fake configured model | 97af238 (later commits touch the status file and `tools/ci` only) |
+| fast gate on the merged head | `bash tools/gate.sh fast` | `gate: fast PASSED on 3d880f5`, exit 0. Started on 97af238; the lead's 3d880f5 (`tools/ci` only, which the fast gate does not run) landed while it ran | 97af238 code, printed 3d880f5 |
+| the checks of the image that run without Docker, with the lead's patch of the stderr check | `bash tools/gate.sh py -m pytest tools/ci/tests -q` | 100 passed | 3d880f5 |
+| superseded rows above: "NOT READ" in "## Status" and the mixed gate | a gate started on 6115de9 ran through the merge of main and printed `PASSED on cf0d243`; it is a hint only | - | - |
 
 ## Negative control
 On 913f787 the line `engine.HEADER: engine.engine_of(...)` was removed from `headers_for` in `app/main.py`:
@@ -132,7 +135,8 @@ Everything of the brief is built. Main 2837867 is merged (97af238; before it a7f
 `apps/converter/app` the merged head differs from main 2837867 in five files only: `cli.py`, `config.py`,
 `engine.py` (new), `main.py`, `model/common.py`; `pipeline.py` and everything it imports are main's.
 Not done, and not possible on this laptop:
-1. The image workflow on this branch is expected RED until request 1 below is applied (stderr of `convert`).
+1. The image workflow has not been seen green on this branch. Request 1 (stderr of `convert`) is applied by the
+   lead in 3d880f5; the run of the workflow on that commit is the proof still missing.
 2. The band of the review page was not looked at in a real browser (the device check needs Playwright, which is
    not a dependency): `npm install --no-save playwright`, then `node scripts/devices.mjs` as its header says; the
    pictures in `apps/review-web/evidence/` are older and do not show the band.
