@@ -5,16 +5,18 @@ import { h } from './dom'
 import { readForm } from '../lib/fp/form'
 import { renderEForm, type EForm } from './eform'
 import { renderCitizen, type Citizen } from './citizen'
+import { renderCheck, type Check } from './check'
 import { FP } from '../lib/fp/text'
 import type { Converted } from '../lib/api'
 
-export interface FillBlock { el: HTMLElement; eform: EForm; citizen: Citizen }
+export interface FillBlock { el: HTMLElement; eform: EForm; citizen: Citizen; check: Check }
 
 export function mountFill(res: Converted): FillBlock {
   const model = readForm(res.form)
   const eform = renderEForm(model)
-  const citizen = renderCitizen(eform)
+  const check = renderCheck(eform)
+  const citizen = renderCitizen(eform, () => check.reset())
   const banner = h('p', { id: 'fp-banner', class: 'fp-banner', role: 'note' }, FP.banner)
-  const el = h('div', { id: 'fp', class: 'fp', lang: 'pl' }, banner, eform.el, citizen.el)
-  return { el, eform, citizen }
+  const el = h('div', { id: 'fp', class: 'fp', lang: 'pl' }, banner, eform.el, citizen.el, check.el)
+  return { el, eform, citizen, check }
 }

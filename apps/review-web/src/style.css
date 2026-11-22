@@ -226,3 +226,6 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .fp-people legend { font-weight: 600; }
 .fp-person { justify-content: flex-start; text-align: left; }
 .linkish { font: inherit; color: var(--c-accent); background: none; border: 0; padding: 0.15rem 0; text-decoration: underline; cursor: pointer; text-align: left; min-height: 1.75rem; }
+.fp-ready { background: var(--c-ok-bg); color: var(--c-ok-text); border: 2px solid var(--c-ok-edge); border-radius: 6px; padding: 0.5rem 1rem; }
+.fp-notready { border: 2px solid var(--c-bad); border-radius: 6px; padding: 0.5rem 1rem; }
+.fp-ok { font-weight: 700; }
