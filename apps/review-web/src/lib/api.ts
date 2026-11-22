@@ -145,3 +145,62 @@ export async function convertFile(file: File, token: string, fetcher: Fetcher = 
   const bytes = new Uint8Array(await res.arrayBuffer())
   return interpretResponse(res.status, res.headers, bytes)
 }
+
+/** What the page wants to know while a conversion runs: the moment the file has left the browser (the stage
+ * changes from sending to processing) and a way to stop waiting. */
+export interface ConvertHooks {
+  onUploaded?: () => void
+  signal?: AbortSignal
+}
+
+/** The code of an outcome the person chose (Przerwij): not an error of the file nor of the service. */
+export const CANCELLED = 'CANCELLED'
+
+/** The same request as convertFile, through XMLHttpRequest, because only it reports the end of the upload; the
+ * stage text of the page is then true, not a timer. Same URL, same body, same headers: the REST contract is
+ * unchanged. Cancelling stops the page waiting; the service may still finish the job on its side. */
+export function convertWithProgress(file: File, token: string, hooks: ConvertHooks = {}): Promise<Outcome> {
+  return new Promise<Outcome>((resolve) => {
+    const fail = (code: string): void => resolve({ kind: 'error', code, status: 0, detail: null, title: null })
+    if (typeof XMLHttpRequest === 'undefined') {
+      convertFile(file, token).then(resolve, () => fail('NETWORK'))
+      return
+    }
+    const body = new FormData()
+    body.append('file', file, file.name)
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', CONVERT_URL)
+    xhr.responseType = 'arraybuffer'
+    if (token.trim()) xhr.setRequestHeader('Authorization', 'Bearer ' + token.trim())
+    let uploaded = false
+    const markUploaded = (): void => { if (!uploaded) { uploaded = true; hooks.onUploaded?.() } }
+    xhr.upload.addEventListener('load', markUploaded)
+    xhr.addEventListener('readystatechange', () => { if (xhr.readyState >= 2) markUploaded() })
+    xhr.addEventListener('load', () => {
+      markUploaded()
+      const bytes = new Uint8Array((xhr.response as ArrayBuffer | null) ?? new ArrayBuffer(0))
+      interpretResponse(xhr.status, { get: (name: string) => xhr.getResponseHeader(name) }, bytes).then(resolve, () => fail('BAD_ANSWER'))
+    })
+    xhr.addEventListener('error', () => fail('NETWORK'))
+    xhr.addEventListener('timeout', () => fail('NETWORK'))
+    xhr.addEventListener('abort', () => fail(CANCELLED))
+    if (hooks.signal) {
+      if (hooks.signal.aborted) { fail(CANCELLED); return }
+      hooks.signal.addEventListener('abort', () => xhr.abort())
+    }
+    xhr.send(body)
+  })
+}
+
+export const STATUS_URL = '../status'
+
+/** GET /status as parsed JSON, or null on any failure (no network, not JSON, not 2xx). Never throws. */
+export async function fetchStatus(fetcher: Fetcher = (u, i) => fetch(u, i)): Promise<unknown> {
+  try {
+    const res = await fetcher(STATUS_URL, { method: 'GET', headers: { Accept: 'application/json' } })
+    if (!res.ok) return null
+    return (await res.json()) as unknown
+  } catch {
+    return null
+  }
+}

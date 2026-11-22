@@ -1,11 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { mountApp } from '../src/ui/app'
-import { engineBadge, renderConverted, renderProblem } from '../src/ui/result'
-
-/** The engine band comes right after the title of the result, before everything else. */
-function root_h2_then_badge(root: HTMLElement): boolean {
-  return root.children[0]?.id === 'h-done' && root.children[1]?.id === 'engine'
-}
+import { renderConverted, renderProblem } from '../src/ui/result'
 import { setLang, t, LANGS, dictionaryKeys } from '../src/lib/i18n'
 import { interpretResponse, type Converted, type Outcome } from '../src/lib/api'
 import { canonical, multipartBody, syntheticForm, syntheticSidecar } from './helpers'
@@ -62,31 +57,58 @@ describe('result page', () => {
     expect(unknown.textContent).toContain(t('problem.UNKNOWN'))
   })
 
-  it('shows the engine of the conversion in words, with the token of the header, in every language', async () => {
+  // WP-H4 showed the engine of the conversion as a band `#engine` inside the result. The page now has ONE
+  // indicator, the badge `#mode` of the header; the same truth is asserted there. /status is silent in this test,
+  // so the badge can only come from the engine the conversion stated.
+  it('shows the engine of the conversion in words on the one badge of the header, in every language', async () => {
     const base = await converted(true)
-    const cases: [Converted['engine'], string, string][] = [
-      ['rules', 'engine-rules', 'engine.rules'], ['rules+model', 'engine-model', 'engine.model'],
-      ['rules-fallback', 'engine-fallback', 'engine.fallback'], [null, 'engine-unknown', 'engine.unknown']
+    const cases: [NonNullable<Converted['engine']>, string][] = [
+      ['rules', 'rules'], ['rules+model', 'model-on'], ['rules-fallback', 'model-fallback']
     ]
+    const texts = new Set<string>()
     for (const lang of LANGS) {
-      setLang(lang)
-      for (const [engine, cls, key] of cases) {
-        const root = renderConverted({ ...base, engine })
-        const badge = root.querySelector('#engine') as HTMLElement
-        expect(badge.classList.contains(cls)).toBe(true)
-        // the meaning is text, not colour alone: label, token and the sentence are all readable
-        expect(badge.textContent).toContain(t('engine.label'))
-        expect(badge.textContent).toContain(t(key))
+      for (const [engine, mode] of cases) {
+        document.body.innerHTML = '<div id="app"></div>'
+        mountApp(document.getElementById('app')!, {
+          store: { getItem: () => lang, setItem: () => undefined }, status: async () => null,
+          convert: async () => ({ ...base, engine })
+        })
+        await new Promise((r) => setTimeout(r, 0))
+        expect(document.getElementById('mode')!.hidden).toBe(true) // before a conversion, without /status: no badge
+        const file = document.getElementById('file') as HTMLInputElement
+        Object.defineProperty(file, 'files', { value: [new File([new Uint8Array([1])], 'x.pdf')], configurable: true })
+        file.dispatchEvent(new Event('change'))
+        await new Promise((r) => setTimeout(r, 0))
+        const badge = document.getElementById('mode')!
+        expect(badge.hidden).toBe(false)
+        expect(badge.closest('header')).not.toBeNull()
+        expect(badge.classList.contains(`mode-${mode}`)).toBe(true)
+        expect(badge.getAttribute('data-mode')).toBe(mode)
+        expect(badge.getAttribute('data-engine')).toBe(engine)
+        // the meaning is text, not colour alone: a sentence of the dictionary, different for every engine
+        const key = `mode.${mode}`
         expect(t(key)).not.toBe(key)
-        expect(badge.querySelector('code')?.textContent ?? null).toBe(engine)
+        expect(badge.textContent).toBe(t(key))
+        expect(badge.textContent!.split(' ').length).toBeGreaterThanOrEqual(3)
+        texts.add(`${lang}|${badge.textContent}`)
         // not a control: nothing to focus, the keyboard order of the page is unchanged
         expect(badge.querySelector('a, button, input, [tabindex]')).toBeNull()
         expect(badge.hasAttribute('tabindex')).toBe(false)
+        // one indicator only: the result carries no second band
+        expect(document.querySelector('#engine, .engine, [class*="engine-"]')).toBeNull()
+        expect(document.querySelectorAll('[data-engine]').length).toBe(1)
       }
     }
+    expect(texts.size).toBe(LANGS.length * cases.length)
     setLang('pl')
-    expect(engineBadge('rules').textContent).toBe('Silnik konwersji: rules — same reguły, bez modelu językowego.')
-    expect(root_h2_then_badge(renderConverted({ ...base, engine: 'rules' }))).toBe(true)
+    expect(['rules', 'model-on', 'model-fallback'].map((m) => t(`mode.${m}`))).toEqual([
+      'Tryb: reguły i lokalny OCR, bez modelu AI', 'Model AI: włączony', 'Model AI: niedostępny, działają reguły'])
+    for (const engine of [...cases.map((c) => c[0]), null]) {
+      const root = renderConverted({ ...base, engine })
+      expect(root.children[0]?.id).toBe('h-done')
+      expect(root.querySelector('#engine, [data-engine], [class*="engine"]')).toBeNull()
+    }
+    for (const lang of LANGS) expect(dictionaryKeys(lang).filter((k) => k.startsWith('engine.'))).toEqual([])
   })
 
   it('renders without a leaked dictionary key in every language', async () => {
@@ -117,7 +139,7 @@ describe('application', () => {
 
   it('starts in Polish, switches the whole page to English and Spanish and remembers the choice', () => {
     const s = store()
-    mountApp(document.getElementById('app')!, { store: s })
+    mountApp(document.getElementById('app')!, { store: s, status: async () => null })
     expect(document.documentElement.lang).toBe('pl')
     expect(document.querySelector('h1')!.textContent).toBe('Przegląd formularza')
     const sel = document.getElementById('lang') as HTMLSelectElement
@@ -129,7 +151,7 @@ describe('application', () => {
     expect(document.querySelector('h1')!.textContent).toBe('Revisión del formulario')
     expect(s.m.get('review.lang')).toBe('es')
     document.body.innerHTML = '<div id="app"></div>'
-    mountApp(document.getElementById('app')!, { store: s })
+    mountApp(document.getElementById('app')!, { store: s, status: async () => null })
     expect(document.documentElement.lang).toBe('es')
   })
 
@@ -137,7 +159,7 @@ describe('application', () => {
     const s = store()
     let got: { name: string; token: string } | null = null
     const outcome: Outcome = await converted(true)
-    mountApp(document.getElementById('app')!, { store: s, convert: async (f, tok) => { got = { name: f.name, token: tok }; return outcome } })
+    mountApp(document.getElementById('app')!, { store: s, status: async () => null, convert: async (f, tok) => { got = { name: f.name, token: tok }; return outcome } })
     const input = document.getElementById('token') as HTMLInputElement
     expect(input.type).toBe('password')
     expect(document.querySelector('label[for="token"]')).not.toBeNull()
