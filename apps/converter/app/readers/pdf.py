@@ -2,7 +2,8 @@
 
 Everything comes from pdfplumber (pdfminer.six underneath), so text, vectors and fields share one coordinate
 space: points, origin top left of the page box. A page with fewer than `ocr_min_chars` characters takes the
-image way through the hook "pdf.textless_page" (WP-F2c); without the hook it stays empty with a warning.
+image way through the hook "pdf.textless_page" (WP-F2c); without the hook it stays empty with a warning. So does a
+scan with a short text layer: one picture over SCAN_COVER of the page and fewer than SCAN_TEXT_MAX characters.
 
 Runs: characters in file order, joined while they sit on one line, close together, in the same weight and size.
 A row of three or more leader characters (dots, underscores) is its own run: it draws a place to fill.
@@ -23,6 +24,20 @@ LINE_MAX_THICKNESS = 3.0   # a filled or stroked rectangle thinner than this is 
 DOT_MAX = 1.0              # a shape smaller than this both ways is a dot (of a dotted leader), not a line or box
 GAP_SPACE = 0.2            # gap / font size above which a missing space is written between two characters
 GAP_BREAK = 1.2            # gap / font size above which a run ends (a column, a tab)
+SCAN_COVER = 0.7           # one picture covering this share of the page makes the page a scan ...
+SCAN_TEXT_MAX = 200        # ... when its own text is shorter than this (a scanner app's footer, a digital stamp)
+
+
+def _scan_cover(page: Any) -> float:
+    """Share of the page that its largest picture covers (clipped to the page), 0 when it has none."""
+    area = float(page.width) * float(page.height)
+    best = 0.0
+    for im in page.images:
+        w = min(float(im["x1"]), float(page.width)) - max(float(im["x0"]), 0.0)
+        h = min(float(im["bottom"]), float(page.height)) - max(float(im["top"]), 0.0)
+        if w > 0 and h > 0 and area > 0:
+            best = max(best, w * h / area)
+    return best
 
 
 # ---------------------------------------------------------------- text
@@ -290,14 +305,22 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
             chars = page.chars
             ink = sum(1 for c in chars if c.get("text") and not c["text"].isspace())
             no_ocr: list[Warning] = []
-            if ink < options.ocr_min_chars and image_way is not None:
+            scan = 0.0
+            if options.ocr_min_chars <= ink < SCAN_TEXT_MAX and image_way is not None:
+                scan = _scan_cover(page)   # a scan with a short text layer (04-F4) takes the image way too
+            if (ink < options.ocr_min_chars or scan >= SCAN_COVER) and image_way is not None:
                 got = image_way(data, index, number, ids, options)
                 page_, extra = got if isinstance(got, tuple) else (got, [])
+                if page_.ink is False and not extra:   # AUDIT-8 VE-2: a measured blank page was not "read from its pixels"
+                    pages.append(page_)
+                    continue
                 if page_.runs or not extra:
                     pages.append(page_)
                     warnings.extend(extra)
+                    why = (f"{ink} characters of text and a picture over {round(100 * scan)}% of the page (a scan)"
+                           if scan >= SCAN_COVER else f"{ink} characters of text")
                     warnings.append(Warning(code="OCR_USED", page=number,
-                                            detail=f"{ink} characters of text; the page was read from its pixels"))
+                                            detail=f"{why}; the page was read from its pixels"))
                     continue
                 # the image way read nothing (no engine, a failure): the native few characters stay, the reason is told
                 no_ocr = extra

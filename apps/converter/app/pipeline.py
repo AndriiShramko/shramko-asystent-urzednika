@@ -56,12 +56,24 @@ def _count_fields(form: dict) -> int:
     return sum(len(q["field"]["repeatingSectionGrid"]) for t in form["tabs"] for q in t["questions"])
 
 
-_NO_QUOTES = re.compile(r"'[^']*'")   # a message may quote a value of the form; the place is enough
+_NO_QUOTES = re.compile(r"'[^']*'|\"[^\"]*\"")   # a message may quote a value of the form; the place is enough
+_EXC_TEXT = re.compile(r"\b([A-Z]\w*(?:Error|Exception|Warning)|KeyError|StopIteration)\b: .*")   # a crash: its type only
+# coi_lint's "page title/techName: rule" (greedy to the last "/techName: ", so a title holding a colon goes too; when a
+# quoted value holds "a/b: " more of the rule goes, never text of the document) or "techName: rule"
+_PLACE_HEAD = re.compile(r"^(?:.*/[^/:\s]*|[A-Za-z0-9_]+): ")
+
+
+def _safe_message(message: str) -> str:
+    """A finding without text of the document: no exception message, no place head (titles), no quoted value.
+    The rule stays, and the place is the JSON pointer next to it (audit-8 VC-3, 06-F11)."""
+    m = _EXC_TEXT.sub(lambda x: x.group(1), message)
+    m = _PLACE_HEAD.sub("", m)
+    return _NO_QUOTES.sub("'...'", m)
 
 
 def _gate_problem(failed: gate.CheckResult) -> ProblemError:
     """500 GATE_FAILED: the id and name of the check and its first findings (a place and a rule, 1000 characters at most)."""
-    shown = "; ".join(f"{_NO_QUOTES.sub(chr(39) + '...' + chr(39), f.message)} at {f.path or '/'}" for f in failed.findings[:5])
+    shown = "; ".join(f"{_safe_message(f.message)} at {f.path or '/'}" for f in failed.findings[:5])
     more = f" (+{len(failed.findings) - 5} more)" if len(failed.findings) > 5 else ""
     return ProblemError("GATE_FAILED", f"Bramka {failed.id} {failed.name} odrzuciła wynik: {shown}{more}"[:1000])
 

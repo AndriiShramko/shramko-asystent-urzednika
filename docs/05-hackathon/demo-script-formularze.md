@@ -1,5 +1,7 @@
 # Demo script for the forms product: visitor and clerk
 
+> Pre-event material for the parked counter product (UDIP requests, visitor and clerk), not built in this task. The demo and the jury answers of the forms converter that was built: [`jury-qa-formularze.md`](jury-qa-formularze.md) and the jury section of [`README.md`](../../README.md).
+
 The owner's instruction: show a working product, not theory. This script is the product's acceptance test as much as its demo. It has two parts that map to slides 3 and 4 of the second deck ([`presentation/storyboard-formularze.md`](presentation/storyboard-formularze.md)). All data is synthetic.
 
 ## Who plays what

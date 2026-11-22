@@ -8,7 +8,8 @@ cell end from a row end and a table paragraph from a body one. Character propert
 direct size and inserted symbols (sprmCSymbol; boxes of Wingdings become Unicode boxes, an unknown symbol is
 U+FFFD, never the placeholder "(" the file stores). Fields: the instruction between field-begin and separator is
 not text; FORMTEXT, FORMCHECKBOX and FORMDROPDOWN become widgets (a check box is written as a box); results are
-kept as text.
+kept as text. A tab whose tab stop (the paragraph's own sprmPChgTabsPapx or sprmPChgTabs) has a leader is written
+as LEADER_LEN leader characters, as the docx reader writes it.
 
 Output: one run per paragraph, anchored "p[n]" (n-th body paragraph), "tbl[m]/cell[r,c]/p[k]" (r-th row, c-th
 cell of that row: the cell's ordinal, not a grid column), "txbx[j]/p[k]" (text box j of the story). Pages end at
@@ -41,7 +42,12 @@ FC_PLCF_BTE_CHPX, FC_PLCF_BTE_PAPX, FC_STTBF_FFN, FC_CLX, FC_PLCF_TXBX_TXT = 12,
 SPRM_P_IN_TABLE, SPRM_P_TTP, SPRM_P_ITAP, SPRM_P_INNER_CELL, SPRM_P_INNER_TTP, SPRM_P_HUGE = (
     0x2416, 0x2417, 0x6649, 0x244B, 0x244C, 0x6646)
 SPRM_C_BOLD, SPRM_C_HPS, SPRM_C_SYMBOL = 0x0835, 0x4A43, 0x6A09
-SPRM_T_DEF_TABLE, SPRM_P_CHG_TABS = 0xD608, 0xC615
+SPRM_C_RG_FTC = (0x4A4F, 0x4A50, 0x4A51)   # sprmCRgFtc0, 1, 2: the run's ASCII, East Asian and other font
+SPRM_T_DEF_TABLE, SPRM_P_CHG_TABS, SPRM_P_CHG_TABS_PAPX = 0xD608, 0xC615, 0xC60D
+# TBD.tlc (MS-DOC 2.9.329): the leader of a tab stop, written as LEADER_LEN characters like the docx reader does
+_TAB_LEADERS = {1: ".", 2: "-", 3: "_", 4: "_", 5: "·"}
+TBD_JC_BAR = 4   # a bar tab draws a vertical line and takes no tab character
+LEADER_LEN = 10
 CHECK_OFF = "☐"
 UNKNOWN_SYMBOL = "�"
 _SYMBOLS = {
@@ -110,7 +116,10 @@ def parse_clx(clx: bytes, stream_len: int) -> list[_Piece]:
     i = 0
     try:
         while i < len(clx) and clx[i] == 0x01:
-            i += 3 + struct.unpack_from("<h", clx, i + 1)[0]
+            cb = struct.unpack_from("<h", clx, i + 1)[0]
+            if cb < 0:   # a negative length would stand still or go back: an endless loop on a hostile file
+                raise ReaderError("UNREADABLE", "the piece table of the Word document is missing or broken")
+            i += 3 + cb
         if i >= len(clx) or clx[i] != 0x02:
             raise ReaderError("UNREADABLE", "the piece table of the Word document is missing or broken")
         lcb = _u32(clx, i + 1)
@@ -164,6 +173,46 @@ def parse_sprms(g: bytes) -> dict[int, bytes]:
         out[sprm] = g[i + 2:i + 2 + n]
         i += 2 + n
     return out
+
+
+def tab_stops(props: dict[int, bytes]) -> list[tuple[int, int]]:
+    """(position in twips, leader code) of the tab stops a paragraph's own properties set, by position:
+    sprmPChgTabsPapx (PChgTabsPapxOperand) and sprmPChgTabs (whose delete list also carries rgdxaClose).
+    Tab stops of the paragraph style are not read (the style sheet is not parsed)."""
+    stops: dict[int, int] = {}
+    for sprm_code in (SPRM_P_CHG_TABS_PAPX, SPRM_P_CHG_TABS):
+        g = props.get(sprm_code)
+        if not g:
+            continue
+        try:
+            ndel = g[1]
+            dels = struct.unpack_from(f"<{ndel}h", g, 2)
+            i = 2 + 2 * ndel + (2 * ndel if sprm_code == SPRM_P_CHG_TABS else 0)
+            nadd = g[i]
+            pos = struct.unpack_from(f"<{nadd}h", g, i + 1)
+            tbd = g[i + 1 + 2 * nadd:i + 1 + 3 * nadd]
+        except (IndexError, struct.error):
+            continue
+        for d in dels:
+            stops.pop(d, None)
+        for p, t in zip(pos, tbd):
+            if t & 7 != TBD_JC_BAR:
+                stops[p] = (t >> 3) & 7
+    return sorted(stops.items())
+
+
+def with_leaders(text: str, stops: list[tuple[int, int]]) -> str:
+    """The n-th tab of the paragraph goes to its n-th tab stop (as in the docx reader); a stop with a leader makes
+    the tab LEADER_LEN leader characters, the paper's place to write."""
+    if "\t" not in text or not any(t in _TAB_LEADERS for _p, t in stops):
+        return text
+    parts = text.split("\t")
+    out = [parts[0]]
+    for n, part in enumerate(parts[1:]):
+        lead = _TAB_LEADERS.get(stops[n][1]) if n < len(stops) else None
+        out.append(lead * LEADER_LEN if lead else "\t")
+        out.append(part)
+    return "".join(out)
 
 
 class _Props:
@@ -230,8 +279,21 @@ def _fonts(table: bytes, fc: int, lcb: int) -> list[str]:
 
 
 def _symbol(font: str, code: int) -> str:
-    table = next((v for k, v in sorted(_SYMBOLS.items(), key=lambda kv: -len(kv[0])) if font.startswith(k)), None)
+    font = font.replace(" ", "")   # "Wingdings2" and "Wingdings 2" are one font
+    table = next((v for k, v in sorted(_SYMBOLS.items(), key=lambda kv: -len(kv[0]))
+                  if font.startswith(k.replace(" ", ""))), None)
     return (table or {}).get(code & 0xFF, UNKNOWN_SYMBOL)
+
+
+def _symbol_font(fonts: list[str], props: dict[int, bytes]) -> str | None:
+    """The symbol font of a character typed in a symbol font (U+F0xx without sprmCSymbol): the first of the run's
+    three fonts (sprmCRgFtc0, 1, 2) that has a symbol table; None when none has."""
+    for code in SPRM_C_RG_FTC:
+        g = props.get(code, b"")
+        ftc = struct.unpack_from("<H", g, 0)[0] if len(g) >= 2 else len(fonts)
+        if ftc < len(fonts) and any(fonts[ftc].replace(" ", "").startswith(k.replace(" ", "")) for k in _SYMBOLS):
+            return fonts[ftc]
+    return None
 
 
 @dataclass
@@ -312,8 +374,9 @@ class _Reader:
         if SPRM_C_SYMBOL in props and len(props[SPRM_C_SYMBOL]) >= 4:
             ftc, xchar = struct.unpack_from("<HH", props[SPRM_C_SYMBOL], 0)
             ch = _symbol(self.fonts[ftc] if ftc < len(self.fonts) else "", xchar)
-        elif 0xF000 <= ord(ch) <= 0xF0FF:  # a character typed in a symbol font: the font is not known here
-            ch = UNKNOWN_SYMBOL
+        elif 0xF000 <= ord(ch) <= 0xF0FF:  # a character typed in a symbol font: the font is one of the run's fonts
+            font = _symbol_font(self.fonts, props)
+            ch = _symbol(font, ord(ch)) if font is not None else UNKNOWN_SYMBOL
         elif ch == "\x1e":
             ch = "-"
         elif ch == "\x0b":
@@ -385,6 +448,7 @@ class _Reader:
         in_table = bool(props.get(SPRM_P_IN_TABLE, b"\0")[0]) or (
             SPRM_P_ITAP in props and len(props[SPRM_P_ITAP]) >= 4 and _u32(props[SPRM_P_ITAP], 0) >= 1)
         row_end = mark is not None and mark.ch == "\x07" and bool(props.get(SPRM_P_TTP, b"\0")[0])
+        text = with_leaders(text, tab_stops(props))
         if not in_table:
             self._close_table()
             anchor = anchor_of_body(self.n_para)

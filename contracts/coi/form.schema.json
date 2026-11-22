@@ -122,6 +122,7 @@
           "items": {
             "type": "object",
             "required": ["id", "name", "techName"],
+            "additionalProperties": false,
             "properties": { "id": { "type": "string" }, "name": { "type": "string" }, "techName": { "type": "string" } }
           }
         },
@@ -139,16 +140,18 @@
           "items": {
             "type": "object",
             "required": ["type", "query"],
+            "additionalProperties": false,
             "properties": { "type": { "enum": ["SHOW", "READ_ONLY"] }, "query": { "type": "string", "minLength": 1 } }
           }
         },
         "consentSectionConfig": {
           "type": "object",
           "required": ["consents"],
+          "additionalProperties": false,
           "properties": {
             "consents": {
               "type": "array", "minItems": 1,
-              "items": { "type": "object", "required": ["description"], "properties": { "description": { "type": "string" }, "required": { "type": "boolean" } } }
+              "items": { "type": "object", "required": ["description"], "additionalProperties": false, "properties": { "description": { "type": "string" }, "required": { "type": "boolean" } } }
             },
             "required": { "type": "boolean" },
             "files": { "type": "array" }

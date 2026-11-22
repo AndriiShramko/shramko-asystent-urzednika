@@ -288,6 +288,9 @@ def _unique_page_titles(pages: list[Page]) -> None:
     for page in pages:
         if not page.role.startswith("matter/"):
             continue
+        # A8 VB-2: a condition names the page in single quotes, the only notation of the exports and of both
+        # reference readers (gate G5, coi_lint); a JSONata string in single quotes cannot hold ' or \.
+        page.title = page.title.replace("'", "’").replace("\\", "/")
         base, n = page.title, 2
         while page.title in seen:
             page.title = f"{base} ({n})"
