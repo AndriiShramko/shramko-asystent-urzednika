@@ -41,6 +41,17 @@ PROBLEM_JSON = "application/problem+json"
 FORM_KEYS = {"title", "tabs", "flow"}  # decision D1: the partner's object and nothing else
 
 
+def _upload_body(file_schema: dict) -> dict:
+    """The body the routes read by hand (`read_parts`), declared for /openapi.json and /docs (audit-8 VC-6, 06-F7)."""
+    return {"requestBody": {"required": True, "content": {"multipart/form-data": {"schema": {
+        "type": "object", "required": ["file"], "properties": {"file": file_schema}}}}}}
+
+
+UPLOAD_ONE = _upload_body({"type": "string", "format": "binary", "description": "one blank form"})
+UPLOAD_MANY = _upload_body({"type": "array", "items": {"type": "string", "format": "binary"}, "maxItems": BATCH_MAX_FILES,
+                            "description": f"up to {BATCH_MAX_FILES} forms, or one .zip holding them"})
+
+
 def _event(stage: str, result: str, job: str, size: int | None = None, ran_on: str | None = None) -> None:
     """Content-free log line: stage, result code, random job id, a size bucket, and for a finished conversion the
     engine it ran on (`app.engine`). Never a name, text or token."""
@@ -185,6 +196,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.exception_handler(StarletteHTTPException)
     async def _http(_: Request, exc: StarletteHTTPException) -> JSONResponse:
+        """Routing errors of the framework (404, 405) in the contract's shape, with a code like every other answer."""
+        code = {404: "NOT_FOUND", 405: "METHOD_NOT_ALLOWED"}.get(exc.status_code)
+        if code:
+            return problem_response(ProblemError(code, headers=dict(exc.headers or {})))
         body = {"type": "about:blank", "title": str(exc.detail), "status": exc.status_code}
         return JSONResponse(body, status_code=exc.status_code, media_type=PROBLEM_JSON)
 
@@ -301,7 +316,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                        "max_upload_bytes": s.max_upload_bytes},
         }
 
-    @app.post("/v1/forms/convert")
+    @app.post("/v1/forms/convert", openapi_extra=UPLOAD_ONE)
     async def convert(request: Request, report: int = 0) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
         form_body = canonical(result.form)
@@ -317,13 +332,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         out += f"--{boundary}--\r\n".encode()
         return Response(out, media_type=f"multipart/mixed; boundary={boundary}", headers=headers)
 
-    @app.post("/v1/forms/report")
+    @app.post("/v1/forms/report", openapi_extra=UPLOAD_ONE)
     async def report_only(request: Request) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
         form_body = canonical(result.form)
         return Response(canonical(result.sidecar), media_type="application/json", headers=headers_for(info, form_body, ms, result))
 
-    @app.post("/v1/forms/inspect")
+    @app.post("/v1/forms/inspect", openapi_extra=UPLOAD_ONE)
     async def inspect(request: Request) -> JSONResponse:
         authorize(request, "convert")
         part = (await read_parts(request))[0]
@@ -337,7 +352,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "macros": info.macros, "pages": None, "external_links": None, "embedded_files": None,
         })
 
-    @app.post("/v1/batches")
+    @app.post("/v1/batches", openapi_extra=UPLOAD_MANY)
     async def batches(request: Request) -> StreamingResponse:
         authorize(request, "convert")
         parts = await read_parts(request, many=True)
