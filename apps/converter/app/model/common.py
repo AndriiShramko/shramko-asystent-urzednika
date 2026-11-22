@@ -104,6 +104,10 @@ WarningCode = Literal[
     "MODEL_USED",            # the model step ran and its answer was applied: engine rules+model
     "MODEL_FALLBACK",        # the model step was tried and failed; the output is the output of the rules
     "MODEL_SKIPPED",         # a model is configured and the step had nothing to ask: engine rules
+    # A8 VB-1: the codes app.pipeline writes itself (sidecar.schema.json): a note of the guard, the ledger that did
+    # not close, the interim path (interim.NOT_READ_CODE), a failed non-blocking check of the gate (D19)
+    "INPUT_NOTE", "LEDGER_NOT_CLOSED", "BRIEF_NOT_READ",
+    "GATE_G5", "GATE_G6", "GATE_G7", "GATE_G8", "GATE_G9", "GATE_G10", "GATE_G11", "GATE_G12",
 ]
 
 Status = Literal["stated", "not_found", "ambiguous"]
