@@ -9,16 +9,30 @@ import { FP } from '../lib/fp/text'
 import type { Sidecar } from '../lib/model'
 import type { EForm } from './eform'
 import { clerkText, inClerkView } from './clerk-view'
+import { boxTargets, fieldBoxes, paperOnlyNotes, type BoxTarget } from '../lib/fp/targets'
+import { t as tr, hasKey, getLang } from '../lib/i18n'
 import { sessionOf, type PaperMark } from './clerk-remarks'
 
-export interface Where { el: HTMLElement; ready: Promise<void>; preview(): Preview | null; joined(): Joined | null }
+export interface Where { el: HTMLElement; ready: Promise<void>; preview(): Preview | null; joined(): Joined | null; targets?(): Map<string, BoxTarget> | null }
+
+/** The plain note a click on a box that is not a field answers with (BL13 CLERK-T). */
+export function boxNote(tg: BoxTarget): string | null {
+  if (tg.kind === 'out') {
+    if (tg.text && getLang() === 'pl') return tg.text
+    const key = 'clerk.box.out.' + (tg.reason ?? 'OTHER')
+    return hasKey(getLang(), key) ? tr(key) : tr('clerk.box.out.OTHER')
+  }
+  if (tg.kind === 'wait') return tr('clerk.box.wait')
+  if (!tg.fields.length) return tr('clerk.box.none')
+  return null
+}
 
 interface Row { key: string; name: string; cid: string | null; place: Place | null }
 
 const pct = (a: number, b: number): string => `${((a / b) * 100).toFixed(3)}%`
 
 /** One page picture with outlined boxes, in % of the page (so it scales with the column). */
-export function paperPage(page: PreviewPage, boxes: { cid: string; place: Place; label: string }[]): HTMLElement {
+export function paperPage(page: PreviewPage, boxes: { cid: string; place: Place; label: string; cls?: string }[]): HTMLElement {
   const sheet = h('div', { class: 'fp-paper', 'data-page': page.n, style: `aspect-ratio: ${page.w} / ${page.h}` })
   if (page.img) sheet.append(h('img', { src: `data:${page.img.media_type};base64,${page.img.data}`, alt: `Strona ${page.n} oryginału`, class: 'fp-paper-img' }))
   const layer = h('div', { class: 'fp-paper-layer', 'aria-hidden': 'true' })
@@ -26,7 +40,7 @@ export function paperPage(page: PreviewPage, boxes: { cid: string; place: Place;
     const box = b.place.box
     if (!box || b.place.page !== page.n) continue
     const [x0, y0, x1, y1] = box
-    layer.append(h('div', { class: 'fp-box', 'data-cid': b.cid, title: b.label,
+    layer.append(h('div', { class: 'fp-box' + (b.cls ? ' ' + b.cls : ''), 'data-cid': b.cid, title: b.label,
       style: `left:${pct(x0, page.w)};top:${pct(y0, page.h)};width:${pct(Math.max(x1 - x0, 2), page.w)};height:${pct(Math.max(y1 - y0, 2), page.h)}` }))
   }
   sheet.append(layer)
@@ -36,6 +50,7 @@ export function paperPage(page: PreviewPage, boxes: { cid: string; place: Place;
 export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise<unknown>): Where {
   let pv: Preview | null = null
   let joined: Joined | null = null
+  let targets: Map<string, BoxTarget> | null = null
   const body = h('div', { id: 'fp-where-body' }, clerkText('p', 'clerk.col.loading', { class: 'muted' }))
   // Wave 11: in the clerk view this block is the left column, "the original"; the list of places is for the jury.
   const el = h('section', { id: 'fp-where', class: 'fp-step', 'aria-labelledby': 'h-where' },
@@ -59,9 +74,32 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       if (!page || !layer) continue
       const mark = h('button', { type: 'button', class: 'clerk-mark clerk-only', 'data-remark': m.key, style: place(m.box, page) },
         h('span', { class: 'clerk-num' }, String(m.n)))
-      mark.addEventListener('click', (e) => { e.stopPropagation(); session.pick({ key: m.key }); spot(m.page, m.box) })
+      mark.addEventListener('click', (e) => {
+        e.stopPropagation()
+        session.pick({ key: m.key })
+        spot(m.page, m.box)
+        // BL13 CLERK-T: the mark of a remark sits on a box; that box's explanation shows too
+        const same = (b?: number[]): boolean => !!b && b.every((x, i) => Math.abs(x - m.box[i]) < 1)
+        const tg = targets ? [...targets.values()].find((x) => x.place.page === m.page && same(x.place.box)) : undefined
+        if (tg && !tg.fields.length) showNote(tg, layer)
+      })
       layer.append(mark)
     }
+  }
+
+  /** BL13 CLERK-T: the plain note of a box that is no field, under the box and for the screen reader. */
+  function showNote(tg: BoxTarget, layer: HTMLElement | null): void {
+    const note = boxNote(tg)
+    if (!note) return
+    for (const x of papersEl?.querySelectorAll('.clerk-boxnote') ?? []) x.remove()
+    const page = pv?.pages.find((p) => p.n === tg.place.page)
+    const b = tg.place.box
+    if (page && b && layer) {
+      const top = Math.min(b[3] + 4, page.h - 40)
+      layer.append(h('div', { class: 'clerk-boxnote', style: `left:${pct(Math.min(b[0], page.w * 0.55), page.w)};top:${pct(top, page.h)}` }, note))
+    }
+    const live = el.querySelector('#fp-where-boxlive')
+    if (live) live.textContent = note
   }
 
   /** Light a place of the original (a box in pt on a page) and bring it into view. */
@@ -114,6 +152,7 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       return
     }
     joined = joinPlaces(rows0, pv)
+    targets = boxTargets(rows0, pv, ef.model, paperOnlyNotes(sidecar?.warnings))
     const rows = rowsOf(joined, pv)
     const live = h('p', { id: 'fp-where-live', 'aria-live': 'polite', class: 'muted' })
     const list = h('ul', { class: 'plain fp-where-list', id: 'fp-where-list' })
@@ -142,11 +181,19 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       body.append(h('p', { class: 'muted', id: 'fp-where-nogeo' }, FP.noPageImage), list)
       return
     }
-    const boxes = rows.filter((r) => r.cid && r.place?.box).map((r) => ({ cid: r.cid!, place: r.place!, label: r.name }))
+    const boxes: { cid: string; place: Place; label: string; cls?: string }[] = rows.filter((r) => r.cid && r.place?.box).map((r) => ({ cid: r.cid!, place: r.place!, label: r.name }))
     // the marks of choice groups, so a ticked option can be seen too
     for (const r of rows) for (const o of r.place?.options ?? []) {
       const m = o.mark ? pv.places[o.mark] : undefined
       if (m?.box) boxes.push({ cid: o.mark!, place: m, label: `${r.name}: ${o.text}` })
+    }
+    // BL13 CLERK-T: the places that did not become a field of their own get a frame too (signature and date,
+    // merged blanks, blanks waiting for a decision), so a click on them answers instead of being silent
+    const drawn = new Set(boxes.map((b) => b.cid))
+    for (const tg of targets.values()) {
+      if (drawn.has(tg.cid) || !tg.place.box) continue
+      drawn.add(tg.cid)
+      boxes.push({ cid: tg.cid, place: tg.place, label: tg.place.label ?? boxNote(tg) ?? '', cls: tg.kind === 'out' ? 'fp-box-out' : tg.kind === 'wait' ? 'fp-box-wait' : undefined })
     }
     for (const page of pv.pages) papers.append(paperPage(page, boxes))
     papers.addEventListener('click', (e) => {
@@ -158,14 +205,25 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       if (inClerkView(el)) {
         // the clerk's view has no list: the box lights itself, the e-form shows its field, the card of the place lights
         for (const b of papers.querySelectorAll('.fp-box-active')) b.classList.remove('fp-box-active')
+        for (const x of papers.querySelectorAll('.clerk-boxnote')) x.remove()
         t.classList.add('fp-box-active')
-        if (fid) { ef.highlight(fid); session.pick({ fieldId: fid }) }
+        const tg = targets?.get(cid)
+        const ids = tg?.fields.length ? tg.fields : fid ? [fid] : []
+        if (ids.length) {
+          ef.highlight(ids[0])
+          for (const id of ids.slice(1)) ef.el.querySelector(`[id="fpw-${id}"]`)?.classList.add('clerk-hl')
+          session.pick({ fieldId: ids[0] })
+          return
+        }
+        if (tg) showNote(tg, t.parentElement)
+        else { const live = el.querySelector('#fp-where-boxlive'); if (live) live.textContent = tr('clerk.box.none') }
         return
       }
       btn?.focus()
       btn?.click()
     })
     papersEl = papers
+    body.append(h('p', { id: 'fp-where-boxlive', class: 'sr-only', 'aria-live': 'polite' }))
     const toggle = h('input', { type: 'checkbox', id: 'fp-where-toggle', checked: true })
     toggle.addEventListener('change', () => papers.classList.toggle('fp-boxes-off', !toggle.checked))
     body.append(h('p', { class: 'jury-only' }, toggle, h('label', { for: 'fp-where-toggle' }, ' ' + FP.whereToggle)),
@@ -178,7 +236,7 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
   ef.onPick((id) => {
     if (!papersEl || !inClerkView(el)) return
     for (const b of papersEl.querySelectorAll('.fp-box-active')) b.classList.remove('fp-box-active')
-    const cid = fieldBox.get(id) ?? joined?.byField.get(id)?.cid
+    const cid = fieldBox.get(id) ?? joined?.byField.get(id)?.cid ?? (targets ? fieldBoxes(targets).get(id) : undefined)
     const box = cid ? papersEl.querySelector<HTMLElement>(`.fp-box[data-cid="${cid}"]`) : null
     if (box) { box.classList.add('fp-box-active'); box.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }) }
     session.pick({ fieldId: id })
@@ -186,11 +244,12 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
   session.attach(ef, {
     preview: () => pv,
     joined: () => joined,
+    targets: () => targets,
     show: (page, box) => spot(page, box),
     marks: (list) => { lastMarks = list; drawMarks() }
   })
 
   const done = (): void => { paint(); session.ready(); drawMarks() }
   const ready = pending.then((raw) => { pv = parsePreview(raw); done() }, () => { pv = null; done() })
-  return { el, ready, preview: () => pv, joined: () => joined }
+  return { el, ready, preview: () => pv, joined: () => joined, targets: () => targets }
 }

@@ -3,6 +3,7 @@
 // whose row or place is missing has no place.
 import type { Sidecar } from '../model'
 import type { PlaceInk } from './ink'
+import { filingKind } from './today'
 
 export type Box = [number, number, number, number]
 export interface PlaceOption { text: string; mark?: string; blank?: string }
@@ -103,12 +104,16 @@ export interface Joined {
   standard: { cid: string; section: string; place: Place; attr: Attr | null }[]
   /** candidate id -> form field id (for a click on a box) */
   fieldOf: Map<string, string>
+  /** BL13 TRY-F: the paper's own place of the filing date (left out of the form: the e-service dates itself);
+   * the print writes today's date above its line. A signature place is never one of them. */
+  dates?: { cid: string; place: Place; kind: 'date' | 'placeDate' }[]
 }
 
 export function joinPlaces(rows: LedgerRow[], pv: Preview): Joined {
   const byField = new Map<string, { cid: string; place: Place }>()
   const standard: Joined['standard'] = []
   const fieldOf = new Map<string, string>()
+  const dates: NonNullable<Joined['dates']> = []
   for (const r of rows) {
     const place = pv.places[r.candidate]
     if (!place) continue
@@ -118,9 +123,12 @@ export function joinPlaces(rows: LedgerRow[], pv: Preview): Joined {
       for (const o of place.options ?? []) if (o.mark) fieldOf.set(o.mark, r.field)
     } else if (r.fate === 'STANDARD' && r.section) {
       standard.push({ cid: r.candidate, section: r.section, place, attr: place.label ? attrOfLabel(place.label) : null })
+    } else if (r.fate === 'LEFT_OUT' && place.kind !== 'signature' && place.label) {
+      const kind = filingKind(place.label)
+      if (kind) dates.push({ cid: r.candidate, place, kind })
     }
   }
-  return { byField, standard, fieldOf }
+  return { byField, standard, fieldOf, dates }
 }
 
 // ---- print math (pt): where a value goes in its place

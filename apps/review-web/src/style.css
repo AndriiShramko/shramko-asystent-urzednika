@@ -402,6 +402,45 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 @media (max-width: 40rem) { .clerk-card-body { grid-template-columns: minmax(0, 1fr); } }
 /* W11 CLERK-P end */
 
+/* BL13 TRY-F: the trial fill opens one step at a time; nothing sticky covers what the clerk works on. The scroll
+   padding keeps a focused or scrolled-to element clear of the sticky bottom bar and of the top edge. */
+html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
+#fp-citizen[hidden], #fp-check-step[hidden], #fp-print-step[hidden],
+#fp-citizen [hidden], #fp-check-step [hidden], #fp-print-step [hidden] { display: none !important; }
+.fp-done-line { margin: 0.5rem 0; padding: 0.35rem 0.75rem; border-left: 4px solid var(--c-ok-edge); background: var(--c-ok-bg); color: var(--c-ok-text); }
+.fp-done-line .status { display: inline; margin: 0; }
+.fp-done-line .actions { margin: 0.4rem 0 0; }
+.fp-done-line .linkish { margin-left: 0.25rem; }
+#fp-citizen > h2, #fp-check-step > h2, #fp-print-step > h2 { margin-top: 1rem; }
+/* the demo banner no longer sticks to the top edge (it covered the long form scrolling under it) */
+.fp-banner { position: static; }
+/* every block of the trial fill has its own grid row: the steps right under the banner, the two documents under
+   the steps. Before, a form without page pictures put the e-form into the row of the QR step (they overlapped). */
+.result[data-view="clerk"][data-try] #fp > #fp-banner { grid-row: 1; }
+.result[data-view="clerk"][data-try] #fp > #fp-citizen { grid-row: 2; }
+.result[data-view="clerk"][data-try] #fp > #fp-check-step { grid-row: 3; }
+.result[data-view="clerk"][data-try] #fp > #fp-print-step { grid-row: 4; }
+.result[data-view="clerk"][data-try] #fp > #fp-where,
+.result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 5; }
+.result[data-view="clerk"][data-try] #fp:has(#fp-where[data-pages="0"]) > #fp-eform { grid-row: 6; }
+@media (max-width: 62rem) { .result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 6; } }
+/* no scroll anchoring in the clerk view: the panels come first in the DOM but last on screen, so the browser kept
+   them in place when a step above them opened, and the page jumped away from the button just pressed */
+.result[data-view="clerk"] { overflow-anchor: none; }
+/* a link button in a list sits in its own line box (on the baseline it reached into the next line) */
+.fp-step li > .linkish { vertical-align: top; }
+#fp-check-result:focus { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+/* after the one-click fill the filled fields light up for a few seconds; the line under each step says what next */
+.fp-field.fp-just-filled { outline: 3px solid var(--c-ok-edge); outline-offset: 1px; background: var(--c-ok-bg); }
+.fp-next { font-weight: 700; margin: 0.5rem 0 0; }
+.fp-next:empty { display: none; }
+/* in the trial fill the bottom bar is one low line: the hint about the download is not needed there */
+.result[data-try] .clerk-final-hint { display: none; }
+.result[data-try] .clerk-final { padding-top: 0.35rem; padding-bottom: 0.35rem; }
+/* the bottom bar reads as a layer above the page: what scrolls under its edge is plainly the rest of the page */
+.clerk-final { box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.12); }
+/* BL13 TRY-F end */
+
 /* W11 FLOW */
 .bar-run[hidden], .bar-fill[hidden], .bar[hidden], .queue[hidden], .q-dot[hidden], .q-state[hidden], .q-alive[hidden], .q-row .btn[hidden], #queue-cancel-all[hidden], #progress-alive[hidden], #token-row[hidden] { display: none; }
 .bar-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: var(--c-bar); transition: width 0.3s linear; }
@@ -428,3 +467,19 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 .q-actions:empty { display: none; }
 .q-row .btn { min-height: 2.25rem; padding: 0.25rem 0.75rem; }
 .q-which { font-weight: 600; margin: 1rem 0 0; padding: 0.4rem 0.75rem; border-left: 6px solid var(--c-accent); background: var(--c-chip-bg); }
+
+/* BL13 CLERK-T */
+.fp-box-out { border-style: dashed; border-color: var(--c-muted); }
+.fp-box-wait { border-style: dotted; border-color: var(--c-bad); }
+.clerk-boxnote { position: absolute; z-index: 3; max-width: 45%; padding: 0.35rem 0.5rem; font-size: 0.875rem; line-height: 1.35; color: var(--c-notice-text); background: var(--c-notice-bg); border: 1px solid var(--c-engine-fallback-edge); border-radius: 4px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25); pointer-events: none; }
+.clerk-signature-note { margin: 0.25rem 0 0.75rem; padding: 0.4rem 0.75rem; border-left: 6px solid var(--c-accent); background: var(--c-chip-bg); color: var(--c-text); }
+.clerk-card-words { display: flex; flex-direction: column; gap: 0.3rem; text-align: left; }
+.clerk-quote { margin: 0; padding: 0.4rem 0.6rem; border-left: 4px solid var(--c-border); background: var(--c-surface); color: var(--c-text); font-style: normal; white-space: pre-wrap; }
+.clerk-card-flat .clerk-card-body { grid-template-columns: minmax(0, 1fr); }
+.clerk-card-fields { display: flex; flex-direction: column; gap: 0.3rem; width: 100%; }
+.clerk-rest-kinds { margin: 0.25rem 0 0.25rem 1.25rem; padding: 0; }
+/* a hit area of at least 24 px around a thin box over a dotted line (WCAG 2.5.8); the visible frame stays thin */
+.fp-box::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: max(100%, 24px); transform: translateY(-50%); }
+.clerk-edit-inline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; padding: 0.3rem; margin: 0 0 0.3rem; }
+.clerk-edit-inline .clerk-edit-input { flex: 1 1 14rem; min-width: 0; font: inherit; font-weight: 600; padding: 0.3rem 0.4rem; }
+.fp-field [hidden], .fp-section > h4[hidden] { display: none !important; }

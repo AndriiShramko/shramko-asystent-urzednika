@@ -122,7 +122,10 @@ describe('W11 remarks on the document', () => {
     expect(rawCard.querySelector('.clerk-crop-mark')).not.toBeNull()
     expect(rawCard.querySelector('.clerk-card-cap')!.textContent).toBe('Na oryginale, strona 1:')
     expect(rawCard.querySelector('.clerk-card-field')!.textContent).toBe('NIP') // candidate c4 became the field f-nip
-    expect(blankCard.querySelector('.clerk-card-field')!.textContent).toBe('tego miejsca nie ma w e-formularzu')
+    // BL13 CLERK-T: the sentence says plainly why there is no field; no separate "not in the e-form" line
+    expect(blankCard.querySelector('.clerk-card-what')!.textContent).toContain('Program nie zrobił tu pola, bo druk nie mówi, co tu wpisać.')
+    expect(blankCard.querySelector('.clerk-card-field')).toBeNull()
+    expect(blankCard.querySelector('.clerk-fix button')!.textContent).toBe('Pomiń to miejsce (nie będzie polem)')
     // the same numbers on the cards, on the original and on the e-form field
     expect(all('#fp-papers .clerk-mark').map((m) => m.textContent)).toEqual(['1', '2'])
     expect(q('[id="fpw-f-nip"] .clerk-flag').textContent).toBe('1do sprawdzenia')
@@ -145,12 +148,17 @@ describe('W11 remarks on the document', () => {
     expect(title.querySelector('.clerk-crop')).not.toBeNull()
     expect(title.querySelector('.clerk-crop-mark')).toBeNull()
     expect(matter.querySelector('.clerk-crop')).toBeNull()
-    expect(matter.querySelector('.clerk-card-cap')!.textContent).toBe('Na oryginale nie ma takiego miejsca.')
+    // BL13 CLERK-T: a remark about the whole paper shows no empty paper box and no "cały formularz"
+    expect(matter.querySelector('.clerk-card-main')).toBeNull()
+    expect(matter.textContent).not.toContain('cały formularz')
   })
 
   it('a format without page pictures: the card names the place in the file, the e-form takes the whole width', async () => {
     await page([{ code: 'LABEL_NOT_FOUND', page: 1, anchor: 'p[12]', candidate: 'c4', evidence: [], detail: 'x' }], fpPreview(false))
-    expect(q('.clerk-card .clerk-card-cap').textContent).toBe('W pliku: p[12]')
+    // BL13 CLERK-T: the paper's own words at that place, never the cell or paragraph address
+    expect(q('.clerk-card .clerk-card-cap').textContent).toBe('W pliku, w tym miejscu jest tekst:')
+    expect(q('.clerk-card .clerk-quote').textContent).toBeTruthy()
+    expect(q('.clerk-card').textContent).not.toContain('p[12]')
     expect(q('#fp-where').getAttribute('data-pages')).toBe('0')
   })
 
@@ -167,8 +175,8 @@ describe('W11 fix by click', () => {
   it('a ready choice: one click writes it into the form, the e-form redraws the field, the remark leaves the list', async () => {
     const { session, res } = await page([requiredChoice(), raw()])
     const card = q('.clerk-card[data-fix="choice"]')
-    expect(card.querySelector('.clerk-card-what')!.textContent).toContain('Druk nie mówi, czy pole „Data urodzenia” jest obowiązkowe.')
-    expect(all('.clerk-card[data-fix="choice"] .clerk-fix-btn').map((b) => b.textContent)).toEqual(['Obowiązkowe (tak jest teraz)', 'Nieobowiązkowe'])
+    expect(card.querySelector('.clerk-card-what')!.textContent).toContain('Dotyczy to pól: „Data urodzenia”.')
+    expect(all('.clerk-card[data-fix="choice"] .clerk-fix-btn').map((b) => b.textContent)).toEqual(['Ustaw to pole jako obowiązkowe (tak jest teraz)', 'Zostaw to pole jako nieobowiązkowe'])
     expect(document.querySelector('[id="fpw-f-data"] .fp-req')).not.toBeNull()
     expect(session.changedForm()).toBeNull()
     card.querySelector<HTMLElement>('[data-option="1"]')!.click()
@@ -212,7 +220,7 @@ describe('W11 fix by click', () => {
     const { session } = await page([raw()])
     const card = q('.clerk-card')
     expect(card.getAttribute('data-fix')).toBe('input')
-    expect(all('.clerk-card .clerk-fix button').map((b) => b.textContent)).toEqual(['Popraw nazwę pola', 'Jest dobrze'])
+    expect(all('.clerk-card .clerk-fix button').map((b) => b.textContent)).toEqual(['Popraw nazwę pola', 'Sprawdzone, zostaw bez zmian'])
     card.querySelector<HTMLElement>('[data-type-in]')!.click()
     const name = q<HTMLInputElement>('[id="fpw-f-nip"] .clerk-edit-input')
     expect(name.value).toBe('NIP')

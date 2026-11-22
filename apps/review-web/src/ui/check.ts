@@ -40,8 +40,8 @@ export function checkForm(ef: EForm): CheckResult {
 
 export interface Check { el: HTMLElement; run(): CheckResult; reset(): void }
 
-export function renderCheck(ef: EForm, extra?: () => HTMLElement | null): Check {
-  const out = h('div', { id: 'fp-check-result', role: 'status' })
+export function renderCheck(ef: EForm, extra?: () => HTMLElement | null, onRun?: (r: CheckResult) => void): Check {
+  const out = h('div', { id: 'fp-check-result', role: 'status', tabindex: '-1' })
   const btn = h('button', { type: 'button', class: 'btn btn-main', id: 'fp-check' }, FP.checkButton)
 
   const go = (n: ENode): HTMLElement => {
@@ -67,11 +67,12 @@ export function renderCheck(ef: EForm, extra?: () => HTMLElement | null): Check 
         h('ul', { class: 'plain fp-missing' }, ...r.missing.map((n) => h('li', {}, go(n)))))
     }
     if (r.ok) out.append(h('p', { class: 'fp-ok' }, FP.allGood))
+    out.append(h('p', { class: 'fp-next', id: 'fp-check-next' }, r.ok ? FP.printNext : FP.fixNext))
     const more = extra?.()
     if (more) out.append(more)
     return r
   }
-  btn.addEventListener('click', () => { run() })
+  btn.addEventListener('click', () => { const r = run(); onRun?.(r) })
 
   const el = h('section', { id: 'fp-check-step', class: 'fp-step', 'aria-labelledby': 'h-check' },
     h('h2', { id: 'h-check' }, FP.step(5), ' ', FP.checkHeading),

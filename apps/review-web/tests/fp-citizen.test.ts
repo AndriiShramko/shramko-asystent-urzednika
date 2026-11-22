@@ -79,14 +79,15 @@ describe('FP one-click fill', () => {
     document.body.append(ef.el, c.el)
     const q = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!
     expect(q('#h-citizen').textContent).toBe('Krok 4 z 6. Próbne wypełnienie danymi demonstracyjnymi')
-    expect(q<HTMLButtonElement>('#fp-fill').disabled).toBe(true)
+    expect(q('#fp-fill-row').hidden).toBe(true) // BL13 TRY-F: one step at a time, no disabled button
+    expect(q('#fp-scan-row').hidden).toBe(false)
     q('#fp-scan').click()
     expect(q('#fp-people').hidden).toBe(false)
     expect(q('#fp-people').textContent).toContain('celowo błędna cyfra kontrolna PESEL')
     q('[data-person="0"]').click()
     expect(q('#fp-scan-status').textContent).toBe('Wczytano dane demonstracyjne: Tomasz Przykładowski.')
     q('#fp-fill').click()
-    expect(q('#fp-fill-result').textContent).toMatch(/^Wypełniono \d+ pól: \d+ z rejestru \(tylko do odczytu\), \d+ jako propozycja do sprawdzenia\. Do uzupełnienia ręcznie: \d+\.$/)
+    expect(q('#fp-fill-result').textContent).toMatch(/^Wypełniono \d+ pól danymi przykładowej osoby: \d+ z rejestru \(tylko do odczytu\), \d+ jako propozycja do sprawdzenia\. Do uzupełnienia ręcznie: \d+\. Wypełnione pola są podświetlone w e-formularzu poniżej\. Następny krok: sprawdź poprawność\.$/)
     expect(q('[id="fpt-f-imie"]').textContent).toBe('Z rejestru PESEL – tylko do odczytu')
     expect(q('[id="fpt-f-nip"]').textContent).toBe('Propozycja z danych demonstracyjnych – sprawdź')
     expect(q<HTMLInputElement>('[id="fpf-f-pesel"]').readOnly).toBe(true)

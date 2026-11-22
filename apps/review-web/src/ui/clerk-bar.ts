@@ -61,7 +61,12 @@ export function clerkFinal(res: Converted, root: HTMLElement): HTMLElement {
   tryBtn.addEventListener('click', () => {
     tryOpen = !tryOpen
     paintTry()
-    if (tryOpen) root.querySelector('#fp-citizen')?.scrollIntoView?.({ block: 'start', behavior: 'smooth' })
+    if (!tryOpen) return
+    // BL13 TRY-F: the banner and the step come into sight under no sticky element; the focus goes to the one action
+    const at = root.querySelector<HTMLElement>('#fp-banner') ?? root.querySelector<HTMLElement>('#fp-citizen')
+    at?.scrollIntoView?.({ block: 'start' })
+    const next = [...root.querySelectorAll<HTMLButtonElement>('#fp-citizen button, #fp-check-step button')].find((b) => !b.closest('[hidden]') && !b.disabled)
+    next?.focus({ preventScroll: true })
   })
   const paint = (): void => {
     const open = session.openCount()

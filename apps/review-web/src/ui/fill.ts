@@ -7,7 +7,7 @@ import { renderEForm, type EForm } from './eform'
 import { renderCitizen, type Citizen } from './citizen'
 import { renderCheck, type Check } from './check'
 import { renderWhere, type Where } from './where'
-import { buildSheets, renderPrint, type PrintStep } from './print'
+import { buildSheets, leadTo, renderPrint, type PrintStep } from './print'
 import { attachAddressHints, type AddressHints } from './address'
 import type { TerytSource } from '../lib/fp/teryt'
 import { FP } from '../lib/fp/text'
@@ -34,11 +34,23 @@ export function mountFill(res: Converted, preview: Promise<unknown> = Promise.re
       })))
     })
     return box
+  }, () => {
+    // the print opens after the check: the result comes into view, the first print action gets the focus
+    print.el.hidden = false
+    leadTo(check.el.querySelector('#fp-check-result'), [...print.el.querySelectorAll<HTMLButtonElement>('button')].find((b) => !b.hidden) ?? null)
   })
-  const citizen = renderCitizen(eform, () => check.reset())
+  // BL13 TRY-F: the check opens after the fill, the print after the check; going back closes what follows
+  const citizen = renderCitizen(eform, () => check.reset(), (s) => {
+    check.el.hidden = s !== 'filled'
+    print.el.hidden = true
+    if (s !== 'filled') check.reset()
+    else leadTo(citizen.el.querySelector('#fp-done-fill'), check.el.querySelector<HTMLButtonElement>('#fp-check'))
+  })
   const print = renderPrint(eform, where, () => citizen.record())
   const address = attachAddressHints(eform, teryt)
   const banner = h('p', { id: 'fp-banner', class: 'fp-banner', role: 'note' }, FP.banner)
+  check.el.hidden = true
+  print.el.hidden = true
   const el = h('div', { id: 'fp', class: 'fp', lang: 'pl' }, banner, where.el, eform.el, citizen.el, check.el, print.el)
   return { el, eform, citizen, check, where, print, address }
 }
