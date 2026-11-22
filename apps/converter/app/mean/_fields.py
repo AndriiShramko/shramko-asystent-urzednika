@@ -1038,6 +1038,7 @@ class _Reader:
             return
         titles = [v.title for v in self.variants]
         first: dict[tuple, dict[str, Any]] = {}
+        renamed: dict[str, str] = {}   # REV-1: key of a deleted twin field -> key of the kept one
         for role, s in list(self.secs.items()):
             if s["variant"] is None or not s["fields"]:
                 continue
@@ -1052,7 +1053,14 @@ class _Reader:
             for cid, d in list(self.disp.items()):
                 if d.fate == "FIELD" and d.key in into and into[d.key]:
                     self.disp[cid] = Disposition(candidate=cid, fate="MERGED", into=into[d.key], why="SAME_ALTERNATIVE")
+            renamed.update({new.key: old.key for old, new in zip(kept["fields"], s["fields"])})
             del self.secs[role]
+        # REV-1: a condition read from a note (C2) may name a field of a deleted twin; it now names the kept twin
+        conds = [c for s in self.secs.values() for c in (s.get("show_if"), *(f.show_if for f in s["fields"]))]
+        for cond in conds + [a.show_if for a in self.out.attachments]:
+            for leaf in (cond.leaves() if cond is not None else []):
+                if leaf.field in renamed:
+                    leaf.field = renamed[leaf.field]
         for s in first.values():
             conds = [Cond(field=SELECTOR_KEY, is_=titles[v]) for v in sorted(s["variants"])]
             if len(conds) < len(titles):
