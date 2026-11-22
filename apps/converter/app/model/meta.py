@@ -165,6 +165,12 @@ class ProposedDictionary(Contract):
     variants: list[str] = []
     pages: list[PageNo] = []
     field: str | None = None
+    # A8 DX-1 (additive, left out while empty): every form id that would take the dictionary, why it is proposed and
+    # how a field uses it (the partner asks for "nazwę, strukturę i zastosowanie"), and the quotes of the paper.
+    fields: list[str] = omit_empty()
+    why: str | None = Field(default=None, min_length=1)
+    use: str | None = Field(default=None, min_length=1)
+    evidence: list[Evidence] = omit_empty()
 
 
 class ProposedSource(Contract):

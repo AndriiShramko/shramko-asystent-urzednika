@@ -65,7 +65,8 @@
       "properties": {
         "origins": {"type": "object"},
         "brief_keys": {"type": "object", "additionalProperties": {"type": "string"}},
-        "ledger": {"type": "object"}
+        "ledger": {"type": "object"},
+        "proposals": {"type": "object"}
       }
     },
     "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
