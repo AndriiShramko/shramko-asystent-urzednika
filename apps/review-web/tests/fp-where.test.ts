@@ -1,6 +1,6 @@
 // FP "where on the paper": the preview contract (FP-contract.md) joined with the ledger. Synthetic places only.
 import { beforeEach, describe, expect, it } from 'vitest'
-import { attrOfLabel, joinPlaces, layoutMark, layoutText, ledgerRows, parsePreview, standardPrints, BASE } from '../src/lib/fp/places'
+import { attrOfLabel, joinPlaces, layoutMark, layoutText, ledgerRows, parsePreview, standardPrints, BASE, GAP, LEADER_RISE } from '../src/lib/fp/places'
 import { readForm } from '../src/lib/fp/form'
 import { renderEForm } from '../src/ui/eform'
 import { renderWhere } from '../src/ui/where'
@@ -41,7 +41,7 @@ describe('FP places: contract and join', () => {
   it('print math: a leader writes on its line, a comb one letter per cell, a mark is centred', () => {
     const lead = layoutText({ page: 1, kind: 'leader', box: [56, 692, 300, 700] }, 'Przykładowa')
     expect(lead.glyphs[0].left).toBe(58)
-    expect(lead.glyphs[0].top + lead.glyphs[0].size * BASE).toBeCloseTo(699)
+    expect(lead.glyphs[0].top + lead.glyphs[0].size * BASE).toBeCloseTo(700 - 8 * LEADER_RISE - GAP) // above the dots (wave 11)
     const comb = layoutText({ page: 1, kind: 'comb', box: [100, 200, 210, 214], cells: 11 }, '12345678901')
     expect(comb.glyphs).toHaveLength(11)
     expect(comb.glyphs[1].left - comb.glyphs[0].left).toBeCloseTo(10)
