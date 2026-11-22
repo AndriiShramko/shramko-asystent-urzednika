@@ -3,50 +3,50 @@ PAGE MAIN Dane
   SECTION urzad_do_ktorego_jest_skladany_wniosek | Urząd, do którego jest składany wniosek | y=0 rows=2
     TEXT_FIELD nazwa_urzedu | Nazwa urzędu | ro def=Urząd Gminy Ulan-Majorat
   SECTION podmiot_wniosku | Podmiot wniosku | y=2 rows=4
-    RADIO wybierz_w_czyim_imieniu_wnioskujesz | Wybierz, w czyim imieniu wnioskujesz | opts=3
-    RADIO wybierz_jako_kto_wnioskujesz | Wybierz, jako kto wnioskujesz | cond opts=2
-    RADIO wybierz_jako_kto_wnioskujesz_inna_osoba | Wybierz, jako kto wnioskujesz w imieniu innej osoby | cond opts=2
+    RADIO wybierz_w_czyim_imieniu_wnioskujesz | Wybierz, w czyim imieniu wnioskujesz | opts=3 val=REQUIRED
+    RADIO wybierz_jako_kto_wnioskujesz | Wybierz, jako kto wnioskujesz | cond opts=2 val=REQUIRED
+    RADIO wybierz_jako_kto_wnioskujesz_inna_osoba | Wybierz, jako kto wnioskujesz w imieniu innej osoby | cond opts=2 val=REQUIRED
   SECTION twoje_dane | Twoje dane | y=6 rows=4
-    TEXT_FIELD imie | Imię | ro def=PESEL.name
-    TEXT_FIELD nazwisko | Nazwisko | ro def=PESEL.surname
-    TEXT_FIELD numer_pesel | Numer PESEL | ro def=PESEL.pesel val=PESEL
+    TEXT_FIELD imie | Imię | ro def=PESEL.name val=REQUIRED
+    TEXT_FIELD nazwisko | Nazwisko | ro def=PESEL.surname val=REQUIRED
+    TEXT_FIELD numer_pesel | Numer PESEL | ro def=PESEL.pesel val=REQUIRED,PESEL
   SECTION adres_zamieszkania | Adres zamieszkania | y=10 rows=10
-    SELECT kraj | Kraj | def=['Polska'] dict=Kraje
-    TEXT_FIELD miejscowosc_zagranica | Miejscowość | cond
+    SELECT kraj | Kraj | def=['Polska'] dict=Kraje val=REQUIRED
+    TEXT_FIELD miejscowosc_zagranica | Miejscowość | cond val=REQUIRED
     TEXT_FIELD kod_pocztowy_zagranica | Kod pocztowy | cond
     TEXT_FIELD ulica_zagranica | Ulica | cond
     SELECT wojewodztwo | TERYT_4G_DOWODOWY | cond def=[] dict=TERYT_4G_DOWODOWY
-    TEXT_FIELD kod_pocztowy | Kod pocztowy | cond def=MLPZ.postCode val=ZIP_CODE
+    TEXT_FIELD kod_pocztowy | Kod pocztowy | cond def=MLPZ.postCode val=REQUIRED,ZIP_CODE
     TEXT_FIELD ulica | Ulica | cond def=MLPZ.street
-    TEXT_FIELD numer_budynku | Numer budynku | def=MLPZ.building
+    TEXT_FIELD numer_budynku | Numer budynku | def=MLPZ.building val=REQUIRED
     TEXT_FIELD numer_lokalu | Numer lokalu | def=MLPZ.apartment
   SECTION dane_podmiotu | Dane podmiotu | y=20 rows=3 | cond
-    TEXT_FIELD nazwa | Nazwa
-    TEXT_FIELD nip | NIP | val=NIP
+    TEXT_FIELD nazwa | Nazwa | val=REQUIRED
+    TEXT_FIELD nip | NIP | val=REQUIRED,NIP
   SECTION adres_siedziby | Adres siedziby | y=23 rows=10 | cond
-    SELECT kraj_siedziba | Kraj | def=['Polska'] dict=Kraje
-    TEXT_FIELD miejscowosc_siedziba_zagranica | Miejscowość | cond
+    SELECT kraj_siedziba | Kraj | def=['Polska'] dict=Kraje val=REQUIRED
+    TEXT_FIELD miejscowosc_siedziba_zagranica | Miejscowość | cond val=REQUIRED
     TEXT_FIELD kod_pocztowy_siedziba_zagranica | Kod pocztowy | cond
     TEXT_FIELD ulica_siedziba_zagranica | Ulica | cond
     SELECT wojewodztwo_siedziba | TERYT_4G_DOWODOWY | cond def=[] dict=TERYT_4G_DOWODOWY
-    TEXT_FIELD kod_pocztowy_siedziba | Kod pocztowy | cond val=ZIP_CODE
+    TEXT_FIELD kod_pocztowy_siedziba | Kod pocztowy | cond val=REQUIRED,ZIP_CODE
     TEXT_FIELD ulica_siedziba | Ulica | cond
-    TEXT_FIELD numer_budynku_siedziba | Numer budynku
+    TEXT_FIELD numer_budynku_siedziba | Numer budynku | val=REQUIRED
     TEXT_FIELD numer_lokalu_siedziba | Numer lokalu
   SECTION potwierdzenie_ze_jestes_reprezentantem | Potwierdzenie, że jesteś reprezentantem | y=33 rows=2 | cond
     FILE_UPLOADER plik_z_odpisem_danych | Plik z odpisem danych
   SECTION dane_innej_osoby | Dane innej osoby | y=35 rows=3 | cond
-    TEXT_FIELD imie_inna_osoba | Imię
-    TEXT_FIELD nazwisko_inna_osoba | Nazwisko
+    TEXT_FIELD imie_inna_osoba | Imię | val=REQUIRED
+    TEXT_FIELD nazwisko_inna_osoba | Nazwisko | val=REQUIRED
   SECTION adres_zamieszkania_osoby_ktorej_jestes_pelnomocnikiem | Adres zamieszkania innej osoby | y=38 rows=10 | cond
-    SELECT kraj_inna_osoba | Kraj | def=['Polska'] dict=Kraje
-    TEXT_FIELD miejscowosc_inna_osoba_zagranica | Miejscowość | cond
+    SELECT kraj_inna_osoba | Kraj | def=['Polska'] dict=Kraje val=REQUIRED
+    TEXT_FIELD miejscowosc_inna_osoba_zagranica | Miejscowość | cond val=REQUIRED
     TEXT_FIELD kod_pocztowy_inna_osoba_zagranica | Kod pocztowy | cond
     TEXT_FIELD ulica_inna_osoba_zagranica | Ulica | cond
     SELECT wojewodztwo_inna_osoba | TERYT_4G_DOWODOWY | cond def=[] dict=TERYT_4G_DOWODOWY
-    TEXT_FIELD kod_pocztowy_inna_osoba | Kod pocztowy | cond val=ZIP_CODE
+    TEXT_FIELD kod_pocztowy_inna_osoba | Kod pocztowy | cond val=REQUIRED,ZIP_CODE
     TEXT_FIELD ulica_inna_osoba | Ulica | cond
-    TEXT_FIELD numer_budynku_inna_osoba | Numer budynku
+    TEXT_FIELD numer_budynku_inna_osoba | Numer budynku | val=REQUIRED
     TEXT_FIELD numer_lokalu_inna_osoba | Numer lokalu
   SECTION potwierdzenie_ze_jestes_przedstawicielem_ustawowym | Potwierdzenie, że jesteś przedstawicielem ustawowym | y=48 rows=2 | cond
     FILE_UPLOADER plik_z_dokumentem_przedstawiciela_ustawowego | Plik z dokumentem potwierdzającym
@@ -79,4 +79,4 @@ PAGE MAIN Kontakt i zgody
 PAGE FINISH Strona końcowa
   SECTION podglad_uzupelnionego_wniosku | Podgląd uzupełnionego wniosku | y=0 rows=2
     TEXT_BLOCK podglad_1 |  | html
-sha256 e5d5cbe8bd7d034c6e929447001058b8b543b880f2c248528ddb6dc109c4bbb8
+sha256 c9d6c7963a39a4fceb891d129769d5ddf28403d9aab4bc156da837497743c51d
