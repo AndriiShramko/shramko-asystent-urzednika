@@ -390,7 +390,7 @@ def _zip_items(data: bytes, s: Settings) -> list[tuple[str | None, bytes, str | 
     """The members of a batch ZIP, in memory. Archive limits first; only the eight formats are taken."""
     if not data.startswith(b"PK"):
         raise ProblemError("TYPE_MISMATCH", "Plik .zip nie jest archiwum ZIP.")
-    zf = check_archive(data, s)
+    zf = check_archive(data, s, office_members=True)   # a DOCX, XLSX, ODS or ODT member is a ZIP by its format
     out: list[tuple[str | None, bytes, str | None]] = []
     for info in zf.infolist():
         if info.is_dir():

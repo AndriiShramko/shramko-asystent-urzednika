@@ -204,8 +204,10 @@ def _embedded_in_ole(data: bytes) -> bool:
     return i + 22 + comment != len(data)
 
 
-def check_archive(data: bytes, settings: Settings) -> zipfile.ZipFile:
-    """Open the ZIP and enforce design 6.1 item 5. Members are decompressed in chunks and counted, never written."""
+def check_archive(data: bytes, settings: Settings, office_members: bool = False) -> zipfile.ZipFile:
+    """Open the ZIP and enforce design 6.1 item 5. Members are decompressed in chunks and counted, never written.
+    `office_members` (the batch ZIP only): a member named .docx, .xlsx, .ods or .odt may itself be a ZIP package,
+    since that is what those formats are; the guard of that member (`inspect_upload`) checks it on its own later."""
     claimed = _eocd_entries(data)
     if claimed is not None and claimed > ZIP_MAX_MEMBERS:
         raise ProblemError("ARCHIVE_LIMIT", f"Archiwum ma więcej niż {ZIP_MAX_MEMBERS} elementów.")
@@ -229,7 +231,7 @@ def check_archive(data: bytes, settings: Settings) -> zipfile.ZipFile:
         try:
             with zf.open(info) as f:
                 head = f.read(4)
-                if head == b"PK\x03\x04":
+                if head == b"PK\x03\x04" and not (office_members and n.rsplit(".", 1)[-1].lower() in ZIP_FORMATS):
                     raise ProblemError("ARCHIVE_LIMIT", "Archiwum zawiera inne archiwum.")
                 count = len(head)
                 while True:
