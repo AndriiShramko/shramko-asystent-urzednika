@@ -46,6 +46,7 @@ _DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
 # C6: a printed date mask after a place ("DD-MM-RRRR", "D D - M M - R R R R", one letter per cell), and the parts of a
 # mask that box glyphs stand in front of ("□ D D -", "□ M M -", "□ R R R R")
 _DATE_MASK = re.compile(r"^DD[-./]?MM[-./]?(?:RRRR|YYYY)")
+_DMY = re.compile(r"DD[-./]?MM[-./]?(?:RRRR|YYYY)")
 _MASK_PART = re.compile(r"^(?:D\s?D|M\s?M|R\s?R(?:\s?R\s?R)?|Y\s?Y\s?Y\s?Y)\s*[-./]?$", re.IGNORECASE)
 # C2, conditions from the paper's notes (design 40-show-rules): family A, an instruction line right under a choice
 # ("Jeśli wybierzesz tę formę ...", "Jeśli tak ...", "W przypadku zaznaczenia ..."); family C, a note that names the
@@ -196,6 +197,9 @@ class _Reader:
             return self._left(c, "SIGNATURE_AND_DATE", label or "podpis")
         if c.kind == "office_use":
             return self._left(c, "OFFICE_USE", label or "adnotacja urzędu")
+        head = self._date_head_of(c)
+        if head is not None:   # BL13 DATE-D: the year boxes of a "DD-MM | RRRR" comb pair are the same date
+            return self._set(c, "MERGED", into=head.id, why="COMB_CELLS")
         if self._heading_edge(c):
             return self._left(c, "EXPLANATION", label)
         if c.label is not None and c.kind in _PLAIN and c.label.how not in _OWN_LABEL:
@@ -423,6 +427,9 @@ class _Reader:
                 if target.type == "TEXT_FIELD" and target.concept is None:
                     target.type, target.length = "TEXTAREA", None
                 return self._set(c, "MERGED", into=prev.id, why="LINE_BLOCK")
+        dated = self._date_label_above(c)
+        if dated:   # BL13 DATE-D: a date comb whose words above were taken by a choice option ("1. ... - data zdarzenia")
+            return self._field(c, dated, dated, None, False)
         self._set(c, "AWAITING_DECISION", decision=f"label_{c.id}")
         self.out.warnings.append(Warning(code="LABEL_NOT_FOUND", page=c.page, candidate=c.id,
                                          detail="a place to fill without a label: the official decides what it asks"))
@@ -752,6 +759,40 @@ class _Reader:
             if role == "instruction":
                 out.append(text)
         return out
+
+    def _dmy_under(self, page: int, x0: float, x1: float, y0: float, y1: float) -> bool:
+        """A printed date mask ("D D - M M - R R R R") inside or right under the boxes x0..x1, y0..y1."""
+        doc = self.doc
+        for _rid, (p, run) in doc.runs.items():
+            b = run.box
+            if p != page or b is None or not (y0 - 2 <= b[1] <= y1 + 25) or b[0] >= x1 or b[2] <= x0:
+                continue
+            if _DMY.search(re.sub(r"\s+", "", run.text).upper()):
+                return True
+        return False
+
+    def _date_head_of(self, c: Candidate) -> Candidate | None:
+        """The "DD-MM" comb a year comb stands right of, on the same line, under one printed date mask."""
+        if c.kind != "comb" or c.box is None:
+            return None
+        for h in self.doc.fo.candidates:
+            if h is c or h.kind != "comb" or h.page != c.page or h.box is None:
+                continue
+            if abs(h.box[1] - c.box[1]) <= 3 and 0 <= c.box[0] - h.box[2] <= 30 \
+                    and self._dmy_under(c.page, h.box[0], c.box[2], min(h.box[1], c.box[1]), max(h.box[3], c.box[3])):
+                return h
+        return None
+
+    def _date_label_above(self, c: Candidate) -> str:
+        """For a date comb without a label: the words "data ..." printed just above it, or "" (then it waits)."""
+        doc = self.doc
+        if c.kind != "comb" or c.box is None or not self._dmy_under(c.page, c.box[0], c.box[2], c.box[1], c.box[3]):
+            return ""
+        above = sorted((run.box[1], run.box[0], doc.text(rid)) for rid, (p, run) in doc.runs.items()
+                       if p == c.page and run.box is not None and c.box[1] - 45 <= run.box[1] and run.box[3] <= c.box[1] + 1
+                       and run.box[0] < c.box[2] + 60 and run.box[2] > c.box[0] - 60)
+        m = re.search(r"\bdata\b.*", " ".join(t for _y, _x, t in above), re.I)
+        return sentence_case(m.group(0).strip(" :;-–")[:120]) if m else ""
 
     def _mask_after(self, c: Candidate, reach: int = 12) -> bool:
         """C6: the text printed right after the place, white space ignored, starts with a date mask; one letter per
