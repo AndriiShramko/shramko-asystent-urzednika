@@ -73,6 +73,11 @@ FOOT = re.compile(r"(?<=[^\s\d])\s?(\d{1,2}\)|\*{1,3})$")
 BULLET = re.compile(r"^[\s•·▪■●○◦‣\-–—*]+")
 PATTERN = re.compile(r"^[A-Za-z]+(?:[-./ ][A-Za-z]+)+$")
 WORD = re.compile(r"[^\W_]")
+# W11 SCANQ: on a scan the OCR reads a dotted leader as letters ("eeeeeeeeee« szerokość", "eeeeeeeev. razem",
+# "eeeeeerseesraeeeeaeee": set scans 06 and 07). The image reader turns such a word back into dots when its ink is a
+# row of dots; this is the guard for what is left. Only labels of OCR pages pass through it.
+MISREAD = re.compile(r"(.)\1\1")   # the same letter three times in a row: no Polish word has it
+LETTERS = re.compile(r"[^\W\d_]+")
 
 
 @dataclass(frozen=True)
@@ -167,8 +172,39 @@ class P:
     col0: list[TLine] = field(default_factory=list)
 
 
-def clean(raw: str) -> tuple[str, list[str]]:
-    """A label as printed, without what is not part of it: bullets, a footnote mark, the brackets of a caption."""
+def misread(chunk: str) -> bool:
+    """A piece of text between two spaces that is a leader read as letters: one of its words of small letters holds
+    the same letter three times in a row, or has 8 or more letters of at most 3 kinds. Capitals only ("III", "XXX")
+    and "www" are never one."""
+    for tok in LETTERS.findall(chunk):
+        if tok.isupper() or tok.lower() == "www":
+            continue
+        low = tok.lower()
+        if MISREAD.search(low) or (len(low) >= 8 and len(set(low)) <= 3):
+            return True
+    return False
+
+
+def drop_misread(raw: str) -> str:
+    """The text without its misread leaders; up to 3 letters caught between two of them go too ("eee ke eee").
+    A text with none comes back as the same string."""
+    chunks = raw.split()
+    bad = [misread(c) for c in chunks]
+    if not any(bad):
+        return raw
+    keep = []
+    for i, c in enumerate(chunks):
+        between = 0 < i < len(chunks) - 1 and bad[i - 1] and bad[i + 1] and sum(ch.isalpha() for ch in c) <= 3
+        if not bad[i] and not between:
+            keep.append(c)
+    return " ".join(keep)
+
+
+def clean(raw: str, ocr: bool = False) -> tuple[str, list[str]]:
+    """A label as printed, without what is not part of it: bullets, a footnote mark, the brackets of a caption; on
+    an OCR page (`ocr`) also without the leaders that were read as letters."""
+    if ocr:
+        raw = drop_misread(raw)
     t = BULLET.sub("", raw.replace("\xa0", " ")).strip()
     foot: list[str] = []
     m = FOOT.search(t)
@@ -207,6 +243,7 @@ class Finder:
         self.letter_of: dict[int, TLine] = {}
         self.title_cells: set[int] = set()
         self.cell_at: dict[str, tuple[int, int, int]] = {}   # C5: run id -> (table, row, column) of its cell
+        self.ocr: set[int] = {p.number for p in pm.pages if p.origin == "ocr"}   # W11 SCANQ: pages read by OCR
 
     # ------------------------------------------------------------------ 1. lines, boxes, order
 
@@ -466,7 +503,7 @@ class Finder:
     # ------------------------------------------------------------------ 3. places inside lines
 
     def lab(self, ln: TLine, a: int, b: int, how: str, score: float = 0.9) -> Lab | None:
-        text, foot = clean(ln.text[a:b])
+        text, foot = clean(ln.text[a:b], ln.page in self.ocr)
         if not text:
             return None
         return Lab(text, ln.parts(a, b), how, score, score, foot)
@@ -511,7 +548,7 @@ class Finder:
             end = marks[k + 1][0] if k + 1 < len(marks) else len(ln.text)
             inner = [t for t in leads if b <= t[0] < end]
             stop = inner[0][0] if inner else end
-            text, _foot = clean(ln.text[b:stop])
+            text, _foot = clean(ln.text[b:stop], ln.page in self.ocr)
             blank: D | None = None
             if inner:
                 la, lb, _ = inner[0]
@@ -641,7 +678,7 @@ class Finder:
                 if best is None or gap < best.box[0] - b[2]:  # type: ignore[index]
                     best = ln
         if best is not None and not best.used:
-            text, _foot = clean(best.text)
+            text, _foot = clean(best.text, best.page in self.ocr)
             d.opt = (text, best.parts(0, len(best.text)), None)
             best.used = True
         elif best is not None and len(best.made) == 1 and best.made[0].kind in ("leader", "blank_in_sentence") \

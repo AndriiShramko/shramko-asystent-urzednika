@@ -10,7 +10,9 @@ UNREADABLE_PART "not read" with the page number: never a crash, never an invente
 from __future__ import annotations
 
 import io
+import re
 import threading
+from dataclasses import replace
 from typing import Any
 
 from PIL import Image
@@ -69,6 +71,44 @@ def _quality(words: list[_ocr.Word], number: int) -> list[Warning]:
                         detail=f"page read poorly: only {round(share * 100)} % of {len(words)} OCR words are confident; "
                                "the scan may be rotated, blurred or too small, check this page against the paper")]
     return []
+
+
+# W11 SCANQ: Tesseract reads a piece of a dotted leader as letters ("eeeeeeeeee szerokość", "eeeeeeeev. razem" on the
+# set scans), and the letters went into the label of the field. Such a "word" is told by its ink, not by its text:
+# one low row of small marks. It becomes the dots it is, so the finder sees a place to write.
+DOT_ROW_MAX_PX = 10    # the ink of the word is at most this tall at 200 dpi (the dots of a leader are 2 to 6 px) ...
+DOT_MARK_MAX_PX = 9    # ... every mark of its rows is at most this wide (longer ink is a rule: _raster._leaders) ...
+DOT_ROW_MIN_MARKS = 3  # ... and one row has at least this many marks
+_MARK = re.compile(rb"\xff+")
+_ALNUM = re.compile(r"[^\W_]")
+
+
+def _dot_row(ink: Image.Image, w: _ocr.Word, f: float = 1.0) -> int:
+    """The number of dots when the ink inside the word's box is one row of small marks, else 0 (f = pixels of this
+    page per pixel at 200 dpi)."""
+    crop = ink.crop((w.x0, w.y0, w.x1, w.y1))
+    bb = crop.getbbox()
+    if bb is None or bb[3] - bb[1] > DOT_ROW_MAX_PX * f:
+        return 0
+    tight = crop.crop(bb)
+    tw, th = tight.size
+    raw = tight.tobytes()
+    most = 0
+    for y in range(th):
+        marks = [m.end() - m.start() for m in _MARK.finditer(raw[y * tw:(y + 1) * tw])]
+        if marks and max(marks) > DOT_MARK_MAX_PX * f:
+            return 0
+        most = max(most, len(marks))
+    return most if most >= DOT_ROW_MIN_MARKS else 0
+
+
+def _dots_not_letters(words: list[_ocr.Word], ink: Image.Image, f: float = 1.0) -> list[_ocr.Word]:
+    """OCR words whose ink is a row of dots but whose text has a letter or a digit -> the same word as dots."""
+    out: list[_ocr.Word] = []
+    for w in words:
+        n = _dot_row(ink, w, f) if _ALNUM.search(w.text) else 0
+        out.append(replace(w, text="." * n) if n else w)
+    return out
 
 
 GLYPH_MAX_PX = 26     # S1 glyph: a closed box at most this wide and tall (200 dpi) inside a word is a letter's counter
@@ -148,6 +188,7 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
                 words = []
                 warns.append(Warning(code="UNREADABLE_PART", page=number, detail=f"page not read: {e}"))
             else:
+                words = _dots_not_letters(words, ink, S / s)
                 runs, bad = _runs(words, ids, number, s)
                 warns.extend(bad)
                 warns.extend(_quality(words, number))
