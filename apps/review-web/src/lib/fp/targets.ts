@@ -61,6 +61,17 @@ export function standardFields(sec: ENode, attr: Attr | null): string[] {
   return [sec.id]
 }
 
+/** One label may name two things ("nr telefonu/adres e-mail"): every attribute it names, in its order. */
+export function attrsOfLabel(label: string): Attr[] {
+  const parts = label.split(/\s*[/;]\s*|\s+lub\s+|\s+albo\s+/).filter(Boolean)
+  const whole = attrOfLabel(label)
+  const out: Attr[] = []
+  for (const p of parts) { const a = attrOfLabel(p); if (a && !out.includes(a)) out.push(a) }
+  // a label that names one thing as a whole ("imię i nazwisko/nazwa") keeps that thing
+  if (whole && (out.length <= 1 || out.includes(whole) === false)) return [whole]
+  return out.length ? out : whole ? [whole] : []
+}
+
 /** candidate id -> its target, for every ledger row whose place the preview knows. */
 export function boxTargets(rows: LedgerRow[], pv: Preview, model: FormModel): Map<string, BoxTarget> {
   const out = new Map<string, BoxTarget>()
@@ -70,7 +81,13 @@ export function boxTargets(rows: LedgerRow[], pv: Preview, model: FormModel): Ma
     if (r.fate === 'STANDARD' && r.section) {
       const sec = sectionNode(model, r.section)
       const label = pv.places[r.candidate]?.label
-      if (sec) return { kind: 'standard', fields: standardFields(sec, label ? attrOfLabel(label) : null), reason: null }
+      if (sec) {
+        const attrs = label ? attrsOfLabel(label) : []
+        const ids = attrs.length ? [...new Set(attrs.flatMap((a) => standardFields(sec, a)))] : [sec.id]
+        // two named things of which one is not in the section: the section's own match only
+        const exact = ids.filter((id) => id !== sec.id)
+        return { kind: 'standard', fields: exact.length ? exact : [sec.id], reason: null }
+      }
     }
     if (r.fate === 'MERGED' && r.into && depth < 8) {
       const into = byCid.get(r.into)
