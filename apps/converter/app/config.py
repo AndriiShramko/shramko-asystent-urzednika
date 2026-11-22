@@ -20,9 +20,9 @@ MIN_HMAC_SECRET_BYTES = 32
 # Scan preparation steps of the image path (audit 8 SL1). A token joins SCAN_PREP_ACCEPTED (what SCAN_PREP=on turns
 # on) only after the scan lab accepted it.
 SCAN_PREP_TOKENS = frozenset({"glyph", "leader", "thick", "deskew", "scale", "rules", "orient"})
-# lab 22.11 (image sl1:s5, 145 files): the six together with orient +13.0 points recall per file; orient alone +0.4
-# ([-1.2, +2.5]), sideways pages not fixed, slower: left out
-SCAN_PREP_ACCEPTED: frozenset[str] = frozenset({"scale", "glyph", "leader", "thick", "deskew", "rules"})
+# lab 22.11 (image sl1:s5, 145 files, recall per file against off): these five +12.0 points ([+8.8, +15.4]), against
+# all seven -1.1 ([-3.5, +1.4]); orient alone +0.4 ([-1.2, +2.5]), scale alone -0.3 ([-2.3, +1.6]): both left out
+SCAN_PREP_ACCEPTED: frozenset[str] = frozenset({"glyph", "leader", "thick", "deskew", "rules"})
 
 
 class ConfigError(Exception):
