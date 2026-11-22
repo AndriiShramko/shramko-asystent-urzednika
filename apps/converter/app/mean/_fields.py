@@ -20,6 +20,7 @@ from ._head import Variant
 DEFAULT_TITLE = "Szczegóły sprawy"
 SELECTOR_KEY = "rodzaj_wniosku"
 SELECTOR_LABEL = "Wybierz rodzaj wniosku"
+_RESERVED_ROLES = frozenset({f"matter/{SELECTOR_KEY}", "matter/wybor_zalacznika"})   # sections the rules make
 
 
 def _habit(name: str) -> re.Pattern[str]:
@@ -687,16 +688,39 @@ class _Reader:
 
     def _choice_kind(self, c: Candidate, raw: str, options: list[str]) -> str:
         """Design 6.4.3 "tick boxes that share a question"."""
-        wording = raw.casefold()
+        wording = " ".join([raw, *self._instructions_before(c)]).casefold()
+        if _MULTIPLE.search(wording):     # "zaznacz wszystkie" over a long list is still several, not a SELECT
+            return "CHECKBOX"
         if len(options) > 5:
             return "SELECT"
-        if _MULTIPLE.search(wording):
-            return "CHECKBOX"
         if len(options) == 2 or _EXCLUSIVE_WORDING.search(wording) or any(_EXCLUSIVE.search(o.casefold()) for o in options):
             return "RADIO"
+        # The paper does not say. One choice is the safe reading: the partner's exports hold no CHECKBOX group, and
+        # an official widens a RADIO to several more easily than a citizen undoes a contradictory set of ticks.
         self.out.warnings.append(Warning(code="AMBIGUOUS_GROUP", page=c.page, candidate=c.id,
-                                         detail="the paper does not say whether one or several options may be marked; several are allowed"))
-        return "CHECKBOX"
+                                         detail="the paper does not say whether one or several options may be marked; one is asked"))
+        return "RADIO"
+
+    def _instructions_before(self, c: Candidate, reach: int = 4) -> list[str]:
+        """The instruction lines right above a group, up to its heading ("(można zaznaczyć kilka odpowiedzi)"): the
+        finder gives them the role instruction, so they are never the group's label."""
+        doc = self.doc
+        first = [doc.pos[r] for o in c.options for r in o.runs if r in doc.pos]
+        at = min(first) if first else doc.cand_pos(c)   # from the first option: the label may be the heading above
+        own = set(doc.cand_runs(c))
+        out: list[str] = []
+        seen = 0
+        for rid in reversed(doc.order[:at]):
+            text = doc.text(rid)
+            role = doc.role(rid)
+            if rid in own or not any(ch.isalnum() for ch in text):
+                continue    # the group's own question, its box glyphs
+            if role == "heading" or role == "owned" or seen >= reach:
+                break       # the heading, a place of another candidate, or too far up
+            seen += 1
+            if role == "instruction":
+                out.append(text)
+        return out
 
     def _hint_after(self, c: Candidate) -> str | None:
         """ "(rodzaj uroczystości, np. wesele ...)" under a line is the hint of the field."""
@@ -733,6 +757,8 @@ class _Reader:
         if repeating:
             title += " – pozycje"
         role = "matter/" + (f"w{v + 1}/" if v is not None else "") + key_of(title, "sekcja")
+        if role in _RESERVED_ROLES:
+            role += "_papier"     # a paper heading "Rodzaj wniosku" must not overwrite the selector's section
         return self.secs.setdefault(role, {"title": title, "role": role, "fields": [], "repeating": repeating, "variant": v})
 
     def _add(self, c: Candidate, f: BriefField, role: str) -> None:

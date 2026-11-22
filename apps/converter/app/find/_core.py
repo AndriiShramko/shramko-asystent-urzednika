@@ -52,8 +52,16 @@ INSTR_HEAD = re.compile(r"instrukcj|pouczeni|objaśnieni|sposób\s+wypełni", _I
 LEGAL = re.compile(r"^(?:na\s+podstawie|zgodnie\s+z)\s+(?:art|§|ustaw|rozporz)|^art\.\s*\d+.*\b(?:ustaw|rozporządz|kodeks)"
                    r"|\bDz\.\s?U\.", _I)
 SIGN = re.compile(r"podpis|pieczę[ćc]|pieczątk", _I)
-OFFICE = re.compile(r"wypełnia\s+(?:organ|urząd|pracownik)|adnotacj\w+\s+(?:urzęd|organu)|miejsce\s+na\s+piecz"
+# a blank inside a sentence: not "niżej podpisany", which names the person
+SIGN_WORD = re.compile(r"\bpodpis(?:y|em)?\b|pieczę[ćc]|pieczątk", _I)
+SIGN_DATE = re.compile(r"^(?:data|dnia|miejscowość(?:,|\s+i)\s+data|data\s+i\s+miejscowość)$", _I)
+OFFICE = re.compile(r"wypełnia\s+(?:organ|urząd|pracownik)|wypełnian\w*\s+przez\s+(?:organ|urząd|pracownik)"
+                    r"|adnotacj\w+\s+(?:urzęd|organu)|miejsce\s+na\s+piecz"
                     r"|n(?:r|umer)\s+sprawy|znak\s+sprawy|data\s+wpływu|potwierdzenie\s+(?:przyjęcia|wpływu)", _I)
+# a heading that gives its whole part to the office: word ends, so "wypełnia organizator" (the applicant of an event)
+# and "wypełnia pracownik" (the employee on a staff form) keep their part
+OFFICE_HEAD = re.compile(r"wypełnia\w*\s+(?:przez\s+)?(?:organ\b|urz[ąę]d|pracownik\w*\s+urzęd)"
+                         r"|adnotacj\w+\s+(?:urzęd|organu)", _I)
 NOTE = re.compile(r"^/?\s*(?:\d{1,2}\s?\)|\*{1,3}\)?)\s*\S")
 CAPTION = re.compile(r"^\s*[(/]")
 NUM = re.compile(r"^(\d{1,2}(?:\.\d{1,2})*)\.?\s+(\S.*)$")
@@ -484,12 +492,25 @@ class Finder:
                     self.add(D("cell", n, ln.pos, box=b, label=lab, geom=0.85))
 
     def kinds(self) -> None:
+        signed: set[int] = set()
         for d in self.cands:
             if d.label is not None and d.kind in ("leader", "line_block", "cell", "blank_in_sentence"):
-                if OFFICE.search(d.label.text):
+                s = self.sec(d.pos)
+                if OFFICE.search(d.label.text) or (s is not None and OFFICE_HEAD.search(s.title)):
+                    # an office-use place: by its own label, or under a heading that gives the part to the office
                     d.kind = "office_use"
-                elif SIGN.search(d.label.text) and d.kind != "blank_in_sentence":
+                elif SIGN.search(d.label.text) and (d.kind != "blank_in_sentence" or (
+                        len(d.label.text.split()) <= 4 and SIGN_WORD.search(d.label.text))):
+                    # a blank inside a sentence is a signature only when its own label is short ("Data ... Podpis
+                    # ...", "...... (podpis)"); a long sentence that names a signature asks something else
                     d.kind = "signature"
+                    if d.line is not None:
+                        signed.add(id(d.line))
+        for d in self.cands:
+            # the date (or place and date) blank on the line of a signature is the date of the signature
+            if d.kind == "blank_in_sentence" and d.label is not None and d.line is not None and id(d.line) in signed \
+                    and SIGN_DATE.match(d.label.text.strip()):
+                d.kind = "signature"
 
     def drawn_mark(self, p: P, b: Box) -> None:
         d = self.add(D("box", p.page.number, p.boxpos[b], box=b, geom=0.95))
@@ -559,6 +580,14 @@ class Finder:
                                 self.cands.remove(made)
                     lab: Lab | None = None
                     left = grid.get((cell.r, cell.c - 1))
+                    if left is None or not WORD.search(text(left)):
+                        # a merged place spans several rows (a page drawn as a grid of thin rows): the words left of
+                        # it may begin on any row it covers, not only on its top row
+                        for rr in range(cell.r + 1, cell.r + cell.rs):
+                            o = grid.get((rr, cell.c - 1))
+                            if o is not None and o is not cell and WORD.search(text(o)):
+                                left = o
+                                break
                     if (own or cont) and WORD.search(heads[cell.c]):
                         hc = grid.get((0, cell.c)) if own else None
                         hparts = [(r, 0, len(self.runs[r][1].text)) for r in hc.runs] if hc is not None else []
@@ -586,6 +615,12 @@ class Finder:
     def widgets(self) -> None:
         for p in self.pages:
             for w in p.page.widgets:
+                n = p.page.number
+                if w.box is not None and any(o.box is not None and o.page == n and o.kind != "widget"
+                                             and sh.inter(o.box, w.box) > 0.5 * sh.area(o.box) for o in self.cands):
+                    # the widget lies over a place the paper draws (a box, a cell, a dotted line): that place is
+                    # already a candidate with the paper's own label; a second one would duplicate the field
+                    continue
                 pos = float(p.first)
                 if p.geo and w.box is not None and p.lines:
                     near = min(p.lines, key=lambda ln: abs(ln.box[1] - w.box[1]) + abs(ln.box[0] - w.box[0]) / 10)  # type: ignore[index]
@@ -905,7 +940,8 @@ class Finder:
                 roles[r.id] = found[0] if found else "body"
 
         order = list(dict.fromkeys(a.run.id for _p, ln in self.ordered() for a in ln.atoms))
-        order += [r.id for pg in self.pm.pages for r in pg.runs if r.id not in set(order)]
+        seen = set(order)
+        order += [r.id for pg in self.pm.pages for r in pg.runs if r.id not in seen]
 
         warnings: list[Warning] = []
         for code, d, detail in self.warn:
