@@ -1,6 +1,7 @@
 """Wave 11 SCANQ: a piece of a dotted leader that the OCR read as letters ("eeeeeeeeee« szerokość", "eeeeeeeev. razem",
-"e..e.eees eeer eee eee eee ke eee działka nr ewid": labels of set scans 06 in the verified image) becomes the dots
-it is, told by its ink (one low row of small marks), not by its text. Words printed with letters stay as read."""
+"e..e.eees eeer eee eee eee ke eee działka nr ewid": labels of set scans 06 in the verified image), alone or glued
+to the word before it ("miejscowości..................eeveeeeseeeseeee": set scan 01), becomes the dots it is, told
+by its ink (one low row of small marks), not by its text. Words printed with letters stay as read."""
 from __future__ import annotations
 
 import re
@@ -86,7 +87,26 @@ def test_dots_read_as_letters_become_dots():
 
 def test_the_number_of_dots_is_the_number_on_the_paper():
     ink = _raster.binarize(page_06())
-    assert image._dot_row(ink, WORDS_06[1]) == 21             # x = 270 .. 510 step 12
+    assert image._dot_parts(ink, WORDS_06[1]) == (0, 0, 21)   # x = 270 .. 510 step 12
+    assert image._dot_parts(ink, WORDS_06[0]) == (0, 0, 0)    # letters only
+
+
+# set scan 01 (PNG, JPEG) in the verified image: the word and its leader came back as ONE word, box 585 x 30, conf 0
+GLUED = ["miejscowości..................eeveeeeseeeseeee", "micjscowOŚCI..................reeeeeeeeeee",
+         "ulicy?.........................eesesesese", "ulicyeeeeeeeeee"]
+
+
+@pytest.mark.parametrize("text", GLUED)
+def test_a_leader_glued_to_its_word_keeps_the_word(text):
+    words = [_ocr.Word(text, 100, 398, 512, 432, 0.0, (1, 1, 1)), WORDS_06[2]]
+    got = read(words).runs[0].text
+    head = re.split(r"\.{3,}|eee", text)[0]
+    assert got == head + "." * 21, got
+
+
+def test_a_leader_glued_before_its_word_keeps_the_word():
+    words = [_ocr.Word("eeeeeeee....szerokość", 268, 398, 722, 432, 0.05, (1, 1, 1))]
+    assert read(words).runs[0].text == "." * 21 + "szerokość"
 
 
 def test_a_word_of_letters_is_never_touched_whatever_its_text():
@@ -95,11 +115,26 @@ def test_a_word_of_letters_is_never_touched_whatever_its_text():
     assert [r.text for r in read(words).runs] == ["eeeeeeeeee", "Zeee"]
 
 
+def test_a_word_the_engine_is_sure_of_is_never_touched():
+    words = [_ocr.Word("oraz", 268, 420, 512, 430, 0.92, (1, 1, 1))]
+    assert [r.text for r in read(words).runs] == ["oraz"]
+
+
+def test_small_print_is_not_a_row_of_dots():
+    """Set scan 01, page 2: "w", "na", "oraz", "numeru" of the small-print clause have ink 10 px tall."""
+    img = Image.new("L", (W, H), 255)
+    d = ImageDraw.Draw(img)
+    for x in range(270, 330, 9):
+        d.rectangle((x, 420, x + 2, 429), fill=0)             # strokes 3 px wide and 10 px tall
+    words = [_ocr.Word("numeru", 268, 418, 332, 432, 0.4, (1, 1, 1))]
+    assert [r.text for r in read(words, img).runs] == ["numeru"]
+
+
 def test_dots_read_as_dots_and_a_rule_stay_as_read():
-    words = [_ocr.Word("..........", 268, 420, 512, 430, 0.9, (1, 1, 1)),      # no letter in the text: not ours
+    words = [_ocr.Word("..........", 268, 420, 512, 430, 0.2, (1, 1, 1)),      # no letter in the text: not ours
              _ocr.Word("eeeeee", 100, 796, 700, 806, 0.2, (1, 2, 1)),          # a solid rule read as letters: not dots
-             _ocr.Word("ke", 740, 420, 760, 430, 0.2, (1, 1, 1))]              # two dots only: too few to tell
-    assert [r.text for r in read(words).runs] == ["..........", "eeeeee", "ke"]
+             _ocr.Word("ke", 740, 420, 760, 430, 0.2, (1, 1, 1))]              # two dots: ink this low is no letter
+    assert [r.text for r in read(words).runs] == ["..........", "eeeeee", ".."]
 
 
 def test_two_stacked_rows_of_dots_are_not_one_leader():
@@ -107,7 +142,7 @@ def test_two_stacked_rows_of_dots_are_not_one_leader():
     d = ImageDraw.Draw(img)
     dots(d, 270, 520, 420)
     dots(d, 270, 520, 440)
-    words = [_ocr.Word("eeeeee", 268, 416, 512, 446, 0.2, (1, 1, 1))]          # 28 px of ink: taller than one row
+    words = [_ocr.Word("eeeeee", 268, 416, 512, 446, 0.2, (1, 1, 1))]          # 24 px between the rows: not one row
     assert [r.text for r in read(words, img).runs] == ["eeeeee"]
 
 

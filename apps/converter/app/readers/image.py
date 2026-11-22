@@ -73,41 +73,93 @@ def _quality(words: list[_ocr.Word], number: int) -> list[Warning]:
     return []
 
 
-# W11 SCANQ: Tesseract reads a piece of a dotted leader as letters ("eeeeeeeeee szerokość", "eeeeeeeev. razem" on the
-# set scans), and the letters went into the label of the field. Such a "word" is told by its ink, not by its text:
-# one low row of small marks. It becomes the dots it is, so the finder sees a place to write.
-DOT_ROW_MAX_PX = 10    # the ink of the word is at most this tall at 200 dpi (the dots of a leader are 2 to 6 px) ...
-DOT_MARK_MAX_PX = 9    # ... every mark of its rows is at most this wide (longer ink is a rule: _raster._leaders) ...
-DOT_ROW_MIN_MARKS = 3  # ... and one row has at least this many marks
+# W11 SCANQ: Tesseract reads a dotted leader as letters, alone ("eeeeeeeeee«", "eeeeeeeev.", "seee", "PP") or glued to
+# the word before it ("miejscowości..................eeveeeeseeeseeee", "ulicy?.........................eesesesese":
+# set scans 01, 06, 07, 09), and the letters went into the label of the next field. The leader is told by its ink,
+# not by its text: one low row of small marks beside the letters or instead of them. It becomes the dots it is, so
+# the finder sees a place to write. A word the engine is sure of is never touched.
+DOT_ROW_MAX_PX = 6     # the ink of a dotted row is at most this tall at 200 dpi (measured: 3 px; small print is 10) ...
+DOT_MARK_MAX_PX = 9    # ... each of its marks is at most this wide (longer ink is a rule: _raster._leaders) ...
+DOT_ROW_MIN_MARKS = 3  # ... and beside letters it has at least this many marks (alone, one mark is enough:
+#                        ink this low is no letter, whatever the engine read in it)
 _MARK = re.compile(rb"\xff+")
 _ALNUM = re.compile(r"[^\W_]")
+_DOT_RUN = re.compile(r"[.…_]{3,}")
+_SAME_3 = re.compile(r"([^\W\d_])\1\1", re.IGNORECASE)
 
 
-def _dot_row(ink: Image.Image, w: _ocr.Word, f: float = 1.0) -> int:
-    """The number of dots when the ink inside the word's box is one row of small marks, else 0 (f = pixels of this
-    page per pixel at 200 dpi)."""
+def _dot_parts(ink: Image.Image, w: _ocr.Word, f: float = 1.0) -> tuple[int, int, int]:
+    """The dots in the ink of a word's box: (left of its letters, right of its letters, in a box with no letters).
+    Letters are the columns whose ink is taller than a dot; a part beside letters counts when it is one row of at
+    least DOT_ROW_MIN_MARKS small marks (f = pixels of this page per pixel at 200 dpi)."""
     crop = ink.crop((w.x0, w.y0, w.x1, w.y1))
     bb = crop.getbbox()
-    if bb is None or bb[3] - bb[1] > DOT_ROW_MAX_PX * f:
-        return 0
+    if bb is None:
+        return 0, 0, 0
     tight = crop.crop(bb)
     tw, th = tight.size
     raw = tight.tobytes()
-    most = 0
+    top, bot = [-1] * tw, [-1] * tw
     for y in range(th):
-        marks = [m.end() - m.start() for m in _MARK.finditer(raw[y * tw:(y + 1) * tw])]
-        if marks and max(marks) > DOT_MARK_MAX_PX * f:
+        for m in _MARK.finditer(raw[y * tw:(y + 1) * tw]):
+            for x in range(m.start(), m.end()):
+                if top[x] < 0:
+                    top[x] = y
+                bot[x] = y
+    tall, wide = DOT_ROW_MAX_PX * f, DOT_MARK_MAX_PX * f
+
+    def dots(x0: int, x1: int, least: int = DOT_ROW_MIN_MARKS) -> int:
+        cols = [x for x in range(x0, x1) if top[x] >= 0]
+        if not cols or max(bot[x] for x in cols) - min(top[x] for x in cols) + 1 > tall:
             return 0
-        most = max(most, len(marks))
-    return most if most >= DOT_ROW_MIN_MARKS else 0
+        marks, run = 0, 0
+        for x in range(x0, x1 + 1):
+            if x < x1 and top[x] >= 0:
+                run += 1
+                continue
+            if run > wide:
+                return 0
+            marks += 1 if run else 0
+            run = 0
+        return marks if marks >= least else 0
+
+    letters = [x for x in range(tw) if top[x] >= 0 and bot[x] - top[x] + 1 > tall]
+    if not letters:
+        return 0, 0, dots(0, tw, 1)
+    a, b = letters[0], letters[-1] + 1
+    while a > 0 and top[a - 1] >= 0:      # the rest of the first and of the last letter
+        a -= 1
+    while b < tw and top[b] >= 0:
+        b += 1
+    return dots(0, a), dots(b, tw), 0
+
+
+def _dots_text(text: str, left: int, right: int, whole: int) -> str:
+    """The word's text with its misread leader as dots. Where the leader starts in the text is told by the first run
+    of dots the engine did read, else by the first letter that stands three times in a row; with neither the text
+    stays as read."""
+    if whole:
+        return "." * whole
+    if right:
+        m = _DOT_RUN.search(text) or _SAME_3.search(text)
+        if m is not None and _ALNUM.search(text[m.start():]):
+            return text[:m.start()] + "." * right
+    elif left:
+        ms = list(_DOT_RUN.finditer(text)) or list(_SAME_3.finditer(text))
+        if ms and _ALNUM.search(text[:ms[-1].end()]):
+            return "." * left + text[ms[-1].end():]
+    return text
 
 
 def _dots_not_letters(words: list[_ocr.Word], ink: Image.Image, f: float = 1.0) -> list[_ocr.Word]:
-    """OCR words whose ink is a row of dots but whose text has a letter or a digit -> the same word as dots."""
+    """OCR words whose ink is, or ends or starts with, a row of dots that the engine read as letters -> the same
+    words with dots there. Only words with a letter or a digit in the text and a confidence under CONFIDENT."""
     out: list[_ocr.Word] = []
     for w in words:
-        n = _dot_row(ink, w, f) if _ALNUM.search(w.text) else 0
-        out.append(replace(w, text="." * n) if n else w)
+        text = w.text
+        if w.conf < CONFIDENT and _ALNUM.search(text):
+            text = _dots_text(text, *_dot_parts(ink, w, f))
+        out.append(w if text == w.text else replace(w, text=text))
     return out
 
 
