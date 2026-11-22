@@ -25,7 +25,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app import __version__, engine, pipeline, preview
+from app import __version__, engine, pipeline, preview, progress
+from app import jobs as jobs_mod
 from app.auth import RateLimiter, TokenVerifier, scopes_of
 from app.config import Settings
 from app.guard import ProblemError, UploadInfo, inspect_upload
@@ -205,8 +206,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     # ---- shared steps ------------------------------------------------------------------------------------------
 
-    def authorize(request: Request, scope: str) -> str:
-        """Token, scope and rate limit; returns the subject. With AUTH_MODE=off the subject is `anonymous`."""
+    def authorize(request: Request, scope: str, count: bool = True) -> str:
+        """Token, scope and rate limit; returns the subject. With AUTH_MODE=off the subject is `anonymous`.
+        `count=False`: a question about a job already taken (its state) is not counted against the rate limit."""
         if verifier is None:
             subject = "anonymous"
         else:
@@ -216,7 +218,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if scope not in scopes_of(claims):
                 raise ProblemError("SCOPE", f"Wymagany zakres: {scope}.")
             subject = str(claims.get("sub", "unknown"))
-        limiter.check(subject)
+        if count:
+            limiter.check(subject)
         return subject
 
     async def read_parts(request: Request, many: bool = False) -> list[UploadFile]:
@@ -236,6 +239,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     def run_one(name: str | None, data: bytes, declared: str | None) -> tuple[UploadInfo, pipeline.PipelineResult, int]:
         t0 = time.perf_counter()
+        progress.phase("received")   # told only to a job's tracker (app.jobs); a no-op elsewhere
         info = inspect_upload(name, data, s, declared)
         result = pipeline.run_limited(data, info.name, s, **({"notes": info.warnings} if info.warnings else {}))
         if set(result.form) != FORM_KEYS:  # the shell's own gate; the full gate (WP-F14) comes behind the pipeline
@@ -294,6 +298,39 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "Server-Timing": f"total;dur={ms}",
         }
 
+    def convert_response(info: UploadInfo, result: pipeline.PipelineResult, ms: int, report: int) -> Response:
+        """The answer of `/v1/forms/convert`: the form alone, or with `report` the form and the sidecar as two parts.
+        `/v1/jobs/{id}/result` gives the same bytes for the same file."""
+        form_body = canonical(result.form)
+        headers = headers_for(info, form_body, ms, result)
+        if not report:
+            return Response(form_body, media_type="application/json", headers=headers)
+        meta_body = canonical(result.sidecar)
+        boundary = "formularze-" + headers["X-Form-SHA256"][:24]
+        out = b""
+        for name, payload in (("form.json", form_body), ("meta.json", meta_body)):
+            out += (f"--{boundary}\r\nContent-Type: application/json\r\n"
+                    f'Content-Disposition: attachment; filename="{name}"\r\n\r\n').encode() + payload + b"\r\n"
+        out += f"--{boundary}--\r\n".encode()
+        return Response(out, media_type=f"multipart/mixed; boundary={boundary}", headers=headers)
+
+    # ---- jobs: taken at once, a bounded queue, the state by real stages (wave 11, app.jobs) -------------------------
+
+    async def job_work(job: jobs_mod.Job) -> tuple[UploadInfo, pipeline.PipelineResult, int]:
+        try:
+            info, result, ms = await run_in_threadpool(run_one, job.name, job.data or b"", job.declared)
+        except ProblemError as exc:
+            _event("job", exc.code, job.id[:12], job.size)
+            raise
+        except Exception as exc:  # noqa: BLE001 - one job never takes the queue down; no text of the exception
+            raise internal_problem(exc) from None
+        _event("job", "ok", job.id[:12], info.size, engine_state.record(result.sidecar))
+        return info, result, ms
+
+    queue = jobs_mod.JobQueue(gate, jobs_mod.QueueLimits.of(s), job_work, model=lambda: pipeline.vision_on(s))
+    app.state.jobs = queue
+    no_store = {"Cache-Control": "no-store"}
+
     # ---- endpoints ---------------------------------------------------------------------------------------------
 
     @app.get("/healthz")
@@ -328,18 +365,50 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.post("/v1/forms/convert", openapi_extra=UPLOAD_ONE)
     async def convert(request: Request, report: int = 0) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
-        form_body = canonical(result.form)
-        headers = headers_for(info, form_body, ms, result)
-        if not report:
-            return Response(form_body, media_type="application/json", headers=headers)
-        meta_body = canonical(result.sidecar)
-        boundary = "formularze-" + headers["X-Form-SHA256"][:24]
-        out = b""
-        for name, payload in (("form.json", form_body), ("meta.json", meta_body)):
-            out += (f"--{boundary}\r\nContent-Type: application/json\r\n"
-                    f'Content-Disposition: attachment; filename="{name}"\r\n\r\n').encode() + payload + b"\r\n"
-        out += f"--{boundary}--\r\n".encode()
-        return Response(out, media_type=f"multipart/mixed; boundary={boundary}", headers=headers)
+        return convert_response(info, result, ms, report)
+
+    @app.post("/v1/jobs", status_code=202, openapi_extra=UPLOAD_ONE, summary="Take one form into the queue")
+    async def job_submit(request: Request) -> JSONResponse:
+        """The file is checked at once (type, size, name: the answers of `/convert`) and then waits its turn. 202 with
+        the job's id and place; 429 QUEUE_FULL when the queue has no room. Then ask `GET /v1/jobs/{id}`."""
+        authorize(request, "convert")
+        part = (await read_parts(request))[0]
+        data = await part.read()
+        await part.close()
+        await run_in_threadpool(inspect_upload, part.filename, data, s, part.content_type)   # refused now, not after a wait
+        job = queue.submit(part.filename, data, part.content_type)
+        return JSONResponse(queue.status(job), status_code=202, headers={**no_store, "Location": f"/v1/jobs/{job.id}"})
+
+    @app.get("/v1/jobs", summary="How busy the queue is")
+    async def job_queue(request: Request) -> JSONResponse:
+        authorize(request, "convert", count=False)
+        return JSONResponse({**queue.counts(), "concurrency": s.concurrency, "job_timeout_s": s.job_timeout_s,
+                             "waiting_bytes_max": queue.limits.waiting_bytes}, headers=no_store)
+
+    @app.get("/v1/jobs/{job_id}", summary="Where one job is: place in the queue, stage, finished parts")
+    async def job_status(request: Request, job_id: str) -> JSONResponse:
+        """`state` queued (with `position`, 1 = next), running (with `stage` {name, step, page, pages} and `units`
+        {done, total}: finished parts of the work, counted from what the conversion reported, never from a clock),
+        done, or error (with the problem). `stage_s` = seconds since the last report."""
+        authorize(request, "convert", count=False)
+        return JSONResponse(queue.status(queue.get(job_id)), headers=no_store)
+
+    @app.get("/v1/jobs/{job_id}/result", summary="The answer of /v1/forms/convert for a finished job")
+    async def job_result(request: Request, job_id: str, report: int = 1) -> Response:
+        authorize(request, "convert", count=False)
+        job = queue.get(job_id)
+        if job.state == jobs_mod.ERROR and job.error is not None:
+            return problem_response(job.error)
+        if job.state != jobs_mod.DONE:
+            return JSONResponse(queue.status(job), status_code=202, headers=no_store)   # not yet: the state instead
+        info, result, ms = job.outcome
+        return convert_response(info, result, ms, report)
+
+    @app.delete("/v1/jobs/{job_id}", summary="Give a job up")
+    async def job_cancel(request: Request, job_id: str) -> JSONResponse:
+        authorize(request, "convert", count=False)
+        job = queue.cancel(job_id)
+        return JSONResponse({"id": job.id, "state": job.state}, headers=no_store)
 
     @app.post("/v1/forms/report", openapi_extra=UPLOAD_ONE)
     async def report_only(request: Request) -> Response:
