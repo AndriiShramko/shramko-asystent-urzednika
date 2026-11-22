@@ -46,6 +46,7 @@ _DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
 # C6: a printed date mask after a place ("DD-MM-RRRR", "D D - M M - R R R R", one letter per cell), and the parts of a
 # mask that box glyphs stand in front of ("□ D D -", "□ M M -", "□ R R R R")
 _DATE_MASK = re.compile(r"^DD[-./]?MM[-./]?(?:RRRR|YYYY)")
+_UNDERSIGNED = re.compile(r"ni[żz]ej\s+podpisan", re.I)
 _DMY = re.compile(r"DD[-./]?MM[-./]?(?:RRRR|YYYY)")
 _MASK_PART = re.compile(r"^(?:D\s?D|M\s?M|R\s?R(?:\s?R\s?R)?|Y\s?Y\s?Y\s?Y)\s*[-./]?$", re.IGNORECASE)
 # C2, conditions from the paper's notes (design 40-show-rules): family A, an instruction line right under a choice
@@ -193,7 +194,9 @@ class _Reader:
         raw = c.label.text if c.label else ""
         label, hint, optional = clean_label(raw, doc.strike)
         chain = [NUMBERING.sub("", t).strip() for t in doc.chain(c)]
-        if c.kind == "signature":
+        # BL13 DATE-D: "Ja niżej podpisany ...." asks for the name of who declares (a field in the PDF and DOCX of the
+        # same paper); only the signature itself is paper-only
+        if c.kind == "signature" and not _UNDERSIGNED.search(raw):
             return self._left(c, "SIGNATURE_AND_DATE", label or "podpis")
         if c.kind == "office_use":
             return self._left(c, "OFFICE_USE", label or "adnotacja urzędu")
