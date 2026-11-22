@@ -8,16 +8,15 @@
 # digest, never use a tag alone. Nothing here downloads anything at start: the product calls nothing out.
 # Python packages come from requirements.lock with hashes and wheels only: a missing wheel fails the build here.
 #
-# NOTE: nobody could build this file on the author's laptop (no Docker). CI (WP-F20) is the first real build.
-# Digests read from the Docker Hub registry on 21 November 2026.
+# Built and checked by CI (.github/workflows/image.yml). Digests read from the Docker Hub registry on 21 November 2026.
 
 ARG PY_ALPINE=python:3.14-alpine@sha256:5862d971d1f0ae26b258cefa4e893556b1d3aba81bd2ff30888704ad378bab67
 ARG PY_SLIM=python:3.14-slim-trixie@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f
 ARG NODE=node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a
 
 # ---- front end -----------------------------------------------------------------------------------------------
-# apps/review-web may not exist yet. The glob below matches nothing then; pyproject.toml is always there, so the
-# COPY itself never fails. When the folder appears, its files land in /src and are built; until then /out is empty.
+# apps/review-web is built here. The glob matches nothing if the folder is absent; pyproject.toml is always there, so
+# the COPY itself never fails and /out stays empty.
 FROM ${NODE} AS ui
 WORKDIR /src
 COPY apps/converter/pyproject.toml apps/review-web*/ ./

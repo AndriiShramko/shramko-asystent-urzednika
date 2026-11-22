@@ -32,7 +32,7 @@ The image is built by CI (`.github/workflows`, WP-F20) and published to `ghcr.io
 
 ```bash
 docker build -f apps/converter/Dockerfile -t converter:core .                 # core: Alpine, the default
-docker build -f apps/converter/Dockerfile --target plus -t converter:plus .   # plus: Debian slim, second OCR engine
+docker build -f apps/converter/Dockerfile --target plus -t converter:plus .   # plus: Debian slim base, same code and the same OCR (Tesseract)
 docker compose up --build                                                     # needs secrets/jwt_secret, see docker-compose.yml
 ```
 

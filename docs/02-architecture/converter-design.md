@@ -524,8 +524,8 @@ Framework behind these controls, with article numbers and status: `research/16` 
 | Base | `python:3.14-alpine`, digest pinned | `python:3.14-slim-trixie`, digest pinned |
 | Why | the card prefers light images and names Alpine; every dependency of the rule path has a wheel for it (`research/14` §3) | the second OCR engine, OpenCV and Morfeusz have no wheel for Alpine |
 | Readers | all eight formats; binary Word by the native reader | the same, plus optional LibreOffice for binary Word (`DOC_READER=libreoffice`, only after J9) |
-| OCR | Tesseract with `pol` and `eng` from the distribution's packages | plus RapidOCR on onnxruntime as the second opinion |
-| Polish wording | phrase table, `simplemma` | plus Morfeusz2 |
+| OCR | Tesseract with `pol` and `eng` from the distribution's packages | the same: no second engine is installed (`OCR_SECOND_ENGINE` is read in `config.py` and by nothing else) |
+| Polish wording | own phrase table (`app/lexicon`) | the same: Morfeusz2 is not installed |
 | Model | none | none shipped; the interface only |
 | Front end | built in a Node stage, copied as static files | the same |
 
