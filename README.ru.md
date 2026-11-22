@@ -2,10 +2,10 @@
 
 Состояние на субботу 21.11, около 13:40. Строим одно: **конвертер бланка в JSON под задание COI «Cyfryzacja formularzy»**. На входе один пустой бланк (PDF, DOC, DOCX, ODS, XLSX, JPG, PNG), на выходе JSON в формате их генератора форм, как сервис в Docker. Идея одной фразой: **компилятор с бухгалтером, а не сканер с ИИ**. Правила и библиотека стандартных секций COI собирают форму, а сервис отчитывается за каждое поле: откуда оно взялось, что стало с каждым пустым местом на бумаге, что пропущено и почему, что он отказался угадывать. Модель внутри продукта не работает: это запрещено условиями задания.
 
-Образ: `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b`. Три команды для жюри (bash и PowerShell, каждая в одну строку, проверены): в разделе «For the jury» файла [`README.md`](README.md) и «Dla jury» файла [`README.pl.md`](README.pl.md). Например, конвертация без сети в PowerShell:
+Образ: `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621`. Три команды для жюри (bash и PowerShell, каждая в одну строку, проверены): в разделе «For the jury» файла [`README.md`](README.md) и «Dla jury» файла [`README.pl.md`](README.pl.md). Например, конвертация без сети в PowerShell:
 
 ```powershell
-mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert /in/form.pdf --out /out/form.json
 ```
 
 - Читает: PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (картинки и сканы через локальный OCR).

@@ -1,6 +1,6 @@
 # Forms converter: from a blank official form to e-service JSON
 
-A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG, exactly the formats of the task card; `STRICT_EXTENSIONS=false` also accepts ODT, XLS, RTF, TXT and more image formats); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. A shared deployment guards access with a JWT token; started alone on one computer the service is open and says so in its log. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to every blank of the paper, what was left out and what it refused to guess.
+A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrodek Informatyki, HackNation 2026). One blank official form goes in (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG, exactly the formats of the task card; `STRICT_EXTENSIONS=false` also accepts ODT, XLS, RTF, TXT and more image formats); the JSON configuration of an electronic form in the partner's structure ("Generator Formularzy e-Usług") comes out. A shared deployment guards access with a JWT token; started alone on one computer the service is open and says so in its log. Next to the form the service writes a sidecar of evidence: where every field came from, what happened to each blank it found on the paper, what was left out and what it refused to guess.
 
 The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. As started by the commands below, no language model runs in the product and it makes no network call at run time. One optional step for weak scan pages can be pointed by the operator at their own server with an open-weight model; it is off unless configured ([`apps/converter/README.md`](apps/converter/README.md), "Optional step").
 
@@ -10,7 +10,7 @@ How it works inside: local OCR, layout analysis and rules. The commands below ru
 
 The image (the same reference in every command below):
 
-`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b`
+`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621`
 
 Put the blank form into a folder `forms` next to where you stand, as `forms/form.pdf`. Each command is one line: paste it whole. The image is built for `linux/amd64`; `--platform linux/amd64` lets an ARM Mac run it under emulation. Run conversions one after another: the service works on two uploads at a time and answers `429 BUSY` to more.
 
@@ -19,31 +19,31 @@ Put the blank form into a folder `forms` next to where you stand, as `forms/form
 bash (Linux, macOS, Git Bash; `MSYS_NO_PATHCONV=1` stops Git Bash from rewriting `/in/...` into a Windows path and does nothing elsewhere):
 
 ```bash
-MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf > form.json
+MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert /in/form.pdf > form.json
 ```
 
 Windows PowerShell 5.1: its own `>` would write UTF-16 with a byte-order mark, so the redirect is left to `cmd`, which keeps the bytes as they are (UTF-8 without a BOM):
 
 ```powershell
-cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf > form.json'
+cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert /in/form.pdf > form.json'
 ```
 
 **2. Offline, the form written into a mounted folder with `--out`.** On Linux the container runs as your own user so that it may write into `out`:
 
 ```bash
-mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert /in/form.pdf --out /out/form.json
 ```
 
 macOS and Git Bash (Docker Desktop maps the owner of the folder itself, so no `--user`):
 
 ```bash
-mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert /in/form.pdf --out /out/form.json
 ```
 
 Windows PowerShell 5.1 (the simplest choice there; the file is UTF-8 without a BOM):
 
 ```powershell
-mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert /in/form.pdf --out /out/form.json
+mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert /in/form.pdf --out /out/form.json
 ```
 
 If `out` cannot be written, `convert` says so in one line and exits with code 4.
@@ -51,17 +51,17 @@ If `out` cannot be written, `convert` says so in one line and exits with code 4.
 **A whole folder of new forms**, one after another, every result into `out/<name>.json`:
 
 ```bash
-mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert "/in/$n" > "out/${n%.*}.json"; done
+mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert "/in/$n" > "out/${n%.*}.json"; done
 ```
 
 ```powershell
-mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
+mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621 convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
 ```
 
 **3. REST and the review page, published on this computer only (loopback).** Start the service in one window (stop it with Ctrl+C):
 
 ```bash
-docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:061fce4b1c7d4dc9ef8f3e6cc30890f5362f6190e377f44fc79e9b3e88d4982b
+docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621
 ```
 
 The same line works in PowerShell. Then, in a second window, from the folder that holds `form.pdf`:
@@ -116,9 +116,9 @@ Full tables: [`apps/converter/README.md`](apps/converter/README.md), sections "C
 
 ## Koszt i wymagania / Cost and requirements
 
-**Wymagania (PL).** Procesor, bez GPU. W czasie pracy usługa nie korzysta z sieci (polecenie 1 powyżej działa z `--network none`). Obraz: 428 238 281 bajtów po rozpakowaniu (`docker image inspect`, build `sha256:e8765c4f…`, linux/amd64; rozmiaru skompresowanego nie mierzono). Ustawienia domyślne: 2 równoległe zadania, 600 s na zadanie, 20 MiB i 60 stron na plik (`apps/converter/app/config.py`). Wywołań zewnętrznych nie ma, więc nie ma opłat za wywołanie; zużycia CPU w sekundach na formularz nie mierzono (poniżej tylko czas zegarowy).
+**Wymagania (PL).** Procesor, bez GPU. W czasie pracy usługa nie korzysta z sieci (polecenie 1 powyżej działa z `--network none`). Obraz: 361 551 088 bajtów po rozpakowaniu (`docker image inspect`, build `sha256:8511a7f6…`, linux/amd64; rozmiaru skompresowanego nie mierzono). Ustawienia domyślne: 2 równoległe zadania, 600 s na zadanie, 20 MiB i 60 stron na plik (`apps/converter/app/config.py`). Wywołań zewnętrznych nie ma, więc nie ma opłat za wywołanie; zużycia CPU w sekundach na formularz nie mierzono (poniżej tylko czas zegarowy).
 
-**Requirements (EN).** CPU only, no GPU. No network at run time (command 1 above runs with `--network none`). Image: 428,238,281 bytes uncompressed (`docker image inspect`, build `sha256:e8765c4f…`, linux/amd64; the compressed size was not measured). Defaults: 2 parallel jobs, 600 s per job, 20 MiB and 60 pages per file (`apps/converter/app/config.py`). No external service is called, so there is no per-call fee; CPU-seconds per form were not measured (below is wall-clock time only).
+**Requirements (EN).** CPU only, no GPU. No network at run time (command 1 above runs with `--network none`). Image: 361,551,088 bytes uncompressed (`docker image inspect`, build `sha256:8511a7f6…`, linux/amd64; the compressed size was not measured). Defaults: 2 parallel jobs, 600 s per job, 20 MiB and 60 pages per file (`apps/converter/app/config.py`). No external service is called, so there is no per-call fee; CPU-seconds per form were not measured (below is wall-clock time only).
 
 Czas jednej konwersji przez REST, 108 plików (54 z zestawów jurorskich i 54 z archiwum), obraz `061fce4b…`, kontener `--cpus 2 --memory 4g`, pliki jeden po drugim, 22.11.2026. Komputer był współdzielony z innym zadaniem obciążającym procesor w 100 %, więc sekundy są zawyżone; liczą się rzędy wielkości. / Seconds for one conversion over REST, 108 files (54 from the judged sets, 54 from the city archive), image `061fce4b…`, container `--cpus 2 --memory 4g`, files one after another, 22 Nov 2026. The laptop was shared with another job using a CPU at 100 %, so the seconds are inflated; read the order of magnitude.
 
@@ -198,10 +198,12 @@ Open the folder in Claude Code and say: `Read START_HERE.md and act as the lead 
 
 ## Honest limits
 
-- Research is dated and labelled (verified, secondary, unverified) in each file; laws and products change. It is not legal advice.
-- The full task card of the challenge is published only at the start of the event; the plan has a gate for re-checking the scope against it.
-- Integrations with state systems (mObywatel, registers, document management) are proposals. This project is independent and is not affiliated with any institution named here.
-- No real personal data is used anywhere; tests and demos use synthetic persons and requests.
+- **Weakest inputs: photos and old binary DOC.** An independent check (a judge that listed the places to fill from the page image without seeing our output; 21 November evening, before the night's fixes) found about half of the places on old DOC and photos (DOC 50 %, photos 55 %) against 81 % on PDF of the task sets. The night's work added text boxes of old DOC (set 08 DOC: 8 to 34 fields from the paper).
+- **A new form can lose lines.** On a synthetic blank made for a strict review (22 November), some labelled underlined lines (PESEL, date of birth) and two attachments were not picked up, and the report did not warn about them. The output is a draft for the clerk to confirm, not a finished e-service.
+- Lists of attachments without lines, and conditions of the kind "fill in if ...", are kept in about half of the cases.
+- No phone number validator: the partner's own list of validators has none.
+- The optional model step for weak scan pages is off by default and no key is in the image; we make no claim that it improves the result (on our lab set it found more fields and also more extra ones).
+- No real personal data is used anywhere; tests and demos use fictitious persons. Research files are dated and labelled; it is not legal advice.
 
 ## Disclosure for HackNation
 

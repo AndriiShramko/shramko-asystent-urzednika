@@ -6,8 +6,8 @@
     "reader": "pdf.native"
   },
   "counts": {
-    "pages": 8,
-    "fields": 92,
+    "pages": 9,
+    "fields": 97,
     "source_pages": 6
   },
   "warnings": [
@@ -20,7 +20,7 @@
         403.56,
         96.0
       ],
-      "candidate": "c60",
+      "candidate": "c62",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -33,7 +33,7 @@
         403.56,
         159.96
       ],
-      "candidate": "c62",
+      "candidate": "c64",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -46,7 +46,7 @@
         403.56,
         223.68
       ],
-      "candidate": "c64",
+      "candidate": "c66",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -59,7 +59,7 @@
         403.56,
         287.28
       ],
-      "candidate": "c66",
+      "candidate": "c68",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -72,7 +72,7 @@
         403.56,
         347.16
       ],
-      "candidate": "c68",
+      "candidate": "c70",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -85,7 +85,7 @@
         403.56,
         514.32
       ],
-      "candidate": "c71",
+      "candidate": "c73",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -98,7 +98,7 @@
         403.56,
         577.56
       ],
-      "candidate": "c73",
+      "candidate": "c75",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -111,7 +111,7 @@
         403.56,
         641.04
       ],
-      "candidate": "c76",
+      "candidate": "c78",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -124,7 +124,7 @@
         403.56,
         704.88
       ],
-      "candidate": "c77",
+      "candidate": "c79",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -137,7 +137,7 @@
         449.4,
         372.72
       ],
-      "candidate": "c88",
+      "candidate": "c90",
       "evidence": [],
       "detail": "a box without words beside it"
     },
@@ -215,7 +215,7 @@
         188.28,
         234.36
       ],
-      "candidate": "c35",
+      "candidate": "c37",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -228,7 +228,7 @@
         270.48,
         234.36
       ],
-      "candidate": "c36",
+      "candidate": "c38",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -241,7 +241,7 @@
         270.48,
         327.6
       ],
-      "candidate": "c39",
+      "candidate": "c41",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -254,7 +254,7 @@
         530.52,
         327.6
       ],
-      "candidate": "c45",
+      "candidate": "c47",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -267,7 +267,7 @@
         403.56,
         74.76
       ],
-      "candidate": "c80",
+      "candidate": "c82",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -280,7 +280,7 @@
         498.6,
         372.72
       ],
-      "candidate": "c85",
+      "candidate": "c87",
       "evidence": [],
       "detail": "two texts are equally near; the label is the first of them"
     },
@@ -293,7 +293,20 @@
         79.44,
         493.32
       ],
-      "candidate": "c97",
+      "candidate": "c99",
+      "evidence": [],
+      "detail": "no text that this place belongs to"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 4,
+      "box": [
+        42.24,
+        513.6,
+        79.44,
+        525.12
+      ],
+      "candidate": "c102",
       "evidence": [],
       "detail": "no text that this place belongs to"
     },
@@ -335,42 +348,35 @@
     {
       "code": "AMBIGUOUS_GROUP",
       "page": 2,
-      "candidate": "c33",
-      "evidence": [],
-      "detail": "the paper does not say whether one or several options may be marked; several are allowed"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
       "candidate": "c35",
       "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
+      "detail": "the paper does not say whether one or several options may be marked; one is asked"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 2,
-      "candidate": "c36",
+      "candidate": "c37",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 2,
-      "candidate": "c39",
+      "candidate": "c38",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 2,
-      "candidate": "c45",
+      "candidate": "c41",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "LABEL_NOT_FOUND",
-      "page": 3,
-      "candidate": "c60",
+      "page": 2,
+      "candidate": "c47",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -405,7 +411,7 @@
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c71",
+      "candidate": "c70",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
@@ -419,50 +425,826 @@
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c76",
+      "candidate": "c75",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 3,
-      "candidate": "c77",
+      "candidate": "c78",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "LABEL_NOT_FOUND",
+      "page": 3,
+      "candidate": "c79",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 4,
-      "candidate": "c80",
+      "candidate": "c82",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
       "code": "AMBIGUOUS_GROUP",
       "page": 4,
-      "candidate": "c83",
+      "candidate": "c85",
       "evidence": [],
       "detail": "a single box outside any group: 'Wyrażam zgodę na otrzymywanie korespondencji za pośrednictwem adresu poczty elek'; an option or a yes-or-no question"
     },
     {
       "code": "LABEL_NOT_FOUND",
       "page": 4,
-      "candidate": "c97",
+      "candidate": "c99",
       "evidence": [],
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
+      "code": "LABEL_NOT_FOUND",
+      "page": 4,
+      "candidate": "c102",
+      "evidence": [],
+      "detail": "a place to fill without a label: the official decides what it asks"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "page": 1,
+      "evidence": [],
+      "detail": "CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note 'B.2 DANE IDENTYFIKACYJNE WSPÓŁMAŁŻONKA (wypełnić tylko w przypadku zaznaczenia kratki w poz. B 1.1.2'"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "page": 2,
+      "evidence": [],
+      "detail": "CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note 'B.4 ADRES DO KORESPONDENCJI (wypełnić tylko w przypadku kiedy jest inny niż w poz. B.3)'"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "page": 4,
+      "evidence": [],
+      "detail": "CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note '78. Podpis współmałżonka (wypełnić tylko w przypadku zaznaczenia poz. B 1.1.2)'"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "page": 5,
+      "evidence": [],
+      "detail": "CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note '12. Objaśnienie dotyczące punktu E.3.68: Wypełnić tylko w przypadku złożenia załącznika A lub B do d'"
+    },
+    {
       "code": "REQUIRED_INFERRED",
-      "detail": "36 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: dane_identyfikacyjne, w_zarzadzie_lub_uzytkowaniu, rodzaj_nieruchomosci, mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja, numer_nieruchomosci_domu, wojewodztwo"
+      "detail": "41 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: skladajacy_deklaracje, w_zarzadzie_lub_uzytkowaniu, rodzaj_nieruchomosci, mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja, nazwisko_imie, adres_zamieszkania",
+      "fix": {
+        "kind": "choice",
+        "rule": "required.paper_is_silent",
+        "text": "Druk nie mówi, które pola są obowiązkowe (dotyczy 41). Wybierz gotową odpowiedź.",
+        "options": [
+          {
+            "label": "Zostaw nieobowiązkowe (druk tego nie oznacza)",
+            "value": "optional",
+            "current": true,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "PESEL"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/7/field/validation",
+                "value": [
+                  "ZIP_CODE"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "ZIP_CODE"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "EMAIL"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "required-only-when-the-paper-says"
+            }
+          },
+          {
+            "label": "Obowiązkowe (37), bez: Numer lokalu, Numer lokalu, Nr tel./fax, Adres e-mail",
+            "value": "required_but_usually_optional",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "PESEL"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/7/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "ZIP_CODE"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "ZIP_CODE"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "EMAIL"
+                ]
+              }
+            ],
+            "source": {
+              "type": "dictionary",
+              "name": "usually-optional"
+            }
+          },
+          {
+            "label": "Wszystkie obowiązkowe (41)",
+            "value": "required",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "PESEL"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/7/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "ZIP_CODE"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "ZIP_CODE"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/2/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "EMAIL"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "unmarked-blank-is-required"
+            }
+          }
+        ]
+      }
     },
     {
       "code": "CLAUSE_LINK_MISSING",
-      "detail": "no https address of the information clause is known; the consent names the clause without a link"
+      "detail": "the clause printed on the paper is attached to the consent section as its description",
+      "fix": {
+        "kind": "applied",
+        "rule": "clause.text_from_paper",
+        "text": "Treść klauzuli informacyjnej przeniesiono z druku do sekcji zgody.",
+        "target": {
+          "id": "b8244eb0-6be1-5795-96ed-0bed0ec0961c",
+          "pointer": "/tabs/7/questions/1/field",
+          "label": "Zgoda",
+          "tab": "Kontakt i zgody"
+        },
+        "value": "Informacja o przetwarzaniu danych osobowych Stosownie do art. 13 i 14 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w ",
+        "source": {
+          "type": "paper",
+          "page": 5,
+          "box": [
+            77.88,
+            474.18,
+            559.94,
+            821.0
+          ],
+          "quote": "Informacja o przetwarzaniu danych osobowych Stosownie do art. 13 i 14 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związk"
+        }
+      }
     },
     {
       "code": "INFERRED_SHAPE",
-      "detail": "CHECKBOX: no export shows one",
-      "field": "3ac55d05-7c46-5efb-93c8-70daf15a00ec"
+      "detail": "DATEPICKER: no export shows one",
+      "field": "2762978c-e3da-5b8d-a94e-114d28a5e641"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
+      "field": "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c"
     },
     {
       "code": "INFERRED_SHAPE",
@@ -601,17 +1383,23 @@
       "2ce7d75e-1651-5faf-b623-fc9a36086d89": "standard",
       "f81dc204-6809-5409-9379-b423fa45eb57": "standard",
       "bcf23a1d-c446-523f-92f5-0e997fbf900d": "paper",
-      "3ab826d8-5260-584f-98cb-75ab6e836c53": "paper",
+      "34401dc5-35e5-5efa-9781-b23d0c78eac6": "paper",
       "3c9aea42-e694-5a0f-a83b-322ab5f3f381": "paper",
       "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5": "paper",
       "c34aafe2-7373-5042-b6a9-1a1cc2432341": "paper",
-      "7899dbbd-f118-5d46-ad00-f0c1622608b9": "paper",
-      "dd28bcc6-eab2-565b-8dde-45b4f5be3cb3": "paper",
-      "aa61350f-c70e-55a8-80ac-9003b5bcd4da": "paper",
-      "52041a41-3c27-5804-a0f8-ea7a527f0a46": "paper",
-      "953674e3-9dcb-5848-89ac-16fab38f151e": "paper",
-      "deae63b7-33b6-5915-a8b5-8b69eb0025c2": "paper",
-      "2496de8c-5b5b-5e0d-ba06-466e9fae31a3": "paper",
+      "26f96a48-38c8-5098-b659-3cb6bc1253aa": "paper",
+      "dca0eabb-f126-51f4-a374-ba312827a239": "paper",
+      "dbcfef38-0e55-5918-9b82-6cf272fcd775": "paper",
+      "8a177ec8-4d87-5bc1-8846-1f0bd8035e39": "paper",
+      "6d643c54-bf52-51a8-8f27-8dc3cb025a45": "paper",
+      "e07e3269-5947-557a-9faf-6598bdee1189": "paper",
+      "bc21f4de-de67-5ef0-a3de-2e494ca6fa58": "paper",
+      "6b86f180-cb52-53dd-b03e-1fc86f81e519": "paper",
+      "b0cf0724-de38-5042-b609-45d50e58dcba": "paper",
+      "b452ad4f-2b44-5a41-9f69-7ed8259e218e": "paper",
+      "a9c20df3-61a9-5db0-9ee8-2bb24e0af8d4": "paper",
+      "a0cff104-f78e-5bd0-bad2-3fd3d15278c5": "paper",
+      "b904b7f4-b6d0-5e11-9d26-41a11f8af97b": "paper",
       "348e0742-2d56-52f3-b79e-0282ff6ab5ae": "paper",
       "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "paper",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "paper",
@@ -629,21 +1417,21 @@
       "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9": "paper",
       "5ebe23cb-a76b-5a03-ad42-f70481121c19": "paper",
       "13a1d715-90ae-5bad-80b1-513800a49512": "paper",
-      "a4afc1ef-f75b-5dee-93f8-aeb7a93a6c44": "paper",
-      "de1e7d6f-f5c4-5083-9a9a-fb6cb840415a": "paper",
-      "9a5001ba-cd85-50ab-b6d8-cfde2cd1b00d": "paper",
-      "15a50fe5-fcb4-5b12-99b6-fcdba588c9c2": "paper",
-      "ac38209c-0323-5f2e-979d-2190c5833056": "paper",
-      "227c33c9-02b0-5d9e-8b51-83c9f2c9ebd9": "paper",
+      "02f267ad-5daf-529e-80a1-6e115345a279": "paper",
+      "a16faa2f-4bac-575c-bf89-a220b57f9357": "paper",
+      "188d1592-0001-5c86-a055-6d2839021365": "paper",
+      "3f32ada0-2df5-5318-ba60-e2e8023f1d23": "paper",
+      "78cab080-5cf4-51d0-9bf6-b0e42dc2134e": "paper",
+      "eec19553-698d-57f1-819d-2032984c64b2": "paper",
       "8acb409d-1e79-5253-9ac9-d3cb89f13ced": "paper",
       "38d8b926-451a-56e9-86b6-1d3aa48b6fb6": "paper",
       "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17": "paper",
       "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd": "paper",
       "29588eb6-b6e2-5896-9315-170123fef399": "paper",
       "cf055b4d-327b-508c-bed1-5b1cc352d05b": "paper",
-      "8bb8f452-936f-54f4-9918-b879105f2377": "paper",
-      "2335f793-aae3-5cff-b4a7-e123ec94c03f": "paper",
-      "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf": "paper",
+      "d2745b98-38ad-5faa-af9c-8cabf46454d9": "paper",
+      "7161a16b-6e12-5f72-828c-d7c6adc675f5": "paper",
+      "9f33cab0-d460-54d5-a58d-552bc917614d": "paper",
       "720074e1-e766-51a7-bc68-ad4286aa7484": "paper",
       "c78c28da-3c2e-516f-ac11-17bfb907f225": "paper",
       "14989f43-1a7f-5ab7-a2e4-14e1da32ac26": "paper",
@@ -664,16 +1452,21 @@
       "6cfccdc8-a4bc-592a-b426-71040d1e384f": "standard"
     },
     "brief_keys": {
-      "3ab826d8-5260-584f-98cb-75ab6e836c53": "dane_identyfikacyjne",
+      "34401dc5-35e5-5efa-9781-b23d0c78eac6": "skladajacy_deklaracje",
       "3c9aea42-e694-5a0f-a83b-322ab5f3f381": "w_zarzadzie_lub_uzytkowaniu",
       "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5": "rodzaj_nieruchomosci",
       "c34aafe2-7373-5042-b6a9-1a1cc2432341": "mieszkancy_a_w_czesci_nieruchomosc_na_ktorej_nie_zamieszkuja",
-      "dd28bcc6-eab2-565b-8dde-45b4f5be3cb3": "numer_nieruchomosci_domu",
-      "aa61350f-c70e-55a8-80ac-9003b5bcd4da": "wojewodztwo",
-      "52041a41-3c27-5804-a0f8-ea7a527f0a46": "ulica",
-      "953674e3-9dcb-5848-89ac-16fab38f151e": "numer_lokalu",
-      "deae63b7-33b6-5915-a8b5-8b69eb0025c2": "gmina",
-      "2496de8c-5b5b-5e0d-ba06-466e9fae31a3": "kod_pocztowy",
+      "dca0eabb-f126-51f4-a374-ba312827a239": "nazwisko_imie",
+      "dbcfef38-0e55-5918-9b82-6cf272fcd775": "adres_zamieszkania",
+      "8a177ec8-4d87-5bc1-8846-1f0bd8035e39": "pesel",
+      "e07e3269-5947-557a-9faf-6598bdee1189": "kraj",
+      "bc21f4de-de67-5ef0-a3de-2e494ca6fa58": "miejscowosc",
+      "6b86f180-cb52-53dd-b03e-1fc86f81e519": "numer_nieruchomosci_domu",
+      "b0cf0724-de38-5042-b609-45d50e58dcba": "wojewodztwo",
+      "b452ad4f-2b44-5a41-9f69-7ed8259e218e": "ulica",
+      "a9c20df3-61a9-5db0-9ee8-2bb24e0af8d4": "numer_lokalu",
+      "a0cff104-f78e-5bd0-bad2-3fd3d15278c5": "gmina",
+      "b904b7f4-b6d0-5e11-9d26-41a11f8af97b": "kod_pocztowy",
       "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "okolicznosci",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "powodujacego_ustanie_obowiazku_oplaty",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "komunalnymi_data_wystapienia_zmiany_danych",
@@ -686,18 +1479,18 @@
       "6640b303-c895-552b-a568-f1c4d8696107": "adres_lub_opis_miejsca_lokalizacji_pojemnikow",
       "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9": "oswiadczam_ze_nieruchomosc_wyposazona_jest_w_przydomowy",
       "13a1d715-90ae-5bad-80b1-513800a49512": "oswiadczenie_o_wysokosci_oplaty_za_gospodarowanie_odpadami",
-      "de1e7d6f-f5c4-5083-9a9a-fb6cb840415a": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_o",
-      "9a5001ba-cd85-50ab-b6d8-cfde2cd1b00d": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_2",
-      "15a50fe5-fcb4-5b12-99b6-fcdba588c9c2": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_3",
-      "ac38209c-0323-5f2e-979d-2190c5833056": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_4",
-      "227c33c9-02b0-5d9e-8b51-83c9f2c9ebd9": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowym",
+      "a16faa2f-4bac-575c-bf89-a220b57f9357": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_o",
+      "188d1592-0001-5c86-a055-6d2839021365": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_2",
+      "3f32ada0-2df5-5318-ba60-e2e8023f1d23": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_3",
+      "78cab080-5cf4-51d0-9bf6-b0e42dc2134e": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_4",
+      "eec19553-698d-57f1-819d-2032984c64b2": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowym",
       "38d8b926-451a-56e9-86b6-1d3aa48b6fb6": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_5",
       "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_6",
       "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_7",
       "29588eb6-b6e2-5896-9315-170123fef399": "liczba_gospodarstw_domowych_zajmujacych_lokale_mieszkalne_8",
       "cf055b4d-327b-508c-bed1-5b1cc352d05b": "liczba_gospodarstw_domowych_objetych_zwolnieniem_dochodowy_2",
-      "2335f793-aae3-5cff-b4a7-e123ec94c03f": "nr_tel_fax",
-      "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf": "adres_e_mail",
+      "7161a16b-6e12-5f72-828c-d7c6adc675f5": "nr_tel_fax",
+      "9f33cab0-d460-54d5-a58d-552bc917614d": "adres_e_mail",
       "c78c28da-3c2e-516f-ac11-17bfb907f225": "imie",
       "14989f43-1a7f-5ab7-a2e4-14e1da32ac26": "nazwisko",
       "41773efb-68f3-5f90-abab-49cf916dc175": "data_wypelnienia",
@@ -705,18 +1498,749 @@
       "e3d7b9ba-ca8f-53f7-85f9-64a9c15a1cf1": "zalacznik_b",
       "1e78af4c-0cbe-5e33-accf-dba4ae608005": "inne_zalaczniki"
     },
+    "evidence": {
+      "34401dc5-35e5-5efa-9781-b23d0c78eac6": [
+        {
+          "page": 1,
+          "box": [
+            53.04,
+            323.52,
+            399.36,
+            347.28
+          ],
+          "runs": [
+            "r19"
+          ],
+          "quote": "1. Składający deklarację (zaznaczyć właściwą kratkę)",
+          "candidate": "c1"
+        }
+      ],
+      "3c9aea42-e694-5a0f-a83b-322ab5f3f381": [
+        {
+          "page": 1,
+          "box": [
+            354.01,
+            354.68,
+            548.89,
+            363.68
+          ],
+          "runs": [
+            "r22"
+          ],
+          "quote": "w zarządzie lub użytkowaniu (należy podać jaki oraz dokładne dane)",
+          "candidate": "c8"
+        }
+      ],
+      "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5": [
+        {
+          "page": 2,
+          "box": [
+            51.72,
+            540.84,
+            59.88,
+            564.6
+          ],
+          "runs": [
+            "r87"
+          ],
+          "quote": "33. Rodzaj nieruchomości",
+          "candidate": "c53"
+        }
+      ],
+      "c34aafe2-7373-5042-b6a9-1a1cc2432341": [
+        {
+          "page": 2,
+          "box": [
+            86.76,
+            594.72,
+            307.32,
+            602.88
+          ],
+          "runs": [
+            "r91"
+          ],
+          "quote": "mieszkańcy, a w części nieruchomość na której nie zamieszkują mieszkańcy, a powstają na niej odpady komunalne",
+          "candidate": "c56"
+        }
+      ],
+      "dca0eabb-f126-51f4-a374-ba312827a239": [
+        {
+          "page": 1,
+          "box": [
+            55.68,
+            545.52,
+            534.24,
+            564.84
+          ],
+          "runs": [
+            "r28",
+            "r29",
+            "r30"
+          ],
+          "quote": "5. Nazwisko, imię",
+          "candidate": "c15"
+        }
+      ],
+      "dbcfef38-0e55-5918-9b82-6cf272fcd775": [
+        {
+          "page": 1,
+          "box": [
+            55.68,
+            604.08,
+            534.24,
+            623.4
+          ],
+          "runs": [
+            "r31",
+            "r32",
+            "r33"
+          ],
+          "quote": "6. Adres zamieszkania",
+          "candidate": "c17"
+        }
+      ],
+      "8a177ec8-4d87-5bc1-8846-1f0bd8035e39": [
+        {
+          "page": 1,
+          "box": [
+            55.68,
+            659.28,
+            210.24,
+            676.8
+          ],
+          "runs": [
+            "r34"
+          ],
+          "quote": "7. PESEL",
+          "candidate": "c19"
+        }
+      ],
+      "e07e3269-5947-557a-9faf-6598bdee1189": [
+        {
+          "page": 2,
+          "box": [
+            46.68,
+            87.24,
+            270.24,
+            108.96
+          ],
+          "runs": [
+            "r48"
+          ],
+          "quote": "17. Kraj",
+          "candidate": "c27"
+        }
+      ],
+      "bc21f4de-de67-5ef0-a3de-2e494ca6fa58": [
+        {
+          "page": 2,
+          "box": [
+            46.68,
+            109.44,
+            270.24,
+            132.12
+          ],
+          "runs": [
+            "r51"
+          ],
+          "quote": "20. Miejscowość",
+          "candidate": "c28"
+        }
+      ],
+      "6b86f180-cb52-53dd-b03e-1fc86f81e519": [
+        {
+          "page": 2,
+          "box": [
+            46.68,
+            132.6,
+            270.24,
+            154.08
+          ],
+          "runs": [
+            "r53"
+          ],
+          "quote": "22. Numer nieruchomości/domu",
+          "candidate": "c29"
+        }
+      ],
+      "b0cf0724-de38-5042-b609-45d50e58dcba": [
+        {
+          "page": 2,
+          "box": [
+            270.24,
+            87.24,
+            418.08,
+            108.96
+          ],
+          "runs": [
+            "r49"
+          ],
+          "quote": "18. Województwo",
+          "candidate": "c30"
+        }
+      ],
+      "b452ad4f-2b44-5a41-9f69-7ed8259e218e": [
+        {
+          "page": 2,
+          "box": [
+            270.24,
+            109.44,
+            567.0,
+            132.12
+          ],
+          "runs": [
+            "r52"
+          ],
+          "quote": "21. Ulica",
+          "candidate": "c31"
+        }
+      ],
+      "a9c20df3-61a9-5db0-9ee8-2bb24e0af8d4": [
+        {
+          "page": 2,
+          "box": [
+            270.24,
+            132.6,
+            418.08,
+            154.08
+          ],
+          "runs": [
+            "r54"
+          ],
+          "quote": "23. Numer lokalu",
+          "candidate": "c32"
+        }
+      ],
+      "a0cff104-f78e-5bd0-bad2-3fd3d15278c5": [
+        {
+          "page": 2,
+          "box": [
+            418.08,
+            87.24,
+            567.0,
+            108.96
+          ],
+          "runs": [
+            "r50"
+          ],
+          "quote": "19. Gmina",
+          "candidate": "c33"
+        }
+      ],
+      "b904b7f4-b6d0-5e11-9d26-41a11f8af97b": [
+        {
+          "page": 2,
+          "box": [
+            418.08,
+            132.6,
+            567.0,
+            154.08
+          ],
+          "runs": [
+            "r55"
+          ],
+          "quote": "24. Kod pocztowy",
+          "candidate": "c34"
+        }
+      ],
+      "3ac55d05-7c46-5efb-93c8-70daf15a00ec": [
+        {
+          "page": 2,
+          "box": [
+            54.12,
+            183.36,
+            342.36,
+            285.96
+          ],
+          "runs": [
+            "r57"
+          ],
+          "quote": "25. Okoliczności",
+          "candidate": "c35"
+        }
+      ],
+      "2762978c-e3da-5b8d-a94e-114d28a5e641": [
+        {
+          "page": 2,
+          "box": [
+            105.96,
+            306.84,
+            188.28,
+            327.6
+          ],
+          "runs": [
+            "r62"
+          ],
+          "quote": "powodującego ustanie obowiązku opłaty",
+          "candidate": "c40"
+        }
+      ],
+      "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": [
+        {
+          "page": 2,
+          "box": [
+            366.0,
+            233.28,
+            448.32,
+            254.04
+          ],
+          "runs": [
+            "r67"
+          ],
+          "quote": "komunalnymi - data wystąpienia zmiany danych",
+          "candidate": "c43"
+        }
+      ],
+      "a9f90d2e-29c2-5660-bd0f-15875b8d8151": [
+        {
+          "page": 2,
+          "box": [
+            357.6,
+            193.64,
+            549.22,
+            213.08
+          ],
+          "runs": [
+            "r65",
+            "r66"
+          ],
+          "quote": "danych będących podstawą ustalenia wysokości należnej opłaty za gospodarowanie odpadami",
+          "candidate": "c44"
+        }
+      ],
+      "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": [
+        {
+          "page": 2,
+          "box": [
+            366.0,
+            306.84,
+            448.32,
+            327.6
+          ],
+          "runs": [
+            "r70"
+          ],
+          "quote": "wystąpienia zmiany danych",
+          "candidate": "c46"
+        }
+      ],
+      "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": [
+        {
+          "page": 2,
+          "box": [
+            46.68,
+            398.64,
+            329.64,
+            425.4
+          ],
+          "runs": [
+            "r78"
+          ],
+          "quote": "29. Numer nieruchomości/domu",
+          "candidate": "c48"
+        }
+      ],
+      "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f": [
+        {
+          "page": 2,
+          "box": [
+            239.16,
+            371.88,
+            375.12,
+            398.16
+          ],
+          "runs": [
+            "r76"
+          ],
+          "quote": "27. Kod pocztowy",
+          "candidate": "c49"
+        }
+      ],
+      "b0a3f978-5325-5554-a934-f86c4829d9d6": [
+        {
+          "page": 2,
+          "box": [
+            375.12,
+            371.88,
+            567.0,
+            398.16
+          ],
+          "runs": [
+            "r77"
+          ],
+          "quote": "28. Ulica",
+          "candidate": "c50"
+        }
+      ],
+      "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5": [
+        {
+          "page": 2,
+          "box": [
+            329.64,
+            398.64,
+            567.0,
+            425.4
+          ],
+          "runs": [
+            "r79"
+          ],
+          "quote": "30. Numer lokalu",
+          "candidate": "c51"
+        }
+      ],
+      "6640b303-c895-552b-a568-f1c4d8696107": [
+        {
+          "page": 2,
+          "box": [
+            46.68,
+            461.16,
+            406.92,
+            516.24
+          ],
+          "runs": [
+            "r83"
+          ],
+          "quote": "31. Adres lub opis miejsca lokalizacji pojemników",
+          "candidate": "c52"
+        }
+      ],
+      "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9": [
+        {
+          "page": 2,
+          "box": [
+            90.12,
+            660.56,
+            563.44,
+            680.0
+          ],
+          "runs": [
+            "r99",
+            "r100"
+          ],
+          "quote": "Oświadczam, że nieruchomość wyposażona jest w przydomowy kompostownik, w którym kompostowane są wytworzone na jej terenie bioodpady stanowiące odpady komunalne",
+          "candidate": "c59"
+        }
+      ],
+      "13a1d715-90ae-5bad-80b1-513800a49512": [
+        {
+          "page": 2,
+          "box": [
+            479.16,
+            699.96,
+            563.52,
+            710.4
+          ],
+          "quote": "E. OŚWIADCZENIE O WYSOKOŚCI OPŁATY ZA GOSPODAROWANIE ODPADAMI KOMUNALNYMI",
+          "candidate": "c60"
+        }
+      ],
+      "a16faa2f-4bac-575c-bf89-a220b57f9357": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            65.72,
+            247.76,
+            95.6
+          ],
+          "runs": [
+            "r106",
+            "r107",
+            "r108"
+          ],
+          "quote": "36. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej nie przekraczającej 45 m²",
+          "candidate": "c63"
+        }
+      ],
+      "188d1592-0001-5c86-a055-6d2839021365": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            129.56,
+            247.76,
+            159.44
+          ],
+          "runs": [
+            "r118",
+            "r119",
+            "r120"
+          ],
+          "quote": "39. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej przekraczającej 45 m² jednak nie większej",
+          "candidate": "c65"
+        }
+      ],
+      "3f32ada0-2df5-5318-ba60-e2e8023f1d23": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            193.52,
+            247.76,
+            223.4
+          ],
+          "runs": [
+            "r131",
+            "r132",
+            "r133"
+          ],
+          "quote": "42. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej przekraczającej 60 m² jednak nie większej",
+          "candidate": "c67"
+        }
+      ],
+      "78cab080-5cf4-51d0-9bf6-b0e42dc2134e": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            257.0,
+            247.76,
+            287.0
+          ],
+          "runs": [
+            "r144",
+            "r145",
+            "r146"
+          ],
+          "quote": "45. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej przekraczającej 80 m²",
+          "candidate": "c69"
+        }
+      ],
+      "eec19553-698d-57f1-819d-2032984c64b2": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            320.72,
+            247.79,
+            340.16
+          ],
+          "runs": [
+            "r156",
+            "r157"
+          ],
+          "quote": "48. Liczba gospodarstw domowych objętych zwolnieniem dochodowym",
+          "candidate": "c71"
+        }
+      ],
+      "38d8b926-451a-56e9-86b6-1d3aa48b6fb6": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            484.64,
+            247.76,
+            514.52
+          ],
+          "runs": [
+            "r174",
+            "r175",
+            "r176"
+          ],
+          "quote": "52. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej nie przekraczającej 45 m²",
+          "candidate": "c74"
+        }
+      ],
+      "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            547.4,
+            247.76,
+            577.28
+          ],
+          "runs": [
+            "r186",
+            "r187",
+            "r188"
+          ],
+          "quote": "55. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej przekraczającej 45 m² jednak nie większej",
+          "candidate": "c76"
+        }
+      ],
+      "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            611.0,
+            247.76,
+            640.88
+          ],
+          "runs": [
+            "r199",
+            "r200",
+            "r201"
+          ],
+          "quote": "58. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej przekraczającej 60 m² jednak nie większej",
+          "candidate": "c77"
+        }
+      ],
+      "29588eb6-b6e2-5896-9315-170123fef399": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            674.48,
+            247.76,
+            704.36
+          ],
+          "runs": [
+            "r212",
+            "r213",
+            "r214"
+          ],
+          "quote": "61. Liczba gospodarstw domowych zajmujących lokale mieszkalne o powierzchni użytkowej przekraczającej 80 m²",
+          "candidate": "c80"
+        }
+      ],
+      "cf055b4d-327b-508c-bed1-5b1cc352d05b": [
+        {
+          "page": 3,
+          "box": [
+            50.28,
+            738.68,
+            247.79,
+            758.12
+          ],
+          "runs": [
+            "r224",
+            "r225"
+          ],
+          "quote": "64. Liczba gospodarstw domowych objętych zwolnieniem dochodowym",
+          "candidate": "c81"
+        }
+      ],
+      "7161a16b-6e12-5f72-828c-d7c6adc675f5": [
+        {
+          "page": 4,
+          "box": [
+            46.68,
+            264.0,
+            303.0,
+            290.4
+          ],
+          "runs": [
+            "r249"
+          ],
+          "quote": "70. Nr tel./fax",
+          "candidate": "c83"
+        }
+      ],
+      "9f33cab0-d460-54d5-a58d-552bc917614d": [
+        {
+          "page": 4,
+          "box": [
+            303.0,
+            264.0,
+            567.0,
+            290.4
+          ],
+          "runs": [
+            "r250"
+          ],
+          "quote": "71. Adres e-mail",
+          "candidate": "c84"
+        }
+      ],
+      "c78c28da-3c2e-516f-ac11-17bfb907f225": [
+        {
+          "page": 4,
+          "box": [
+            82.8,
+            452.28,
+            352.56,
+            481.2
+          ],
+          "runs": [
+            "r264"
+          ],
+          "quote": "74. Imię",
+          "candidate": "c97"
+        }
+      ],
+      "14989f43-1a7f-5ab7-a2e4-14e1da32ac26": [
+        {
+          "page": 4,
+          "box": [
+            352.56,
+            452.28,
+            567.0,
+            481.2
+          ],
+          "runs": [
+            "r265"
+          ],
+          "quote": "75. Nazwisko",
+          "candidate": "c98"
+        }
+      ],
+      "41773efb-68f3-5f90-abab-49cf916dc175": [
+        {
+          "page": 4,
+          "box": [
+            82.8,
+            481.68,
+            261.72,
+            513.0
+          ],
+          "runs": [
+            "r266"
+          ],
+          "quote": "76. Data wypełnienia",
+          "candidate": "c100"
+        }
+      ],
+      "431a5d04-a4eb-5e85-9e0e-4d6026325481": [
+        {
+          "page": 4,
+          "runs": [
+            "r256"
+          ],
+          "quote": "Załącznik A",
+          "candidate": "c87"
+        }
+      ],
+      "e3d7b9ba-ca8f-53f7-85f9-64a9c15a1cf1": [
+        {
+          "page": 4,
+          "runs": [
+            "r258"
+          ],
+          "quote": "Załącznik B",
+          "candidate": "c87"
+        }
+      ],
+      "1e78af4c-0cbe-5e33-accf-dba4ae608005": [
+        {
+          "page": 4,
+          "box": [
+            197.39,
+            393.32,
+            547.38,
+            402.32
+          ],
+          "runs": [
+            "r261"
+          ],
+          "quote": "4. Inne: (podać jakie)",
+          "candidate": "c95"
+        }
+      ]
+    },
     "ledger": {
-      "blanks_found": 100,
-      "became_field": 39,
+      "blanks_found": 103,
+      "became_field": 44,
       "merged": 20,
-      "covered_by_standard": 14,
+      "covered_by_standard": 11,
       "left_out": 6,
-      "awaiting_decision": 21,
+      "awaiting_decision": 22,
       "rows": [
         {
           "candidate": "c1",
           "fate": "FIELD",
-          "field": "3ab826d8-5260-584f-98cb-75ab6e836c53"
+          "field": "34401dc5-35e5-5efa-9781-b23d0c78eac6"
         },
         {
           "candidate": "c2",
@@ -792,8 +2316,8 @@
         },
         {
           "candidate": "c15",
-          "fate": "STANDARD",
-          "section": "standard/twoje_dane"
+          "fate": "FIELD",
+          "field": "dca0eabb-f126-51f4-a374-ba312827a239"
         },
         {
           "candidate": "c16",
@@ -802,8 +2326,8 @@
         },
         {
           "candidate": "c17",
-          "fate": "STANDARD",
-          "section": "standard/adres"
+          "fate": "FIELD",
+          "field": "dbcfef38-0e55-5918-9b82-6cf272fcd775"
         },
         {
           "candidate": "c18",
@@ -812,8 +2336,8 @@
         },
         {
           "candidate": "c19",
-          "fate": "STANDARD",
-          "section": "standard/twoje_dane"
+          "fate": "FIELD",
+          "field": "8a177ec8-4d87-5bc1-8846-1f0bd8035e39"
         },
         {
           "candidate": "c20",
@@ -853,185 +2377,185 @@
         {
           "candidate": "c27",
           "fate": "FIELD",
-          "field": "dd28bcc6-eab2-565b-8dde-45b4f5be3cb3"
+          "field": "e07e3269-5947-557a-9faf-6598bdee1189"
         },
         {
           "candidate": "c28",
           "fate": "FIELD",
-          "field": "aa61350f-c70e-55a8-80ac-9003b5bcd4da"
+          "field": "bc21f4de-de67-5ef0-a3de-2e494ca6fa58"
         },
         {
           "candidate": "c29",
           "fate": "FIELD",
-          "field": "52041a41-3c27-5804-a0f8-ea7a527f0a46"
+          "field": "6b86f180-cb52-53dd-b03e-1fc86f81e519"
         },
         {
           "candidate": "c30",
           "fate": "FIELD",
-          "field": "953674e3-9dcb-5848-89ac-16fab38f151e"
+          "field": "b0cf0724-de38-5042-b609-45d50e58dcba"
         },
         {
           "candidate": "c31",
           "fate": "FIELD",
-          "field": "deae63b7-33b6-5915-a8b5-8b69eb0025c2"
+          "field": "b452ad4f-2b44-5a41-9f69-7ed8259e218e"
         },
         {
           "candidate": "c32",
           "fate": "FIELD",
-          "field": "2496de8c-5b5b-5e0d-ba06-466e9fae31a3"
+          "field": "a9c20df3-61a9-5db0-9ee8-2bb24e0af8d4"
         },
         {
           "candidate": "c33",
           "fate": "FIELD",
-          "field": "3ac55d05-7c46-5efb-93c8-70daf15a00ec"
+          "field": "a0cff104-f78e-5bd0-bad2-3fd3d15278c5"
         },
         {
           "candidate": "c34",
-          "fate": "MERGED",
-          "into": "c33",
-          "why": "GROUP_MEMBER"
+          "fate": "FIELD",
+          "field": "b904b7f4-b6d0-5e11-9d26-41a11f8af97b"
         },
         {
           "candidate": "c35",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c35"
+          "fate": "FIELD",
+          "field": "3ac55d05-7c46-5efb-93c8-70daf15a00ec"
         },
         {
           "candidate": "c36",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c36"
-        },
-        {
-          "candidate": "c37",
           "fate": "MERGED",
-          "into": "c33",
+          "into": "c35",
           "why": "GROUP_MEMBER"
         },
         {
+          "candidate": "c37",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c37"
+        },
+        {
           "candidate": "c38",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c38"
+        },
+        {
+          "candidate": "c39",
+          "fate": "MERGED",
+          "into": "c35",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c40",
           "fate": "FIELD",
           "field": "2762978c-e3da-5b8d-a94e-114d28a5e641"
         },
         {
-          "candidate": "c39",
+          "candidate": "c41",
           "fate": "AWAITING_DECISION",
-          "decision": "label_c39"
+          "decision": "label_c41"
         },
         {
-          "candidate": "c40",
+          "candidate": "c42",
           "fate": "MERGED",
-          "into": "c33",
+          "into": "c35",
           "why": "GROUP_MEMBER"
         },
         {
-          "candidate": "c41",
+          "candidate": "c43",
           "fate": "FIELD",
           "field": "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d"
         },
         {
-          "candidate": "c42",
+          "candidate": "c44",
           "fate": "FIELD",
           "field": "a9f90d2e-29c2-5660-bd0f-15875b8d8151"
         },
         {
-          "candidate": "c43",
-          "fate": "MERGED",
-          "into": "c33",
-          "why": "GROUP_MEMBER"
-        },
-        {
-          "candidate": "c44",
-          "fate": "FIELD",
-          "field": "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c"
-        },
-        {
           "candidate": "c45",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c45"
+          "fate": "MERGED",
+          "into": "c35",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c46",
           "fate": "FIELD",
-          "field": "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3"
+          "field": "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c"
         },
         {
           "candidate": "c47",
-          "fate": "FIELD",
-          "field": "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c47"
         },
         {
           "candidate": "c48",
           "fate": "FIELD",
-          "field": "b0a3f978-5325-5554-a934-f86c4829d9d6"
+          "field": "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3"
         },
         {
           "candidate": "c49",
           "fate": "FIELD",
-          "field": "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5"
+          "field": "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f"
         },
         {
           "candidate": "c50",
           "fate": "FIELD",
-          "field": "6640b303-c895-552b-a568-f1c4d8696107"
+          "field": "b0a3f978-5325-5554-a934-f86c4829d9d6"
         },
         {
           "candidate": "c51",
           "fate": "FIELD",
-          "field": "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5"
+          "field": "2b8e7bb4-3bbf-5323-930d-fa8168b26bf5"
         },
         {
           "candidate": "c52",
-          "fate": "MERGED",
-          "into": "c51",
-          "why": "GROUP_MEMBER"
+          "fate": "FIELD",
+          "field": "6640b303-c895-552b-a568-f1c4d8696107"
         },
         {
           "candidate": "c53",
-          "fate": "MERGED",
-          "into": "c51",
-          "why": "GROUP_MEMBER"
+          "fate": "FIELD",
+          "field": "067197e4-87b4-5cfa-b1c3-881fe9a5b7f5"
         },
         {
           "candidate": "c54",
-          "fate": "FIELD",
-          "field": "c34aafe2-7373-5042-b6a9-1a1cc2432341"
+          "fate": "MERGED",
+          "into": "c53",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c55",
           "fate": "MERGED",
-          "into": "c54",
+          "into": "c53",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c56",
-          "fate": "MERGED",
-          "into": "c54",
-          "why": "GROUP_MEMBER"
+          "fate": "FIELD",
+          "field": "c34aafe2-7373-5042-b6a9-1a1cc2432341"
         },
         {
           "candidate": "c57",
+          "fate": "MERGED",
+          "into": "c56",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c58",
+          "fate": "MERGED",
+          "into": "c56",
+          "why": "GROUP_MEMBER"
+        },
+        {
+          "candidate": "c59",
           "fate": "FIELD",
           "field": "7df6f365-cfc5-51f9-aa1c-91a9bd607dc9"
         },
         {
-          "candidate": "c58",
+          "candidate": "c60",
           "fate": "FIELD",
           "field": "13a1d715-90ae-5bad-80b1-513800a49512"
         },
         {
-          "candidate": "c59",
+          "candidate": "c61",
           "fate": "LEFT_OUT",
           "reason": "EXPLANATION"
-        },
-        {
-          "candidate": "c60",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c60"
-        },
-        {
-          "candidate": "c61",
-          "fate": "FIELD",
-          "field": "de1e7d6f-f5c4-5083-9a9a-fb6cb840415a"
         },
         {
           "candidate": "c62",
@@ -1041,7 +2565,7 @@
         {
           "candidate": "c63",
           "fate": "FIELD",
-          "field": "9a5001ba-cd85-50ab-b6d8-cfde2cd1b00d"
+          "field": "a16faa2f-4bac-575c-bf89-a220b57f9357"
         },
         {
           "candidate": "c64",
@@ -1051,7 +2575,7 @@
         {
           "candidate": "c65",
           "fate": "FIELD",
-          "field": "15a50fe5-fcb4-5b12-99b6-fcdba588c9c2"
+          "field": "188d1592-0001-5c86-a055-6d2839021365"
         },
         {
           "candidate": "c66",
@@ -1061,7 +2585,7 @@
         {
           "candidate": "c67",
           "fate": "FIELD",
-          "field": "ac38209c-0323-5f2e-979d-2190c5833056"
+          "field": "3f32ada0-2df5-5318-ba60-e2e8023f1d23"
         },
         {
           "candidate": "c68",
@@ -1071,22 +2595,22 @@
         {
           "candidate": "c69",
           "fate": "FIELD",
-          "field": "227c33c9-02b0-5d9e-8b51-83c9f2c9ebd9"
+          "field": "78cab080-5cf4-51d0-9bf6-b0e42dc2134e"
         },
         {
           "candidate": "c70",
-          "fate": "LEFT_OUT",
-          "reason": "EXPLANATION"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c70"
         },
         {
           "candidate": "c71",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c71"
+          "fate": "FIELD",
+          "field": "eec19553-698d-57f1-819d-2032984c64b2"
         },
         {
           "candidate": "c72",
-          "fate": "FIELD",
-          "field": "38d8b926-451a-56e9-86b6-1d3aa48b6fb6"
+          "fate": "LEFT_OUT",
+          "reason": "EXPLANATION"
         },
         {
           "candidate": "c73",
@@ -1096,144 +2620,228 @@
         {
           "candidate": "c74",
           "fate": "FIELD",
-          "field": "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17"
+          "field": "38d8b926-451a-56e9-86b6-1d3aa48b6fb6"
         },
         {
           "candidate": "c75",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c75"
+        },
+        {
+          "candidate": "c76",
+          "fate": "FIELD",
+          "field": "63ff48a8-cfe0-56a6-b073-e97b9d0cbf17"
+        },
+        {
+          "candidate": "c77",
           "fate": "FIELD",
           "field": "f1b49607-7bc6-571c-bb9a-b2097ea8d7fd"
         },
         {
-          "candidate": "c76",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c76"
-        },
-        {
-          "candidate": "c77",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c77"
-        },
-        {
           "candidate": "c78",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c78"
+        },
+        {
+          "candidate": "c79",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c79"
+        },
+        {
+          "candidate": "c80",
           "fate": "FIELD",
           "field": "29588eb6-b6e2-5896-9315-170123fef399"
         },
         {
-          "candidate": "c79",
+          "candidate": "c81",
           "fate": "FIELD",
           "field": "cf055b4d-327b-508c-bed1-5b1cc352d05b"
         },
         {
-          "candidate": "c80",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c80"
-        },
-        {
-          "candidate": "c81",
-          "fate": "FIELD",
-          "field": "2335f793-aae3-5cff-b4a7-e123ec94c03f"
-        },
-        {
           "candidate": "c82",
-          "fate": "FIELD",
-          "field": "e06d9bd4-995f-5e98-beb8-b1a2a7f3aedf"
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c82"
         },
         {
           "candidate": "c83",
-          "fate": "AWAITING_DECISION",
-          "decision": "box_c83"
+          "fate": "FIELD",
+          "field": "7161a16b-6e12-5f72-828c-d7c6adc675f5"
         },
         {
           "candidate": "c84",
+          "fate": "FIELD",
+          "field": "9f33cab0-d460-54d5-a58d-552bc917614d"
+        },
+        {
+          "candidate": "c85",
+          "fate": "AWAITING_DECISION",
+          "decision": "box_c85"
+        },
+        {
+          "candidate": "c86",
           "fate": "LEFT_OUT",
           "reason": "EXPLANATION"
         },
         {
-          "candidate": "c85",
+          "candidate": "c87",
           "fate": "FIELD",
           "field": "431a5d04-a4eb-5e85-9e0e-4d6026325481"
         },
         {
-          "candidate": "c86",
-          "fate": "MERGED",
-          "into": "c85",
-          "why": "GROUP_MEMBER"
-        },
-        {
-          "candidate": "c87",
-          "fate": "MERGED",
-          "into": "c85",
-          "why": "GROUP_MEMBER"
-        },
-        {
           "candidate": "c88",
-          "fate": "AWAITING_DECISION",
-          "decision": "attachment_c88"
+          "fate": "MERGED",
+          "into": "c87",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c89",
           "fate": "MERGED",
-          "into": "c85",
+          "into": "c87",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c90",
-          "fate": "STANDARD",
-          "section": "standard/pelnomocnictwo"
+          "fate": "AWAITING_DECISION",
+          "decision": "attachment_c90"
         },
         {
           "candidate": "c91",
           "fate": "MERGED",
-          "into": "c90",
+          "into": "c87",
           "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c92",
-          "fate": "MERGED",
-          "into": "c90",
-          "why": "GROUP_MEMBER"
+          "fate": "STANDARD",
+          "section": "standard/pelnomocnictwo"
         },
         {
           "candidate": "c93",
-          "fate": "FIELD",
-          "field": "1e78af4c-0cbe-5e33-accf-dba4ae608005"
+          "fate": "MERGED",
+          "into": "c92",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c94",
-          "fate": "LEFT_OUT",
-          "reason": "SIGNATURE_AND_DATE"
+          "fate": "MERGED",
+          "into": "c92",
+          "why": "GROUP_MEMBER"
         },
         {
           "candidate": "c95",
           "fate": "FIELD",
-          "field": "c78c28da-3c2e-516f-ac11-17bfb907f225"
+          "field": "1e78af4c-0cbe-5e33-accf-dba4ae608005"
         },
         {
           "candidate": "c96",
-          "fate": "FIELD",
-          "field": "14989f43-1a7f-5ab7-a2e4-14e1da32ac26"
-        },
-        {
-          "candidate": "c97",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c97"
-        },
-        {
-          "candidate": "c98",
-          "fate": "FIELD",
-          "field": "41773efb-68f3-5f90-abab-49cf916dc175"
-        },
-        {
-          "candidate": "c99",
           "fate": "LEFT_OUT",
           "reason": "SIGNATURE_AND_DATE"
         },
         {
+          "candidate": "c97",
+          "fate": "FIELD",
+          "field": "c78c28da-3c2e-516f-ac11-17bfb907f225"
+        },
+        {
+          "candidate": "c98",
+          "fate": "FIELD",
+          "field": "14989f43-1a7f-5ab7-a2e4-14e1da32ac26"
+        },
+        {
+          "candidate": "c99",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c99"
+        },
+        {
           "candidate": "c100",
+          "fate": "FIELD",
+          "field": "41773efb-68f3-5f90-abab-49cf916dc175"
+        },
+        {
+          "candidate": "c101",
+          "fate": "LEFT_OUT",
+          "reason": "SIGNATURE_AND_DATE"
+        },
+        {
+          "candidate": "c102",
+          "fate": "AWAITING_DECISION",
+          "decision": "label_c102"
+        },
+        {
+          "candidate": "c103",
           "fate": "LEFT_OUT",
           "reason": "OFFICE_USE"
         }
       ]
-    }
-  }
+    },
+    "proposals": {
+      "dictionaries": [
+        {
+          "name": "Składający deklarację",
+          "entries": [
+            "właściciel/współwłaściciel",
+            "współwłaściciel (wspólność majątkowa )",
+            "najemca/dzierżawca",
+            "wspólnota mieszkaniowa",
+            "spółdzielnia mieszkaniowa",
+            "inny podmiot posiadający nieruchomość"
+          ],
+          "pages": [
+            1
+          ],
+          "field": "34401dc5-35e5-5efa-9781-b23d0c78eac6",
+          "fields": [
+            "34401dc5-35e5-5efa-9781-b23d0c78eac6"
+          ],
+          "why": "Zamknięta lista 6 krótkich pozycji wydrukowana na formularzu (dane referencyjne).",
+          "use": "Pole „Składający deklarację” brałoby pozycje z tego słownika zamiast z listy opcji wpisanej w formularz; struktura: jedna pozycja = nazwa wyświetlana (jak na papierze) i kod techniczny.",
+          "evidence": [
+            {
+              "page": 1,
+              "quote": "1. Składający deklarację (zaznaczyć właściwą kratkę)"
+            }
+          ]
+        }
+      ]
+    },
+    "dictionary_links": [
+      {
+        "field": "e07e3269-5947-557a-9faf-6598bdee1189",
+        "label": "Kraj",
+        "dictionary": "Kraje",
+        "written": true,
+        "why": "Etykieta „Kraj” wskazuje kraj: słownik partnera Kraje (lista rozwijana) zamiast wpisywania nazwy państwa tekstem."
+      },
+      {
+        "field": "bc21f4de-de67-5ef0-a3de-2e494ca6fa58",
+        "label": "Miejscowość",
+        "dictionary": "TERYT_4G_DOWODOWY",
+        "written": false,
+        "why": "Etykieta „Miejscowość”: pasuje słownik partnera Miejscowość (TERYT_4G_DOWODOWY). Nie zapisano go w formularzu: wzorcowy eksport partnera zostawia „Miejscowość” w sprawie jako pole tekstowe."
+      },
+      {
+        "field": "b0cf0724-de38-5042-b609-45d50e58dcba",
+        "label": "Województwo",
+        "dictionary": "TERYT_4G_DOWODOWY",
+        "written": true,
+        "why": "Etykieta „Województwo” to jednostka podziału terytorialnego: słownik TERYT_4G_DOWODOWY, ten sam co w adresach sekcji standardowych partnera."
+      },
+      {
+        "field": "a0cff104-f78e-5bd0-bad2-3fd3d15278c5",
+        "label": "Gmina",
+        "dictionary": "TERYT_4G_DOWODOWY",
+        "written": true,
+        "why": "Etykieta „Gmina” to jednostka podziału terytorialnego: słownik TERYT_4G_DOWODOWY, ten sam co w adresach sekcji standardowych partnera."
+      },
+      {
+        "field": "7161a16b-6e12-5f72-828c-d7c6adc675f5",
+        "label": "Nr tel./fax",
+        "dictionary": "Numery kierunkowe",
+        "written": false,
+        "why": "Pole telefonu „Nr tel./fax”: pasuje słownik partnera Numery kierunkowe (wybór prefiksu kraju). Nie zapisano go w formularzu: eksporty partnera nie pokazują jego nazwy technicznej (bramka G9)."
+      }
+    ]
+  },
+  "input_sha256": "b0ebb030f204c3bc7314f80aab47c354146d91607bac36fdc08cfa8a7c115536",
+  "form_sha256": "4d6756acfb4196e2a77029aba4b560d8e812495c8cfcf72589c0d629bc58b407"
 }

@@ -101,7 +101,317 @@
     },
     {
       "code": "REQUIRED_INFERRED",
-      "detail": "17 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego, nazwa_drogi_oraz_jej_nr, miejscowosc, numer_ewidencyjny_dzialki, w_celu_wykonania, calkowita_powierzchnia_zajecia"
+      "detail": "17 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wydanie_zezwolenia_na_zajecie_terenu_pasa_drogowego, nazwa_drogi_oraz_jej_nr, miejscowosc, numer_ewidencyjny_dzialki, w_celu_wykonania, calkowita_powierzchnia_zajecia",
+      "fix": {
+        "kind": "choice",
+        "rule": "required.paper_is_silent",
+        "text": "Druk nie mówi, które pola są obowiązkowe (dotyczy 17). Wybierz gotową odpowiedź.",
+        "options": [
+          {
+            "label": "Zostaw nieobowiązkowe (druk tego nie oznacza)",
+            "value": "optional",
+            "current": true,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/7/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/8/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/9/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "required-only-when-the-paper-says"
+            }
+          },
+          {
+            "label": "Obowiązkowe (16), bez: Telefon",
+            "value": "required_but_usually_optional",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/7/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/8/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/9/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "dictionary",
+              "name": "usually-optional"
+            }
+          },
+          {
+            "label": "Wszystkie obowiązkowe (17)",
+            "value": "required",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/7/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/8/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/9/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "unmarked-blank-is-required"
+            }
+          }
+        ]
+      }
     },
     {
       "code": "SECTION_SPLIT",
@@ -109,7 +419,30 @@
     },
     {
       "code": "CLAUSE_LINK_MISSING",
-      "detail": "no https address of the information clause is known; the consent names the clause without a link"
+      "detail": "the clause printed on the paper is attached to the consent section as its description",
+      "fix": {
+        "kind": "applied",
+        "rule": "clause.text_from_paper",
+        "text": "Treść klauzuli informacyjnej przeniesiono z druku do sekcji zgody.",
+        "target": {
+          "id": "286c99e6-074c-5b71-834e-1aac79e22a1c",
+          "pointer": "/tabs/4/questions/1/field",
+          "label": "Zgoda",
+          "tab": "Kontakt i zgody"
+        },
+        "value": "Zgodnie z art. 13 ust. 1 i 2 rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku",
+        "source": {
+          "type": "paper",
+          "page": 2,
+          "box": [
+            75.14,
+            405.58,
+            536.02,
+            594.12
+          ],
+          "quote": "Zgodnie z art. 13 ust. 1 i 2 rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w s"
+        }
+      }
     },
     {
       "code": "INFERRED_SHAPE",
@@ -314,6 +647,374 @@
       "ce42e095-b1d9-5b5c-b9f7-69f993a49d0b": "szczegolowy_harmonogram_robot",
       "6015e51e-d564-58de-9a65-6709ba0a4156": "zatwierdzony_projekt_organizacji_ruchu",
       "df0893c0-4829-58b3-806b-ad6d9f32b2c6": "informacje_o_sposobie_zabezpieczenia_robot"
+    },
+    "evidence": {
+      "3c02cf5b-1f11-57fc-97c9-3464e3907c3c": [
+        {
+          "page": 1,
+          "box": [
+            463.06,
+            287.25,
+            535.13,
+            298.29
+          ],
+          "runs": [
+            "r16"
+          ],
+          "quote": "Proszę o wydanie zezwolenia na zajęcie terenu pasa drogowego drogi gminnej",
+          "candidate": "c6"
+        }
+      ],
+      "b23a2496-b40a-516e-94ac-aa13521f2785": [
+        {
+          "page": 1,
+          "box": [
+            219.65,
+            332.94,
+            300.21,
+            340.98
+          ],
+          "runs": [
+            "r20"
+          ],
+          "quote": "nazwa drogi oraz jej nr",
+          "candidate": "c7"
+        }
+      ],
+      "65d265df-7bb8-5c29-9766-56c74957b84e": [
+        {
+          "page": 1,
+          "box": [
+            157.1,
+            349.05,
+            366.13,
+            360.09
+          ],
+          "runs": [
+            "r21"
+          ],
+          "quote": "w miejscowości",
+          "candidate": "c8"
+        }
+      ],
+      "e8c87bce-e907-5ba7-a1f4-df092b49183e": [
+        {
+          "page": 1,
+          "box": [
+            440.18,
+            349.05,
+            533.57,
+            360.09
+          ],
+          "quote": "działka nr ewid",
+          "candidate": "c9"
+        }
+      ],
+      "a1827e71-8013-5e16-9f09-0d2b2b79fe80": [
+        {
+          "page": 1,
+          "box": [
+            162.26,
+            369.57,
+            533.57,
+            380.61
+          ],
+          "runs": [
+            "r25"
+          ],
+          "quote": "w celu wykonania",
+          "candidate": "c10"
+        }
+      ],
+      "043309b7-3156-571d-aea1-a06242b1e109": [
+        {
+          "page": 1,
+          "box": [
+            233.51,
+            692.3,
+            332.51,
+            703.34
+          ],
+          "runs": [
+            "r98"
+          ],
+          "quote": "Całkowita powierzchnia zajęcia",
+          "candidate": "c36"
+        }
+      ],
+      "f7301aa1-c85b-54e0-859f-a54018bf59fc": [
+        {
+          "page": 2,
+          "box": [
+            305.83,
+            82.5,
+            402.5,
+            93.54
+          ],
+          "runs": [
+            "r102"
+          ],
+          "quote": "2. Roboty będą realizowane w terminie od dnia",
+          "candidate": "c37"
+        }
+      ],
+      "e057d1ae-e4df-5dde-be2a-aa28325c803a": [
+        {
+          "page": 2,
+          "box": [
+            443.14,
+            82.5,
+            524.21,
+            93.54
+          ],
+          "runs": [
+            "r104"
+          ],
+          "quote": "do dnia",
+          "candidate": "c38"
+        }
+      ],
+      "ebf334cb-9d20-553c-ba97-d76b73d536dc": [
+        {
+          "page": 2,
+          "box": [
+            96.7,
+            101.7,
+            146.65,
+            112.74
+          ],
+          "quote": "tj",
+          "candidate": "c39"
+        }
+      ],
+      "cd46ef7e-89a2-59d2-8e58-ddb639cbb28c": [
+        {
+          "page": 2,
+          "box": [
+            212.81,
+            123.06,
+            524.51,
+            134.1
+          ],
+          "quote": "3. Wykonawcą Robót będzie",
+          "candidate": "c40"
+        }
+      ],
+      "4b6a657e-d78b-5256-954c-dee1ec08d867": [
+        {
+          "page": 2,
+          "box": [
+            412.54,
+            161.42,
+            471.49,
+            172.94
+          ],
+          "runs": [
+            "r113"
+          ],
+          "quote": "drogowego zgodnie z warunkami określonymi w wydanej decyzji będzie",
+          "candidate": "c41"
+        }
+      ],
+      "fce9fe07-5cae-5e7c-a131-4164abd57fcf": [
+        {
+          "page": 2,
+          "box": [
+            75.14,
+            174.78,
+            268.29,
+            185.82
+          ],
+          "runs": [
+            "r112"
+          ],
+          "quote": "a osobą odpowiedzialną za wykonanie robót zgodnie z projektem i odtworzenie pasa",
+          "candidate": "c42"
+        }
+      ],
+      "c67f4117-913f-59dc-8689-70aa8a58e38d": [
+        {
+          "page": 2,
+          "box": [
+            286.19,
+            174.78,
+            521.2,
+            185.82
+          ],
+          "quote": "zam",
+          "candidate": "c43"
+        }
+      ],
+      "7f728ec4-33cc-5c68-ad51-ebb330d3675f": [
+        {
+          "page": 2,
+          "box": [
+            86.17,
+            187.38,
+            338.0,
+            198.42
+          ],
+          "quote": "tel",
+          "candidate": "c44"
+        }
+      ],
+      "6ee6ab37-38f4-55ba-9372-12d88ee6a7b6": [
+        {
+          "page": 1,
+          "box": [
+            165.62,
+            474.48,
+            248.43,
+            484.44
+          ],
+          "runs": [
+            "r31"
+          ],
+          "quote": "długość",
+          "candidate": "c12"
+        }
+      ],
+      "5f42cf48-0a28-5501-82d6-4a4dc3498e27": [
+        {
+          "page": 1,
+          "box": [
+            298.15,
+            474.48,
+            383.72,
+            484.44
+          ],
+          "runs": [
+            "r33"
+          ],
+          "quote": "szerokość",
+          "candidate": "c13"
+        }
+      ],
+      "4438b7f1-1c5b-59c7-ad28-22684ee49a6d": [
+        {
+          "page": 1,
+          "box": [
+            414.07,
+            474.48,
+            507.95,
+            484.44
+          ],
+          "runs": [
+            "r35"
+          ],
+          "quote": "razem",
+          "candidate": "c14"
+        }
+      ],
+      "a0f8010d-c84c-584f-8549-69ef48aff3b4": [
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            285.82,
+            536.19,
+            319.78
+          ],
+          "runs": [
+            "r126",
+            "r127",
+            "r128"
+          ],
+          "quote": "- Zatwierdzony projekt organizacji ruchu, jeżeli zajęcie pasa drogowego wpływa na ruch drogowy lub ogranicza widoczność na drodze albo powoduje wprowadzenie zmian w istniejącej organizacji ruchu pojazdów lub pieszych."
+        },
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            321.82,
+            518.4,
+            331.84
+          ],
+          "runs": [
+            "r129"
+          ],
+          "quote": "- Informację o sposobie zabezpieczenia robót, jeżeli nie jest wymagany projekt organizacji ruchu."
+        }
+      ],
+      "11a98075-c1c6-53c3-af5e-fc97e597b411": [
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            225.79,
+            536.1,
+            247.75
+          ],
+          "runs": [
+            "r121",
+            "r122"
+          ],
+          "quote": "- Ogólny plan orientacyjny w skali 1:10 000 lub 1:25 000 z zaznaczeniem zajmowanego odcinka pasa drogowego."
+        }
+      ],
+      "67d52e53-522f-5d0d-9177-38c6225b91e8": [
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            249.79,
+            535.82,
+            271.78
+          ],
+          "runs": [
+            "r123",
+            "r124"
+          ],
+          "quote": "- Szczegółowy plan sytuacyjny w skali 1:1000 lub 1:500 z zaznaczeniem granic i podaniem wymiarów planowanej powierzchni zajęcia pasa drogowego."
+        }
+      ],
+      "ce42e095-b1d9-5b5c-b9f7-69f993a49d0b": [
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            273.82,
+            248.09,
+            283.84
+          ],
+          "runs": [
+            "r125"
+          ],
+          "quote": "- Szczegółowy harmonogram robót."
+        }
+      ],
+      "6015e51e-d564-58de-9a65-6709ba0a4156": [
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            285.82,
+            536.19,
+            319.78
+          ],
+          "runs": [
+            "r126",
+            "r127",
+            "r128"
+          ],
+          "quote": "- Zatwierdzony projekt organizacji ruchu, jeżeli zajęcie pasa drogowego wpływa na ruch drogowy lub ogranicza widoczność na drodze albo powoduje wprowadzenie zmian w istniejącej organizacji ruchu pojazdów lub pieszych."
+        }
+      ],
+      "df0893c0-4829-58b3-806b-ad6d9f32b2c6": [
+        {
+          "page": 2,
+          "box": [
+            78.62,
+            321.82,
+            518.4,
+            331.84
+          ],
+          "runs": [
+            "r129"
+          ],
+          "quote": "- Informację o sposobie zabezpieczenia robót, jeżeli nie jest wymagany projekt organizacji ruchu."
+        }
+      ]
     },
     "ledger": {
       "blanks_found": 45,
@@ -571,6 +1272,24 @@
           "reason": "SIGNATURE_AND_DATE"
         }
       ]
-    }
-  }
+    },
+    "dictionary_links": [
+      {
+        "field": "65d265df-7bb8-5c29-9766-56c74957b84e",
+        "label": "Miejscowość",
+        "dictionary": "TERYT_4G_DOWODOWY",
+        "written": false,
+        "why": "Etykieta „Miejscowość”: pasuje słownik partnera Miejscowość (TERYT_4G_DOWODOWY). Nie zapisano go w formularzu: wzorcowy eksport partnera zostawia „Miejscowość” w sprawie jako pole tekstowe."
+      },
+      {
+        "field": "7f728ec4-33cc-5c68-ad51-ebb330d3675f",
+        "label": "Telefon",
+        "dictionary": "Numery kierunkowe",
+        "written": false,
+        "why": "Pole telefonu „Telefon”: pasuje słownik partnera Numery kierunkowe (wybór prefiksu kraju). Nie zapisano go w formularzu: eksporty partnera nie pokazują jego nazwy technicznej (bramka G9)."
+      }
+    ]
+  },
+  "input_sha256": "b251035b40bdd8a264b9c1035f466c57760b15db73d84a3ceebf9716c62ce14a",
+  "form_sha256": "8e18b4697013e8922c7fde60e457b9407abde114479af68b7e2febba76167152"
 }

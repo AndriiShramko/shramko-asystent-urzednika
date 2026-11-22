@@ -296,7 +296,7 @@
       "page": 3,
       "candidate": "c32",
       "evidence": [],
-      "detail": "the paper does not say whether one or several options may be marked; several are allowed"
+      "detail": "the paper does not say whether one or several options may be marked; one is asked"
     },
     {
       "code": "LABEL_NOT_FOUND",
@@ -425,24 +425,624 @@
       "detail": "a place to fill without a label: the official decides what it asks"
     },
     {
-      "code": "REQUIRED_INFERRED",
-      "detail": "field adres_do_korespondencji: REQUIRED is not written; the paper makes the field optional or conditional ('jeśli' in the hint)"
+      "code": "UNRESOLVED_REFERENCE",
+      "page": 7,
+      "evidence": [],
+      "detail": "CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note 'Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.'"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "page": 11,
+      "evidence": [],
+      "detail": "CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note 'Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.'"
     },
     {
       "code": "REQUIRED_INFERRED",
-      "detail": "field adres_do_korespondencji_2: REQUIRED is not written; the paper makes the field optional or conditional ('jeśli' in the hint)"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "detail": "field adres_do_korespondencji_3: REQUIRED is not written; the paper makes the field optional or conditional ('jeśli' in the hint)"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "detail": "56 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: wnioskodawca, seria_i_numer_dowodu_osobistego, korespondencja_z_urzedem, skrzynka_epuap_adres_skrzynki, edoreczenia_adres_skrzynki, imie"
+      "detail": "53 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: wnioskodawca, seria_i_numer_dowodu_osobistego, korespondencja_z_urzedem, skrzynka_epuap_adres_skrzynki, edoreczenia_adres_skrzynki, imie",
+      "fix": {
+        "kind": "choice",
+        "rule": "required.paper_is_silent",
+        "text": "Druk nie mówi, które pola są obowiązkowe (dotyczy 53). Wybierz gotową odpowiedź.",
+        "options": [
+          {
+            "label": "Zostaw nieobowiązkowe (druk tego nie oznacza)",
+            "value": "optional",
+            "current": true,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "SERIAL_NUMBER_ID_CARD"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "EPUAP"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "ADE"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/6/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/7/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/6/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "SERIAL_NUMBER_ID_CARD"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "EPUAP"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "ADE"
+                ]
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/7/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/8/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/8/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "required-only-when-the-paper-says"
+            }
+          },
+          {
+            "label": "Wszystkie obowiązkowe (53)",
+            "value": "required",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "SERIAL_NUMBER_ID_CARD"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "EPUAP"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "ADE"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/1/field/repeatingSectionGrid/7/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/3/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/4/questions/1/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "SERIAL_NUMBER_ID_CARD"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "EPUAP"
+                ]
+              },
+              {
+                "pointer": "/tabs/5/questions/2/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED",
+                  "ADE"
+                ]
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/6/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/1/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/2/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/2/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/7/questions/2/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/8/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/8/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/8/questions/1/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "unmarked-blank-is-required"
+            }
+          }
+        ]
+      }
     },
     {
       "code": "CLAUSE_LINK_MISSING",
-      "detail": "no https address of the information clause is known; the consent names the clause without a link"
+      "detail": "the clause printed on the paper is attached to the consent section as its description",
+      "fix": {
+        "kind": "applied",
+        "rule": "clause.text_from_paper",
+        "text": "Treść klauzuli informacyjnej przeniesiono z druku do sekcji zgody.",
+        "target": {
+          "id": "ab2a3604-0658-50d1-9aca-4bc9fc6bc76b",
+          "pointer": "/tabs/9/questions/2/field",
+          "label": "Zgoda",
+          "tab": "Kontakt i zgody"
+        },
+        "value": "4. Klauzula informacyjna Informacje na temat ochrony danych osobowych stosowanych przez administratora danych, którymi są wnioskujący:",
+        "source": {
+          "type": "paper",
+          "page": 5,
+          "box": [
+            70.82,
+            73.58,
+            522.3,
+            203.42
+          ],
+          "quote": "4. Klauzula informacyjna Informacje na temat ochrony danych osobowych stosowanych przez administratora danych, którymi są wnioskujący:"
+        }
+      }
     },
     {
       "code": "STEP_NOTE_ADDED",
@@ -472,11 +1072,6 @@
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
       "field": "d70ea7b5-faf7-510d-901b-b38a18c6880c"
-    },
-    {
-      "code": "INFERRED_SHAPE",
-      "detail": "CHECKBOX: no export shows one",
-      "field": "c341b6a8-2cb3-5193-85f3-3b012a5b6838"
     },
     {
       "code": "INFERRED_SHAPE",
@@ -806,6 +1401,1110 @@
       "a8d690ee-333e-5db7-b5c5-817b485b9d6c": "dyplomy_lub_inne_dokumenty_potwierdzajace_opisane",
       "d1fc4ef2-07fc-5241-84f9-9d8737b40728": "dokument_z_opinia_klubu",
       "ebc0e445-19d2-5282-a51d-529a0e6bef33": "zaswiadczenia_wydane_przez_polski_zwiazek_sportowy"
+    },
+    "evidence": {
+      "ba56ec13-0075-50f3-8929-200a9f0befa2": [
+        {
+          "page": 2,
+          "box": [
+            81.02,
+            74.09,
+            487.52,
+            111.17
+          ],
+          "runs": [
+            "r12",
+            "r13"
+          ],
+          "quote": "I. Wniosek o przyznanie stypendium sportowego Rady Miasta Zgierza"
+        },
+        {
+          "page": 7,
+          "box": [
+            77.06,
+            74.09,
+            500.79,
+            90.05
+          ],
+          "runs": [
+            "r177"
+          ],
+          "quote": "II. Wniosek o przyznanie nagrody sportowej Rady Miasta Zgierza"
+        },
+        {
+          "page": 11,
+          "box": [
+            73.1,
+            74.09,
+            488.69,
+            111.17
+          ],
+          "runs": [
+            "r308",
+            "r309"
+          ],
+          "quote": "III. Wniosek o przyznanie wyróżnienia sportowego Rady Miasta Zgierza"
+        }
+      ],
+      "4bba4e36-9aaf-506a-a29b-62303767036d": [
+        {
+          "page": 2,
+          "box": [
+            106.82,
+            140.85,
+            112.7,
+            170.78
+          ],
+          "quote": "Wnioskodawca",
+          "candidate": "c1"
+        }
+      ],
+      "06f7e497-8a63-572e-9701-551554931c0f": [
+        {
+          "page": 2,
+          "box": [
+            236.44,
+            384.29,
+            524.28,
+            396.29
+          ],
+          "runs": [
+            "r30"
+          ],
+          "quote": "Seria i numer dowodu osobistego",
+          "candidate": "c11"
+        },
+        {
+          "page": 2,
+          "box": [
+            70.82,
+            181.46,
+            390.54,
+            193.46
+          ],
+          "runs": [
+            "r17"
+          ],
+          "quote": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego."
+        }
+      ],
+      "74b7b253-543d-5a47-9b2e-4cd8532f48b3": [
+        {
+          "page": 2,
+          "box": [
+            84.98,
+            607.18,
+            90.19,
+            635.98
+          ],
+          "runs": [
+            "r44"
+          ],
+          "quote": "Korespondencja z urzędem (wybierz preferowany sposób korespondencji z urzędem)",
+          "candidate": "c17"
+        },
+        {
+          "page": 2,
+          "box": [
+            70.82,
+            181.46,
+            390.54,
+            193.46
+          ],
+          "runs": [
+            "r17"
+          ],
+          "quote": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego."
+        }
+      ],
+      "ef991d94-03fd-5623-bddd-c1c1bd743f75": [
+        {
+          "page": 2,
+          "box": [
+            238.97,
+            623.98,
+            523.7,
+            635.98
+          ],
+          "quote": "inny adres korespondencyjny",
+          "candidate": "c20"
+        }
+      ],
+      "1197c37b-178a-5b8c-8c5f-548cc1867b93": [
+        {
+          "page": 2,
+          "box": [
+            252.41,
+            658.42,
+            520.56,
+            670.42
+          ],
+          "quote": "Skrzynka ePUAP - adres skrzynki",
+          "candidate": "c24"
+        },
+        {
+          "page": 2,
+          "box": [
+            70.82,
+            181.46,
+            390.54,
+            193.46
+          ],
+          "runs": [
+            "r17"
+          ],
+          "quote": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego."
+        }
+      ],
+      "4190b6e6-54fb-5f61-abe7-553a0af72d9a": [
+        {
+          "page": 2,
+          "box": [
+            234.53,
+            675.94,
+            522.26,
+            687.94
+          ],
+          "quote": "eDoręczenia - adres skrzynki",
+          "candidate": "c26"
+        },
+        {
+          "page": 2,
+          "box": [
+            70.82,
+            181.46,
+            390.54,
+            193.46
+          ],
+          "runs": [
+            "r17"
+          ],
+          "quote": "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego."
+        }
+      ],
+      "cf9f557c-58a3-5194-8225-55d36237a4ad": [
+        {
+          "page": 3,
+          "box": [
+            94.93,
+            111.26,
+            523.59,
+            123.26
+          ],
+          "runs": [
+            "r59"
+          ],
+          "quote": "Imię",
+          "candidate": "c27"
+        }
+      ],
+      "b51831c7-8d7d-538c-a32e-e65f204fa3b7": [
+        {
+          "page": 3,
+          "box": [
+            119.04,
+            132.14,
+            522.74,
+            144.14
+          ],
+          "runs": [
+            "r61"
+          ],
+          "quote": "Nazwisko",
+          "candidate": "c28"
+        }
+      ],
+      "d70ea7b5-faf7-510d-901b-b38a18c6880c": [
+        {
+          "page": 3,
+          "box": [
+            147.07,
+            152.9,
+            523.08,
+            164.9
+          ],
+          "runs": [
+            "r63"
+          ],
+          "quote": "Data urodzenia",
+          "candidate": "c29"
+        }
+      ],
+      "90e16744-9f34-569f-98f8-b36d8a714654": [
+        {
+          "page": 3,
+          "box": [
+            70.82,
+            194.66,
+            524.32,
+            206.66
+          ],
+          "runs": [
+            "r65"
+          ],
+          "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+          "candidate": "c30"
+        }
+      ],
+      "92d7f7b8-6722-5aa0-91d0-3de7137a81b7": [
+        {
+          "page": 3,
+          "box": [
+            70.82,
+            236.3,
+            524.32,
+            248.3
+          ],
+          "runs": [
+            "r67"
+          ],
+          "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+          "candidate": "c31"
+        }
+      ],
+      "c341b6a8-2cb3-5193-85f3-3b012a5b6838": [
+        {
+          "page": 3,
+          "box": [
+            88.82,
+            305.04,
+            95.19,
+            719.98
+          ],
+          "runs": [
+            "r71"
+          ],
+          "quote": "a następnie wybierz konkretne dyscypliny z listy",
+          "candidate": "c32"
+        }
+      ],
+      "67af1f53-be66-570f-85db-cdc77fb69ffd": [
+        {
+          "page": 3,
+          "box": [
+            88.82,
+            305.04,
+            95.19,
+            719.98
+          ],
+          "runs": [
+            "r71"
+          ],
+          "quote": "a następnie wybierz konkretne dyscypliny z listy",
+          "candidate": "c32"
+        }
+      ],
+      "704a6ce3-2be4-51c3-a463-eac9e42fc9ca": [
+        {
+          "page": 3,
+          "box": [
+            121.55,
+            741.58,
+            514.06,
+            753.58
+          ],
+          "runs": [
+            "r97"
+          ],
+          "quote": "dyscyplina",
+          "candidate": "c56"
+        }
+      ],
+      "d80d8cf6-d834-5942-8906-4e006c1fa93b": [
+        {
+          "page": 4,
+          "box": [
+            70.82,
+            90.38,
+            494.27,
+            119.3
+          ],
+          "runs": [
+            "r100",
+            "r101"
+          ],
+          "quote": "Opisz najważniejsze osiągnięcia sportowe kandydata, które będą brane pod uwagę przy ocenie wniosku",
+          "candidate": "c57"
+        }
+      ],
+      "21219afb-2eab-541c-aee6-28a9fbc2a3fb": [
+        {
+          "page": 4,
+          "box": [
+            70.82,
+            360.89,
+            488.0,
+            389.81
+          ],
+          "runs": [
+            "r116",
+            "r117"
+          ],
+          "quote": "Opinia macierzystego klubu sportowego, potwierdzająca nienaganną postawę etyczną i moralną sportowca",
+          "candidate": "c58"
+        }
+      ],
+      "ffb4aed0-cef4-5f36-a725-530b379de806": [
+        {
+          "page": 4,
+          "box": [
+            70.82,
+            620.26,
+            518.31,
+            734.5
+          ],
+          "runs": [
+            "r130"
+          ],
+          "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do stypendium",
+          "candidate": "c59"
+        }
+      ],
+      "83dd72c6-1990-5450-9e82-117fbad8b5b0": [
+        {
+          "page": 6,
+          "box": [
+            200.22,
+            120.26,
+            514.97,
+            132.26
+          ],
+          "runs": [
+            "r150"
+          ],
+          "quote": "Imię i nazwisko kandydata",
+          "candidate": "c61"
+        }
+      ],
+      "96ca633a-59ba-591c-9213-0a49190bf18f": [
+        {
+          "page": 6,
+          "box": [
+            141.62,
+            262.13,
+            164.28,
+            274.13
+          ],
+          "runs": [
+            "r159"
+          ],
+          "quote": "Data",
+          "candidate": "c62"
+        }
+      ],
+      "c7ed219e-6dfa-598a-90f7-8ea0f9ac266d": [
+        {
+          "page": 6,
+          "box": [
+            200.22,
+            330.77,
+            517.99,
+            342.77
+          ],
+          "runs": [
+            "r162"
+          ],
+          "quote": "Imię i nazwisko kandydata",
+          "candidate": "c64"
+        }
+      ],
+      "bcd04331-3bb8-51c9-9fd0-5bdfc5e8c7d6": [
+        {
+          "page": 6,
+          "box": [
+            173.38,
+            353.69,
+            400.03,
+            365.69
+          ],
+          "runs": [
+            "r164"
+          ],
+          "quote": "1) Ja niżej podpisany",
+          "candidate": "c65"
+        }
+      ],
+      "16026941-0654-564b-8565-c26aa2f88109": [
+        {
+          "page": 8,
+          "box": [
+            94.93,
+            107.3,
+            523.58,
+            119.3
+          ],
+          "runs": [
+            "r223"
+          ],
+          "quote": "Imię",
+          "candidate": "c94"
+        }
+      ],
+      "e12882c2-7818-53bb-b8d6-900693717249": [
+        {
+          "page": 8,
+          "box": [
+            119.04,
+            124.1,
+            522.79,
+            136.1
+          ],
+          "runs": [
+            "r225"
+          ],
+          "quote": "Nazwisko",
+          "candidate": "c95"
+        }
+      ],
+      "72d63c84-46a2-59e2-bacf-3eff2b86c926": [
+        {
+          "page": 8,
+          "box": [
+            147.07,
+            140.9,
+            522.91,
+            152.9
+          ],
+          "runs": [
+            "r227"
+          ],
+          "quote": "Data urodzenia",
+          "candidate": "c96"
+        }
+      ],
+      "8bd007ce-f38b-5170-bd25-60aa4a3524d5": [
+        {
+          "page": 8,
+          "box": [
+            70.82,
+            174.62,
+            524.32,
+            186.62
+          ],
+          "runs": [
+            "r229"
+          ],
+          "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+          "candidate": "c97"
+        }
+      ],
+      "23beced0-6f96-54c1-9aa1-0e5bbe9d1507": [
+        {
+          "page": 8,
+          "box": [
+            70.82,
+            208.34,
+            524.32,
+            220.34
+          ],
+          "runs": [
+            "r231"
+          ],
+          "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+          "candidate": "c98"
+        }
+      ],
+      "1d9d1331-ea67-50ab-8d97-15a12710fcb1": [
+        {
+          "page": 8,
+          "box": [
+            70.82,
+            244.37,
+            494.15,
+            273.17
+          ],
+          "runs": [
+            "r234",
+            "r235"
+          ],
+          "quote": "Opisz najważniejsze osiągnięcia sportowe kandydata, które będą brane pod uwagę przy ocenie wniosku",
+          "candidate": "c99"
+        }
+      ],
+      "4c952e51-f4f1-5233-9e0c-375a43acbb9d": [
+        {
+          "page": 8,
+          "box": [
+            70.82,
+            497.95,
+            487.82,
+            526.87
+          ],
+          "runs": [
+            "r249",
+            "r250"
+          ],
+          "quote": "Opinia macierzystego klubu sportowego, potwierdzająca nienaganną postawę etyczną i moralną sportowca",
+          "candidate": "c100"
+        }
+      ],
+      "bb7d1d2d-6146-5081-b40f-98b2eba1c12f": [
+        {
+          "page": 9,
+          "box": [
+            70.82,
+            105.98,
+            524.38,
+            185.3
+          ],
+          "runs": [
+            "r263"
+          ],
+          "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do nagrody",
+          "candidate": "c101"
+        }
+      ],
+      "551d23fb-a49d-5cf6-85ec-72d10ec7af52": [
+        {
+          "page": 10,
+          "box": [
+            200.22,
+            114.26,
+            514.97,
+            126.26
+          ],
+          "runs": [
+            "r283"
+          ],
+          "quote": "Imię i nazwisko kandydata",
+          "candidate": "c104"
+        }
+      ],
+      "a671965e-4ca2-5956-83a9-5f93d6c69980": [
+        {
+          "page": 10,
+          "box": [
+            141.62,
+            239.3,
+            164.28,
+            251.3
+          ],
+          "runs": [
+            "r291"
+          ],
+          "quote": "Data",
+          "candidate": "c105"
+        }
+      ],
+      "5881584e-932f-5637-80da-8cb12c7ed907": [
+        {
+          "page": 10,
+          "box": [
+            200.22,
+            295.97,
+            514.97,
+            307.97
+          ],
+          "runs": [
+            "r294"
+          ],
+          "quote": "Imię i nazwisko kandydata",
+          "candidate": "c107"
+        }
+      ],
+      "31449a40-f0ec-56f5-a025-e602a0bc710a": [
+        {
+          "page": 10,
+          "box": [
+            173.38,
+            318.77,
+            394.7,
+            330.77
+          ],
+          "runs": [
+            "r296"
+          ],
+          "quote": "1) Ja niżej podpisany",
+          "candidate": "c108"
+        }
+      ],
+      "df5d6b73-cc88-5324-a4f9-2d93c05a5564": [
+        {
+          "page": 11,
+          "box": [
+            88.82,
+            140.85,
+            94.69,
+            170.78
+          ],
+          "quote": "Wnioskodawca",
+          "candidate": "c111"
+        }
+      ],
+      "27553f26-3714-5d8b-b5f9-54c9ba507ae1": [
+        {
+          "page": 11,
+          "box": [
+            236.44,
+            362.21,
+            524.26,
+            374.21
+          ],
+          "runs": [
+            "r326"
+          ],
+          "quote": "Seria i numer dowodu osobistego",
+          "candidate": "c121"
+        }
+      ],
+      "84478251-0189-5471-8c15-2e3f4bb70659": [
+        {
+          "page": 11,
+          "box": [
+            238.87,
+            610.06,
+            523.7,
+            622.06
+          ],
+          "quote": "inny adres korespondencyjny",
+          "candidate": "c130"
+        }
+      ],
+      "7b5c3cd4-4e0d-5954-b944-b788b42ceecf": [
+        {
+          "page": 11,
+          "box": [
+            245.79,
+            644.5,
+            522.24,
+            656.5
+          ],
+          "quote": "Skrzynka ePUAP - adres skrzynki",
+          "candidate": "c134"
+        }
+      ],
+      "ef626269-0f1b-5bb5-962e-5f5690f50085": [
+        {
+          "page": 11,
+          "box": [
+            229.9,
+            661.9,
+            523.7,
+            673.9
+          ],
+          "quote": "eDoręczenia - adres skrzynki",
+          "candidate": "c136"
+        }
+      ],
+      "053b95dd-cc6c-55bc-97bc-d162f83afa51": [
+        {
+          "page": 12,
+          "box": [
+            94.93,
+            115.22,
+            517.43,
+            127.22
+          ],
+          "runs": [
+            "r361"
+          ],
+          "quote": "Imię",
+          "candidate": "c137"
+        }
+      ],
+      "9988139f-69af-52c8-abd7-df7b976a625a": [
+        {
+          "page": 12,
+          "box": [
+            119.04,
+            140.06,
+            516.7,
+            152.06
+          ],
+          "runs": [
+            "r363"
+          ],
+          "quote": "Nazwisko",
+          "candidate": "c138"
+        }
+      ],
+      "84d22576-ed79-578e-9f38-ab912f6770fc": [
+        {
+          "page": 12,
+          "box": [
+            147.07,
+            164.9,
+            519.89,
+            176.9
+          ],
+          "runs": [
+            "r365"
+          ],
+          "quote": "Data urodzenia",
+          "candidate": "c139"
+        }
+      ],
+      "c2409d62-9cbe-5364-9329-86eaf6e3eb8e": [
+        {
+          "page": 12,
+          "box": [
+            70.82,
+            214.58,
+            524.32,
+            226.58
+          ],
+          "runs": [
+            "r367"
+          ],
+          "quote": "Adres zameldowania (adres zameldowania może być inny niż adres zamieszkania)",
+          "candidate": "c140"
+        }
+      ],
+      "f67fd307-6f58-5023-8c7e-71404cf20357": [
+        {
+          "page": 12,
+          "box": [
+            70.82,
+            264.29,
+            524.32,
+            276.29
+          ],
+          "runs": [
+            "r369"
+          ],
+          "quote": "Adres do korespondencji (jeśli różni się od adresu zameldowania)",
+          "candidate": "c141"
+        }
+      ],
+      "d4f38af2-d8e9-5041-9f29-a231798611bc": [
+        {
+          "page": 12,
+          "box": [
+            70.82,
+            304.97,
+            487.82,
+            333.89
+          ],
+          "runs": [
+            "r372",
+            "r373"
+          ],
+          "quote": "Opinia macierzystego klubu sportowego, potwierdzająca nienaganną postawę etyczną i moralną opiekuna sportowego.",
+          "candidate": "c142"
+        }
+      ],
+      "e7004428-a22c-5257-ab51-1f44759e705c": [
+        {
+          "page": 12,
+          "box": [
+            70.82,
+            508.15,
+            518.27,
+            587.47
+          ],
+          "runs": [
+            "r383"
+          ],
+          "quote": "Ewentualne dodatkowe informacje o kandydatce/kandydacie do wyróżnienia",
+          "candidate": "c143"
+        }
+      ],
+      "12c8e9e8-5dfd-5c21-a590-d7b85f707688": [
+        {
+          "page": 13,
+          "box": [
+            70.82,
+            187.58,
+            518.34,
+            199.58
+          ],
+          "runs": [
+            "r394"
+          ],
+          "quote": "Imię i nazwisko zawodniczki/zawodnika",
+          "candidate": "c144"
+        }
+      ],
+      "3a081b12-8a60-583f-8fae-9ce054277711": [
+        {
+          "page": 13,
+          "box": [
+            70.82,
+            228.26,
+            521.37,
+            324.53
+          ],
+          "runs": [
+            "r396"
+          ],
+          "quote": "Osiągnięcia sportowe podopiecznego",
+          "candidate": "c145"
+        }
+      ],
+      "0c07d4d0-6b65-5fa2-afba-56604a9be1ad": [
+        {
+          "page": 13,
+          "box": [
+            70.82,
+            382.01,
+            518.38,
+            394.01
+          ],
+          "runs": [
+            "r404"
+          ],
+          "quote": "Imię i nazwisko zawodniczki/zawodnika",
+          "candidate": "c146"
+        }
+      ],
+      "f7a6206c-58dc-5cdd-be2b-76c9fc8f3809": [
+        {
+          "page": 13,
+          "box": [
+            70.82,
+            422.71,
+            521.37,
+            518.95
+          ],
+          "runs": [
+            "r406"
+          ],
+          "quote": "Osiągnięcia sportowe podopiecznego",
+          "candidate": "c147"
+        }
+      ],
+      "f7d486ca-ab0f-5909-af34-98cf5ef64c58": [
+        {
+          "page": 13,
+          "box": [
+            70.82,
+            576.43,
+            518.34,
+            588.43
+          ],
+          "runs": [
+            "r414"
+          ],
+          "quote": "Imię i nazwisko zawodniczki/zawodnika",
+          "candidate": "c148"
+        }
+      ],
+      "c61b7688-916b-5848-867e-063fadbc5f9e": [
+        {
+          "page": 13,
+          "box": [
+            70.82,
+            617.14,
+            509.14,
+            645.94
+          ],
+          "runs": [
+            "r417",
+            "r418"
+          ],
+          "quote": "Osiągnięcia sportowe podopiecznego kandydata, które będą brane pod uwagę przy ocenie wniosku",
+          "candidate": "c149"
+        }
+      ],
+      "a1d42fbf-fc54-51b4-9f04-216525776435": [
+        {
+          "page": 14,
+          "box": [
+            70.82,
+            113.9,
+            518.27,
+            125.9
+          ],
+          "runs": [
+            "r426"
+          ],
+          "quote": "Imię i nazwisko zawodniczki/zawodnika",
+          "candidate": "c150"
+        }
+      ],
+      "ae4ef893-d83d-5c03-8dc8-42cb933de890": [
+        {
+          "page": 14,
+          "box": [
+            70.82,
+            154.58,
+            509.14,
+            183.38
+          ],
+          "runs": [
+            "r429",
+            "r430"
+          ],
+          "quote": "Osiągnięcia sportowe podopiecznego kandydata, które będą brane pod uwagę przy ocenie wniosku",
+          "candidate": "c151"
+        }
+      ],
+      "d8697fbb-5f29-5f81-9912-4aa0ecffa1c8": [
+        {
+          "page": 14,
+          "box": [
+            70.82,
+            398.57,
+            202.55,
+            410.57
+          ],
+          "runs": [
+            "r443"
+          ],
+          "quote": "Data sporządzenia wniosku",
+          "candidate": "c152"
+        }
+      ],
+      "60223137-e6b4-52e3-9515-d65f8de36fbe": [
+        {
+          "page": 15,
+          "box": [
+            200.22,
+            125.3,
+            514.97,
+            137.3
+          ],
+          "runs": [
+            "r455"
+          ],
+          "quote": "Imię i nazwisko kandydata",
+          "candidate": "c154"
+        }
+      ],
+      "71ec106f-5ee6-53bf-b8ff-b7524a66c44f": [
+        {
+          "page": 15,
+          "box": [
+            141.62,
+            256.49,
+            164.28,
+            268.49
+          ],
+          "runs": [
+            "r463"
+          ],
+          "quote": "Data",
+          "candidate": "c155"
+        }
+      ],
+      "6638e002-3c0c-543b-802f-ec48ddd99050": [
+        {
+          "page": 16,
+          "box": [
+            224.21,
+            177.14,
+            522.28,
+            189.14
+          ],
+          "runs": [
+            "r469"
+          ],
+          "quote": "Imię i nazwisko podopiecznego",
+          "candidate": "c157"
+        }
+      ],
+      "c3285651-6c59-5b11-82ca-58847a68f344": [
+        {
+          "page": 16,
+          "box": [
+            141.62,
+            308.33,
+            164.28,
+            320.33
+          ],
+          "runs": [
+            "r477"
+          ],
+          "quote": "Data",
+          "candidate": "c158"
+        }
+      ],
+      "1e1ef23b-1adf-5aa5-85f9-dfa2d9e54467": [
+        {
+          "page": 16,
+          "box": [
+            224.21,
+            364.97,
+            522.28,
+            376.97
+          ],
+          "runs": [
+            "r480"
+          ],
+          "quote": "Imię i nazwisko podopiecznego",
+          "candidate": "c160"
+        }
+      ],
+      "da5bb808-5911-5dc9-8eb1-d08d29e008cd": [
+        {
+          "page": 16,
+          "box": [
+            173.38,
+            387.77,
+            394.7,
+            399.77
+          ],
+          "runs": [
+            "r482"
+          ],
+          "quote": "1) Ja niżej podpisany",
+          "candidate": "c161"
+        }
+      ],
+      "c6418470-3785-5e79-9a81-23b8d150ce14": [
+        {
+          "page": 2,
+          "box": [
+            70.82,
+            716.5,
+            513.36,
+            745.3
+          ],
+          "runs": [
+            "r55",
+            "r56"
+          ],
+          "quote": "Do wniosku należy dołączyć aktualny odpis danych o klubie z Krajowego Rejestru Sądowego lub innego właściwego rejestru, zgodny z bieżącym stanem faktycznym i prawnym."
+        }
+      ],
+      "a8d690ee-333e-5db7-b5c5-817b485b9d6c": [
+        {
+          "page": 4,
+          "box": [
+            70.82,
+            309.41,
+            523.2,
+            338.21
+          ],
+          "runs": [
+            "r113",
+            "r114"
+          ],
+          "quote": "Do wniosku można dołączyć dyplomy lub inne dokumenty potwierdzające opisane osiągnięcia sportowe."
+        }
+      ],
+      "d1fc4ef2-07fc-5241-84f9-9d8737b40728": [
+        {
+          "page": 4,
+          "box": [
+            70.82,
+            495.67,
+            330.59,
+            507.67
+          ],
+          "runs": [
+            "r124"
+          ],
+          "quote": "Do wniosku można dołączyć dokument z opinią klubu."
+        }
+      ],
+      "ebc0e445-19d2-5282-a51d-529a0e6bef33": [
+        {
+          "page": 4,
+          "box": [
+            70.82,
+            530.35,
+            523.31,
+            576.07
+          ],
+          "runs": [
+            "r126",
+            "r127",
+            "r128"
+          ],
+          "quote": "Do wniosku należy załączyć zaświadczenia wydane przez Polski Związek Sportowy odpowiedni dla danej dyscypliny sportowej lub inne oficjalne dokumenty (np. komunikaty z zawodów), które potwierdzają osiągnięcia sportowe."
+        }
+      ]
     },
     "ledger": {
       "blanks_found": 163,
@@ -1682,6 +3381,52 @@
           "decision": "label_c163"
         }
       ]
+    },
+    "proposals": {
+      "dictionaries": [
+        {
+          "name": "Dyscypliny sportowe",
+          "entries": [
+            "gimnastyka artystyczna",
+            "hokej",
+            "karate",
+            "kolarstwo",
+            "koszykówka",
+            "lekkoatletyka",
+            "łucznictwo",
+            "łyżwiarstwo",
+            "narciarstwo klasyczne",
+            "piłka nożna",
+            "piłka ręczna",
+            "piłka siatkowa",
+            "piłka wodna",
+            "sport motocyklowy",
+            "sporty walki",
+            "sporty wodne",
+            "tenis stołowy",
+            "tenis ziemny",
+            "unihokej",
+            "zapasy"
+          ],
+          "pages": [
+            3
+          ],
+          "field": "67af1f53-be66-570f-85db-cdc77fb69ffd",
+          "fields": [
+            "67af1f53-be66-570f-85db-cdc77fb69ffd"
+          ],
+          "why": "Zamknięta lista 20 krótkich pozycji wydrukowana na formularzu (dane referencyjne).",
+          "use": "Pole „Dyscypliny sportowe” brałoby pozycje z tego słownika zamiast z listy opcji wpisanej w formularz; struktura: jedna pozycja = nazwa wyświetlana (jak na papierze) i kod techniczny.",
+          "evidence": [
+            {
+              "page": 3,
+              "quote": "a następnie wybierz konkretne dyscypliny z listy"
+            }
+          ]
+        }
+      ]
     }
-  }
+  },
+  "input_sha256": "d9ace125afc5c4af18d1679eb63b85428a0391326bcb7bdf0022ec0fd4e77797",
+  "form_sha256": "cca7a59a1ff35a7f4b5760de9f2eaaa71b989b512e89047e63837cfd6ed553ed"
 }

@@ -13,15 +13,160 @@
   "warnings": [
     {
       "code": "REQUIRED_INFERRED",
-      "detail": "field data_szczepienia: REQUIRED is not written; the paper makes the field optional or conditional ('w przypadku' in the hint)"
+      "detail": "field data_szczepienia: REQUIRED is not written; the paper makes the field optional or conditional ('w przypadku' in the hint)",
+      "fix": {
+        "kind": "applied",
+        "rule": "required.paper_optional",
+        "text": "Pole „Data szczepienia” jest nieobowiązkowe: tak wynika ze słów druku.",
+        "target": {
+          "id": "0ada5215-e7f4-59f4-8e11-0ab29316721a",
+          "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/3/field",
+          "label": "Data szczepienia",
+          "tab": "Informacja o posiadanym psie"
+        },
+        "value": "optional",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            254.93,
+            469.97,
+            362.38,
+            478.01
+          ],
+          "quote": "Data szczepienia (w przypadku jego braku)"
+        }
+      }
     },
     {
       "code": "REQUIRED_INFERRED",
-      "detail": "7 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: pochodzenie_psa, rasa_psa, data_urodzenia_psa, plec, sposob_oznakowania_psa_nr_ident, adres_miejsca_utrzymywania_psa_psow"
+      "detail": "7 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: pochodzenie_psa, rasa_psa, data_urodzenia_psa, plec, sposob_oznakowania_psa_nr_ident, adres_miejsca_utrzymywania_psa_psow",
+      "fix": {
+        "kind": "choice",
+        "rule": "required.paper_is_silent",
+        "text": "Druk nie mówi, które pola są obowiązkowe (dotyczy 7). Wybierz gotową odpowiedź.",
+        "options": [
+          {
+            "label": "Zostaw nieobowiązkowe (druk tego nie oznacza)",
+            "value": "optional",
+            "current": true,
+            "set": [
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/8/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/9/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "required-only-when-the-paper-says"
+            }
+          },
+          {
+            "label": "Wszystkie obowiązkowe (7)",
+            "value": "required",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/8/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/2/questions/0/field/repeatingSectionGrid/9/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "unmarked-blank-is-required"
+            }
+          }
+        ]
+      }
     },
     {
       "code": "CLAUSE_LINK_MISSING",
-      "detail": "no https address of the information clause is known; the consent names the clause without a link"
+      "detail": "the clause printed on the paper is attached to the consent section as its description",
+      "fix": {
+        "kind": "applied",
+        "rule": "clause.text_from_paper",
+        "text": "Treść klauzuli informacyjnej przeniesiono z druku do sekcji zgody.",
+        "target": {
+          "id": "c5282d15-76f9-5a98-9cff-59a3400fef62",
+          "pointer": "/tabs/4/questions/2/field",
+          "label": "Zgoda",
+          "tab": "Kontakt i zgody"
+        },
+        "value": "INFORMACJE DOTYCZĄCE PRZETWARZANIA TWOICH DANYCH OSOBOWYCH Niniejszą informację otrzymuje Pani/Pan w związku z obowiązkami określonymi w art. 13 rozporządzenia ",
+        "source": {
+          "type": "paper",
+          "page": 2,
+          "box": [
+            51.0,
+            74.0,
+            544.34,
+            764.34
+          ],
+          "quote": "INFORMACJE DOTYCZĄCE PRZETWARZANIA TWOICH DANYCH OSOBOWYCH Niniejszą informację otrzymuje Pani/Pan w związku z obowiązkami określonymi w art. 13 rozporządzenia Parlamentu Europejskiego i Rady (UE) 201"
+        }
+      }
     },
     {
       "code": "INFERRED_SHAPE",
@@ -183,6 +328,215 @@
       "c4a42446-9953-58c1-92f6-39702129414c": "opis_miejsca_i_warunkow_w_jakich_wnioskodawca_zamierza",
       "063d98ac-45fc-5803-aeb3-52cc1fa2a9d2": "kopia_dla_kazdego_psa"
     },
+    "evidence": {
+      "a44f7c6e-2a0a-507c-b141-916dc85b80b6": [
+        {
+          "page": 1,
+          "box": [
+            51.0,
+            330.09,
+            540.22,
+            352.31
+          ],
+          "runs": [
+            "r16",
+            "r17",
+            "r18",
+            "r19",
+            "r20",
+            "r21"
+          ],
+          "quote": "charta/chartów* lub mieszańca charta/mieszańców chartów*"
+        }
+      ],
+      "fbe2ca76-c8b7-5ef6-9924-7563ffa0b0c5": [
+        {
+          "page": 1,
+          "box": [
+            51.0,
+            330.09,
+            540.22,
+            339.71
+          ],
+          "runs": [
+            "r16",
+            "r17",
+            "r18",
+            "r19"
+          ],
+          "quote": "rasowych oraz ich mieszańców proszę o wydanie zezwolenia na hodowanie/utrzymywanie* charta/chartów*"
+        }
+      ],
+      "35af5308-6e43-5f40-a9c0-c2742b7ccada": [
+        {
+          "page": 1,
+          "box": [
+            60.98,
+            408.29,
+            485.54,
+            416.33
+          ],
+          "runs": [
+            "r26"
+          ],
+          "quote": "Pochodzenie psa (metryka**, numer rodowodu**, imię, nazwisko i adres poprzedniego właściciela)",
+          "candidate": "c11"
+        }
+      ],
+      "88b60e54-4a75-5c04-8c9b-e99555546a64": [
+        {
+          "page": 1,
+          "box": [
+            257.81,
+            429.65,
+            365.32,
+            437.69
+          ],
+          "runs": [
+            "r28"
+          ],
+          "quote": "Rasa psa",
+          "candidate": "c12"
+        }
+      ],
+      "9192f5b9-70fb-564b-be3c-b7d6ee60ce26": [
+        {
+          "page": 1,
+          "box": [
+            257.81,
+            450.65,
+            365.32,
+            458.69
+          ],
+          "runs": [
+            "r30"
+          ],
+          "quote": "Data urodzenia psa",
+          "candidate": "c13"
+        }
+      ],
+      "0ada5215-e7f4-59f4-8e11-0ab29316721a": [
+        {
+          "page": 1,
+          "box": [
+            254.93,
+            469.97,
+            362.38,
+            478.01
+          ],
+          "runs": [
+            "r32"
+          ],
+          "quote": "Data szczepienia (w przypadku jego braku)",
+          "candidate": "c14"
+        }
+      ],
+      "54295451-4801-5c32-af2a-37add99f72b2": [
+        {
+          "page": 1,
+          "box": [
+            254.93,
+            489.19,
+            409.22,
+            499.15
+          ],
+          "runs": [
+            "r34"
+          ],
+          "quote": "Płeć",
+          "candidate": "c15"
+        }
+      ],
+      "a87b8a35-12f2-5b01-84e4-d514851a5d3c": [
+        {
+          "page": 1,
+          "box": [
+            254.93,
+            511.87,
+            261.46,
+            567.19
+          ],
+          "runs": [
+            "r39"
+          ],
+          "quote": "Sposób oznakowania psa / nr ident.",
+          "candidate": "c18"
+        }
+      ],
+      "f887456a-71bf-55d4-aaa8-d1d14277f0b9": [
+        {
+          "page": 1,
+          "box": [
+            327.14,
+            513.41,
+            487.12,
+            521.45
+          ],
+          "quote": "mikroprocesor",
+          "candidate": "c20"
+        }
+      ],
+      "0282df60-3adc-50ea-9645-cbb0071a9d6e": [
+        {
+          "page": 1,
+          "box": [
+            294.65,
+            536.09,
+            486.46,
+            544.13
+          ],
+          "quote": "tatuaż",
+          "candidate": "c22"
+        }
+      ],
+      "f8083043-0611-5fe4-bf5e-59610e7f4353": [
+        {
+          "page": 1,
+          "box": [
+            51.0,
+            604.16,
+            519.64,
+            626.72
+          ],
+          "runs": [
+            "r48"
+          ],
+          "quote": "Adres miejsca utrzymywania psa/psów",
+          "candidate": "c24"
+        }
+      ],
+      "c4a42446-9953-58c1-92f6-39702129414c": [
+        {
+          "page": 1,
+          "box": [
+            51.0,
+            647.84,
+            519.69,
+            685.04
+          ],
+          "runs": [
+            "r51"
+          ],
+          "quote": "Opis miejsca i warunków w jakich wnioskodawca zamierza utrzymywać psa/psy",
+          "candidate": "c25"
+        }
+      ],
+      "063d98ac-45fc-5803-aeb3-52cc1fa2a9d2": [
+        {
+          "page": 1,
+          "box": [
+            58.1,
+            747.66,
+            533.32,
+            756.66
+          ],
+          "runs": [
+            "r59"
+          ],
+          "quote": "2. Oświadczam, że zaszczepiono psa/psy przeciwko wściekliźnie – w załączeniu kopia dla każdego psa."
+        }
+      ]
+    },
     "ledger": {
       "blanks_found": 26,
       "became_field": 10,
@@ -328,5 +682,7 @@
         }
       ]
     }
-  }
+  },
+  "input_sha256": "22d99255ad6b8d93501dd6f0303a819dd8c37a671de49fd5c43c3c9565f682cc",
+  "form_sha256": "ac7c596ae3e4703fe4086cb74a0a7ad5ca73db4d2f432956c4f33cef86fb6ae5"
 }

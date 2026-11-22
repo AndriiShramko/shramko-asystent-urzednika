@@ -42,20 +42,79 @@
       "page": 1,
       "candidate": "c6",
       "evidence": [],
-      "detail": "the paper does not say whether one or several options may be marked; several are allowed"
+      "detail": "the paper does not say whether one or several options may be marked; one is asked"
     },
     {
       "code": "REQUIRED_INFERRED",
-      "detail": "2 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wydanie_zaswiadczenia_o, zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
+      "detail": "2 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wydanie_zaswiadczenia_o, zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
+      "fix": {
+        "kind": "choice",
+        "rule": "required.paper_is_silent",
+        "text": "Druk nie mówi, które pola są obowiązkowe (dotyczy 2). Wybierz gotową odpowiedź.",
+        "options": [
+          {
+            "label": "Zostaw nieobowiązkowe (druk tego nie oznacza)",
+            "value": "optional",
+            "current": true,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "required-only-when-the-paper-says"
+            }
+          },
+          {
+            "label": "Wszystkie obowiązkowe (2)",
+            "value": "required",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/0/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "unmarked-blank-is-required"
+            }
+          }
+        ]
+      }
     },
     {
       "code": "CLAUSE_LINK_MISSING",
-      "detail": "no https address of the information clause is known; the consent names the clause without a link"
-    },
-    {
-      "code": "INFERRED_SHAPE",
-      "detail": "CHECKBOX: no export shows one",
-      "field": "5a940314-1163-5fd9-b119-df2c030c4c38"
+      "detail": "no https address of the information clause is known; the consent names the clause without a link",
+      "fix": {
+        "kind": "applied",
+        "rule": "clause.as_partner_exports",
+        "text": "Na druku nie ma klauzuli informacyjnej: zgoda ma brzmienie z wzorcowych formularzy (bez odnośnika).",
+        "target": {
+          "id": "47eac519-2f5d-5d17-b294-24f099cb16c7",
+          "pointer": "/tabs/2/questions/1/field",
+          "label": "Zgoda",
+          "tab": "Kontakt i zgody"
+        },
+        "source": {
+          "type": "rule",
+          "name": "partner-exports"
+        }
+      }
     }
   ],
   "checks": [
@@ -184,6 +243,53 @@
       "33a9644e-1eb3-50c0-a160-552532087f4e": "prosze_o_wydanie_zaswiadczenia_o_inne",
       "182a9e81-62c4-55e8-999d-6b7688744ba1": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
     },
+    "evidence": {
+      "5a940314-1163-5fd9-b119-df2c030c4c38": [
+        {
+          "page": 1,
+          "box": [
+            89.0,
+            307.42,
+            95.44,
+            407.69
+          ],
+          "runs": [
+            "r15"
+          ],
+          "quote": "Proszę o wydanie zaświadczenia o",
+          "candidate": "c6"
+        }
+      ],
+      "33a9644e-1eb3-50c0-a160-552532087f4e": [
+        {
+          "page": 1,
+          "box": [
+            127.6,
+            395.69,
+            523.6,
+            407.69
+          ],
+          "quote": "inne",
+          "candidate": "c12"
+        }
+      ],
+      "182a9e81-62c4-55e8-999d-6b7688744ba1": [
+        {
+          "page": 1,
+          "box": [
+            340.77,
+            458.29,
+            523.77,
+            470.29
+          ],
+          "runs": [
+            "r23"
+          ],
+          "quote": "Zaświadczenie potrzebne jest celem przedłożenia w",
+          "candidate": "c14"
+        }
+      ]
+    },
     "ledger": {
       "blanks_found": 16,
       "became_field": 3,
@@ -281,5 +387,7 @@
         }
       ]
     }
-  }
+  },
+  "input_sha256": "3c7f6a8d3ccddac4f0926b4b1450b0b1f89256f3d99bb0f5162e95dc7a923f10",
+  "form_sha256": "93ab1a5964d6a165020e8927256989afe59ed35177c1d94bce5b45329cdf5453"
 }

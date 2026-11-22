@@ -162,11 +162,11 @@ Shramko
 
 ### 19. [Opcjonalne] Dodatkowe pole na materiały
 ```text
-Film: <<FILM_LINK>> | Kod: https://github.com/AndriiShramko/shramko-asystent-urzednika | Wyniki JSON: https://github.com/AndriiShramko/shramko-asystent-urzednika/tree/main/results | Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>>
+Film: <<FILM_LINK>> | Kod: https://github.com/AndriiShramko/shramko-asystent-urzednika | Wyniki JSON wszystkich 7 formularzy (także zestaw 08) i archiwum obrazu: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.0-hacknation | Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@<<FINAL_DIGEST>>
 ```
 
 ### Файлы JSON семи оцениваемых форм (требование карточки)
-Лежат в репозитории в `results/` (наборы 02, 03, 04, 06, 07, 08, 09), пересобираются из финального образа после 09:15. Набор 08 в git не кладётся (в нём банковский счёт учреждения с бумаги, проверка публикации такое не пропускает): он идёт файлом в релиз GitHub, ссылка на релиз — в поле 19, если релиз опубликован с вашего «да».
+Все 7 файлов (наборы 02, 03, 04, 06, 07, 08, 09) лежат в публичном релизе GitHub: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.0-hacknation — вместе с архивом образа (запасной путь). В git (`results/`) лежат 6 из 7: набор 08 цитирует банковский счёт учреждения с бумаги, проверка публикации такое в git не пускает. Если HackTribe позволяет приложить файлы — приложите и сами JSON из релиза; ссылка на релиз стоит в поле 19.
 
 ---
 

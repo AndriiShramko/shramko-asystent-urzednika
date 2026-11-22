@@ -13,11 +13,115 @@
   "warnings": [
     {
       "code": "REQUIRED_INFERRED",
-      "detail": "6 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wynajem_lub_uzyczenie_swietlicy_wiejskiej_w, termin_od, termin_do, cel_wynajecia_swietlicy, przewidywana_ilosc_uczestnikow, imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz"
+      "detail": "6 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wynajem_lub_uzyczenie_swietlicy_wiejskiej_w, termin_od, termin_do, cel_wynajecia_swietlicy, przewidywana_ilosc_uczestnikow, imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz",
+      "fix": {
+        "kind": "choice",
+        "rule": "required.paper_is_silent",
+        "text": "Druk nie mówi, które pola są obowiązkowe (dotyczy 6). Wybierz gotową odpowiedź.",
+        "options": [
+          {
+            "label": "Zostaw nieobowiązkowe (druk tego nie oznacza)",
+            "value": "optional",
+            "current": true,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": []
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": []
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "required-only-when-the-paper-says"
+            }
+          },
+          {
+            "label": "Wszystkie obowiązkowe (6)",
+            "value": "required",
+            "current": false,
+            "set": [
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/1/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/2/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/3/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/4/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/5/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              },
+              {
+                "pointer": "/tabs/1/questions/0/field/repeatingSectionGrid/6/field/validation",
+                "value": [
+                  "REQUIRED"
+                ]
+              }
+            ],
+            "source": {
+              "type": "rule",
+              "name": "unmarked-blank-is-required"
+            }
+          }
+        ]
+      }
     },
     {
       "code": "CLAUSE_LINK_MISSING",
-      "detail": "no https address of the information clause is known; the consent names the clause without a link"
+      "detail": "no https address of the information clause is known; the consent names the clause without a link",
+      "fix": {
+        "kind": "applied",
+        "rule": "clause.as_partner_exports",
+        "text": "Na druku nie ma klauzuli informacyjnej: zgoda ma brzmienie z wzorcowych formularzy (bez odnośnika).",
+        "target": {
+          "id": "f04b11a9-ef86-5dd9-a38b-a7444662ad55",
+          "pointer": "/tabs/2/questions/2/field",
+          "label": "Zgoda",
+          "tab": "Kontakt i zgody"
+        },
+        "source": {
+          "type": "rule",
+          "name": "partner-exports"
+        }
+      }
     },
     {
       "code": "INFERRED_SHAPE",
@@ -165,6 +269,137 @@
       "cc346d9f-dcda-518a-8ebc-9e3f6c5b926a": "imie_i_nazwisko_wnioskodawca_w_przypadku_innej_osoby_niz",
       "b81ed336-c02f-59f3-9eab-24358ba492bf": "zbiorcze_oswiadczenie_tej_osoby"
     },
+    "evidence": {
+      "af76acc9-a851-5658-999f-51113a327102": [
+        {
+          "page": 1,
+          "box": [
+            193.5,
+            310.52,
+            401.88,
+            321.52
+          ],
+          "runs": [
+            "r15"
+          ],
+          "quote": "wynajęcie/użyczenie* świetlicy wiejskiej"
+        }
+      ],
+      "1100fa41-c961-55e8-afb2-d18e8fe06ff2": [
+        {
+          "page": 1,
+          "box": [
+            302.21,
+            348.52,
+            520.24,
+            359.52
+          ],
+          "runs": [
+            "r16"
+          ],
+          "quote": "Proszę o wynajem/użyczenie* świetlicy wiejskiej w",
+          "candidate": "c5"
+        }
+      ],
+      "08c8e3a6-0abf-5f63-bf55-46e985c88a26": [
+        {
+          "page": 1,
+          "box": [
+            233.15,
+            367.42,
+            349.24,
+            378.42
+          ],
+          "runs": [
+            "r18"
+          ],
+          "quote": "wraz z wyposażeniem w terminie od",
+          "candidate": "c6"
+        }
+      ],
+      "6f66c0b8-6070-56b9-bb21-cc08b3d7ea53": [
+        {
+          "page": 1,
+          "box": [
+            367.63,
+            367.42,
+            521.63,
+            378.42
+          ],
+          "runs": [
+            "r20"
+          ],
+          "quote": "do",
+          "candidate": "c7"
+        }
+      ],
+      "5e13357a-0c1c-51f9-ae2c-200d897456c6": [
+        {
+          "page": 1,
+          "box": [
+            186.15,
+            386.42,
+            519.2,
+            397.42
+          ],
+          "runs": [
+            "r22"
+          ],
+          "quote": "1. Cel wynajęcia świetlicy",
+          "candidate": "c8"
+        }
+      ],
+      "d5e05ddf-9638-5cfa-8cc8-17d3a9757526": [
+        {
+          "page": 1,
+          "box": [
+            233.27,
+            434.22,
+            486.27,
+            445.22
+          ],
+          "runs": [
+            "r25"
+          ],
+          "quote": "2. Przewidywana ilość uczestników",
+          "candidate": "c9"
+        }
+      ],
+      "cc346d9f-dcda-518a-8ebc-9e3f6c5b926a": [
+        {
+          "page": 1,
+          "box": [
+            54.1,
+            475.12,
+            500.18,
+            486.12
+          ],
+          "runs": [
+            "r29"
+          ],
+          "quote": "imię i nazwisko – wnioskodawca, w przypadku innej osoby niż wnioskodawca - zgoda osoby odpowiedzialnej",
+          "candidate": "c10"
+        }
+      ],
+      "b81ed336-c02f-59f3-9eab-24358ba492bf": [
+        {
+          "page": 1,
+          "box": [
+            54.1,
+            508.52,
+            525.09,
+            532.12
+          ],
+          "runs": [
+            "r30",
+            "r31",
+            "r32",
+            "r33"
+          ],
+          "quote": "4. Jednocześnie oświadczam, że (w przypadku innej osoby niż wnioskodawca, zbiorcze oświadczenie tej osoby załączyć do wniosku) :"
+        }
+      ]
+    },
     "ledger": {
       "blanks_found": 11,
       "became_field": 6,
@@ -230,5 +465,7 @@
         }
       ]
     }
-  }
+  },
+  "input_sha256": "8ba4a8c133f08c9a9893695d91387c98ac1a978395f4c931b12565bfe43fa311",
+  "form_sha256": "5fd513a4bac90604655844d2a00c6a6cbfd2e4b5e133000b076a0c983d6a142f"
 }
