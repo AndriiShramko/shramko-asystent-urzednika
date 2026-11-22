@@ -4,6 +4,19 @@ A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrode
 
 The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. As started by the commands below, no language model runs in the product and it makes no network call at run time. One optional step for weak scan pages can be pointed by the operator at their own server with an open-weight model; it is off unless configured ([`apps/converter/README.md`](apps/converter/README.md), "Optional step").
 
+## Where the jury sees each criterion / Gdzie widać kryteria oceny
+
+| Criterion of the task card | Where to see it |
+|---|---|
+| Minimum scope: REST, the eight formats, the partner's structure, thematic pages | `POST /v1/forms/convert` answers exactly `title`, `tabs`, `flow`; [`results/`](results/) holds the forms of the judged sets (set 08 as a release asset, see [`results/README.md`](results/README.md)); `GET /status` lists the eight formats |
+| I. Dictionaries and initial data | in the JSON, fields with `dictionaryName` (for example `Kraje` with the default value Polska); on the page `/ui/`, view "Widok dla jury", block "Słowniki" |
+| II. A proposed new dictionary | page block "Słowniki" → "Proponowany nowy słownik" (set 09: sports disciplines from the paper); the same in the report `meta.json` |
+| III. Dependencies and conditions | in the JSON, `states` with JSONata conditions (`SHOW`); on the page, the e-form preview: a choice opens the dependent section |
+| IV. Upload and preview page | `/ui/`: the clerk view (the original next to the e-form, remarks as cards on the document), the jury view, "Gdzie na papierze", trial fill and print on the original blank, many files at once with progress by stage |
+| V. Field validation and UX | validators in the JSON (`validation`: PESEL, NIP, REGON, postal code, e-mail, identity card number, ePUAP and e-Doręczenia addresses: the partner's own list); "Sprawdź poprawność" on the page; many files: `POST /v1/batches` or `POST /v1/jobs` |
+
+The film (at most 3 minutes) and the presentation (PDF) are linked in the HackTribe submission.
+
 ## For the jury: three commands
 
 How it works inside: local OCR, layout analysis and rules. The commands below run without a language model, without an API key and without a GPU.
@@ -80,19 +93,6 @@ Started without settings and without a key file, the service is open and writes 
 
 - **Reads:** PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (images and scans through local OCR). What it could not read is a warning with the page and the place, never a made-up field.
 - Links: state of the build [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) · [`apps/converter/README.md`](apps/converter/README.md) · [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md) · pre-event disclosure [`NOTICE`](NOTICE).
-
-## Where the jury sees each criterion / Gdzie widać kryteria oceny
-
-| Criterion of the task card | Where to see it |
-|---|---|
-| Minimum scope: REST, the eight formats, the partner's structure, thematic pages | `POST /v1/forms/convert` answers exactly `title`, `tabs`, `flow`; [`results/`](results/) holds the forms of the judged sets; `GET /status` lists the eight formats |
-| I. Dictionaries and initial data | in the JSON, fields with `dictionaryName` (for example `Kraje` with the default value Polska); on the page `/ui/`, view "Widok dla jury", block "Słowniki" |
-| II. A proposed new dictionary | page block "Słowniki" → "Proponowany nowy słownik" (set 09: sports disciplines from the paper); the same in the report `meta.json` |
-| III. Dependencies and conditions | in the JSON, `states` with JSONata conditions (`SHOW`); on the page, the e-form preview: a choice opens the dependent section |
-| IV. Upload and preview page | `/ui/`: the clerk view (the original next to the e-form, remarks as cards on the document), the jury view, "Gdzie na papierze", trial fill and print on the original blank, many files at once with progress by stage |
-| V. Field validation and UX | validators in the JSON (`validation`: PESEL, NIP, REGON, postal code, e-mail, identity card number, ePUAP and e-Doręczenia addresses: the partner's own list); "Sprawdź poprawność" on the page; many files: `POST /v1/batches` or `POST /v1/jobs` |
-
-The film (at most 3 minutes) and the presentation (PDF) are linked in the HackTribe submission.
 
 ## Configuration and REST API (short) / Konfiguracja i REST API
 

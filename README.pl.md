@@ -4,8 +4,6 @@ Usługa REST w Dockerze dla zadania „Cyfryzacja formularzy” (Centralny Ośro
 
 Idea w jednym zdaniu: **kompilator z księgowym, a nie skaner ze sztuczną inteligencją.** Reguły i biblioteka standardowych sekcji partnera składają formularz, a usługa się z niego rozlicza. W czasie działania nie pracuje żaden model językowy i nie ma żadnego połączenia z siecią.
 
-> **Stan na 21.11.2026:** budowa trwa; dokładny stan i rozbieżności opisuje [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md).
-
 ## Dla jury: trzy polecenia
 
 Jak to działa w środku: lokalny OCR, analiza układu i reguły, bez modelu językowego, bez klucza API i bez GPU.
