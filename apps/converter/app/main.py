@@ -306,7 +306,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         nothing that needs one: no secret, no path, no key material; the name, the version and the limits in force.
         `engine` comes from `app.engine`; so does the key `model`, present only when a model is configured, and
         then with its name and the class of its host at most. With no model configured the six keys are fixed."""
-        return {
+        body = {
             "service": app.title,
             "version": __version__,
             **engine_state.status(),
@@ -315,6 +315,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
                        "max_upload_bytes": s.max_upload_bytes},
         }
+        if pipeline.vision_on(s):   # ORDER M2 P1, weak image page reader: ON or FALLBACK{reason} and the model name
+            from app import vision
+
+            body["vision"] = vision.status()
+        return body
 
     @app.post("/v1/forms/convert", openapi_extra=UPLOAD_ONE)
     async def convert(request: Request, report: int = 0) -> Response:
