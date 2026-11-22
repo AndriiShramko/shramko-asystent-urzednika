@@ -143,10 +143,11 @@ def _runs(fcs: list[int], props: dict[int, bytes], width: dict[int, int]) -> lis
 def doc_bytes(main: str, txbx: list[str] | None = None, para: dict[int, bytes] | None = None,
               chars: dict[int, bytes] | None = None, compressed: int = 0, fonts: tuple[str, ...] = ("Times New Roman",
               "Wingdings"), flags: int = 0x0200, nfib: int = 0x00C1, with_papx: bool = True,
-              table_name: str | None = None) -> bytes:
+              table_name: str | None = None, extra: dict[int, bytes] | None = None) -> bytes:
     """A Word 97 binary document. `main` and the text-box texts use Word's marks (\\r paragraph, \\x07 cell or row
     end, \\x0c page break, \\x13 \\x14 \\x15 fields). The first `compressed` characters are stored as an 8-bit piece,
-    the rest as UTF-16. `para` maps the CP of a paragraph mark to its sprms, `chars` the CP of a character to its."""
+    the rest as UTF-16. `para` maps the CP of a paragraph mark to its sprms, `chars` the CP of a character to its.
+    `extra` maps a fibRgFcLcb97 index to a table-stream structure that holds no stream offsets (PlcSpaMom, DggInfo)."""
     para, chars = para or {}, chars or {}
     boxes = txbx or []
     full = main + "".join(boxes)
@@ -198,6 +199,9 @@ def doc_bytes(main: str, txbx: list[str] | None = None, para: dict[int, bytes] |
         bounds.append(bounds[-1] + 1)  # the dummy last box
         blob = struct.pack(f"<{len(bounds)}I", *bounds) + b"\0" * 22 * (len(bounds) - 1)
         fclcb[56] = (len(tbl), len(blob))
+        tbl += blob
+    for index, blob in (extra or {}).items():
+        fclcb[index] = (len(tbl), len(blob))
         tbl += blob
 
     lw = [0] * 22

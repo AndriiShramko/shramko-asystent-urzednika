@@ -2,6 +2,8 @@
 
 Written on 21 November 2026, 13:40, by the preparing session. It follows [`../03-plan/DECISIONS-forms-track.md`](../03-plan/DECISIONS-forms-track.md) (ids `D1` … `D14` below refer to it; that file wins over this one). Format of the partner: [`coi-json-format.md`](coi-json-format.md). Packages that build this: [`../03-plan/work-packages/WP-F-forms-to-json.md`](../03-plan/work-packages/WP-F-forms-to-json.md).
 
+State on 22 November 2026 (main `7cdcbfc`): this file is the design, not a description of the build. Built under `apps/converter/app/`: `model`, `readers`, `find`, `lexicon`, `mean`, `compose`, `gate`, `guard`, `auth`, the CLI and the routes that `main.py` serves. Not built: the folders `conditions`, `validation`, `dictionaries`, `sidecar`, `privacy`, `security`, `diff`, `export`, `metrics` of section 2 as separate modules (the validator names live in `compose/validators.py`), the routes marked "not built" in section 3, and the settings marked "no effect" in section 4. What runs today: [`../../apps/converter/README.md`](../../apps/converter/README.md).
+
 Sources of the facts used here: `research/14` (stack, wheels, licences), `research/15` (the partner's platform), `research/16` (security), `research/18` (versions, exports, evaluation), the model reports in `research/eden/` (`e2` document analysis, `e3` identifiers and law, `e5` ideas), the forensic facts in `docs/05-hackathon/mentor-questions/reference-json-forensics.txt`, and our own reading of the nine sets in `data/coi/`. A statement marked *(inference)* is ours and is not shown by any material.
 
 Words used below. **Paper**: the uploaded file, whatever its format. **Form**: the partner's JSON (`title`, `tabs`, `flow`). **Brief**: our small description of what the paper asks. **Sidecar**: our `meta` document that travels beside the form and never inside it.
@@ -83,11 +85,11 @@ tools/env_check.py           what this machine has and what to do about what it 
 | `POST /v1/forms/report` | `convert` | `200 application/json`: the sidecar alone. Same input gives the same hashes as `convert` |
 | `POST /v1/forms/inspect` | `convert` | what the guard sees without converting: type proof, pages, macros, external links, embedded files |
 | `POST /v1/batches` (several parts `file`, or one ZIP) | `convert` | `200 application/x-ndjson`: one line per file as it finishes: name hash, state, counts, warnings, seconds, the form. Nothing is kept after the stream ends |
-| `POST /v1/forms/diff` (two form JSON files) | `convert` | typed list of changes (section 6.9) |
-| `POST /v1/forms/export` (one form JSON, optional sidecar) | `convert` | the agent pack as `multipart/mixed` |
+| `POST /v1/forms/diff` (two form JSON files) | `convert` | typed list of changes (section 6.9); not built |
+| `POST /v1/forms/export` (one form JSON, optional sidecar) | `convert` | the agent pack as `multipart/mixed`; not built |
 | `GET /status` | none | service name and version, `engine: "rules"`, the token mode, the readable formats, the limits. The offline proof is not an endpoint: it is `convert` in a container started with `--network none` (section 8); a self-test endpoint was planned here and never built |
 | `GET /healthz` | none | `200` when the worker pool answers |
-| `GET /about/licences`, `/about/sbom`, `/about/build` | none | licence list, SBOM, git commit and base image digest |
+| `GET /about/licences`, `/about/sbom`, `/about/build` | none | licence list, SBOM, git commit and base image digest; not built |
 | `GET /openapi.json`, `/ui/` | none | the generated API description; the front end |
 
 The same pipeline runs without HTTP: `python -m converter convert FILE [--report DIR]` writes the form (and the sidecar) to files. CI uses it inside a container that has no network, the evaluation run uses it for the judged sets, and it is the quickest way to work on Windows. `python -m converter serve` starts the API and the front end without a container.
@@ -129,7 +131,7 @@ Every value comes from the environment or from a file named by the environment; 
 | `MAX_PAGES` | `60` | pages per document |
 | `MAX_PIXELS` | `80000000` | pixels of one decoded image. **Not lower: the scan of set 9 is 1654 × 37424 = 61.9 million pixels** |
 | `JOB_TIMEOUT_S` | `600` | wall-clock limit of one conversion; over it the request answers 504 and the job ends in the background |
-| `WORKER_MEMORY_MB` | `1024` | address-space limit of one worker |
+| `WORKER_MEMORY_MB` | `1024` | address-space limit of one worker; no effect today: jobs run in a thread of the service process |
 | `CONCURRENCY` | `2` | workers at once; more uploads wait or get `429` |
 | `RATE_LIMIT_PER_MIN` | `60` | per token subject |
 | `AUTH_MODE` | `auto` | `auto`: JWT when a key file is configured, otherwise open; `jwt`: a key file is required, start refused without it (exit 3); `off`: open. An open start is logged as a warning and shown by `GET /status` |
@@ -142,15 +144,15 @@ Every value comes from the environment or from a file named by the environment; 
 | `VALIDATORS` | `on` | `off` writes empty lists as in the exports (D8) |
 | `REPEATING_STYLE` | `native` | `native`: `REPEATING_SECTION`; `flat`: one plain section and a warning, for an importer that refuses the inferred shape |
 | `STRICT_EXTENSIONS` | `false` | `false` accepts `.jpe` as JPEG when the content is JPEG (set 7 holds such a file); `true` accepts exactly the eight extensions of the card |
-| `DOC_READER` | `native` | `native`, `libreoffice` (image `plus` only, D4 of the stack table), `off` |
+| `DOC_READER` | `native` | `native`, `libreoffice` (image `plus` only, D4 of the stack table), `off`. `libreoffice` has no effect today (no image installs it; it reads like `native`); `off` refuses DOC with `415 DOC_READER_OFF` |
 | `OCR_LANGS` | `pol+eng` | Tesseract languages |
-| `OCR_DPI` | `300` | rendering resolution of pages without text |
-| `OCR_SECOND_ENGINE` | `off` | `on` in `plus`: agreement check with the second engine |
+| `OCR_DPI` | `300` | rendering resolution of pages without text; no effect today (the readers do not read it) |
+| `OCR_SECOND_ENGINE` | `off` | `on` in `plus`: agreement check with the second engine; no effect today (not built) |
 | `ACTIVE_CONTENT` | `warn` | `strict` refuses files with macros or DDE |
-| `FILLED_FORM` | `warn` | `reject` answers 422 when the paper looks filled in |
+| `FILLED_FORM` | `warn` | `reject` answers 422 when the paper looks filled in; no effect today (no check emits `FILLED_FORM`) |
 | `FORM_KEY` | empty | fixed key for ids; empty: the slug of the title (D10) |
 | `ID_NAMESPACE` | fixed UUID in the code | namespace of the ids; an office may set its own |
-| `SIGN_OUTPUT` | `off` | `jws`: detached signature in `X-Content-Signature`; key from `SIGNING_KEY_FILE` |
+| `SIGN_OUTPUT` | `off` | `jws`: detached signature in `X-Content-Signature`; key from `SIGNING_KEY_FILE`; no effect today (no signature is written; `jws` only demands the key file at start) |
 | `MODEL_STEP` | `off` | the interface of D12; with `off` nothing is loaded |
 | `UI_ENABLED` | `true` | serve the front end |
 | `LOG_LEVEL` | `info` | logs are content-free at every level |
@@ -522,8 +524,8 @@ Framework behind these controls, with article numbers and status: `research/16` 
 | Base | `python:3.14-alpine`, digest pinned | `python:3.14-slim-trixie`, digest pinned |
 | Why | the card prefers light images and names Alpine; every dependency of the rule path has a wheel for it (`research/14` §3) | the second OCR engine, OpenCV and Morfeusz have no wheel for Alpine |
 | Readers | all eight formats; binary Word by the native reader | the same, plus optional LibreOffice for binary Word (`DOC_READER=libreoffice`, only after J9) |
-| OCR | Tesseract with `pol` and `eng` from the distribution's packages | plus RapidOCR on onnxruntime as the second opinion |
-| Polish wording | phrase table, `simplemma` | plus Morfeusz2 |
+| OCR | Tesseract with `pol` and `eng` from the distribution's packages | the same: no second engine is installed (`OCR_SECOND_ENGINE` is read in `config.py` and by nothing else) |
+| Polish wording | own phrase table (`app/lexicon`) | the same: Morfeusz2 is not installed |
 | Model | none | none shipped; the interface only |
 | Front end | built in a Node stage, copied as static files | the same |
 

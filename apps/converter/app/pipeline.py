@@ -17,7 +17,7 @@ from app import __version__, gate, interim
 from app.find import find
 from app.mean import understand
 from app.model.ledger import LedgerError, assemble_ledger
-from app.compose import ComposeError, compose
+from app.compose import ComposeError, compose, dictionaries
 from app.config import Settings, compose_options, read_options
 from app.guard import ProblemError
 from app.guard.checks import KIND_LABEL, sniff_kinds
@@ -192,6 +192,7 @@ def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] =
             meta["ledger"] = ledger.model_dump(mode="json", exclude_none=True)
         except LedgerError:
             warnings.append({"code": "LEDGER_NOT_CLOSED", "detail": "the account of the blanks could not be closed"})
+    meta.update(dictionaries.sidecar_extras(brief, composed.brief_keys))   # A8 DX: points I and II; empty = no key
     sidecar = {
         "version": 1,
         "converter": {"version": __version__, "pipeline": "interim" if fallback else "brief", "reader": model.source.reader},

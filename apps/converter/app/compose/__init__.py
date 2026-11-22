@@ -40,6 +40,7 @@ from app.model.form import (
     textarea,
 )
 
+from . import dictionaries
 from . import library as lib
 from . import required as required_rule
 from . import validators
@@ -53,6 +54,8 @@ __all__ = ["EXPORT_1", "EXPORT_5", "ComposeError", "ComposeOptions", "ComposeRes
            "pages_without_fixed_content"]
 
 TITLE_MISSING = "Formularz bez tytułu"
+NO_MATTER_TEXT = ("Z dokumentu nie odczytano żadnego pola sprawy: formularz zawiera tylko sekcje standardowe "
+                  "(i ewentualnie teksty lub opłatę z papieru). Pola sprawy trzeba uzupełnić ręcznie.")
 # Concept of a brief field -> the partner's validator (D8): the table and the rule live in compose.validators.
 CONCEPT_VALIDATORS = validators.CONCEPT_VALIDATORS
 # Shapes that no export shows (skill rule 14): each use is a remark.
@@ -223,6 +226,12 @@ def _brief_comp(f: BriefField, section_title: str, policy: str, remarks: list[Re
         # a single yes-or-no box (brief 1.1): the partner's grammar wants options, so the box is one option "Tak"
         # under the question; no export shows a CHECKBOX, the shape is flagged INFERRED_SHAPE like every CHECKBOX
         options = (SINGLE_BOX_OPTION,)
+    link = dictionaries.link_of(f)
+    if link is not None and link.written:
+        # A8 DX-2 (point I): the label names a country or a territorial unit, so the field takes the partner's
+        # dictionary; a dictionary is bound only to a drop-down list. The sidecar row says why (meta.dictionary_links).
+        return Comp(title=f.label, html=doc(p(f.hint)) if f.hint else "", validation=("REQUIRED",) if must else (),
+                    dictionary=link.dictionary, multi_level=link.multi_level, search=True, **{**common, "type": "SELECT"})
     return Comp(title=f.label, html=doc(p(f.hint)) if f.hint else "", options=options, validation=validation,
                 search=True if f.type == "SELECT" and len(f.options) > 15 else None, **common)
 
@@ -251,8 +260,11 @@ def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark], droppe
         secs.append(Sec("matter/oplata_za_wniosek", "Opłata", None, [
             Comp("informacja", "TEXT_BLOCK", "", html=doc(*[p(q) for q in quotes]), origin="paper"),
             Comp("potwierdzenie_oplaty", "FILE_UPLOADER", "Potwierdzenie opłaty")], origin="paper"))
+    # A8 DX-3: "no field read from the paper" is the honest gap, whatever text or fee the matter still shows; the
+    # reviewer reads this text as it is, so it is Polish. Before, NO_MATTER came only when no section was made at all.
+    if not any(c.origin == "paper" and c.type not in ("TEXT_BLOCK", "INFO_SECTION") for s in secs for c in s.comps):
+        remarks.append(Remark("NO_MATTER", NO_MATTER_TEXT))
     if not secs:
-        remarks.append(Remark("NO_MATTER", "the brief holds no field of the matter: the form is the standard scaffold only"))
         return []
 
     limit = max(1, o.max_fields_per_page)

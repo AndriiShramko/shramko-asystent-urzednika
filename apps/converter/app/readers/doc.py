@@ -15,8 +15,18 @@ Output: one run per paragraph, anchored "p[n]" (n-th body paragraph), "tbl[m]/ce
 cell of that row: the cell's ordinal, not a grid column), "txbx[j]/p[k]" (text box j of the story). Pages end at
 page breaks only (the file does not record where Word broke pages). Nothing is placed: no widths, no merges, no
 borders, no positions of text boxes; each such gap is one UNREADABLE_PART warning, so the finder knows the
-grid is a flow. Encrypted and obfuscated files are ENCRYPTED; Word 6/95 files and broken piece tables are
-UNREADABLE with the reason.
+grid is a flow.
+
+Native (origin "native", reader "doc.native"), the binary twin of docx.native: a document drawn as floating text
+boxes and shapes (a PDF exported to Word), chosen when the text of the text boxes this reader can place is at least
+NATIVE_SHARE of all text. The shape anchors (PlcSpaMom: anchor CP, rectangle in twips, what it is measured from)
+and the OfficeArt shapes of the main drawing (type, text id, line and fill) place each text box's paragraphs at the
+box and each visible drawn shape as a line or a rectangle, by the rules of docx.native. A position measured from a
+paragraph is known only for the first paragraph of a page (it starts at the top margin); anything else is counted
+in an UNREADABLE_PART warning, never placed by a guess.
+
+Encrypted and obfuscated files are ENCRYPTED; Word 6/95 files and broken piece tables are UNREADABLE with the
+reason.
 """
 from __future__ import annotations
 
@@ -27,17 +37,19 @@ from dataclasses import dataclass, field
 
 import olefile
 
-from app.model.common import Warning
-from app.model.page import Cell, Page, Run, Table, Widget
+from app.model.common import Box, Warning
+from app.model.page import Cell, Line, Page, Rect, Run, Table, Widget
 
 from . import register
-from ._base import Ids, ReaderError, ReadOptions, ReadResult
+from ._base import Ids, ReaderError, ReadOptions, ReadResult, r2
+from .docx import LINE_MAX_THICKNESS, NATIVE_SHARE, PICTURE_BOX_MAX
 
 WORD_IDENT = 0xA5EC
 NFIB_WORD97 = 0x00C1
 F_WHICH_TBL, F_ENCRYPTED, F_OBFUSCATED = 0x0200, 0x0100, 0x8000
 # fibRgFcLcb97 indices (MS-DOC 2.5.6)
 FC_PLCF_BTE_CHPX, FC_PLCF_BTE_PAPX, FC_STTBF_FFN, FC_CLX, FC_PLCF_TXBX_TXT = 12, 13, 15, 33, 56
+FC_PLCF_SED, FC_PLC_SPA_MOM, FC_DGG_INFO = 6, 40, 50
 # sprms
 SPRM_P_IN_TABLE, SPRM_P_TTP, SPRM_P_ITAP, SPRM_P_INNER_CELL, SPRM_P_INNER_TTP, SPRM_P_HUGE = (
     0x2416, 0x2417, 0x6649, 0x244B, 0x244C, 0x6646)
@@ -530,6 +542,9 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
     chpx = _Props(wd, table, *fib.pair(FC_PLCF_BTE_CHPX), papx=False)
     fonts = _fonts(table, *fib.pair(FC_STTBF_FFN))
 
+    native = _read_native(wd, table, fib, pieces, papx, chpx, fonts)
+    if native is not None:
+        return native
     out = _Out(Ids())
     rd = _Reader(papx, chpx, fonts, out)
     main_end = fib.ccp(3)
@@ -577,3 +592,265 @@ def _txbx_bounds(table: bytes, fc: int, lcb: int) -> list[tuple[int, int]]:
     except struct.error:
         return []
     return [(cps[k], cps[k + 1]) for k in range(n) if cps[k + 1] > cps[k]]
+
+
+# ---------------------------------------------------------------- native: a document drawn as text boxes and shapes
+
+TWIP = 20.0
+SHAPE_LINE, SHAPE_CONNECTOR, SHAPE_PICTURE = 20, 32, 75   # msosptLine, msosptStraightConnector1, msosptPictureFrame
+OPT_TXID, OPT_PIB, OPT_FILL_COLOR, OPT_FILL_BOOLS, OPT_LINE_BOOLS = 0x0080, 0x0104, 0x0181, 0x01BF, 0x01FF
+OPT_POSRELH, OPT_POSRELV = 0x0390, 0x0392
+SPRM_S_XA_PAGE, SPRM_S_YA_PAGE, SPRM_S_DXA_LEFT, SPRM_S_DXA_RIGHT, SPRM_S_DYA_TOP, SPRM_S_DYA_BOTTOM = (
+    0xB01F, 0xB020, 0xB021, 0xB022, 0x9023, 0x9024)
+A4 = {"width": 595.3, "height": 841.9, "left": 72.0, "right": 72.0, "top": 72.0, "bottom": 72.0}
+
+
+@dataclass
+class _Shape:
+    type: int
+    props: dict[int, int]
+
+
+@dataclass
+class _Spa:
+    cp: int
+    spid: int
+    rect: tuple[int, int, int, int]   # xaLeft, yaTop, xaRight, yaBottom in twips
+    bx: int                           # 0 margin, 1 page, 2 column
+    by: int                           # 0 margin, 1 page, 2 paragraph
+
+
+def _shapes(table: bytes, fc: int, lcb: int) -> dict[int, _Shape]:
+    """OfficeArtContent: the drawing group, then drawings (one byte: 0 main document, 1 headers) each holding an
+    OfficeArtDgContainer. Kept: the shapes of the main document with their type and simple properties."""
+    blob = table[fc:fc + lcb] if lcb and fc + lcb <= len(table) else b""
+    shapes: dict[int, _Shape] = {}
+
+    def walk(o: int, end: int) -> None:
+        last: int | None = None
+        while o + 8 <= end:
+            vi, typ, ln = struct.unpack_from("<HHI", blob, o)
+            body = o + 8
+            if body + ln > end:
+                return
+            if vi & 0xF == 0xF:
+                walk(body, body + ln)
+            elif typ == 0xF00A and ln >= 8:      # OfficeArtFSP: recInstance is the shape type
+                last = _u32(blob, body)
+                shapes[last] = _Shape(vi >> 4, {})
+            elif typ == 0xF00B and last is not None:   # OfficeArtFOPT: recInstance properties of 6 bytes
+                for i in range(min(vi >> 4, ln // 6)):
+                    pid, val = struct.unpack_from("<HI", blob, body + 6 * i)
+                    shapes[last].props[pid & 0x3FFF] = val
+            o = body + ln
+
+    try:
+        if len(blob) < 8:
+            return {}
+        o = 8 + struct.unpack_from("<HHI", blob, 0)[2]
+        while o + 9 <= len(blob):
+            ln = struct.unpack_from("<HHI", blob, o + 1)[2]
+            if blob[o] == 0:
+                walk(o + 9, min(o + 9 + ln, len(blob)))
+            o += 9 + ln
+    except struct.error:
+        return {}
+    return shapes
+
+
+def _anchors(table: bytes, fc: int, lcb: int) -> list[_Spa]:
+    """PlcSpaMom: (n+1) CPs and n FSPA of 26 bytes."""
+    if lcb < 4 + 4 + 26 or fc + lcb > len(table):
+        return []
+    n = (lcb - 4) // 30
+    try:
+        cps = struct.unpack_from(f"<{n + 1}i", table, fc)
+        out = []
+        for k in range(n):
+            spid, xl, yt, xr, yb, fl = struct.unpack_from("<IiiiiH", table, fc + 4 * (n + 1) + 26 * k)
+            out.append(_Spa(cps[k], spid, (xl, yt, xr, yb), (fl >> 1) & 3, (fl >> 3) & 3))
+    except struct.error:
+        return []
+    return out
+
+
+def _sections(wd: bytes, table: bytes, fc: int, lcb: int) -> list[tuple[int, dict[str, float]]]:
+    """PlcfSed: (end CP, page geometry in points) of each section; A4 with 1-inch margins where a value is absent."""
+    if lcb < 4 + 4 + 12 or fc + lcb > len(table):
+        return []
+    n = (lcb - 4) // 16
+    out = []
+    try:
+        cps = struct.unpack_from(f"<{n + 1}i", table, fc)
+        for k in range(n):
+            fc_sepx = struct.unpack_from("<i", table, fc + 4 * (n + 1) + 12 * k + 2)[0]
+            sprms: dict[int, bytes] = {}
+            if 0 <= fc_sepx < len(wd) - 2:
+                cb = _u16(wd, fc_sepx)
+                sprms = parse_sprms(wd[fc_sepx + 2:fc_sepx + 2 + cb])
+            names = (("width", SPRM_S_XA_PAGE), ("height", SPRM_S_YA_PAGE), ("left", SPRM_S_DXA_LEFT),
+                     ("right", SPRM_S_DXA_RIGHT), ("top", SPRM_S_DYA_TOP), ("bottom", SPRM_S_DYA_BOTTOM))
+            g = {name: (_u16(sprms[s], 0) / TWIP if len(sprms.get(s, b"")) >= 2 else A4[name]) for name, s in names}
+            out.append((cps[k + 1], g))
+    except struct.error:
+        return []
+    return out
+
+
+def _bool_prop(props: dict[int, int], pid: int, bit: int, default: bool = True) -> bool:
+    """An OfficeArt boolean: the 'use' bit 16 places higher says whether the value bit is set at all."""
+    v = props.get(pid)
+    if v is None or not (v >> (bit + 16)) & 1:
+        return default
+    return bool((v >> bit) & 1)
+
+
+def _doc_shape_kind(s: _Shape) -> str:
+    """'text', 'line', 'fill', 'rect', 'picture' or '' (invisible), as docx._shape_kind names them."""
+    if OPT_TXID in s.props:
+        return "text"
+    if s.type == SHAPE_PICTURE or OPT_PIB in s.props:
+        return "picture"
+    line = _bool_prop(s.props, OPT_LINE_BOOLS, 3)
+    if s.type in (SHAPE_LINE, SHAPE_CONNECTOR):
+        return "line" if line else ""
+    color = s.props.get(OPT_FILL_COLOR, 0xFFFFFF)
+    white = color >> 24 == 0 and color & 0xFFFFFF == 0xFFFFFF
+    if _bool_prop(s.props, OPT_FILL_BOOLS, 4) and not white:
+        return "fill"
+    return "rect" if line else ""
+
+
+def _txbx_entries(table: bytes, fc: int, lcb: int) -> list[tuple[int, int]]:
+    """(start, end) of every text box of the story by its index in PlcftxbxTxt (the text id of its shape - 1)."""
+    if lcb < 4 + 4 + 22:
+        return []
+    n = (lcb - 4) // 26
+    try:
+        cps = struct.unpack_from(f"<{n + 1}I", table, fc)
+    except struct.error:
+        return []
+    return [(cps[k], cps[k + 1]) for k in range(n)]
+
+
+def _printed(chars: list[_Char]) -> int:
+    return sum(1 for c in chars if c.ch.isprintable() and not c.ch.isspace())
+
+
+def _read_native(wd: bytes, table: bytes, fib: _Fib, pieces: list[_Piece], papx: _Props, chpx: _Props,
+                 fonts: list[str]) -> ReadResult | None:
+    """The document as placed text boxes and shapes, or None when it is not one (then the flow reader runs)."""
+    n_txbx = fib.ccp(9)
+    if not n_txbx:
+        return None
+    spas = _anchors(table, *fib.pair(FC_PLC_SPA_MOM))
+    shapes = _shapes(table, *fib.pair(FC_DGG_INFO))
+    entries = _txbx_entries(table, *fib.pair(FC_PLCF_TXBX_TXT))
+    if not spas or not shapes or not entries:
+        return None
+    main_end = fib.ccp(3)
+    main = story(wd, pieces, 0, main_end)
+    txbx0 = main_end + sum(fib.ccp(i) for i in (4, 5, 6, 7, 8))
+    chars = story(wd, pieces, txbx0, txbx0 + n_txbx)
+    sections = _sections(wd, table, *fib.pair(FC_PLCF_SED)) or [(main_end + 1, A4)]
+    breaks = [i for i, c in enumerate(main) if c.ch == "\x0c"]
+    ends = [i for i, c in enumerate(main) if c.ch in ("\r", "\x0c", "\x07")]
+
+    def page_of(cp: int) -> int:
+        return bisect.bisect_left(breaks, cp)
+
+    def geometry(cp: int) -> dict[str, float]:
+        for end, g in sections:
+            if cp < end:
+                return g
+        return sections[-1][1]
+
+    def box_of(spa: _Spa, s: _Shape) -> tuple[float, float, float, float] | None:
+        g = geometry(spa.cp)
+        bx = s.props.get(OPT_POSRELH, spa.bx)
+        by = s.props.get(OPT_POSRELV, spa.by)
+        base_x = {0: g["left"], 1: 0.0, 2: g["left"]}.get(bx)
+        base_y = {0: g["top"], 1: 0.0}.get(by)
+        if by == 2:   # from the anchoring paragraph: known only when it is the first paragraph of its page
+            p = page_of(spa.cp)
+            start = breaks[p - 1] + 1 if p else 0
+            base_y = g["top"] if bisect.bisect_left(ends, start) == bisect.bisect_left(ends, spa.cp) else None
+        if base_x is None or base_y is None:
+            return None
+        xl, yt, xr, yb = spa.rect
+        raw = Box.from_raw(base_x + xl / TWIP, base_y + yt / TWIP, base_x + xr / TWIP, base_y + yb / TWIP)
+        return tuple(r2(v) for v in raw) if raw else None
+
+    # Which text box each placed shape shows: the high word of its text id is the box index + 1, the low word
+    # its place in a chain of linked boxes (only the first of a chain is kept: the story text is read once).
+    placed: dict[int, tuple[int, tuple[float, float, float, float]]] = {}
+    drawn: list[tuple[int, str, tuple[float, float, float, float]]] = []
+    unplaced = {"position": 0, "pictures": 0, "tables": 0}
+    for spa in spas:
+        s = shapes.get(spa.spid)
+        kind = _doc_shape_kind(s) if s is not None else ""
+        if not kind:
+            continue
+        box = box_of(spa, s)
+        if box is None:
+            unplaced["position"] += 1
+            continue
+        if kind == "text":
+            txid = s.props[OPT_TXID]
+            if txid & 0xFFFF == 0 and 0 < txid >> 16 <= len(entries):
+                placed.setdefault((txid >> 16) - 1, (page_of(spa.cp), box))
+            continue
+        drawn.append((page_of(spa.cp), kind, box))
+    boxed = sum(_printed(chars[a:b]) for k, (a, b) in enumerate(entries) if k in placed)
+    other = _printed(main) + sum(_printed(chars[a:b]) for k, (a, b) in enumerate(entries) if k not in placed)
+    if not boxed or boxed < NATIVE_SHARE * (boxed + other):
+        return None
+
+    ids = Ids()
+    n_pages = max([len(breaks)] + [p for p, _ in placed.values()] + [p for p, _, _ in drawn]) + 1
+    content: list[dict] = [{"runs": [], "lines": [], "rects": [], "widgets": []} for _ in range(n_pages)]
+    warnings: list[Warning] = []
+    for k in sorted(placed, key=lambda k: (placed[k][0], k)):
+        page, box = placed[k]
+        a, b = entries[k]
+        bo = _Out(ids)
+        rd = _Reader(papx, chpx, fonts, bo)
+        rd.read(chars[a:b], lambda n: f"p[{n}]")
+        bo.new_page()
+        warnings.extend(bo.warnings)
+        for pg in bo.pages:
+            unplaced["tables"] += len(pg.tables)
+            in_tables = {rid for t in pg.tables for c in t.cells for rid in c.runs}
+            content[page]["runs"] += [r.model_copy(update={"box": box, "anchor": None})
+                                      for r in pg.runs if r.id not in in_tables]
+            content[page]["widgets"] += [w.model_copy(update={"box": box, "anchor": None}) for w in pg.widgets]
+    for page, kind, (x0, y0, x1, y1) in drawn:
+        w, h = x1 - x0, y1 - y0
+        c = content[page]
+        if kind in ("line", "fill") and h <= LINE_MAX_THICKNESS and w > h:
+            y = r2((y0 + y1) / 2)
+            c["lines"].append(Line(id=ids.next("l"), box=(x0, y, x1, y)))
+        elif kind in ("line", "fill") and w <= LINE_MAX_THICKNESS and h > w:
+            x = r2((x0 + x1) / 2)
+            c["lines"].append(Line(id=ids.next("l"), box=(x, y0, x, y1)))
+        elif kind in ("fill", "rect"):
+            c["rects"].append(Rect(id=ids.next("q"), box=(x0, y0, x1, y1)))
+        elif kind == "picture":
+            if w <= PICTURE_BOX_MAX and h <= PICTURE_BOX_MAX:
+                c["rects"].append(Rect(id=ids.next("q"), box=(x0, y0, x1, y1)))
+            else:
+                unplaced["pictures"] += 1
+    pages = []
+    for i, c in enumerate(content):
+        g = geometry(breaks[i - 1] + 1 if i and i - 1 < len(breaks) else 0)
+        pages.append(Page(number=i + 1, width=r2(g["width"]), height=r2(g["height"]), origin="native", **c))
+    body = _printed(main)
+    for n, text in ((unplaced["position"], "shapes have a position this reader cannot place (measured from a "
+                     "paragraph that is not the first of its page); they are not read"),
+                    (body, "characters of body text between the text boxes have no position on the page; they "
+                     "are not read"),
+                    (unplaced["tables"], "tables inside text boxes are not read"),
+                    (unplaced["pictures"], "pictures larger than a box glyph; their pixels are not read")):
+        if n:
+            warnings.append(Warning(code="UNREADABLE_PART", detail=f"binary Word: {n} {text}"))
+    return ReadResult(reader="doc.native", pages=pages, warnings=warnings)

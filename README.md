@@ -81,6 +81,31 @@ Started without settings and without a key file, the service is open and writes 
 - **Reads:** PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (images and scans through local OCR). What it could not read is a warning with the page and the place, never a made-up field.
 - Links: state of the build [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) · [`apps/converter/README.md`](apps/converter/README.md) · [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md) · pre-event disclosure [`NOTICE`](NOTICE).
 
+## Koszt i wymagania / Cost and requirements
+
+**Wymagania (PL).** Procesor, bez GPU. W czasie pracy usługa nie korzysta z sieci (polecenie 1 powyżej działa z `--network none`). Obraz: 428 238 281 bajtów po rozpakowaniu (`docker image inspect`, build `sha256:e8765c4f…`, linux/amd64; rozmiaru skompresowanego nie mierzono). Ustawienia domyślne: 2 równoległe zadania, 600 s na zadanie, 20 MiB i 60 stron na plik (`apps/converter/app/config.py`). Wywołań zewnętrznych nie ma, więc nie ma opłat za wywołanie; zużycia CPU w sekundach na formularz nie mierzono (poniżej tylko czas zegarowy).
+
+**Requirements (EN).** CPU only, no GPU. No network at run time (command 1 above runs with `--network none`). Image: 428,238,281 bytes uncompressed (`docker image inspect`, build `sha256:e8765c4f…`, linux/amd64; the compressed size was not measured). Defaults: 2 parallel jobs, 600 s per job, 20 MiB and 60 pages per file (`apps/converter/app/config.py`). No external service is called, so there is no per-call fee; CPU-seconds per form were not measured (below is wall-clock time only).
+
+Czas jednej konwersji przez REST, 108 plików (54 z zestawów jurorskich i 54 z archiwum), obraz `061fce4b…`, kontener `--cpus 2 --memory 4g`, pliki jeden po drugim, 22.11.2026. Komputer był współdzielony z innym zadaniem obciążającym procesor w 100 %, więc sekundy są zawyżone; liczą się rzędy wielkości. / Seconds for one conversion over REST, 108 files (54 from the judged sets, 54 from the city archive), image `061fce4b…`, container `--cpus 2 --memory 4g`, files one after another, 22 Nov 2026. The laptop was shared with another job using a CPU at 100 %, so the seconds are inflated; read the order of magnitude.
+
+| Format | Files | Median s | Max s |
+|---|---|---|---|
+| DOC | 16 | 0.9 | 1.6 |
+| DOCX | 17 | 0.9 | 3.1 |
+| ODS | 7 | 1.2 | 5.4 |
+| XLSX | 7 | 1.4 | 5.4 |
+| PDF | 32 | 1.9 | 131.5 |
+| JPG | 8 | 12.2 | 58.9 |
+| JPEG | 7 | 15.6 | 65.0 |
+| PNG | 7 | 16.7 | 54.2 |
+
+The PDF maximum is one 16-page scan (OCR); one 130-page PDF was refused with 413 (the limit is 60 pages) and is in the 32. 107 of 108 answered 200, none 5xx, no timeout in that run. A separate run of 280 synthetic scans and photos (image `061fce4b…`, `--cpus 2`, shared laptop): median 4.7 s, maximum 17.1 s; 27 images of the judged sets: median 7.7 s, maximum 52.0 s. / Maksimum dla PDF to jeden 16-stronicowy skan (OCR); jeden PDF o 130 stronach odrzucono kodem 413 (limit to 60 stron) i jest wśród 32. 107 z 108 odpowiedzi to 200, bez błędów 5xx i bez przekroczenia czasu w tym przebiegu. Osobny przebieg 280 syntetycznych skanów i zdjęć: mediana 4,7 s, maksimum 17,1 s; 27 obrazów z zestawów jurorskich: mediana 7,7 s, maksimum 52,0 s.
+
+Pamięć / Memory: peak 577 MiB (limit 2 GiB) over that run (280 synthetic scans and photos, 27 set images, 3 blank controls); one earlier check reports 55 to 190 MiB from idle to one OCR job (`docker stats`), one OCR job keeping one core at about 100 %. Szczyt 577 MiB w tym przebiegu (280 skanów i zdjęć, 27 obrazów, 3 puste kontrole); wcześniejszy pomiar: od 55 do 190 MiB od stanu spoczynku do jednego zadania OCR.
+
+Build from source / Budowa ze źródeł (from the repository root, context `.`): `docker build -f apps/converter/Dockerfile -t converter:core .`
+
 ---
 
 ## Pre-event material (a parked vision, not built in this task)
@@ -91,7 +116,7 @@ Everything below was prepared before the event (tag `pre-event`, see [`NOTICE`](
 
 Sites and pitch decks: <https://formularze.flyreelstudio.eu> (forms: from a paper form to an online service; the primary track) and <https://urzad.flyreelstudio.eu> (public-information requests) · Polski: [README.pl.md](README.pl.md) · Русский (для владельца проекта): [README.ru.md](README.ru.md) · For AI agents: [START_HERE.md](START_HERE.md), [AGENTS.md](AGENTS.md), [AGENT_SETUP.md](AGENT_SETUP.md), [llms.txt](llms.txt) · Known traps: [docs/warnings.md](docs/warnings.md)
 
-> **Status: pre-event brief (tag `pre-event`).** This repository contains research, requirements, a scope decision, a build plan and an orchestration playbook written before the hackathon. It contains no application code yet. Application code is written during the 24 hours of the event and will be recognisable by commits after the tag. Live state: [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md).
+> **Status of this section: pre-event brief (tag `pre-event`).** What follows is research, requirements, a scope decision, a build plan and an orchestration playbook written before the hackathon, for another product. The forms converter described above is not part of it: its code is `apps/converter` (the service) and `apps/review-web` (the review page), written during the event, in commits after the tag. Live state: [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md).
 
 ## Questions this answers
 

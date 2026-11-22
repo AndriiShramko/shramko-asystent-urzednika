@@ -11,6 +11,8 @@ CODES: dict[str, tuple[int, str]] = {
     "TOKEN_INVALID": (401, "Token dostępu jest nieprawidłowy"),
     "TOKEN_EXPIRED": (401, "Token dostępu wygasł"),
     "SCOPE": (403, "Token nie ma wymaganego zakresu"),
+    "NOT_FOUND": (404, "Nie ma takiego adresu"),
+    "METHOD_NOT_ALLOWED": (405, "Ta metoda nie jest obsługiwana pod tym adresem"),
     "TOO_LARGE": (413, "Plik jest za duży"),
     "TOO_MANY_PAGES": (413, "Dokument ma za dużo stron"),
     "TOO_MANY_PIXELS": (413, "Obraz ma za dużo pikseli"),

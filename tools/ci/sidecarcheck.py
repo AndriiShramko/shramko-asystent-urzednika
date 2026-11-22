@@ -35,6 +35,15 @@ def _validators():
     return Draft202012Validator(shape), Draft202012Validator(ledger), Draft202012Validator(contract)
 
 
+@lru_cache(maxsize=1)
+def _proposals_validator():
+    """A8 DX-1: meta.proposals, when present, against `Proposals` of the contract, as meta.ledger against `Ledger`."""
+    from jsonschema import Draft202012Validator
+
+    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+    return Draft202012Validator({"$schema": contract["$schema"], "$defs": contract["$defs"], "$ref": "#/$defs/Proposals"})
+
+
 def _lines(validator, doc, prefix: str, limit: int = 5) -> list[str]:
     """One line per schema error: the place and the rule, never a value of the document."""
     errors = sorted(validator.iter_errors(doc), key=lambda e: [str(p) for p in e.absolute_path])
@@ -61,6 +70,8 @@ def problems_of_sidecar(raw: bytes, form: bytes | None = None) -> list[str]:
         out.append(f"sidecar checks are {ids}, not G1 to G12 once each")
     if "ledger" in doc["meta"]:
         out += _lines(ledger, doc["meta"]["ledger"], "sidecar meta/ledger (contract Ledger)")
+    if "proposals" in doc["meta"]:
+        out += _lines(_proposals_validator(), doc["meta"]["proposals"], "sidecar meta/proposals (contract Proposals)")
     if form is not None:
         if "form_sha256" not in doc:
             out.append("sidecar has no form_sha256")

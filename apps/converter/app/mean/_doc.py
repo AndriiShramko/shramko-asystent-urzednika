@@ -13,8 +13,8 @@ from app.model.common import Evidence
 from app.model.page import PageModel, Run
 
 _PL = str.maketrans("ąćęłńóśźżĄĆĘŁŃÓŚŹŻ", "acelnoszzACELNOSZZ")
-# "2.1 ", "B.3 ", "A. ", "1) ", "17. " in front of a heading or a label; never "W przypadku" and never "17 zł".
-NUMBERING = re.compile(r"^\s*(?:[A-Z](?:\.\d*|\d+)(?:\.\d+)*\.?|(?=\d*[.)])\d+(?:\.\d+)*[.)]?)\s+(?=\S)")
+# "2.1 ", "B.3 ", "A. ", "1) ", "17. ", "a) " in front of a heading or a label; never "W przypadku", never "17 zł".
+NUMBERING = re.compile(r"^\s*(?:[a-z]\)|[A-Z](?:\.\d*|\d+)(?:\.\d+)*\.?|(?=\d*[.)])\d+(?:\.\d+)*[.)]?)\s+(?=\S)")
 BULLET = re.compile(r"[-❑□☐■▪•◻❏❐]")
 # "wynajęcie/użyczenie*": alternatives joined by a slash and marked with a star (design 6.4.3 rows 3 and 4).
 ALT = re.compile(r"(\w[\w-]*(?:\s*/\s*\w[\w-]*)+)\s*\*+")
