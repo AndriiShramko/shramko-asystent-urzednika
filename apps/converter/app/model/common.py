@@ -100,6 +100,10 @@ WarningCode = Literal[
     "CONDITION_NOT_WRITTEN", "SECTION_SPLIT", "REPEATING_FLATTENED", "STEP_NOTE_ADDED", "MARKUP_IN_LABEL",
     "TITLE_MISSING", "ADDRESSEE_MISSING", "APPLICANTS_ASSUMED", "SOLE_TRADER_AS_ENTITY", "CLAUSE_LINK_MISSING",
     "NO_MATTER", "EXTRA_NOT_PLACED",
+    # WP-H4: the three outcomes of the model step; `app.engine.engine_of` reads them. Not emitted until WP-H1.
+    "MODEL_USED",            # the model step ran and its answer was applied: engine rules+model
+    "MODEL_FALLBACK",        # the model step was tried and failed; the output is the output of the rules
+    "MODEL_SKIPPED",         # a model is configured and the step had nothing to ask: engine rules
 ]
 
 Status = Literal["stated", "not_found", "ambiguous"]

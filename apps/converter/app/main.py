@@ -11,6 +11,7 @@ import logging
 import re
 import time
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import AsyncIterator
 
@@ -24,7 +25,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app import __version__, pipeline
+from app import __version__, engine, pipeline
 from app.auth import RateLimiter, TokenVerifier, scopes_of
 from app.config import Settings
 from app.guard import ProblemError, UploadInfo, inspect_upload
@@ -40,10 +41,14 @@ PROBLEM_JSON = "application/problem+json"
 FORM_KEYS = {"title", "tabs", "flow"}  # decision D1: the partner's object and nothing else
 
 
-def _event(stage: str, result: str, job: str, size: int | None = None) -> None:
-    """Content-free log line: stage, result code, random job id, a size bucket. Never a name, text or token."""
+def _event(stage: str, result: str, job: str, size: int | None = None, ran_on: str | None = None) -> None:
+    """Content-free log line: stage, result code, random job id, a size bucket, and for a finished conversion the
+    engine it ran on (`app.engine`). Never a name, text or token."""
     bucket = "n/a" if size is None else f"<=2^{max(size, 1).bit_length()}"
-    log.info("stage=%s result=%s job=%s size=%s", stage, result, job, bucket)
+    if ran_on is None:
+        log.info("stage=%s result=%s job=%s size=%s", stage, result, job, bucket)
+    else:
+        log.info("stage=%s result=%s job=%s size=%s engine=%s", stage, result, job, bucket, ran_on)
 
 
 def problem_response(exc: ProblemError) -> JSONResponse:
@@ -148,8 +153,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     elif not s.auth_enabled:   # AUTH_MODE=auto and no key file
         log.warning("No JWT key configured: the API accepts requests WITHOUT a token. "
                     "For shared networks set AUTH_MODE=jwt and JWT_SECRET_FILE.")
+    engine_state = engine.EngineState(s)
 
-    app = FastAPI(title="Konwerter formularzy", version=__version__)
+    @asynccontextmanager
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        # Which engine runs here: the model's name and host class at most, never a URL or a key. Logged at start-up
+        # and not while the app is built, because only then do the log handlers of the server exist.
+        log.info(engine.start_line(s))
+        yield
+
+    app = FastAPI(title="Konwerter formularzy", version=__version__, lifespan=lifespan)
     app.state.settings = s
     app.add_middleware(BodyLimit, settings=s)
     app.add_middleware(CatchAll)   # added last, so it wraps everything of ours
@@ -228,7 +241,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             except ProblemError as exc:
                 _event("convert", exc.code, job, len(data))
                 raise
-        _event("convert", "ok", job, info.size)
+        _event("convert", "ok", job, info.size, engine_state.record(result.sidecar))
         return info, result, ms, job
 
     def canonical(obj: dict) -> bytes:
@@ -257,6 +270,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if result is not None and isinstance(result.sidecar, dict) and result.sidecar.get("warnings"):
             extra["X-Converter-Warnings"] = warnings_header(result)
         return {**extra,
+            engine.HEADER: engine.engine_of(result.sidecar if result is not None else None),
             "X-Input-SHA256": info.sha256,
             "X-Form-SHA256": hashlib.sha256(body).hexdigest(),
             "X-Converter-Version": __version__,
@@ -272,11 +286,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/status")
     async def status() -> dict:
         """What runs here, for a person or a script before the first upload. No token, like `/healthz`, and so
-        nothing that needs one: no secret, no path, no key material; the name, the version and the limits in force."""
+        nothing that needs one: no secret, no path, no key material; the name, the version and the limits in force.
+        `engine` comes from `app.engine`; so does the key `model`, present only when a model is configured, and
+        then with its name and the class of its host at most. With no model configured the six keys are fixed."""
         return {
             "service": app.title,
             "version": __version__,
-            "engine": "rules",
+            **engine_state.status(),
             "auth": "jwt" if s.auth_enabled else "off",
             "formats": reader_formats(),
             "limits": {"job_timeout_s": s.job_timeout_s, "concurrency": s.concurrency, "max_pages": s.max_pages,
@@ -344,7 +360,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     line: dict = {"name_sha256_16": hashlib.sha256((name or "").encode()).hexdigest()[:16]}
                     try:
                         info, result, _ = await run_in_threadpool(run_one, name, data, declared)
-                        line.update(state="ok", counts=result.sidecar.get("counts", {}),
+                        line.update(state="ok", engine=engine_state.record(result.sidecar), counts=result.sidecar.get("counts", {}),
                                     warnings=result.sidecar.get("warnings", []), form=result.form)
                     except ProblemError as exc:
                         line.update(state="error", code=exc.code, status=exc.status, counts={}, warnings=[], form=None)

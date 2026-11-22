@@ -481,7 +481,10 @@
             "SOLE_TRADER_AS_ENTITY",
             "CLAUSE_LINK_MISSING",
             "NO_MATTER",
-            "EXTRA_NOT_PLACED"
+            "EXTRA_NOT_PLACED",
+            "MODEL_USED",
+            "MODEL_FALLBACK",
+            "MODEL_SKIPPED"
           ],
           "title": "Code",
           "type": "string"

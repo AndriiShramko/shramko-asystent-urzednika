@@ -1,7 +1,8 @@
 """Command line: `python -m converter convert FILE [--out FILE] [--report DIR]` and `python -m converter serve`.
 
 `convert` runs the same guard and the same pipeline as the HTTP endpoint, without HTTP and without a token. It
-works in a container with no network. Exit codes: 0 done, 2 the file was refused (problem JSON on stderr),
+works in a container with no network. After a conversion one line on stderr names the engine (`ENGINE: rules`).
+Exit codes: 0 done, 2 the file was refused (problem JSON on stderr),
 3 the configuration is inconsistent, 4 the file cannot be read from disk or the output cannot be written.
 """
 from __future__ import annotations
@@ -13,7 +14,7 @@ import os
 import sys
 from pathlib import Path
 
-from app import __version__, pipeline
+from app import __version__, engine, pipeline
 from app.config import ConfigError, Settings
 from app.guard import ProblemError, inspect_upload
 
@@ -67,6 +68,8 @@ def cmd_convert(args: argparse.Namespace) -> int:
             (folder / f"{path.stem}.meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         except OSError as exc:
             return _cannot_write(args.report, exc)
+    # The engine goes to standard error, never to standard output: standard output is the form JSON and nothing else.
+    print(engine.cli_line(engine.engine_of(result.sidecar)), file=sys.stderr)
     return 0
 
 
@@ -84,11 +87,19 @@ def cmd_serve(args: argparse.Namespace) -> int:
     except ConfigError as exc:
         print("Configuration refused:\n  " + "\n  ".join(exc.problems), file=sys.stderr)
         return 3
+    import copy
+
     import uvicorn
+    from uvicorn.config import LOGGING_CONFIG
 
     from app.main import create_app
 
-    uvicorn.run(create_app(s), host=args.host, port=args.port, log_level=s.log_level, access_log=False)
+    # The service's own lines (logger `converter`: the engine at start, one content-free line per conversion) go
+    # where the server's lines go. Without this the logger has no handler and everything below a warning is lost.
+    log_config = copy.deepcopy(LOGGING_CONFIG)
+    log_config["loggers"]["converter"] = {"handlers": ["default"], "level": s.log_level.upper(), "propagate": False}
+    uvicorn.run(create_app(s), host=args.host, port=args.port, log_level=s.log_level, access_log=False,
+                log_config=log_config)
     return 0
 
 

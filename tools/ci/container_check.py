@@ -290,8 +290,13 @@ def conversion_problems(first_stdout: bytes, first_stderr: bytes, second_exit: i
     """What two conversions of one fixture must show: a passing form, the same bytes twice, a valid sidecar."""
     form = first_stdout.rstrip(b"\n")
     problems = problems_of_form(form)
-    if first_stderr.strip():
-        problems.append(f"stderr not empty: {first_stderr.decode(errors='replace')[-200:]}")
+    # WP-H4: the command line names its engine in one line on stderr; anything else there is a problem.
+    noise = [ln for ln in first_stderr.decode(errors="replace").splitlines()
+             if ln.strip() and not ln.startswith("ENGINE: ")]
+    if noise:
+        problems.append(f"stderr not empty: {' | '.join(noise)[-200:]}")
+    if b"ENGINE: " not in first_stderr:
+        problems.append("no ENGINE line on stderr")
     if second_exit != 0:
         return problems + [f"the conversion with --report exits {second_exit}"]
     return problems + problems_of_pair(form, second_form) + problems_of_sidecar(sidecar, second_form)

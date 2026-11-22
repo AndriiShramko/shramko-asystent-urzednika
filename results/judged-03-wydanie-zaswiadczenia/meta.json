@@ -46,19 +46,7 @@
     },
     {
       "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "prosze_o_wydanie_zaswiadczenia_o",
-      "candidate": "c6",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
-    },
-    {
-      "code": "REQUIRED_INFERRED",
-      "page": 1,
-      "field": "zaswiadczenie_potrzebne_jest_celem_przedlozenia_w",
-      "candidate": "c14",
-      "evidence": [],
-      "detail": "the paper does not say whether this is required; marked required by our rule"
+      "detail": "2 fields are required only by our rule and the paper does not mark them: REQUIRED is not written (required policy 'paper'); first: prosze_o_wydanie_zaswiadczenia_o, zaswiadczenie_potrzebne_jest_celem_przedlozenia_w"
     },
     {
       "code": "CLAUSE_LINK_MISSING",
