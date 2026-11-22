@@ -8,6 +8,8 @@ import { joinPlaces, ledgerRows, parsePreview, type Joined, type Place, type Pre
 import { FP } from '../lib/fp/text'
 import type { Sidecar } from '../lib/model'
 import type { EForm } from './eform'
+import { clerkText, inClerkView } from './clerk-view'
+import { sessionOf, type PaperMark } from './clerk-remarks'
 
 export interface Where { el: HTMLElement; ready: Promise<void>; preview(): Preview | null; joined(): Joined | null }
 
@@ -34,9 +36,46 @@ export function paperPage(page: PreviewPage, boxes: { cid: string; place: Place;
 export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise<unknown>): Where {
   let pv: Preview | null = null
   let joined: Joined | null = null
-  const body = h('div', { id: 'fp-where-body' }, h('p', { class: 'muted' }, '…'))
+  const body = h('div', { id: 'fp-where-body' }, clerkText('p', 'clerk.col.loading', { class: 'muted' }))
+  // Wave 11: in the clerk view this block is the left column, "the original"; the list of places is for the jury.
   const el = h('section', { id: 'fp-where', class: 'fp-step', 'aria-labelledby': 'h-where' },
-    h('h2', { id: 'h-where' }, FP.step(2), ' ', FP.whereHeading), body)
+    clerkText('h3', 'clerk.col.original', { class: 'clerk-only clerk-col-title' }),
+    clerkText('p', 'clerk.col.originalHint', { class: 'clerk-only muted clerk-col-hint' }),
+    h('h2', { id: 'h-where', class: 'jury-only' }, FP.step(2), ' ', FP.whereHeading), body)
+  const session = sessionOf(sidecar)
+  let papersEl: HTMLElement | null = null
+  let lastMarks: PaperMark[] = []
+
+  const pageLayer = (n: number): HTMLElement | null => papersEl?.querySelector<HTMLElement>(`.fp-paper[data-page="${n}"] .fp-paper-layer`) ?? null
+  const place = (box: [number, number, number, number], page: { w: number; h: number }): string =>
+    `left:${pct(box[0], page.w)};top:${pct(box[1], page.h)};width:${pct(Math.max(box[2] - box[0], 2), page.w)};height:${pct(Math.max(box[3] - box[1], 2), page.h)}`
+
+  function drawMarks(): void {
+    if (!papersEl || !pv) return
+    for (const m of papersEl.querySelectorAll('.clerk-mark')) m.remove()
+    for (const m of lastMarks) {
+      const page = pv.pages.find((x) => x.n === m.page)
+      const layer = pageLayer(m.page)
+      if (!page || !layer) continue
+      const mark = h('button', { type: 'button', class: 'clerk-mark clerk-only', 'data-remark': m.key, style: place(m.box, page) },
+        h('span', { class: 'clerk-num' }, String(m.n)))
+      mark.addEventListener('click', (e) => { e.stopPropagation(); session.pick({ key: m.key }); spot(m.page, m.box) })
+      layer.append(mark)
+    }
+  }
+
+  /** Light a place of the original (a box in pt on a page) and bring it into view. */
+  function spot(pageNo: number, box: [number, number, number, number]): boolean {
+    if (!papersEl || !pv) return false
+    const page = pv.pages.find((x) => x.n === pageNo)
+    const layer = pageLayer(pageNo)
+    if (!page || !layer) return false
+    for (const x of papersEl.querySelectorAll('.clerk-spot')) x.remove()
+    const mark = h('div', { class: 'clerk-spot', style: place(box, page) })
+    layer.append(mark)
+    mark.scrollIntoView?.({ block: 'center', behavior: 'smooth' })
+    return true
+  }
 
   const origins: Record<string, string> = (sidecar?.meta?.origins ?? sidecar?.origins ?? {}) as Record<string, string>
 
@@ -64,13 +103,23 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
   function paint(): void {
     clear(body)
     const rows0 = ledgerRows(sidecar)
-    if (!pv || !rows0.length) { body.append(h('p', { id: 'fp-where-missing' }, FP.previewMissing)); return }
+    papersEl = null
+    el.setAttribute('data-pages', String(pv?.pages.length ?? 0))
+    if (!pv || !rows0.length) {
+      // without the ledger there are no places, but the clerk still compares with the pictures when they are there
+      if (pv?.pages.length) {
+        papersEl = h('div', { class: 'fp-papers', id: 'fp-papers' }, ...pv.pages.map((page) => paperPage(page, [])))
+        body.append(h('p', { id: 'fp-where-missing', class: 'jury-only' }, FP.previewMissing), papersEl)
+      } else body.append(h('p', { id: 'fp-where-missing' }, FP.previewMissing))
+      return
+    }
     joined = joinPlaces(rows0, pv)
     const rows = rowsOf(joined, pv)
     const live = h('p', { id: 'fp-where-live', 'aria-live': 'polite', class: 'muted' })
     const list = h('ul', { class: 'plain fp-where-list', id: 'fp-where-list' })
     const papers = h('div', { class: 'fp-papers', id: 'fp-papers' })
     const geometry = pv.pages.length > 0
+    fieldBox.clear()
 
     for (const r of rows) {
       const hasBox = geometry && !!r.place?.box
@@ -85,6 +134,7 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
           live.textContent = `„${r.name}”: ${FP.pageChip(r.place!.page)}`
         }
       })
+      if (hasBox && r.cid && ef.model.byId.has(r.key)) fieldBox.set(r.key, r.cid)
       list.append(h('li', {}, btn, ' ', h('span', { class: hasBox ? 'chip' : 'chip chip-req' }, chip)))
     }
 
@@ -105,15 +155,42 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       const cid = t.dataset.cid ?? ''
       const fid = joined?.fieldOf.get(cid)
       const btn = list.querySelector<HTMLButtonElement>(`[data-cid="${cid}"]`) ?? (fid ? list.querySelector<HTMLButtonElement>(`[data-where="${fid}"]`) : null)
+      if (inClerkView(el)) {
+        // the clerk's view has no list: the box lights itself, the e-form shows its field, the card of the place lights
+        for (const b of papers.querySelectorAll('.fp-box-active')) b.classList.remove('fp-box-active')
+        t.classList.add('fp-box-active')
+        if (fid) { ef.highlight(fid); session.pick({ fieldId: fid }) }
+        return
+      }
       btn?.focus()
       btn?.click()
     })
+    papersEl = papers
     const toggle = h('input', { type: 'checkbox', id: 'fp-where-toggle', checked: true })
     toggle.addEventListener('change', () => papers.classList.toggle('fp-boxes-off', !toggle.checked))
-    body.append(h('p', {}, toggle, h('label', { for: 'fp-where-toggle' }, ' ' + FP.whereToggle)),
-      h('div', { class: 'fp-where-grid' }, h('div', {}, list, live), papers))
+    body.append(h('p', { class: 'jury-only' }, toggle, h('label', { for: 'fp-where-toggle' }, ' ' + FP.whereToggle)),
+      h('div', { class: 'fp-where-grid' }, h('div', { class: 'jury-only' }, list, live), papers))
   }
 
-  const ready = pending.then((raw) => { pv = parsePreview(raw); paint() }, () => { pv = null; paint() })
+  /** form field id -> the candidate whose box is drawn for it */
+  const fieldBox = new Map<string, string>()
+  // a focus in the e-form lights the place of that field on the original (clerk view only: side by side)
+  ef.onPick((id) => {
+    if (!papersEl || !inClerkView(el)) return
+    for (const b of papersEl.querySelectorAll('.fp-box-active')) b.classList.remove('fp-box-active')
+    const cid = fieldBox.get(id) ?? joined?.byField.get(id)?.cid
+    const box = cid ? papersEl.querySelector<HTMLElement>(`.fp-box[data-cid="${cid}"]`) : null
+    if (box) { box.classList.add('fp-box-active'); box.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }) }
+    session.pick({ fieldId: id })
+  })
+  session.attach(ef, {
+    preview: () => pv,
+    joined: () => joined,
+    show: (page, box) => spot(page, box),
+    marks: (list) => { lastMarks = list; drawMarks() }
+  })
+
+  const done = (): void => { paint(); session.ready(); drawMarks() }
+  const ready = pending.then((raw) => { pv = parsePreview(raw); done() }, () => { pv = null; done() })
   return { el, ready, preview: () => pv, joined: () => joined }
 }

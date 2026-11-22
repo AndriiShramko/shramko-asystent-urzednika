@@ -151,6 +151,14 @@ export async function convertFile(file: File, token: string, fetcher: Fetcher = 
 export interface ConvertHooks {
   onUploaded?: () => void
   signal?: AbortSignal
+  /** W11 FLOW (convertQueued): bytes of the file that left the browser. */
+  onSent?: (loaded: number, total: number) => void
+  /** W11 FLOW: every answer of the service about the job (place in the queue, stage, finished parts). */
+  onStatus?: (status: JobStatus) => void
+  /** W11 FLOW: the queue of the service had no room; the file is offered again in `retryS` seconds. */
+  onFull?: (retryS: number) => void
+  /** W11 FLOW: how many questions about the job in a row got no answer. */
+  onSilent?: (questions: number) => void
 }
 
 /** The code of an outcome the person chose (Przerwij): not an error of the file nor of the service. */
@@ -221,5 +229,195 @@ export async function previewFile(file: File, token: string, fetcher: Fetcher = 
     return (await res.json()) as unknown
   } catch {
     return null
+  }
+}
+
+// ---- W11 FLOW: jobs (POST /v1/jobs, GET /v1/jobs/{id}, GET /v1/jobs/{id}/result) -----------------------------------
+// The file is taken at once, waits its turn in the service's bounded queue, and the service tells where it is: the
+// place in the queue, the stage, and the finished parts of the work. The page shows exactly that and adds nothing.
+
+export interface JobStage { name: string; step: string | null; page: number | null; pages: number | null }
+
+export interface JobStatus {
+  id: string
+  state: 'queued' | 'running' | 'done' | 'error' | 'cancelled'
+  /** place among the waiting jobs, 1 = the next to start; null when not waiting */
+  position: number | null
+  queue: { running: number; waiting: number; waitingMax: number } | null
+  stage: JobStage | null
+  /** finished parts of the work and all parts, as the conversion reported them; never a clock */
+  units: { done: number; total: number } | null
+  /** seconds since the conversion last reported something (the service's own clock) */
+  stageS: number | null
+}
+
+const num = (x: unknown): number | null => (typeof x === 'number' && Number.isFinite(x) ? x : null)
+const JOB_STATES: readonly string[] = ['queued', 'running', 'done', 'error', 'cancelled']
+
+/** The body of a job answer, or null when it is not one. Unknown keys are ignored, missing ones are null. */
+export function parseJobStatus(raw: unknown): JobStatus | null {
+  if (!raw || typeof raw !== 'object') return null
+  const o = raw as Record<string, unknown>
+  if (typeof o.id !== 'string' || !o.id || typeof o.state !== 'string' || !JOB_STATES.includes(o.state)) return null
+  const q = o.queue as Record<string, unknown> | undefined
+  const s = o.stage as Record<string, unknown> | undefined
+  const u = o.units as Record<string, unknown> | undefined
+  const done = u ? num(u.done) : null
+  const total = u ? num(u.total) : null
+  return {
+    id: o.id,
+    state: o.state as JobStatus['state'],
+    position: num(o.position),
+    queue: q && num(q.running) !== null && num(q.waiting) !== null
+      ? { running: num(q.running)!, waiting: num(q.waiting)!, waitingMax: num(q.waiting_max) ?? 0 } : null,
+    stage: s && typeof s.name === 'string'
+      ? { name: s.name, step: typeof s.step === 'string' ? s.step : null, page: num(s.page), pages: num(s.pages) } : null,
+    units: done !== null && total !== null && total > 0 ? { done: Math.max(0, Math.min(done, total)), total } : null,
+    stageS: num(o.stage_s)
+  }
+}
+
+export const JOBS_URL = '../v1/jobs'
+/** How often the page asks for the state of a job. */
+export const POLL_MS = 1000
+/** After this many state questions in a row without an answer the page stops waiting (NETWORK). */
+export const POLL_FAILS_MAX = 20
+/** A full queue: the page waits and offers the file again, at most this many times. */
+export const FULL_TRIES_MAX = 90
+/** The job is unknown to the service (it restarted, or the result expired). */
+export const JOB_LOST = 'JOB_LOST'
+
+export interface Answer { status: number; headers: Pick<Headers, 'get'>; bytes: Uint8Array }
+
+/** What convertQueued needs from the outside; tests replace it. */
+export interface JobIo {
+  /** POST the file to JOBS_URL; `onSent` gets the bytes that left the browser. Rejects on a network failure. */
+  submit: (file: File, token: string, onSent: (loaded: number, total: number) => void, signal?: AbortSignal) => Promise<Answer>
+  fetcher: Fetcher
+  /** Resolves after `ms`, or at once when the signal aborts. */
+  sleep: (ms: number, signal?: AbortSignal) => Promise<void>
+  /** The request the page made before jobs existed; used when the service has no /v1/jobs (an older build). */
+  direct: (file: File, token: string, hooks: ConvertHooks) => Promise<Outcome>
+}
+
+function authHeaders(token: string): Record<string, string> {
+  return token.trim() ? { Authorization: 'Bearer ' + token.trim() } : {}
+}
+
+function xhrSubmit(file: File, token: string, onSent: (loaded: number, total: number) => void, signal?: AbortSignal): Promise<Answer> {
+  return new Promise<Answer>((resolve, reject) => {
+    const body = new FormData()
+    body.append('file', file, file.name)
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', JOBS_URL)
+    xhr.responseType = 'arraybuffer'
+    if (token.trim()) xhr.setRequestHeader('Authorization', 'Bearer ' + token.trim())
+    xhr.upload.addEventListener('progress', (e) => { if (e.lengthComputable) onSent(e.loaded, e.total) })
+    xhr.addEventListener('load', () => resolve({
+      status: xhr.status,
+      headers: { get: (name: string) => xhr.getResponseHeader(name) },
+      bytes: new Uint8Array((xhr.response as ArrayBuffer | null) ?? new ArrayBuffer(0))
+    }))
+    xhr.addEventListener('error', () => reject(new Error('network')))
+    xhr.addEventListener('timeout', () => reject(new Error('network')))
+    xhr.addEventListener('abort', () => reject(new Error(CANCELLED)))
+    if (signal) {
+      if (signal.aborted) { reject(new Error(CANCELLED)); return }
+      signal.addEventListener('abort', () => xhr.abort())
+    }
+    xhr.send(body)
+  })
+}
+
+function sleepFor(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise<void>((resolve) => {
+    if (signal?.aborted) { resolve(); return }
+    const timer = setTimeout(done, ms)
+    function done(): void { clearTimeout(timer); signal?.removeEventListener('abort', done); resolve() }
+    signal?.addEventListener('abort', done)
+  })
+}
+
+export const defaultJobIo: JobIo = {
+  submit: xhrSubmit,
+  fetcher: (u, i) => fetch(u, i),
+  sleep: sleepFor,
+  direct: (file, token, hooks) => convertWithProgress(file, token, hooks)
+}
+
+function jsonOf(bytes: Uint8Array): unknown {
+  try { return JSON.parse(new TextDecoder().decode(bytes)) as unknown } catch { return null }
+}
+
+/** One file through the service's queue. Resolves with the same Outcome as convertWithProgress; on the way the
+ * hooks are told what the service said (never a guess of the page):
+ *  - onSent: bytes of the file that left the browser;
+ *  - onUploaded: the service has taken the file (202);
+ *  - onFull: the queue had no room (429 QUEUE_FULL); the page waits `retryS` seconds and offers the file again;
+ *  - onStatus: every answer about the job; onSilent: questions in a row that got no answer.
+ * A service without /v1/jobs (404 or 405) gets the old single request instead. */
+export async function convertQueued(file: File, token: string, hooks: ConvertHooks = {}, io: JobIo = defaultJobIo): Promise<Outcome> {
+  const fail = (code: string, status = 0): Problem => ({ kind: 'error', code, status, detail: null, title: null })
+  const signal = hooks.signal
+  let taken: JobStatus | null = null
+  for (let tries = 0; taken === null; tries++) {
+    if (signal?.aborted) return fail(CANCELLED)
+    let res: Answer
+    try {
+      res = await io.submit(file, token, (loaded, total) => hooks.onSent?.(loaded, total), signal)
+    } catch (e) {
+      return fail(signal?.aborted || (e instanceof Error && e.message === CANCELLED) ? CANCELLED : 'NETWORK')
+    }
+    if (res.status === 404 || res.status === 405) return io.direct(file, token, hooks)
+    if (res.status === 202) {
+      taken = parseJobStatus(jsonOf(res.bytes))
+      if (taken === null) return fail('BAD_ANSWER', res.status)
+      break
+    }
+    const problem = problemFrom(res.status, res.headers.get('content-type'), new TextDecoder().decode(res.bytes))
+    if (problem.code !== 'QUEUE_FULL' || tries + 1 >= FULL_TRIES_MAX) return problem
+    const asked = Number(res.headers.get('retry-after'))
+    const retryS = Number.isFinite(asked) && asked > 0 ? Math.min(asked, 60) : 10
+    hooks.onFull?.(retryS)
+    await io.sleep(retryS * 1000, signal)
+  }
+  hooks.onUploaded?.()
+  hooks.onStatus?.(taken)
+  const url = `${JOBS_URL}/${encodeURIComponent(taken.id)}`
+  const headers = authHeaders(token)
+  const giveUp = (): void => { void io.fetcher(url, { method: 'DELETE', headers }).catch(() => undefined) }
+  let silent = 0
+  let state: JobStatus = taken
+  while (state.state === 'queued' || state.state === 'running') {
+    await io.sleep(POLL_MS, signal)
+    if (signal?.aborted) { giveUp(); return fail(CANCELLED) }
+    let next: JobStatus | null = null
+    let status = 0
+    try {
+      const res = await io.fetcher(url, { method: 'GET', headers: { ...headers, Accept: 'application/json' } })
+      status = res.status
+      next = res.ok ? parseJobStatus(await res.json()) : null
+    } catch {
+      next = null
+    }
+    if (status === 404) return fail(JOB_LOST, 404)
+    if (next === null) {
+      silent += 1
+      hooks.onSilent?.(silent)
+      if (silent >= POLL_FAILS_MAX) return fail('NETWORK')
+      continue
+    }
+    silent = 0
+    state = next
+    hooks.onStatus?.(state)
+  }
+  if (state.state === 'cancelled') return fail(CANCELLED)
+  try {
+    const res = await io.fetcher(`${url}/result?report=1`, { method: 'GET', headers })
+    if (res.status === 404) return fail(JOB_LOST, 404)
+    if (res.status === 202) return fail('BAD_ANSWER', 202)
+    return await interpretResponse(res.status, res.headers, new Uint8Array(await res.arrayBuffer()))
+  } catch {
+    return fail('NETWORK')
   }
 }

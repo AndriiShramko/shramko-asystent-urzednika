@@ -8,12 +8,13 @@ trace, no content of the file. No endpoint, no command and no test of the shell 
 """
 from __future__ import annotations
 
+import contextvars
 import json
 import re
 import threading
 from dataclasses import dataclass
 
-from app import __version__, gate, interim
+from app import __version__, gate, interim, progress
 from app.find import find
 from app.mean import understand
 from app.model.ledger import LedgerError, assemble_ledger
@@ -112,7 +113,8 @@ def run_limited(data: bytes, filename: str, settings: Settings, notes: tuple[str
         except BaseException as exc:   # handed to the caller, which re-raises it
             box["error"] = exc
 
-    th = threading.Thread(target=work, name="convert-job", daemon=True)
+    # the job thread works in a copy of the caller's context, so `app.progress` reports to the caller's tracker
+    th = threading.Thread(target=contextvars.copy_context().run, args=(work,), name="convert-job", daemon=True)
     th.start()
     th.join(settings.job_timeout_s)
     if th.is_alive():
@@ -172,16 +174,19 @@ def run(data: bytes, filename: str, settings: Settings, notes: tuple[str, ...] =
     """`filename` is not used: the format comes from the content, and a name must never reach a log.
     `notes` are the Polish sentences of the guard (`UploadInfo.warnings`: the extension disagreed with the content, a
     file name was cleaned); they travel into the warnings of the sidecar as they are."""
+    progress.phase("recognised")
     fmt = _format_of(data, settings)
     if fmt not in formats():
         if fmt == "heic":   # the reader comes with WP-F20f stage 1b; the user is never asked to re-save the file
             raise ProblemError("UNREADABLE", "Ta instalacja nie ma dekodera HEIC.")
         label = KIND_LABEL.get(fmt, fmt)
         raise ProblemError("UNREADABLE", f"Ta wersja usługi nie potrafi jeszcze czytać tego formatu ({label}).")
+    progress.phase("reading")
     try:
         model = read_document(data, fmt, read_options(settings))
     except ReaderError as exc:
         raise _problem_of(exc) from None
+    progress.phase("fields")
     finder = find(model)
     rules = _finish(model, finder, settings, notes)
     if not vision_on(settings):
@@ -225,6 +230,7 @@ def _with_vision(model, finder, settings: Settings, notes: tuple[str, ...], rule
         if not jobs:
             vision._set_state("ON", "", cfg.model)
             return rules
+        progress.phase("model")
         answers = vision.ask_pages(cfg, jobs, post=post)
         merged, added = vmerge.merge(model, answers)
         if not added:
@@ -260,20 +266,24 @@ def _note(res: PipelineResult, code: str, detail: str, cfg, pages: list[int], ad
 
 def _finish(model, finder, settings: Settings, notes: tuple[str, ...] = ()) -> PipelineResult:
     """Finder output -> brief -> form -> gate -> sidecar (the rules' path after reading)."""
+    progress.phase("meaning")
     fallback = not finder.candidates
     if fallback:
         brief = interim.brief_from_pages(model)
     else:
         brief = understand(model, finder)
+    progress.phase("form")
     try:
         composed = compose(brief, compose_options(settings))
     except ComposeError as exc:
         raise ProblemError("GATE_FAILED", f"Kompozytor odrzucił wynik ({type(exc).__name__}).") from None
     form = json.loads(composed.form.to_json_bytes())
+    progress.phase("checks")
     report = gate.check(form)
     blocking = [c for c in report.failed if c.id in BLOCKING_CHECKS]
     if blocking:   # D19: only G1 to G4 are our fault (500); a failed G5 to G12 is a warning of a 200
         raise _gate_problem(blocking[0])
+    progress.phase("export")
     warnings = [{"code": "INPUT_NOTE", "detail": n} for n in notes]
     warnings += [_gate_warning(c) for c in report.failed]
     warnings += [w.model_dump(mode="json", exclude_none=True) for w in model.warnings]

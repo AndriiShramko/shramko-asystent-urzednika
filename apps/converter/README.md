@@ -73,7 +73,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `MAX_PAGES` | `60` | pages per document; more is `413 TOO_LARGE` |
 | `MAX_CELLS` | `200000` | cells with content per sheet file (XLSX, ODS); more is `413 TOO_LARGE` |
 | `OCR_MIN_CHARS` | `20` | a PDF page with fewer characters takes the image way |
-| `SCAN_PREP` | `off` | scan preparation of the image way (photos, scans, image-only PDF pages): `off` = the image way of before; `on` = the steps the scan lab accepted (page to A4 at 200 dpi, straightening, letter counters not taken for boxes, dotted and open lines read as places to write, thick lines thinned); or a comma list of `scale`, `deskew`, `glyph`, `leader`, `rules`, `thick`, `orient` (turning a page read upside down or sideways: not accepted, off in `on`). Scaling, straightening and turning a page are each a warning in the sidecar |
+| `SCAN_PREP` | `off` | scan preparation of the image way (photos, scans, image-only PDF pages): `off` = the image way of before; `on` = the steps the scan lab accepted (straightening, letter counters not taken for boxes, dotted and open lines read as places to write, thick lines thinned); or a comma list of `deskew`, `glyph`, `leader`, `rules`, `thick`, `scale` (page to A4 at 200 dpi) and `orient` (turning a page read upside down or sideways); the last two are not accepted and stay off in `on`. Scaling, straightening and turning a page are each a warning in the sidecar |
 | `FINISH_STYLE` | `export` | `export`: `SECTION` with `TEXT_BLOCK`; `info_section` |
 | `VALIDATORS` | `on` | `off` writes empty validator lists, as in the exports |
 | `REQUIRED_POLICY` | `paper` | `paper`: `REQUIRED` only where the paper or the standard says so (the partner's exports carry none); `inferred`: also where our rule calls a field the substance of the request, each reported as `REQUIRED_INFERRED` in the sidecar |
@@ -95,6 +95,8 @@ What the service cannot read is never a made-up form: a file with nothing readab
 
 **PL.** Domyślnie wyłączony: bez konfiguracji usługa nie wykonuje żadnego połączenia wychodzącego, a wynik jest bajt w bajt taki sam jak ścieżki reguł. Operator może go włączyć, wskazując własny serwer zgodny z API OpenAI (na przykład vLLM lub Ollama z modelem Qwen3 o otwartych wagach): `VISION_BASE_URL`, klucz w `VISION_API_KEY_FILE` (albo `VISION_API_KEY`) oraz opcjonalnie `VISION_MODEL`. Model nie pisze pól: wskazuje tylko numery linii, które nasz OCR już odczytał na słabej stronie skanu lub zdjęcia, a dalej działają te same reguły. Zmierzono na naszym zestawie laboratoryjnym (22 listopada 2026): z 27 obrazów z zestawów zadania co najmniej jedno pole formularza znaleziono w 24 bez kroku i w 27 z krokiem; zgodnych pól 172 bez kroku i 199 z krokiem na 651; krok dodaje też więcej niezweryfikowanych pól nadmiarowych i około 4 s na stronę. To nie jest obietnica dokładności; stan kroku (ON, OFF, FALLBACK) widać w `/status` i w nagłówku `X-Converter-Engine`.
 
+**Key on the page / Klucz na stronie.** The page block "Model AI (opcjonalnie)" shows the key of the service as dots. Its eye button shows only the last four characters, unless the operator starts the container with `VISION_KEY_REVEAL=on` (default off): then it shows the whole key, to a caller who may convert. Use it only on your own machine (`-p 127.0.0.1:...`). The key is never baked into the image: it is given at run time (`-e VISION_API_KEY` or `VISION_API_KEY_FILE`), as the task card asks. / Blok strony „Model AI (opcjonalnie)” pokazuje klucz usługi jako kropki; przycisk podglądu pokazuje tylko 4 ostatnie znaki, chyba że operator uruchomi kontener z `VISION_KEY_REVEAL=on` (domyślnie wyłączone) — wtedy pokazuje cały klucz. Klucz nigdy nie jest w obrazie: podaje się go przy uruchomieniu.
+
 Guard facts worth knowing: the file kind is judged by content, never by extension alone; a name is refused when longer than 250 characters or holding `; : > < / \ | ' * % $`; a `.doc` holding a DOCX package is read as DOCX (two forms of the partner's sets are named so); a legacy Word file that merely contains a zip package in a stream is still a Word file, a zip appended at its end is refused.
 
 ## API
@@ -110,7 +112,12 @@ curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/inspect            # what the guard sees
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" "http://127.0.0.1:8080/v1/forms/preview?dpi=150"  # page pictures and field places, read only
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@a.pdf" -F "file=@b.docx" http://127.0.0.1:8080/v1/batches   # one JSON line per file; or one ZIP
+curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/jobs                     # 202: the file is taken into the queue; answers {id, state, position}
+curl -s -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8080/v1/jobs/$ID                                     # where the job is: place in the queue, stage, finished parts
+curl -s -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:8080/v1/jobs/$ID/result?report=1"                   # the answer of convert for the finished job
 ```
+
+Jobs (`/v1/jobs`, wave 11) are how the page converts, and what a script should use for many files or long scans. `POST /v1/jobs` checks the file at once (the refusals of `convert`: type, size, name) and answers `202` with the job's `id`; the file then waits its turn. Never more than `CONCURRENCY` conversions run; up to 20 files (and five single-file limits of bytes) wait, each told its `position` (1 = next); beyond that the answer is `429 QUEUE_FULL` with `Retry-After`, and nothing is dropped silently. `GET /v1/jobs/{id}` answers `state` (`queued`, `running`, `done`, `error`), `stage` (`received`, `recognised`, `reading` with `step`, `page`, `pages`, then `fields`, `meaning`, `form`, `checks`, `export`; `model` when the open model is configured) and `units {done, total}`: the finished parts of 100. A part is counted only when the conversion reports the work behind it (a page rendered, a page read by OCR, a phase ended); nothing moves with the clock. `stage_s` is the time since the last report, the sign of life during one long page. `GET /v1/jobs/{id}/result` answers the same bytes as `convert` for the same file (`?report=0` for the form alone), `202` with the state while the job is not finished, or the job's problem. `DELETE /v1/jobs/{id}` gives a job up. A finished job is kept in memory for 30 minutes (the newest 60); nothing is written to disk. `GET /v1/jobs` tells how busy the queue is.
 
 The answer of `convert` is the partner's object (`title`, `tabs`, `flow`) and nothing else. The same input gives the same `X-Form-SHA256`.
 
@@ -124,6 +131,7 @@ The answer of `convert` is the partner's object (`title`, `tabs`, `flow`) and no
 | 415 | `EXTENSION`, `TYPE_MISMATCH`, `DOC_READER_OFF` | not one of the eight formats, or the content is another type |
 | 422 | `UNREADABLE`, `ACTIVE_CONTENT` | nothing readable; macros under `strict` |
 | 429 | `BUSY` | all slots busy, or the rate limit; with `Retry-After` |
+| 429 | `QUEUE_FULL` | `POST /v1/jobs` only: 20 files (or five single-file limits of bytes) already wait; with `Retry-After` |
 | 500 / 504 | `GATE_FAILED` / `TIMEOUT` | the result failed our own gate and is never sent |
 
 Not in the service: `/v1/forms/diff`, `/v1/forms/export`, `/about/*`. The proof of working without a network is the `convert` command under `--network none`; the state of the service is `GET /status`.

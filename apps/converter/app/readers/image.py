@@ -15,6 +15,7 @@ from typing import Any
 
 from PIL import Image
 
+from app import progress
 from app.model.common import Warning
 from app.model.page import Line, Page, Rect, Run
 
@@ -127,6 +128,7 @@ def _prep_shapes(shapes: _raster.Shapes, words: list[_ocr.Word], prep: frozenset
 def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s: float = S) -> tuple[Page, list[Warning]]:
     """One page strip (mode L) -> page of origin "ocr" and its warnings."""
     warns: list[Warning] = []
+    progress.page(number, "prepare")
     if "deskew" in options.scan_prep:
         grey, angle = _raster.deskew(grey)
         if angle:
@@ -142,6 +144,7 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
             warns.append(Warning(code="UNREADABLE_PART", page=number,
                                  detail="page not read: no OCR engine in this build; its lines and boxes are kept"))
         else:
+            progress.page(number, "ocr")
             try:
                 words = engine.read(_png(grey), options.ocr_lang, options.ocr_timeout)
             except _ocr.OcrError as e:
@@ -151,6 +154,7 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
                 runs, bad = _runs(words, ids, number, s)
                 warns.extend(bad)
                 warns.extend(_quality(words, number))
+    progress.page(number, "shapes")
     shapes = _raster.detect(ink)
     extra = _prep_shapes(shapes, words, options.scan_prep, s) if words and options.scan_prep else []
     lines: list[Line] = []
@@ -248,6 +252,7 @@ def _read(data: bytes, options: ReadOptions) -> ReadResult:
     ids = Ids()
     pages: list[Page] = []
     warnings: list[Warning] = [Warning(code="UNREADABLE_PART", detail=d) for d in drafted]
+    progress.pages(len(cuts) - 1)
     for i in range(len(cuts) - 1):
         strip = _scaled(grey.crop((0, cuts[i], grey.size[0], cuts[i + 1])), i + 1, options, warnings)
         page, warns = read_strip(strip, i + 1, ids, options)
@@ -270,6 +275,7 @@ def textless_pdf_page(data: bytes, index: int, number: int, ids: Ids, options: R
     """Hook "pdf.textless_page": render the page at 200 dpi and read its pixels."""
     import pypdfium2 as pdfium
 
+    progress.page(number, "render")
     with _PDFIUM_LOCK:
         pdf = pdfium.PdfDocument(data)
         try:

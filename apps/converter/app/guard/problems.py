@@ -24,6 +24,7 @@ CODES: dict[str, tuple[int, str]] = {
     "NOT_A_FORM": (422, "Nie znaleziono miejsc do wypełnienia"),
     "ACTIVE_CONTENT": (422, "Plik zawiera makra lub treść aktywną"),
     "BUSY": (429, "Usługa jest zajęta, spróbuj za chwilę"),
+    "QUEUE_FULL": (429, "Kolejka zadań jest pełna, spróbuj za chwilę"),
     "GATE_FAILED": (500, "Wynik nie przeszedł kontroli wewnętrznej"),
     "TIMEOUT": (504, "Przekroczono czas przetwarzania"),
 }

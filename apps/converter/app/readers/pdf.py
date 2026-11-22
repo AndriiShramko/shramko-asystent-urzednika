@@ -15,6 +15,7 @@ import re
 import warnings as warnings_mod
 from typing import Any
 
+from app import progress
 from app.model.common import Warning
 from app.model.page import Line, Page, Rect, Run, Widget
 
@@ -316,8 +317,10 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
         if len(pdf.pages) > options.max_pages:
             raise ReaderError("TOO_LARGE", f"{len(pdf.pages)} pages, the limit is {options.max_pages}")
         image_way = hook("pdf.textless_page")
+        progress.pages(len(pdf.pages))
         for index, page in enumerate(pdf.pages):
             number = index + 1
+            progress.page(number, "native")
             chars = page.chars
             ink = sum(1 for c in chars if c.get("text") and not c["text"].isspace())
             no_ocr: list[Warning] = []
