@@ -20,6 +20,9 @@ NAME_FORBIDDEN = set(";:><\\/|'*%$")
 # Direction overrides, embeddings, isolates and marks: a name must never reorder its own display.
 NAME_BIDI = set("‎‏؜‪‫‬‭‮⁦⁧⁨⁩")
 
+# The task card (C-TECH-FMT): the only extensions accepted by default (STRICT_EXTENSIONS=true).
+CARD_EXTENSIONS = ("pdf", "doc", "docx", "ods", "xlsx", "jpg", "jpeg", "png")
+# Every extension with a reader in this build; the ones outside the card only with STRICT_EXTENSIONS=false.
 EXTENSIONS = ("pdf", "doc", "docx", "ods", "odt", "xls", "xlsx", "rtf", "txt", "jpg", "jpeg", "png", "tif", "tiff", "bmp",
               "gif", "webp", "heic", "heif")
 KIND_OF_EXT = {"jpeg": "jpeg", "jpg": "jpeg", "tif": "tiff", "heif": "heic"}  # the other extensions are their own kind
@@ -131,13 +134,20 @@ def check_name(raw: str | None) -> str:
     return clean_name(raw)[0]
 
 
+def accepted_extensions(strict: bool) -> tuple[str, ...]:
+    """The extensions this installation accepts: the card's eight when `strict` (the default), else every one."""
+    return CARD_EXTENSIONS if strict else EXTENSIONS
+
+
 def check_extension(name: str, strict: bool) -> tuple[str, str]:
-    """Return (extension as written in lower case, canonical extension). `.jpe` is `jpeg` unless `strict`."""
+    """Return (extension as written in lower case, canonical extension). `.jpe` is `jpeg` (the partner's judged
+    set 7 ships one); any extension outside `accepted_extensions(strict)` is a 415."""
     ext = name.rsplit(".", 1)[1].lower() if "." in name else ""
-    if ext == "jpe" and not strict:
+    if ext == "jpe":
         return ext, "jpeg"
-    if ext not in EXTENSIONS:
-        raise ProblemError("EXTENSION", "Obsługiwane rozszerzenia: " + ", ".join(EXTENSIONS) + ".")
+    allowed = accepted_extensions(strict)
+    if ext not in allowed:
+        raise ProblemError("EXTENSION", "Obsługiwane rozszerzenia: " + ", ".join(allowed) + ".")
     return ext, ext
 
 

@@ -29,7 +29,8 @@ def classify(path: Path, name: str) -> dict:
                  "no_label": 0, "warnings": {}, "error": ""}
     t0 = time.monotonic()
     try:
-        settings = Settings.from_env({**os.environ, "AUTH_MODE": "off"})
+        # the corpus holds rtf, odt, tif and more: the chain measures every reader, so the extra formats are on
+        settings = Settings.from_env({"STRICT_EXTENSIONS": "false", **os.environ, "AUTH_MODE": "off"})
         data = path.read_bytes()
         info = inspect_upload(name, data, settings)
         if os.environ.get("CHAIN_FAULT") == "raise":
