@@ -71,13 +71,71 @@ def _quality(words: list[_ocr.Word], number: int) -> list[Warning]:
     return []
 
 
+GLYPH_MAX_PX = 26     # S1 glyph: a closed box at most this wide and tall (200 dpi) inside a word is a letter's counter
+THICK_MAX_PT = 1.5    # S1 thick: the finder takes a ruled line up to this thickness (find/_shapes.py `ruled`)
+DOTS = frozenset(".…_")
+
+
+def _cover(b: tuple[int, int, int, int], w: _ocr.Word) -> float:
+    """Share of box b that lies inside the word's box."""
+    ix = min(b[2], w.x1) - max(b[0], w.x0)
+    iy = min(b[3], w.y1) - max(b[1], w.y0)
+    area = max(1, (b[2] - b[0]) * (b[3] - b[1]))
+    return ix * iy / area if ix > 0 and iy > 0 else 0.0
+
+
+def _thin(b: tuple[int, int, int, int], across: int, k: float) -> tuple[int, int, int, int]:
+    """A line box whose thickness (axis `across`: 1 = y, 0 = x) is over THICK_MAX_PT -> a line of max(1, int(k))
+    pixels through its middle (k = pixels per point); a thinner line is returned as is."""
+    lo, hi = b[across], b[across + 2]
+    if (hi - lo) / k <= THICK_MAX_PT:
+        return b
+    mid = (lo + hi) // 2
+    t = max(1, int(k))
+    return (b[0], mid, b[2], mid + t) if across == 1 else (mid, b[1], mid + t, b[3])
+
+
+def _prep_shapes(shapes: _raster.Shapes, words: list[_ocr.Word], prep: frozenset[str], s: float) -> list[dict[str, Any]]:
+    """SCAN_PREP steps that need the OCR words (S1). Changes `shapes` in place; returns the runs to add."""
+    k = 1.0 / s
+    extra: list[dict[str, Any]] = []
+    if "rules" in prep:  # first: on the shapes as detected (glyph and thick change boxes and lines)
+        for b in _raster.open_rules(shapes.hlines, shapes.vlines, shapes.boxes,
+                                    [(w.x0, w.y0, w.x1, w.y1) for w in words], k, [w.text for w in words]):
+            x0, _, x1, y1 = _pt(b, s)
+            extra.append(dict(text="_" * max(8, int((x1 - x0) / 2.2)), box=[x0, r2(max(0.0, y1 - 8)), x1, y1],
+                              size=8.0, conf=0.9))
+    if "glyph" in prep:
+        big = [w for w in words if len(w.text) >= 2]
+        shapes.boxes = [b for b in shapes.boxes
+                        if not (b[2] - b[0] <= GLYPH_MAX_PX and b[3] - b[1] <= GLYPH_MAX_PX
+                                and any(_cover(b, w) >= 0.8 for w in big))]
+    if "thick" in prep:
+        shapes.hlines = [_thin(b, 1, k) for b in shapes.hlines]
+        shapes.vlines = [_thin(b, 0, k) for b in shapes.vlines]
+    if "leader" in prep:
+        for b in shapes.leaders:
+            if any(set(w.text) <= DOTS and w.y0 - 10 <= b[3] and w.y1 + 10 >= b[1]
+                   and min(b[2], w.x1) - max(b[0], w.x0) > 0.5 * (b[2] - b[0]) for w in words):
+                continue  # the OCR already read these dots
+            x0, _, x1, y1 = _pt(b, s)
+            extra.append(dict(text="." * max(8, int((x1 - x0) / 2.2)), box=[x0, r2(max(0.0, y1 - 8)), x1, y1],
+                              size=8.0, conf=0.9))
+    return extra
+
+
 def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s: float = S) -> tuple[Page, list[Warning]]:
     """One page strip (mode L) -> page of origin "ocr" and its warnings."""
+    warns: list[Warning] = []
+    if "deskew" in options.scan_prep:
+        grey, angle = _raster.deskew(grey)
+        if angle:
+            warns.append(Warning(code="UNREADABLE_PART", page=number, detail=f"page straightened by {angle} degrees"))
     w, h = grey.size
     ink = _raster.binarize(grey)
     has_ink = ink.getbbox() is not None
-    warns: list[Warning] = []
     runs: list[Run] = []
+    words: list[_ocr.Word] = []
     if has_ink:
         engine = _ocr.get_engine()
         if engine is None:
@@ -87,12 +145,14 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
             try:
                 words = engine.read(_png(grey), options.ocr_lang, options.ocr_timeout)
             except _ocr.OcrError as e:
+                words = []
                 warns.append(Warning(code="UNREADABLE_PART", page=number, detail=f"page not read: {e}"))
             else:
                 runs, bad = _runs(words, ids, number, s)
                 warns.extend(bad)
                 warns.extend(_quality(words, number))
     shapes = _raster.detect(ink)
+    extra = _prep_shapes(shapes, words, options.scan_prep, s) if words and options.scan_prep else []
     lines: list[Line] = []
     rects: list[Rect] = []
     items: list[tuple[str, Any, str]] = (
@@ -111,9 +171,25 @@ def read_strip(grey: Image.Image, number: int, ids: Ids, options: ReadOptions, s
     if dropped:
         warns.append(Warning(code="UNREADABLE_PART", page=number,
                              detail=f"{dropped} shapes beyond the limit of {MAX_SHAPES} per page were left out"))
+    for e in extra:
+        run, bad = Run.safe(number, id=ids.next("r"), **e)
+        warns.extend(bad)
+        if run is not None:
+            runs.append(run)
     page = Page(number=number, width=r2(w * s), height=r2(h * s), origin="ocr", runs=runs, lines=lines, rects=rects,
                 ink=has_ink)
     return page, warns
+
+
+def _scaled(grey: Image.Image, number: int, options: ReadOptions, warnings: list[Warning]) -> Image.Image:
+    """SCAN_PREP "scale": a page strip of a scan -> A4 at 200 dpi, with a warning when it was resampled."""
+    if "scale" not in options.scan_prep:
+        return grey
+    out, f = _raster.normalize(grey, options.max_pixels)
+    if out is not grey:
+        warnings.append(Warning(code="UNREADABLE_PART", page=number,
+                                detail=f"page scaled from about {round(_raster.a4_dpi(grey.size))} dpi to 200 dpi"))
+    return out
 
 
 @register("jpeg")
@@ -132,6 +208,7 @@ def _read_frames(data: bytes, options: ReadOptions, kind: str) -> ReadResult:
     pages: list[Page] = []
     warnings: list[Warning] = []
     for i, grey in enumerate(_raster.decode_frames(data, options, kind), 1):
+        grey = _scaled(grey, i, options, warnings)
         page, warns = read_strip(grey, i, ids, options)
         pages.append(page)
         warnings.extend(warns)
@@ -172,7 +249,9 @@ def _read(data: bytes, options: ReadOptions) -> ReadResult:
     pages: list[Page] = []
     warnings: list[Warning] = [Warning(code="UNREADABLE_PART", detail=d) for d in drafted]
     for i in range(len(cuts) - 1):
-        page, warns = read_strip(grey.crop((0, cuts[i], grey.size[0], cuts[i + 1])), i + 1, ids, options)
+        strip = _scaled(grey.crop((0, cuts[i], grey.size[0], cuts[i + 1])), i + 1, options, warnings)
+        page, warns = read_strip(strip, i + 1, ids, options)
+        del strip
         pages.append(page)
         warnings.extend(warns)
         if i + 1 in unsnapped:

@@ -24,6 +24,8 @@ class ReadOptions:
     max_pixels: int = 120_000_000    # an image with more pixels (width x height) is refused before decoding (F2c)
     ocr_lang: str = "pol+eng"        # Tesseract languages (design 6.2.2)
     ocr_timeout: float = 90.0        # seconds the OCR program may take for one page, then the page is "not read"
+    # scan preparation steps of the image path (SCAN_PREP, audit 8 SL1); empty = the image path of before, byte for byte
+    scan_prep: frozenset[str] = frozenset()
 
     @classmethod
     def of(cls, options: ReadOptions | Mapping[str, Any] | None) -> ReadOptions:

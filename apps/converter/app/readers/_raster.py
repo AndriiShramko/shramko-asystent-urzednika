@@ -151,6 +151,65 @@ def binarize(grey: Image.Image) -> Image.Image:
     return ink
 
 
+# ---------------------------------------------------------------- scale (SCAN_PREP token "scale")
+
+
+A4_W_PX = 1654      # A4 portrait at 200 dpi: the size the thresholds of this module and the OCR were tuned on
+MAX_UPSCALE = 3.0
+
+
+def normalize(grey: Image.Image, max_pixels: int) -> tuple[Image.Image, float]:
+    """A page strip -> the same page at A4 200 dpi (portrait: width 1654 px; landscape: width 2339 px) and the factor.
+
+    Within 10 % of that size the strip is returned as is (the same object, factor 1.0): a Letter page or a scan with
+    a margin at 200 dpi is not resampled. The factor is capped at MAX_UPSCALE and by the pixel budget."""
+    w, h = grey.size
+    f = 200.0 / a4_dpi(grey.size)
+    if 0.9 <= f <= 1.1:
+        return grey, 1.0
+    f = min(f, MAX_UPSCALE, (max_pixels / (w * h)) ** 0.5)
+    if 0.9 <= f <= 1.1:
+        return grey, 1.0
+    size = (max(1, round(w * f)), max(1, round(h * f)))
+    if size[0] * size[1] > max_pixels:
+        size = (max(1, int(w * f)), max(1, int(h * f)))
+    return grey.resize(size, Image.Resampling.LANCZOS), f
+
+
+def a4_dpi(size: tuple[int, int]) -> float:
+    """The resolution a page strip of this size has if the page is A4 (portrait when not wider than tall)."""
+    w, h = size
+    return 200.0 * w / (A4_W_PX if w <= h else A4_W_PX * SQRT2)
+
+
+# ---------------------------------------------------------------- deskew (SCAN_PREP token "deskew")
+
+
+DESKEW_MAX = 5.0     # degrees searched either way
+DESKEW_FLOOR = 0.3   # a smaller angle is left alone: the page comes back as the same object
+
+
+def deskew(grey: Image.Image) -> tuple[Image.Image, float]:
+    """A page strip tilted by up to DESKEW_MAX degrees -> the strip turned level, and the angle it was turned by
+    (counter-clockwise, degrees). The angle maximises the sharpness of the row profile of the ink (level lines of
+    text and rules give tall narrow peaks): a coarse search in 0.25 degree steps, then 0.05 around the best."""
+    ink = binarize(grey)
+    if ink.getbbox() is None:
+        return grey, 0.0
+    sm = ink.resize((800, max(1, grey.size[1] * 800 // max(1, grey.size[0]))), Image.Resampling.BOX)
+
+    def score(a: float) -> tuple[int, float]:
+        p = sm.rotate(a, Image.Resampling.NEAREST, fillcolor=0).resize((1, sm.size[1]), Image.Resampling.BOX)
+        return sum(v * v for v in p.tobytes()), -abs(a)
+
+    steps = int(DESKEW_MAX * 4)
+    a = max((i / 4 for i in range(-steps, steps + 1)), key=score)
+    a = max((a + i / 20 for i in range(-5, 6)), key=score)
+    if abs(a) < DESKEW_FLOOR:
+        return grey, 0.0
+    return grey.rotate(a, Image.Resampling.BICUBIC, fillcolor=255), round(a, 2)
+
+
 # ---------------------------------------------------------------- cutting a tall scan
 
 
@@ -386,6 +445,39 @@ def _leaders(ink: Image.Image, rows: list[bytes]) -> list[Box4]:
             leaders.append((x0, y0, x1, y1))
     del w
     return leaders
+
+
+def open_rules(hlines: list[Box4], vlines: list[Box4], boxes: list[Box4], words: list[Box4], k: float,
+               texts: list[str] | None = None) -> list[Box4]:
+    """Open solid rules that are places to write (SCAN_PREP token "rules"): at least 40 pt long (k = pixels per
+    point), not the top or bottom edge of a box, not closed by a vertical at either end, not inside a box (a table
+    cell), not the underline of the text right above it, not already read by the OCR as underscores or dots, and with
+    text left of it on its line or right above it. `words` are the OCR word boxes, `texts` their texts."""
+    texts = texts if texts is not None else [""] * len(words)
+    heights = sorted(w[3] - w[1] for w in words)
+    lh = 1.5 * (heights[len(heights) // 2] if heights else 20)
+    out: list[Box4] = []
+    for x0, y0, x1, y1 in hlines:
+        if x1 - x0 < 40 * k:
+            continue
+        if any(b[0] - 3 <= x0 and x1 <= b[2] + 3 and (abs(b[1] - y0) <= 3 or abs(b[3] - y1) <= 3) for b in boxes):
+            continue  # the edge of a box
+        if any(abs(v[0] - e) <= 4 * k and v[1] - 3 <= y0 <= v[3] + 3 for v in vlines for e in (x0, x1)):
+            continue  # closed by a vertical
+        if any(b[0] < x0 and x1 < b[2] and b[1] < y0 and y1 < b[3] for b in boxes):
+            continue  # inside a table cell
+        if any(set(t) <= set("_.…") and t and min(x1, w[2]) - max(x0, w[0]) > 0.5 * (x1 - x0)
+               and w[1] - lh <= y0 <= w[3] + lh / 2 for w, t in zip(words, texts)):
+            continue  # the OCR read it already
+        above = [w for w in words if w[3] <= y0 + 2 and y0 - w[3] <= lh and w[0] < x1 and w[2] > x0]
+        close = [w for w in above if y0 - w[3] <= lh / 3]
+        covered = sum(min(x1, w[2]) - max(x0, w[0]) for w in close)
+        if covered > 0.6 * (x1 - x0):
+            continue  # the underline of the text right above it
+        left = any(w[2] <= x0 + 5 and abs(w[3] - y1) <= lh for w in words)
+        if left or above:
+            out.append((x0, y0, x1, y1))
+    return out
 
 
 def detect(ink: Image.Image, *, min_line: int = 30, max_thick: int = 8) -> Shapes:
