@@ -279,3 +279,21 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .fp-hint-note { margin: 0.25rem 0 0; }
 .fp-hint-note:empty { display: none; }
 .fp-warn { color: var(--c-notice-text); background: var(--c-notice-bg); padding: 0 0.25rem; border-radius: 3px; }
+
+/* W11 KEY: the block "Model AI (opcjonalnie)" (state, key in dots, connection check) */
+.ai { border: 1px solid var(--c-border); border-radius: 6px; padding: 0.25rem 1rem; background: var(--c-bg); }
+.ai[hidden] { display: none; }
+.ai-details > summary { font-size: 1.05rem; }
+.ai-badge { display: inline-block; border-radius: 999px; padding: 0.1rem 0.7rem; font-size: 0.9rem; font-weight: 600; border: 1px solid var(--c-engine-rules-edge); background: var(--c-engine-rules-bg); color: var(--c-engine-rules-text); }
+.ai-badge.ai-on { border-color: var(--c-engine-model-edge); background: var(--c-engine-model-bg); color: var(--c-engine-model-text); }
+.ai-badge.ai-fallback { border-color: var(--c-engine-fallback-edge); background: var(--c-engine-fallback-bg); color: var(--c-engine-fallback-text); }
+.ai-state { font-weight: 600; }
+.ai-state-fallback { background: var(--c-engine-fallback-bg); color: var(--c-engine-fallback-text); border-left: 4px solid var(--c-engine-fallback-edge); padding: 0.5rem 0.75rem; }
+.ai input[type="text"] { width: 100%; max-width: 28rem; }
+.ai-keyrow { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.ai-keyrow input { flex: 1 1 14rem; }
+.ai-key-server::placeholder { color: var(--c-text); opacity: 1; letter-spacing: 0.1em; }
+.ai-result { min-height: 1.5rem; font-weight: 600; }
+.ai-result.ai-good { background: var(--c-ok-bg); color: var(--c-ok-text); border-left: 4px solid var(--c-ok-edge); padding: 0.5rem 0.75rem; }
+.ai-result.ai-bad { background: var(--c-error-bg); color: var(--c-error-text); border-left: 4px solid var(--c-bad); padding: 0.5rem 0.75rem; }
+.ai input:disabled { background: var(--c-surface); }
