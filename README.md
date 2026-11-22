@@ -6,6 +6,8 @@ A REST service in Docker for the task "Cyfryzacja formularzy" (Centralny Ośrode
 
 The idea in one line: **a compiler with an accountant, not a scanner with AI.** Rules and a library of the partner's standard sections build the form; the service accounts for it. As started by the commands below, no language model runs in the product and it makes no network call at run time. One optional step for weak scan pages can be pointed by the operator at their own server with an open-weight model; it is off unless configured ([`apps/converter/README.md`](apps/converter/README.md), "Optional step").
 
+**Quick start / Szybki start.** `docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057` → <http://127.0.0.1:8080/ui/> (upload a blank form / wgraj pusty formularz); REST: `curl -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json`. No login, no key, no settings / bez logowania, klucza i ustawień.
+
 ## Where the jury sees each criterion / Gdzie widać kryteria oceny
 
 | Criterion of the task card | Where to see it |

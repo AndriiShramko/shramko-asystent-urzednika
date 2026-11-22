@@ -4,6 +4,8 @@ Usługa REST w Dockerze dla zadania „Cyfryzacja formularzy” (Centralny Ośro
 
 Idea w jednym zdaniu: **kompilator z księgowym, a nie skaner ze sztuczną inteligencją.** Reguły i biblioteka standardowych sekcji partnera składają formularz, a usługa się z niego rozlicza. Uruchomiona poleceniami dla jury usługa nie używa żadnego modelu językowego i nie łączy się z siecią; opcjonalny krok z modelem o otwartych wagach na serwerze urzędu (dla słabo czytelnych stron skanów) włącza administrator, domyślnie jest wyłączony.
 
+**Szybki start.** `docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057` → <http://127.0.0.1:8080/ui/> (wgraj pusty formularz); REST: `curl -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json`. Bez logowania, klucza i ustawień.
+
 **Wydanie:** [najnowsze wydanie](https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/latest) (7 plików JSON, prezentacja PDF, archiwum obrazu). **Gdzie widać każde kryterium oceny:** tabela na początku [README.md](README.md).
 
 ![Widok urzędnika: uwagi prostym językiem nad oryginałem i e-formularzem; kliknięcie ramki na oryginale prowadzi do pola (wzorcowy druk COI „Wniosek o ustalenie numeru porządkowego”)](docs/img/clerk-view.png)
