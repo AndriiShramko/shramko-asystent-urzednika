@@ -57,6 +57,39 @@ _ATT_IF = re.compile(r",?\s+(?:jeżeli|jeśli|w\s+przypadku|gdy)\b", re.IGNORECA
 _NOT_REQUIRED = re.compile(r"\bnie\s+(?:jest|są|będzie|będą)\s+(?:wymagan|konieczn|potrzebn)\w*|\bnie\s+dotyczy\b|\bw\s+przypadku\s+braku\b",
                            re.IGNORECASE)
 _ATT_MAY = re.compile(r"\bmożna\b|\bewentualn|opcjonaln|w\s+przypadku|\bjeżeli\b|\bjeśli\b", re.IGNORECASE)
+# WP-C1: a negation that stands at most _NEGATION_REACH characters before a required cue blocks the cue: the word
+# "nie" ("nie jest wymagany", "nie są wymagane", "nie dotyczy ... wymaganego"), or "nie" glued to the cue
+# ("niewymagane", and "niejestwymagane" of a footnote, whose whitespace is removed).
+_NEGATION = re.compile(r"\bnie\b|niedotyczy|nie(?:jest|są|będzie|będą)?$")
+_NEGATION_REACH = 40
+_REQUIRED_WORDING = _habit("required_wording")      # "należy wypełnić", "musi zawierać"
+
+
+def _says_required(text: str) -> bool:
+    """The paper's own words mark this text required: a cue of the habits `required` and `required_wording` that no
+    negation precedes. An asterisk is no cue: on these papers it marks a footnote ("niepotrzebne skreślić")."""
+    low = text.casefold()
+    return any(not _NEGATION.search(low[max(0, m.start() - _NEGATION_REACH): m.start()])
+               for rx in (REQUIRED, _REQUIRED_WORDING) for m in rx.finditer(low))
+
+
+_OPTIONAL_WORDING, _CONDITIONAL = _habit("optional_wording"), _habit("conditional")
+_BRACKET = re.compile(r"\(([^()]*)\)")      # an aside of a section title: "Dane do kontaktu (pola obowiązkowe)"
+
+
+def _aside_says_required(text: str) -> bool:
+    """A hint, or a bracket of a section title, marks required unless a condition stands beside the cue
+    ("wymagane w przypadku ..."): that is a condition of the paper, not its "required"."""
+    return _says_required(text) and not _CONDITIONAL.search(text.casefold())
+
+
+def _says_optional(text: str) -> bool:
+    """The paper's own words mark this text optional: the habit `optional`, or the wording "ewentualne", "jeśli
+    różni się od", "w razie potrzeby", "nie jest wymagane"."""
+    low = text.casefold()
+    return bool(OPTIONAL.search(low) or _OPTIONAL_WORDING.search(low))
+
+
 _YES_NO_ROW = re.compile(r"^\s*(?:\d{1,2}[.)]\s*)?(.+?)\s+TAK\s+NIE\s*$")
 _SENTENCE_END = (".", "!", "?")
 # No fragments (audit T3 to T5): the kinds of place that take a label from the text around them, the labels that are
@@ -559,8 +592,14 @@ class _Reader:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
         notes = [doc.footnote(m) for m in c.footnotes]
-        optional = optional or bool(OPTIONAL.search(low)) or any(OPTIONAL.search(n) for n in notes)
-        marked = bool(REQUIRED.search(low)) or any(REQUIRED.search(n) for n in notes)
+        said = hint or self._hint_after(c) or ""
+        optional = optional or _says_optional(low) or any(_says_optional(n) for n in notes) or _says_optional(said)
+        marked = _says_required(low) or any(_says_required(n) for n in notes) or _aside_says_required(said)
+        if not (optional or marked):        # the field's own words (label, hint, footnote) outrank the title of its section
+            head = doc.sections.get(c.section or "")
+            title = head.title if head is not None else ""
+            optional = _says_optional(title)
+            marked = any(_aside_says_required(aside) for aside in _BRACKET.findall(title))
         required = not optional
         basis = ("paper" if marked else "inferred") if required else None
         f = BriefField(**some(key=key, label=shown, type=kind, concept=concept, required=required, required_basis=basis,
