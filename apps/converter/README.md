@@ -110,7 +110,12 @@ curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/inspect            # what the guard sees
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" "http://127.0.0.1:8080/v1/forms/preview?dpi=150"  # page pictures and field places, read only
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@a.pdf" -F "file=@b.docx" http://127.0.0.1:8080/v1/batches   # one JSON line per file; or one ZIP
+curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/jobs                     # 202: the file is taken into the queue; answers {id, state, position}
+curl -s -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8080/v1/jobs/$ID                                     # where the job is: place in the queue, stage, finished parts
+curl -s -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:8080/v1/jobs/$ID/result?report=1"                   # the answer of convert for the finished job
 ```
+
+Jobs (`/v1/jobs`, wave 11) are how the page converts, and what a script should use for many files or long scans. `POST /v1/jobs` checks the file at once (the refusals of `convert`: type, size, name) and answers `202` with the job's `id`; the file then waits its turn. Never more than `CONCURRENCY` conversions run; up to 20 files (and five single-file limits of bytes) wait, each told its `position` (1 = next); beyond that the answer is `429 QUEUE_FULL` with `Retry-After`, and nothing is dropped silently. `GET /v1/jobs/{id}` answers `state` (`queued`, `running`, `done`, `error`), `stage` (`received`, `recognised`, `reading` with `step`, `page`, `pages`, then `fields`, `meaning`, `form`, `checks`, `export`; `model` when the open model is configured) and `units {done, total}`: the finished parts of 100. A part is counted only when the conversion reports the work behind it (a page rendered, a page read by OCR, a phase ended); nothing moves with the clock. `stage_s` is the time since the last report, the sign of life during one long page. `GET /v1/jobs/{id}/result` answers the same bytes as `convert` for the same file (`?report=0` for the form alone), `202` with the state while the job is not finished, or the job's problem. `DELETE /v1/jobs/{id}` gives a job up. A finished job is kept in memory for 30 minutes (the newest 60); nothing is written to disk. `GET /v1/jobs` tells how busy the queue is.
 
 The answer of `convert` is the partner's object (`title`, `tabs`, `flow`) and nothing else. The same input gives the same `X-Form-SHA256`.
 
@@ -124,6 +129,7 @@ The answer of `convert` is the partner's object (`title`, `tabs`, `flow`) and no
 | 415 | `EXTENSION`, `TYPE_MISMATCH`, `DOC_READER_OFF` | not one of the eight formats, or the content is another type |
 | 422 | `UNREADABLE`, `ACTIVE_CONTENT` | nothing readable; macros under `strict` |
 | 429 | `BUSY` | all slots busy, or the rate limit; with `Retry-After` |
+| 429 | `QUEUE_FULL` | `POST /v1/jobs` only: 20 files (or five single-file limits of bytes) already wait; with `Retry-After` |
 | 500 / 504 | `GATE_FAILED` / `TIMEOUT` | the result failed our own gate and is never sent |
 
 Not in the service: `/v1/forms/diff`, `/v1/forms/export`, `/about/*`. The proof of working without a network is the `convert` command under `--network none`; the state of the service is `GET /status`.
