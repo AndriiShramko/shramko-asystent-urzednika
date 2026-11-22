@@ -50,7 +50,7 @@ describe('FP print on the original', () => {
     await block(fpPreview())
     const print = vi.fn()
     window.print = print
-    expect(q<HTMLButtonElement>('#fp-print-sheet').disabled).toBe(false)
+    expect(q<HTMLButtonElement>('#fp-print-sheet').hidden).toBe(false)
     expect(q('#h-print').textContent).toBe('Krok 6 z 6. Wydruk')
     expect(document.body.textContent).toContain('Przed drukiem ustaw skalę 100 % (bez dopasowania do strony).')
     q('#fp-print-preview-btn').click()
@@ -69,7 +69,7 @@ describe('FP print on the original', () => {
 
   it('office formats and a failed preview: only the electronic form prints, with the honest line', async () => {
     await block(fpPreview(false))
-    expect(q<HTMLButtonElement>('#fp-print-sheet').disabled).toBe(true)
+    expect(q<HTMLButtonElement>('#fp-print-sheet').hidden).toBe(true) // BL13 TRY-F: an action that cannot work is not shown
     expect(q('#fp-print-note').textContent).toBe('Dla tego formatu nie ma obrazu strony. Dostępny jest wydruk formularza elektronicznego.')
     document.body.innerHTML = ''
     await block(null)

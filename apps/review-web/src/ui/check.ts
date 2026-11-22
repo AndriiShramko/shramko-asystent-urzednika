@@ -40,7 +40,7 @@ export function checkForm(ef: EForm): CheckResult {
 
 export interface Check { el: HTMLElement; run(): CheckResult; reset(): void }
 
-export function renderCheck(ef: EForm, extra?: () => HTMLElement | null): Check {
+export function renderCheck(ef: EForm, extra?: () => HTMLElement | null, onRun?: (r: CheckResult) => void): Check {
   const out = h('div', { id: 'fp-check-result', role: 'status' })
   const btn = h('button', { type: 'button', class: 'btn btn-main', id: 'fp-check' }, FP.checkButton)
 
@@ -71,7 +71,7 @@ export function renderCheck(ef: EForm, extra?: () => HTMLElement | null): Check 
     if (more) out.append(more)
     return r
   }
-  btn.addEventListener('click', () => { run() })
+  btn.addEventListener('click', () => { const r = run(); onRun?.(r) })
 
   const el = h('section', { id: 'fp-check-step', class: 'fp-step', 'aria-labelledby': 'h-check' },
     h('h2', { id: 'h-check' }, FP.step(5), ' ', FP.checkHeading),

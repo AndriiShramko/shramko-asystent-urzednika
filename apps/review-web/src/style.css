@@ -402,6 +402,18 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 @media (max-width: 40rem) { .clerk-card-body { grid-template-columns: minmax(0, 1fr); } }
 /* W11 CLERK-P end */
 
+/* BL13 TRY-F: the trial fill opens one step at a time; nothing sticky covers what the clerk works on. The scroll
+   padding keeps a focused or scrolled-to element clear of the sticky bottom bar and of the top edge. */
+html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
+#fp-citizen[hidden], #fp-check-step[hidden], #fp-print-step[hidden],
+#fp-citizen [hidden], #fp-check-step [hidden], #fp-print-step [hidden] { display: none !important; }
+.fp-done-line { margin: 0.5rem 0; padding: 0.35rem 0.75rem; border-left: 4px solid var(--c-ok-edge); background: var(--c-ok-bg); color: var(--c-ok-text); }
+.fp-done-line .status { display: inline; margin: 0; }
+.fp-done-line .actions { margin: 0.4rem 0 0; }
+.fp-done-line .linkish { margin-left: 0.25rem; }
+#fp-citizen > h2, #fp-check-step > h2, #fp-print-step > h2 { margin-top: 1rem; }
+/* BL13 TRY-F end */
+
 /* W11 FLOW */
 .bar-run[hidden], .bar-fill[hidden], .bar[hidden], .queue[hidden], .q-dot[hidden], .q-state[hidden], .q-alive[hidden], .q-row .btn[hidden], #queue-cancel-all[hidden], #progress-alive[hidden], #token-row[hidden] { display: none; }
 .bar-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: var(--c-bar); transition: width 0.3s linear; }

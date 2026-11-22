@@ -79,7 +79,8 @@ describe('FP one-click fill', () => {
     document.body.append(ef.el, c.el)
     const q = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!
     expect(q('#h-citizen').textContent).toBe('Krok 4 z 6. Próbne wypełnienie danymi demonstracyjnymi')
-    expect(q<HTMLButtonElement>('#fp-fill').disabled).toBe(true)
+    expect(q('#fp-fill-row').hidden).toBe(true) // BL13 TRY-F: one step at a time, no disabled button
+    expect(q('#fp-scan-row').hidden).toBe(false)
     q('#fp-scan').click()
     expect(q('#fp-people').hidden).toBe(false)
     expect(q('#fp-people').textContent).toContain('celowo błędna cyfra kontrolna PESEL')

@@ -7,6 +7,8 @@ import { INPUT_TYPES, nameOf, type ENode } from '../lib/fp/form'
 import { fullAddress, peselOf, type DemoRecord } from '../lib/fp/family'
 import { layoutMark, layoutText, standardPrints, type Attr, type Glyph, type Place } from '../lib/fp/places'
 import { FP } from '../lib/fp/text'
+import { filingValue } from '../lib/fp/fill'
+import { todayPl } from '../lib/fp/today'
 import { canReadInk, measureInk, type PlaceInk } from '../lib/fp/ink'
 import type { EForm } from './eform'
 import type { Where } from './where'
@@ -80,7 +82,10 @@ export function buildSheets(ef: EForm, where: Where, record: DemoRecord | null, 
   for (const [fid, { cid, place }] of j.byField) {
     const n = ef.model.byId.get(fid)
     if (!n || !ef.isVisible(n) || !place.box) continue
-    const v = ef.get(fid)
+    const v0 = ef.get(fid)
+    // BL13 TRY-F: an empty filing-date field prints the day of the print
+    const filed = !v0 || (typeof v0 === 'string' && !v0.trim()) ? filingValue(n, attrValue(ef, 'place', record).text) : ''
+    const v = filed || v0
     const chosen = Array.isArray(v) ? v : typeof v === 'string' && v ? [v] : []
     if (!chosen.length) continue
     if (place.options?.length && (n.type === 'RADIO' || n.type === 'CHECKBOX' || n.type === 'SELECT')) {
@@ -99,7 +104,7 @@ export function buildSheets(ef: EForm, where: Where, record: DemoRecord | null, 
       if (g) { add(place.page, [g], cid); used.add(fid); placed++ }
       continue
     }
-    let text = paperText(n, ef.textOf(fid))
+    let text = paperText(n, filed || ef.textOf(fid))
     if (place.kind === 'comb' && place.cells && text.replace(/\s/g, '').length > place.cells) text = text.replace(/[.\-\s]/g, '')
     const r = layoutText(place, text, ink?.get(cid))
     if (r.fits) used.add(fid)
@@ -115,6 +120,15 @@ export function buildSheets(ef: EForm, where: Where, record: DemoRecord | null, 
     if (r.fits) for (const id of ids) used.add(id)
     else overflow.push(s.place.label ?? s.attr)
     add(s.place.page, r.glyphs, s.cid)
+    placed++
+  }
+
+  // BL13 TRY-F: the paper's own place of the filing date gets the day of the print (never a signature place)
+  for (const d of j.dates ?? []) {
+    if (!d.place.box) continue
+    const town = d.kind === 'placeDate' ? attrValue(ef, 'place', record).text : ''
+    const r = layoutText(d.place, town ? `${town}, ${todayPl()}` : todayPl(), ink?.get(d.cid))
+    add(d.place.page, r.glyphs, d.cid)
     placed++
   }
 
@@ -155,7 +169,7 @@ export function buildEformPrint(ef: EForm): HTMLElement {
       for (const c of n.children) walk(c, box)
       into.append(box)
     } else if (INPUT_TYPES.has(n.type) && n.type !== 'FILE_UPLOADER') {
-      into.append(h('p', {}, h('strong', {}, nameOf(n) + ': '), paperText(n, ef.textOf(n.id)) || '—'))
+      into.append(h('p', {}, h('strong', {}, nameOf(n) + ': '), paperText(n, ef.textOf(n.id) || filingValue(n)) || '—'))
     }
   }
   for (const tab of ef.model.tabs) {
@@ -172,8 +186,8 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
   const note = h('p', { id: 'fp-print-note', class: 'muted' })
   const extraNote = h('p', { id: 'fp-print-extra' })
   const preview = h('div', { id: 'fp-print-preview', class: 'fp-print-preview', hidden: true })
-  const pvBtn = h('button', { type: 'button', class: 'btn', id: 'fp-print-preview-btn', disabled: true, 'aria-expanded': 'false', 'aria-controls': 'fp-print-preview' }, FP.printPreview)
-  const sheetBtn = h('button', { type: 'button', class: 'btn btn-main', id: 'fp-print-sheet', disabled: true }, FP.printSheet)
+  const pvBtn = h('button', { type: 'button', class: 'btn', id: 'fp-print-preview-btn', hidden: true, 'aria-expanded': 'false', 'aria-controls': 'fp-print-preview' }, FP.printPreview)
+  const sheetBtn = h('button', { type: 'button', class: 'btn btn-main', id: 'fp-print-sheet', hidden: true }, FP.printSheet)
   const eBtn = h('button', { type: 'button', class: 'btn', id: 'fp-print-eform' }, FP.printEform)
 
   function fillNotes(s: Sheets | null): void {
@@ -221,8 +235,8 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
   function refresh(): void {
     const pv = where.preview()
     const geometry = !!pv && pv.pages.length > 0 && !!where.joined()
-    pvBtn.disabled = !geometry
-    sheetBtn.disabled = !geometry
+    pvBtn.hidden = !geometry
+    sheetBtn.hidden = !geometry
     note.textContent = geometry ? '' : pv ? FP.noPageImage : FP.previewMissing
     if (!preview.hidden) showPreview()
   }

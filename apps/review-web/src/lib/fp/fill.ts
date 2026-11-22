@@ -4,6 +4,7 @@
 // few title patterns. Fields of another person, an attorney or a representative are never filled.
 import { INPUT_TYPES, type ENode, type FormModel } from './form'
 import { accountOf, extraOf, fullAddress, idCardOf, nipOf, peselOf, regonOf, type DemoRecord } from './family'
+import { filingKind, todayIso, todayPl } from './today'
 
 export type FillTag = 'pesel' | 'mlpz' | 'proposal'
 export interface FillItem { id: string; value: string | string[]; tag: FillTag }
@@ -29,14 +30,21 @@ export function externalValue(key: string, r: DemoRecord): string {
   return typeof v === 'string' ? v : ''
 }
 
-const today = (): string => new Date().toISOString().slice(0, 10)
+/** BL13 TRY-F: the filing date of a field, or '' when the field is not about the day of filing. A date picker takes
+ * the form's own format, a text field the Polish one; "miejscowość i data" takes the place and the date. */
+export function filingValue(n: ENode, place = ''): string {
+  if (/podpis/.test(norm(n.title)) && !/data/.test(norm(n.title))) return ''
+  const kind = filingKind(n.title) ?? filingKind(n.techName)
+  if (!kind || (n.type !== 'DATEPICKER' && n.type !== 'TEXT_FIELD')) return ''
+  if (n.type === 'DATEPICKER') return kind === 'date' ? todayIso() : ''
+  return kind === 'placeDate' && place ? `${place}, ${todayPl()}` : todayPl()
+}
 
 /** A proposal for a field without a partner key, or '' when the page has no honest guess. */
 function proposal(n: ENode, r: DemoRecord): string | string[] {
   const t = norm(n.title)
   const tech = norm(n.techName)
   const m = r.MLPZ
-  const isDate = n.type === 'DATEPICKER'
   const inDogSection = (() => { for (let p = n.parent; p; p = p.parent) if (/psa|psie|psow/.test(norm(p.techName + ' ' + p.title))) return true; return false })()
   // dog (set 07 style)
   if (/rasa psa/.test(t)) return extraOf(r, 'dog.breed')
@@ -64,7 +72,8 @@ function proposal(n: ENode, r: DemoRecord): string | string[] {
   if (tech === 'nazwisko' || t === 'nazwisko') return m.surname
   if (/^data urodzenia$/.test(t)) return r.PESEL.birthDate ?? ''
   if (/^miejsce urodzenia$/.test(t)) return r.PESEL.birthPlace ?? ''
-  if (/data (wypelnienia|sporzadzenia)/.test(t) && isDate) return today()
+  const filed = filingValue(n, m.place ?? '')
+  if (filed) return filed
   // the address
   if (tech === 'kod_pocztowy' || /^kod pocztowy$/.test(t)) return m.postCode
   if (tech === 'ulica' || /^ulica$/.test(t)) return m.street

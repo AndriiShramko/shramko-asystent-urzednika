@@ -66,5 +66,11 @@ export const FP = {
   printSheet: 'Drukuj na blankiecie',
   printEform: 'Drukuj formularz elektroniczny',
   printHint: 'Przed drukiem ustaw skalę 100 % (bez dopasowania do strony).',
-  noPageImage: 'Dla tego formatu nie ma obrazu strony. Dostępny jest wydruk formularza elektronicznego.'
+  noPageImage: 'Dla tego formatu nie ma obrazu strony. Dostępny jest wydruk formularza elektronicznego.',
+
+  // BL13 TRY-F: the progressive trial fill (one step open at a time, finished steps as one line)
+  scanDone: 'Kod QR zeskanowany (symulacja).',
+  scanAgain: 'Zeskanuj ponownie',
+  changePerson: 'Zmień osobę',
+  printNext: 'Formularz sprawdzony. Następny krok: wydruk.'
 }

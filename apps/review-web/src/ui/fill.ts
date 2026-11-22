@@ -34,11 +34,19 @@ export function mountFill(res: Converted, preview: Promise<unknown> = Promise.re
       })))
     })
     return box
+  }, () => { print.el.hidden = false; print.el.scrollIntoView?.({ block: "nearest", behavior: "smooth" }) })
+  // BL13 TRY-F: the check opens after the fill, the print after the check; going back closes what follows
+  const citizen = renderCitizen(eform, () => check.reset(), (s) => {
+    check.el.hidden = s !== 'filled'
+    print.el.hidden = true
+    if (s !== 'filled') check.reset()
+    else check.el.querySelector<HTMLButtonElement>('#fp-check')?.focus()
   })
-  const citizen = renderCitizen(eform, () => check.reset())
   const print = renderPrint(eform, where, () => citizen.record())
   const address = attachAddressHints(eform, teryt)
   const banner = h('p', { id: 'fp-banner', class: 'fp-banner', role: 'note' }, FP.banner)
+  check.el.hidden = true
+  print.el.hidden = true
   const el = h('div', { id: 'fp', class: 'fp', lang: 'pl' }, banner, where.el, eform.el, citizen.el, check.el, print.el)
   return { el, eform, citizen, check, where, print, address }
 }
