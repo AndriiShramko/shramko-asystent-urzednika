@@ -132,6 +132,62 @@
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
       "field": "6f66c0b8-6070-56b9-bb21-cc08b3d7ea53"
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 1,
+      "box": [
+        365.5,
+        108.12,
+        541.5,
+        119.12
+      ],
+      "candidate": "c4",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): miejscowość i data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            365.5,
+            108.12,
+            541.5,
+            119.12
+          ],
+          "quote": "miejscowość i data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 1,
+      "box": [
+        323.3,
+        646.82,
+        521.3,
+        657.82
+      ],
+      "candidate": "c11",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): czytelny podpis wnioskodawcy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            323.3,
+            646.82,
+            521.3,
+            657.82
+          ],
+          "quote": "czytelny podpis wnioskodawcy"
+        }
+      }
     }
   ],
   "checks": [

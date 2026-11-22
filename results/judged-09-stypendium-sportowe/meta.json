@@ -1107,6 +1107,546 @@
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
       "field": "c3285651-6c59-5b11-82ca-58847a68f344"
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 4,
+      "box": [
+        70.82,
+        739.3,
+        202.55,
+        751.3
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data sporządzenia wniosku",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 4,
+          "box": [
+            70.82,
+            739.3,
+            202.55,
+            751.3
+          ],
+          "quote": "Data sporządzenia wniosku"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 4,
+      "box": [
+        354.07,
+        739.3,
+        513.77,
+        751.3
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis i pieczątka wnioskodawcy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 4,
+          "box": [
+            354.07,
+            739.3,
+            513.77,
+            751.3
+          ],
+          "quote": "Podpis i pieczątka wnioskodawcy"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 6,
+      "box": [
+        141.62,
+        262.13,
+        164.28,
+        274.13
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 6,
+          "box": [
+            141.62,
+            262.13,
+            164.28,
+            274.13
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 6,
+      "box": [
+        392.23,
+        262.13,
+        477.77,
+        274.13
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis kandydata",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 6,
+          "box": [
+            392.23,
+            262.13,
+            477.77,
+            274.13
+          ],
+          "quote": "Podpis kandydata"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 6,
+      "box": [
+        141.62,
+        501.55,
+        164.28,
+        513.55
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 6,
+          "box": [
+            141.62,
+            501.55,
+            164.28,
+            513.55
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 6,
+      "box": [
+        318.67,
+        501.55,
+        489.33,
+        513.55
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis rodzica/opiekuna prawnego",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 6,
+          "box": [
+            318.67,
+            501.55,
+            489.33,
+            513.55
+          ],
+          "quote": "Podpis rodzica/opiekuna prawnego"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 9,
+      "box": [
+        70.82,
+        231.02,
+        202.55,
+        243.02
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data sporządzenia wniosku",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 9,
+          "box": [
+            70.82,
+            231.02,
+            202.55,
+            243.02
+          ],
+          "quote": "Data sporządzenia wniosku"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 9,
+      "box": [
+        354.07,
+        231.02,
+        513.77,
+        243.02
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis i pieczątka wnioskodawcy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 9,
+          "box": [
+            354.07,
+            231.02,
+            513.77,
+            243.02
+          ],
+          "quote": "Podpis i pieczątka wnioskodawcy"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 10,
+      "box": [
+        141.62,
+        239.3,
+        164.28,
+        251.3
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 10,
+          "box": [
+            141.62,
+            239.3,
+            164.28,
+            251.3
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 10,
+      "box": [
+        392.23,
+        239.3,
+        477.73,
+        251.3
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis kandydata",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 10,
+          "box": [
+            392.23,
+            239.3,
+            477.73,
+            251.3
+          ],
+          "quote": "Podpis kandydata"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 10,
+      "box": [
+        141.62,
+        449.95,
+        164.28,
+        461.95
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 10,
+          "box": [
+            141.62,
+            449.95,
+            164.28,
+            461.95
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 10,
+      "box": [
+        318.67,
+        449.95,
+        489.42,
+        461.95
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis rodzica/opiekuna prawnego",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 10,
+          "box": [
+            318.67,
+            449.95,
+            489.42,
+            461.95
+          ],
+          "quote": "Podpis rodzica/opiekuna prawnego"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 14,
+      "box": [
+        70.82,
+        398.57,
+        202.55,
+        410.57
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data sporządzenia wniosku",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 14,
+          "box": [
+            70.82,
+            398.57,
+            202.55,
+            410.57
+          ],
+          "quote": "Data sporządzenia wniosku"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 14,
+      "box": [
+        354.07,
+        398.57,
+        513.77,
+        410.57
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis i pieczątka wnioskodawcy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 14,
+          "box": [
+            354.07,
+            398.57,
+            513.77,
+            410.57
+          ],
+          "quote": "Podpis i pieczątka wnioskodawcy"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 15,
+      "box": [
+        141.62,
+        256.49,
+        164.28,
+        268.49
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 15,
+          "box": [
+            141.62,
+            256.49,
+            164.28,
+            268.49
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 15,
+      "box": [
+        392.23,
+        256.49,
+        477.73,
+        268.49
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis kandydata",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 15,
+          "box": [
+            392.23,
+            256.49,
+            477.73,
+            268.49
+          ],
+          "quote": "Podpis kandydata"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 16,
+      "box": [
+        141.62,
+        308.33,
+        164.28,
+        320.33
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 16,
+          "box": [
+            141.62,
+            308.33,
+            164.28,
+            320.33
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 16,
+      "box": [
+        392.23,
+        308.33,
+        477.73,
+        320.33
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis kandydata",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 16,
+          "box": [
+            392.23,
+            308.33,
+            477.73,
+            320.33
+          ],
+          "quote": "Podpis kandydata"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 16,
+      "box": [
+        141.62,
+        518.83,
+        164.28,
+        530.83
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 16,
+          "box": [
+            141.62,
+            518.83,
+            164.28,
+            530.83
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 16,
+      "box": [
+        318.67,
+        518.83,
+        489.33,
+        530.83
+      ],
+      "detail": "paper-only words, no place found (SIGNATURE_AND_DATE): Podpis rodzica/opiekuna prawnego",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 16,
+          "box": [
+            318.67,
+            518.83,
+            489.33,
+            530.83
+          ],
+          "quote": "Podpis rodzica/opiekuna prawnego"
+        }
+      }
     }
   ],
   "checks": [

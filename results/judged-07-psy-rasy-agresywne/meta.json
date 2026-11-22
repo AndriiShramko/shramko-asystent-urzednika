@@ -177,6 +177,118 @@
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
       "field": "0ada5215-e7f4-59f4-8e11-0ab29316721a"
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 1,
+      "box": [
+        384.27,
+        29.98,
+        544.1,
+        38.02
+      ],
+      "candidate": "c1",
+      "detail": "paper-only place left out (OFFICE_USE): Nr sprawy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.office_use",
+        "text": "Część „wypełnia urząd” zostaje na papierze; e-usługa jej nie pokazuje.",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            384.27,
+            29.98,
+            544.1,
+            38.02
+          ],
+          "quote": "Nr sprawy"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 1,
+      "box": [
+        57.25,
+        33.0,
+        215.3,
+        120.4
+      ],
+      "candidate": "c2",
+      "detail": "paper-only place left out (OFFICE_USE): Miejsce na pieczęć Urzędu",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.office_use",
+        "text": "Część „wypełnia urząd” zostaje na papierze; e-usługa jej nie pokazuje.",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            57.25,
+            33.0,
+            215.3,
+            120.4
+          ],
+          "quote": "Miejsce na pieczęć Urzędu"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 1,
+      "box": [
+        420.39,
+        71.92,
+        544.19,
+        81.88
+      ],
+      "candidate": "c3",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): Wrocław, dnia",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            420.39,
+            71.92,
+            544.19,
+            81.88
+          ],
+          "quote": "Wrocław, dnia"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 2,
+      "box": [
+        369.67,
+        30.18,
+        543.25,
+        39.18
+      ],
+      "candidate": "c26",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): podpis wnioskodawcy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 2,
+          "box": [
+            369.67,
+            30.18,
+            543.25,
+            39.18
+          ],
+          "quote": "podpis wnioskodawcy"
+        }
+      }
     }
   ],
   "checks": [

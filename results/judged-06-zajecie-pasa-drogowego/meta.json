@@ -458,6 +458,62 @@
       "code": "INFERRED_SHAPE",
       "detail": "REPEATING_SECTION: no export shows one",
       "field": "b4d404fb-81ea-5be6-bcab-9b47b76930d8"
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 1,
+      "box": [
+        446.14,
+        60.53,
+        536.11,
+        70.49
+      ],
+      "candidate": "c5",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): dnia",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 1,
+          "box": [
+            446.14,
+            60.53,
+            536.11,
+            70.49
+          ],
+          "quote": "dnia"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 2,
+      "box": [
+        75.14,
+        619.44,
+        237.82,
+        629.4
+      ],
+      "candidate": "c45",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): podpis Wnioskodawcy",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 2,
+          "box": [
+            75.14,
+            619.44,
+            237.82,
+            629.4
+          ],
+          "quote": "podpis Wnioskodawcy"
+        }
+      }
     }
   ],
   "checks": [

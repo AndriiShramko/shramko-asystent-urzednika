@@ -130,6 +130,62 @@
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
       "field": "3b46cff6-c6a5-5459-a4d5-dbe4affec7b0"
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 2,
+      "box": [
+        228.47,
+        568.4,
+        404.77,
+        588.9
+      ],
+      "candidate": "c26",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): Data",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 2,
+          "box": [
+            228.47,
+            568.4,
+            404.77,
+            588.9
+          ],
+          "quote": "Data"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 2,
+      "box": [
+        228.47,
+        610.5,
+        580.98,
+        644.95
+      ],
+      "candidate": "c27",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): Podpis",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 2,
+          "box": [
+            228.47,
+            610.5,
+            580.98,
+            644.95
+          ],
+          "quote": "Podpis"
+        }
+      }
     }
   ],
   "checks": [

@@ -354,34 +354,6 @@
     },
     {
       "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c37",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c38",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c41",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
-      "page": 2,
-      "candidate": "c47",
-      "evidence": [],
-      "detail": "a place to fill without a label: the official decides what it asks"
-    },
-    {
-      "code": "LABEL_NOT_FOUND",
       "page": 3,
       "candidate": "c62",
       "evidence": [],
@@ -1234,6 +1206,11 @@
     {
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
+      "field": "05a3901a-279a-5e8e-b8cf-a944f9920c17"
+    },
+    {
+      "code": "INFERRED_SHAPE",
+      "detail": "DATEPICKER: no export shows one",
       "field": "2762978c-e3da-5b8d-a94e-114d28a5e641"
     },
     {
@@ -1255,6 +1232,90 @@
       "code": "INFERRED_SHAPE",
       "detail": "DATEPICKER: no export shows one",
       "field": "41773efb-68f3-5f90-abab-49cf916dc175"
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 4,
+      "box": [
+        42.24,
+        452.28,
+        79.44,
+        463.8
+      ],
+      "candidate": "c96",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): H. PODPIS SKŁADAJĄCEGO DEKLARACJĘ / OSOBY REPREZENTUJĄCEJ",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 4,
+          "box": [
+            42.24,
+            452.28,
+            79.44,
+            463.8
+          ],
+          "quote": "H. PODPIS SKŁADAJĄCEGO DEKLARACJĘ / OSOBY REPREZENTUJĄCEJ"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 4,
+      "box": [
+        261.72,
+        481.68,
+        567.0,
+        513.0
+      ],
+      "candidate": "c101",
+      "detail": "paper-only place left out (SIGNATURE_AND_DATE): 77. Podpis składającego deklarację / osoby reprezentującej",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.signature_and_date",
+        "text": "Podpis i datę złożenia dodaje e-usługa przy wysyłce.",
+        "source": {
+          "type": "paper",
+          "page": 4,
+          "box": [
+            261.72,
+            481.68,
+            567.0,
+            513.0
+          ],
+          "quote": "77. Podpis składającego deklarację / osoby reprezentującej"
+        }
+      }
+    },
+    {
+      "code": "INPUT_NOTE",
+      "page": 4,
+      "box": [
+        42.24,
+        565.56,
+        79.92,
+        577.2
+      ],
+      "candidate": "c103",
+      "detail": "paper-only place left out (OFFICE_USE): I. ADNOTACJA ORGANU",
+      "fix": {
+        "kind": "applied",
+        "rule": "paper_only.office_use",
+        "text": "Część „wypełnia urząd” zostaje na papierze; e-usługa jej nie pokazuje.",
+        "source": {
+          "type": "paper",
+          "page": 4,
+          "box": [
+            42.24,
+            565.56,
+            79.92,
+            577.2
+          ],
+          "quote": "I. ADNOTACJA ORGANU"
+        }
+      }
     }
   ],
   "checks": [
@@ -1402,9 +1463,9 @@
       "b904b7f4-b6d0-5e11-9d26-41a11f8af97b": "paper",
       "348e0742-2d56-52f3-b79e-0282ff6ab5ae": "paper",
       "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "paper",
+      "05a3901a-279a-5e8e-b8cf-a944f9920c17": "paper",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "paper",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "paper",
-      "a9f90d2e-29c2-5660-bd0f-15875b8d8151": "paper",
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": "paper",
       "19e8af72-e472-56ef-a6bf-d3f4a6403647": "paper",
       "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": "paper",
@@ -1468,9 +1529,9 @@
       "a0cff104-f78e-5bd0-bad2-3fd3d15278c5": "gmina",
       "b904b7f4-b6d0-5e11-9d26-41a11f8af97b": "kod_pocztowy",
       "3ac55d05-7c46-5efb-93c8-70daf15a00ec": "okolicznosci",
+      "05a3901a-279a-5e8e-b8cf-a944f9920c17": "data_zdarzenia_powodujacego_powstanie_obowiazku_oplaty",
       "2762978c-e3da-5b8d-a94e-114d28a5e641": "powodujacego_ustanie_obowiazku_oplaty",
       "7b45a5a0-ef3b-5188-a813-6b1cf23cc59d": "komunalnymi_data_wystapienia_zmiany_danych",
-      "a9f90d2e-29c2-5660-bd0f-15875b8d8151": "danych_bedacych_podstawa_ustalenia_wysokosci_naleznej_oplaty",
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": "wystapienia_zmiany_danych",
       "1f7d2b32-d65a-52f3-8ff8-13d12a8986c3": "numer_nieruchomosci_domu_2",
       "bb82b6cc-6f13-59fb-83fd-a95cbdacec1f": "kod_pocztowy_2",
@@ -1759,6 +1820,18 @@
           "candidate": "c35"
         }
       ],
+      "05a3901a-279a-5e8e-b8cf-a944f9920c17": [
+        {
+          "page": 2,
+          "box": [
+            105.96,
+            213.6,
+            188.28,
+            234.36
+          ],
+          "candidate": "c37"
+        }
+      ],
       "2762978c-e3da-5b8d-a94e-114d28a5e641": [
         {
           "page": 2,
@@ -1789,23 +1862,6 @@
           ],
           "quote": "komunalnymi - data wystąpienia zmiany danych",
           "candidate": "c43"
-        }
-      ],
-      "a9f90d2e-29c2-5660-bd0f-15875b8d8151": [
-        {
-          "page": 2,
-          "box": [
-            357.6,
-            193.64,
-            549.22,
-            213.08
-          ],
-          "runs": [
-            "r65",
-            "r66"
-          ],
-          "quote": "danych będących podstawą ustalenia wysokości należnej opłaty za gospodarowanie odpadami",
-          "candidate": "c44"
         }
       ],
       "51bc2bf6-39bc-5d1c-ac09-c7f15a32484c": [
@@ -2232,10 +2288,10 @@
     "ledger": {
       "blanks_found": 103,
       "became_field": 44,
-      "merged": 20,
+      "merged": 24,
       "covered_by_standard": 11,
       "left_out": 6,
-      "awaiting_decision": 22,
+      "awaiting_decision": 18,
       "rows": [
         {
           "candidate": "c1",
@@ -2427,13 +2483,14 @@
         },
         {
           "candidate": "c37",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c37"
+          "fate": "FIELD",
+          "field": "05a3901a-279a-5e8e-b8cf-a944f9920c17"
         },
         {
           "candidate": "c38",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c38"
+          "fate": "MERGED",
+          "into": "c37",
+          "why": "COMB_CELLS"
         },
         {
           "candidate": "c39",
@@ -2448,8 +2505,9 @@
         },
         {
           "candidate": "c41",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c41"
+          "fate": "MERGED",
+          "into": "c40",
+          "why": "COMB_CELLS"
         },
         {
           "candidate": "c42",
@@ -2464,8 +2522,9 @@
         },
         {
           "candidate": "c44",
-          "fate": "FIELD",
-          "field": "a9f90d2e-29c2-5660-bd0f-15875b8d8151"
+          "fate": "MERGED",
+          "into": "c43",
+          "why": "COMB_CELLS"
         },
         {
           "candidate": "c45",
@@ -2480,8 +2539,9 @@
         },
         {
           "candidate": "c47",
-          "fate": "AWAITING_DECISION",
-          "decision": "label_c47"
+          "fate": "MERGED",
+          "into": "c46",
+          "why": "COMB_CELLS"
         },
         {
           "candidate": "c48",
