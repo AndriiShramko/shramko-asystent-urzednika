@@ -42,6 +42,7 @@ FC_PLCF_BTE_CHPX, FC_PLCF_BTE_PAPX, FC_STTBF_FFN, FC_CLX, FC_PLCF_TXBX_TXT = 12,
 SPRM_P_IN_TABLE, SPRM_P_TTP, SPRM_P_ITAP, SPRM_P_INNER_CELL, SPRM_P_INNER_TTP, SPRM_P_HUGE = (
     0x2416, 0x2417, 0x6649, 0x244B, 0x244C, 0x6646)
 SPRM_C_BOLD, SPRM_C_HPS, SPRM_C_SYMBOL = 0x0835, 0x4A43, 0x6A09
+SPRM_C_RG_FTC = (0x4A4F, 0x4A50, 0x4A51)   # sprmCRgFtc0, 1, 2: the run's ASCII, East Asian and other font
 SPRM_T_DEF_TABLE, SPRM_P_CHG_TABS, SPRM_P_CHG_TABS_PAPX = 0xD608, 0xC615, 0xC60D
 # TBD.tlc (MS-DOC 2.9.329): the leader of a tab stop, written as LEADER_LEN characters like the docx reader does
 _TAB_LEADERS = {1: ".", 2: "-", 3: "_", 4: "_", 5: "·"}
@@ -278,8 +279,21 @@ def _fonts(table: bytes, fc: int, lcb: int) -> list[str]:
 
 
 def _symbol(font: str, code: int) -> str:
-    table = next((v for k, v in sorted(_SYMBOLS.items(), key=lambda kv: -len(kv[0])) if font.startswith(k)), None)
+    font = font.replace(" ", "")   # "Wingdings2" and "Wingdings 2" are one font
+    table = next((v for k, v in sorted(_SYMBOLS.items(), key=lambda kv: -len(kv[0]))
+                  if font.startswith(k.replace(" ", ""))), None)
     return (table or {}).get(code & 0xFF, UNKNOWN_SYMBOL)
+
+
+def _symbol_font(fonts: list[str], props: dict[int, bytes]) -> str | None:
+    """The symbol font of a character typed in a symbol font (U+F0xx without sprmCSymbol): the first of the run's
+    three fonts (sprmCRgFtc0, 1, 2) that has a symbol table; None when none has."""
+    for code in SPRM_C_RG_FTC:
+        g = props.get(code, b"")
+        ftc = struct.unpack_from("<H", g, 0)[0] if len(g) >= 2 else len(fonts)
+        if ftc < len(fonts) and any(fonts[ftc].replace(" ", "").startswith(k.replace(" ", "")) for k in _SYMBOLS):
+            return fonts[ftc]
+    return None
 
 
 @dataclass
@@ -360,8 +374,9 @@ class _Reader:
         if SPRM_C_SYMBOL in props and len(props[SPRM_C_SYMBOL]) >= 4:
             ftc, xchar = struct.unpack_from("<HH", props[SPRM_C_SYMBOL], 0)
             ch = _symbol(self.fonts[ftc] if ftc < len(self.fonts) else "", xchar)
-        elif 0xF000 <= ord(ch) <= 0xF0FF:  # a character typed in a symbol font: the font is not known here
-            ch = UNKNOWN_SYMBOL
+        elif 0xF000 <= ord(ch) <= 0xF0FF:  # a character typed in a symbol font: the font is one of the run's fonts
+            font = _symbol_font(self.fonts, props)
+            ch = _symbol(font, ord(ch)) if font is not None else UNKNOWN_SYMBOL
         elif ch == "\x1e":
             ch = "-"
         elif ch == "\x0b":
