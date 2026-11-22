@@ -546,7 +546,8 @@ function makeSession(sidecar: Sidecar | null): Session {
     const meta = (sidecar?.meta ?? {}) as Record<string, unknown>
     const ledger = (meta.ledger ?? (sidecar as Record<string, unknown> | null)?.ledger) as { rows?: { fate?: unknown; reason?: unknown }[] } | undefined
     const rows = Array.isArray(ledger?.rows) ? ledger.rows : []
-    if (!rows.some((x) => x?.fate === 'LEFT_OUT' && x?.reason === 'SIGNATURE_AND_DATE')) return null
+    const noted = (Array.isArray(sidecar?.warnings) ? sidecar.warnings : []).some((w) => (w?.fix as { rule?: unknown } | undefined)?.rule === 'paper_only.signature_and_date')
+    if (!noted && !rows.some((x) => x?.fate === 'LEFT_OUT' && x?.reason === 'SIGNATURE_AND_DATE')) return null
     return h('p', { class: 'clerk-signature-note', id: 'clerk-signature-note' }, t('clerk.signature.note'))
   }
 

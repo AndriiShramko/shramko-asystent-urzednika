@@ -75,6 +75,23 @@ describe('BL13 box targets', () => {
   })
 })
 
+describe('BL13 paper-only places', () => {
+  it('the server\'s paper-only note is the text of the click; without a ledger row a signature place still answers', async () => {
+    const pv = fpPreview() as { places: Record<string, unknown> }
+    pv.places.c9 = { page: 1, kind: 'signature', box: [400, 700, 520, 712], label: 'podpis wnioskodawcy' }
+    await page([{ code: 'INPUT_NOTE', page: 1, candidate: 'c1', detail: 'paper-only place left out',
+      fix: { kind: 'applied', rule: 'paper_only.office_use', text: 'Część „wypełnia urząd” zostaje na papierze.', source: { type: 'paper', page: 1 } } }], pv)
+    q('.fp-box[data-cid="c1"]').click()
+    expect(q('.clerk-boxnote').textContent).toBe('Część „wypełnia urząd” zostaje na papierze.')
+    const sig = q('.fp-box[data-cid="c9"]')
+    expect(sig.classList.contains('fp-box-out')).toBe(true)
+    sig.click()
+    expect(q('.clerk-boxnote').textContent).toContain('wnioskodawca podpisuje wniosek w e-usłudze')
+    // an applied note makes no card
+    expect(document.querySelector('.clerk-card')).toBeNull()
+  })
+})
+
 describe('BL13 cards and the signature line', () => {
   it('the signature line is visible without a click when the paper had a signature and date', async () => {
     await page([], fpPreview(), [{ candidate: 'c9', fate: 'LEFT_OUT', reason: 'SIGNATURE_AND_DATE' }])

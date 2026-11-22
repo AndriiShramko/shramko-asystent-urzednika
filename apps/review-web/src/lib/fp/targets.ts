@@ -18,6 +18,32 @@ export interface BoxTarget {
   fields: string[]
   /** LEFT_OUT reason, when the place on purpose has no field */
   reason: string | null
+  /** the server's own plain sentence for a paper-only place (sidecar INPUT_NOTE, rule paper_only.*), Polish */
+  text?: string
+}
+
+export interface PaperOnly { reason: string; text: string }
+
+/** Paper-only places the converter reports in the sidecar (INPUT_NOTE with an applied fix of rule paper_only.*). */
+export function paperOnlyNotes(warnings: unknown): Map<string, PaperOnly> {
+  const m = new Map<string, PaperOnly>()
+  for (const w of Array.isArray(warnings) ? warnings as Record<string, unknown>[] : []) {
+    const fix = (w?.fix ?? {}) as Record<string, unknown>
+    const rule = typeof fix.rule === 'string' ? fix.rule : ''
+    if (typeof w?.candidate !== 'string' || fix.kind !== 'applied' || !rule.startsWith('paper_only.')) continue
+    const reason = rule === 'paper_only.signature_and_date' ? 'SIGNATURE_AND_DATE' : rule === 'paper_only.office_use' ? 'OFFICE_USE' : 'OTHER'
+    m.set(w.candidate, { reason, text: typeof fix.text === 'string' ? fix.text.trim() : '' })
+  }
+  return m
+}
+
+/** Without a ledger row: a place the finder itself calls a signature, a date or office use is on purpose no field. */
+function ownRule(place: Place): string | null {
+  const label = norm(place.label ?? '')
+  if (place.kind === 'signature' || /^(podpis|czytelny podpis)/.test(label)) return 'SIGNATURE_AND_DATE'
+  if (/^data( zlozenia| wypelnienia)?/.test(label) && !/urodzenia/.test(label)) return 'SIGNATURE_AND_DATE'
+  if (place.kind === 'office_use') return 'OFFICE_USE'
+  return null
 }
 
 const norm = (s: string): string => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l').replace(/\s+/g, ' ').trim()
@@ -73,7 +99,7 @@ export function attrsOfLabel(label: string): Attr[] {
 }
 
 /** candidate id -> its target, for every ledger row whose place the preview knows. */
-export function boxTargets(rows: LedgerRow[], pv: Preview, model: FormModel): Map<string, BoxTarget> {
+export function boxTargets(rows: LedgerRow[], pv: Preview, model: FormModel, notes: Map<string, PaperOnly> = new Map()): Map<string, BoxTarget> {
   const out = new Map<string, BoxTarget>()
   const byCid = new Map(rows.map((r) => [r.candidate, r]))
   const fieldsOf = (r: LedgerRow, depth: number): { kind: TargetKind; fields: string[]; reason: string | null } => {
@@ -107,6 +133,19 @@ export function boxTargets(rows: LedgerRow[], pv: Preview, model: FormModel): Ma
       const m = o.mark ? pv.places[o.mark] : undefined
       if (o.mark && m && !out.has(o.mark)) out.set(o.mark, { cid: o.mark, place: m, ...t })
     }
+  }
+  // the server's paper-only notes win over our own wording; a place that became a field keeps its field
+  for (const [cid, n] of notes) {
+    const place = pv.places[cid]
+    const had = out.get(cid)
+    if (!place || (had && had.fields.length)) continue
+    out.set(cid, { cid, place, kind: 'out', fields: [], reason: n.reason, text: n.text || undefined })
+  }
+  // no ledger row and no note: the finder's own kind or label of a signature, date or office place
+  for (const [cid, place] of Object.entries(pv.places)) {
+    if (out.has(cid) || !place.box) continue
+    const reason = ownRule(place)
+    if (reason) out.set(cid, { cid, place, kind: 'out', fields: [], reason })
   }
   return out
 }

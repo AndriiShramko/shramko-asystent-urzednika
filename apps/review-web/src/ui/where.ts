@@ -9,7 +9,7 @@ import { FP } from '../lib/fp/text'
 import type { Sidecar } from '../lib/model'
 import type { EForm } from './eform'
 import { clerkText, inClerkView } from './clerk-view'
-import { boxTargets, fieldBoxes, type BoxTarget } from '../lib/fp/targets'
+import { boxTargets, fieldBoxes, paperOnlyNotes, type BoxTarget } from '../lib/fp/targets'
 import { t as tr, hasKey, getLang } from '../lib/i18n'
 import { sessionOf, type PaperMark } from './clerk-remarks'
 
@@ -18,6 +18,7 @@ export interface Where { el: HTMLElement; ready: Promise<void>; preview(): Previ
 /** The plain note a click on a box that is not a field answers with (BL13 CLERK-T). */
 export function boxNote(tg: BoxTarget): string | null {
   if (tg.kind === 'out') {
+    if (tg.text && getLang() === 'pl') return tg.text
     const key = 'clerk.box.out.' + (tg.reason ?? 'OTHER')
     return hasKey(getLang(), key) ? tr(key) : tr('clerk.box.out.OTHER')
   }
@@ -128,7 +129,7 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
       return
     }
     joined = joinPlaces(rows0, pv)
-    targets = boxTargets(rows0, pv, ef.model)
+    targets = boxTargets(rows0, pv, ef.model, paperOnlyNotes(sidecar?.warnings))
     const rows = rowsOf(joined, pv)
     const live = h('p', { id: 'fp-where-live', 'aria-live': 'polite', class: 'muted' })
     const list = h('ul', { class: 'plain fp-where-list', id: 'fp-where-list' })
