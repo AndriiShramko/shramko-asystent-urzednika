@@ -86,7 +86,7 @@ Everything comes from the environment; the service refuses to start on an incons
 | `UI_ENABLED`, `UI_DIR` | `true`, empty | serve the front end; folder of a build |
 | `LOG_LEVEL` | `info` | logs are content-free at every level |
 
-**The open default, honestly.** `AUTH_MODE=auto` makes the image start with no flags, so a juror can run it at once; without a key file anyone who reaches the port can convert. Publish the port on loopback only (`-p 127.0.0.1:8080:8080`). On a shared network use [`docker-compose.yml`](../../docker-compose.yml), which mounts a key file and runs with JWT, or set `AUTH_MODE=jwt` so that a missing key stops the start instead of opening the service.
+**Access by default.** `AUTH_MODE=auto` makes the image start with no flags, so a juror can run it at once; without a key file anyone who reaches the port can convert. Publish the port on loopback only (`-p 127.0.0.1:8080:8080`). On a shared network use [`docker-compose.yml`](../../docker-compose.yml), which mounts a key file and runs with JWT, or set `AUTH_MODE=jwt` so that a missing key stops the start instead of opening the service.
 
 What the service cannot read is never a made-up form: a file with nothing readable answers `422 UNREADABLE`, a place it could not read is a warning in the sidecar with the page and the place.
 

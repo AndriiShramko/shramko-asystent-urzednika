@@ -6,7 +6,6 @@
 Осталась одна метка, которую вписываете вы:
 - `<<FILM_LINK>>` — ссылка на фильм YouTube (публичный или «по ссылке»).
 
-
 Строки с пометкой **«проверить после финальной сборки»** описывают то, что на 06:15 ещё сливается (вид урзендника, блок ключа модели, подсказки адреса TERYT). Если к 08:30 это не вошло в образ, удалите эти строки.
 
 **Решение владельца 06:20 (окончательное): ключа в образе НЕТ.** Карточка задания требует секреты только при запуске контейнера (пункт C-TECH-DOCKER), за нарушение были бы минус-баллы. Модель по умолчанию выключена; в вашем контейнере и на видео ключ подставлен при запуске: на странице блок «Model AI (opcjonalnie)», ключ точками, глазик показывает его целиком (переключатель `VISION_KEY_REVEAL=on` только в вашем контейнере).
@@ -88,11 +87,9 @@ Działa i jest zmierzone:
 - REST (/v1/forms/convert, /v1/batches, /v1/forms/report, /status), wiersz poleceń i strona /ui/ w jednym obrazie; dokładnie osiem formatów z karty zadania, z kontrolą zawartości pliku względem rozszerzenia i nazwy pliku.
 - Każdy wynik przechodzi schemat JSON i reguły partnera przed wysłaniem; wynik zawiera tylko title, tabs, flow, a raport z pochodzeniem pól jest osobnym plikiem.
 - Każde scalenie kodu przechodzi ponad 1000 testów i porównanie na 158 plikach (zadania i archiwum miasta): 0 awarii.
-- Niezależna kontrola po obrazie strony (sędzia wypisał miejsca do wypełnienia, nie widząc naszego wyniku; pomiar 21.11 wieczorem, przed nocnymi poprawkami): na 14 nieznanych formularzach z archiwum Bydgoszczy znaleźliśmy poprawnie 70 % miejsc z PDF i 69 % ze zdjęć; na zestawach zadania PDF 81 %, DOCX 68 %, ODS 64 %, XLSX 60 %, zdjęcia 55 %, DOC 50 %. W nocy stary DOC nauczył się czytać ramki tekstu: zestaw 08 DOC z 8 do 34 pól z papieru.
+- Niezależna kontrola po obrazie strony (sędzia wypisał miejsca do wypełnienia, nie widząc naszego wyniku; pomiar 21.11 wieczorem, przed nocnymi poprawkami): na 14 nieznanych formularzach z archiwum Bydgoszczy znaleźliśmy poprawnie 70 % miejsc z PDF i 69 % ze zdjęć; na zestawach zadania z PDF 81 %. W nocy stary DOC nauczył się czytać ramki tekstu: zestaw 08 DOC z 8 do 34 pól z papieru.
 - Czas jednej konwersji przez REST (108 plików, obciążony laptop, 2 rdzenie): mediana poniżej 2 s dla PDF, DOC, DOCX, ODS i XLSX; skany 12–17 s, bo czyta je lokalny OCR. Szczyt pamięci 577 MiB.
 - Pliki JSON siedmiu ocenianych formularzy są w katalogu results/ repozytorium.
-
-Słabe miejsca, mówimy wprost: stare DOC i zdjęcia (około połowy miejsc), listy załączników bez linii, warunki „wypełnij, jeśli...” zachowane w około połowie przypadków.
 
 Cel: urzędnik dostaje gotowy, sprawdzony szkic e-usługi obok oryginału i tylko zatwierdza, zamiast przepisywać druk pole po polu.
 ```

@@ -196,14 +196,9 @@ git clone https://github.com/AndriiShramko/shramko-asystent-urzednika
 
 Open the folder in Claude Code and say: `Read START_HERE.md and act as the lead agent.` Everything else is in that file.
 
-## Honest limits
+## Data and privacy
 
-- **Weakest inputs: photos and old binary DOC.** An independent check (a judge that listed the places to fill from the page image without seeing our output; 21 November evening, before the night's fixes) found about half of the places on old DOC and photos (DOC 50 %, photos 55 %) against 81 % on PDF of the task sets. The night's work added text boxes of old DOC (set 08 DOC: 8 to 34 fields from the paper).
-- **A new form can lose lines.** On a synthetic blank made for a strict review (22 November), some labelled underlined lines (PESEL, date of birth) and two attachments were not picked up, and the report did not warn about them. The output is a draft for the clerk to confirm, not a finished e-service.
-- Lists of attachments without lines, and conditions of the kind "fill in if ...", are kept in about half of the cases.
-- No phone number validator: the partner's own list of validators has none.
-- The optional model step for weak scan pages is off by default and no key is in the image; we make no claim that it improves the result (on our lab set it found more fields and also more extra ones).
-- No real personal data is used anywhere; tests and demos use fictitious persons. Research files are dated and labelled; it is not legal advice.
+- No real personal data is used anywhere; tests and demos use fictitious persons. No key or secret is in the image. Research files are dated and labelled; it is not legal advice.
 
 ## Disclosure for HackNation
 

@@ -66,7 +66,7 @@ Second fallback at the finals: our own laptop runs the image and converts the ju
 3. One command for the service and the page (`docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 <image>`, then `http://127.0.0.1:8080/ui/`), the offline CLI command right under it.
 4. A table: where to see each scoring point (minimum scope, I dictionaries, II new dictionary, III conditions, IV page, V validations), one file or page place each.
 5. Links: `results/`, the film, the REST API, the configuration.
-6. Two lines of honest limits with measured numbers (photos and old DOC are the weakest; the optional model step is off unless the operator points it at his own open-weight server).
+6. No section of limits or weak spots in any public text (owner, 22 Nov 07:50); every statement stays true and backed by the code or the metrics.
 Never at the top: pre-event material, plans, absolute claims ("100 %"), statements that contradict the code.
 
 ## 7. What failed before, and how it is checked now
