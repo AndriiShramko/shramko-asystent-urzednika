@@ -38,11 +38,11 @@ _LINE_KINDS = ("leader", "line_block", "blank_in_sentence")
 _LEADER_LETTERS = frozenset("escovra")
 
 
-def _leader_token(tok: str) -> bool:
+def _leader_token(tok: str, least: int = 6) -> bool:
     """BL13 SCAN-L: OCR reads a dotted leader as a run of e's ("Reeeeeeeeeeeseeeeee", "eeceeeeeo"): six letters or
     more, all of them e, s, c, o, v, r or a, at least half of them e. No Polish word of the lexicon looks like it."""
     w = re.sub(r"[\W\d_]", "", tok).casefold()
-    return len(w) >= 6 and set(w) <= _LEADER_LETTERS and w.count("e") * 2 >= len(w)
+    return len(w) >= least and set(w) <= _LEADER_LETTERS and w.count("e") * 2 >= len(w)
 
 
 def _distance(a: str, b: str, cap: int) -> int:
@@ -103,8 +103,14 @@ def ocr_mend(label: str) -> str:
     six letters of a lead-in phrase of the lexicon ("W micjscowOŚCI", "przy ulicy?") is that phrase. Callers give
     only OCR text: native text of a PDF, DOCX or sheet is never mended."""
     toks = label.split()
+    if toks and _leader_token(toks[0]):
+        # the label starts with leader dots: everything up to the last dot-like token is the leader, short dot-like
+        # pieces and the stray letters between them included ("E..e.eees eeer eee ke eee działka nr ewid")
+        weak = [i for i, t in enumerate(toks) if _leader_token(t, 3)]
+        if weak[-1] + 1 < len(toks):
+            toks = toks[weak[-1] + 1:]
     kept = [t for t in toks if not _leader_token(t)]
-    if kept and len(kept) < len(toks):
+    if kept and len(kept) < len(label.split()):
         label = " ".join(kept).strip(" .:;,/")
     low = label.casefold().rstrip(" ?.:")
     vocab = ocr_vocab()

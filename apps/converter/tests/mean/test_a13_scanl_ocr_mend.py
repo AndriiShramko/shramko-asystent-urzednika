@@ -26,6 +26,12 @@ def test_leader_dropped_then_phrase():
     assert ocr_mend("Reeeeeeeeeeeseeeeee przy ulicy?") == "przy ulicy"
 
 
+def test_leader_prefix_with_short_pieces():
+    assert ocr_mend("E..e.eees eeer eee eee eee ke eee działka nr ewid") == "działka nr ewid"
+    assert ocr_mend("Eeeeeeeeee« szerokość") == "szerokość"
+    assert ocr_mend("Sesje eee przy ulicy") == "Sesje eee przy ulicy"   # no leader in front: nothing is cut
+
+
 def test_misspelled_lead_in():
     assert ocr_mend("W micjscowOŚCI") == "w miejscowości"
 
