@@ -517,7 +517,5 @@
         }
       ]
     }
-  },
-  "input_sha256": "be4d196a6622490e7dc18b2c2740986ef62d95beb45803da9b016ace72fe1dee",
-  "form_sha256": "5e65385fed293d51a7aeb7f16db921581dc057487f8f1869c89967620648c517"
+  }
 }

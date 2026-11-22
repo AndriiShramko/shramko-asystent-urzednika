@@ -2841,7 +2841,5 @@
         "why": "Pole telefonu „Nr tel./fax”: pasuje słownik partnera Numery kierunkowe (wybór prefiksu kraju). Nie zapisano go w formularzu: eksporty partnera nie pokazują jego nazwy technicznej (bramka G9)."
       }
     ]
-  },
-  "input_sha256": "b0ebb030f204c3bc7314f80aab47c354146d91607bac36fdc08cfa8a7c115536",
-  "form_sha256": "4d6756acfb4196e2a77029aba4b560d8e812495c8cfcf72589c0d629bc58b407"
+  }
 }

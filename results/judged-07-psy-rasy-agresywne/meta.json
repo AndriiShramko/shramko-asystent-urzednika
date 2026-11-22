@@ -682,7 +682,5 @@
         }
       ]
     }
-  },
-  "input_sha256": "22d99255ad6b8d93501dd6f0303a819dd8c37a671de49fd5c43c3c9565f682cc",
-  "form_sha256": "ac7c596ae3e4703fe4086cb74a0a7ad5ca73db4d2f432956c4f33cef86fb6ae5"
+  }
 }

@@ -1289,7 +1289,5 @@
         "why": "Pole telefonu „Telefon”: pasuje słownik partnera Numery kierunkowe (wybór prefiksu kraju). Nie zapisano go w formularzu: eksporty partnera nie pokazują jego nazwy technicznej (bramka G9)."
       }
     ]
-  },
-  "input_sha256": "b251035b40bdd8a264b9c1035f466c57760b15db73d84a3ceebf9716c62ce14a",
-  "form_sha256": "8e18b4697013e8922c7fde60e457b9407abde114479af68b7e2febba76167152"
+  }
 }
