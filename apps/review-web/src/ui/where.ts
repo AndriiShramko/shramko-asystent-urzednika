@@ -246,10 +246,13 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
     w.append(h('p', { class: 'fp-noplace muted', lang: 'pl', 'data-for': id }, text))
     const live = el.querySelector('#fp-where-boxlive')
     if (live) live.textContent = text
+    else w.lastElementChild?.setAttribute('role', 'status')
   }
   // a focus in the e-form lights the place of that field on the original (clerk view only: side by side)
   ef.onPick((id) => {
-    if (!papersEl || !inClerkView(el)) return
+    if (!inClerkView(el)) return
+    // BL13 PRINT-MAP: an original without page pictures (or a preview that failed) still answers the pick
+    if (!papersEl) { if (painted) { noPlaceLine(id); session.pick({ fieldId: id }) } return }
     for (const b of papersEl.querySelectorAll('.fp-box-active')) b.classList.remove('fp-box-active')
     for (const x of ef.el.querySelectorAll('.fp-noplace')) x.remove()
     const cid = fieldBox.get(id) ?? joined?.byField.get(id)?.cid ?? (targets ? fieldBoxes(targets).get(id) : undefined)
@@ -266,7 +269,8 @@ export function renderWhere(ef: EForm, sidecar: Sidecar | null, pending: Promise
     marks: (list) => { lastMarks = list; drawMarks() }
   })
 
-  const done = (): void => { paint(); session.ready(); drawMarks() }
+  let painted = false
+  const done = (): void => { paint(); painted = true; session.ready(); drawMarks() }
   const ready = pending.then((raw) => { pv = parsePreview(raw); done() }, () => { pv = null; done() })
   return { el, ready, preview: () => pv, joined: () => joined, targets: () => targets }
 }

@@ -11,11 +11,11 @@ import { printNote } from '../src/ui/print'
 import { canonical, multipartBody } from './helpers'
 import { fpForm, fpLedgerSidecar, fpPreview } from './fp-fixture'
 
-async function page() {
+async function page(preview: unknown = fpPreview()) {
   const res = await interpretResponse(200, new Headers({ 'content-type': 'multipart/mixed; boundary=formularze-abc123' }),
     multipartBody(canonical(fpForm()), canonical(fpLedgerSidecar()))) as Converted
   const view = renderConverted(res)
-  const fill = mountFill(res, Promise.resolve(fpPreview()))
+  const fill = mountFill(res, Promise.resolve(preview))
   view.insertBefore(fill.el, view.querySelector('section[aria-labelledby="h-json"]'))
   document.body.append(view)
   await fill.where.ready
@@ -88,5 +88,21 @@ describe('BL13 PRINT-MAP: an empty blank is never shown without a word', () => {
     expect(document.querySelectorAll('#fp-print-preview .fp-sheet').length).toBeGreaterThan(0)
     const glyphs = document.querySelectorAll('#fp-print-preview .fp-glyph').length
     if (!glyphs) expect(note.textContent).not.toBe('')
+  })
+})
+
+describe('BL13 PRINT-MAP: an original without page pictures', () => {
+  it('every picked field still gets its line', async () => {
+    await page({ ...(fpPreview() as object), pages: [] })
+    const fields = all('.fp-field[data-node]')
+    let silent = 0
+    for (const w of fields) {
+      w.dispatchEvent(new Event('focusin', { bubbles: true }))
+      const l = w.querySelector('.fp-noplace')
+      if (!l || all('.fp-noplace').length !== 1) silent++
+      else expect(l.getAttribute('role')).toBe('status')
+    }
+    expect(fields.length).toBeGreaterThan(3)
+    expect(silent).toBe(0)
   })
 })
