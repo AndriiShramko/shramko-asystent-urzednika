@@ -52,6 +52,7 @@ export function renderCitizen(ef: EForm, onCleared?: () => void, onStage?: (s: S
     scan.setAttribute('aria-expanded', String(s === 'person'))
     personLine.hidden = s === 'scan' ? !status.textContent : s === 'person' ? !status.classList.contains('bad') : false
     change.hidden = s === 'scan' || s === 'person'
+    scanAgain.hidden = s === 'person'
     fillRow.hidden = s !== 'fill'
     doneRow.hidden = s !== 'filled'
     lists.hidden = s !== 'filled'

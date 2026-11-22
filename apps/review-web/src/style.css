@@ -412,6 +412,11 @@ html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
 .fp-done-line .actions { margin: 0.4rem 0 0; }
 .fp-done-line .linkish { margin-left: 0.25rem; }
 #fp-citizen > h2, #fp-check-step > h2, #fp-print-step > h2 { margin-top: 1rem; }
+/* the demo banner no longer sticks to the top edge (it covered the long form scrolling under it) */
+.fp-banner { position: static; }
+/* in the trial fill the bottom bar is one low line: the hint about the download is not needed there */
+.result[data-try] .clerk-final-hint { display: none; }
+.result[data-try] .clerk-final { padding-top: 0.35rem; padding-bottom: 0.35rem; }
 /* BL13 TRY-F end */
 
 /* W11 FLOW */
