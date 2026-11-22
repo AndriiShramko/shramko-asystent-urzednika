@@ -101,10 +101,13 @@ curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" "http://127.0.0.1:8080/v1/forms/convert?report=1"   # multipart/mixed: form.json and meta.json
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/report              # the sidecar alone
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/inspect            # what the guard sees
+curl -s -H "Authorization: Bearer $TOKEN" -F "file=@form.pdf" "http://127.0.0.1:8080/v1/forms/preview?dpi=150"  # page pictures and field places, read only
 curl -s -H "Authorization: Bearer $TOKEN" -F "file=@a.pdf" -F "file=@b.docx" http://127.0.0.1:8080/v1/batches   # one JSON line per file; or one ZIP
 ```
 
 The answer of `convert` is the partner's object (`title`, `tabs`, `flow`) and nothing else. The same input gives the same `X-Form-SHA256`.
+
+`preview` is read only and changes nothing in `convert`: for the same file it answers `{version, input_sha256, format, units: "pt", origin: "top-left", page_images, pages, places, counts}`. `pages[]` holds `n`, `w`, `h` (points) and, for a PDF, JPG or PNG, `img` (greyscale PNG in base64 with `dpi`, `width_px`, `height_px`); `places` maps every finder candidate id (`c1`, `c2`, ...) to `page`, `kind`, `box` `[x0, y0, x1, y1]` or `anchor`, `label` and, where they apply, `cells`, `group`, `options[].mark`. Every `meta.ledger.rows[].candidate` of `convert?report=1` is a key of `places`, so a form field finds its place on the paper. DOCX, DOC, XLSX, ODS and the other formats without page geometry answer `page_images: "NO_PAGE_IMAGE"`, `pages: []` and anchors. Query: `images=0` leaves the pictures out, `dpi` 50 to 200 (default 150, lowered when a page would exceed `MAX_PIXELS`). Token, guard, slots, time limit and error codes are those of `convert`; the same file and query give the same bytes.
 
 | Status | `code` | When |
 |---|---|---|

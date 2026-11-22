@@ -189,3 +189,77 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 }
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+
+/* ---- Fill and print (wave 10, FP): steps 3 to 6 under the result. Only existing colour tokens are used, so the
+   pairs stay those checked in tests/contrast*.test.ts. ---- */
+.fp { margin-top: 2rem; border-top: 2px solid var(--c-border); }
+.fp-step { margin-top: 1rem; }
+.fp-pager { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin: 0.75rem 0; }
+.fp-pageline { font-weight: 600; margin: 0; }
+.fp-page[hidden], .fp-section[hidden], .fp-field[hidden], .fp-text[hidden], .fp-tag[hidden], .fp-err[hidden], .fp-because[hidden] { display: none; }
+.fp-section { border-left: 4px solid var(--c-remark-edge); padding: 0.1rem 0 0.1rem 0.75rem; margin: 0.75rem 0; }
+.fp-section h4 { font-size: 1rem; margin: 0.5rem 0 0.25rem; }
+.fp-field { border: 1px solid var(--c-border); border-radius: 6px; padding: 0.6rem 0.75rem; margin: 0.5rem 0; background: var(--c-bg); }
+.fp-field > label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.fp-field input[type="text"], .fp-field input[type="number"], .fp-field input[type="date"], .fp-field textarea, .fp-field select {
+  font: inherit; color: var(--c-text); background: var(--c-bg); border: 2px solid var(--c-border); border-radius: 4px;
+  padding: 0.5rem; min-height: 2.75rem; width: 100%; max-width: 32rem;
+}
+.fp-field input[readonly], .fp-field textarea[readonly] { background: var(--c-surface); }
+.fp-field [aria-invalid="true"] { border-color: var(--c-bad); }
+.fp-group { border: 0; padding: 0; margin: 0; }
+.fp-group legend { font-weight: 600; padding: 0; margin-bottom: 0.25rem; }
+.fp-choice { display: flex; align-items: flex-start; gap: 0.4rem; margin: 0.2rem 0; }
+.fp-choice input[type="radio"] { width: 1.25rem; height: 1.25rem; margin-top: 0.15rem; }
+.fp-req { color: var(--c-req-text); font-weight: 700; }
+.fp-desc { white-space: pre-line; font-size: 0.9rem; }
+.fp-because { font-size: 0.9rem; color: var(--c-ok-text); background: var(--c-ok-bg); border-radius: 4px; padding: 0.15rem 0.5rem; display: inline-block; }
+.fp-unread-cond > .fp-because { color: var(--c-notice-text); background: var(--c-notice-bg); }
+.fp-err { color: var(--c-bad); font-weight: 600; margin: 0.25rem 0 0; }
+.fp-tag { font-size: 0.875rem; margin: 0.25rem 0 0; padding: 0.1rem 0.5rem; border-radius: 4px; display: inline-block; }
+.fp-tag-pesel, .fp-tag-mlpz { background: var(--c-ok-bg); color: var(--c-ok-text); }
+.fp-tag-proposal { background: var(--c-notice-bg); color: var(--c-notice-text); }
+.fp-notice { margin-top: 0.5rem; }
+.fp-banner { position: sticky; top: 0; z-index: 5; margin: 1rem 0 0; background: var(--c-notice-bg); color: var(--c-notice-text); border: 2px solid var(--c-notice-text); border-radius: 6px; padding: 0.5rem 1rem; font-weight: 600; }
+.fp-people { border: 1px solid var(--c-border); border-radius: 6px; padding: 0.5rem 0.75rem; display: grid; gap: 0.5rem; }
+.fp-people[hidden] { display: none; }
+.fp-people legend { font-weight: 600; }
+.fp-person { justify-content: flex-start; text-align: left; }
+.linkish { font: inherit; color: var(--c-accent); background: none; border: 0; padding: 0.15rem 0; text-decoration: underline; cursor: pointer; text-align: left; min-height: 1.75rem; }
+.fp-ready { background: var(--c-ok-bg); color: var(--c-ok-text); border: 2px solid var(--c-ok-edge); border-radius: 6px; padding: 0.5rem 1rem; }
+.fp-notready { border: 2px solid var(--c-bad); border-radius: 6px; padding: 0.5rem 1rem; }
+.fp-ok { font-weight: 700; }
+.fp-where-grid { display: grid; grid-template-columns: minmax(12rem, 1fr) 2fr; gap: 1rem; align-items: start; }
+.fp-where-list li { margin: 0.2rem 0; }
+.fp-papers { display: grid; gap: 1rem; }
+.fp-paper { position: relative; width: 100%; border: 1px solid var(--c-border); background: var(--c-bg); }
+.fp-paper-img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fp-paper-layer { position: absolute; inset: 0; }
+.fp-box { position: absolute; border: 2px solid var(--c-accent); border-radius: 2px; cursor: pointer; }
+.fp-box-active { border-color: var(--c-bad); background: rgba(155, 28, 28, 0.12); animation: fp-pulse 0.8s ease-in-out 3; }
+.fp-boxes-off .fp-box:not(.fp-box-active) { display: none; }
+@keyframes fp-pulse { 50% { outline: 4px solid var(--c-bad); } }
+@media (max-width: 48rem) { .fp-where-grid { grid-template-columns: 1fr; } }
+
+/* ---- print (FP step 6): sheets in pt on a named page without margins; the screen UI is hidden while printing ---- */
+.fp-print-preview { overflow: auto; margin-top: 1rem; display: grid; gap: 1rem; }
+.fp-print-preview[hidden] { display: none; }
+.fp-sheet { position: relative; overflow: hidden; background: #ffffff; color: #000000; box-shadow: 0 0 0 1px var(--c-border); flex: none; }
+.fp-sheet-img { position: absolute; left: 0; top: 0; }
+.fp-glyph { position: absolute; line-height: 1; white-space: nowrap; font-family: Arial, "Liberation Sans", Helvetica, sans-serif; color: #000000; }
+.fp-sheet-demo { position: absolute; font: 6pt/1 Arial, "Liberation Sans", sans-serif; color: #000000; white-space: nowrap; }
+.fp-extra-body { padding: 40pt; font: 11pt/1.4 Arial, "Liberation Sans", sans-serif; }
+.fp-extra-body h1 { font-size: 14pt; }
+.fp-extra-body dt { font-weight: 700; margin-top: 4pt; }
+.fp-extra-body dd { margin: 0 0 0 12pt; }
+.fp-extra-demo { font-weight: 700; }
+#fp-print { display: none; }
+@page fpsheet { size: A4; margin: 0; }
+@media print {
+  body.fp-printing { margin: 0; background: #ffffff; }
+  body.fp-printing > *:not(#fp-print) { display: none !important; }
+  body.fp-printing #fp-print { display: block; }
+  #fp-print .fp-sheet { page: fpsheet; box-shadow: none; break-after: page; }
+  #fp-print .fp-sheet:last-child { break-after: auto; }
+  #fp-print .fp-eprint { font: 11pt/1.4 Arial, "Liberation Sans", sans-serif; color: #000000; }
+}
