@@ -62,8 +62,14 @@ export function renderCitizen(ef: EForm, onCleared?: () => void): Citizen {
 
   fillBtn.addEventListener('click', () => {
     if (!record) return
-    const plan = planFill(ef.model, record, (id) => !ef.textOf(id).trim())
-    for (const it of plan) ef.set(it.id, it.value, it.tag)
+    // a filled choice can reveal a field (the chip number after "mikroprocesor"): plan again until nothing new
+    const plan: ReturnType<typeof planFill> = []
+    for (let pass = 0; pass < 4; pass++) {
+      const more = planFill(ef.model, record, (id) => !ef.textOf(id).trim(), (n) => ef.isVisible(n))
+      if (!more.length) break
+      for (const it of more) ef.set(it.id, it.value, it.tag)
+      plan.push(...more)
+    }
     const k = plan.filter((p) => p.tag !== 'proposal').length
     const m = plan.length - k
     const empty = stillEmpty(ef)

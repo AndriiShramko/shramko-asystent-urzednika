@@ -48,7 +48,7 @@ function proposal(n: ENode, r: DemoRecord): string | string[] {
   if (n.type === 'RADIO' && /^plec$/.test(t) && inDogSection) {
     const s = extraOf(r, 'dog.sex'); return s && n.options.includes(s) ? s : ''
   }
-  if (/adres miejsca utrzymywania psa/.test(t)) return extraOf(r, 'dog') ? fullAddress(r) : ''
+  if (/adres miejsca utrzymywania psa/.test(t)) return extraOf(r, 'dog.breed') ? fullAddress(r) : ''
   // identifiers by validator
   if (n.validation.includes('PESEL') || /^(numer )?pesel$/.test(t) || tech === 'numer_pesel' || tech === 'pesel') return peselOf(r)
   if (n.validation.includes('NIP') || /^nip$/.test(t)) return nipOf(r)
@@ -79,9 +79,12 @@ function proposal(n: ENode, r: DemoRecord): string | string[] {
 }
 
 /** The plan of one click: only empty fields that take text or one choice; nothing is overwritten. */
-export function planFill(model: FormModel, r: DemoRecord, isEmpty: (id: string) => boolean): FillItem[] {
+export function planFill(model: FormModel, r: DemoRecord, isEmpty: (id: string) => boolean,
+  isVisible: (n: ENode) => boolean = () => true): FillItem[] {
   const out: FillItem[] = []
   for (const n of model.all) {
+    // a hidden field (another country's address, another person) is not filled: the person did not choose it
+    if (!isVisible(n)) continue
     if (!INPUT_TYPES.has(n.type) || n.type === 'FILE_UPLOADER' || n.type === 'CONSENT_SECTION') continue
     if (!isEmpty(n.id)) continue
     if (n.defaultValueType === 'EXTERNAL_SYSTEM' && typeof n.defaultValue === 'string') {

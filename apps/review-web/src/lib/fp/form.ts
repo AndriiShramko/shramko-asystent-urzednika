@@ -129,5 +129,6 @@ export function readForm(form: unknown): FormModel {
 
 /** The display name of a field: its title, else the techName. */
 export function nameOf(n: ENode): string {
-  return n.title || n.techName || n.type
+  // a consent block has no title of its own: its section's title names it
+  return n.title || (n.type === 'CONSENT_SECTION' ? n.parent?.title : '') || n.techName || n.type
 }

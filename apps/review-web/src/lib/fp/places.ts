@@ -149,7 +149,7 @@ export function layoutText(place: Place, text: string): { glyphs: Glyph[]; fits:
   }
   if (place.kind === 'line_block' && place.lines && place.lines > 1) {
     const lh = hgt / place.lines
-    const size = clampSize(lh * 0.7)
+    const size = clampSize(lh * 0.9)
     // words wrapped to the lines by the rough width
     const words = text.split(/\s+/)
     const lines: string[] = []
@@ -164,10 +164,18 @@ export function layoutText(place: Place, text: string): { glyphs: Glyph[]; fits:
   }
   // leader, blank in sentence, cell, widget: one line; a tall cell writes in its lower part, a line sits on y1
   const tall = hgt > 16
-  let size = clampSize(tall ? 10 : 10)
-  while (size > 7 && textWidth(text, size) > w - 4) size -= 0.5
+  // A low table cell holds its own label in the top line: the value then starts after the label (label width
+  // estimated at 8 pt type), so the two do not touch; a taller cell writes under the label.
+  let left = x0 + 2
+  if (place.kind === 'cell' && place.label && hgt < 24) {
+    const after = x0 + 3 + place.label.length * 4.2 + 6
+    if (x1 - after >= Math.max(40, textWidth(text, 8))) left = after
+  }
+  const room = x1 - left - 2
+  let size = clampSize(10)
+  while (size > 7 && textWidth(text, size) > room) size -= 0.5
   const top = (tall ? y1 - 4 : y1 - 1) - size * BASE
-  return { glyphs: [{ left: x0 + 2, top, text, size }], fits: textWidth(text, size) <= w - 4 }
+  return { glyphs: [{ left, top, text, size }], fits: textWidth(text, size) <= room }
 }
 
 /** An X centred on a mark box. */

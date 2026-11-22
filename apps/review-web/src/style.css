@@ -240,3 +240,26 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .fp-boxes-off .fp-box:not(.fp-box-active) { display: none; }
 @keyframes fp-pulse { 50% { outline: 4px solid var(--c-bad); } }
 @media (max-width: 48rem) { .fp-where-grid { grid-template-columns: 1fr; } }
+
+/* ---- print (FP step 6): sheets in pt on a named page without margins; the screen UI is hidden while printing ---- */
+.fp-print-preview { overflow: auto; margin-top: 1rem; display: grid; gap: 1rem; }
+.fp-print-preview[hidden] { display: none; }
+.fp-sheet { position: relative; overflow: hidden; background: #ffffff; color: #000000; box-shadow: 0 0 0 1px var(--c-border); flex: none; }
+.fp-sheet-img { position: absolute; left: 0; top: 0; }
+.fp-glyph { position: absolute; line-height: 1; white-space: nowrap; font-family: Arial, "Liberation Sans", Helvetica, sans-serif; color: #000000; }
+.fp-sheet-demo { position: absolute; font: 6pt/1 Arial, "Liberation Sans", sans-serif; color: #000000; white-space: nowrap; }
+.fp-extra-body { padding: 40pt; font: 11pt/1.4 Arial, "Liberation Sans", sans-serif; }
+.fp-extra-body h1 { font-size: 14pt; }
+.fp-extra-body dt { font-weight: 700; margin-top: 4pt; }
+.fp-extra-body dd { margin: 0 0 0 12pt; }
+.fp-extra-demo { font-weight: 700; }
+#fp-print { display: none; }
+@page fpsheet { size: A4; margin: 0; }
+@media print {
+  body.fp-printing { margin: 0; background: #ffffff; }
+  body.fp-printing > *:not(#fp-print) { display: none !important; }
+  body.fp-printing #fp-print { display: block; }
+  #fp-print .fp-sheet { page: fpsheet; box-shadow: none; break-after: page; }
+  #fp-print .fp-sheet:last-child { break-after: auto; }
+  #fp-print .fp-eprint { font: 11pt/1.4 Arial, "Liberation Sans", sans-serif; color: #000000; }
+}

@@ -8,42 +8,7 @@ import { mountApp } from '../src/ui/app'
 import { setLang } from '../src/lib/i18n'
 import { interpretResponse, type Outcome } from '../src/lib/api'
 import { canonical, multipartBody } from './helpers'
-import { fpForm, fpSidecar } from './fp-fixture'
-
-export function fpLedgerSidecar() {
-  const s = fpSidecar() as ReturnType<typeof fpSidecar> & { converter: unknown }
-  s.converter = { pipeline: 'brief' }
-  s.meta.ledger = { rows: [
-    { candidate: 'c1', fate: 'LEFT_OUT', reason: 'OFFICE_USE' },
-    { candidate: 'c2', fate: 'STANDARD', section: 'standard/twoje_dane' },
-    { candidate: 'c3', fate: 'STANDARD', section: 'standard/adres' },
-    { candidate: 'c4', fate: 'FIELD', field: 'f-nip' },
-    { candidate: 'c5', fate: 'FIELD', field: 'r-kto' },
-    { candidate: 'c8', fate: 'FIELD', field: 'f-data' }
-  ] } as never
-  return s
-}
-
-export function fpPreview(geometry = true) {
-  const page = { n: 1, w: 595.32, h: 842.04, source: 'native', img: { media_type: 'image/png', dpi: 150, width_px: 1241, height_px: 1755, data: 'AAAA' } }
-  const place = (o: Record<string, unknown>) => geometry ? o : { ...o, box: undefined, anchor: 'p[3]' }
-  return {
-    version: 1, format: geometry ? 'pdf' : 'docx', units: 'pt', origin: 'top-left',
-    page_images: geometry ? 'OK' : 'NO_PAGE_IMAGE',
-    pages: geometry ? [page] : [],
-    places: {
-      c1: place({ page: 1, kind: 'office_use', box: [384, 30, 544, 38], label: 'Nr sprawy' }),
-      c2: place({ page: 1, kind: 'cell', box: [55, 198, 539, 224], label: 'Imię i nazwisko', section: 's1' }),
-      c3: place({ page: 1, kind: 'cell', box: [55, 224, 346, 245], label: 'Nr domu', section: 's1' }),
-      c4: place({ page: 1, kind: 'leader', box: [258, 430, 365, 438], label: 'NIP', section: 's2' }),
-      c5: place({ page: 1, kind: 'choice_group', box: [255, 489, 409, 499], label: 'W czyim imieniu', options: [{ text: 'Swoim', mark: 'c6' }, { text: 'Innej osoby', mark: 'c7' }] }),
-      c6: place({ page: 1, kind: 'box', box: [255, 489, 261, 499], group: 'c5' }),
-      c7: place({ page: 1, kind: 'box', box: [404, 489, 409, 499], group: 'c5' }),
-      c8: { page: 1, kind: 'leader', anchor: 'p[9]', label: 'Data urodzenia' }
-    },
-    counts: { pages: 1, places: 8, boxed: 7, anchored: 1 }
-  }
-}
+import { fpForm, fpLedgerSidecar, fpPreview } from './fp-fixture'
 
 beforeEach(() => { setLang('pl'); document.body.innerHTML = '<div id="app"></div>' })
 
