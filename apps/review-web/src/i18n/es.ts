@@ -260,6 +260,7 @@ export const es: Dict = {
   'ai.source.session': "La configuración se escribió en esta página. Funciona hasta que se reinicie el servicio.",
   'ai.url.label': "Dirección del servidor del modelo",
   'ai.url.hint': "Un servidor compatible con la API de OpenAI, por ejemplo su propio vLLM u Ollama. La dirección suele terminar en /v1.",
+  'ai.preset.note': "La dirección y el modelo ya están rellenados para la pasarela Eden AI (la clave del organizador de HackNation). Pegue la clave y pulse «Usar en esta sesión». También puede escribir la dirección de su propio servidor.",
   'ai.model.label': "Nombre del modelo (tal como lo indica el servidor)",
   'ai.key.label': "Clave del servidor del modelo",
   'ai.key.hint.environment-variable': "La clave está definida en el servidor (variable de entorno VISION_API_KEY). La página no la conoce, por eso se ven puntos. Para sustituirla, escriba aquí otra clave.",

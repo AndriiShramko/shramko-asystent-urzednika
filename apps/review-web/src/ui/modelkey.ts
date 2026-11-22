@@ -42,6 +42,12 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
   let loaded = false
   let busy = false
   let revealed = false
+  // BL13: with nothing configured the address and the model of the organiser's gateway stand in the fields, so a
+  // person who has only the key pastes the key and nothing else. Nothing is called until a button is pressed.
+  const PRESET_URL = 'https://api.edenai.run/v3'
+  const PRESET_MODEL = 'amazon/qwen.qwen3-235b-a22b-2507-v1:0'
+  const presetOnly = (): boolean => Boolean(state && !state.address && url.value.trim() === PRESET_URL &&
+    model.value.trim() === PRESET_MODEL)
   let touched = false            // has the person edited the address or the model name since the last answer
   let call = 0
   let hadKey = false           // was there a typed key before this keystroke
@@ -62,8 +68,10 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
   const checkBtn = i18nEl('button', 'ai.check', { type: 'button', class: 'btn', id: 'ai-check' })
   const useBtn = i18nEl('button', 'ai.use', { type: 'button', class: 'btn btn-main', id: 'ai-use' })
   const resetBtn = i18nEl('button', 'ai.reset', { type: 'button', class: 'btn', id: 'ai-reset' })
+  const presetNote = h('p', { id: 'ai-preset', class: 'ai-preset', hidden: true })
   const resultLine = h('p', { id: 'ai-result', class: 'ai-result', role: 'status', 'aria-live': 'polite' })
   const form = h('div', { id: 'ai-form' },
+    presetNote,
     h('div', { class: 'field-row' }, i18nEl('label', 'ai.url.label', { for: 'ai-url' }), url,
       i18nEl('p', 'ai.url.hint', { id: 'ai-url-hint', class: 'muted' })),
     h('div', { class: 'field-row' }, i18nEl('label', 'ai.model.label', { for: 'ai-model' }), model),
@@ -112,7 +120,10 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
         : revealed && s.keyFull ? t('ai.key.hint.full')
         : revealed ? t(s.keyTail ? 'ai.key.hint.tail' : 'ai.key.hint.notail', { tail: s.keyTail })
           : t('ai.key.hint.' + (s.keyOrigin || 'environment-variable'))
-    const dirty = isTyped(typed())
+    // the preset alone is not a change: the button wakes up when the key is typed
+    const dirty = isTyped(typed()) && !(presetOnly() && !key.value.trim())
+    presetNote.hidden = !presetOnly() || !s.pageConfig
+    presetNote.textContent = t('ai.preset.note')
     checkBtn.disabled = busy
     useBtn.disabled = busy || !dirty || !s.pageConfig
     useBtn.hidden = !s.pageConfig
@@ -136,8 +147,9 @@ export function mountModelKey(deps: Partial<ModelKeyDeps> = {}): ModelKeyBlock {
   /** The fields follow the service unless the person is in the middle of typing. */
   function fill(): void {
     if (!state || touched) return
-    url.value = state.address
-    model.value = state.model
+    const preset = state.pageConfig && !state.address && !state.keySet
+    url.value = state.address || (preset ? PRESET_URL : '')
+    model.value = state.model || (preset ? PRESET_MODEL : '')
   }
 
   function show(res: { ok: boolean; code: string; http?: number | null; ms?: number }, lead?: string): void {
