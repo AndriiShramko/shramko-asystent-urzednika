@@ -204,3 +204,22 @@ export async function fetchStatus(fetcher: Fetcher = (u, i) => fetch(u, i)): Pro
     return null
   }
 }
+
+export const PREVIEW_URL = '../v1/forms/preview?images=1&dpi=150'
+
+/** POST /v1/forms/preview (wave 10, FP-contract.md): page pictures and the places of the finder's candidates for
+ * the same file. A read-only side call: any failure (no route, BUSY, a refusal, no network) is null, and the rest
+ * of the page works without it. */
+export async function previewFile(file: File, token: string, fetcher: Fetcher = (u, i) => fetch(u, i)): Promise<unknown> {
+  try {
+    const body = new FormData()
+    body.append('file', file, file.name)
+    const headers: Record<string, string> = {}
+    if (token.trim()) headers['Authorization'] = 'Bearer ' + token.trim()
+    const res = await fetcher(PREVIEW_URL, { method: 'POST', body, headers })
+    if (res.status !== 200) return null
+    return (await res.json()) as unknown
+  } catch {
+    return null
+  }
+}

@@ -1,7 +1,7 @@
 // The page: header with the mode badge and the language switch, the upload panel, a progress panel, a live status
 // line, the result. The upload panel is built once (so a typed token and the focus survive a change of language);
 // its texts are refreshed through data-i18n attributes. The result is rebuilt from the kept outcome.
-import { CANCELLED, convertWithProgress, fetchStatus, type ConvertHooks, type Engine, type Outcome } from '../lib/api'
+import { CANCELLED, convertWithProgress, fetchStatus, previewFile, type ConvertHooks, type Engine, type Outcome } from '../lib/api'
 import { LANGS, getLang, initialLang, setLang, t, type Lang } from '../lib/i18n'
 import { badgeMode, modeOf, type Mode } from '../lib/verdict'
 import { h, clear } from './dom'
@@ -19,6 +19,8 @@ export interface AppDeps {
   store: Pick<Storage, 'getItem' | 'setItem'> | null
   /** GET /status as JSON, or null when it failed. */
   status: () => Promise<unknown>
+  /** POST /v1/forms/preview for the same file (wave 10); any failure resolves to null. */
+  preview: (file: File, token: string) => Promise<unknown>
 }
 
 function i18nEl<K extends keyof HTMLElementTagNameMap>(tag: K, key: string, attrs: Record<string, string> = {}): HTMLElementTagNameMap[K] {
@@ -39,6 +41,8 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   const convert = deps.convert ?? ((f, tok, hooks) => convertWithProgress(f, tok, hooks))
   const store = deps.store === undefined ? safeStorage() : deps.store
   const getStatus = deps.status ?? (() => fetchStatus())
+  // A page with an injected convert (tests, scripts) calls no real preview unless one is injected too.
+  const getPreview = deps.preview ?? (deps.convert ? async () => null : (f: File, tok: string) => previewFile(f, tok))
   setLang(initialLang(store?.getItem(STORE_KEY)))
   document.documentElement.lang = getLang()
 
@@ -222,7 +226,7 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     if (outcome.kind === 'ok') {
       const view = renderConverted(outcome)
       resultBox.append(view)
-      fill ??= mountFill(outcome)
+      fill ??= mountFill(outcome, lastFile ? getPreview(lastFile, token.value).catch(() => null) : Promise.resolve(null))
       // Steps 3 to 6 sit between the review and the form JSON (the JSON stays last, as before).
       const json = view.querySelector('section[aria-labelledby="h-json"]')
       if (json) view.insertBefore(fill.el, json)

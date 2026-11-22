@@ -229,3 +229,14 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .fp-ready { background: var(--c-ok-bg); color: var(--c-ok-text); border: 2px solid var(--c-ok-edge); border-radius: 6px; padding: 0.5rem 1rem; }
 .fp-notready { border: 2px solid var(--c-bad); border-radius: 6px; padding: 0.5rem 1rem; }
 .fp-ok { font-weight: 700; }
+.fp-where-grid { display: grid; grid-template-columns: minmax(12rem, 1fr) 2fr; gap: 1rem; align-items: start; }
+.fp-where-list li { margin: 0.2rem 0; }
+.fp-papers { display: grid; gap: 1rem; }
+.fp-paper { position: relative; width: 100%; border: 1px solid var(--c-border); background: var(--c-bg); }
+.fp-paper-img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fp-paper-layer { position: absolute; inset: 0; }
+.fp-box { position: absolute; border: 2px solid var(--c-accent); border-radius: 2px; cursor: pointer; }
+.fp-box-active { border-color: var(--c-bad); background: rgba(155, 28, 28, 0.12); animation: fp-pulse 0.8s ease-in-out 3; }
+.fp-boxes-off .fp-box:not(.fp-box-active) { display: none; }
+@keyframes fp-pulse { 50% { outline: 4px solid var(--c-bad); } }
+@media (max-width: 48rem) { .fp-where-grid { grid-template-columns: 1fr; } }
