@@ -6,6 +6,7 @@ import { INPUT_TYPES, CONTAINER_TYPES, nameOf, type ENode, type FormModel } from
 import { evaluate, parseCondition, reasons, type Cond } from '../lib/fp/conditions'
 import { dictionaryEntries } from '../lib/fp/dictionaries'
 import { FP } from '../lib/fp/text'
+import { clerkText } from './clerk-view'
 
 export type Val = string | string[]
 /** Where a value came from: the PESEL register block, the logged-in user block, or a proposal from demo data. */
@@ -30,6 +31,22 @@ export interface EForm {
   onChange(fn: () => void): void
   /** Show every page at once (for the print of the electronic form) or back to one page. */
   showAll(on: boolean): void
+  // ---- wave 11 (clerk view): the e-form next to the original, remarks shown on its fields
+  /** Bring a field into view (its page, the scroll of its column) and ring it for a moment. */
+  highlight(id: string): void
+  /** Called with the field id when the focus moves into a field. */
+  onPick(fn: (id: string) => void): void
+  /** A property of a node changed in the form JSON (title, validation, defaultValue, readOnly): redraw the node. */
+  patch(id: string, key: string, value: unknown): void
+  /** The last resort: the name of the field becomes an input in place. `done` gets the new name, or null. */
+  edit(id: string, done: (title: string | null) => void): void
+  /** Ask for a value in the field's own control: a line with `label` and a button under it; `done` gets the text. */
+  ask(id: string, label: string, done: (value: string | null) => void): void
+  /** A numbered mark "do sprawdzenia" on a field (null removes it). */
+  flag(id: string, n: number | null): void
+  clearFlags(): void
+  /** A quiet mark on a doubtful field; `text` is what it says. */
+  doubt(id: string, band: string, text: string): void
 }
 
 const PL = { lang: 'pl' }
@@ -48,6 +65,7 @@ export function renderEForm(model: FormModel): EForm {
   const values = new Map<string, Val>()
   const tags = new Map<string, Tag>()
   const listeners: (() => void)[] = []
+  const pickers: ((id: string) => void)[] = []
   const conds = new Map<string, (Cond | null)[]>()
   for (const n of model.all) if (n.shows.length) conds.set(n.id, n.shows.map(parseCondition))
   let page = 0
@@ -162,10 +180,10 @@ export function renderEForm(model: FormModel): EForm {
     const { box, label } = control(n)
     const chips: (HTMLElement | null)[] = [
       n.validation.includes('REQUIRED') ? h('span', { class: 'chip chip-req' }, FP.required) : null,
-      n.dictionaryName ? h('span', { class: 'chip' }, FP.dictionary(n.dictionaryName)) : null,
+      n.dictionaryName ? h('span', { class: 'chip jury-only' }, FP.dictionary(n.dictionaryName)) : null,
       n.defaultValueType === 'EXTERNAL_SYSTEM' && typeof n.defaultValue === 'string'
-        ? h('span', { class: 'chip' }, FP.initialData(n.defaultValue)) : null,
-      ...n.validation.filter((v) => v !== 'REQUIRED').map((v) => h('span', { class: 'chip chip-type' }, FP.validator(v)))
+        ? h('span', { class: 'chip jury-only' }, FP.initialData(n.defaultValue)) : null,
+      ...n.validation.filter((v) => v !== 'REQUIRED').map((v) => h('span', { class: 'chip chip-type jury-only' }, FP.validator(v)))
     ]
     if (label && n.validation.includes('REQUIRED')) label.append(h('span', { class: 'fp-req', 'aria-hidden': 'true' }, ' *'))
     return h('div', { class: 'fp-field', id: wrapId(n.id), 'data-node': n.id, 'data-type': n.type },
@@ -291,13 +309,111 @@ export function renderEForm(model: FormModel): EForm {
     },
     reset,
     onChange: (fn) => { listeners.push(fn) },
-    showAll(on) { all = on; paintPage() }
+    showAll(on) { all = on; paintPage() },
+    highlight(id) {
+      const n = model.byId.get(id)
+      const w = wrap(id)
+      if (!n || !w) return
+      if (!all) { page = n.tabIndex; paintPage() }
+      for (const x of root.querySelectorAll('.clerk-hl')) x.classList.remove('clerk-hl')
+      w.classList.add('clerk-hl')
+      w.scrollIntoView?.({ block: 'center', behavior: 'smooth' })
+    },
+    onPick: (fn) => { pickers.push(fn) },
+    patch(id, key, value) {
+      const n = model.byId.get(id)
+      if (!n) return
+      if (key === 'title') n.title = typeof value === 'string' ? value : n.title
+      else if (key === 'validation') n.validation = Array.isArray(value) ? value.filter((v): v is string => typeof v === 'string') : []
+      else if (key === 'readOnly') n.readOnly = value === true
+      else if (key === 'defaultValue') {
+        n.defaultValue = value
+        const v = initialOf(n)
+        if (v === undefined) values.delete(id); else values.set(id, v)
+      } else return
+      const old = wrap(id)
+      if (!old) return
+      const marks = [...old.children].filter((c) => c.classList.contains('clerk-flag') || c.classList.contains('clerk-doubt'))
+      const fresh = renderNode(n)
+      fresh.hidden = old.hidden
+      if (old.classList.contains('clerk-hl')) fresh.classList.add('clerk-hl')
+      if (old.classList.contains('clerk-flagged')) fresh.classList.add('clerk-flagged')
+      old.replaceWith(fresh)
+      fresh.prepend(...marks)
+      const redo = (x: ENode): void => { if (INPUT_TYPES.has(x.type)) { paintValue(x); paintTag(x) } for (const c of x.children) redo(c) }
+      redo(n)
+      emit()
+    },
+    edit(id, done) {
+      const n = model.byId.get(id)
+      const w = wrap(id)
+      if (!n || !w) { done(null); return }
+      api.highlight(id)
+      for (const c of [...w.children]) if (c.classList.contains('clerk-edit')) c.remove()
+      const inp = h('input', { type: 'text', class: 'clerk-edit-input', id: `fpn-${id}`, value: nameOf(n), ...PL })
+      const save = clerkText('button', 'clerk.edit.save', { type: 'button', class: 'btn btn-main' })
+      const cancel = clerkText('button', 'clerk.edit.cancel', { type: 'button', class: 'btn' })
+      const box = h('div', { class: 'clerk-edit' }, clerkText('label', 'clerk.edit.name', { for: `fpn-${id}` }), inp, h('div', { class: 'actions' }, save, cancel))
+      const close = (title: string | null): void => { box.remove(); if (title !== null) api.patch(id, 'title', title); done(title) }
+      save.addEventListener('click', () => { const v = inp.value.trim(); close(v || null) })
+      cancel.addEventListener('click', () => close(null))
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); save.click() } else if (e.key === 'Escape') cancel.click() })
+      w.prepend(box)
+      inp.focus()
+      inp.select?.()
+    },
+    ask(id, label, done) {
+      const n = model.byId.get(id)
+      const w = wrap(id)
+      const el = root.querySelector<HTMLElement>(`[id="${ctlId(id)}"]`)
+      if (!n || !w || !(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) { done(null); return }
+      api.highlight(id)
+      for (const c of [...w.querySelectorAll('.clerk-ask')]) c.remove()
+      el.readOnly = false
+      const ok = clerkText('button', 'clerk.edit.save', { type: 'button', class: 'btn btn-main' })
+      const cancel = clerkText('button', 'clerk.edit.cancel', { type: 'button', class: 'btn' })
+      const box = h('div', { class: 'clerk-ask' }, h('p', { class: 'clerk-ask-label', ...PL }, label), h('div', { class: 'actions' }, ok, cancel))
+      const close = (v: string | null): void => { box.remove(); paintTag(n); done(v) }
+      ok.addEventListener('click', () => { const v = el.value.trim(); if (v) close(v); else el.focus() })
+      cancel.addEventListener('click', () => close(null))
+      el.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' && box.isConnected && el instanceof HTMLInputElement) { e.preventDefault(); ok.click() }
+      })
+      el.after(box)
+      el.focus()
+    },
+    flag(id, n) {
+      const w = wrap(id)
+      if (!w) return
+      for (const c of [...w.children]) if (c.classList.contains('clerk-flag')) c.remove()
+      w.classList.toggle('clerk-flagged', n !== null)
+      if (n !== null) {
+        w.prepend(h('span', { class: 'clerk-flag clerk-only' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), clerkText('span', 'clerk.flag')))
+      }
+    },
+    clearFlags() {
+      for (const x of root.querySelectorAll('.clerk-flag')) x.remove()
+      for (const x of root.querySelectorAll('.clerk-flagged')) x.classList.remove('clerk-flagged')
+    },
+    doubt(id, band, text) {
+      const w = wrap(id)
+      if (!w || [...w.children].some((c) => c.classList.contains('clerk-doubt'))) return
+      w.setAttribute('data-band', band)
+      w.prepend(h('span', { class: `clerk-doubt clerk-doubt-${band}`, title: text }, text))
+    }
   }
+  root.addEventListener('focusin', (e) => {
+    const w = (e.target as HTMLElement).closest<HTMLElement>('.fp-field')
+    const id = w?.getAttribute('data-node')
+    if (id) for (const fn of pickers) fn(id)
+  })
 
   root.append(
-    h('h2', { id: 'h-eform', tabindex: -1 }, FP.step(3), ' ', FP.eformHeading),
-    h('p', { class: 'notice fp-notice', role: 'note' }, FP.controlPreview),
-    h('div', { class: 'fp-pager' }, prev, pageLine, next),
+    clerkText('h3', 'clerk.col.eform', { class: 'clerk-only clerk-col-title' }),
+    clerkText('p', 'clerk.col.eformHint', { class: 'clerk-only muted clerk-col-hint' }),
+    h('h2', { id: 'h-eform', tabindex: -1, class: 'jury-only' }, FP.step(3), ' ', FP.eformHeading),
+    h('p', { class: 'notice fp-notice jury-only', role: 'note' }, FP.controlPreview),
+    h('div', { class: 'fp-pager jury-only' }, prev, pageLine, next),
     ...pages)
   reset()
   paintPage()

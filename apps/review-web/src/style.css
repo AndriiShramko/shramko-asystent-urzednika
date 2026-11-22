@@ -297,3 +297,100 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .ai-result.ai-good { background: var(--c-ok-bg); color: var(--c-ok-text); border-left: 4px solid var(--c-ok-edge); padding: 0.5rem 0.75rem; }
 .ai-result.ai-bad { background: var(--c-error-bg); color: var(--c-error-text); border-left: 4px solid var(--c-bad); padding: 0.5rem 0.75rem; }
 .ai input:disabled { background: var(--c-surface); }
+/* ---- W11 CLERK-P: two views of one result (clerk, jury); the original next to the e-form; remarks as cards on the
+   document; one-click fixes. Only existing colour tokens are used. Everything of this lane stays in this block. ---- */
+.result[data-view="clerk"] .jury-only { display: none !important; }
+.result[data-view="jury"] .clerk-only { display: none !important; }
+.view-switch { display: inline-flex; margin: 0.75rem 0 0; border: 2px solid var(--c-accent); border-radius: 8px; overflow: hidden; }
+.view-btn { font: inherit; font-weight: 600; padding: 0.5rem 1rem; min-height: 2.75rem; border: 0; background: var(--c-bg); color: var(--c-accent); cursor: pointer; }
+.view-btn[aria-pressed="true"] { background: var(--c-accent); color: var(--c-on-accent); }
+.view-btn:focus-visible { outline: 3px solid var(--c-focus); outline-offset: -4px; }
+#app:has(.result[data-view="clerk"]) { max-width: 100rem; }
+
+.clerk-top { margin-top: 1rem; }
+.clerk-remarks { background: var(--c-partial-bg); color: var(--c-partial-text); border: 1px solid var(--c-partial-edge); border-radius: 8px; padding: 0.5rem 1rem 0.75rem; }
+.clerk-remarks[data-open="0"] { background: var(--c-ok-bg); color: var(--c-ok-text); border-color: var(--c-ok-edge); padding-bottom: 0.5rem; }
+.clerk-remarks h3 { margin: 0.25rem 0; font-size: 1.15rem; }
+.clerk-remarks-intro { margin: 0; color: inherit; }
+.clerk-cards { list-style: none; margin: 0.6rem 0 0.5rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(38rem, 100%), 1fr)); gap: 0.75rem; }
+.clerk-card-body { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 0.75rem; align-items: start; }
+.clerk-card-side { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start; }
+.clerk-card { background: var(--c-bg); color: var(--c-text); border: 2px solid var(--c-border); border-radius: 8px; padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.clerk-card-active { border-color: var(--c-bad); box-shadow: 0 0 0 3px rgba(155, 28, 28, 0.2); }
+.clerk-card-what { margin: 0; font-weight: 600; }
+.clerk-card-count { font-weight: 400; color: var(--c-muted); }
+.clerk-num { display: inline-flex; align-items: center; justify-content: center; min-width: 1.5rem; height: 1.5rem; padding: 0 0.35rem; border-radius: 999px; background: var(--c-partial-edge); color: var(--c-on-accent); font-size: 0.85rem; font-weight: 700; line-height: 1; }
+.clerk-card-main { font: inherit; color: inherit; text-align: left; background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 6px; padding: 0.4rem; cursor: pointer; display: block; width: 100%; }
+.clerk-card-main:hover { background: var(--c-surface); }
+.clerk-card-main:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+.clerk-card-cap { display: block; font-size: 0.85rem; color: var(--c-muted); margin-bottom: 0.2rem; }
+.clerk-card-nopaper .clerk-card-cap { font-size: 0.9rem; }
+.clerk-crop { position: relative; width: 100%; overflow: hidden; border: 1px solid var(--c-border); background: #ffffff; }
+.clerk-crop-img { position: absolute; max-width: none; height: auto; }
+.clerk-crop-mark { position: absolute; border: 2px solid var(--c-bad); background: rgba(155, 28, 28, 0.12); border-radius: 2px; }
+.clerk-card-field { display: block; font: inherit; font-weight: 600; color: var(--c-text); text-align: left; border: 2px solid var(--c-border); border-radius: 4px; padding: 0.3rem 0.5rem; background: var(--c-surface); width: 100%; }
+button.clerk-card-field { cursor: pointer; }
+button.clerk-card-field:hover { border-color: var(--c-accent); }
+.result[data-view="clerk"] .fp-field input[type="file"] { display: none; }
+.clerk-card-whole { font-weight: 400; font-style: italic; border-style: dashed; }
+.clerk-fix { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin-top: auto; }
+.clerk-fix .btn { width: auto; }
+.clerk-fix-current { border-color: var(--c-ok-edge); background: var(--c-ok-bg); color: var(--c-ok-text); }
+.clerk-fix-now { font-weight: 400; font-size: 0.85rem; margin-left: 0.35rem; }
+.clerk-fix-select { font: inherit; min-height: 2.75rem; padding: 0.4rem; border: 2px solid var(--c-border); border-radius: 4px; max-width: 100%; background: var(--c-bg); color: var(--c-text); }
+.clerk-stepper { display: flex; gap: 0.5rem; align-items: center; margin: 0; font-size: 0.9rem; }
+.clerk-stepper .btn { width: auto; min-width: 2.75rem; padding: 0.2rem 0.6rem; }
+
+/* the two documents side by side */
+.result[data-view="clerk"] #fp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; border-top: 0; margin-top: 1rem; }
+.result[data-view="clerk"] #fp > * { grid-column: 1 / -1; }
+.result[data-view="clerk"] #fp > #fp-where { grid-column: 1; grid-row: 1; }
+.result[data-view="clerk"] #fp > #fp-eform { grid-column: 2; grid-row: 1; }
+.result[data-view="clerk"] #fp > #fp-where, .result[data-view="clerk"] #fp > #fp-eform { position: sticky; top: 0.5rem; max-height: calc(100vh - 7.5rem); overflow: auto; margin-top: 0; border: 1px solid var(--c-border); border-radius: 8px; padding: 0 0.75rem 0.75rem; background: var(--c-bg); }
+.result[data-view="clerk"]:not([data-try]) #fp > #fp-banner,
+.result[data-view="clerk"]:not([data-try]) #fp > #fp-citizen,
+.result[data-view="clerk"]:not([data-try]) #fp > #fp-check-step,
+.result[data-view="clerk"]:not([data-try]) #fp > #fp-print-step { display: none; }
+.result[data-view="clerk"] #fp:has(#fp-where[data-pages="0"]) { grid-template-columns: minmax(0, 1fr); }
+.result[data-view="clerk"] #fp:has(#fp-where[data-pages="0"]) > #fp-where { position: static; max-height: none; }
+.result[data-view="clerk"] #fp:has(#fp-where[data-pages="0"]) > #fp-eform { grid-column: 1; grid-row: 2; position: static; max-height: none; }
+.clerk-col-title { position: sticky; top: 0; z-index: 3; background: var(--c-bg); margin: 0; padding: 0.5rem 0 0.25rem; font-size: 1.15rem; border-bottom: 1px solid var(--c-border); }
+.clerk-col-hint { margin: 0.35rem 0 0.5rem; font-size: 0.9rem; }
+.result[data-view="clerk"] .fp-where-grid { display: block; }
+.result[data-view="clerk"] .fp-page[hidden] { display: block; }
+.result[data-view="clerk"] .fp-page > h3 { background: var(--c-surface); padding: 0.3rem 0.5rem; border-radius: 4px; }
+.result[data-view="clerk"] .fp-box { border-width: 1px; }
+.result[data-view="clerk"] .fp-box-active { border-width: 3px; }
+.clerk-mark { position: absolute; border: 2px solid var(--c-partial-edge); background: rgba(138, 90, 0, 0.16); border-radius: 2px; padding: 0; margin: 0; cursor: pointer; min-width: 8px; min-height: 8px; z-index: 2; }
+.clerk-mark .clerk-num { position: absolute; right: 100%; top: 50%; transform: translate(-2px, -50%); min-width: 1.25rem; height: 1.25rem; font-size: 0.75rem; }
+.clerk-spot { position: absolute; border: 3px solid var(--c-bad); background: rgba(155, 28, 28, 0.12); border-radius: 3px; pointer-events: none; z-index: 3; animation: fp-pulse 0.8s ease-in-out 3; }
+.clerk-flag { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; font-weight: 600; color: var(--c-partial-text); background: var(--c-partial-bg); border-radius: 999px; padding: 0.1rem 0.6rem 0.1rem 0.1rem; margin-bottom: 0.35rem; }
+.result[data-view="clerk"] .clerk-flagged { border: 2px solid var(--c-partial-edge); }
+.clerk-hl { outline: 3px solid var(--c-bad); outline-offset: 2px; }
+.clerk-doubt { float: right; font-size: 0.8rem; color: var(--c-muted); border-left: 3px solid var(--c-partial-edge); padding-left: 0.4rem; margin: 0 0 0.25rem 0.5rem; }
+.clerk-edit, .clerk-ask { background: var(--c-partial-bg); color: var(--c-partial-text); border: 2px solid var(--c-partial-edge); border-radius: 6px; padding: 0.5rem; margin: 0.4rem 0; display: grid; gap: 0.4rem; }
+.clerk-edit label, .clerk-ask-label { font-weight: 600; margin: 0; }
+.clerk-edit .actions, .clerk-ask .actions { margin: 0; }
+.clerk-edit .btn, .clerk-ask .btn { width: auto; }
+
+/* the one final action, always in sight */
+.clerk-final { position: sticky; bottom: 0; z-index: 6; margin-top: 1rem; background: var(--c-surface); border: 2px solid var(--c-accent); border-bottom: 0; border-radius: 8px 8px 0 0; padding: 0.5rem 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; }
+.clerk-final-state { margin: 0; font-weight: 700; }
+.clerk-final-clear { color: var(--c-ok-text); }
+.clerk-final .actions { margin: 0; }
+.clerk-final-hint { margin: 0; flex: 1 1 16rem; }
+
+/* jury: what was done and by what */
+.jury-table { border-collapse: collapse; margin: 0.5rem 0; }
+.jury-table th { text-align: left; font-weight: 600; padding: 0.2rem 1rem 0.2rem 0; vertical-align: top; }
+.jury-table td { padding: 0.2rem 0; }
+.jury-list li { margin: 0.35rem 0; }
+.jury-list .code-line { display: block; }
+
+@media (max-width: 62rem) {
+  .result[data-view="clerk"] #fp { grid-template-columns: minmax(0, 1fr); }
+  .result[data-view="clerk"] #fp > #fp-where { position: static; max-height: 70vh; }
+  .result[data-view="clerk"] #fp > #fp-eform { grid-column: 1; grid-row: 2; position: static; max-height: none; }
+}
+@media (max-width: 40rem) { .clerk-card-body { grid-template-columns: minmax(0, 1fr); } }
+/* W11 CLERK-P end */

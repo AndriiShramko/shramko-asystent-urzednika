@@ -11,6 +11,8 @@ import type { Converted, Problem } from '../lib/api'
 import { h } from './dom'
 import { readDictionaries } from '../lib/dictionaries'
 import { dictionariesSection } from './dictionaries'
+import { viewSwitch } from './clerk-view'
+import { clerkFinal, clerkHeadline, clerkTop, juryDone } from './clerk-bar'
 
 const PL = { lang: 'pl' }
 
@@ -228,30 +230,35 @@ export function renderConverted(res: Converted): HTMLElement {
   const view = buildView(res.form, res.sidecar)
   const hl = chooseHeadline(view, res.header)
   const root = h('div', { class: 'result' })
+  // Wave 11: one result, two views. The clerk's words come first in the headline; the counted line stays for the jury.
   root.append(h('h2', { id: 'h-done', tabindex: -1, class: `result-title result-${hl.kind}`, 'data-kind': hl.kind },
-    h('span', { class: 'headline' }, headlineText(hl)),
+    h('span', { class: 'headline-clerk clerk-only' }, clerkHeadline(hl, view)),
+    h('span', { class: 'headline jury-only' }, headlineText(hl)),
     formName(view.title)))
+  root.append(viewSwitch(root), clerkTop(res, view))
+  const jury = (el: HTMLElement): HTMLElement => { el.classList.add('jury-only'); return el }
   // The engine of this conversion is not repeated here: the badge in the header (#mode) is its one indicator.
   if (!view.hasSidecar) {
-    root.append(h('section', { class: 'notice', role: 'note', 'aria-labelledby': 'h-nosidecar' },
+    root.append(jury(h('section', { class: 'notice', role: 'note', 'aria-labelledby': 'h-nosidecar' },
       h('h2', { id: 'h-nosidecar' }, t('sidecar.missing.heading')),
-      h('p', {}, t('sidecar.missing.body'))))
+      h('p', {}, t('sidecar.missing.body')))))
   }
-  root.append(summary(view, res.header))
+  root.append(jury(summary(view, res.header)))
+  if (view.hasSidecar) root.append(jury(juryDone(res, view)))
   if (view.hasSidecar) {
     const noSource = view.matter.filter((r) => !r.quote).length
     const noSourceText = noSource === view.matter.length
       ? t('matter.noSourceAll')
       : t('matter.noSource', { n: noSource, total: view.matter.length })
-    root.append(h('section', { 'aria-labelledby': 'h-matter' },
+    root.append(jury(h('section', { 'aria-labelledby': 'h-matter' },
       h('h2', { id: 'h-matter' }, t('matter.heading')),
       h('p', { class: 'muted' }, t('matter.intro')),
       view.matter.length && noSource ? h('p', { class: 'muted', id: 'matter-nosource' }, noSourceText) : null,
-      view.matter.length ? fieldList(view.matter) : h('p', {}, t('matter.empty'))))
+      view.matter.length ? fieldList(view.matter) : h('p', {}, t('matter.empty')))))
   }
   const dict = dictionariesSection(readDictionaries(res.sidecar), view.rows, view.hasSidecar)
-  if (dict) root.append(dict)
-  root.append(warningsSection(view, res.header))
+  if (dict) root.append(jury(dict))
+  root.append(jury(warningsSection(view, res.header)))
   if (view.hasSidecar && view.standardCount) {
     const details = h('details', { class: 'standard' },
       h('summary', {}, t('standard.summary', { fields: tn('count.fields', view.standardCount) })),
@@ -259,15 +266,16 @@ export function renderConverted(res: Converted): HTMLElement {
     for (const [tab, rows] of view.standard) {
       details.append(h('h3', PL, tab), fieldList(rows))
     }
-    root.append(h('section', { 'aria-labelledby': 'h-standard' }, h('h2', { id: 'h-standard' }, t('standard.heading')), details))
+    root.append(jury(h('section', { 'aria-labelledby': 'h-standard' }, h('h2', { id: 'h-standard' }, t('standard.heading')), details)))
   }
   if (view.unknown.length) {
-    root.append(h('section', { 'aria-labelledby': 'h-unknown' },
+    root.append(jury(h('section', { 'aria-labelledby': 'h-unknown' },
       h('h2', { id: 'h-unknown' }, t('unknown.heading')),
       h('p', { class: 'muted' }, t('unknown.body')),
-      h('details', { open: true }, h('summary', {}, t('summary.fields', { n: view.unknown.length })), fieldList(view.unknown))))
+      h('details', { open: true }, h('summary', {}, t('summary.fields', { n: view.unknown.length })), fieldList(view.unknown)))))
   }
-  root.append(jsonSection(res))
+  // The fill-and-print block (#fp) is put before the JSON section by the page; the clerk's final action comes last.
+  root.append(jury(jsonSection(res)), clerkFinal(res, root))
   return root
 }
 
