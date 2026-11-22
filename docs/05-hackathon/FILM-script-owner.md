@@ -99,18 +99,18 @@
 ### Команды для сцены 9 (PowerShell, из папки, где лежат `forms` и `out`)
 
 ```powershell
-docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:c257e1ffb3c207642609a55ea1eb11a4adcf3b47582b4e2981bc21d3ed283923 convert /in/form.pdf --out /out/a.json
+docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/a.json
 ```
 
 ```powershell
-docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:c257e1ffb3c207642609a55ea1eb11a4adcf3b47582b4e2981bc21d3ed283923 convert /in/form.pdf --out /out/b.json
+docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/b.json
 ```
 
 ```powershell
 Get-FileHash out\a.json, out\b.json
 ```
 
-`sha256:c257e1ffb3c207642609a55ea1eb11a4adcf3b47582b4e2981bc21d3ed283923` — строка `sha256:...` финального образа (из `docs/03-plan/RESUME.md`). Перед записью прогнать один раз: хэши должны совпасть (с `--network none` модель не вызывается). Проверить после финальной сборки.
+`sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f` — строка `sha256:...` финального образа (из `docs/03-plan/RESUME.md`). Перед записью прогнать один раз: хэши должны совпасть (с `--network none` модель не вызывается). Проверить после финальной сборки.
 
 ### Откуда числа (не читать вслух)
 - 661 формуляр одного города: `data/forms-census.json` (перепись 21.11.2026: 661 уникальный документ на 224 карточках услуг).
