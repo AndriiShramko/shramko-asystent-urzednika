@@ -190,6 +190,7 @@ class Finder:
         self.titled: dict[int, tuple[str, str]] = {}
         self.letter_of: dict[int, TLine] = {}
         self.title_cells: set[int] = set()
+        self.cell_at: dict[str, tuple[int, int, int]] = {}   # C5: run id -> (table, row, column) of its cell
 
     # ------------------------------------------------------------------ 1. lines, boxes, order
 
@@ -246,6 +247,9 @@ class Finder:
                 if not t.cells:
                     continue
                 ncols = max(c.c + c.cs for c in t.cells)
+                for c in t.cells:
+                    for rid in c.runs:
+                        self.cell_at[rid] = (id(t), c.r, c.c)
                 texts = [c for c in t.cells if WORD.search(self.cell_text(c))]
                 for big in texts:
                     rows = range(big.r, big.r + big.rs)
@@ -277,9 +281,47 @@ class Finder:
     def heading_of(self, ln: TLine) -> tuple[str | None, str] | None:
         if self.titled.get(id(ln), ("", ""))[1]:
             return self.titled[id(ln)]
-        if ln.toks:
-            return None
+        if ln.toks or self.numbered_row(ln) or len(self.CAPS_IN_LINE.findall(ln.text)) >= 2:
+            return None   # C5: "3. PESEL 4. NIP/REGON" is a row of numbered captions in one line, not a heading
         full = ln.text.strip()
+        head = self.heading_tests(ln, full)
+        cut = re.split(r"\s+\(", full, maxsplit=1)[0].strip()
+        if head is None and cut != full and len(cut.split()) >= 2:
+            # C5: "4. Uzasadnienie wniosku (opisz w polu poniżej ...)", "B.4 ADRES (wypełnić tylko ...)": the words in
+            # brackets are an instruction to the heading, not part of the heading tests
+            head = self.heading_tests(ln, cut, continues=True)
+        return head
+
+    NUMCAP = re.compile(r"^\d{1,3}\.\s+\S")
+    CAPS_IN_LINE = re.compile(r"(?:^|\s)\d{1,3}\.\s*[A-ZĄĆĘŁŃÓŚŹŻ]")
+
+    def numbered_row(self, ln: TLine) -> bool:
+        """C5: a line that shares its row with another numbered caption ("17. Kraj   20. Miejscowość") is a caption
+        of a row of places, never a heading. Bold numbered headings side by side ("1. WNIOSKODAWCA" next to
+        "2. PEŁNOMOCNIK") are two column headings and stay headings."""
+        if not self.NUMCAP.match(ln.text.strip()) or ln.atoms[0].run.bold:
+            return False
+        if ln.box is not None:
+            lb = ln.box
+            p = next((p for p in self.pages if p.page.number == ln.page), None)
+            return p is not None and any(
+                o is not ln and o.box is not None and self.NUMCAP.match(o.text.strip())
+                and _yov(o.box, lb) >= 0.5 * min(o.box[3] - o.box[1], lb[3] - lb[1]) for o in p.lines)
+        at = self.cell_at.get(ln.atoms[0].run.id)
+        if at is None:
+            return False
+        return any(o is not ln and self.NUMCAP.match(o.text.strip()) and (c := self.cell_at.get(o.atoms[0].run.id))
+                   and c[0] == at[0] and c[1] == at[1] and c[2] != at[2]
+                   for p in self.pages if p.page.number == ln.page for o in p.lines)
+
+    def continues(self, number: str) -> bool:
+        """C5: every number before this one at its level is a heading already (1, 2, 3 -> 4; 2.1 -> 2.2)."""
+        parts = number.split(".")
+        stem, last = parts[:-1], int(parts[-1])
+        have = {s.number for s in self.sections if s.number}
+        return last >= 2 and all(".".join([*stem, str(k)]) in have for k in range(1, last))
+
+    def heading_tests(self, ln: TLine, full: str, continues: bool = False) -> tuple[str | None, str] | None:
         lead_end = 0
         for at, st in zip(ln.atoms, ln.starts):
             if not at.run.bold:
@@ -291,15 +333,18 @@ class Finder:
             if m and WORD.search(m.group(2)):
                 return m.group(1), m.group(2).strip()
         top = self.page_rank.get(ln.page, 0) < TOP_LINES
-        if top and NUM_HEAD.match(full) and len(full.split()) <= 10 and full[-1] not in ".:,;":
-            # a numbered heading that is not bold (set 9 PDF): "1. Wnioskodawca", "II. Wniosek o ..."
+        if NUM_HEAD.match(full) and len(full.split()) <= 10 and full[-1] not in ".:,;":
+            # a numbered heading that is not bold (set 9 PDF): "1. Wnioskodawca", "II. Wniosek o ..."; away from the
+            # top of its page only when it continues numbered headings (C5)
             m = NUM.match(full) or LET.match(full)
-            if m and WORD.search(m.group(2)):
+            if m and WORD.search(m.group(2)) and (top or (continues and NUM.match(full) and self.continues(m.group(1)))):
                 return m.group(1).rstrip("."), m.group(2).strip()
         cand = lead or full
         letters = [ch for ch in cand if ch.isalpha()]
         if cand.endswith(".") or not letters or any(ch != ch.upper() for ch in letters):
             return None
+        if continues and not lead and len(cand.split()) < 3:
+            return None   # C5: "KOD POCZTOWY (xx-xxx)" is a caption, not a heading
         if (lead and len(letters) >= 6) or (len(letters) >= 10 and len(cand.split()) >= 2):
             return None, cand
         return None
@@ -365,7 +410,10 @@ class Finder:
                     ln.role = "clause"
                     continue
             bold_start = ln.atoms[0].run.bold
-            if INSTR.search(t) and not bold_start and not OFFICE.search(t) and id(ln) not in self.titled and (
+            # C5: an instruction in brackets after a heading or a numbered caption does not make the line an instruction
+            cut = re.split(r"\s+\(", t, maxsplit=1)[0]
+            said = cut if (head is not None or NUM_HEAD.match(t)) and len(cut.split()) >= 2 else t
+            if INSTR.search(said) and not bold_start and not OFFICE.search(t) and id(ln) not in self.titled and (
                     not ln.toks or all(k == "mark" and ln.view[a] in TICKED_CHARS for a, _, k in ln.toks)):
                 ln.role = "instruction"
                 continue
