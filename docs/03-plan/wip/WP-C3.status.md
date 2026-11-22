@@ -1,5 +1,5 @@
 # WP-C3 the DOCX reader gives the list numbers and bullets the paper shows: status
-Claimed by: build7 (agent c3-docx); heartbeat: 2026-11-22 01:20; state: running
+Claimed by: build7 (agent c3-docx); heartbeat: 2026-11-22 01:35; state: running
 
 Branch: wp/C3-docx-numbering   Stage now: core
 
@@ -16,7 +16,7 @@ Branch: wp/C3-docx-numbering   Stage now: core
   - 04 DOCX: unchanged (markers "1)".."4)" and "1.","2." are produced, but the finder/mean do not make consents of them: see Requests to lead)
   - 06 DOCX: **FILE_UPLOADER 6 -> 11, RADIO 4 -> 5**, MAIN 4 -> 5, SECTION 19 -> 21, SHOW 31 -> 33 (the six "-" bulleted attachments)
   - markers found (tmp/c3_markers.py): 03: 5 bullets + 3 numbers; 04: 6 numbers; 06: 6 dashes
-- [~] (e) readers tests 240 passed on 28199e2; fast gate running (tmp/fast.log)
+- [x] (e) readers tests 240 passed on 28199e2; `gate: fast PASSED on 6c364a5` (849 passed, 3 skipped, 22 deselected; 21 passed)
 - [ ] (f) eval.chain --compare, WORSE lines explained, state ready_to_merge
 
 ## Decisions
@@ -34,7 +34,7 @@ Branch: wp/C3-docx-numbering   Stage now: core
 Replaced `out.text = f"{marker} {text}" if marker else text` by `out.text = text` in `_Reader.para`: test_docx_numbering.py 7 failed, 1 passed (the no-numbering test); restored: 8 passed.
 
 ## Left for the next stage
-(e), (f). Next commands (in the worktree):
+(f) only. Next commands (in the worktree):
 - `bash tools/gate.sh py tmp/c3_counts.py` (scratch, not committed: for judged sets 03, 04, 06 DOCX found through tools/coi_paths.py, run pipeline.run with Settings.from_env({}), print Counter of every dict "type" in the form; recreate if missing)
 - `bash tools/gate.sh py -m pytest apps/converter/tests/readers -q`
 - `bash tools/gate.sh fast > tmp/fast.log 2>&1`
