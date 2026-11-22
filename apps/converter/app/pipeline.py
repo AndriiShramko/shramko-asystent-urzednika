@@ -315,8 +315,8 @@ def ocr_label_notes(model, finder, brief) -> list[dict]:
             continue
         before = clean_label(c.label.text)[0]
         after = ocr_mend(before) if before else before
-        if after == before:
-            continue
+        if after.casefold() == before.casefold().rstrip(" ?.:"):
+            continue    # the same words: only the case or a closing mark differs, nothing the dictionary changed
         where: dict = {"page": c.page}
         if c.box is not None:
             where["box"] = [float(v) for v in c.box]

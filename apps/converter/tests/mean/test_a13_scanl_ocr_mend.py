@@ -57,3 +57,25 @@ def test_misspelt_lexicon_words():
 def test_only_leader_kept_as_is():
     # nothing but leader dots: the label is not emptied by the mending, the caller decides
     assert ocr_mend("eeeeeeeeee") == "eeeeeeeeee"
+
+
+def _notes(text, origin="ocr", fate="FIELD"):
+    from types import SimpleNamespace as N
+
+    from app.pipeline import ocr_label_notes
+    c = N(id="c1", page=1, box=(10.0, 20.0, 110.0, 30.0), anchor=None, label=N(text=text))
+    return ocr_label_notes(N(pages=[N(number=1, origin=origin)]), N(candidates=[c]),
+                           N(dispositions=[N(candidate="c1", fate=fate)]))
+
+
+def test_sidecar_note_names_the_ocr_words_and_the_words_used():
+    (n,) = _notes("W micjscowOŚCI")
+    assert n["code"] == "INPUT_NOTE" and n["fix"]["kind"] == "applied" and n["fix"]["rule"] == "ocr.label_lexicon"
+    assert "W micjscowOŚCI" in n["fix"]["text"] and "w miejscowości" in n["fix"]["text"]
+    assert n["fix"]["source"] == {"type": "paper", "page": 1, "box": [10.0, 20.0, 110.0, 30.0], "quote": "W micjscowOŚCI"}
+
+
+def test_no_note_for_native_text_or_case_only():
+    assert _notes("W micjscowOŚCI", origin="native") == []
+    assert _notes("W miejscowości") == []
+    assert _notes("W micjscowOŚCI", fate="LEFT_OUT") == []
