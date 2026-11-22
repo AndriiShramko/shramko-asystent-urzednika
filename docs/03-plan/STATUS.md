@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-22 00:45 CET. **To continue after a limit or to join from another subscription: [`RESUME.md`](RESUME.md) (start prompt, rules of parallel work through git, board of lanes).** Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).
+Last update: 2026-11-21 01:24 CET. **To continue after a limit or to join from another subscription: [`RESUME.md`](RESUME.md) (start prompt, rules of parallel work through git, board of lanes).** Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).
 
 ## Build log (the lead's handoff; newest state on top)
 
@@ -26,7 +26,7 @@ Last update: 2026-11-22 00:45 CET. **To continue after a limit or to join from a
 | 14:51 | WP-F2a readers for PDF and DOCX (text boxes with boxes, form fields, tables, leaders) | `b60de98` | independent review: merge; 17 set files read, none refused, no unhandled exception |
 | 14:51 | WP-F5 composer: library of standard sections, pages, ids from meaning, conditions, D16 to D18 | `0043f5a` | independent review: merge; fast gate on `main` 378 passed |
 
-**SEVENTH BUILD LEAD (new subscription), live block. Updated 21 November 00:45. Reports to program lead 8 (session `local_a05c83e2-7861-49fd-a663-a05adf82ca29`).** The old economy rules below (economy mode, 85 to 91 percent stops, "sonnet only", "no Workflow", pool of three) were about the spent subscription and are void; binding on the new week: stop at 98 percent, steps at 94 and 96 ([`subscription-cutoff.md`](../04-orchestration/subscription-cutoff.md)), freeze Sunday 08:30, merges by 06:30.
+**SEVENTH BUILD LEAD (new subscription), live block. Updated 21 November 01:24. Reports to program lead 8 (session `local_a05c83e2-7861-49fd-a663-a05adf82ca29`).** The old economy rules below (economy mode, 85 to 91 percent stops, "sonnet only", "no Workflow", pool of three) were about the spent subscription and are void; binding on the new week: stop at 98 percent, steps at 94 and 96 ([`subscription-cutoff.md`](../04-orchestration/subscription-cutoff.md)), freeze Sunday 08:30, merges by 06:30.
 
 - **Budget:** 22:27 week 1 %, Fable 2 %, 5-hour 6 %. 23:10 the 5-hour window ran out (five top-model agents and the lead: about 94 points in 43 minutes); work went on at 00:15 on a new window. 00:44: week 9 %, Fable 11 %, 5-hour 49 % (shared with the program lead's audit; about 1.3 points a minute; reset about 05:00). **The board of lanes and the way to continue are in [`RESUME.md`](RESUME.md); this block is the short history.**
 - **Writer check 22:27:** no commit of others since `c940d03` (20:52:58); the sixth lead and its two dev servers (ports 8099, 8123) are stopped; `eval/chain/summary.json` is left modified by the sixth lead's last rerun (not committed; the next chain run on `main` rewrites it). Docker Desktop 29.9.3 runs on this laptop now.
@@ -44,9 +44,9 @@ Last update: 2026-11-22 00:45 CET. **To continue after a limit or to join from a
 |---|---|---|---|
 | `wp/F-val-validators`, status `wip/WP-F-val.status.md` | B8 validators, B9 REQUIRED only where the paper says it | `wp-thinker` (fable), then the lead | **MERGED 00:36, `a7f2cee`**: `REQUIRED_POLICY=paper` by default (146 to 13 REQUIRED on the seven results; `inferred` restores the old rule), PESEL validator in sets 03 and 08; chain 158 files 0 failed, 0 worse; `results/` recomputed (`6e2944c`) |
 | `wp/F20-image-checks`, status `wip/WP-F20i.status.md` | S3 thread and locale environment, sidecar check, hostile inputs, the jury's first run as a CI check | `wp-thinker` (fable), then the lead | **MERGED 00:25, `4e1439a`**; recorded red run actions/runs/44961782575 |
-| `wp/H4-engine-visible`, status `wip/WP-H4.status.md` | ORDER M item 1: header `X-Converter-Engine`, `/status` extended, CLI and log line, badge, three warning codes; no model call | `wp-thinker` (fable), killed by the limit 23:10, resumed 00:22 | running; pushes after every commit |
-| `wp/C1-required-cues`, status `wip/WP-C1.status.md` | ORDER C1 of program lead 9: required and optional cues from hint and section title, negation guard | `wp-thinker` (fable), started 00:45 | running; pushes after every commit |
-| `wp/C3-docx-numbering`, status `wip/WP-C3.status.md` | ORDER C3: list numbers and bullets of DOCX as leading text | `wp-builder` (opus), started 00:45 | running; pushes after every commit |
+| `wp/H4-engine-visible`, status `wip/WP-H4.status.md` | ORDER M item 1: the engine is always visible; no model call | `wp-thinker` (fable) | **MERGED 01:07, `40e1876`**: form and sidecar byte-identical on 158 of 158 files. **Build V1.2** (commit `bd71323`): core `sha256:ad20729d0f54f1c4ed8b9a8db852538df7fb925c28c9ad6d28c884df03b21078`, workflow green, jury acceptance ALL PASS. **The seventh lead stopped at 01:24 at a clean point; continue from [`RESUME.md`](RESUME.md)** |
+| `wp/C1-required-cues`, status `wip/WP-C1.status.md` | ORDER C1: required and optional by the paper's words | `wp-thinker` (fable) | **MERGED 01:24, `7cdcbfc`**: 28 fields of sets 08 and 09 optional, no REQUIRED of a form changed, chain 0 worse |
+| `wp/C3-docx-numbering`, status `wip/WP-C3.status.md` | ORDER C3: list numbers and bullets of DOCX | `wp-builder` (opus) | **MERGED 01:13, `bd71323`**: chain 0 worse, 4 better; set 04 DOCX consents still missing (request passed on) |
 
 - **Merge order:** F1, then service fixes (fast gate and `eval.chain --compare` each time, one merge at a time, `tools/lead/merge.sh`), push, wait for the image run, digest to the program lead; then jury docs with that digest; then image checks, F-val; H4 (`/status` extended, engine header) starts after the service fixes merge (shared `main.py`); H0 after F-val (shared `lexicon`).
 - **Recovery if this lead stops:** `git worktree list`; `git log main..<branch> --oneline` for the five branches above; each status file; nothing of these agents is merged until this block says so.
