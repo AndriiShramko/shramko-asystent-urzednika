@@ -69,7 +69,8 @@ FROM ${PY_ALPINE} AS core
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONUTF8=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 # Determinism (WP-F20i), the same line as in plus: one OCR thread, one locale, one time zone.
 ENV OMP_THREAD_LIMIT=1 OMP_NUM_THREADS=1 LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC
-RUN apk add --no-cache tesseract-ocr tesseract-ocr-data-pol tesseract-ocr-data-eng libheif-tools && \
+# Explicit versions (task card: never latest): "~" pins the release and lets Alpine take its own rebuild (-rN).
+RUN apk add --no-cache tesseract-ocr~5.5.2 tesseract-ocr-data-pol~5.5.2 tesseract-ocr-data-eng~5.5.2 libheif-tools~1.23.7 && \
     adduser -S -D -H -u 10001 -s /sbin/nologin converter
 # HEIC (WP-F20f, D24): the narrowest package that gives heif-dec, never libheif-plugins-all. No x265 (GPL-2.0+).
 # The build fails if any installed package is named like it, and the program must run.

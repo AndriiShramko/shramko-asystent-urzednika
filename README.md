@@ -81,6 +81,39 @@ Started without settings and without a key file, the service is open and writes 
 - **Reads:** PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (images and scans through local OCR). What it could not read is a warning with the page and the place, never a made-up field.
 - Links: state of the build [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) · [`apps/converter/README.md`](apps/converter/README.md) · [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md) · pre-event disclosure [`NOTICE`](NOTICE).
 
+## Where the jury sees each criterion / Gdzie widać kryteria oceny
+
+| Criterion of the task card | Where to see it |
+|---|---|
+| Minimum scope: REST, the eight formats, the partner's structure, thematic pages | `POST /v1/forms/convert` answers exactly `title`, `tabs`, `flow`; [`results/`](results/) holds the forms of the judged sets; `GET /status` lists the eight formats |
+| I. Dictionaries and initial data | in the JSON, fields with `dictionaryName` (for example `Kraje` with the default value Polska); on the page `/ui/`, view "Widok dla jury", block "Słowniki" |
+| II. A proposed new dictionary | page block "Słowniki" → "Proponowany nowy słownik" (set 09: sports disciplines from the paper); the same in the report `meta.json` |
+| III. Dependencies and conditions | in the JSON, `states` with JSONata conditions (`SHOW`); on the page, the e-form preview: a choice opens the dependent section |
+| IV. Upload and preview page | `/ui/`: the clerk view (the original next to the e-form, remarks as cards on the document), the jury view, "Gdzie na papierze", trial fill and print on the original blank, many files at once with progress by stage |
+| V. Field validation and UX | validators in the JSON (`validation`: PESEL, NIP, REGON, postal code, e-mail, identity card number, ePUAP and e-Doręczenia addresses: the partner's own list); "Sprawdź poprawność" on the page; many files: `POST /v1/batches` or `POST /v1/jobs` |
+
+The film (at most 3 minutes) and the presentation (PDF) are linked in the HackTribe submission.
+
+## Configuration and REST API (short) / Konfiguracja i REST API
+
+Full tables: [`apps/converter/README.md`](apps/converter/README.md), sections "Configuration" and "API". Everything is set by environment variables at run time; secrets come as files and are never in the image.
+
+| Endpoint | What it does |
+|---|---|
+| `GET /healthz`, `GET /status` | liveness; name, version, engine, token mode, accepted formats, limits |
+| `POST /v1/forms/convert` (multipart `file`) | the partner's JSON (`title`, `tabs`, `flow`) and nothing else; `?report=1` adds the report `meta.json` |
+| `POST /v1/forms/report`, `POST /v1/forms/preview` | the report alone; page pictures and field places (read only) |
+| `POST /v1/batches`, `POST /v1/jobs`, `GET /v1/jobs/{id}` | many files in one call; a queue with progress by stage |
+| Errors | `application/problem+json` with a stable `code`: 400 `BAD_NAME`, 401/403 token, 413 `TOO_LARGE`, 415 `EXTENSION`/`TYPE_MISMATCH`, 422 `UNREADABLE`, 429 `BUSY`/`QUEUE_FULL`, 504 `TIMEOUT` |
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `AUTH_MODE`, `JWT_SECRET_FILE`, `JWT_PUBLIC_KEY_FILE`, `JWT_JWKS_FILE` | `auto`, none | JWT when a key file is given; open with a log warning otherwise (publish on `127.0.0.1`) |
+| `MAX_UPLOAD_BYTES`, `MAX_PAGES`, `JOB_TIMEOUT_S`, `CONCURRENCY` | 20 MiB, 60, 600, 2 | limits |
+| `STRICT_EXTENSIONS` | `true` | exactly the eight formats of the card; `false` also ODT, XLS, RTF, TXT and more image formats |
+| `SCAN_PREP` | `off` | extra scan preparation for photos (operator's switch) |
+| `VISION_BASE_URL`, `VISION_API_KEY_FILE`, `VISION_MODEL`, `VISION_PAGE_CONFIG`, `VISION_KEY_REVEAL` | none, none, Qwen3, `on`, `off` | the optional model step for weak scan pages, off unless the operator points it at their own server; no key is in the image |
+
 ## Koszt i wymagania / Cost and requirements
 
 **Wymagania (PL).** Procesor, bez GPU. W czasie pracy usługa nie korzysta z sieci (polecenie 1 powyżej działa z `--network none`). Obraz: 428 238 281 bajtów po rozpakowaniu (`docker image inspect`, build `sha256:e8765c4f…`, linux/amd64; rozmiaru skompresowanego nie mierzono). Ustawienia domyślne: 2 równoległe zadania, 600 s na zadanie, 20 MiB i 60 stron na plik (`apps/converter/app/config.py`). Wywołań zewnętrznych nie ma, więc nie ma opłat za wywołanie; zużycia CPU w sekundach na formularz nie mierzono (poniżej tylko czas zegarowy).

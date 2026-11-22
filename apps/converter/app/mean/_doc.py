@@ -59,11 +59,25 @@ class Keys:
         return name
 
 
+_ROMAN = re.compile(r"(?=[IVXLCDM]+$)M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})")
+
+
+def is_roman(word: str) -> bool:
+    """A Roman section number ("II.", "IV)", "XII"): kept in capitals. A bare one-letter "I" is the conjunction "i"
+    of a shouted title, and "MI", "CI" are words, so a number needs a dot or bracket, or only the letters I, V, X."""
+    core = word.strip(",:;(/")
+    bare = core.rstrip(".)")
+    if not bare or not _ROMAN.fullmatch(bare):
+        return False
+    return core != bare or (len(bare) >= 2 and set(bare) <= set("IVX"))
+
+
 def sentence_case(text: str) -> str:
-    """Words printed in capitals go to lower case (acronyms stay), the first letter is a capital."""
+    """Words printed in capitals go to lower case (acronyms and Roman numbers stay), the first letter is a capital."""
     words = text.split()
     shout = sum(w.isupper() for w in words) * 2 > len(words)
-    out = [w.lower() if w.isupper() and (len(w) > 1 or shout) and not _ACRONYM.match(w.strip(".,:;()/")) else w for w in words]
+    out = [w.lower() if w.isupper() and (len(w) > 1 or shout) and not _ACRONYM.match(w.strip(".,:;()/"))
+           and not is_roman(w) else w for w in words]
     t = " ".join(out)
     return t[:1].upper() + t[1:]
 
