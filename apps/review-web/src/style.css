@@ -267,3 +267,15 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .dictionaries .dict-proposal { margin: 0.5rem 0 1rem; }
 .dictionaries ul.dict-entries { columns: 2 14rem; margin: 0.2rem 0 0.4rem 1.2rem; }
 .dictionaries .dict-links li { margin: 0.25rem 0; }
+
+/* W11 ADDR: address hints from the TERYT register under a locality, street or postal code field */
+.fp-hints { list-style: none; margin: 0.15rem 0 0; padding: 0; border: 1px solid var(--c-accent); border-radius: 6px; background: var(--c-bg); max-height: 19rem; overflow: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+.fp-hints[hidden] { display: none; }
+.fp-hint { padding: 0.4rem 0.6rem; cursor: pointer; display: grid; gap: 0.05rem; border-bottom: 1px solid var(--c-border); }
+.fp-hint:last-child { border-bottom: 0; }
+.fp-hint:hover, .fp-hint[aria-selected="true"] { background: var(--c-notice-bg); color: var(--c-notice-text); }
+.fp-hint-main { font-weight: 600; }
+.fp-hint-sub { font-size: 0.875rem; }
+.fp-hint-note { margin: 0.25rem 0 0; }
+.fp-hint-note:empty { display: none; }
+.fp-warn { color: var(--c-notice-text); background: var(--c-notice-bg); padding: 0 0.25rem; border-radius: 3px; }
