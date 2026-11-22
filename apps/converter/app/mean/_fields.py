@@ -614,9 +614,10 @@ class _Reader:
                 self._set(c, "AWAITING_DECISION", decision=f"options_{c.id}")
                 self.out.warnings.append(Warning(code="AMBIGUOUS_GROUP", page=c.page, candidate=c.id, detail="a choice group with fewer than two readable options"))
                 return None
-            kind = self._choice_kind(c, raw, options)
             if all(_MASK_PART.match(o) for o in options):
                 kind, options, concept = "DATEPICKER", [], "date"   # C6: the boxes stand in front of a date mask
+            else:   # REV-3: only a real choice is asked "one or several" (no AMBIGUOUS_GROUP on a date mask)
+                kind = self._choice_kind(c, raw, options)
         else:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
