@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 
 from app import interim, lexicon
-from app.model.brief import Addressee, Applicants
+from app.model.brief import Addressee, Applicants, ClauseText, OfficeCandidate
 from app.model.common import Dropped, Evidence, Stated, Warning
 from app.model.page import Run
 
@@ -23,6 +23,7 @@ _ADDR_SECTION = lexicon.regex("habits", habit="addressee_section")
 _LEGAL_SECTION = lexicon.regex("habits", habit="legal_section")
 _HEAD_NO = re.compile(r"^\s*(?:[IVX]{1,4}|[A-Z]|\d{1,2}(?:\.\d{1,2})*)[.)]\s+(?=\S)")   # "II. Wniosek ..."
 _TO = re.compile(r"^(?:do|adresat\s*:?)\s+", re.IGNORECASE)
+_ITEM = re.compile(r"^\s*(?:\d{1,2}[.)]|[a-z]\)|[•▪■–—-])\s*\S")           # a line that opens an item of a list
 NOT_FOUND = Stated(status="not_found")
 
 
@@ -180,8 +181,12 @@ def find_addressee(doc: Doc) -> tuple[Addressee, list[Warning]]:
                 if more[:1].isupper() and not re.search(r"\d", more) and len(more.split()) <= 4:
                     hit = ([rid, nxt], m, more)
                     break
-    if hit is None:
-        return Addressee(status="not_found"), []
+    # W11 CLERK-S. No addressee block: the whole paper is searched. A first page read by OCR is searched this way
+    # too, because its runs are single words and the two rules above see "Urząd" without its name.
+    if hit is None or _first_page_is_ocr(doc):
+        wide = _addressee_of(office_candidates(doc))
+        if hit is None or wide.status != "not_found":
+            return wide, []
     rids, m, tail = hit
     kind, name = _named(m, tail)
     quote = " ".join(doc.text(r) for r in rids)
@@ -199,6 +204,85 @@ def find_addressee(doc: Doc) -> tuple[Addressee, list[Warning]]:
                                         detail="the paper names two different offices; the addressee block wins"))
                 return Addressee(status="stated", kind=kind, name=name, evidence=[ev]), warnings
     return Addressee(status="stated", kind=kind, name=name, evidence=[ev]), warnings
+
+
+_CONTROLLER = lexicon.regex("habits", habit="data_controller")
+MAX_OFFICES = 5
+_HEADER_BOTTOM = 300.0   # points from the top of the first page: where a header or an addressee stamp stands
+
+
+def office_candidates(doc: Doc) -> list[OfficeCandidate]:
+    """W11 CLERK-S: every office the paper names anywhere (a header, a stamp line, a footer, the clause), read only
+    when no addressee block was found. Mentions that share a word of the proper name are one office. The most
+    likely first: the top of the first page, then the controller of the data ("Administratorem ... jest"), then
+    the number of mentions, then the reading order."""
+    if not doc.order:
+        return []
+    first_page = doc.page(doc.order[0])
+    lines = _lines(doc)
+    found: list[dict] = []
+    for i, rids in enumerate(lines):
+        text = " ".join(doc.text(r) for r in rids)
+        top = min((doc.runs[r][1].box[1] for r in rids if doc.runs[r][1].box is not None), default=None)
+        for m in _OFFICE.finditer(text):
+            used, tail = rids, " ".join(m.group(2).split())
+            if not tail and m.end() == len(text) and i + 1 < len(lines):      # the name goes on in the next line
+                more = " ".join(doc.text(r) for r in lines[i + 1])
+                if more[:1].isupper() and not re.search(r"\d", more) and len(more.split()) <= 4 and doc.page(lines[i + 1][0]) == doc.page(rids[0]):
+                    used, tail = [*rids, *lines[i + 1]], more
+            words = _name_words(tail)
+            if not words:
+                continue
+            row = _FORMS[m.group(1).casefold()]
+            rest = " ".join(m.group(0)[len(m.group(1)):].split()) or tail     # "w Daleszycach", "Stawiguda"
+            name = f"{row['base']} {rest.title() if tail.isupper() else rest}"
+            score = 0
+            if doc.page(rids[0]) == first_page and top is not None and top < _HEADER_BOTTOM and doc.role(rids[0]) in ("body", "heading", "owned"):
+                score += 3
+            if _CONTROLLER.search(text[: m.start()]):
+                score += 2
+            quote = " ".join(doc.text(r) for r in used)[:200]
+            same = next((f for f in found if f["words"] & words), None)
+            if same is not None:
+                same["mentions"] += 1
+                same["words"] |= words
+                if score > same["score"]:
+                    same.update(score=score, kind=row["kind"], name=name, rids=used, quote=quote)
+                continue
+            found.append({"kind": row["kind"], "name": name, "words": words, "score": score, "mentions": 1, "rids": used,
+                          "quote": quote, "pos": doc.pos[rids[0]]})
+    found.sort(key=lambda f: (-f["score"], -min(f["mentions"], 4), f["pos"]))
+    return [OfficeCandidate(kind=f["kind"], name=f["name"], evidence=doc.evidence(f["rids"], f["quote"]))
+            for f in found[:MAX_OFFICES]]
+
+
+def _first_page_is_ocr(doc: Doc) -> bool:
+    return bool(doc.order) and any(p.origin == "ocr" for p in doc.pm.pages if p.number == doc.page(doc.order[0]))
+
+
+def _lines(doc: Doc) -> list[list[str]]:
+    """Runs joined into printed lines: neighbours of the reading order on one page whose boxes share a baseline and
+    stand a word space apart (OCR gives single words). A run without a box is a line by itself."""
+    out: list[list[str]] = []
+    for rid in doc.order:
+        if not doc.text(rid):
+            continue
+        box = doc.runs[rid][1].box
+        last = doc.runs[out[-1][-1]][1].box if out else None
+        if box is not None and last is not None and doc.page(rid) == doc.page(out[-1][-1]):
+            h = max(box[3] - box[1], last[3] - last[1], 1.0)
+            if abs((box[1] + box[3]) - (last[1] + last[3])) <= h and -0.5 * h <= box[0] - last[2] <= 1.5 * h:
+                out[-1].append(rid)
+                continue
+        out.append([rid])
+    return out
+
+
+def _addressee_of(found: list[OfficeCandidate]) -> Addressee:
+    if not found:
+        return Addressee(status="not_found")
+    status = "stated" if len(found) == 1 else "ambiguous"
+    return Addressee(status=status, kind=found[0].kind, name=found[0].name, evidence=[c.evidence for c in found], candidates=found)
 
 
 # -- who may apply ------------------------------------------------------------------------------------------------
@@ -290,3 +374,38 @@ def find_clause(doc: Doc) -> tuple[Stated, list[Dropped]]:
     quote = doc.text(rids[0]) or "klauzula informacyjna"
     return (Stated(status="stated", evidence=[doc.evidence(rids[:1], quote)]),
             [Dropped(what=quote[:120], reason="CLAUSE_LINKED", page=doc.page(rids[0]), count=len(rids))])
+
+
+_RANK = {"native": 0, "flow": 1, "ocr": 2}
+
+
+def clause_text(doc: Doc) -> ClauseText | None:
+    """W11 CLERK-S: the information clause as printed (the runs the finder gave the role `clause`), as paragraphs:
+    a line that does not open a numbered or bulleted item and follows an unfinished sentence is joined to it.
+    `conf` is the lowest mean word confidence among the pages the clause stands on (1 for text that was not OCR).
+    An address the clause prints is not made a link: clauses also print the address of the supervisory authority."""
+    rids = [r for r in doc.order if doc.fo.roles.get(r) == "clause" and doc.text(r)]
+    if not rids:
+        return None
+    mine = set(rids)
+    paragraphs: list[str] = []
+    for line in _lines(doc):
+        t = " ".join(doc.text(r) for r in line if r in mine)
+        if not t:
+            continue
+        last = paragraphs[-1] if paragraphs else ""
+        ended = last.endswith(":") or (last.endswith((".", ";")) and t[:1].isupper())
+        if last and not _ITEM.match(t) and not ended:
+            paragraphs[-1] = last[:-1] + t if last.endswith("-") and t[:1].islower() else f"{last} {t}"
+        else:
+            paragraphs.append(t)
+    paragraphs = list(dict.fromkeys(paragraphs))   # a paper of several applications prints its clause once per application
+    origins = {p.number: p.origin for p in doc.pm.pages}
+    by_page: dict[int, list[float]] = {}
+    for rid in rids:
+        by_page.setdefault(doc.page(rid), []).append(doc.runs[rid][1].conf)
+    origin = max((origins.get(n, "native") for n in by_page), key=_RANK.__getitem__)
+    conf = round(min(sum(v) / len(v) for v in by_page.values()), 2)
+    first = doc.page(rids[0])
+    ev = doc.evidence([r for r in rids if doc.page(r) == first], paragraphs[0][:200])
+    return ClauseText(paragraphs=paragraphs, origin=origin, conf=conf, evidence=[ev])

@@ -37,6 +37,13 @@
         "name": {
           "title": "Name",
           "type": "string"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/OfficeCandidate"
+          },
+          "title": "Candidates",
+          "type": "array"
         }
       },
       "required": [
@@ -364,6 +371,51 @@
       "title": "BriefField",
       "type": "object"
     },
+    "ClauseText": {
+      "additionalProperties": false,
+      "description": "W11 CLERK-S: the information clause as the paper prints it, so that the consent of the form can carry it.",
+      "properties": {
+        "paragraphs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Paragraphs",
+          "type": "array"
+        },
+        "origin": {
+          "enum": [
+            "native",
+            "ocr",
+            "flow"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "conf": {
+          "description": "Lowest mean word confidence of a page the clause stands on; 1 for text that was not OCR.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Conf",
+          "type": "number"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "paragraphs",
+        "origin",
+        "conf"
+      ],
+      "title": "ClauseText",
+      "type": "object"
+    },
     "Cond": {
       "additionalProperties": false,
       "description": "Predicate tree (design 6.7): exactly one of {field, is} | any_of | all_of | not.",
@@ -450,6 +502,9 @@
         },
         "clause": {
           "$ref": "#/$defs/Stated"
+        },
+        "clause_text": {
+          "$ref": "#/$defs/ClauseText"
         }
       },
       "required": [
@@ -733,6 +788,35 @@
         "fields"
       ],
       "title": "MatterSection",
+      "type": "object"
+    },
+    "OfficeCandidate": {
+      "additionalProperties": false,
+      "description": "W11 CLERK-S: one office the paper names outside an addressee block (a header, a stamp line, the clause).",
+      "properties": {
+        "kind": {
+          "enum": [
+            "office",
+            "body"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "kind",
+        "name",
+        "evidence"
+      ],
+      "title": "OfficeCandidate",
       "type": "object"
     },
     "ProposedFee": {
