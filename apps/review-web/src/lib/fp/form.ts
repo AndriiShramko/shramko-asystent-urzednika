@@ -135,5 +135,7 @@ export function readForm(form: unknown): FormModel {
 /** The display name of a field: its title, else the techName. */
 export function nameOf(n: ENode): string {
   // a consent block has no title of its own: its section's title names it
+  // the partner's dictionary id is not a label for a person
+  if (n.title && n.title === n.dictionaryName && /^TERYT/i.test(n.title)) return 'Miejscowość z rejestru TERYT (gmina, powiat, województwo)'
   return n.title || (n.type === 'CONSENT_SECTION' ? n.parent?.title : '') || n.techName || n.type
 }
