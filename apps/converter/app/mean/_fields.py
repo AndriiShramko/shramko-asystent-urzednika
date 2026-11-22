@@ -43,6 +43,20 @@ _THIRD_PERSON = re.compile(r"(kandydat|podopieczn|zawodnik|sportowc|trener|dziec
 # phrases (set judged-07 PDF); each side keeps its own words.
 _ALT_OR = re.compile(r"(\w[\w-]*(?:\s*/\s*\w[\w-]*)+)\s*\*+\s+lub\s+((?:[\w-]+\s+){0,3}\w[\w-]*(?:\s*/\s*\w[\w-]*)+(?:\s+[\w-]+){0,2})\s*\*+")
 _DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
+# C6: a printed date mask after a place ("DD-MM-RRRR", "D D - M M - R R R R", one letter per cell), and the parts of a
+# mask that box glyphs stand in front of ("□ D D -", "□ M M -", "□ R R R R")
+_DATE_MASK = re.compile(r"^DD[-./]?MM[-./]?(?:RRRR|YYYY)")
+_MASK_PART = re.compile(r"^(?:D\s?D|M\s?M|R\s?R(?:\s?R\s?R)?|Y\s?Y\s?Y\s?Y)\s*[-./]?$", re.IGNORECASE)
+# C2, conditions from the paper's notes (design 40-show-rules): family A, an instruction line right under a choice
+# ("Jeśli wybierzesz tę formę ...", "Jeśli tak ...", "W przypadku zaznaczenia ..."); family C, a note that names the
+# option it depends on ("Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego", "dotyczy wyłącznie ...").
+_COND_A = re.compile(r"^\W*(?:jeśli|jeżeli|w\s+przypadku)\s+(tak|nie|wybierzesz|wybrania|wyboru|zaznaczenia"
+                     r"|odpowiedzi\s+(?:twierdzącej|przeczącej))\b", re.IGNORECASE)
+_COND_C = re.compile(r"(?:należy\s+)?wypełni[ćc]\s+(?:tylko\s+|wyłącznie\s+)?w\s+przypadku\s+|dotyczy\s+wyłącznie\s+",
+                     re.IGNORECASE)
+# 4-letter stems that name no option: "inny niż w poz. B.3", "kiedy jest", "zaznaczenia kratki"
+_STEM_STOP = {"inny", "inna", "inne", "jest", "kied", "tylk", "oraz", "prze", "któr", "zazn", "krat", "pozy", "dany",
+              "dane", "osob", "wype", "nale", "jeże", "jeśl", "wnio"}
 # Attachments named in running text (audit T2): a list under "Załączniki ...:", "należy / można dołączyć X",
 # "w załączeniu X", "X załączyć do wniosku"; a row "N. X  TAK  NIE" of an attachments table.
 _ATT_LIST = re.compile(r"^(?:\d{1,2}\.\s*)?(?:załączniki\b[^:]{0,40}|do wniosku\s+(?:należy|można)\s+(?:dołączyć|załączyć))\s*:$", re.IGNORECASE)
@@ -155,6 +169,7 @@ class _Reader:
         self._attachments_in_text()
         self._declarations()
         self._text_roles()
+        self._conditional_lines()
         for role, labels in self.standard.items():
             self.out.dropped.append(Dropped(what=f"{role}: {', '.join(labels)}"[:300], reason="COVERED_BY_STANDARD", count=len(labels)))
         self._composite()
@@ -589,6 +604,8 @@ class _Reader:
                 self.out.warnings.append(Warning(code="AMBIGUOUS_GROUP", page=c.page, candidate=c.id, detail="a choice group with fewer than two readable options"))
                 return None
             kind = self._choice_kind(c, raw, options)
+            if all(_MASK_PART.match(o) for o in options):
+                kind, options, concept = "DATEPICKER", [], "date"   # C6: the boxes stand in front of a date mask
         else:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
@@ -676,6 +693,8 @@ class _Reader:
             return "DATEPICKER", "date", None, self.last.label[:-2] + "do"   # "od ... do ...": two dates in one section
         if c.kind == "comb" and c.mask and re.search(r"[DMR]{2}", c.mask):
             return "DATEPICKER", "date", None, shown
+        if self._mask_after(c):
+            return "DATEPICKER", "date", None, shown
         for rx, row in lexicon.compiled("concepts"):
             if rx.search(low) or (hint and row["type"] == "DATEPICKER" and rx.search(hint.casefold())):   # "(DD-MM-RRRR)"
                 return row["type"], row.get("concept"), row.get("length"), row.get("label") or _PHRASES.get(low) or shown
@@ -721,6 +740,20 @@ class _Reader:
             if role == "instruction":
                 out.append(text)
         return out
+
+    def _mask_after(self, c: Candidate, reach: int = 12) -> bool:
+        """C6: the text printed right after the place, white space ignored, starts with a date mask; one letter per
+        cell of a sheet counts too."""
+        doc = self.doc
+        place = [doc.pos[r] for r in doc.cand_runs(c) if r in doc.pos]
+        if not place:
+            return False
+        seen = ""
+        for rid in doc.order[max(place) + 1: max(place) + 1 + reach]:
+            seen += re.sub(r"\s+", "", doc.text(rid)).upper()
+            if len(seen) >= 10:
+                break
+        return bool(_DATE_MASK.match(seen))
 
     def _hint_after(self, c: Candidate) -> str | None:
         """ "(rodzaj uroczystości, np. wesele ...)" under a line is the hint of the field."""
@@ -902,6 +935,84 @@ class _Reader:
                     by_page.setdefault(doc.page(rid), []).append(rid)
             for page, rids in sorted(by_page.items()):
                 self.out.dropped.append(Dropped(what=doc.text(rids[0])[:120], reason=reason, page=page, count=len(rids)))
+
+    def _conditional_lines(self) -> None:
+        """C2: a SHOW from the paper's own note (design 40-show-rules, families A and C). A condition is set only on
+        a field of the matter that has none; a note whose choice is not found leaves the fields as they are and says
+        so (UNRESOLVED_REFERENCE). Neither the composer nor the gate changes."""
+        doc = self.doc
+        placed = sorted(((doc.cand_pos(doc.cands[cid]), cid, f) for cid, f in self.field_of.items() if cid in doc.cands),
+                        key=lambda x: x[0])
+        if not placed:
+            return
+        choices = [x for x in placed if x[2].type in ("RADIO", "CHECKBOX", "SELECT") and x[2].options]
+        head_runs = {r for s in doc.fo.sections for r in s.runs}
+        heads = sorted(min(doc.pos[r] for r in s.runs if r in doc.pos) for s in doc.fo.sections
+                       if any(r in doc.pos for r in s.runs))   # where each section starts (a wrapped heading is one)
+        owned = {r: cid for cid in self.field_of if cid in doc.cands for r in doc.cand_runs(doc.cands[cid])}
+
+        def stems(t: str) -> set[str]:
+            return {w[:4] for w in re.findall(r"\w{4,}", t.casefold())} - _STEM_STOP
+
+        def page_at(p: int) -> int:
+            return doc.page(doc.order[p]) if 0 <= p < len(doc.order) else -1
+
+        def show(fields: list[BriefField], ctrl: BriefField, opt: str, rids: list[str], text: str) -> None:
+            for f in fields:
+                if f is not ctrl and f.show_if is None:
+                    f.show_if = Cond(field=ctrl.key, is_=opt)
+                    f.evidence = [*f.evidence, doc.evidence(rids, text[:300])]
+
+        def missed(rids: list[str], text: str) -> None:
+            self.out.warnings.append(Warning(code="UNRESOLVED_REFERENCE", page=doc.page(rids[0]),
+                                             detail=f"CONDITION_TARGET_NOT_FOUND: no choice on the paper for the note {text[:100]!r}"))
+
+        for rids, text in self._lines():
+            ats = [doc.pos[r] for r in rids if r in doc.pos]
+            if not ats or doc.fo.roles.get(rids[0]) in ("legal_basis", "note"):
+                continue
+            at, page = min(ats), doc.page(rids[0])
+            stop = next((h for h in heads if h > at), 10 ** 9)   # the next heading ends what a note governs
+            a, cm = _COND_A.match(text), _COND_C.search(text)
+            if a is not None:
+                # family A: the nearest choice above on the same page, no other field without a condition between
+                before = [x for x in choices if x[0] < at and page_at(x[0]) == page]
+                ctrl = before[-1] if before else None
+                if ctrl is not None and any(ctrl[0] < p < at and f is not ctrl[2] and f.show_if is None
+                                            for p, _cid, f in placed):
+                    ctrl = None
+                word, opt = a.group(1).casefold(), None
+                if ctrl is not None:
+                    by_low = {o.casefold(): o for o in ctrl[2].options}
+                    if word == "tak" or "twierdz" in word:
+                        opt = by_low.get("tak")
+                    elif word == "nie" or "przecz" in word:
+                        opt = by_low.get("nie")
+                    else:
+                        opt = ctrl[2].options[-1]   # the option printed last, right above the note
+                if ctrl is None or opt is None:
+                    missed(rids, text)
+                    continue
+                after = [f for p, _cid, f in placed if at <= p < stop and page_at(p) == page and f is not ctrl[2]]
+                cut = next((i for i, f in enumerate(after) if f.type in ("RADIO", "CHECKBOX", "SELECT")), len(after))
+                show(after[:min(cut, 4)], ctrl[2], opt, rids, text)
+            elif cm is not None:
+                # family C: the option sharing the most stems with the words after the cue, by a margin of one
+                want = stems(re.split(r"\)", text[cm.end():], maxsplit=1)[0])
+                scored = sorted(((len(stems(o) & want), i, o) for i, x in enumerate(choices) if x[0] < at
+                                 for o in x[2].options), key=lambda s: -s[0])
+                # the note names the option: most of the option's own words are in it ("Klub sportowy" in "Klubu
+                # sportowego"), not one word shared by chance ("adres siedziby klubu")
+                if not want or not scored or scored[0][0] < 1 or (len(scored) > 1 and scored[0][0] - scored[1][0] < 1) \
+                        or scored[0][0] < 0.75 * len(stems(scored[0][2])):
+                    missed(rids, text)
+                    continue
+                ctrl, opt = choices[scored[0][1]][2], scored[0][2]
+                own = {owned[r] for r in rids if r in owned and r not in head_runs}
+                if own:   # the note is the label of a field: "Podpis (wypełnić tylko w przypadku ...)"
+                    show([f for _p, cid, f in placed if cid in own], ctrl, opt, rids, text)
+                else:     # a heading or a line of its own: the fields after it, up to the next heading
+                    show([f for p, _cid, f in placed if at <= p < stop], ctrl, opt, rids, text)
 
     def _composite(self) -> None:
         """Design 6.4.4: one selector, every variant's sections shown by it; a section that is word for word the
