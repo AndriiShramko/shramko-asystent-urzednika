@@ -35,6 +35,100 @@ _ENUM = re.compile(r"^\s*(?:\d+[.)]|[a-z]\)|[-–•])\s*")
 _LINE_KINDS = ("leader", "line_block", "blank_in_sentence")
 
 
+_LEADER_LETTERS = frozenset("escovra")
+
+
+def _leader_token(tok: str, least: int = 6) -> bool:
+    """BL13 SCAN-L: OCR reads a dotted leader as a run of e's ("Reeeeeeeeeeeseeeeee", "eeceeeeeo"): six letters or
+    more, all of them e, s, c, o, v, r or a, at least half of them e. No Polish word of the lexicon looks like it."""
+    w = re.sub(r"[\W\d_]", "", tok).casefold()
+    return len(w) >= least and set(w) <= _LEADER_LETTERS and w.count("e") * 2 >= len(w)
+
+
+def _distance(a: str, b: str, cap: int) -> int:
+    """Levenshtein distance of two short strings, stopped early above `cap`."""
+    if abs(len(a) - len(b)) > cap:
+        return cap + 1
+    row = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        prev, row[0] = row[0], i
+        for j, cb in enumerate(b, 1):
+            prev, row[j] = row[j], min(row[j] + 1, row[j - 1] + 1, prev + (ca != cb))
+        if min(row) > cap:
+            return cap + 1
+    return row[-1]
+
+
+_WORD = re.compile(r"[^\W\d_][^\W\d_ .,-]*(?:[ .,-]+[^\W\d_]+)*\.?")
+_vocab: dict[str, str] | None = None
+
+
+def ocr_vocab() -> dict[str, str]:
+    """BL13 SCAN-L: the known words of forms, from the project's own lexicon: the lead-in phrases (kept as keys, so
+    the label rules map them), the wordings phrases and concepts write, the whole-word alternatives of the applicant
+    labels and of the place-and-date habit, the names of offices. Casefolded key -> the words a mended label takes."""
+    global _vocab
+    if _vocab is None:
+        v: dict[str, str] = {}
+        def add(t: str, as_is: bool = False) -> None:
+            t = re.sub(r"\s+", " ", t).strip()
+            k = t.casefold()
+            if len(k) >= 6 and _WORD.fullmatch(t) and k not in v:
+                v[k] = k if as_is else t
+        for key in _PHRASES:
+            add(key, as_is=True)
+        for name in ("phrases", "concepts"):
+            for row in lexicon.rows(name):
+                if row.get("label"):
+                    add(row["label"])
+        # only patterns whose alternatives are whole words closed by a word boundary or the end ("^(miejscowość|ulica|
+        # nr domu ...)\b"); the other patterns hold stems ("pełnomocni", "ewentualn") that are no words to mend into
+        whole = [r for r in lexicon.rows("applicants") if r.get("table") == "label"] + \
+            [r for r in lexicon.rows("habits") if r.get("habit") == "date_place"]
+        for row in whole:
+            pat = re.sub(r"\b|\^|\$|\(\?:", "", row["pattern"]).replace(r"\s+", " ").replace(r"\s", " ")
+            for part in re.split(r"[()|]", pat):
+                closed = r"(?:\\b|\$|\)(?:\\b|\$)|\|[^()]*\)(?:\\b|\$))"   # the alternative ends at a word boundary
+                if part.strip() and re.search(re.escape(part.strip()) + closed, row["pattern"]):
+                    add(part)   # a bare "siedzib" (a stem) is no word to mend into
+        for row in lexicon.rows("offices"):
+            for t in [row.get("base") or "", *(row.get("forms") or [])]:
+                add(t)
+        _vocab = v
+    return _vocab
+
+
+def ocr_mend(label: str) -> str:
+    """BL13 SCAN-L: a label read by OCR loses the tokens a dotted leader became; a label then within one edit per
+    six letters of a lead-in phrase of the lexicon ("W micjscowOŚCI", "przy ulicy?") is that phrase. Callers give
+    only OCR text: native text of a PDF, DOCX or sheet is never mended."""
+    toks = label.split()
+    if toks and _leader_token(toks[0]):
+        # the label starts with leader dots: everything up to the last dot-like token is the leader, short dot-like
+        # pieces and the stray letters between them included ("E..e.eees eeer eee ke eee działka nr ewid")
+        weak = [i for i, t in enumerate(toks) if _leader_token(t, 3)]
+        if weak[-1] + 1 < len(toks):
+            toks = toks[weak[-1] + 1:]
+    kept = [t for t in toks if not _leader_token(t)]
+    if kept and len(kept) < len(label.split()):
+        label = " ".join(kept).strip(" .:;,/")
+    low = label.casefold().rstrip(" ?.:")
+    vocab = ocr_vocab()
+    if low in vocab:
+        return vocab[low] if low in _PHRASES or low != label.casefold() else label
+    best = None
+    for key, words in vocab.items():
+        cap = len(key) // 6
+        if cap and (d := _distance(low, key, cap)) <= cap and (best is None or d < best[0]):
+            best = (d, words)
+    if best is None:
+        return label
+    words = best[1]
+    if words not in _PHRASES and label[:1].isupper():
+        words = words[:1].upper() + words[1:]   # "Kod pocztcwy" -> "Kod pocztowy"; a phrase key is worded by the rules
+    return words
+
+
 _YES_NO = {"tak", "nie"}
 # A name asked of a third person (the candidate, the ward) is a field of the matter, never the applicant's own name
 # (set judged-09 ODS/XLSX: "Imię i nazwisko kandydata" under the heading "Wnioskodawca").
@@ -211,6 +305,8 @@ class _Reader:
             if new != raw:
                 raw = new
                 label, hint, optional = clean_label(raw, doc.strike)
+        if label and any(p.origin == "ocr" for p in doc.pm.pages if p.number == c.page):
+            label = ocr_mend(label)   # BL13 SCAN-L: only words read by OCR from a scan, never native text
         if label and _AMOUNT.match(label):
             return self._left(c, "EXPLANATION", label)    # a printed rate or amount: text of the form
         if c.id in rows:
