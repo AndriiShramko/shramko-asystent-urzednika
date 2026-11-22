@@ -35,5 +35,5 @@ if [ "${1:-}" = "relock" ] || [ ! -s "$P/requirements.lock" ] || [ ! -s "$P/requ
 fi
 try 6 "$PY" -m uv pip install --python "$PY" --require-hashes -r "$P/requirements-dev.lock" \
   || { echo "FAIL: install (see $LOG)"; exit 1; }
-"$PY" -c "import fastapi, pydantic, pypdfium2, pdfplumber, docx, openpyxl, olefile, nh3, rapidfuzz, simplemma, jsonata, jwt, jsonschema, defusedxml, filetype, lxml, PIL, pytest, httpx, reportlab; print('OK: environment ready,', fastapi.__version__, pydantic.__version__)" 2>> "$LOG" \
+"$PY" -c "import fastapi, pydantic, pypdfium2, pdfplumber, docx, openpyxl, olefile, nh3, jsonata, jwt, jsonschema, lxml, PIL, pytest, httpx, reportlab; print('OK: environment ready,', fastapi.__version__, pydantic.__version__)" 2>> "$LOG" \
   || { echo "FAIL: import check (see $LOG)"; exit 1; }
