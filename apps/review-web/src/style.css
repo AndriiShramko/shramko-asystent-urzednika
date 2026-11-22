@@ -351,6 +351,13 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 .result[data-view="clerk"]:not([data-try]) #fp > #fp-citizen,
 .result[data-view="clerk"]:not([data-try]) #fp > #fp-check-step,
 .result[data-view="clerk"]:not([data-try]) #fp > #fp-print-step { display: none; }
+/* BL12: in the trial fill the steps of the citizen (banner, QR, fill button) come ABOVE the two panels, and the
+   panels stop sticking: sticky panels had covered the steps placed under them while the page scrolled. */
+.result[data-view="clerk"][data-try] #fp > #fp-banner { grid-row: 1; position: static; }
+.result[data-view="clerk"][data-try] #fp > #fp-citizen { grid-row: 2; }
+.result[data-view="clerk"][data-try] #fp > #fp-where,
+.result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 3; position: static; max-height: 80vh; }
+@media (max-width: 62rem) { .result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 4; } }
 .result[data-view="clerk"] #fp:has(#fp-where[data-pages="0"]) { grid-template-columns: minmax(0, 1fr); }
 .result[data-view="clerk"] #fp:has(#fp-where[data-pages="0"]) > #fp-where { position: static; max-height: none; }
 .result[data-view="clerk"] #fp:has(#fp-where[data-pages="0"]) > #fp-eform { grid-column: 1; grid-row: 2; position: static; max-height: none; }
