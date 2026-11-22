@@ -459,7 +459,7 @@ export const en: Dict = {
   'clerk.req.setRequired': "Make this field required|Make these {n} fields required|Make these {n} fields required",
   'clerk.fix.skip': "Skip this place (it will not be a field)",
   'clerk.fix.skipAll': "Skip all these places (they will not be fields)",
-  'clerk.rest.what': "{n} place in the file has no description and no field in the e-form.|{n} places in the file have no description and no field in the e-form.|{n} places in the file have no description and no field in the e-form.",
+  'clerk.rest.line': "Technical notes with no place on the original: {n}. Details are in the jury view.",
   'clerk.rest.why': "The software does not know what they are for, so it made no fields of them. There is nothing to show here. If something is missing in the e-form, compare it with the file.",
   'clerk.rest.ok': "Understood, skip this place|Understood, skip these {n} places|Understood, skip these {n} places",
   'clerk.signature.note': "The signature and the filing date are not in the e-form, as in the COI reference forms: the applicant signs the application in the e-service at the end, after the preview.",

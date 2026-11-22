@@ -157,12 +157,11 @@ describe('BL13 cards and the signature line', () => {
     expect(text).not.toMatch(/Formularz!|A229|p\[3\]/)
     expect(text).not.toContain('Dla tego formatu pliku nie ma obrazu strony')
     expect(q('.clerk-card .clerk-quote').textContent).toBe('NIP')
-    const rest = q('.clerk-card-rest')
-    // z1 reported twice is one place
-    expect(rest.querySelector('.clerk-card-what')!.textContent).toContain('2 miejsca w pliku nie mają opisu ani pola w e-formularzu.')
-    expect(rest.querySelector('button')!.textContent).toBe('Rozumiem, pomiń te 2 miejsca')
-    rest.querySelector('button')!.click()
     expect(document.querySelector('.clerk-card-rest')).toBeNull()
+    // z1 reported twice is one place; the rest is a muted line, not a card, and not in the count
+    expect(q('#clerk-rest-line').textContent).toBe('Uwagi techniczne bez miejsca na oryginale: 2. Szczegóły są w widoku dla jury.')
+    expect(q('#h-clerk-remarks').textContent).toContain('(1)')
+    expect(q('#clerk-final').textContent).toContain('1')
   })
 
   it('every BL13 text exists in Polish, English and Spanish', () => {
