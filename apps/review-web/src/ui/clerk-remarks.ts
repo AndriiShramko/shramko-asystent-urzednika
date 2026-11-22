@@ -15,6 +15,7 @@ import type { Box, Joined, Preview, PreviewPage } from '../lib/fp/places'
 import { nameOf } from '../lib/fp/form'
 import { h, clear } from './dom'
 import type { EForm } from './eform'
+import type { BoxTarget } from '../lib/fp/targets'
 
 /** How many cards are shown before "Pokaż wszystkie". */
 export const CARDS_SHOWN = 6
@@ -48,6 +49,8 @@ export interface Paper {
   show(page: number, box: Box): boolean
   /** redraw the numbered marks of the open remarks */
   marks(list: PaperMark[]): void
+  /** BL13 CLERK-T: what each box stands for in the e-form (standard sections, merged blanks) */
+  targets?(): Map<string, BoxTarget> | null
 }
 
 export interface Change { what: string; answer: string }
@@ -81,6 +84,9 @@ const sessions = new WeakMap<object, Session>()
 /** The sentence of a remark for the clerk: the server's ready question, else a short one of ours, else the general one. */
 export function remarkText(r: Pick<Remark, 'code' | 'fix'>): string {
   if (r.fix.rule && hasKey(getLang(), 'fix.' + r.fix.rule)) return t('fix.' + r.fix.rule)
+  // BL13 CLERK-T: a remark without a ready answer speaks in our plain words; a ready choice keeps the server's question
+  const ready = r.fix.kind === 'choice' || (r.fix.kind === 'input' && r.fix.stated)
+  if (!ready && hasKey('pl', 'clerk.warn.' + r.code)) return t('clerk.warn.' + r.code)
   if (r.fix.text) return r.fix.text
   for (const key of ['clerk.warn.' + r.code, 'warn.' + r.code]) if (hasKey('pl', key)) return t(key)
   return t('clerk.warn.other')
@@ -124,8 +130,15 @@ function buildRemarks(sidecar: Sidecar | null): { remarks: Remark[]; applied: Ra
   const applied: RawWarning[] = []
   const notes: RawWarning[] = []
   const perKind = new Map<string, { n: number; rest: Remark | null }>()
+  const seen = new Set<string>()
   list.forEach((w, i) => {
     const code = typeof w.code === 'string' && w.code ? w.code : 'UNKNOWN'
+    // BL13 CLERK-T: the same place of the same kind reported twice (once with its cell, once without) is one place
+    if (typeof w.candidate === 'string' && w.candidate) {
+      const k = code + '|' + w.candidate
+      if (seen.has(k)) return
+      seen.add(k)
+    }
     const fix = fixOf(w)
     if (fix.kind === 'applied') { applied.push(w); return }
     if (fix.kind === 'note') { notes.push(w); return }
@@ -170,7 +183,68 @@ function makeSession(sidecar: Sidecar | null): Session {
     const w = cur(r)
     if (known(w.field) && ef) return w.field
     const j = paper?.joined()
-    return typeof w.candidate === 'string' && j ? j.fieldOf.get(w.candidate) ?? null : null
+    const direct = typeof w.candidate === 'string' && j ? j.fieldOf.get(w.candidate) ?? null : null
+    if (direct) return direct
+    const tg = typeof w.candidate === 'string' ? paper?.targets?.()?.get(w.candidate) : undefined
+    return tg?.fields[0] ?? null
+  }
+
+  /** BL13 CLERK-T: every e-form node a remark concerns: the field of the place (all fields of a standard section that
+   * took it over), and for a ready choice the fields its options would change. */
+  const fieldsOf = (r: Remark): string[] => {
+    const ids: string[] = []
+    const add = (id: string | null | undefined): void => { if (id && (!ef || ef.model.byId.has(id)) && !ids.includes(id)) ids.push(id) }
+    const w = cur(r)
+    const tg = typeof w.candidate === 'string' ? paper?.targets?.()?.get(w.candidate) : undefined
+    add(fieldOf(r))
+    for (const id of tg?.fields ?? []) add(id)
+    if (r.fix.kind === 'choice') {
+      for (const o of r.fix.options) for (const s of o.set) add(nodeAt(patched ?? form, s.pointer)?.id)
+    }
+    return ids
+  }
+
+  /** BL13 CLERK-T: the paper's own words at the place of a remark (a quote of the source, the label of the box). */
+  function wordsOf(r: Remark): string | null {
+    const w = cur(r)
+    const srcs = [r.fix.source, ...(r.fix.kind === 'choice' ? r.fix.options.map((o) => o.source) : [])]
+    const cut = (x: string): string => { const s = x.replace(/\s+/g, ' ').trim(); return s.length > 160 ? s.slice(0, 157) + '…' : s }
+    for (const s of srcs) if (s?.type === 'paper' && typeof s.quote === 'string' && s.quote.trim()) return cut(s.quote)
+    if (typeof w.quote === 'string' && w.quote.trim()) return cut(w.quote)
+    const pv = paper?.preview()
+    const place = typeof w.candidate === 'string' ? pv?.places[w.candidate] : undefined
+    if (place?.label?.trim()) return cut(place.label)
+    if (typeof w.label === 'string' && w.label.trim()) return cut(w.label)
+    return null
+  }
+
+  const isRequiredChoice = (r: Remark): boolean => r.fix.kind === 'choice' && (r.code === 'REQUIRED_INFERRED' || r.fix.rule === 'required.paper_is_silent')
+  const nameList = (ids: string[]): string => ids.map((id) => { const n = ef?.model.byId.get(id); return n ? '„' + nameOf(n) + '”' : '' }).filter(Boolean).join(', ')
+
+  /** The sentence on the card: for the "which fields are required" choice it names the fields. */
+  function cardText(r: Remark): string {
+    if (isRequiredChoice(r)) {
+      const ids = fieldsOf(r)
+      if (ids.length && ef) return t('clerk.req.what', { fields: nameList(ids) })
+    }
+    return remarkText(r)
+  }
+
+  /** The label of a button of a ready choice: ours for the "required" choice, the server's otherwise. */
+  function optionLabel(r: Remark, o: FixOption): string {
+    if (isRequiredChoice(r)) {
+      const n = fieldsOf(r).length
+      if (o.value === 'optional') return tn('clerk.req.keepOptional', n)
+      if (o.value === 'required') return tn('clerk.req.setRequired', n)
+    }
+    return o.label
+  }
+
+  /** A remark with nothing to show and nothing to decide (no picture, no words, no field): merged into one card. */
+  function empty(r: Remark): boolean {
+    if (r.fix.kind === 'choice' || (r.fix.kind === 'input' && r.fix.stated)) return false
+    if (!paper?.preview()) return false
+    return !spotOf(r) && !wordsOf(r) && !fieldsOf(r).length
   }
 
   /** The page and box of a remark in the units of the preview (pt, origin top left), from the most exact source. */
@@ -220,8 +294,10 @@ function makeSession(sidecar: Sidecar | null): Session {
     light(r.key)
     const at = boxOf(r)
     const shown = at ? paper?.show(at.page, at.box) ?? false : false
-    const f = fieldOf(r)
+    const ids = fieldsOf(r)
+    const f = ids[0] ?? null
     if (f) ef?.highlight(f)
+    for (const id of ids.slice(1)) ef?.el.querySelector(`[id="fpw-${id}"]`)?.classList.add('clerk-hl')
     const live = host.querySelector('#clerk-remarks-live')
     if (live) live.textContent = shown || f ? t('clerk.card.shown') : t('clerk.card.nowhere')
   }
@@ -299,13 +375,13 @@ function makeSession(sidecar: Sidecar | null): Session {
       const options = r.fix.options
       if (options.length > 4) {
         const sel = h('select', { class: 'clerk-fix-select' },
-          h('option', { value: '' }, t('clerk.fix.choose')), ...options.map((o, i) => h('option', { value: String(i) }, o.label + (o.current ? ' ' + t('clerk.fix.current') : ''))))
+          h('option', { value: '' }, t('clerk.fix.choose')), ...options.map((o, i) => h('option', { value: String(i) }, optionLabel(r, o) + (o.current ? ' ' + t('clerk.fix.current') : ''))))
         sel.setAttribute('aria-label', t('clerk.fix.choose'))
         sel.addEventListener('change', () => { const o = options[Number(sel.value)]; if (sel.value !== '' && o) pickOption(r, o) })
         box.append(sel)
       } else {
         options.forEach((o, i) => {
-          const b = h('button', { type: 'button', class: 'btn clerk-fix-btn' + (o.current ? ' clerk-fix-current' : ''), 'data-option': i }, o.label,
+          const b = h('button', { type: 'button', class: 'btn clerk-fix-btn' + (o.current ? ' clerk-fix-current' : ''), 'data-option': i }, optionLabel(r, o),
             o.current ? ' ' : null, o.current ? h('span', { class: 'clerk-fix-now' }, t('clerk.fix.current')) : null)
           b.addEventListener('click', () => pickOption(r, o))
           box.append(b)
@@ -324,37 +400,55 @@ function makeSession(sidecar: Sidecar | null): Session {
       edit.addEventListener('click', () => typeIn(r))
       box.append(edit)
     }
-    const ok = h('button', { type: 'button', class: 'btn clerk-fix-btn', 'data-done': '1' }, r.items.length > 1 ? t('clerk.fix.checkedAll') : t('clerk.fix.checked'))
+    // BL13 CLERK-T: the button says what it does: a blank that is no field is skipped, anything else stays as it is
+    const skip = !f && (r.code === 'LABEL_NOT_FOUND' || r.code === 'AMBIGUOUS_GROUP')
+    const okText = skip ? (r.items.length > 1 ? t('clerk.fix.skipAll') : t('clerk.fix.skip'))
+      : r.items.length > 1 ? t('clerk.fix.checkedAll') : t('clerk.fix.checked')
+    const ok = h('button', { type: 'button', class: 'btn clerk-fix-btn', 'data-done': '1' }, okText)
     ok.addEventListener('click', () => session.resolve(r, null))
     box.append(ok)
     return box
   }
 
   function card(r: Remark, n: number): HTMLElement {
+    // BL13 CLERK-T: (1) what the matter is, (2) where on the paper in the paper's own words or picture, never a cell
+    // address and never "the whole form", (3) the fields it concerns, (4) one action whose button says what it does
     const spot = spotOf(r)
-    const f = fieldOf(r)
-    const node = f && ef ? ef.model.byId.get(f) : undefined
+    const ids = fieldsOf(r)
     const pv = paper?.preview()
     const page = spot?.page.n ?? placeOf(cur(r))
+    const words = wordsOf(r)
+    const onPaper = !!spot && !spot.absent
     const main = h('button', { type: 'button', class: 'clerk-card-main' })
     main.setAttribute('aria-label', t('clerk.card.show'))
+    let hasPaper = true
     if (spot) {
       main.append(h('div', { class: 'clerk-card-paper' },
         h('span', { class: 'clerk-card-cap' }, spot.absent ? t('clerk.card.wouldBe') : t('clerk.card.onPaper', { page: spot.page.n })),
         cropOf(spot.page, spot.region, spot.mark)))
-    } else {
-      const anchor = typeof cur(r).anchor === 'string' ? (cur(r).anchor as string).trim() : ''
-      const why = pv && !pv.pages.length ? (anchor ? t('clerk.card.anchor', { anchor }) : t('clerk.card.noPicture'))
-        : !pv ? t('clerk.card.noPreview')
-          : page !== null ? t('clerk.card.pageOnly', { page }) : t('clerk.card.notOnPaper')
-      main.append(h('div', { class: 'clerk-card-paper clerk-card-nopaper' }, h('span', { class: 'clerk-card-cap' }, why)))
-    }
-    const fieldName = node ? nameOf(node) : r.fix.target?.label ?? null
-    const fieldBtn = fieldName !== null
-      ? h('button', { type: 'button', class: 'clerk-card-field', lang: 'pl' }, fieldName)
-      : h('span', { class: 'clerk-card-field clerk-card-whole' }, f === null && spot && !spot.absent ? t('clerk.card.notInForm') : t('clerk.card.wholeForm'))
-    if (fieldName !== null) fieldBtn.addEventListener('click', () => go(r))
+    } else if (words) {
+      const cap = pv && pv.pages.length && page !== null ? t('clerk.card.wordsPage', { page }) : t('clerk.card.words')
+      main.append(h('div', { class: 'clerk-card-paper clerk-card-words' },
+        h('span', { class: 'clerk-card-cap' }, cap), h('blockquote', { class: 'clerk-quote', lang: 'pl' }, words)))
+    } else if (!pv && typeof cur(r).candidate === 'string') {
+      main.append(h('div', { class: 'clerk-card-paper clerk-card-nopaper' }, h('span', { class: 'clerk-card-cap' }, t('clerk.card.noPreview'))))
+    } else if (pv && pv.pages.length && page !== null && boxOf(r)) {
+      main.append(h('div', { class: 'clerk-card-paper clerk-card-nopaper' }, h('span', { class: 'clerk-card-cap' }, t('clerk.card.pageOnly', { page }))))
+    } else hasPaper = false
     main.addEventListener('click', () => go(r))
+    let side: HTMLElement | null = null
+    if (ids.length) {
+      const shown = ids.slice(0, 6)
+      const btns = shown.map((id) => {
+        const node = ef?.model.byId.get(id)
+        const b = h('button', { type: 'button', class: 'clerk-card-field', lang: 'pl' }, node ? nameOf(node) : r.fix.target?.label ?? id)
+        b.addEventListener('click', () => go(r))
+        return b
+      })
+      side = h('div', { class: 'clerk-card-fields' }, ...btns, ids.length > shown.length ? h('span', { class: 'muted' }, ' ' + t('clerk.card.moreFields', { n: ids.length - shown.length })) : null)
+    } else if (onPaper || words) {
+      side = h('span', { class: 'clerk-card-field clerk-card-whole' }, t('clerk.card.notInForm'))
+    }
     const many = r.items.length > 1
     let stepper: HTMLElement | null = null
     if (many) {
@@ -367,22 +461,38 @@ function makeSession(sidecar: Sidecar | null): Session {
       next.addEventListener('click', () => move(1))
       stepper = h('p', { class: 'clerk-stepper' }, prev, h('span', {}, t('clerk.card.ofMany', { i: r.at + 1, n: r.items.length })), next)
     }
-    return h('li', { class: 'clerk-card' + (r.key === active ? ' clerk-card-active' : ''), 'data-remark': r.key, 'data-fix': r.fix.kind },
-      h('p', { class: 'clerk-card-what' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), ' ', remarkText(r),
+    return h('li', { class: 'clerk-card' + (r.key === active ? ' clerk-card-active' : '') + (hasPaper ? '' : ' clerk-card-flat'), 'data-remark': r.key, 'data-fix': r.fix.kind },
+      h('p', { class: 'clerk-card-what' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), ' ', cardText(r),
         many ? h('span', { class: 'clerk-card-count' }, ' ' + tn('clerk.card.places', r.items.length)) : null),
       h('div', { class: 'clerk-card-body' },
-        main,
+        hasPaper ? main : null,
         h('div', { class: 'clerk-card-side' },
-          h('span', { class: 'clerk-card-cap' }, t('clerk.card.inForm')),
-          fieldBtn,
+          side ? h('span', { class: 'clerk-card-cap' }, ids.length > 1 ? t('clerk.card.inFormMany') : t('clerk.card.inForm')) : null,
+          side,
           stepper,
           fixBox(r))))
   }
 
+  /** BL13 CLERK-T: one card for all the remarks that have nothing to show and nothing to decide. */
+  function restCard(list: Remark[], n: number): HTMLElement {
+    const places = list.reduce((a, r) => a + r.items.length, 0)
+    const kinds = [...new Set(list.map((r) => remarkText(r)))]
+    const ok = h('button', { type: 'button', class: 'btn clerk-fix-btn', 'data-done': '1' }, tn('clerk.rest.ok', places))
+    ok.addEventListener('click', () => { for (const r of list) { r.done = true; r.answer = null }; if (active && list.some((r) => r.key === active)) active = null; repaint(); session.onChange?.() })
+    return h('li', { class: 'clerk-card clerk-card-flat clerk-card-rest', 'data-remark': 'rest', 'data-fix': 'rest' },
+      h('p', { class: 'clerk-card-what' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), ' ', tn('clerk.rest.what', places)),
+      h('ul', { class: 'clerk-rest-kinds' }, ...kinds.map((k) => h('li', {}, k))),
+      h('p', { class: 'muted' }, t('clerk.rest.why')),
+      h('div', { class: 'clerk-card-side' }, h('div', { class: 'clerk-fix' }, ok)))
+  }
+
   function repaint(): void {
     clear(host)
-    const open = remarks.filter((r) => !r.done)
-    const places = open.reduce((a, r) => a + r.items.length, 0)
+    const open0 = remarks.filter((r) => !r.done)
+    // BL13 CLERK-T: remarks with nothing to show or to decide share one card at the end
+    const rest = open0.filter((r) => empty(r))
+    const open = open0.filter((r) => !rest.includes(r))
+    const places = open0.reduce((a, r) => a + r.items.length, 0)
     const done = remarks.length - open.length
     host.setAttribute('data-open', String(places))
     // the same numbers on the cards, on the original and on the e-form fields
@@ -391,27 +501,42 @@ function makeSession(sidecar: Sidecar | null): Session {
     const marks: PaperMark[] = []
     for (const r of open) {
       const n = numbered.get(r.key) ?? 0
+      for (const id of fieldsOf(r).slice(1)) ef?.flag(id, n)
       const f = fieldOf(r)
       if (f) ef?.flag(f, n)
       const at = boxOf(r)
       if (at) marks.push({ key: r.key, n, page: at.page, box: at.box })
     }
     paper?.marks(marks)
-    if (!open.length) {
+    const sig = signatureNote()
+    if (!open0.length) {
+      if (sig) host.append(sig)
       host.append(h('h3', { id: 'h-clerk-remarks', class: 'clerk-allgood' }, done ? t('clerk.remarks.allDone') : t('clerk.remarks.none')))
       return
     }
     host.append(
       h('h3', { id: 'h-clerk-remarks' }, t('clerk.remarks.heading', { n: places })),
       h('p', { class: 'muted clerk-remarks-intro' }, t('clerk.remarks.intro')))
+    if (sig) host.append(sig)
     const shown = showAll ? open : open.slice(0, CARDS_SHOWN)
-    host.append(h('ol', { class: 'clerk-cards' }, ...shown.map((r) => card(r, numbered.get(r.key) ?? 0))))
+    const items = shown.map((r) => card(r, numbered.get(r.key) ?? 0))
+    if (rest.length && shown.length === open.length) items.push(restCard(rest, open.length + 1))
+    host.append(h('ol', { class: 'clerk-cards' }, ...items))
     if (open.length > shown.length) {
-      const more = h('button', { type: 'button', class: 'btn', id: 'clerk-remarks-more' }, t('clerk.remarks.more', { n: open.length - shown.length }))
+      const more = h('button', { type: 'button', class: 'btn', id: 'clerk-remarks-more' }, t('clerk.remarks.more', { n: open.length - shown.length + (rest.length ? 1 : 0) }))
       more.addEventListener('click', () => { showAll = true; repaint() })
       host.append(more)
     }
     host.append(h('p', { id: 'clerk-remarks-live', class: 'sr-only', 'aria-live': 'polite' }))
+  }
+
+  /** BL13 CLERK-T: one plain line, visible without a click, when the paper's signature and date have no field. */
+  function signatureNote(): HTMLElement | null {
+    const meta = (sidecar?.meta ?? {}) as Record<string, unknown>
+    const ledger = (meta.ledger ?? (sidecar as Record<string, unknown> | null)?.ledger) as { rows?: { fate?: unknown; reason?: unknown }[] } | undefined
+    const rows = Array.isArray(ledger?.rows) ? ledger.rows : []
+    if (!rows.some((x) => x?.fate === 'LEFT_OUT' && x?.reason === 'SIGNATURE_AND_DATE')) return null
+    return h('p', { class: 'clerk-signature-note', id: 'clerk-signature-note' }, t('clerk.signature.note'))
   }
 
   const session: Session = {

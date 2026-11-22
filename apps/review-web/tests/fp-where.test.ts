@@ -68,7 +68,7 @@ describe('FP where-on-paper panel', () => {
     await panel(fpPreview())
     expect(q('#h-where').textContent).toBe('Krok 2 z 6. Gdzie na papierze')
     expect(q('.fp-paper img').getAttribute('src')).toBe('data:image/png;base64,AAAA')
-    expect(document.querySelectorAll('.fp-box').length).toBe(6) // c2 c3 c4 c5 and the marks c6 c7 (c1 left out, c8 no box)
+    expect(document.querySelectorAll('.fp-box').length).toBe(7) // c2 c3 c4 c5, the marks c6 c7 and the left-out c1 (BL13: framed too); c8 no box
     const nip = q<HTMLButtonElement>('[data-where="f-nip"]')
     expect(nip.parentElement!.textContent).toContain('strona 1')
     nip.click()
