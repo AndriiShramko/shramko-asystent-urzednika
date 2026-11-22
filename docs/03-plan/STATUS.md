@@ -2,7 +2,7 @@
 
 Lead-owned. One screen. Update on every merge, on every start or stop of a sub-agent, and before any long wait.
 
-Last update: 2026-11-21 01:24 CET. **To continue after a limit or to join from another subscription: [`RESUME.md`](RESUME.md) (start prompt, rules of parallel work through git, board of lanes).** Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).
+Last update: 2026-11-22 03:15 CET by build lead 8: `main` = `864c0c9`, build V1.5 (core `sha256:2148c8fc9ee9f0e35b1b4cb170484aa63e687fa46feac5d77bc97d352aa1a100`) verified end to end; merged since `7cdcbfc`: the night audit ORDER 3 parts A and B (25 patches) and the review page ORDER UI; what waits is on the board at the top of [`RESUME.md`](RESUME.md). **To continue after a limit or to join from another subscription: [`RESUME.md`](RESUME.md) (start prompt, rules of parallel work through git, board of lanes).** Track F (the forms converter) is being built: read "Build log" first, then [`DECISIONS-forms-track.md`](DECISIONS-forms-track.md).
 
 ## Build log (the lead's handoff; newest state on top)
 
