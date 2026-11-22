@@ -28,7 +28,11 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 - [x] (f) counts after: brief dump (28 fields changed, all "required, inferred" -> optional) and form counts over all
       70 inputs (`count_sets.py --diff`: no line, so no validator and no REQUIRED of a form changed; inputs equal) in "## Evidence"
 - [ ] (g) fast gate, chain compare, state `ready_to_merge`
-- [ ] (h) only if (c) to (e) are green: legend "pola oznaczone * / gwiazdką są obowiązkowe" makes starred labels required
+- [x] (h) legend "pola oznaczone * / gwiazdką są obowiązkowe": needs NO product code. The legend is the footnote of the star,
+      and the footnote path already carries it: starred label "paper", the unstarred one "inferred", the star of "niepotrzebne
+      skreślić" no cue, a negated legend optional (new with the guard). Pinned in `tests/mean/test_mean_c1_legend.py`: 5 passed.
+      Limit: it holds only where the finder attaches the star to the label as a footnote mark and reads the legend as a note
+      (`app/find/**`, not owned); a legend printed in the head or the body of the paper is not read.
 
 ## Decisions
 - Negation: the word "nie", "niedotyczy", or "nie" glued to the cue, within 40 characters BEFORE a required cue, blocks it /
@@ -66,6 +70,8 @@ tail of `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write the
 line 3 to `ready_to_merge`. `main` has two newer commits (STATUS and results, documents only): `git merge --no-edit main` before
 the hand-over. The package is mergeable without (e2) and (h): they only add cues, and no field of any set holds the words of (e2)
 (0 of 689 fields have "należy wypełnić" or "musi zawierać" in label, hint or section title).
+Heartbeat 01:45: `main` (with WP-H4) is merged into the branch (4f33bbb); the three checks below were STARTED on that code in
+one background command and their result is not yet written here: if this line is still the last word, run them again.
 (e2) is committed after that gate run (heartbeat 01:35): so RE-RUN on the head of the branch, in this order: the dump tool
 without set names (expect `diff tmp/c1-brief-all-after.tsv` = no line), the chain compare, the fast gate. If one of them is red
 and time is short, `git revert --no-edit <commit of e2>` returns the code that passed everything above.
