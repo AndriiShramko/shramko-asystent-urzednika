@@ -389,6 +389,19 @@ def refuse_bad_name(raw: str | None) -> None:
                                        "Skróć nazwę pliku i wyślij go ponownie.")
 
 
+DOC_MAY_HOLD = frozenset({"docx", "rtf"})   # a .doc that is really DOCX or RTF (the partner's own s07.doc, ref05.doc)
+
+
+def mismatch_detail(written: str, actual: str) -> str:
+    """The Polish reason of a strict-mode refusal: the written extension, the kind the content proves, the remedy."""
+    suggest = {"jpeg": "jpg"}.get(actual, actual)
+    if suggest in CARD_EXTENSIONS:
+        fix = f"Zmień rozszerzenie na .{suggest} albo wybierz właściwy plik."
+    else:
+        fix = "Ten format nie jest obsługiwany; zapisz formularz jako PDF, DOC, DOCX, ODS, XLSX, JPG lub PNG albo wybierz właściwy plik."
+    return f"Rozszerzenie .{written}, a zawartość to {KIND_LABEL.get(actual, actual)}. {fix}"
+
+
 def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declared_type: str | None = None) -> UploadInfo:
     """The whole guard for one upload that is already in memory. Raises ProblemError; never parses a body."""
     if getattr(settings, "name_policy", "refuse") != "clean":
@@ -396,6 +409,11 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
     name, warns_name = clean_name(raw_name)
     warns: list[str] = list(warns_name)
     no_ext = "." not in name
+    if no_ext and settings.strict_extensions:
+        # the card: only the supported formats, with the content confirming the extension (BL13 FIX-TYPE)
+        raise ProblemError("EXTENSION", "Plik nie ma rozszerzenia. Obsługiwane rozszerzenia: "
+                           + ", ".join(accepted_extensions(True)) + ". Dodaj rozszerzenie zgodne z zawartością pliku "
+                           "albo wybierz właściwy plik.")
     if no_ext:
         # a name with no extension at all: the content decides when it is exactly one readable kind (D25)
         guess = sniff_kinds(data, settings) if len(data) <= settings.max_upload_bytes else set()
@@ -423,6 +441,8 @@ def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declar
         if actual not in READABLE_KINDS or (actual == "txt" and declared_kind not in TEXT_OK_EXT):
             what = f"a zawartość to {KIND_LABEL[actual]}" if actual in KIND_LABEL else "a zawartość nie jest rozpoznanym formatem"
             raise ProblemError("TYPE_MISMATCH", f"Rozszerzenie .{written}, {what}.")
+        if settings.strict_extensions and not (declared_kind == "doc" and actual in DOC_MAY_HOLD):
+            raise ProblemError("TYPE_MISMATCH", mismatch_detail(written, actual))
         # The content is exactly one known kind (a .doc that holds RTF or a DOCX is the common case, measured on the
         # partner's sets): the file is read as the kind it is and the sidecar says so (WP-F20f, D24).
         warns.append(f"Rozszerzenie .{written} nie zgadza się z zawartością; plik odczytano jako {KIND_LABEL[actual]}.")

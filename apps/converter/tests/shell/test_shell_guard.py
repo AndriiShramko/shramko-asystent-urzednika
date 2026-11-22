@@ -10,6 +10,7 @@ from app.config import Settings
 from app.guard import ProblemError, inspect_upload
 
 S = Settings(auth_mode="off", max_upload_bytes=200_000)
+LOOSE = Settings(auth_mode="off", max_upload_bytes=200_000, strict_extensions=False)   # reads a mismatch by content
 
 
 def refused(name, data, code, settings=S, declared=None):
@@ -101,16 +102,19 @@ def test_name_is_normalised_to_nfc():
     assert info.name == unicodedata.normalize("NFC", info.name)
 
 
-def test_missing_name_is_read_by_content():
-    info = inspect_upload(None, fx.pdf(), S)
+def test_missing_name_is_read_by_content_only_with_strict_off():
+    info = inspect_upload(None, fx.pdf(), LOOSE)
     assert info.kind == "pdf" and info.name == "plik.pdf" and len(info.warnings) == 2
-    assert inspect_upload("noextension", fx.pdf(), S).kind == "pdf"
+    assert inspect_upload("noextension", fx.pdf(), LOOSE).kind == "pdf"
+    refused(None, fx.pdf(), "EXTENSION")          # BL13: the default refuses a file with no extension
+    refused("noextension", fx.pdf(), "EXTENSION")
 
 
 # ---- content proofs ---------------------------------------------------------------------------------------------
 
-def test_png_bytes_named_pdf_are_read_as_png_with_a_warning():
-    info = inspect_upload("a.pdf", fx.png(), S)
+def test_png_bytes_named_pdf_are_read_as_png_with_a_warning_only_with_strict_off():
+    refused("a.pdf", fx.png(), "TYPE_MISMATCH")
+    info = inspect_upload("a.pdf", fx.png(), LOOSE)
     assert info.kind == "png" and "obraz PNG" in info.warnings[0]
 
 
@@ -127,13 +131,16 @@ def test_pdf_without_end_marker():
     (fx.docx(), "a.xlsx", "DOCX"), (fx.xlsx(), "a.ods", "XLSX"), (fx.ods(), "a.docx", "ODS"),
     (fx.docx(), "a.ods", "DOCX"), (fx.xlsx(), "a.docx", "XLSX"),
 ])
-def test_swapped_zip_suffixes_are_read_by_content_with_a_warning(data, name, actual):
-    info = inspect_upload(name, data, S)   # WP-F20f: exactly one known kind is read as that kind
+def test_swapped_zip_suffixes_are_read_by_content_with_a_warning_only_with_strict_off(data, name, actual):
+    e = refused(name, data, "TYPE_MISMATCH")   # BL13: the default refuses, naming both kinds
+    assert actual in e.detail and "." + name.rsplit(".", 1)[1] in e.detail
+    info = inspect_upload(name, data, LOOSE)   # WP-F20f: exactly one known kind is read as that kind
     assert info.kind == actual.lower() and actual in info.warnings[0] and "ZIP" not in info.warnings[0]
 
 
-def test_legacy_workbook_named_doc_is_read_as_xls_with_a_warning():
-    info = inspect_upload("a.doc", fx.legacy_workbook(), S)
+def test_legacy_workbook_named_doc_is_read_as_xls_with_a_warning_only_with_strict_off():
+    refused("a.doc", fx.legacy_workbook(), "TYPE_MISMATCH")   # a .doc may hold DOCX or RTF only
+    info = inspect_upload("a.doc", fx.legacy_workbook(), LOOSE)
     assert info.kind == "xls" and "XLS" in info.warnings[0]
 
 
