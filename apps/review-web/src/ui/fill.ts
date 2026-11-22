@@ -34,7 +34,11 @@ export function mountFill(res: Converted, preview: Promise<unknown> = Promise.re
       })))
     })
     return box
-  }, () => { print.el.hidden = false; print.el.scrollIntoView?.({ block: "nearest", behavior: "smooth" }) })
+  }, (r) => {
+    // the print opens after the check; with nothing missing the focus goes to its first action, else it stays here
+    print.el.hidden = false
+    if (r.ok) [...print.el.querySelectorAll<HTMLButtonElement>("button")].find((b) => !b.hidden)?.focus()
+  })
   // BL13 TRY-F: the check opens after the fill, the print after the check; going back closes what follows
   const citizen = renderCitizen(eform, () => check.reset(), (s) => {
     check.el.hidden = s !== 'filled'

@@ -414,9 +414,21 @@ html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
 #fp-citizen > h2, #fp-check-step > h2, #fp-print-step > h2 { margin-top: 1rem; }
 /* the demo banner no longer sticks to the top edge (it covered the long form scrolling under it) */
 .fp-banner { position: static; }
+/* every block of the trial fill has its own grid row: the steps right under the banner, the two documents under
+   the steps. Before, a form without page pictures put the e-form into the row of the QR step (they overlapped). */
+.result[data-view="clerk"][data-try] #fp > #fp-banner { grid-row: 1; }
+.result[data-view="clerk"][data-try] #fp > #fp-citizen { grid-row: 2; }
+.result[data-view="clerk"][data-try] #fp > #fp-check-step { grid-row: 3; }
+.result[data-view="clerk"][data-try] #fp > #fp-print-step { grid-row: 4; }
+.result[data-view="clerk"][data-try] #fp > #fp-where,
+.result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 5; }
+.result[data-view="clerk"][data-try] #fp:has(#fp-where[data-pages="0"]) > #fp-eform { grid-row: 6; }
+@media (max-width: 62rem) { .result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 6; } }
 /* in the trial fill the bottom bar is one low line: the hint about the download is not needed there */
 .result[data-try] .clerk-final-hint { display: none; }
 .result[data-try] .clerk-final { padding-top: 0.35rem; padding-bottom: 0.35rem; }
+/* the bottom bar reads as a layer above the page: what scrolls under its edge is plainly the rest of the page */
+.clerk-final { box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.12); }
 /* BL13 TRY-F end */
 
 /* W11 FLOW */
