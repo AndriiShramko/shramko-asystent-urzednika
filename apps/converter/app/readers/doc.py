@@ -110,7 +110,10 @@ def parse_clx(clx: bytes, stream_len: int) -> list[_Piece]:
     i = 0
     try:
         while i < len(clx) and clx[i] == 0x01:
-            i += 3 + struct.unpack_from("<h", clx, i + 1)[0]
+            cb = struct.unpack_from("<h", clx, i + 1)[0]
+            if cb < 0:   # a negative length would stand still or go back: an endless loop on a hostile file
+                raise ReaderError("UNREADABLE", "the piece table of the Word document is missing or broken")
+            i += 3 + cb
         if i >= len(clx) or clx[i] != 0x02:
             raise ReaderError("UNREADABLE", "the piece table of the Word document is missing or broken")
         lcb = _u32(clx, i + 1)
