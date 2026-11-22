@@ -20,6 +20,7 @@ from ._head import Variant
 DEFAULT_TITLE = "Szczegóły sprawy"
 SELECTOR_KEY = "rodzaj_wniosku"
 SELECTOR_LABEL = "Wybierz rodzaj wniosku"
+_RESERVED_ROLES = frozenset({f"matter/{SELECTOR_KEY}", "matter/wybor_zalacznika"})   # sections the rules make
 
 
 def _habit(name: str) -> re.Pattern[str]:
@@ -756,6 +757,8 @@ class _Reader:
         if repeating:
             title += " – pozycje"
         role = "matter/" + (f"w{v + 1}/" if v is not None else "") + key_of(title, "sekcja")
+        if role in _RESERVED_ROLES:
+            role += "_papier"     # a paper heading "Rodzaj wniosku" must not overwrite the selector's section
         return self.secs.setdefault(role, {"title": title, "role": role, "fields": [], "repeating": repeating, "variant": v})
 
     def _add(self, c: Candidate, f: BriefField, role: str) -> None:
