@@ -45,6 +45,8 @@ export interface ViewModel {
   hasSidecar: boolean
   warnings: RawWarning[]
   counts: { pages: number; fields: number; sourcePages: number | null }
+  /** SECTION nodes of the form, at any depth */
+  sectionCount: number
 }
 
 /** Types that are not blanks to fill: containers and fixed texts. */
@@ -89,11 +91,13 @@ export function buildView(form: unknown, sidecar: Sidecar | null): ViewModel {
   const origins: Record<string, string> = sidecar?.meta?.origins ?? sidecar?.origins ?? {}
   const evidence: Record<string, unknown> = sidecar?.meta?.evidence ?? sidecar?.evidence ?? {}
   const rows: FieldRow[] = []
+  let sections = 0
 
   const walk = (field: RawField, tab: string, section: string | null, inherited: Origin | null): void => {
     const own = field.id ? asOrigin(origins[field.id]) : null
     const origin = own ?? inherited
     const type = field.type ?? ''
+    if (type === 'SECTION') sections++
     if (!NOT_A_FIELD.has(type)) {
       const ev = pickEvidence(field.id ? evidence[field.id] : undefined)
       rows.push({
@@ -135,6 +139,7 @@ export function buildView(form: unknown, sidecar: Sidecar | null): ViewModel {
     standardCount: standardRows.length,
     unknown: rows.filter((r) => r.origin === 'unknown'),
     hasSidecar: sidecar !== null,
+    sectionCount: sections,
     warnings,
     counts: {
       pages: (f.tabs ?? []).length,

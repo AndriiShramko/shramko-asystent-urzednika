@@ -40,6 +40,23 @@ export function t(key: string, params?: Params): string {
   return translate(current, key, params)
 }
 
+/** Which of the three forms "one|few|many" a number takes. Polish: 1 pole, 2-4 pola (not 12-14), 5 pól. English
+ * and Spanish: one, else many (their "few" form repeats "many"). */
+export function pluralIndex(lang: Lang, n: number): 0 | 1 | 2 {
+  const a = Math.abs(Math.trunc(n))
+  if (a === 1) return 0
+  if (lang !== 'pl') return 2
+  const d = a % 10
+  const dd = a % 100
+  return d >= 2 && d <= 4 && !(dd >= 12 && dd <= 14) ? 1 : 2
+}
+
+/** A counted phrase: the key holds "one|few|many", each with {n}. */
+export function tn(key: string, n: number, params: Params = {}): string {
+  const forms = t(key, { ...params, n }).split('|')
+  return forms[Math.min(pluralIndex(current, n), forms.length - 1)]
+}
+
 /** The language to start with: a stored choice, else Polish. The browser's own language is not used on purpose:
  * the specification fixes Polish as the default. */
 export function initialLang(stored: string | null | undefined): Lang {

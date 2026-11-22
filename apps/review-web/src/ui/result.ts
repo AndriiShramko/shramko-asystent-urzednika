@@ -1,32 +1,39 @@
-// The answer of the service as a page: summary, fields of the matter first, warnings in plain words, standard
-// sections collapsed, the form JSON. Every text of ours goes through t(); the form's own labels and the Polish
-// `detail` of the service are shown as they are, in elements marked lang="pl".
-import { t } from '../lib/i18n'
+// The answer of the service as a page: a headline that says plainly how much was read from the form, fields from
+// the form first, remarks for the clerk in one calm collapsed block, standard sections collapsed, the form JSON.
+// Every text of ours goes through t(); the form's own labels are shown as they are, in elements marked lang="pl".
+// The service's own `detail` of a remark is English today, so it is shown only for codes the page cannot explain,
+// inside "Szczegóły techniczne".
+import { getLang, hasKey, t, tn } from '../lib/i18n'
 import { buildView, type FieldRow, type ViewModel } from '../lib/model'
 import { groupWarnings, placeOf, type HeaderWarnings, type RawWarning } from '../lib/warnings'
+import { adviceKey, causeOf, chooseHeadline, type Headline } from '../lib/verdict'
 import type { Converted, Engine, Problem } from '../lib/api'
 import { h } from './dom'
 
 const PL = { lang: 'pl' }
+
+/** The field type in words; a type the page has no word for stays as its code, small and grey. */
+function typeChip(type: string): HTMLElement {
+  const key = 'type.' + type
+  return hasKey(getLang(), key)
+    ? h('span', { class: 'chip chip-type' }, t(key))
+    : h('span', { class: 'chip chip-type' }, h('code', { class: 'code' }, type))
+}
 
 function fieldItem(r: FieldRow): HTMLElement {
   const meta: (Node | string)[] = []
   if (r.page !== null) meta.push(h('span', { class: 'chip' }, t('matter.page', { page: r.page })))
   else if (r.anchor) meta.push(h('span', { class: 'chip' }, r.anchor))
   if (r.required) meta.push(h('span', { class: 'chip chip-req' }, t('matter.required')))
-  meta.push(h('span', { class: 'chip chip-type' }, r.type))
+  if (r.type) meta.push(typeChip(r.type))
   const body: (Node | null)[] = [
     h('div', { class: 'field-title', ...PL }, r.title),
     h('div', { class: 'chips', 'aria-label': t('matter.type') }, ...meta)
   ]
-  if (r.section) body.push(h('div', { class: 'muted', ...PL }, t('matter.section', { name: r.section })))
-  if (r.options.length) body.push(h('div', { class: 'muted', ...PL }, t('matter.options', { list: r.options.join('; ') })))
-  if (r.origin === 'paper' || r.origin === 'reviewer') {
-    body.push(
-      r.quote
-        ? h('figure', { class: 'snippet' }, h('figcaption', {}, t('matter.snippet')), h('blockquote', PL, r.quote))
-        : h('p', { class: 'muted' }, t('matter.noSource'))
-    )
+  if (r.section) body.push(h('div', { class: 'muted' }, t('matter.section', { name: '' }), h('span', PL, r.section)))
+  if (r.options.length) body.push(h('div', { class: 'muted' }, t('matter.options', { list: '' }), h('span', PL, r.options.join('; '))))
+  if ((r.origin === 'paper' || r.origin === 'reviewer') && r.quote) {
+    body.push(h('figure', { class: 'snippet' }, h('figcaption', {}, t('matter.snippet')), h('blockquote', PL, r.quote)))
   }
   return h('li', { class: 'field' }, ...body)
 }
@@ -52,40 +59,45 @@ function warningDetail(w: RawWarning): HTMLElement {
   const place = placeOf(w)
   return h('li', {},
     place !== null ? h('span', { class: 'chip' }, t('matter.page', { page: place })) : null,
-    w.detail ? h('span', { class: 'detail', ...PL }, ' ' + w.detail) : null)
+    w.detail ? h('span', { class: 'detail' }, ' ' + w.detail) : null)
 }
 
+/** How many remarks there are: every occurrence, not every kind. */
+export function remarkCount(view: ViewModel, header: HeaderWarnings | null): number {
+  if (view.hasSidecar) return view.warnings.length
+  return header?.count ?? header?.codes.length ?? 0
+}
+
+/** Remarks for the clerk: one collapsed block with the count, a human sentence each, the code small and grey. */
 export function warningsSection(view: ViewModel, header: HeaderWarnings | null): HTMLElement {
-  const sec = h('section', { 'aria-labelledby': 'h-warnings' }, h('h2', { id: 'h-warnings' }, t('warnings.heading')))
-  const total = view.hasSidecar ? view.warnings.length : header?.count ?? 0
-  if (header) {
-    const shown = [header.count !== null ? String(header.count) : '', ...header.codes].filter(Boolean).join(', ')
-    sec.append(h('p', { class: 'muted' }, t('warnings.header', { value: shown || header.raw })))
-  } else {
-    sec.append(h('p', { class: 'muted' }, t('warnings.headerNone')))
-  }
-  if (view.hasSidecar && view.warnings.length === 0) {
-    sec.append(h('p', {}, t('warnings.none')))
-    return sec
-  }
-  if (!view.hasSidecar && total === 0 && !header?.codes.length) {
-    sec.append(h('p', {}, t('warnings.none')))
-    return sec
-  }
+  const total = remarkCount(view, header)
   const groups = view.hasSidecar
     ? groupWarnings(view.warnings)
     : groupWarnings((header?.codes ?? []).map((code) => ({ code })))
+  if (total === 0 && groups.length === 0) {
+    return h('section', { class: 'remarks', 'aria-labelledby': 'h-warnings' },
+      h('p', { id: 'h-warnings', class: 'muted' }, t('warnings.none')))
+  }
+  const details = h('details', { class: 'remarks-box' },
+    h('summary', { id: 'h-warnings' }, t('warnings.heading', { n: total })),
+    h('p', { class: 'muted' }, t('warnings.intro')))
   for (const g of groups) {
     const explain = g.known ? t(g.key) : t('warnings.unknown')
-    const places = g.items.filter((w) => w.detail || placeOf(w) !== null)
-    sec.append(h('article', { class: 'warning' },
+    const pages = [...new Set(g.items.map(placeOf).filter((p): p is number => p !== null))].sort((a, b) => a - b)
+    const where: string[] = []
+    if (view.hasSidecar) where.push(tn('warnings.times', g.items.length))
+    if (pages.length) where.push(tn('warnings.pages', pages.length, { list: pages.join(', ') }))
+    const withText = g.known ? [] : g.items.filter((w) => w.detail || placeOf(w) !== null)
+    details.append(h('article', { class: 'remark' },
       h('h3', {}, explain),
-      h('p', { class: 'muted' }, h('code', {}, g.code), view.hasSidecar ? ' · ' + t('warnings.times', { n: g.items.length }) : ''),
-      places.length
-        ? h('details', {}, h('summary', {}, t('warnings.detail')), h('ul', { class: 'plain' }, ...places.map(warningDetail)))
+      h('p', { class: 'code-line' },
+        where.length ? '(' + where.join('; ') + ') · ' : '',
+        t('warnings.code', { code: '' }), h('code', { class: 'code' }, g.code)),
+      withText.length
+        ? h('details', { class: 'tech' }, h('summary', {}, t('warnings.detail')), h('ul', { class: 'plain' }, ...withText.map(warningDetail)))
         : null))
   }
-  return sec
+  return h('section', { class: 'remarks', 'aria-labelledby': 'h-warnings' }, details)
 }
 
 function jsonSection(res: Converted): HTMLElement {
@@ -109,13 +121,17 @@ function jsonSection(res: Converted): HTMLElement {
     area.textContent = pretty.checked ? JSON.stringify(res.form, null, 2) : res.formText
   })
   const hashKey = res.hash === 'ok' ? 'json.hash.ok' : res.hash === 'bad' ? 'json.hash.bad' : 'json.hash.unchecked'
+  const hashLine = h('p', { class: res.hash === 'bad' ? 'bad' : 'muted' }, t(hashKey, { hash: (res.formSha256 ?? '').slice(0, 12) + '…' }))
+  const tech = h('details', { class: 'tech' }, h('summary', {}, t('json.tech')),
+    res.hash === 'bad' ? null : hashLine,
+    h('p', { class: 'muted' }, t('json.bytes', { n: res.formBytes.length })))
   return h('section', { 'aria-labelledby': 'h-json' },
     h('h2', { id: 'h-json' }, t('json.heading')),
     h('p', { class: 'muted' }, t('json.intro')),
-    h('p', { class: res.hash === 'bad' ? 'bad' : 'muted' }, t(hashKey, { hash: (res.formSha256 ?? '').slice(0, 12) + '…' })),
-    h('p', { class: 'muted' }, t('json.bytes', { n: res.formBytes.length })),
+    res.hash === 'bad' ? hashLine : null,
     h('div', { class: 'actions' }, copy, link),
     h('p', {}, pretty, h('label', { for: 'json-pretty' }, ' ' + t('json.pretty'))),
+    tech,
     status,
     area)
 }
@@ -130,11 +146,30 @@ export function engineBadge(engine: Engine | null): HTMLElement {
     h('span', { class: 'engine-meaning' }, t(`engine.${kind}`)))
 }
 
+/** The words of the headline: a success only when fields were read from the form; never "Gotowe". */
+export function headlineText(hl: Headline): string {
+  const fields = tn('count.fields', hl.fields)
+  const sections = tn('count.sectionsIn', hl.sections)
+  if (hl.kind === 'partial') {
+    return t('result.partial', { paper: tn('count.fields', hl.paper ?? 0), standard: tn('count.stdFields', hl.standard) })
+  }
+  return t(hl.kind === 'ok' ? 'result.ok' : 'result.neutral', { fields, sections })
+}
+
+/** The status line (aria-live) after a conversion: names the form, says "częściowo" when nothing was read. */
+export function doneStatus(res: Converted): string {
+  const view = buildView(res.form, res.sidecar)
+  const hl = chooseHeadline(view, res.header)
+  return t(hl.kind === 'partial' ? 'status.partial' : 'status.done', { title: view.title })
+}
+
 export function renderConverted(res: Converted): HTMLElement {
   const view = buildView(res.form, res.sidecar)
+  const hl = chooseHeadline(view, res.header)
   const root = h('div', { class: 'result' })
-  root.append(h('h2', { id: 'h-done', tabindex: -1, class: 'result-title' }, t('status.done', { title: view.title })))
-  root.querySelector('#h-done')?.setAttribute('lang', 'pl')
+  root.append(h('h2', { id: 'h-done', tabindex: -1, class: `result-title result-${hl.kind}`, 'data-kind': hl.kind },
+    h('span', { class: 'headline' }, headlineText(hl)),
+    h('span', { class: 'form-name' }, t('result.formName') + ' ', h('span', PL, '„' + view.title + '”'))))
   root.append(engineBadge(res.engine))
   if (!view.hasSidecar) {
     root.append(h('section', { class: 'notice', role: 'note', 'aria-labelledby': 'h-nosidecar' },
@@ -143,15 +178,17 @@ export function renderConverted(res: Converted): HTMLElement {
   }
   root.append(summary(view, res.header?.count ?? null))
   if (view.hasSidecar) {
+    const noSource = view.matter.filter((r) => !r.quote).length
     root.append(h('section', { 'aria-labelledby': 'h-matter' },
       h('h2', { id: 'h-matter' }, t('matter.heading')),
       h('p', { class: 'muted' }, t('matter.intro')),
+      view.matter.length && noSource ? h('p', { class: 'muted', id: 'matter-nosource' }, t('matter.noSource', { n: noSource, total: view.matter.length })) : null,
       view.matter.length ? fieldList(view.matter) : h('p', {}, t('matter.empty'))))
   }
   root.append(warningsSection(view, res.header))
   if (view.hasSidecar && view.standardCount) {
     const details = h('details', { class: 'standard' },
-      h('summary', {}, t('standard.summary', { n: view.standardCount })),
+      h('summary', {}, t('standard.summary', { fields: tn('count.fields', view.standardCount) })),
       h('p', { class: 'muted' }, t('standard.intro')))
     for (const [tab, rows] of view.standard) {
       details.append(h('h3', PL, tab), fieldList(rows))
@@ -168,15 +205,34 @@ export function renderConverted(res: Converted): HTMLElement {
   return root
 }
 
-export function renderProblem(p: Problem): HTMLElement {
+export interface ProblemActions {
+  /** send the same file again (service and token faults) */
+  retry?: () => void
+  /** open the file picker (faults of the file) */
+  pickOther?: () => void
+}
+
+/** One red block: what failed, why, what to do (chosen by the code's cause), the code small and grey, one button. */
+export function renderProblem(p: Problem, actions: ProblemActions = {}): HTMLElement {
   const key = 'problem.' + p.code
-  const known = t(key) !== key
+  const known = hasKey('pl', key)
   const reason = known ? t(key) : p.code === 'HTTP' ? t('problem.HTTP') : t('problem.UNKNOWN')
+  const advice = t(adviceKey(p.code, (k) => hasKey('pl', k)), { code: p.code })
+  const cause = causeOf(p.code)
+  let button: HTMLElement | null = null
+  if (cause === 'file' && actions.pickOther) {
+    button = h('button', { type: 'button', class: 'btn', id: 'error-action' }, t('error.other'))
+    button.addEventListener('click', actions.pickOther)
+  } else if (cause !== 'file' && actions.retry) {
+    button = h('button', { type: 'button', class: 'btn', id: 'error-action' }, t('error.again'))
+    button.addEventListener('click', actions.retry)
+  }
   return h('div', { class: 'result' },
-    h('section', { class: 'error', role: 'alert', 'aria-labelledby': 'h-error' },
+    h('section', { class: 'error', role: 'alert', 'aria-labelledby': 'h-error', 'data-cause': cause },
       h('h2', { id: 'h-error', tabindex: -1 }, t('error.heading')),
-      h('p', { class: 'reason' }, t('error.reason') + ': ' + reason),
-      p.detail ? h('p', { class: 'muted', ...PL }, t('error.serverDetail') + ': ' + p.detail) : null,
-      h('p', { class: 'muted' }, t('error.code', { code: p.code }) + (p.status ? ' · ' + t('error.status', { status: p.status }) : '')),
-      h('p', {}, t('error.retry'))))
+      h('p', { class: 'reason' }, reason),
+      h('p', { class: 'todo' }, h('strong', {}, t('error.todo') + ': '), advice),
+      p.detail ? h('p', { class: 'small' }, t('error.serverDetail') + ': ', h('span', PL, p.detail)) : null,
+      h('p', { class: 'code-line' }, t('error.code', { code: p.code }) + (p.status ? ' · ' + t('error.status', { status: p.status }) : '')),
+      button))
 }

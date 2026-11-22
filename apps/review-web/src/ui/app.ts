@@ -1,17 +1,21 @@
-// The page: header with the language switch, the upload panel, a live status line, the result. The upload panel
-// is built once (so a typed token and the focus survive a change of language); its texts are refreshed through
-// data-i18n attributes. The result is rebuilt from the kept outcome.
-import { convertFile, type Outcome } from '../lib/api'
+// The page: header with the mode badge and the language switch, the upload panel, a progress panel, a live status
+// line, the result. The upload panel is built once (so a typed token and the focus survive a change of language);
+// its texts are refreshed through data-i18n attributes. The result is rebuilt from the kept outcome.
+import { CANCELLED, convertWithProgress, fetchStatus, type ConvertHooks, type Outcome } from '../lib/api'
 import { LANGS, getLang, initialLang, setLang, t, type Lang } from '../lib/i18n'
-import { buildView } from '../lib/model'
+import { modeOf, type Mode } from '../lib/verdict'
 import { h, clear } from './dom'
-import { renderConverted, renderProblem } from './result'
+import { doneStatus, renderConverted, renderProblem } from './result'
 
 const STORE_KEY = 'review.lang'
+/** After this long the page says the wait is unusual and offers to stop. */
+export const LONG_MS = 90_000
 
 export interface AppDeps {
-  convert: (file: File, token: string) => Promise<Outcome>
+  convert: (file: File, token: string, hooks?: ConvertHooks) => Promise<Outcome>
   store: Pick<Storage, 'getItem' | 'setItem'> | null
+  /** GET /status as JSON, or null when it failed. */
+  status: () => Promise<unknown>
 }
 
 function i18nEl<K extends keyof HTMLElementTagNameMap>(tag: K, key: string, attrs: Record<string, string> = {}): HTMLElementTagNameMap[K] {
@@ -20,19 +24,39 @@ function i18nEl<K extends keyof HTMLElementTagNameMap>(tag: K, key: string, attr
   return el
 }
 
+/** File size for people: KB under one megabyte, else MB with one decimal, in the page's language. */
+export function formatSize(bytes: number): string {
+  const nf = (n: number, digits: number): string =>
+    new Intl.NumberFormat(getLang(), { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(n)
+  if (bytes < 1024 * 1024) return t('size.kb', { n: nf(Math.max(1, Math.round(bytes / 1024)), 0) })
+  return t('size.mb', { n: nf(bytes / (1024 * 1024), 1) })
+}
+
 export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refresh(): void } {
-  const convert = deps.convert ?? ((f, tok) => convertFile(f, tok))
+  const convert = deps.convert ?? ((f, tok, hooks) => convertWithProgress(f, tok, hooks))
   const store = deps.store === undefined ? safeStorage() : deps.store
+  const getStatus = deps.status ?? (() => fetchStatus())
   setLang(initialLang(store?.getItem(STORE_KEY)))
   document.documentElement.lang = getLang()
 
   let outcome: Outcome | null = null
   let fileName = ''
+  let lastFile: File | null = null
+  let busy = false
+  let stage: 'sending' | 'processing' = 'sending'
+  let started = 0
+  let ticker: ReturnType<typeof setInterval> | null = null
+  let abort: AbortController | null = null
+  let cancelled = false
+  let several = false
+  let mode: Mode | null = null
 
   const status = h('p', { id: 'status', role: 'status', 'aria-live': 'polite', class: 'status' })
+  // The result itself is not a live region (it is long); the status line above announces it, an error is role=alert.
   const resultBox = h('div', { id: 'result', class: 'result-box' })
 
-  // ---- header and language switch
+  // ---- header: the mode of the service (from GET /status) and the language switch
+  const modeBadge = h('span', { id: 'mode', class: 'mode', hidden: true })
   const select = h('select', { id: 'lang', name: 'lang' },
     ...LANGS.map((l) => h('option', { value: l, lang: l }, t('lang.' + l))))
   select.value = getLang()
@@ -43,7 +67,8 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   })
   const header = h('header', { class: 'top' },
     h('div', { class: 'brand' }, i18nEl('h1', 'app.title'), i18nEl('p', 'app.subtitle', { class: 'muted' })),
-    h('div', { class: 'lang' }, i18nEl('label', 'lang.label', { for: 'lang' }), select))
+    h('div', { class: 'top-right' }, modeBadge,
+      h('div', { class: 'lang' }, i18nEl('label', 'lang.label', { for: 'lang' }), select)))
 
   // ---- upload panel
   const fileInput = h('input', { type: 'file', id: 'file', class: 'sr-only', tabindex: -1, 'aria-hidden': 'true',
@@ -62,42 +87,112 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
       i18nEl('label', 'upload.token.label', { for: 'token' }), token,
       i18nEl('p', 'upload.token.hint', { id: 'token-hint', class: 'muted' })))
 
-  pick.addEventListener('click', () => fileInput.click())
+  // ---- progress panel: file name and size, a moving bar without a percentage, elapsed seconds, the long state
+  const progFile = h('p', { id: 'progress-file', class: 'progress-file' })
+  const bar = h('div', { class: 'bar', role: 'progressbar', id: 'progress-bar' }, h('div', { class: 'bar-run' }))
+  const elapsed = h('p', { id: 'progress-elapsed', class: 'muted', role: 'timer' })
+  // its own polite live text: the sentence is set only when the wait becomes long, so it is announced once
+  const longText = h('p', { id: 'progress-long', class: 'progress-long', 'aria-live': 'polite' })
+  const cancelBtn = h('button', { type: 'button', class: 'btn', id: 'progress-cancel' })
+  const longBox = h('div', { id: 'progress-longbox', hidden: true }, longText, cancelBtn)
+  const progress = h('div', { id: 'progress', class: 'progress', hidden: true }, progFile, bar, elapsed, longBox)
+  cancelBtn.addEventListener('click', () => { cancelled = true; abort?.abort() })
+
+  pick.addEventListener('click', () => { if (!busy) fileInput.click() })
   fileInput.addEventListener('change', () => {
     const files = [...(fileInput.files ?? [])]
     fileInput.value = ''
     void run(files)
   })
   for (const ev of ['dragenter', 'dragover'] as const) {
-    zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add('active'); setChosen(t('upload.dropActive')) })
+    zone.addEventListener(ev, (e) => {
+      e.preventDefault()
+      if (busy) return
+      zone.classList.add('active'); setChosen(t('upload.dropActive'))
+    })
   }
   for (const ev of ['dragleave', 'drop'] as const) {
     zone.addEventListener(ev, () => { zone.classList.remove('active'); setChosen(fileName ? t('upload.chosen', { name: fileName }) : '') })
   }
   zone.addEventListener('drop', (e) => {
     e.preventDefault()
+    if (busy) return
     void run([...(e.dataTransfer?.files ?? [])])
   })
 
   function setChosen(text: string): void { chosen.textContent = text }
 
+  function setBusy(on: boolean): void {
+    busy = on
+    pick.disabled = on
+    fileInput.disabled = on
+    zone.classList.toggle('busy', on)
+    if (on) zone.setAttribute('aria-disabled', 'true')
+    else zone.removeAttribute('aria-disabled')
+    progress.hidden = !on
+    if (on) resultBox.setAttribute('aria-busy', 'true')
+    else resultBox.removeAttribute('aria-busy')
+  }
+
+  function paintProgress(): void {
+    if (!busy || !lastFile) return
+    const secs = Math.floor((Date.now() - started) / 1000)
+    progFile.textContent = t('progress.file', { name: lastFile.name, size: formatSize(lastFile.size) })
+    bar.setAttribute('aria-label', t('progress.label'))
+    elapsed.textContent = t('progress.elapsed', { s: secs })
+    const long = Date.now() - started >= LONG_MS
+    longText.textContent = long ? t('progress.long') : ''
+    cancelBtn.textContent = t('progress.cancel')
+    longBox.hidden = !long
+    // The live line changes only with the stage, never every second: the seconds sit in the role=timer line,
+    // which screen readers do not announce by themselves; the long state has its own live text above.
+    const parts = [
+      several ? t('upload.multiple') : '',
+      t(stage === 'sending' ? 'progress.sending' : 'progress.processing', { name: lastFile.name })
+    ]
+    const line = parts.filter(Boolean).join(' ')
+    if (status.textContent !== line) status.textContent = line
+  }
+
   async function run(files: File[]): Promise<void> {
-    if (!files.length) return
+    if (!files.length || busy) return
     const file = files[0]
+    lastFile = file
     fileName = file.name
     setChosen(t('upload.chosen', { name: fileName }))
     outcome = null
+    cancelled = false
     clear(resultBox)
-    status.textContent = (files.length > 1 ? t('upload.multiple') + ' ' : '') + t('upload.busy', { name: fileName })
-    resultBox.setAttribute('aria-busy', 'true')
-    pick.disabled = true
+    stage = 'sending'
+    started = Date.now()
+    longBox.hidden = true
+    several = files.length > 1
+    setBusy(true)
+    paintProgress()
+    ticker = setInterval(paintProgress, 1000)
+    abort = new AbortController()
     try {
-      outcome = await convert(file, token.value)
+      outcome = await convert(file, token.value, {
+        signal: abort.signal,
+        onUploaded: () => { stage = 'processing'; paintProgress() }
+      })
+    } catch {
+      outcome = { kind: 'error', code: 'NETWORK', status: 0, detail: null, title: null }
     } finally {
-      pick.disabled = false
-      resultBox.removeAttribute('aria-busy')
+      if (ticker !== null) clearInterval(ticker)
+      ticker = null
+      abort = null
+      setBusy(false)
+    }
+    if (cancelled || (outcome.kind === 'error' && outcome.code === CANCELLED)) {
+      outcome = null
+      renderOutcome(false)
+      status.textContent = t('progress.cancelled')
+      pick.focus()
+      return
     }
     renderOutcome(true)
+    void loadMode() // the engine may have changed (a model that stopped answering)
   }
 
   function renderOutcome(moveFocus: boolean): void {
@@ -105,13 +200,34 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     if (!outcome) { status.textContent = ''; return }
     if (outcome.kind === 'ok') {
       resultBox.append(renderConverted(outcome))
-      status.textContent = t('status.done', { title: buildView(outcome.form, outcome.sidecar).title })
+      status.textContent = doneStatus(outcome)
       if (moveFocus) resultBox.querySelector<HTMLElement>('#h-done')?.focus()
     } else {
-      resultBox.append(renderProblem(outcome))
+      resultBox.append(renderProblem(outcome, {
+        retry: () => { if (lastFile) void run([lastFile]) },
+        pickOther: () => { if (!busy) fileInput.click() }
+      }))
       status.textContent = t('status.refused')
       if (moveFocus) resultBox.querySelector<HTMLElement>('#h-error')?.focus()
     }
+  }
+
+  function paintMode(): void {
+    if (mode === null) { modeBadge.hidden = true; modeBadge.textContent = ''; return }
+    modeBadge.hidden = false
+    modeBadge.className = `mode mode-${mode}`
+    modeBadge.setAttribute('data-mode', mode)
+    modeBadge.textContent = t('mode.' + mode)
+    // Only in the rules mode is it true that nothing leaves this service.
+    if (mode === 'rules') modeBadge.setAttribute('title', t('mode.local'))
+    else modeBadge.removeAttribute('title')
+  }
+
+  async function loadMode(): Promise<void> {
+    let answer: unknown = null
+    try { answer = await getStatus() } catch { answer = null }
+    mode = modeOf(answer)
+    paintMode()
   }
 
   function refresh(): void {
@@ -120,13 +236,16 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     for (const el of root.querySelectorAll<HTMLElement>('[data-i18n]')) el.textContent = t(el.dataset.i18n ?? '')
     for (const opt of select.options) opt.textContent = t('lang.' + opt.value)
     setChosen(fileName ? t('upload.chosen', { name: fileName }) : '')
-    renderOutcome(false)
+    paintMode()
+    if (busy) paintProgress()
+    else renderOutcome(false)
   }
 
-  const main = h('main', { id: 'main', tabindex: -1 }, upload, status, resultBox)
+  const main = h('main', { id: 'main', tabindex: -1 }, upload, progress, status, resultBox)
   clear(root)
   root.append(i18nEl('a', 'app.skip', { href: '#main', class: 'skip' }), header, main)
   refresh()
+  void loadMode()
   return { refresh }
 }
 
