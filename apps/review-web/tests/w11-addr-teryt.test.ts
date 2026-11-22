@@ -138,6 +138,7 @@ describe('W11 ADDR: hints in the trial fill', () => {
     const app = document.getElementById('app')!
     app.append(fill.el)
     expect(asked).toEqual([])                       // nothing is read before an address field gets focus
+    expect(app.querySelector('[id="fph-f-miejsc-note"]')?.textContent).toMatch(/^Wpisz pierwsze litery miejscowości/)
     const loc = input(app, 'f-miejsc')
     type(loc, 'Byd')
     await tick()
@@ -151,7 +152,7 @@ describe('W11 ADDR: hints in the trial fill', () => {
     expect(fill.eform.textOf('f-powiat')).toBe('Bydgoszcz')
     expect(fill.eform.textOf('f-woj')).toBe('kujawsko-pomorskie')
     expect(fill.eform.textOf('f-kod')).toBe('')    // a city has many codes: none is guessed
-    expect(app.querySelector('[id="fph-f-miejsc-note"]')?.textContent).toBe('Uzupełniono z rejestru TERYT: gmina Bydgoszcz, powiat Bydgoszcz, województwo kujawsko-pomorskie.')
+    expect(app.querySelector('[id="fph-f-miejsc-note"]')?.textContent).toBe('Wybrano: Bydgoszcz (miasto), gmina Bydgoszcz, powiat Bydgoszcz, województwo kujawsko-pomorskie. Uzupełniono z rejestru TERYT: gmina Bydgoszcz, powiat Bydgoszcz, województwo kujawsko-pomorskie.')
     expect(fill.eform.textOf('f-data')).toBe('')   // "Miejscowość, data" is not an address field
 
     const street = input(app, 'f-ulica')

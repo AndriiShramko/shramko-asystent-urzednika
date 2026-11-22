@@ -11,6 +11,9 @@ export type Role = 'locality' | 'teryt' | 'street' | 'postal' | 'gmina' | 'powia
 
 const TXT = {
   loading: 'Wczytywanie rejestru TERYT…',
+  start: 'Wpisz pierwsze litery miejscowości: podpowiemy ją razem z gminą, powiatem i województwem (rejestr TERYT GUS).',
+  example: 'np. Bydgoszcz',
+  chosen: (loc: Locality): string => `Wybrano: ${loc.name} (${loc.kind}), gmina ${loc.gmina}, powiat ${loc.powiat}, województwo ${loc.woj}.`,
   unavailable: 'Podpowiedzi adresowe są niedostępne (brak plików rejestru TERYT w tej instalacji). Adres można wpisać ręcznie.',
   source: (stan: string): string => `Źródło: rejestr TERYT GUS (${stan}). Wybierz z listy albo wpisz własną wartość.`,
   none: 'Brak takiej miejscowości w rejestrze TERYT. Sprawdź pisownię albo wpisz nazwę ręcznie.',
@@ -81,6 +84,7 @@ function hintBox(input: HTMLInputElement, id: string, items: () => Promise<{ ite
   input.setAttribute('aria-controls', id)
   input.setAttribute('aria-expanded', 'false')
   input.removeAttribute('list')
+  input.setAttribute('spellcheck', 'false')
   input.after(list, note)
   let shown: Item[] = []
   let active = -1
@@ -180,22 +184,25 @@ export function attachAddressHints(ef: EForm, source: TerytSource = terytSource(
     if (codes.length === 1) put('postal', codes[0], 'kod pocztowy')
     const street = g.parts.street
     if (street && ef.textOf(street.id) === auto.get(street.id)) write(street, '')
-    if (note) note.textContent = done.length ? TXT.filled(done.join(', ')) : TXT.source(known?.stan ?? '')
+    if (note) note.textContent = [TXT.chosen(loc), done.length ? TXT.filled(done.join(', ')) : ''].filter(Boolean).join(' ')
   }
 
   for (const g of groups) {
     const locInput = inputOf(g.locality)
     if (locInput) {
+      locInput.setAttribute('placeholder', TXT.example)
       hintBox(locInput, `fph-${g.locality.id}`, async () => {
-        const noteEl = document.getElementById(`fph-${g.locality.id}-note`)
+        const noteEl = ef.el.querySelector<HTMLElement>(`[id="fph-${g.locality.id}-note"]`)
         if (!known) { if (noteEl) noteEl.textContent = TXT.loading; known = await source.localities() }
         const typed = locInput.value.includes(' / ') ? '' : locInput.value
         const found = known.search(typed, 8)
         const items = found.map((loc) => ({ main: loc.name, sub: describe(loc), pick: () => pick(g, loc, noteEl) }))
         const settled = resolve(g)
-        const note = found.length ? TXT.source(known.stan) : fold(typed).length >= 2 && !settled ? TXT.none : noteEl && settled ? noteEl.textContent ?? '' : TXT.source(known.stan)
+        const note = found.length ? TXT.source(known.stan) : fold(typed).length >= 2 && !settled ? TXT.none : settled ? TXT.chosen(settled) : TXT.start
         return { items: settled && found.length === 1 && found[0] === settled ? [] : items, note }
       })
+      const start = ef.el.querySelector(`[id="fph-${g.locality.id}-note"]`)
+      if (start && !ef.textOf(g.locality.id)) start.textContent = TXT.start
     }
     const street = g.parts.street
     const streetInput = street ? inputOf(street) : null
