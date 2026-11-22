@@ -78,5 +78,7 @@ export const FP = {
 
   // BL13 PRINT-MAP: a field of the e-form whose place on the original the program did not point out
   noPlaceStandard: 'To pole pochodzi z sekcji standardowej e-usług. Na tym oryginale program nie wskazał jego miejsca.',
-  noPlaceOther: 'Program nie wskazał miejsca tego pola na oryginale.'
+  noPlaceOther: 'Program nie wskazał miejsca tego pola na oryginale.',
+  blankEmptyExtra: (n: number): string => `Na tym blankiecie program nie znalazł miejsc dla wypełnionych pól, dlatego blankiet zostaje pusty. Wypełnione wartości (${n}) są wydrukowane na dodatkowej stronie zaraz za blankietem.`,
+  blankEmptyNothing: 'Blankiet jest pusty, bo żadne pole e-formularza nie jest jeszcze wypełnione. Wypełnij pola powyżej, a wartości pojawią się na wydruku.'
 }

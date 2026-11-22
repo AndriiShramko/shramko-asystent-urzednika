@@ -7,6 +7,7 @@ import { renderConverted } from '../src/ui/result'
 import { mountFill } from '../src/ui/fill'
 import { setView } from '../src/ui/clerk-view'
 import { FP } from '../src/lib/fp/text'
+import { printNote } from '../src/ui/print'
 import { canonical, multipartBody } from './helpers'
 import { fpForm, fpLedgerSidecar, fpPreview } from './fp-fixture'
 
@@ -64,5 +65,28 @@ describe('BL13 PRINT-MAP: every picked field answers', () => {
     expect(all('.fp-noplace').length).toBe(1)
     pick(withBox[0])
     expect(all('.fp-noplace').length).toBe(0)
+  })
+})
+
+describe('BL13 PRINT-MAP: an empty blank is never shown without a word', () => {
+  it('the line above the preview by what landed on the blank', () => {
+    const one = [{ name: 'Imię', value: 'Anna' }]
+    expect(printNote(null)).toBe('')
+    expect(printNote({ placed: 3, extra: [] })).toBe('')
+    expect(printNote({ placed: 3, extra: one })).toBe(FP.noPlace(1))
+    expect(printNote({ placed: 0, extra: one })).toBe(FP.blankEmptyExtra(1))
+    expect(printNote({ placed: 0, extra: one })).toContain('na dodatkowej stronie')
+    expect(printNote({ placed: 0, extra: [] })).toBe(FP.blankEmptyNothing)
+  })
+
+  it('the preview of a form nobody filled says why the blank is empty; the line is a status for the screen reader', async () => {
+    await page()
+    const btn = document.querySelector<HTMLButtonElement>('#fp-print-preview-btn')!
+    btn.click()
+    const note = document.querySelector<HTMLElement>('#fp-print-extra')!
+    expect(note.getAttribute('role')).toBe('status')
+    expect(document.querySelectorAll('#fp-print-preview .fp-sheet').length).toBeGreaterThan(0)
+    const glyphs = document.querySelectorAll('#fp-print-preview .fp-glyph').length
+    if (!glyphs) expect(note.textContent).not.toBe('')
   })
 })
