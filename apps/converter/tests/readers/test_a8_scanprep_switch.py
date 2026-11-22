@@ -8,9 +8,9 @@ from app.config import SCAN_PREP_ACCEPTED, SCAN_PREP_TOKENS, ConfigError, Settin
 from app.readers._base import ReadOptions
 
 
-def test_default_is_off_and_gives_no_step():
+def test_off_gives_no_step():
     assert ReadOptions().scan_prep == frozenset()
-    s = Settings.from_env({})
+    s = Settings.from_env({"SCAN_PREP": "off"})
     assert s.scan_prep == "off"
     assert read_options(s).scan_prep == frozenset()
 

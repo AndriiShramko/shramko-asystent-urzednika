@@ -18,8 +18,8 @@ def test_on_turns_the_accepted_steps_on():
     assert read_options(Settings.from_env({"SCAN_PREP": "on"})).scan_prep == ACCEPTED
 
 
-def test_unset_still_gives_no_step():
-    assert read_options(Settings.from_env({})).scan_prep == frozenset()
+def test_off_still_gives_no_step():
+    assert read_options(Settings.from_env({"SCAN_PREP": "off"})).scan_prep == frozenset()
 
 
 def test_orient_is_not_accepted():

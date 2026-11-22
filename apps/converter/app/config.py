@@ -81,9 +81,9 @@ class Settings:
     model_name: str = ""
     model_api_key_file: str = field(default="", repr=False)
     model_api_key_set: bool = False
-    # scan preparation of the image path: "off" (the image path of before), "on" (= SCAN_PREP_ACCEPTED) or a comma
-    # list of SCAN_PREP_TOKENS
-    scan_prep: str = "off"
+    # scan preparation of the image path: "on" (= SCAN_PREP_ACCEPTED, the default), "off" (the image path of before)
+    # or a comma list of SCAN_PREP_TOKENS
+    scan_prep: str = "on"
     ui_enabled: bool = True
     ui_dir: str = ""
     log_level: str = "info"
