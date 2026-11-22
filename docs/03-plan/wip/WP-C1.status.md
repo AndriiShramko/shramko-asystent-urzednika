@@ -55,6 +55,8 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 | A field REQUIRED by the paper stays so | same, all sets, 5 text formats | 689 fields; basis "paper" 10 before, 10 after; 0 changed lines held "paper"; required 670 -> 642; the 28 changed fields are exactly the two rows above, no other set changed | 6d5e675 |
 | No judged set loses an element or a validator in any format | `count_sets.py tmp/c1-after.json --all`, then `--diff tmp/c1-before.json tmp/c1-after.json` | 70 inputs (every set, every format): `--diff` prints nothing; inputs and REQUIRED per form equal; only "required in the brief" drops: set 08 ods and xlsx 105 -> 100, set 09 doc 51 -> 45, docx 44 -> 38, pdf 62 -> 56 (sum 28) | 6d5e675 |
 | Fast gate | `bash tools/gate.sh fast > tmp/fast.log 2>&1` | "gate: fast PASSED on d0d7bc6": 870 passed, 3 skipped, 22 deselected; then 21 passed | d0d7bc6 |
+| Chain compare (gate of the order: nothing worse) | `bash tools/gate.sh py -m eval.chain --compare --archive C:/dev/shramko-asystent-urzednika/data/archive > tmp/chain.log 2>&1` | "158 files: 152 converted, 6 refused, 0 failed; gate failures 0; strict-lint errors 0"; sets 71 of 71 converted; "compare: 0 worse (0 fatal), 0 better, 0 notes"; `eval/chain/summary.json` restored | 4f33bbb (all product code of the package, main merged) |
+| The cues of (e2) change no field of any set | dump tool on all sets, diff against the dump of 6d5e675 | 0 lines differ | 4f33bbb |
 | Unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` | 122 passed, 1 skipped (29 new cases in three files) | 6d5e675 |
 
 ## Negative control
@@ -70,8 +72,10 @@ tail of `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write the
 line 3 to `ready_to_merge`. `main` has two newer commits (STATUS and results, documents only): `git merge --no-edit main` before
 the hand-over. The package is mergeable without (e2) and (h): they only add cues, and no field of any set holds the words of (e2)
 (0 of 689 fields have "należy wypełnić" or "musi zawierać" in label, hint or section title).
-Heartbeat 01:45: `main` (with WP-H4) is merged into the branch (4f33bbb); the three checks below were STARTED on that code in
-one background command and their result is not yet written here: if this line is still the last word, run them again.
+Heartbeat 01:55: `main` (with WP-H4) is merged into the branch (4f33bbb). On that code the dump (0 lines differ) and the chain
+compare (0 worse) PASSED, see "## Evidence". The ONLY check left is the fast gate on the head of the branch
+(`bash tools/gate.sh fast > tmp/fast2.log 2>&1`, about 7 minutes, the last line must read "gate: fast PASSED on <commit>");
+it was started and its result is not yet written here. When it is green: state `ready_to_merge` in line 3.
 (e2) is committed after that gate run (heartbeat 01:35): so RE-RUN on the head of the branch, in this order: the dump tool
 without set names (expect `diff tmp/c1-brief-all-after.tsv` = no line), the chain compare, the fast gate. If one of them is red
 and time is short, `git revert --no-edit <commit of e2>` returns the code that passed everything above.
