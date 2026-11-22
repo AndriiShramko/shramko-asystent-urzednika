@@ -1,6 +1,6 @@
 # WP-C1 REQUIRED and optional follow the paper's own words: status
 
-Claimed by: build7 (agent c1-required); heartbeat: 2026-11-22 00:55; state: running
+Claimed by: build7 (agent c1-required); heartbeat: 2026-11-22 01:17; state: ready_to_merge
 Branch: wp/C1-required-cues (cut from main 7fedaed)   Stage now: core
 
 Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/habits.json`,
@@ -27,7 +27,7 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
       mean tests and `test_required.py`: 130 passed, 1 skipped. The fast gate and the dump are NOT yet re-run on this code.
 - [x] (f) counts after: brief dump (28 fields changed, all "required, inferred" -> optional) and form counts over all
       70 inputs (`count_sets.py --diff`: no line, so no validator and no REQUIRED of a form changed; inputs equal) in "## Evidence"
-- [ ] (g) fast gate, chain compare, state `ready_to_merge`
+- [x] (g) fast gate PASSED on 1d86ee6 (main merged), chain compare 158 files 0 worse, state `ready_to_merge`
 - [x] (h) legend "pola oznaczone * / gwiazdką są obowiązkowe": needs NO product code. The legend is the footnote of the star,
       and the footnote path already carries it: starred label "paper", the unstarred one "inferred", the star of "niepotrzebne
       skreślić" no cue, a negated legend optional (new with the guard). Pinned in `tests/mean/test_mean_c1_legend.py`: 5 passed.
@@ -57,6 +57,7 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 | Fast gate | `bash tools/gate.sh fast > tmp/fast.log 2>&1` | "gate: fast PASSED on d0d7bc6": 870 passed, 3 skipped, 22 deselected; then 21 passed | d0d7bc6 |
 | Chain compare (gate of the order: nothing worse) | `bash tools/gate.sh py -m eval.chain --compare --archive C:/dev/shramko-asystent-urzednika/data/archive > tmp/chain.log 2>&1` | "158 files: 152 converted, 6 refused, 0 failed; gate failures 0; strict-lint errors 0"; sets 71 of 71 converted; "compare: 0 worse (0 fatal), 0 better, 0 notes"; `eval/chain/summary.json` restored | 4f33bbb (all product code of the package, main merged) |
 | The cues of (e2) change no field of any set | dump tool on all sets, diff against the dump of 6d5e675 | 0 lines differ | 4f33bbb |
+| Fast gate on the final code, main merged | `bash tools/gate.sh fast > tmp/fast2.log 2>&1` | "gate: fast PASSED on 1d86ee6": 932 passed, 3 skipped, 22 deselected; then 21 passed | 1d86ee6 |
 | Unit tests | `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` | 122 passed, 1 skipped (29 new cases in three files) | 6d5e675 |
 
 ## Negative control
@@ -72,10 +73,17 @@ tail of `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write the
 line 3 to `ready_to_merge`. `main` has two newer commits (STATUS and results, documents only): `git merge --no-edit main` before
 the hand-over. The package is mergeable without (e2) and (h): they only add cues, and no field of any set holds the words of (e2)
 (0 of 689 fields have "należy wypełnić" or "musi zawierać" in label, hint or section title).
-Heartbeat 01:55: `main` (with WP-H4) is merged into the branch (4f33bbb). On that code the dump (0 lines differ) and the chain
-compare (0 worse) PASSED, see "## Evidence". The ONLY check left is the fast gate on the head of the branch
-(`bash tools/gate.sh fast > tmp/fast2.log 2>&1`, about 7 minutes, the last line must read "gate: fast PASSED on <commit>");
-it was started and its result is not yet written here. When it is green: state `ready_to_merge` in line 3.
+NOTHING IS LEFT TO BUILD: the package is `ready_to_merge` (real clock 01:17; the heartbeats written above as 01:00 to 01:55
+were guesses that ran ahead of the clock). The lead merges `wp/C1-required-cues` into `main`; if `main` moved since 4f33bbb,
+merge it first and re-run `bash tools/gate.sh fast`. Every check of "## Evidence" passed on the code of the head: dump and
+chain on 4f33bbb, fast gate on 1d86ee6 (the commits after 4f33bbb add tests and this file only).
+Not verified, for the lead to know: (1) the image workflow on this branch was not looked at; (2) scans (jpg, jpeg, png) are
+outside the brief dump, their form counts did not change; (3) the legend of stars works only through the finder's footnote
+marks (see step h); (4) the composer's own reading of the habit `optional` (`app/compose/required.py`, not owned) does not know
+the new row `optional_wording`: it does not need to, the understanding step now gives it `required=False` for those fields.
+The older notes below describe the way here.
+Heartbeat 01:55 (guessed clock): `main` (with WP-H4) is merged into the branch (4f33bbb). The dump (0 lines differ) and the
+chain compare (0 worse) PASSED on that code; the fast gate was the last check and it has passed since.
 (e2) is committed after that gate run (heartbeat 01:35): so RE-RUN on the head of the branch, in this order: the dump tool
 without set names (expect `diff tmp/c1-brief-all-after.tsv` = no line), the chain compare, the fast gate. If one of them is red
 and time is short, `git revert --no-edit <commit of e2>` returns the code that passed everything above.
@@ -104,4 +112,6 @@ Checks that passed: none yet.
 - (none)
 
 ## Cost notes
-- (none yet)
+- core to acceptance in one stage, about 45 replies: the waits for the fast gate took the most (a wait loop that greps
+  "^gate:" returns at once on the line "gate: lint ok": wait on the exit line instead); `count_sets.py` takes OUT.json first
+  (a run with `--all` first wrote a file named `--all`); a brief-level dump tool from the start would have saved two runs.
