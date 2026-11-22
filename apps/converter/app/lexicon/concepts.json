@@ -15,7 +15,7 @@
     {"pattern": "rachun(?:ek|k)|kont[oa] bankow|\\bn(?:r|umer)\\.?\\s+kont[aou]\\b", "type": "TEXT_FIELD", "concept": "nrb", "length": 26, "source": "design 5.3 example; WP-F3 acceptance (the account holds 26 digits by the label); AUDIT-8 VA-5 (22-F7: 'rachunek', 'nr konta')", "date": "2026-11-21"},
     {"pattern": "w terminie od( dnia)?$", "type": "DATEPICKER", "concept": "date", "label": "Termin od", "source": "design 6.4.3 row 2; sets judged-04, judged-06", "date": "2026-11-21"},
     {"pattern": "(?:w okresie|okres)\\s+od( dnia)?$", "type": "DATEPICKER", "concept": "date", "label": "Okres od", "source": "AUDIT-8 VA-5 (22-F6: 'w okresie od ... do ...')", "date": "2026-11-21"},
-    {"pattern": "^data i miejsce", "type": "TEXT_FIELD", "source": "AUDIT-8 VA-5 (22-F6: a date and a place in one place)", "date": "2026-11-21"},
+    {"pattern": "^data( \\w+)? i miejsce|^miejsce i data", "type": "TEXT_FIELD", "source": "AUDIT-8 VA-5 (22-F6: a date and a place in one place); VA-8 (03-F3 word orders)", "date": "2026-11-21"},
     {"pattern": "^(data|termin)\\b|\\bdata (urodzenia|szczepienia|uiszczenia|wydania|zawarcia)", "type": "DATEPICKER", "concept": "date", "source": "design 6.4.3 row 2; sets judged-02, judged-07", "date": "2026-11-21"},
     {"pattern": "\\bdd[-./ ]?mm[-./ ]?(rrrr|yyyy)|\\bdnia$|\\bw dniu$", "type": "DATEPICKER", "concept": "date", "source": "audit T9, sets judged-06, judged-09 (the paper's own format hint, 'dnia'); AUDIT-8 VA-5 ('w dniu')", "date": "2026-11-21"},
     {"pattern": "\\bdni$", "type": "NUMBER", "concept": "count", "source": "audit T9, set judged-06 (a count of days)", "date": "2026-11-21"},
