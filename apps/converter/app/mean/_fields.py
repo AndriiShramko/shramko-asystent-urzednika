@@ -54,6 +54,7 @@ _COND_A = re.compile(r"^\W*(?:jeśli|jeżeli|w\s+przypadku)\s+(tak|nie|wybierzes
                      r"|odpowiedzi\s+(?:twierdzącej|przeczącej))\b", re.IGNORECASE)
 _COND_C = re.compile(r"(?:należy\s+)?wypełni[ćc]\s+(?:tylko\s+|wyłącznie\s+)?w\s+przypadku\s+|dotyczy\s+wyłącznie\s+",
                      re.IGNORECASE)
+_NUM_HEAD_LINE = re.compile(r"^\s*(?:\d{1,2}|[IVX]{1,4})\.\s+[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]")
 # 4-letter stems that name no option: "inny niż w poz. B.3", "kiedy jest", "zaznaczenia kratki"
 _STEM_STOP = {"inny", "inna", "inne", "jest", "kied", "tylk", "oraz", "prze", "któr", "zazn", "krat", "pozy", "dany",
               "dane", "osob", "wype", "nale", "jeże", "jeśl", "wnio"}
@@ -613,9 +614,10 @@ class _Reader:
                 self._set(c, "AWAITING_DECISION", decision=f"options_{c.id}")
                 self.out.warnings.append(Warning(code="AMBIGUOUS_GROUP", page=c.page, candidate=c.id, detail="a choice group with fewer than two readable options"))
                 return None
-            kind = self._choice_kind(c, raw, options)
             if all(_MASK_PART.match(o) for o in options):
                 kind, options, concept = "DATEPICKER", [], "date"   # C6: the boxes stand in front of a date mask
+            else:   # REV-3: only a real choice is asked "one or several" (no AMBIGUOUS_GROUP on a date mask)
+                kind = self._choice_kind(c, raw, options)
         else:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
@@ -960,6 +962,11 @@ class _Reader:
         heads = sorted(min(doc.pos[r] for r in s.runs if r in doc.pos) for s in doc.fo.sections
                        if any(r in doc.pos for r in s.runs))   # where each section starts (a wrapped heading is one)
         owned = {r: cid for cid in self.field_of if cid in doc.cands for r in doc.cand_runs(doc.cands[cid])}
+        # a numbered line that reads as a heading ("2. Dane sportowca", "III. Oświadczenia") ends a block too, when
+        # the finder did not make it a section (a plain cell of a sheet); a numbered label of a field does not
+        num_lines = sorted(min(doc.pos[r] for r in rids if r in doc.pos) for rids, text in self._lines()
+                           if _NUM_HEAD_LINE.match(text) and len(text.split()) <= 10 and text.rstrip()[-1:] not in ":.,;"
+                           and any(r in doc.pos for r in rids) and not any(r in owned for r in rids))
 
         def stems(t: str) -> set[str]:
             return {w[:4] for w in re.findall(r"\w{4,}", t.casefold())} - _STEM_STOP
@@ -983,6 +990,7 @@ class _Reader:
                 continue
             at, page = min(ats), doc.page(rids[0])
             stop = next((h for h in heads if h > at), 10 ** 9)   # the next heading ends what a note governs
+            stop = min(stop, next((h for h in num_lines if h > at), 10 ** 9))
             a, cm = _COND_A.match(text), _COND_C.search(text)
             if a is not None:
                 # family A: the nearest choice above on the same page, no other field without a condition between
@@ -1031,6 +1039,7 @@ class _Reader:
             return
         titles = [v.title for v in self.variants]
         first: dict[tuple, dict[str, Any]] = {}
+        renamed: dict[str, str] = {}   # REV-1: key of a deleted twin field -> key of the kept one
         for role, s in list(self.secs.items()):
             if s["variant"] is None or not s["fields"]:
                 continue
@@ -1045,7 +1054,14 @@ class _Reader:
             for cid, d in list(self.disp.items()):
                 if d.fate == "FIELD" and d.key in into and into[d.key]:
                     self.disp[cid] = Disposition(candidate=cid, fate="MERGED", into=into[d.key], why="SAME_ALTERNATIVE")
+            renamed.update({new.key: old.key for old, new in zip(kept["fields"], s["fields"])})
             del self.secs[role]
+        # REV-1: a condition read from a note (C2) may name a field of a deleted twin; it now names the kept twin
+        conds = [c for s in self.secs.values() for c in (s.get("show_if"), *(f.show_if for f in s["fields"]))]
+        for cond in conds + [a.show_if for a in self.out.attachments]:
+            for leaf in (cond.leaves() if cond is not None else []):
+                if leaf.field in renamed:
+                    leaf.field = renamed[leaf.field]
         for s in first.values():
             conds = [Cond(field=SELECTOR_KEY, is_=titles[v]) for v in sorted(s["variants"])]
             if len(conds) < len(titles):

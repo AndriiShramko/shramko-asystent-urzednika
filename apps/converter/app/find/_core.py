@@ -693,6 +693,8 @@ class Finder:
                     at = max([at] + [ln.pos for ln in lines])
                     if WORD.search(text(cell)) or (own and cell.r == 0):
                         continue
+                    if not (own or cont) and self.tick_cell(p, cell, grid, text, at):
+                        continue
                     parts = [(r, 0, len(self.runs[r][1].text)) for r in cell.runs if self.runs[r][1].text.strip()]
                     for ln in lines:
                         ln.used = True
@@ -735,6 +737,42 @@ class Finder:
                                (carried[4] if cont and carried else 0) + nrows)
                 else:
                     carried = None
+
+    LIST_NO = re.compile(r"\s*(?:\d{1,2}|[a-z])\s*[.)]\s*")
+
+    def tick_cell(self, p: P, cell: Any, grid: dict, text: Any, at: float) -> bool:
+        """C4 (sheets): an empty one-cell square with all four borders, nothing but a list number left of it, and the
+        words of an option in an unruled cell right after it (one empty column between allowed) is a tick box, as a
+        drawn square beside words is on a page. Its option is those words; boxes on consecutive lines group later."""
+        if cell.rs != 1 or cell.cs != 1 or cell.borders != "trbl" or text(cell):
+            return False
+        left = grid.get((cell.r, cell.c - 1))
+        if left is not None and WORD.search(text(left)) and not self.LIST_NO.fullmatch(text(left)):
+            return False
+        opt = None
+        for dc in (1, 2):
+            o = grid.get((cell.r, cell.c + dc))
+            if o is None or (not text(o) and not o.borders):
+                continue
+            if WORD.search(text(o)) and o.borders != "trbl" and o.r == cell.r:
+                opt = o
+            break
+        if opt is None:
+            return False
+        lines = [ln for r in opt.runs for ln in self.run_lines.get(r, [])]
+        if not lines or any(ln.used or ln.role is not None or ln.toks for ln in lines):
+            return False
+        words, _foot = clean(text(opt))
+        if not words:
+            return False
+        d = self.add(D("box", p.page.number, at + (cell.r * 100 + cell.c + 1) / 100000, box=cell.box,
+                       anchor=cell.anchor, table=True, geom=0.9 if cell.box else 0.7))
+        d.opt = (words, [(r, 0, len(self.runs[r][1].text)) for r in opt.runs], None)
+        d.line = lines[0]
+        for ln in lines:
+            ln.used = True
+        self.marks.append(d)
+        return True
 
     def one_place_per_label(self, made: list[tuple[D, Any, Any]], grid: dict, text: Any) -> None:
         """C4, places of one table. (1) A label cell merged over several rows names one place, the largest of the

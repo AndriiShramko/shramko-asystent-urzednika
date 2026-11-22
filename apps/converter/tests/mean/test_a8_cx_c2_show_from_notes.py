@@ -48,6 +48,20 @@ def test_family_c_note_names_its_option_and_shows_the_block():
     assert dysc.show_if is None, "the next heading ends the block"
 
 
+def test_family_c_block_ends_at_a_numbered_heading_line_the_finder_missed():
+    """A sheet: "2. Dane sportowca" is a plain cell (not bold, far from the top), so no section starts there; the
+    note's block still ends at it."""
+    filler = [f"Uwaga nr {k} do wniosku" for k in range(6)]
+    got = _fields("WNIOSEK O STYPENDIUM", *filler, "1. Wnioskodawca", "□ Prezydent Miasta", "□ Klub sportowy",
+                  "Należy wypełnić w przypadku Wnioskodawcy – Klubu sportowego.",
+                  "Numer licencji klubu sportowego " + DOTS,
+                  "2. Dane sportowca", "Data urodzenia zawodnika " + DOTS, "Dyscyplina " + DOTS, bold=(0,))
+    nazwa = next(f for k, f in got.items() if "licencji" in k.casefold())
+    assert nazwa.show_if is not None and nazwa.show_if.is_ == "Klub sportowy", got
+    later = [f for k, f in got.items() if "dyscyplina" in k.casefold() or "urodzenia" in k.casefold()]
+    assert later and all(f.show_if is None for f in later), {k: f.show_if for k, f in got.items()}
+
+
 def test_negative_controls_stay_unconditioned():
     got = _fields("WNIOSEK", "1. Dane", "Jeśli wybierzesz tę formę, wpisz numer",
                   "Numer sprawy w urzedzie: " + DOTS,
