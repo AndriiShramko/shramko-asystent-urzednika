@@ -6,6 +6,7 @@ import { LANGS, getLang, initialLang, setLang, t, type Lang } from '../lib/i18n'
 import { badgeMode, modeOf, type Mode } from '../lib/verdict'
 import { h, clear } from './dom'
 import { doneStatus, renderConverted, renderProblem } from './result'
+import { mountFill, type FillBlock } from './fill'
 
 const STORE_KEY = 'review.lang'
 /** After this long the page says the wait is unusual and offers to stop. */
@@ -51,6 +52,8 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   let abort: AbortController | null = null
   let cancelled = false
   let several = false
+  // The fill-and-print block of the current result: built once per conversion, kept across a language change.
+  let fill: FillBlock | null = null
   // The badge has two sources (see badgeMode): what /status said last, and the engine of the last conversion.
   let statusMode: Mode | null = null
   let lastEngine: Engine | null = null
@@ -172,6 +175,7 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     fileName = file.name
     setChosen(t('upload.chosen', { name: fileName }))
     outcome = null
+    fill = null
     cancelled = false
     clear(resultBox)
     stage = 'sending'
@@ -216,7 +220,13 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     clear(resultBox)
     if (!outcome) { status.textContent = ''; return }
     if (outcome.kind === 'ok') {
-      resultBox.append(renderConverted(outcome))
+      const view = renderConverted(outcome)
+      resultBox.append(view)
+      fill ??= mountFill(outcome)
+      // Steps 3 to 6 sit between the review and the form JSON (the JSON stays last, as before).
+      const json = view.querySelector('section[aria-labelledby="h-json"]')
+      if (json) view.insertBefore(fill.el, json)
+      else view.append(fill.el)
       status.textContent = doneStatus(outcome)
       if (moveFocus) resultBox.querySelector<HTMLElement>('#h-done')?.focus()
     } else {
