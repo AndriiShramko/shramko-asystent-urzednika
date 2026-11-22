@@ -123,7 +123,7 @@ export function joinPlaces(rows: LedgerRow[], pv: Preview): Joined {
       for (const o of place.options ?? []) if (o.mark) fieldOf.set(o.mark, r.field)
     } else if (r.fate === 'STANDARD' && r.section) {
       standard.push({ cid: r.candidate, section: r.section, place, attr: place.label ? attrOfLabel(place.label) : null })
-    } else if (r.fate === 'LEFT_OUT' && place.kind !== 'signature' && place.label) {
+    } else if (r.fate === 'LEFT_OUT' && place.kind !== 'signature' && place.kind !== 'office_use' && r.reason !== 'OFFICE_USE' && place.label) {
       const kind = filingKind(place.label)
       if (kind) dates.push({ cid: r.candidate, place, kind })
     }

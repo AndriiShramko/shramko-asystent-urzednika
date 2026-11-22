@@ -30,3 +30,15 @@ export function filingKind(label: string): FilingKind | null {
   if (/^data (wniosku|zgloszenia|oswiadczenia)$/.test(t)) return 'date'
   return null
 }
+
+/** BL13 review: a label that is only "data", "dnia", "w dniu" or "dzień". As the title of a FIELD it is more often a
+ * content date (a column of a list, an event) than the day of filing: the converter leaves the paper's filing date
+ * out of the e-form. Such a field takes today's date only inside a section about the signature or the declaration. */
+export function isBareDate(label: string): boolean {
+  return /^(data|dnia|w dniu|dzien)$/.test(norm(label).replace(/_/g, ' '))
+}
+
+/** Is this section title about signing or declaring (where a bare "Data" is the day of filing)? */
+export function isSigningContext(title: string): boolean {
+  return /(podpis|oswiadcz|data i miejsce|miejsce i data|miejscowosc i data)/.test(norm(title))
+}

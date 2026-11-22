@@ -36,7 +36,11 @@ describe('BL13 the day of filing', () => {
   it('a filing-date field takes today; a birth date or a signature never does', () => {
     vi.useFakeTimers(); vi.setSystemTime(DAY)
     expect(filingValue(node('DATEPICKER', 'Data wypełnienia'))).toBe('2026-11-22')
-    expect(filingValue(node('TEXT_FIELD', 'Data'))).toBe('22.11.2026')
+    expect(filingValue(node('TEXT_FIELD', 'Data'))).toBe('') // a bare 'Data' field outside a signing section is content
+    const signing = { ...node('SECTION', 'Oświadczenie i podpis'), parent: null } as unknown as ENode
+    expect(filingValue({ ...node('TEXT_FIELD', 'Data'), parent: signing } as unknown as ENode)).toBe('22.11.2026')
+    const events = { ...node('SECTION', 'Wykaz szczepień'), parent: null } as unknown as ENode
+    expect(filingValue({ ...node('DATEPICKER', 'Data'), parent: events } as unknown as ENode)).toBe('')
     expect(filingValue(node('TEXT_FIELD', 'Miejscowość i data'), 'Bydgoszcz')).toBe('Bydgoszcz, 22.11.2026')
     expect(filingValue(node('TEXT_FIELD', 'Pole', 'data_zlozenia'))).toBe('22.11.2026')
     expect(filingValue(node('DATEPICKER', 'Data urodzenia'))).toBe('')
