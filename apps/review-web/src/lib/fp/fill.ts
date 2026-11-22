@@ -4,7 +4,7 @@
 // few title patterns. Fields of another person, an attorney or a representative are never filled.
 import { INPUT_TYPES, type ENode, type FormModel } from './form'
 import { accountOf, extraOf, fullAddress, idCardOf, nipOf, peselOf, regonOf, type DemoRecord } from './family'
-import { filingKind, todayIso, todayPl } from './today'
+import { filingKind, todayIso, todayPl, isBareDate, isSigningContext } from './today'
 
 export type FillTag = 'pesel' | 'mlpz' | 'proposal'
 export interface FillItem { id: string; value: string | string[]; tag: FillTag }
@@ -36,6 +36,11 @@ export function filingValue(n: ENode, place = ''): string {
   if (/podpis/.test(norm(n.title)) && !/data/.test(norm(n.title))) return ''
   const kind = filingKind(n.title) ?? filingKind(n.techName)
   if (!kind || (n.type !== 'DATEPICKER' && n.type !== 'TEXT_FIELD')) return ''
+  if (kind === 'date' && isBareDate(n.title || n.techName)) {
+    let p = n.parent, ok = false
+    for (let i = 0; p && i < 4; i++, p = p.parent) if (isSigningContext(p.title || '')) { ok = true; break }
+    if (!ok) return ''
+  }
   if (n.type === 'DATEPICKER') return kind === 'date' ? todayIso() : ''
   return kind === 'placeDate' && place ? `${place}, ${todayPl()}` : todayPl()
 }
