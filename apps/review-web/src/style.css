@@ -394,3 +394,30 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 }
 @media (max-width: 40rem) { .clerk-card-body { grid-template-columns: minmax(0, 1fr); } }
 /* W11 CLERK-P end */
+
+/* W11 FLOW */
+.bar-run[hidden], .bar-fill[hidden], .bar[hidden], .queue[hidden], .q-dot[hidden], .q-state[hidden], .q-alive[hidden], .q-row .btn[hidden], #queue-cancel-all[hidden], #progress-alive[hidden] { display: none; }
+.bar-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: var(--c-bar); transition: width 0.3s linear; }
+.progress .bar { height: 0.75rem; }
+.q-state { display: flex; align-items: baseline; gap: 0.5rem; margin: 0.5rem 0 0; }
+.progress-stage { font-weight: 600; }
+.q-dot { flex: none; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--c-bar); opacity: 0.35; align-self: center; }
+.q-dot.beat { animation: q-beat 0.9s ease-out 1; }
+@keyframes q-beat { 0% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0.35; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .q-dot.beat { animation: none; opacity: 1; } .bar-fill { transition: none; } }
+.q-list { list-style: none; margin: 0.75rem 0; padding: 0; display: grid; gap: 0.5rem; }
+.q-row { border: 1px solid var(--c-border); border-radius: 6px; padding: 0.6rem 0.75rem; background: var(--c-bg); min-width: 0; }
+.q-row.selected { border: 2px solid var(--c-accent); }
+.q-row[data-phase="done"] { border-left: 6px solid var(--c-ok-edge); }
+.q-row[data-phase="failed"] { border-left: 6px solid var(--c-error-text); background: var(--c-error-bg); }
+.q-row[data-phase="cancelled"], .q-row[data-phase="skipped"] { border-left: 6px solid var(--c-border); }
+.q-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+.q-name { font-weight: 600; overflow-wrap: anywhere; }
+.q-pct { flex: none; font-weight: 600; font-variant-numeric: tabular-nums; }
+.q-row .bar { margin-top: 0.4rem; }
+.q-stage { margin: 0; }
+.q-alive { margin: 0.25rem 0 0; font-size: 0.875rem; }
+.q-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.q-actions:empty { display: none; }
+.q-row .btn { min-height: 2.25rem; padding: 0.25rem 0.75rem; }
+.q-which { font-weight: 600; margin: 1rem 0 0; padding: 0.4rem 0.75rem; border-left: 6px solid var(--c-accent); background: var(--c-chip-bg); }
