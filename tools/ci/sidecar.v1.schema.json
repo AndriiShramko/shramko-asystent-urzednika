@@ -65,6 +65,7 @@
       "properties": {
         "origins": {"type": "object"},
         "brief_keys": {"type": "object", "additionalProperties": {"type": "string"}},
+        "evidence": {"type": "object", "additionalProperties": {"type": "array", "minItems": 1, "items": {"type": "object"}}},
         "ledger": {"type": "object"},
         "proposals": {"type": "object"},
         "dictionary_links": {

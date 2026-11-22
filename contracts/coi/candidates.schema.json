@@ -484,7 +484,18 @@
             "EXTRA_NOT_PLACED",
             "MODEL_USED",
             "MODEL_FALLBACK",
-            "MODEL_SKIPPED"
+            "MODEL_SKIPPED",
+            "INPUT_NOTE",
+            "LEDGER_NOT_CLOSED",
+            "BRIEF_NOT_READ",
+            "GATE_G5",
+            "GATE_G6",
+            "GATE_G7",
+            "GATE_G8",
+            "GATE_G9",
+            "GATE_G10",
+            "GATE_G11",
+            "GATE_G12"
           ],
           "title": "Code",
           "type": "string"

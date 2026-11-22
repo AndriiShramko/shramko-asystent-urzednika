@@ -123,6 +123,22 @@ class D:
     question: Lab | None = None
     table: bool = False
     id: str = ""
+    alias: str | None = None   # a widget's internal name made readable: its label only when the paper shows none
+
+
+# WAVE-10 VJF-2: a widget name that is a program identifier, not words printed for a person: "Imię_Osoba",
+# "AdresPocztyElektronicznej", "Text12", "form1[0].Page1[0].Nazwisko[0]"
+WIDGET_ID = re.compile(r"_|[a-ząćęłńóśźż][A-ZĄĆĘŁŃÓŚŹŻ]|\[\d+\]|^(?i:text|tekst|pole(?:\s+tekstowe)?|field|fill)\s*\d+$")
+
+
+def widget_alias(name: str) -> str:
+    """'form1[0].Page1[0].Imię_Osoba[0]' -> 'Imię osoba'; 'AdresPocztyElektronicznej' -> 'Adres poczty elektronicznej'."""
+    last = re.sub(r"\[\d+\]", "", name).split(".")[-1]
+    words = re.sub(r"(?<=[a-ząćęłńóśźż])(?=[A-ZĄĆĘŁŃÓŚŹŻ])", " ", last.replace("_", " ")).split()
+    if not words:
+        return name.strip()
+    rest = [w if w.isupper() else w[:1].lower() + w[1:] for w in words[1:]]
+    return " ".join([words[0][:1].upper() + words[0][1:]] + rest)
 
 
 @dataclass(eq=False)
@@ -785,6 +801,15 @@ class Finder:
                     near = min(p.lines, key=lambda ln: abs(ln.box[1] - w.box[1]) + abs(ln.box[0] - w.box[0]) / 10)  # type: ignore[index]
                     pos = near.pos + 0.5
                 name = (w.name or "").strip()
+                if name and WIDGET_ID.search(name):
+                    # a program identifier: a text box takes the words printed beside or above it (labels step) and
+                    # falls back to the name made readable; a box to tick keeps the readable name (its words are on
+                    # its right, where the labels step does not look)
+                    alias = widget_alias(name)
+                    seek = w.kind in ("text", "choice") and w.box is not None
+                    self.add(D("widget", p.page.number, pos, box=w.box, anchor=w.anchor, widget=w.id, geom=1.0,
+                               label=None if seek else Lab(alias, [], "widget_name", 0.6, 0.6), alias=alias))
+                    continue
                 self.add(D("widget", p.page.number, pos, box=w.box, anchor=w.anchor, widget=w.id, geom=1.0,
                            label=Lab(name, [], "widget_name", 0.7, 0.7) if name else None))
 
@@ -985,6 +1010,8 @@ class Finder:
                         d.label, ln.used = lab, True
                         if margin < 0.05:
                             self.warn.append(("LOW_CONFIDENCE", d, "two texts are equally near; the label is the first of them"))
+            if d.label is None and d.alias:   # no printed words near the widget: its readable internal name
+                d.label = Lab(d.alias, [], "widget_name", 0.6, 0.6)
             if d.label is None and d.group is None and not (d.kind == "box" and d in self.marks):
                 if s is not None and id(s) not in seen and not s.table_title:
                     # the first place under a heading that has no text of its own answers to the heading (C4: not

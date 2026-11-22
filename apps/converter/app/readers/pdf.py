@@ -11,6 +11,7 @@ A row of three or more leader characters (dots, underscores) is its own run: it 
 from __future__ import annotations
 
 import io
+import re
 import warnings as warnings_mod
 from typing import Any
 
@@ -26,6 +27,21 @@ GAP_SPACE = 0.2            # gap / font size above which a missing space is writ
 GAP_BREAK = 1.2            # gap / font size above which a run ends (a column, a tab)
 SCAN_COVER = 0.7           # one picture covering this share of the page makes the page a scan ...
 SCAN_TEXT_MAX = 200        # ... when its own text is shorter than this (a scanner app's footer, a digital stamp)
+CID_SHARE = 0.5            # characters coming out as font codes "(cid:N)" over this share: the text layer has no letters
+
+
+def _cid(text: str) -> bool:
+    """A character the font gives no letter for: pdfminer writes its glyph code as "(cid:N)"."""
+    return text.startswith("(cid:")
+
+
+_CID_CODE = re.compile(r"\(cid:\d+\)")
+
+
+def _decoded(text: str) -> str | None:
+    """The words of a run without its font codes; None when no word of two letters is left."""
+    left = re.sub(r"\s+", " ", _CID_CODE.sub("", text)).strip()
+    return left if re.search(r"[^\W\d_]{2}", left) else None
 
 
 def _scan_cover(page: Any) -> float:
@@ -308,16 +324,31 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
             scan = 0.0
             if options.ocr_min_chars <= ink < SCAN_TEXT_MAX and image_way is not None:
                 scan = _scan_cover(page)   # a scan with a short text layer (04-F4) takes the image way too
-            if (ink < options.ocr_min_chars or scan >= SCAN_COVER) and image_way is not None:
+            # WAVE-10 VJF-1: a font embedded without a map to letters gives its glyph codes "(cid:N)" instead of words;
+            # such a page has plenty of "text" and none of it can be a label, so it is read from its pixels like a scan
+            codes = sum(1 for c in chars if c.get("text") and _cid(c["text"]))
+            garbled = ink >= options.ocr_min_chars and codes >= CID_SHARE * ink
+            widgets_: list[Widget] | None = None
+            if garbled:
+                try:
+                    with warnings_mod.catch_warnings():
+                        warnings_mod.simplefilter("ignore")
+                        widgets_ = _widgets(page, ids)
+                except Exception:  # noqa: BLE001 - the native pass below tells the reason
+                    widgets_ = None
+            if (ink < options.ocr_min_chars or scan >= SCAN_COVER or garbled) and image_way is not None:
                 got = image_way(data, index, number, ids, options)
                 page_, extra = got if isinstance(got, tuple) else (got, [])
                 if page_.ink is False and not extra:   # AUDIT-8 VE-2: a measured blank page was not "read from its pixels"
                     pages.append(page_)
                     continue
                 if page_.runs or not extra:
+                    if garbled and widgets_:   # the declared fields are exact in the file; only the words were lost
+                        page_ = page_.model_copy(update={"widgets": widgets_})
                     pages.append(page_)
                     warnings.extend(extra)
-                    why = (f"{ink} characters of text and a picture over {round(100 * scan)}% of the page (a scan)"
+                    why = (f"{codes} of {ink} characters are font codes without letters" if garbled else
+                           f"{ink} characters of text and a picture over {round(100 * scan)}% of the page (a scan)"
                            if scan >= SCAN_COVER else f"{ink} characters of text")
                     warnings.append(Warning(code="OCR_USED", page=number,
                                             detail=f"{why}; the page was read from its pixels"))
@@ -325,6 +356,12 @@ def read(data: bytes, options: ReadOptions) -> ReadResult:
                 # the image way read nothing (no engine, a failure): the native few characters stay, the reason is told
                 no_ocr = extra
             runs = _runs(chars, ids)
+            if garbled:   # no pixels read either: font codes are never offered as labels or text
+                runs = [r.model_copy(update={"text": t}) for r in runs if (t := _decoded(r.text)) is not None]
+                warnings.append(Warning(
+                    code="UNREADABLE_PART", page=number,
+                    detail=f"{codes} of {ink} characters are font codes without letters and the page could not be "
+                           "read from its pixels: its labels are missing"))
             lines, rects = _vectors(page, ids)
             if no_ocr:
                 warnings.extend(no_ocr)

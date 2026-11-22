@@ -1,0 +1,854 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AndriiShramko/shramko-asystent-urzednika/contracts/coi/sidecar.schema.json",
+  "$defs": {
+    "DictionaryLink": {
+      "additionalProperties": false,
+      "description": "A8 DX-2: one field of the paper that names a dictionary of the partner (`compose.dictionaries.links`).",
+      "properties": {
+        "field": {
+          "description": "Form id of the field.",
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "dictionary": {
+          "minLength": 1,
+          "title": "Dictionary",
+          "type": "string"
+        },
+        "written": {
+          "description": "True when the form JSON carries the link, false when it was only noted.",
+          "title": "Written",
+          "type": "boolean"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "label",
+        "dictionary",
+        "written",
+        "why"
+      ],
+      "title": "DictionaryLink",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "Where a statement comes from: a quote, and the place on the paper when it is known.\n\nRevision 1.1: a record may carry box and anchor together (an anchored text box), and may leave out the quote\nwhen it locates a drawn blank with a box or an anchor. A Stated value still needs a quote (see Stated).",
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "runs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "spans": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Spans",
+          "type": "array"
+        }
+      },
+      "title": "Evidence",
+      "type": "object"
+    },
+    "FieldEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "quote": {
+          "description": "1.1: may be left out when box or anchor locate a drawn blank.",
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "runs": {
+          "description": "1.1: run ids of the quote or of the blank.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Runs",
+          "type": "array"
+        }
+      },
+      "title": "FieldEvidence",
+      "type": "object"
+    },
+    "Ledger": {
+      "additionalProperties": false,
+      "properties": {
+        "blanks_found": {
+          "minimum": 0,
+          "title": "Blanks Found",
+          "type": "integer"
+        },
+        "became_field": {
+          "minimum": 0,
+          "title": "Became Field",
+          "type": "integer"
+        },
+        "merged": {
+          "minimum": 0,
+          "title": "Merged",
+          "type": "integer"
+        },
+        "covered_by_standard": {
+          "minimum": 0,
+          "title": "Covered By Standard",
+          "type": "integer"
+        },
+        "left_out": {
+          "minimum": 0,
+          "title": "Left Out",
+          "type": "integer"
+        },
+        "awaiting_decision": {
+          "minimum": 0,
+          "title": "Awaiting Decision",
+          "type": "integer"
+        },
+        "rows": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LedgerRow"
+          },
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "blanks_found",
+        "became_field",
+        "merged",
+        "covered_by_standard",
+        "left_out",
+        "awaiting_decision"
+      ],
+      "title": "Ledger",
+      "type": "object"
+    },
+    "LedgerRow": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "minLength": 1,
+          "title": "Candidate",
+          "type": "string"
+        },
+        "fate": {
+          "enum": [
+            "FIELD",
+            "MERGED",
+            "STANDARD",
+            "LEFT_OUT",
+            "AWAITING_DECISION"
+          ],
+          "title": "Fate",
+          "type": "string"
+        },
+        "field": {
+          "description": "FIELD: id of the form component.",
+          "title": "Field",
+          "type": "string"
+        },
+        "into": {
+          "description": "MERGED: candidate it was merged into.",
+          "title": "Into",
+          "type": "string"
+        },
+        "why": {
+          "enum": [
+            "COMB_CELLS",
+            "GROUP_MEMBER",
+            "LINE_BLOCK",
+            "SAME_ALTERNATIVE",
+            "TABLE_ROW"
+          ],
+          "title": "Why",
+          "type": "string"
+        },
+        "section": {
+          "description": "STANDARD: techName of the standard section.",
+          "title": "Section",
+          "type": "string"
+        },
+        "reason": {
+          "description": "LEFT_OUT: reason code.",
+          "enum": [
+            "PAPER_INSTRUCTION",
+            "COVERED_BY_STANDARD",
+            "SIGNATURE_AND_DATE",
+            "OFFICE_USE",
+            "PAGE_FURNITURE",
+            "GRAMMAR_VARIANT",
+            "CLAUSE_LINKED",
+            "EXPLANATION",
+            "COMPUTED_VALUE"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "decision": {
+          "description": "AWAITING_DECISION: id of the decision.",
+          "title": "Decision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate",
+        "fate"
+      ],
+      "title": "LedgerRow",
+      "type": "object"
+    },
+    "Proposals": {
+      "additionalProperties": false,
+      "properties": {
+        "dictionaries": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProposedDictionary"
+          },
+          "title": "Dictionaries",
+          "type": "array"
+        },
+        "initial_data": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProposedSource"
+          },
+          "title": "Initial Data",
+          "type": "array"
+        },
+        "validators": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ProposedValidatorRow"
+          },
+          "title": "Validators",
+          "type": "array"
+        },
+        "other": {
+          "default": [],
+          "description": "E.g. an e-Delivery field, a third capacity (design 6.6).",
+          "items": {
+            "$ref": "#/$defs/ProposedOther"
+          },
+          "title": "Other",
+          "type": "array"
+        },
+        "fee": {
+          "$ref": "#/$defs/ProposedFee",
+          "description": "1.1: a proposed fee; receipts.fee stays what the paper states."
+        }
+      },
+      "title": "Proposals",
+      "type": "object"
+    },
+    "ProposedDictionary": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "entries": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "variants": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Variants",
+          "type": "array"
+        },
+        "pages": {
+          "default": [],
+          "items": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "title": "Pages",
+          "type": "array"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Fields",
+          "type": "array"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        },
+        "use": {
+          "minLength": 1,
+          "title": "Use",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ProposedDictionary",
+      "type": "object"
+    },
+    "ProposedFee": {
+      "additionalProperties": false,
+      "description": "1.1: a fee we propose (from a statute or a guide), kept apart from the paper's fee: it never turns a\n`not_found` fee into `stated` (brief.proposed_fee, meta proposals.fee).",
+      "properties": {
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "value",
+        "why"
+      ],
+      "title": "ProposedFee",
+      "type": "object"
+    },
+    "ProposedOther": {
+      "additionalProperties": false,
+      "properties": {
+        "what": {
+          "minLength": 1,
+          "title": "What",
+          "type": "string"
+        },
+        "why": {
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "what",
+        "why"
+      ],
+      "title": "ProposedOther",
+      "type": "object"
+    },
+    "ProposedSource": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "source": {
+          "description": "Partner notation, e.g. \"KRS.name\".",
+          "pattern": "^[A-Z][A-Z_]*\\.[A-Za-z_]+$",
+          "title": "Source",
+          "type": "string"
+        },
+        "why": {
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "source",
+        "why"
+      ],
+      "title": "ProposedSource",
+      "type": "object"
+    },
+    "ProposedValidatorRow": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "name": {
+          "enum": [
+            "NRB",
+            "KRS",
+            "KW",
+            "PHONE_PL",
+            "DATE_RANGE",
+            "PARCEL_ID"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "why": {
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "name",
+        "why"
+      ],
+      "title": "ProposedValidatorRow",
+      "type": "object"
+    },
+    "RunCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^G([1-9]|1[0-2])$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "status"
+      ],
+      "title": "RunCheck",
+      "type": "object"
+    },
+    "RunConverter": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "pipeline": {
+          "description": "interim: the finder found no candidate, title and standard pages only.",
+          "enum": [
+            "brief",
+            "interim"
+          ],
+          "title": "Pipeline",
+          "type": "string"
+        },
+        "reader": {
+          "description": "The reader that read the file, e.g. \"pdf.native\".",
+          "minLength": 1,
+          "title": "Reader",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "pipeline",
+        "reader"
+      ],
+      "title": "RunConverter",
+      "type": "object"
+    },
+    "RunCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "pages": {
+          "description": "Pages (tabs) of the form.",
+          "minimum": 0,
+          "title": "Pages",
+          "type": "integer"
+        },
+        "fields": {
+          "description": "Components of the form, all pages.",
+          "minimum": 0,
+          "title": "Fields",
+          "type": "integer"
+        },
+        "source_pages": {
+          "description": "Pages of the uploaded file.",
+          "minimum": 0,
+          "title": "Source Pages",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "pages",
+        "fields",
+        "source_pages"
+      ],
+      "title": "RunCounts",
+      "type": "object"
+    },
+    "RunMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "origins": {
+          "additionalProperties": {
+            "enum": [
+              "paper",
+              "standard",
+              "reviewer"
+            ],
+            "type": "string"
+          },
+          "default": {},
+          "title": "Origins",
+          "type": "object"
+        },
+        "brief_keys": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "description": "Form id -> key of the brief field it was composed from.",
+          "title": "Brief Keys",
+          "type": "object"
+        },
+        "evidence": {
+          "additionalProperties": {
+            "items": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "type": "array"
+          },
+          "default": {},
+          "description": "Form id -> where the field stands on the paper (A8 VB-4); fields of the matter only.",
+          "title": "Evidence",
+          "type": "object"
+        },
+        "ledger": {
+          "$ref": "#/$defs/Ledger",
+          "description": "Absent on the interim path and when it does not close (LEDGER_NOT_CLOSED)."
+        },
+        "proposals": {
+          "$ref": "#/$defs/Proposals",
+          "description": "Proposed dictionaries; absent when there are none."
+        },
+        "dictionary_links": {
+          "default": [],
+          "description": "Absent when no field names a dictionary.",
+          "items": {
+            "$ref": "#/$defs/DictionaryLink"
+          },
+          "title": "Dictionary Links",
+          "type": "array"
+        }
+      },
+      "title": "RunMeta",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "description": "Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an\noption that shares its run with others (\"❑ pies ❑ suka\"). Revision 1.1. A whole run is still named by its id\nalone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans).",
+      "properties": {
+        "run": {
+          "minLength": 1,
+          "title": "Run",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run",
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "Warning": {
+      "additionalProperties": false,
+      "description": "One honest gap: what, where, and the quotes that show it.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "NOT_A_FORM",
+            "UNREADABLE_PART",
+            "OCR_USED",
+            "HIDDEN_SHEET",
+            "ACTIVE_CONTENT",
+            "FILLED_FORM",
+            "SILENT_PAGE",
+            "LABEL_NOT_FOUND",
+            "LABEL_RAW",
+            "AMBIGUOUS_GROUP",
+            "UNRESOLVED_REFERENCE",
+            "REQUIRED_INFERRED",
+            "ADDRESSEE_CONFLICT",
+            "COMPOSITE_UNRESOLVED",
+            "INFERRED_SHAPE",
+            "LOW_CONFIDENCE",
+            "REQUIRED_WITHOUT_EVIDENCE",
+            "CONDITION_NOT_WRITTEN",
+            "SECTION_SPLIT",
+            "REPEATING_FLATTENED",
+            "STEP_NOTE_ADDED",
+            "MARKUP_IN_LABEL",
+            "TITLE_MISSING",
+            "ADDRESSEE_MISSING",
+            "APPLICANTS_ASSUMED",
+            "SOLE_TRADER_AS_ENTITY",
+            "CLAUSE_LINK_MISSING",
+            "NO_MATTER",
+            "EXTRA_NOT_PLACED",
+            "MODEL_USED",
+            "MODEL_FALLBACK",
+            "MODEL_SKIPPED",
+            "INPUT_NOTE",
+            "LEDGER_NOT_CLOSED",
+            "BRIEF_NOT_READ",
+            "GATE_G5",
+            "GATE_G6",
+            "GATE_G7",
+            "GATE_G8",
+            "GATE_G9",
+            "GATE_G10",
+            "GATE_G11",
+            "GATE_G12"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "Warning",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1,
+      "title": "Version",
+      "type": "integer"
+    },
+    "converter": {
+      "$ref": "#/$defs/RunConverter"
+    },
+    "counts": {
+      "$ref": "#/$defs/RunCounts"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Warning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "checks": {
+      "description": "The import gate, G1 to G12, in order.",
+      "items": {
+        "$ref": "#/$defs/RunCheck"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "meta": {
+      "$ref": "#/$defs/RunMeta"
+    }
+  },
+  "required": [
+    "version",
+    "converter",
+    "counts",
+    "checks",
+    "meta"
+  ],
+  "title": "Sidecar",
+  "type": "object",
+  "description": "Sidecar returned by a run today (app.pipeline.run: the meta of /v1/convert, results/*/meta.json). Not meta.schema.json, the design 5.4 target that no run writes yet. Also checked by app.model.meta.Ledger: the ledger closes. Warning codes are app.model.common.WarningCode."
+}

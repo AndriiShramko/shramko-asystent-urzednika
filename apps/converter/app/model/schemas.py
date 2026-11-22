@@ -21,6 +21,7 @@ from .candidate import FinderOutput
 from .common import canonical_json
 from .meta import Meta
 from .page import PageModel
+from .sidecar import Sidecar
 
 ROOT = Path(__file__).resolve().parents[4]
 CONTRACTS = ROOT / "contracts" / "coi"
@@ -47,6 +48,14 @@ SCHEMAS: dict[str, tuple[type[BaseModel], str]] = {
                    "from the finder's candidates and the brief's dispositions. Revision 1.1, additive."),
 }
 
+# A8 VB-1: the sidecar a run returns today (app.pipeline.run); kept apart from SCHEMAS, which pairs each contract
+# with an example of the design. `meta` above stays the design 5.4 target.
+RUN_SCHEMAS: dict[str, tuple[type[BaseModel], str]] = {
+    "sidecar": (Sidecar, "Sidecar returned by a run today (app.pipeline.run: the meta of /v1/convert, results/*/meta.json). "
+                         "Not meta.schema.json, the design 5.4 target that no run writes yet. Also checked by "
+                         "app.model.meta.Ledger: the ledger closes. Warning codes are app.model.common.WarningCode."),
+}
+
 
 class _NoNull(GenerateJsonSchema):
     """Optional means absent, never null."""
@@ -64,7 +73,7 @@ class _NoNull(GenerateJsonSchema):
 
 
 def schema_for(name: str) -> dict[str, Any]:
-    model, description = SCHEMAS[name]
+    model, description = {**SCHEMAS, **RUN_SCHEMAS}[name]
     body = model.model_json_schema(schema_generator=_NoNull, by_alias=True)
     body["description"] = description
     return {"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": BASE_ID + f"{name}.schema.json", **body}
@@ -73,7 +82,7 @@ def schema_for(name: str) -> dict[str, Any]:
 def main(argv: list[str]) -> int:
     check = "--check" in argv
     differ = []
-    for name in SCHEMAS:
+    for name in (*SCHEMAS, *RUN_SCHEMAS):
         path = CONTRACTS / f"{name}.schema.json"
         data = canonical_json(schema_for(name))
         if check:
@@ -84,7 +93,7 @@ def main(argv: list[str]) -> int:
     if differ:
         print("schemas differ from the models:", ", ".join(differ), "- run: python -m app.model.schemas")
         return 1
-    print("schemas", "match" if check else "written", len(SCHEMAS))
+    print("schemas", "match" if check else "written", len(SCHEMAS) + len(RUN_SCHEMAS))
     return 0
 
 
