@@ -2,7 +2,7 @@
 
 One folder per judged set of the task: `form.json` is the form in the partner's structure (exactly `title`, `tabs`, `flow`), `meta.json` is our report beside it (where each field came from, remarks for the clerk, proposed dictionaries).
 
-**State of these files: 22 November 2026, 07:15, produced by the submitted image `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:8511a7f6b7e84cafed8f21a476ad5b25f661fb288713de237291b0cd85a6c621` (code commit `bd2d0d6`)** with the jury's own flags: `docker run --rm --network none --read-only --cap-drop ALL ... convert /in/<file> --out /out/form.json --report /out`. One input per set: the PDF of the set.
+**State of these files: 22 November 2026, 07:36, produced by the submitted image `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:77f29937c49dbbfbe20bcfd820c37816cafc2d2c6da71a238aac65f91a87a97a` (code commit `a9fef20`)** with the jury's own flags: `docker run --rm --network none --read-only --cap-drop ALL ... convert /in/<file> --out /out/form.json --report /out`. One input per set: the PDF of the set.
 
 | Set | Input | Pages (`tabs`) | Remarks in `meta.json` |
 |---|---|---|---|
