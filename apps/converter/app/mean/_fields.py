@@ -43,6 +43,10 @@ _THIRD_PERSON = re.compile(r"(kandydat|podopieczn|zawodnik|sportowc|trener|dziec
 # phrases (set judged-07 PDF); each side keeps its own words.
 _ALT_OR = re.compile(r"(\w[\w-]*(?:\s*/\s*\w[\w-]*)+)\s*\*+\s+lub\s+((?:[\w-]+\s+){0,3}\w[\w-]*(?:\s*/\s*\w[\w-]*)+(?:\s+[\w-]+){0,2})\s*\*+")
 _DECLARE = re.compile(r"oświadczam\b", re.IGNORECASE)
+# C6: a printed date mask after a place ("DD-MM-RRRR", "D D - M M - R R R R", one letter per cell), and the parts of a
+# mask that box glyphs stand in front of ("□ D D -", "□ M M -", "□ R R R R")
+_DATE_MASK = re.compile(r"^DD[-./]?MM[-./]?(?:RRRR|YYYY)")
+_MASK_PART = re.compile(r"^(?:D\s?D|M\s?M|R\s?R(?:\s?R\s?R)?|Y\s?Y\s?Y\s?Y)\s*[-./]?$", re.IGNORECASE)
 # Attachments named in running text (audit T2): a list under "Załączniki ...:", "należy / można dołączyć X",
 # "w załączeniu X", "X załączyć do wniosku"; a row "N. X  TAK  NIE" of an attachments table.
 _ATT_LIST = re.compile(r"^(?:\d{1,2}\.\s*)?(?:załączniki\b[^:]{0,40}|do wniosku\s+(?:należy|można)\s+(?:dołączyć|załączyć))\s*:$", re.IGNORECASE)
@@ -589,6 +593,8 @@ class _Reader:
                 self.out.warnings.append(Warning(code="AMBIGUOUS_GROUP", page=c.page, candidate=c.id, detail="a choice group with fewer than two readable options"))
                 return None
             kind = self._choice_kind(c, raw, options)
+            if all(_MASK_PART.match(o) for o in options):
+                kind, options, concept = "DATEPICKER", [], "date"   # C6: the boxes stand in front of a date mask
         else:
             kind, concept, length, shown = self._typing(c, label, low, shown, hint or self._hint_after(c))
         key = self.keys.unique(key_of(shown))
@@ -676,6 +682,8 @@ class _Reader:
             return "DATEPICKER", "date", None, self.last.label[:-2] + "do"   # "od ... do ...": two dates in one section
         if c.kind == "comb" and c.mask and re.search(r"[DMR]{2}", c.mask):
             return "DATEPICKER", "date", None, shown
+        if self._mask_after(c):
+            return "DATEPICKER", "date", None, shown
         for rx, row in lexicon.compiled("concepts"):
             if rx.search(low) or (hint and row["type"] == "DATEPICKER" and rx.search(hint.casefold())):   # "(DD-MM-RRRR)"
                 return row["type"], row.get("concept"), row.get("length"), row.get("label") or _PHRASES.get(low) or shown
@@ -721,6 +729,20 @@ class _Reader:
             if role == "instruction":
                 out.append(text)
         return out
+
+    def _mask_after(self, c: Candidate, reach: int = 12) -> bool:
+        """C6: the text printed right after the place, white space ignored, starts with a date mask; one letter per
+        cell of a sheet counts too."""
+        doc = self.doc
+        place = [doc.pos[r] for r in doc.cand_runs(c) if r in doc.pos]
+        if not place:
+            return False
+        seen = ""
+        for rid in doc.order[max(place) + 1: max(place) + 1 + reach]:
+            seen += re.sub(r"\s+", "", doc.text(rid)).upper()
+            if len(seen) >= 10:
+                break
+        return bool(_DATE_MASK.match(seen))
 
     def _hint_after(self, c: Candidate) -> str | None:
         """ "(rodzaj uroczystości, np. wesele ...)" under a line is the hint of the field."""
