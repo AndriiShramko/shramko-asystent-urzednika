@@ -220,3 +220,9 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .fp-tag-pesel, .fp-tag-mlpz { background: var(--c-ok-bg); color: var(--c-ok-text); }
 .fp-tag-proposal { background: var(--c-notice-bg); color: var(--c-notice-text); }
 .fp-notice { margin-top: 0.5rem; }
+.fp-banner { position: sticky; top: 0; z-index: 5; margin: 1rem 0 0; background: var(--c-notice-bg); color: var(--c-notice-text); border: 2px solid var(--c-notice-text); border-radius: 6px; padding: 0.5rem 1rem; font-weight: 600; }
+.fp-people { border: 1px solid var(--c-border); border-radius: 6px; padding: 0.5rem 0.75rem; display: grid; gap: 0.5rem; }
+.fp-people[hidden] { display: none; }
+.fp-people legend { font-weight: 600; }
+.fp-person { justify-content: flex-start; text-align: left; }
+.linkish { font: inherit; color: var(--c-accent); background: none; border: 0; padding: 0.15rem 0; text-decoration: underline; cursor: pointer; text-align: left; min-height: 1.75rem; }
