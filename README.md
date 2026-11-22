@@ -27,7 +27,7 @@ How it works inside: local OCR, layout analysis and rules. The commands below ru
 
 The image (the same reference in every command below):
 
-`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f`
+`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057`
 
 Put the blank form into a folder `forms` next to where you stand, as `forms/form.pdf`. Each command is one line: paste it whole. The image is built for `linux/amd64`; `--platform linux/amd64` lets an ARM Mac run it under emulation. Run conversions one after another: the service works on two uploads at a time and answers `429 BUSY` to more.
 
@@ -36,31 +36,31 @@ Put the blank form into a folder `forms` next to where you stand, as `forms/form
 bash (Linux, macOS, Git Bash; `MSYS_NO_PATHCONV=1` stops Git Bash from rewriting `/in/...` into a Windows path and does nothing elsewhere):
 
 ```bash
-MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf > form.json
+MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf > form.json
 ```
 
 Windows PowerShell 5.1: its own `>` would write UTF-16 with a byte-order mark, so the redirect is left to `cmd`, which keeps the bytes as they are (UTF-8 without a BOM):
 
 ```powershell
-cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf > form.json'
+cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf > form.json'
 ```
 
 **2. Offline, the form written into a mounted folder with `--out`.** On Linux the container runs as your own user so that it may write into `out`:
 
 ```bash
-mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/form.json
+mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf --out /out/form.json
 ```
 
 macOS and Git Bash (Docker Desktop maps the owner of the folder itself, so no `--user`):
 
 ```bash
-mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/form.json
+mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf --out /out/form.json
 ```
 
 Windows PowerShell 5.1 (the simplest choice there; the file is UTF-8 without a BOM):
 
 ```powershell
-mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/form.json
+mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf --out /out/form.json
 ```
 
 If `out` cannot be written, `convert` says so in one line and exits with code 4.
@@ -68,17 +68,17 @@ If `out` cannot be written, `convert` says so in one line and exits with code 4.
 **A whole folder of new forms**, one after another, every result into `out/<name>.json`:
 
 ```bash
-mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert "/in/$n" > "out/${n%.*}.json"; done
+mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert "/in/$n" > "out/${n%.*}.json"; done
 ```
 
 ```powershell
-mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
+mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
 ```
 
 **3. REST and the review page, published on this computer only (loopback).** Start the service in one window (stop it with Ctrl+C):
 
 ```bash
-docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f
+docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057
 ```
 
 The same line works in PowerShell. Then, in a second window, from the folder that holds `form.pdf`:
@@ -97,6 +97,10 @@ Started without settings and without a key file, the service is open and writes 
 
 - **Reads:** PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG (images and scans through local OCR). What it could not read is a warning with the page and the place, never a made-up field.
 - Links: state of the build [`docs/03-plan/STATUS.md`](docs/03-plan/STATUS.md) · [`apps/converter/README.md`](apps/converter/README.md) · [`docs/02-architecture/converter-design.md`](docs/02-architecture/converter-design.md) · pre-event disclosure [`NOTICE`](NOTICE).
+
+**Optional: the AI model with the organiser's key.** Open `/ui/`, the block "Model AI (opcjonalnie)", paste the key and press "Użyj w tej sesji": the gateway address and the model name are already filled in, nothing else to type. The key stays only in the memory of the service until it stops: never on disk, in logs or in the image. Without a key, or with a wrong one, the conversion keeps working on rules and local OCR, and the page says so plainly. The same from the command line: add `-e VISION_API_KEY=<key> -e VISION_BASE_URL=https://api.edenai.run/v3 -e VISION_MODEL=amazon/qwen.qwen3-235b-a22b-2507-v1:0` to the `docker run` command.
+
+**Opcjonalnie: model AI z kluczem od organizatora.** Otwórz `/ui/`, blok „Model AI (opcjonalnie)”, wklej klucz i naciśnij „Użyj w tej sesji”: adres bramki i nazwa modelu są już wpisane, niczego więcej nie trzeba podawać. Klucz zostaje tylko w pamięci usługi do jej zatrzymania: nie trafia na dysk, do logów ani do obrazu. Bez klucza albo z błędnym kluczem konwersja działa dalej na regułach i lokalnym OCR, a strona mówi o tym wprost. To samo z wiersza poleceń: dodaj do polecenia `docker run` opcje `-e VISION_API_KEY=<klucz> -e VISION_BASE_URL=https://api.edenai.run/v3 -e VISION_MODEL=amazon/qwen.qwen3-235b-a22b-2507-v1:0`.
 
 ## Configuration and REST API (short) / Konfiguracja i REST API
 
@@ -120,9 +124,9 @@ Full tables: [`apps/converter/README.md`](apps/converter/README.md), sections "C
 
 ## Koszt i wymagania / Cost and requirements
 
-**Wymagania (PL).** Procesor, bez GPU. W czasie pracy usługa nie korzysta z sieci (polecenie 1 powyżej działa z `--network none`). Obraz: 361 617 605 bajtów po rozpakowaniu (`docker image inspect`, build `sha256:d0487555…`, linux/amd64; do pobrania 101,3 MB skompresowanych warstw według manifestu ghcr.io, archiwum gzip w wydaniu 100,9 MB). Ustawienia domyślne: 2 równoległe zadania, 600 s na zadanie, 20 MiB i 60 stron na plik (`apps/converter/app/config.py`). Wywołań zewnętrznych nie ma, więc nie ma opłat za wywołanie; czas procesora jednej konwersji (licznik cgroup w kontenerze z polecenia 1, `--cpus 2`, razem ze startem Pythona): DOCX 3,8 s, skan jednej strony JPG 5,0 s, PDF 4 strony 6,7 s, PDF 11 stron 17,6 s. Poniżej czas zegarowy.
+**Wymagania (PL).** Procesor, bez GPU. W czasie pracy usługa nie korzysta z sieci (polecenie 1 powyżej działa z `--network none`). Obraz: 361 606 814 bajtów po rozpakowaniu (`docker image inspect`, build `sha256:20557740…`, linux/amd64; do pobrania 101,3 MB skompresowanych warstw według manifestu ghcr.io, archiwum gzip w wydaniu 100,9 MB). Ustawienia domyślne: 2 równoległe zadania, 600 s na zadanie, 20 MiB i 60 stron na plik (`apps/converter/app/config.py`). Wywołań zewnętrznych nie ma, więc nie ma opłat za wywołanie; czas procesora jednej konwersji (licznik cgroup w kontenerze z polecenia 1, `--cpus 2`, razem ze startem Pythona): DOCX 3,8 s, skan jednej strony JPG 5,0 s, PDF 4 strony 6,7 s, PDF 11 stron 17,6 s. Poniżej czas zegarowy.
 
-**Requirements (EN).** CPU only, no GPU. No network at run time (command 1 above runs with `--network none`). Image: 361,617,605 bytes uncompressed (`docker image inspect`, build `sha256:d0487555…`, linux/amd64; the download is 101.3 MB of compressed layers per the ghcr.io manifest, the gzip archive in the release 100.9 MB). Defaults: 2 parallel jobs, 600 s per job, 20 MiB and 60 pages per file (`apps/converter/app/config.py`). No external service is called, so there is no per-call fee; CPU time of one conversion (cgroup counter inside the container of command 1, `--cpus 2`, Python start-up included): DOCX 3.8 s, a one-page JPG scan 5.0 s, a 4-page PDF 6.7 s, an 11-page PDF 17.6 s. Below is wall-clock time.
+**Requirements (EN).** CPU only, no GPU. No network at run time (command 1 above runs with `--network none`). Image: 361,606,814 bytes uncompressed (`docker image inspect`, build `sha256:20557740…`, linux/amd64; the download is 101.3 MB of compressed layers per the ghcr.io manifest, the gzip archive in the release 100.9 MB). Defaults: 2 parallel jobs, 600 s per job, 20 MiB and 60 pages per file (`apps/converter/app/config.py`). No external service is called, so there is no per-call fee; CPU time of one conversion (cgroup counter inside the container of command 1, `--cpus 2`, Python start-up included): DOCX 3.8 s, a one-page JPG scan 5.0 s, a 4-page PDF 6.7 s, an 11-page PDF 17.6 s. Below is wall-clock time.
 
 Czas jednej konwersji przez REST, 108 plików (54 z zestawów jurorskich i 54 z archiwum), obraz `061fce4b…`, kontener `--cpus 2 --memory 4g`, pliki jeden po drugim, 22.11.2026. Komputer był współdzielony z innym zadaniem obciążającym procesor w 100 %, więc sekundy są zawyżone; liczą się rzędy wielkości. / Seconds for one conversion over REST, 108 files (54 from the judged sets, 54 from the city archive), image `061fce4b…`, container `--cpus 2 --memory 4g`, files one after another, 22 Nov 2026. The laptop was shared with another job using a CPU at 100 %, so the seconds are inflated; read the order of magnitude.
 

@@ -2,7 +2,7 @@
 
 Написано 22.11.2026 около 06:15 для финальной сдачи задания COI «Cyfryzacja formularzy». Дедлайн HackTribe **11:00**; последний Save **не позже 10:45**. Польский текст в блоках вставлять как есть; русская строка над блоком только для вас.
 
-**Финальные значения уже вписаны (10:05, v1.2):** образ `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f` (код `97df429`, проверен: приёмка жюри‑скриптом 9 из 9, 10:02; 4c 10:05), релиз со всеми 7 JSON: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.2-hacknation, презентация: `C:\ShramkoU\HackNation2026\deck-v3\Shramko-Asystent-Urzednika-COI.pdf`.
+**Финальные значения уже вписаны (10:40, v1.3):** образ `ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057` (код `b31a410`, проверен: приёмка жюри‑скриптом 9 из 9, 10:02; 4c 10:05), релиз со всеми 7 JSON: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.3-hacknation, презентация: `C:\ShramkoU\HackNation2026\deck-v3\Shramko-Asystent-Urzednika-COI.pdf`.
 Осталась одна метка, которую вписываете вы:
 - `https://www.youtube.com/watch?v=U5bJ_MtXDVk (film do 3 minut; wersja rozszerzona 7:23: https://www.youtube.com/watch?v=Ac__UlsRNR0)` — ссылка на фильм YouTube (публичный или «по ссылке»).
 
@@ -79,7 +79,7 @@ Model pomocniczy, domyślnie wyłączony: dla słabych stron skanów administrat
 ### 7. What's done so far and goal of your project
 *Что сделано. Числа только измеренные, с указанием, на чём мерили. Источники для вас: перепись — `data/forms-census.json`; точность — `quality-gate/VJ1-vision-judge.md` в хранилище; время — README, раздел «Koszt i wymagania»; тесты — журнал лида 10, 02:14; цепочка 158 файлов — `docs/03-plan/RESUME.md`.*
 ```text
-Stan na 22.11.2026, godz. 10:05. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f (linux/amd64, publiczny, bez logowania).
+Stan na 22.11.2026, godz. 10:40. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 (linux/amd64, publiczny, bez logowania).
 
 Przed wydarzeniem (oznaczone w repozytorium jako materiał sprzed hackathonu): analiza obu eksportów wzorcowych partnera pole po polu, spis 661 dokumentów-formularzy Bydgoszczy, badania i specyfikacja. Na wydarzeniu: cały kod produktu.
 
@@ -122,10 +122,10 @@ https://github.com/AndriiShramko/shramko-asystent-urzednika
 ### 15. [Opcjonalne] Instrukcje jak otworzyć projekt
 *Команды для жюри. Совпадают с README; перед вставкой сверить с README на GitHub после финальной сборки.*
 ```text
-Potrzebny tylko Docker. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f
+Potrzebny tylko Docker. Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057
 
 1) Usługa i strona dla urzędnika (Linux, macOS, Windows):
-docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f
+docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057
 Potem w przeglądarce: http://127.0.0.1:8080/ui/ (wczytaj pusty formularz). Stan usługi: http://127.0.0.1:8080/status
 
 2) REST z drugiego okna:
@@ -133,7 +133,7 @@ curl -F "file=@formularz.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.jso
 (w PowerShell: curl.exe)
 
 3) Bez sieci, wynik na standardowe wyjście (dowód, że nic nie wychodzi z kontenera); formularz w folderze forms/:
-docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf > form.json
+docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf > form.json
 (Git Bash: dodaj MSYS_NO_PATHCONV=1 na początku; PowerShell: polecenie w README, sekcja „For the jury”.)
 
 Pliki konwertujcie po kolei: usługa pracuje na dwóch plikach naraz i na więcej odpowiada 429. Limit: 20 MiB i 60 stron na plik (zmienne środowiskowe w README).
@@ -158,11 +158,11 @@ Shramko
 
 ### 19. [Opcjonalne] Dodatkowe pole na materiały
 ```text
-Film: https://www.youtube.com/watch?v=U5bJ_MtXDVk (film do 3 minut; wersja rozszerzona 7:23: https://www.youtube.com/watch?v=Ac__UlsRNR0) | Kod: https://github.com/AndriiShramko/shramko-asystent-urzednika | Wyniki JSON wszystkich 7 formularzy (także zestaw 08) i archiwum obrazu: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.2-hacknation | Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f
+Film: https://www.youtube.com/watch?v=U5bJ_MtXDVk (film do 3 minut; wersja rozszerzona 7:23: https://www.youtube.com/watch?v=Ac__UlsRNR0) | Kod: https://github.com/AndriiShramko/shramko-asystent-urzednika | Wyniki JSON wszystkich 7 formularzy (także zestaw 08) i archiwum obrazu: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.3-hacknation | Obraz: ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057
 ```
 
 ### Файлы JSON семи оцениваемых форм (требование карточки)
-Все 7 файлов (наборы 02, 03, 04, 06, 07, 08, 09) лежат в публичном релизе GitHub: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.2-hacknation — вместе с архивом образа (запасной путь). В git (`results/`) лежат 6 из 7: набор 08 цитирует банковский счёт учреждения с бумаги, проверка публикации такое в git не пускает. Если HackTribe позволяет приложить файлы — приложите и сами JSON из релиза; ссылка на релиз стоит в поле 19.
+Все 7 файлов (наборы 02, 03, 04, 06, 07, 08, 09) лежат в публичном релизе GitHub: https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/tag/v1.3-hacknation — вместе с архивом образа (запасной путь). В git (`results/`) лежат 6 из 7: набор 08 цитирует банковский счёт учреждения с бумаги, проверка публикации такое в git не пускает. Если HackTribe позволяет приложить файлы — приложите и сами JSON из релиза; ссылка на релиз стоит в поле 19.
 
 ---
 

@@ -14,7 +14,7 @@ Jak to działa w środku: lokalny OCR, analiza układu i reguły, bez modelu ję
 
 Obraz (ta sama referencja we wszystkich poleceniach poniżej):
 
-`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f`
+`ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057`
 
 Pusty formularz należy włożyć do folderu `forms` w bieżącym katalogu, jako `forms/form.pdf`. Każde polecenie to jedna linia: proszę wkleić ją w całości. Obraz jest zbudowany dla `linux/amd64`; dzięki `--platform linux/amd64` uruchomi się też na Macu z procesorem ARM (w emulacji). Konwersje proszę uruchamiać jedna po drugiej: usługa obsługuje naraz dwa pliki, na kolejne odpowiada `429 BUSY`.
 
@@ -23,31 +23,31 @@ Pusty formularz należy włożyć do folderu `forms` w bieżącym katalogu, jako
 bash (Linux, macOS, Git Bash; `MSYS_NO_PATHCONV=1` nie pozwala Git Bash zamienić `/in/...` na ścieżkę Windows, w innych systemach nic nie zmienia):
 
 ```bash
-MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf > form.json
+MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf > form.json
 ```
 
 Windows PowerShell 5.1: jego własne `>` zapisałoby plik w UTF-16 ze znacznikiem BOM, dlatego przekierowanie wykonuje `cmd`, który zostawia bajty bez zmian (UTF-8 bez BOM):
 
 ```powershell
-cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf > form.json'
+cmd /c 'docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "%cd%\forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf > form.json'
 ```
 
 **2. Bez sieci, formularz zapisany do zamontowanego folderu przez `--out`.** W Linuksie kontener działa jako Pani/Pana użytkownik, żeby mógł pisać do `out`:
 
 ```bash
-mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/form.json
+mkdir -p out && docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL --user "$(id -u):$(id -g)" -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf --out /out/form.json
 ```
 
 macOS i Git Bash (Docker Desktop sam przypisuje właściciela folderu, więc bez `--user`):
 
 ```bash
-mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/form.json
+mkdir -p out && MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" -v "$PWD/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf --out /out/form.json
 ```
 
 Windows PowerShell 5.1 (tu najprostszy wybór; plik jest w UTF-8 bez BOM):
 
 ```powershell
-mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert /in/form.pdf --out /out/form.json
+mkdir -Force out | Out-Null; docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert /in/form.pdf --out /out/form.json
 ```
 
 Jeśli do `out` nie da się pisać, `convert` mówi to w jednej linii i kończy się kodem 4.
@@ -55,17 +55,17 @@ Jeśli do `out` nie da się pisać, `convert` mówi to w jednej linii i kończy 
 **Cały folder nowych formularzy**, jeden po drugim, każdy wynik do `out/<nazwa>.json`:
 
 ```bash
-mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert "/in/$n" > "out/${n%.*}.json"; done
+mkdir -p out && for f in forms/*; do n="${f##*/}"; MSYS_NO_PATHCONV=1 docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "$PWD/forms:/in:ro" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert "/in/$n" > "out/${n%.*}.json"; done
 ```
 
 ```powershell
-mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
+mkdir -Force out | Out-Null; Get-ChildItem forms -File | ForEach-Object { docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL -v "${PWD}/forms:/in:ro" -v "${PWD}/out:/out" ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057 convert "/in/$($_.Name)" --out "/out/$($_.BaseName).json" }
 ```
 
 **3. REST i strona przeglądu, opublikowane tylko na tym komputerze (loopback).** W jednym oknie uruchomić usługę (zatrzymanie: Ctrl+C):
 
 ```bash
-docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:d04875554f13ccb92fb83d223b704e62776df8a579814885794b0066b6ff441f
+docker run --rm --platform linux/amd64 -p 127.0.0.1:8080:8080 --read-only --cap-drop ALL ghcr.io/andriishramko/shramko-asystent-urzednika@sha256:205577407dc5667b034d84f82e4835accad8866daa37b0fdf9d2b9118bee7057
 ```
 
 Ta sama linia działa w PowerShell. Potem w drugim oknie, w folderze z plikiem `form.pdf`:
@@ -81,6 +81,8 @@ curl.exe -F "file=@form.pdf" http://127.0.0.1:8080/v1/forms/convert -o form.json
 (W PowerShell `curl` to inne polecenie, `Invoke-WebRequest`; należy pisać `curl.exe`.) Strona przeglądu: <http://127.0.0.1:8080/ui/>. Stan usługi (nazwa, wersja, `engine: "rules"`, tryb tokenu, czytane formaty, limity): <http://127.0.0.1:8080/status>.
 
 Uruchomiona bez ustawień i bez pliku klucza usługa jest otwarta i zapisuje o tym ostrzeżenie w dzienniku; dlatego przykład publikuje port tylko na `127.0.0.1`. W sieci współdzielonej należy użyć [`docker-compose.yml`](docker-compose.yml), który działa z tokenem JWT. Serwer REST pod `--network none` jest nieosiągalny z komputera gospodarza, więc dowodem pracy bez sieci jest polecenie 1, a nie REST. Kody wyjścia `convert`: 0 gotowe, 2 plik odrzucony, 3 niespójna konfiguracja, 4 plik nieczytelny albo nie da się zapisać wyniku. Wszystkie ustawienia: [`apps/converter/README.md`](apps/converter/README.md).
+
+**Opcjonalnie: model AI z kluczem od organizatora.** Otwórz `/ui/`, blok „Model AI (opcjonalnie)”, wklej klucz i naciśnij „Użyj w tej sesji”: adres bramki i nazwa modelu są już wpisane, niczego więcej nie trzeba podawać. Klucz zostaje tylko w pamięci usługi do jej zatrzymania: nie trafia na dysk, do logów ani do obrazu. Bez klucza albo z błędnym kluczem konwersja działa dalej na regułach i lokalnym OCR, a strona mówi o tym wprost. To samo z wiersza poleceń: dodaj do polecenia `docker run` opcje `-e VISION_API_KEY=<klucz> -e VISION_BASE_URL=https://api.edenai.run/v3 -e VISION_MODEL=amazon/qwen.qwen3-235b-a22b-2507-v1:0`.
 
 ## Co czyta
 
