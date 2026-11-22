@@ -7,6 +7,7 @@ import { evaluate, parseCondition, reasons, type Cond } from '../lib/fp/conditio
 import { dictionaryEntries } from '../lib/fp/dictionaries'
 import { FP } from '../lib/fp/text'
 import { clerkText } from './clerk-view'
+import { t } from '../lib/i18n'
 
 export type Val = string | string[]
 /** Where a value came from: the PESEL register block, the logged-in user block, or a proposal from demo data. */
@@ -349,16 +350,19 @@ export function renderEForm(model: FormModel): EForm {
       const w = wrap(id)
       if (!n || !w) { done(null); return }
       api.highlight(id)
-      for (const c of [...w.children]) if (c.classList.contains('clerk-edit')) c.remove()
+      for (const c of [...w.querySelectorAll('.clerk-edit')]) c.remove()
+      // BL13 CLERK-T: the name turns into an input in its own place; no second copy of the name above the field
+      const name = w.querySelector<HTMLElement>(':scope > label, :scope > fieldset > legend, :scope > h4, :scope > .field-title')
       const inp = h('input', { type: 'text', class: 'clerk-edit-input', id: `fpn-${id}`, value: nameOf(n), ...PL })
+      inp.setAttribute('aria-label', t('clerk.edit.name'))
       const save = clerkText('button', 'clerk.edit.save', { type: 'button', class: 'btn btn-main' })
       const cancel = clerkText('button', 'clerk.edit.cancel', { type: 'button', class: 'btn' })
-      const box = h('div', { class: 'clerk-edit' }, clerkText('label', 'clerk.edit.name', { for: `fpn-${id}` }), inp, h('div', { class: 'actions' }, save, cancel))
-      const close = (title: string | null): void => { box.remove(); if (title !== null) api.patch(id, 'title', title); done(title) }
+      const box = h('div', { class: 'clerk-edit clerk-edit-inline' }, inp, save, cancel)
+      const close = (title: string | null): void => { box.remove(); if (name) name.hidden = false; if (title !== null) api.patch(id, 'title', title); done(title) }
       save.addEventListener('click', () => { const v = inp.value.trim(); close(v || null) })
       cancel.addEventListener('click', () => close(null))
       inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); save.click() } else if (e.key === 'Escape') cancel.click() })
-      w.prepend(box)
+      if (name) { name.hidden = true; (name.tagName === 'LEGEND' ? name.parentElement ?? name : name).before(box) } else w.prepend(box)
       inp.focus()
       inp.select?.()
     },
