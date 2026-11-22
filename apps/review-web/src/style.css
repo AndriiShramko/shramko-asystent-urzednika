@@ -263,3 +263,7 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
   #fp-print .fp-sheet:last-child { break-after: auto; }
   #fp-print .fp-eprint { font: 11pt/1.4 Arial, "Liberation Sans", sans-serif; color: #000000; }
 }
+/* Wave 10 DICT: the block "Słowniki" (proposed new dictionary, dictionaries of fields from the paper) */
+.dictionaries .dict-proposal { margin: 0.5rem 0 1rem; }
+.dictionaries ul.dict-entries { columns: 2 14rem; margin: 0.2rem 0 0.4rem 1.2rem; }
+.dictionaries .dict-links li { margin: 0.25rem 0; }

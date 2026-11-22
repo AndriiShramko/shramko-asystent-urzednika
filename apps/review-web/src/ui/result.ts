@@ -9,6 +9,8 @@ import { groupWarnings, placeOf, type HeaderWarnings, type RawWarning } from '..
 import { adviceKey, causeOf, chooseHeadline, formatsText, titleLooksRead, type Headline } from '../lib/verdict'
 import type { Converted, Problem } from '../lib/api'
 import { h } from './dom'
+import { readDictionaries } from '../lib/dictionaries'
+import { dictionariesSection } from './dictionaries'
 
 const PL = { lang: 'pl' }
 
@@ -90,6 +92,16 @@ function placeText(w: RawWarning): string | null {
   return parts.length ? parts.join(', ') : null
 }
 
+/** INPUT_NOTE: the service's guard writes its own Polish sentence about the uploaded file (the extension disagreed
+ * with the content, a file without an extension, a corrected file name, an image read in a reduced size); each one
+ * is shown once, as the service wrote it. */
+function noteList(items: readonly RawWarning[]): HTMLElement | null {
+  const notes = [...new Set(items.map((w) => (typeof w.detail === 'string' ? w.detail.trim() : '')).filter(Boolean))]
+  return notes.length
+    ? h('div', { class: 'places' }, h('p', { class: 'muted' }, t('warnings.noteText')), h('ul', { class: 'plain', ...PL }, ...notes.map((n) => h('li', {}, n))))
+    : null
+}
+
 /** Remarks for the clerk: one collapsed block counted in kinds (2044 remarks of one sheet are mostly one kind), each
  * kind collapsed too with its own count, a human sentence, the first few places and the code small and grey. */
 export function warningsSection(view: ViewModel, header: HeaderWarnings | null): HTMLElement {
@@ -129,6 +141,7 @@ export function warningsSection(view: ViewModel, header: HeaderWarnings | null):
           h('ul', { class: 'plain' }, ...shown.map((p) => h('li', {}, p))),
           rest > 0 ? h('p', { class: 'muted' }, t('warnings.more', { places: tn('warnings.times', rest) })) : null)
         : null,
+      g.code === 'INPUT_NOTE' ? noteList(g.items) : null,
       withText.length
         ? h('details', { class: 'tech' }, h('summary', {}, t('warnings.detail')), h('ul', { class: 'plain' }, ...withText.map(warningDetail)))
         : null))
@@ -236,6 +249,8 @@ export function renderConverted(res: Converted): HTMLElement {
       view.matter.length && noSource ? h('p', { class: 'muted', id: 'matter-nosource' }, noSourceText) : null,
       view.matter.length ? fieldList(view.matter) : h('p', {}, t('matter.empty'))))
   }
+  const dict = dictionariesSection(readDictionaries(res.sidecar), view.rows, view.hasSidecar)
+  if (dict) root.append(dict)
   root.append(warningsSection(view, res.header))
   if (view.hasSidecar && view.standardCount) {
     const details = h('details', { class: 'standard' },
