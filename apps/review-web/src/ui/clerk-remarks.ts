@@ -365,13 +365,32 @@ function makeSession(sidecar: Sidecar | null): Session {
       return
     }
     // no pointer from the server: the name of the field is what the clerk can correct in place
-    ef.edit(f, (title) => {
+    const apply = (title: string | null): void => {
       if (title === null) return
       const ptr = pointerOfNode(patched ?? form, f)
       if (ptr) applySets([{ pointer: ptr + '/title', value: title }], null)
       record(r, title)
       session.resolve(r, title)
-    })
+    }
+    // FIX-UI: a field inside a hidden conditional section has no visible place for the input: it opens in the card
+    const wrapper = document.getElementById('fpw-' + f)
+    const card = host.querySelector<HTMLElement>(`.clerk-card[data-remark="${r.key}"]`)
+    if (wrapper?.closest('[hidden]') && card) {
+      card.querySelector('.clerk-edit-inline')?.remove()
+      const node = ef.model.byId.get(f)
+      const inp = h('input', { type: 'text', class: 'clerk-edit-input', value: node ? nameOf(node) : '' })
+      inp.setAttribute('aria-label', t('clerk.edit.name'))
+      const save = h('button', { type: 'button', class: 'btn btn-main' }, t('clerk.edit.save'))
+      const cancel = h('button', { type: 'button', class: 'btn' }, t('clerk.edit.cancel'))
+      const box = h('div', { class: 'clerk-edit clerk-edit-inline' }, inp, save, cancel)
+      save.addEventListener('click', () => { const v = inp.value.trim(); if (!v) { inp.focus(); return } ef?.patch(f, 'title', v); box.remove(); apply(v) })
+      cancel.addEventListener('click', () => box.remove())
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); save.click() } else if (e.key === 'Escape') cancel.click() })
+      card.append(box)
+      inp.focus()
+      return
+    }
+    ef.edit(f, apply)
   }
 
   function fixBox(r: Remark): HTMLElement {

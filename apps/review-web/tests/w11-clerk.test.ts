@@ -216,6 +216,21 @@ describe('W11 fix by click', () => {
     expect(q<HTMLInputElement>('[id="fpf-f-nip"]').value).toBe('Urząd Gminy Przykładowo')
   })
 
+  it('FIX-UI: a field in a hidden section is renamed inside the card', async () => {
+    const { session } = await page([raw()])
+    const wrapper = q('[id="fpw-f-nip"]')
+    const sec = document.createElement('div'); sec.hidden = true
+    wrapper.parentElement!.insertBefore(sec, wrapper); sec.appendChild(wrapper)
+    const card = q('.clerk-card')
+    card.querySelector<HTMLElement>('[data-type-in]')!.click()
+    const name = card.querySelector<HTMLInputElement>('.clerk-edit-inline .clerk-edit-input')!
+    expect(name.value).toBe('NIP')
+    name.value = 'Numer NIP firmy'
+    card.querySelector<HTMLElement>('.clerk-edit-inline .btn-main')!.click()
+    expect(formAt(session.changedForm(), 0).title).toBe('Numer NIP firmy')
+    expect(session.openCount()).toBe(0)
+  })
+
   it('a remark without a fix is input too: the name of the field is corrected in place', async () => {
     const { session } = await page([raw()])
     const card = q('.clerk-card')
