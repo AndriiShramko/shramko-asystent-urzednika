@@ -135,6 +135,14 @@ export function modeOf(status: unknown): Mode | null {
     state = typeof raw === 'string' ? raw.trim().toUpperCase() : null
     if (state === null) return null
   }
+  // W11 KEY: the open-model step for weak scan pages reports under `vision` ({state: 'ON' | 'FALLBACK'}; the key is
+  // absent when nothing is configured). A configured step is never shown as "rules, nothing leaves this service".
+  const vision = (status as { vision?: unknown }).vision
+  if (vision && typeof vision === 'object' && !Array.isArray(vision)) {
+    const raw = (vision as { state?: unknown }).state
+    const v = typeof raw === 'string' ? raw.trim().toUpperCase() : null
+    if ((v === 'ON' || v === 'FALLBACK') && state !== 'UNAVAILABLE' && state !== 'FALLBACK') state = v
+  }
   if (engine === 'rules-fallback' || state === 'UNAVAILABLE' || state === 'FALLBACK') return 'model-fallback'
   if (state === 'ON' || engine === 'rules+model') return 'model-on'
   if (engine === 'rules' && (state === null || state === 'OFF')) return 'rules'

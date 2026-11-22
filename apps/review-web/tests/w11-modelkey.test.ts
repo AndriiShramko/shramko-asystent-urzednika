@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { checkModel, fetchAiState, forgetSession, masked, parseCheck, parseState, typedOf, useInSession, CODES,
   type AiState, type Changed, type CheckResult, type Typed } from '../src/lib/aimodel'
 import { hasKey, LANGS, setLang } from '../src/lib/i18n'
+import { modeOf } from '../src/lib/verdict'
 import { mountApp } from '../src/ui/app'
 import { attachModelKey, mountModelKey, type ModelKeyDeps } from '../src/ui/modelkey'
 
@@ -272,5 +273,25 @@ describe('on the page', () => {
     expect($(root, '#ai-badge').textContent).toBe('failure: working without the model')
     expect($(root, '#ai-state').textContent).toContain('The model server refused the key')
     expect($(root, '#ai-check').textContent).toBe('Check connection')
+  })
+})
+
+describe('the badge of the header knows the open-model step (/status key `vision`)', () => {
+  const base = { service: 'x', version: '1', engine: 'rules', auth: 'off', formats: [], limits: {} }
+  it('nothing configured is still "rules"', () => {
+    expect(modeOf(base)).toBe('rules')
+  })
+  it('a configured step is "model on" before the first conversion, never "rules, nothing leaves"', () => {
+    expect(modeOf({ ...base, vision: { state: 'ON', model: 'm', calls: 'none yet' } })).toBe('model-on')
+    expect(modeOf({ ...base, vision: { state: 'ON', model: 'm' } })).toBe('model-on')
+  })
+  it('a step that fell back is "model unavailable"', () => {
+    expect(modeOf({ ...base, vision: { state: 'FALLBACK', model: 'm', reason: 'http_401' } })).toBe('model-fallback')
+    expect(modeOf({ ...base, engine: 'rules-fallback', vision: { state: 'ON', model: 'm' } })).toBe('model-fallback')
+  })
+  it('a `vision` the page does not understand changes nothing', () => {
+    expect(modeOf({ ...base, vision: 'ON' })).toBe('rules')
+    expect(modeOf({ ...base, vision: { state: 'OFF' } })).toBe('rules')
+    expect(modeOf({ ...base, vision: { state: 7 } })).toBe('rules')
   })
 })
