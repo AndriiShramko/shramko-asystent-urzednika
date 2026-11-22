@@ -24,6 +24,8 @@ VISION_API_KEY_FILE or VISION_API_KEY, no other variable is ever read for it):
   VISION_TRIGGER     weak (default: ORDER M2 thresholds) | all (every OCR page, still at most VISION_MAX_PAGES)
   VISION_VOTES       default 3: three calls per page in parallel, a line counts when 2 agree (1..5)
   VISION_MAX_PAGES   default 4;  VISION_TIMEOUT_S default 45;  VISION_CONNECT_S default 2;  VISION_DEADLINE_S default 120
+  VISION_PAGE_CONFIG on (default) | off: may the review page replace address, model and key until restart
+                     (`app.vision.session`: memory only, no key in any answer, `GET /v1/model` names the state)
 The engine of each conversion is visible through WP-H4: the warning MODEL_USED gives `rules+model`, MODEL_FALLBACK
 gives `rules-fallback` (header X-Converter-Engine, log line, `/status` "engine"); `/status` "vision" names the state.
 """
@@ -103,6 +105,7 @@ class VisionConfig:
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> "VisionConfig":
+        process_env = env is None
         env = os.environ if env is None else env
         mode = (env.get("VISION_MODE") or "auto").strip().lower()
         if (env.get("MODEL_STEP") or "").strip().lower() == "off":   # the service-wide switch of every model step
@@ -126,12 +129,17 @@ class VisionConfig:
             except ValueError:
                 return default
 
-        return cls(mode="auto" if mode != "off" else "off", base_url=base, key=key,
-                   model=(env.get("VISION_MODEL") or DEFAULT_MODEL).strip(),
-                   max_pages=int(num("VISION_MAX_PAGES", 4)), timeout_s=num("VISION_TIMEOUT_S", 45),
-                   connect_s=num("VISION_CONNECT_S", 2), deadline_s=num("VISION_DEADLINE_S", 120),
-                   trigger="all" if (env.get("VISION_TRIGGER") or "").strip().lower() == "all" else "weak",
-                   votes=max(1, min(5, int(num("VISION_VOTES", 3)))))
+        cfg = cls(mode="auto" if mode != "off" else "off", base_url=base, key=key,
+                  model=(env.get("VISION_MODEL") or DEFAULT_MODEL).strip(),
+                  max_pages=int(num("VISION_MAX_PAGES", 4)), timeout_s=num("VISION_TIMEOUT_S", 45),
+                  connect_s=num("VISION_CONNECT_S", 2), deadline_s=num("VISION_DEADLINE_S", 120),
+                  trigger="all" if (env.get("VISION_TRIGGER") or "").strip().lower() == "all" else "weak",
+                  votes=max(1, min(5, int(num("VISION_VOTES", 3)))))
+        if process_env:   # wave 11 KEY: an address, model and key typed on the review page, held in memory only
+            from app.vision import session
+
+            cfg = session.apply(cfg)
+        return cfg
 
 
 class VisionError(Exception):

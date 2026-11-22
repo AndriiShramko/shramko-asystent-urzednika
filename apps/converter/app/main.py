@@ -321,6 +321,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             body["vision"] = vision.status()
         return body
 
+    from app.vision import routes as model_routes   # wave 11 KEY: /v1/model (state, page settings, check)
+
+    model_routes.mount(app, authorize, s.auth_enabled)
+
     @app.post("/v1/forms/convert", openapi_extra=UPLOAD_ONE)
     async def convert(request: Request, report: int = 0) -> Response:
         info, result, ms, _ = await convert_request(request, "convert")
