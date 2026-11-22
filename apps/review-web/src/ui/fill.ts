@@ -38,6 +38,7 @@ export function mountFill(res: Converted, preview: Promise<unknown> = Promise.re
     // the print opens after the check; with nothing missing the focus goes to its first action, else it stays here
     print.el.hidden = false
     if (r.ok) [...print.el.querySelectorAll<HTMLButtonElement>("button")].find((b) => !b.hidden)?.focus()
+    else check.el.querySelector<HTMLElement>("#fp-check-result")?.focus() // what is missing comes into sight
   })
   // BL13 TRY-F: the check opens after the fill, the print after the check; going back closes what follows
   const citizen = renderCitizen(eform, () => check.reset(), (s) => {

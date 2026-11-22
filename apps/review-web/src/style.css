@@ -424,6 +424,12 @@ html { scroll-padding-top: 0.75rem; scroll-padding-bottom: 8rem; }
 .result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 5; }
 .result[data-view="clerk"][data-try] #fp:has(#fp-where[data-pages="0"]) > #fp-eform { grid-row: 6; }
 @media (max-width: 62rem) { .result[data-view="clerk"][data-try] #fp > #fp-eform { grid-row: 6; } }
+/* no scroll anchoring in the clerk view: the panels come first in the DOM but last on screen, so the browser kept
+   them in place when a step above them opened, and the page jumped away from the button just pressed */
+.result[data-view="clerk"] { overflow-anchor: none; }
+/* a link button in a list sits in its own line box (on the baseline it reached into the next line) */
+.fp-step li > .linkish { vertical-align: top; }
+#fp-check-result:focus { outline: 3px solid var(--c-focus); outline-offset: 2px; }
 /* in the trial fill the bottom bar is one low line: the hint about the download is not needed there */
 .result[data-try] .clerk-final-hint { display: none; }
 .result[data-try] .clerk-final { padding-top: 0.35rem; padding-bottom: 0.35rem; }

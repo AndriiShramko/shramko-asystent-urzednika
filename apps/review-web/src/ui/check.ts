@@ -41,7 +41,7 @@ export function checkForm(ef: EForm): CheckResult {
 export interface Check { el: HTMLElement; run(): CheckResult; reset(): void }
 
 export function renderCheck(ef: EForm, extra?: () => HTMLElement | null, onRun?: (r: CheckResult) => void): Check {
-  const out = h('div', { id: 'fp-check-result', role: 'status' })
+  const out = h('div', { id: 'fp-check-result', role: 'status', tabindex: '-1' })
   const btn = h('button', { type: 'button', class: 'btn btn-main', id: 'fp-check' }, FP.checkButton)
 
   const go = (n: ENode): HTMLElement => {
