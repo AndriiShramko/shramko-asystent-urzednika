@@ -294,6 +294,39 @@ def paper_only_notes(finder, brief, model=None) -> list[dict]:
                     "fix": {"kind": "applied", "rule": rule, "text": text, "source": source}})
     if model is not None:
         out += _paper_only_words(model, finder, out)
+        out += ocr_label_notes(model, finder, brief)
+    return out
+
+
+def ocr_label_notes(model, finder, brief) -> list[dict]:
+    """BL13 SCAN-L: one INPUT_NOTE with an `applied` fix per field label of a scan that the lexicon mended (leader
+    dots read as letters dropped, a misspelt lead-in phrase taken from the lexicon): the OCR words and the words used,
+    so the clerk sees what the dictionary changed. Native text is never mended, so it never gets such a note."""
+    from app.mean._doc import clean_label
+    from app.mean._fields import ocr_mend
+    ocr_pages = {p.number for p in model.pages if p.origin == "ocr"}
+    if not ocr_pages:
+        return []
+    by_id = {c.id: c for c in finder.candidates}
+    out: list[dict] = []
+    for d in brief.dispositions:
+        c = by_id.get(d.candidate)
+        if d.fate not in ("FIELD", "STANDARD") or c is None or c.label is None or c.page not in ocr_pages:
+            continue
+        before = clean_label(c.label.text)[0]
+        after = ocr_mend(before) if before else before
+        if after == before:
+            continue
+        where: dict = {"page": c.page}
+        if c.box is not None:
+            where["box"] = [float(v) for v in c.box]
+        elif c.anchor is not None:
+            where["anchor"] = c.anchor
+        source = {"type": "paper", **where, "quote": c.label.text[:200]}
+        out.append({"code": "INPUT_NOTE", **where, "candidate": c.id,
+                    "detail": f"OCR label mended by the lexicon: {before[:120]!r} -> {after!r}",
+                    "fix": {"kind": "applied", "rule": "ocr.label_lexicon",
+                            "text": f"Nazwa pola poprawiona słownikiem: „{before[:120]}” → „{after}”.", "source": source}})
     return out
 
 
