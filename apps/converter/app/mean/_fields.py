@@ -187,7 +187,10 @@ class _Reader:
             return self._set(c, "MERGED", into=rows[c.id], why="TABLE_ROW")
         low = label.casefold()
         before = self.title_pos is not None and c.page == self.title_page and doc.cand_pos(c) < self.title_pos
-        if label and _DATE_PLACE.search(low) and (low.endswith("dnia") or before or any(_SIGN_SECTION.search(t) for t in chain)):
+        # "Miejscowość, data" (place and date together) is the place and date of signing wherever it stands; a bare
+        # "Data" is one only before the title, at "dnia" or under a signature heading
+        if label and _DATE_PLACE.search(low) and (low.endswith("dnia") or "miejscowo" in low or before
+                                                  or any(_SIGN_SECTION.search(t) for t in chain)):
             return self._left(c, "SIGNATURE_AND_DATE", label)
         if c.id in blank_of and blank_of[c.id][0] in self.field_of and self._option_blank(c, *blank_of[c.id]):
             return None
