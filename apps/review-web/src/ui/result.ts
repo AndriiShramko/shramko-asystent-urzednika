@@ -6,7 +6,7 @@
 import { getLang, hasKey, t, tn } from '../lib/i18n'
 import { buildView, type FieldRow, type ViewModel } from '../lib/model'
 import { groupWarnings, placeOf, type HeaderWarnings, type RawWarning } from '../lib/warnings'
-import { adviceKey, causeOf, chooseHeadline, type Headline } from '../lib/verdict'
+import { adviceKey, causeOf, chooseHeadline, formatsText, titleLooksRead, type Headline } from '../lib/verdict'
 import type { Converted, Problem } from '../lib/api'
 import { h } from './dom'
 
@@ -42,13 +42,23 @@ function fieldList(rows: FieldRow[]): HTMLElement {
   return h('ul', { class: 'fields' }, ...rows.map(fieldItem))
 }
 
-function summary(view: ViewModel, headerCount: number | null): HTMLElement {
+/** "2 rodzaje (2031 miejsc)": kinds first, so thousands of one remark read as one kind. */
+function remarksCountText(kinds: number, total: number): string {
+  return t('warnings.kindsTotal', { kinds: tn('warnings.kinds', kinds), places: tn('warnings.times', total) })
+}
+
+function summary(view: ViewModel, header: HeaderWarnings | null): HTMLElement {
+  const headerCount = header?.count ?? null
+  const kinds = view.hasSidecar ? groupWarnings(view.warnings).length : (header?.codes.length ?? 0)
+  const total = view.hasSidecar ? view.warnings.length : (headerCount ?? 0)
   const items = [
     t('summary.pages', { n: view.counts.pages }),
     t('summary.fields', { n: view.counts.fields }),
     view.hasSidecar ? t('summary.matter', { n: view.matter.length }) : null,
     view.counts.sourcePages !== null ? t('summary.sourcePages', { n: view.counts.sourcePages }) : null,
-    view.hasSidecar || headerCount !== null ? t('summary.warnings', { n: view.hasSidecar ? view.warnings.length : (headerCount ?? 0) }) : null
+    view.hasSidecar || headerCount !== null
+      ? t('summary.warnings', { n: total > 0 && kinds > 0 ? remarksCountText(kinds, total) : String(total) })
+      : null
   ].filter((x): x is string => x !== null)
   return h('section', { 'aria-labelledby': 'h-summary' },
     h('h2', { id: 'h-summary' }, t('summary.heading')),
@@ -68,7 +78,20 @@ export function remarkCount(view: ViewModel, header: HeaderWarnings | null): num
   return header?.count ?? header?.codes.length ?? 0
 }
 
-/** Remarks for the clerk: one collapsed block with the count, a human sentence each, the code small and grey. */
+/** How many places of one kind are listed by name; the rest is a count. */
+export const PLACES_SHOWN = 5
+
+/** Where one remark points, in words a clerk can find: the page and the cell or anchor; null when it says neither. */
+function placeText(w: RawWarning): string | null {
+  const parts: string[] = []
+  const page = placeOf(w)
+  if (page !== null) parts.push(t('matter.page', { page }))
+  if (typeof w.anchor === 'string' && w.anchor.trim()) parts.push(w.anchor.trim())
+  return parts.length ? parts.join(', ') : null
+}
+
+/** Remarks for the clerk: one collapsed block counted in kinds (2044 remarks of one sheet are mostly one kind), each
+ * kind collapsed too with its own count, a human sentence, the first few places and the code small and grey. */
 export function warningsSection(view: ViewModel, header: HeaderWarnings | null): HTMLElement {
   const total = remarkCount(view, header)
   const groups = view.hasSidecar
@@ -79,7 +102,7 @@ export function warningsSection(view: ViewModel, header: HeaderWarnings | null):
       h('p', { id: 'h-warnings', class: 'muted' }, t('warnings.none')))
   }
   const details = h('details', { class: 'remarks-box' },
-    h('summary', { id: 'h-warnings' }, t('warnings.heading', { n: total })),
+    h('summary', { id: 'h-warnings' }, t('warnings.heading', { n: tn('warnings.kinds', groups.length) })),
     h('p', { class: 'muted' }, t('warnings.intro')))
   for (const g of groups) {
     const explain = g.known ? t(g.key) : t('warnings.unknown')
@@ -88,11 +111,24 @@ export function warningsSection(view: ViewModel, header: HeaderWarnings | null):
     if (view.hasSidecar) where.push(tn('warnings.times', g.items.length))
     if (pages.length) where.push(tn('warnings.pages', pages.length, { list: pages.join(', ') }))
     const withText = g.known ? [] : g.items.filter((w) => w.detail || placeOf(w) !== null)
-    details.append(h('article', { class: 'remark' },
-      h('h3', {}, explain),
-      h('p', { class: 'code-line' },
-        where.length ? '(' + where.join('; ') + ') · ' : '',
-        t('warnings.code', { code: '' }), h('code', { class: 'code' }, g.code)),
+    // Places named beyond the page (a cell, an anchor), each once; pages alone are already on the code line.
+    const places = g.known && g.items.some((w) => typeof w.anchor === 'string' && w.anchor.trim())
+      ? [...new Set(g.items.map(placeText).filter((p): p is string => p !== null))]
+      : []
+    const shown = places.slice(0, PLACES_SHOWN)
+    const rest = places.length - shown.length
+    details.append(h('details', { class: 'remark' },
+      h('summary', {},
+        h('h3', {}, explain),
+        h('p', { class: 'code-line' },
+          where.length ? '(' + where.join('; ') + ') · ' : '',
+          t('warnings.code', { code: '' }), h('code', { class: 'code' }, g.code))),
+      shown.length
+        ? h('div', { class: 'places' },
+          h('p', { class: 'muted' }, t('warnings.firstPlaces')),
+          h('ul', { class: 'plain' }, ...shown.map((p) => h('li', {}, p))),
+          rest > 0 ? h('p', { class: 'muted' }, t('warnings.more', { places: tn('warnings.times', rest) })) : null)
+        : null,
       withText.length
         ? h('details', { class: 'tech' }, h('summary', {}, t('warnings.detail')), h('ul', { class: 'plain' }, ...withText.map(warningDetail)))
         : null))
@@ -140,17 +176,39 @@ function jsonSection(res: Converted): HTMLElement {
 export function headlineText(hl: Headline): string {
   const fields = tn('count.fields', hl.fields)
   const sections = tn('count.sectionsIn', hl.sections)
-  if (hl.kind === 'partial') {
-    return t('result.partial', { paper: tn('count.fields', hl.paper ?? 0), standard: tn('count.stdFields', hl.standard) })
+  if (hl.paper === null) {
+    // no report: the origin of the fields is unknown, so the two numbers cannot be given
+    return hl.kind === 'partial' ? t('result.partialNoReport', { fields, sections }) : t('result.neutral', { fields, sections })
   }
-  return t(hl.kind === 'ok' ? 'result.ok' : 'result.neutral', { fields, sections })
+  // with the report both numbers are always on the line: how much came from the paper, how much is standard
+  const counts = { fields, sections, paper: hl.paper, standard: hl.standard }
+  if (hl.kind === 'partial') return t('result.partial.' + (hl.why ?? 'none'), counts)
+  return t('result.ok', counts)
 }
 
-/** The status line (aria-live) after a conversion: names the form, says "częściowo" when nothing was read. */
+/** The title as the status line names it: quoted, or "bez odczytanego tytułu" when OCR gave noise. */
+function titleForStatus(title: string): string {
+  return titleLooksRead(title) ? '„' + title + '”' : t('status.noTitle')
+}
+
+/** The status line (aria-live) after a conversion: names the form, says "częściowo" when the paper gave little. */
 export function doneStatus(res: Converted): string {
   const view = buildView(res.form, res.sidecar)
   const hl = chooseHeadline(view, res.header)
-  return t(hl.kind === 'partial' ? 'status.partial' : 'status.done', { title: view.title })
+  const title = titleForStatus(view.title)
+  if (hl.kind !== 'partial') return t('status.done', { title })
+  if (hl.why === 'few') return t('status.few', { title, paper: tn('count.fields', hl.paper ?? 0) })
+  return t('status.partial', { title })
+}
+
+/** The title line of the headline: the title read from the paper, or a plain "not read" with the raw OCR text small
+ * and grey (a photo of a map gave "zdnia"). */
+function formName(title: string): HTMLElement {
+  if (titleLooksRead(title)) {
+    return h('span', { class: 'form-name' }, t('result.formName') + ' ', h('span', PL, '„' + title + '”'))
+  }
+  return h('span', { class: 'form-name' }, t('result.titleNotRead'),
+    title.trim() ? h('span', { class: 'title-raw' }, ' ' + t('result.titleRaw') + ' ', h('span', PL, '„' + title.trim() + '”')) : null)
 }
 
 export function renderConverted(res: Converted): HTMLElement {
@@ -159,20 +217,23 @@ export function renderConverted(res: Converted): HTMLElement {
   const root = h('div', { class: 'result' })
   root.append(h('h2', { id: 'h-done', tabindex: -1, class: `result-title result-${hl.kind}`, 'data-kind': hl.kind },
     h('span', { class: 'headline' }, headlineText(hl)),
-    h('span', { class: 'form-name' }, t('result.formName') + ' ', h('span', PL, '„' + view.title + '”'))))
+    formName(view.title)))
   // The engine of this conversion is not repeated here: the badge in the header (#mode) is its one indicator.
   if (!view.hasSidecar) {
     root.append(h('section', { class: 'notice', role: 'note', 'aria-labelledby': 'h-nosidecar' },
       h('h2', { id: 'h-nosidecar' }, t('sidecar.missing.heading')),
       h('p', {}, t('sidecar.missing.body'))))
   }
-  root.append(summary(view, res.header?.count ?? null))
+  root.append(summary(view, res.header))
   if (view.hasSidecar) {
     const noSource = view.matter.filter((r) => !r.quote).length
+    const noSourceText = noSource === view.matter.length
+      ? t('matter.noSourceAll')
+      : t('matter.noSource', { n: noSource, total: view.matter.length })
     root.append(h('section', { 'aria-labelledby': 'h-matter' },
       h('h2', { id: 'h-matter' }, t('matter.heading')),
       h('p', { class: 'muted' }, t('matter.intro')),
-      view.matter.length && noSource ? h('p', { class: 'muted', id: 'matter-nosource' }, t('matter.noSource', { n: noSource, total: view.matter.length })) : null,
+      view.matter.length && noSource ? h('p', { class: 'muted', id: 'matter-nosource' }, noSourceText) : null,
       view.matter.length ? fieldList(view.matter) : h('p', {}, t('matter.empty'))))
   }
   root.append(warningsSection(view, res.header))
@@ -202,13 +263,24 @@ export interface ProblemActions {
   pickOther?: () => void
 }
 
-/** One red block: what failed, why, what to do (chosen by the code's cause), the code small and grey, one button. */
-export function renderProblem(p: Problem, actions: ProblemActions = {}): HTMLElement {
+/** What the page knows besides the service's answer: the size of the file sent and the formats of /status. */
+export interface ProblemContext {
+  fileSize?: number
+  formats?: readonly string[]
+}
+
+/** One red block: what failed, why, what to do (chosen by the code's cause), the code small and grey, one button.
+ * A refusal of the file for a 0-byte file is called what it is (the service says TYPE_MISMATCH for it today); the
+ * EXTENSION advice names the formats of /status when the page has them. */
+export function renderProblem(p: Problem, actions: ProblemActions = {}, ctx: ProblemContext = {}): HTMLElement {
   const key = 'problem.' + p.code
   const known = hasKey('pl', key)
-  const reason = known ? t(key) : p.code === 'HTTP' ? t('problem.HTTP') : t('problem.UNKNOWN')
-  const advice = t(adviceKey(p.code, (k) => hasKey('pl', k)), { code: p.code })
   const cause = causeOf(p.code)
+  const empty = ctx.fileSize === 0 && cause === 'file'
+  const reason = empty ? t('problem.EMPTY_FILE') : known ? t(key) : p.code === 'HTTP' ? t('problem.HTTP') : t('problem.UNKNOWN')
+  const advice = empty ? t('todo.EMPTY_FILE')
+    : p.code === 'EXTENSION' && ctx.formats?.length ? t('todo.EXTENSION.list', { list: formatsText(ctx.formats) })
+      : t(adviceKey(p.code, (k) => hasKey('pl', k)), { code: p.code })
   let button: HTMLElement | null = null
   if (cause === 'file' && actions.pickOther) {
     button = h('button', { type: 'button', class: 'btn', id: 'error-action' }, t('error.other'))

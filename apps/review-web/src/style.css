@@ -169,6 +169,12 @@ details > summary { cursor: pointer; font-weight: 600; min-height: 2rem; padding
 .remark h3 { margin-top: 0.25rem; font-weight: 600; }
 .code-line, .small { font-size: 0.85rem; color: var(--c-code); margin: 0.15rem 0; }
 .code { font-size: 0.85rem; color: var(--c-code); }
+/* UX2: each kind of remark is collapsed; its sentence sits on the summary line next to the marker */
+.remark > summary { font-weight: 400; }
+.remark > summary h3 { display: inline; font-size: 1rem; }
+.remark > summary .code-line { display: block; }
+.places ul { margin: 0.2rem 0 0.2rem 1rem; font-size: 0.9rem; }
+.result-title .title-raw { font-size: 0.85rem; color: var(--c-code); }
 .chip .code { color: inherit; }
 .tech > summary { font-size: 0.9rem; font-weight: 400; color: var(--c-code); }
 .error .code-line, .error .small { color: var(--c-error-text); }
