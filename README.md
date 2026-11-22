@@ -114,7 +114,7 @@ Full tables: [`apps/converter/README.md`](apps/converter/README.md), sections "C
 |---|---|---|
 | `AUTH_MODE`, `JWT_SECRET_FILE`, `JWT_PUBLIC_KEY_FILE`, `JWT_JWKS_FILE` | `auto`, none | JWT when a key file is given; open with a log warning otherwise (publish on `127.0.0.1`) |
 | `MAX_UPLOAD_BYTES`, `MAX_PAGES`, `JOB_TIMEOUT_S`, `CONCURRENCY` | 20 MiB, 60, 600, 2 | limits |
-| `STRICT_EXTENSIONS` | `true` | exactly the eight formats of the card; `false` also ODT, XLS, RTF, TXT and more image formats |
+| `STRICT_EXTENSIONS` | `true` | exactly the eight formats of the card, and the content must match the extension (415 `TYPE_MISMATCH` with a Polish reason; a `.doc` holding DOCX or RTF is read by its content); `false` also ODT, XLS, RTF, TXT and more image formats, read by content |
 | `SCAN_PREP` | `off` | extra scan preparation for photos (operator's switch) |
 | `VISION_BASE_URL`, `VISION_API_KEY_FILE`, `VISION_MODEL`, `VISION_PAGE_CONFIG`, `VISION_KEY_REVEAL` | none, none, Qwen3, `on`, `off` | the optional model step for weak scan pages, off unless the operator points it at their own server; no key is in the image |
 
