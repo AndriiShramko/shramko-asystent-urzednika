@@ -161,6 +161,267 @@
       "title": "FieldEvidence",
       "type": "object"
     },
+    "Fix": {
+      "additionalProperties": false,
+      "description": "applied: the converter decided and only tells what it did (never in the clerk's list); choice: 2 to 5 ready\noptions, the most likely first; input: nothing could be proposed.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "applied",
+            "choice",
+            "input"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "rule": {
+          "description": "Stable id of the decision.",
+          "pattern": "^[a-z_]+\\.[a-z_]+$",
+          "title": "Rule",
+          "type": "string"
+        },
+        "text": {
+          "description": "Polish, one sentence, ready to show.",
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/FixTarget"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FixOption"
+          },
+          "maxItems": 5,
+          "title": "Options",
+          "type": "array"
+        },
+        "input": {
+          "$ref": "#/$defs/FixInput"
+        },
+        "source": {
+          "$ref": "#/$defs/FixSource"
+        }
+      },
+      "required": [
+        "kind",
+        "rule",
+        "text"
+      ],
+      "title": "Fix",
+      "type": "object"
+    },
+    "FixInput": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "set": {
+          "description": "`from: input` takes the typed string; an entry with `value` is written as it is.",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/FixInputSet"
+              },
+              {
+                "$ref": "#/$defs/FixSet"
+              }
+            ]
+          },
+          "title": "Set",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "set"
+      ],
+      "title": "FixInput",
+      "type": "object"
+    },
+    "FixInputSet": {
+      "additionalProperties": false,
+      "properties": {
+        "pointer": {
+          "pattern": "^/",
+          "title": "Pointer",
+          "type": "string"
+        },
+        "from": {
+          "const": "input",
+          "title": "From",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pointer",
+        "from"
+      ],
+      "title": "FixInputSet",
+      "type": "object"
+    },
+    "FixOption": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "description": "Polish, the text of the button.",
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "current": {
+          "description": "True on the one option the form JSON holds now.",
+          "title": "Current",
+          "type": "boolean"
+        },
+        "set": {
+          "items": {
+            "$ref": "#/$defs/FixSet"
+          },
+          "title": "Set",
+          "type": "array"
+        },
+        "source": {
+          "$ref": "#/$defs/FixSource"
+        }
+      },
+      "required": [
+        "label",
+        "value",
+        "current",
+        "set"
+      ],
+      "title": "FixOption",
+      "type": "object"
+    },
+    "FixSet": {
+      "additionalProperties": false,
+      "description": "One write into the form JSON: the value at `pointer` is replaced; the shape above it never changes.",
+      "properties": {
+        "pointer": {
+          "pattern": "^/",
+          "title": "Pointer",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value"
+        }
+      },
+      "required": [
+        "pointer",
+        "value"
+      ],
+      "title": "FixSet",
+      "type": "object"
+    },
+    "FixSource": {
+      "additionalProperties": false,
+      "description": "Where a proposal comes from: a place of the paper, a dictionary, or a rule of the converter.",
+      "properties": {
+        "type": {
+          "enum": [
+            "paper",
+            "dictionary",
+            "rule"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "name": {
+          "description": "dictionary or rule: its name.",
+          "title": "Name",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "box": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Box",
+          "type": "array"
+        },
+        "anchor": {
+          "description": "Place in a file without geometry: \"p[12]\", \"p[12]/cell[2,3]\", \"Arkusz1!B7\".",
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "FixSource",
+      "type": "object"
+    },
+    "FixTarget": {
+      "additionalProperties": false,
+      "description": "The node of the form the remark is about.",
+      "properties": {
+        "id": {
+          "description": "Form id of the field or section.",
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "pointer": {
+          "description": "RFC 6901 pointer of the node's `field` object in the form JSON.",
+          "pattern": "^/",
+          "title": "Pointer",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "tab": {
+          "description": "Title of the form page the node stands on.",
+          "title": "Tab",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "pointer",
+        "label",
+        "tab"
+      ],
+      "title": "FixTarget",
+      "type": "object"
+    },
     "Ledger": {
       "additionalProperties": false,
       "properties": {
@@ -664,37 +925,8 @@
       "title": "RunMeta",
       "type": "object"
     },
-    "Span": {
+    "RunWarning": {
       "additionalProperties": false,
-      "description": "Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an\noption that shares its run with others (\"❑ pies ❑ suka\"). Revision 1.1. A whole run is still named by its id\nalone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans).",
-      "properties": {
-        "run": {
-          "minLength": 1,
-          "title": "Run",
-          "type": "string"
-        },
-        "start": {
-          "minimum": 0,
-          "title": "Start",
-          "type": "integer"
-        },
-        "end": {
-          "minimum": 1,
-          "title": "End",
-          "type": "integer"
-        }
-      },
-      "required": [
-        "run",
-        "start",
-        "end"
-      ],
-      "title": "Span",
-      "type": "object"
-    },
-    "Warning": {
-      "additionalProperties": false,
-      "description": "One honest gap: what, where, and the quotes that show it.",
       "properties": {
         "id": {
           "title": "Id",
@@ -799,12 +1031,43 @@
         "detail": {
           "title": "Detail",
           "type": "string"
+        },
+        "fix": {
+          "$ref": "#/$defs/Fix"
         }
       },
       "required": [
         "code"
       ],
-      "title": "Warning",
+      "title": "RunWarning",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "description": "Characters [start, end) of one run's text (Python string indices, end exclusive): a mark, a label or an\noption that shares its run with others (\"❑ pies ❑ suka\"). Revision 1.1. A whole run is still named by its id\nalone. That a span lies inside its run's text is checked against the page model (FinderOutput.check_spans).",
+      "properties": {
+        "run": {
+          "minLength": 1,
+          "title": "Run",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run",
+        "start",
+        "end"
+      ],
+      "title": "Span",
       "type": "object"
     }
   },
@@ -824,7 +1087,7 @@
     "warnings": {
       "default": [],
       "items": {
-        "$ref": "#/$defs/Warning"
+        "$ref": "#/$defs/RunWarning"
       },
       "title": "Warnings",
       "type": "array"

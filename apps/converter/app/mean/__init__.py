@@ -22,9 +22,9 @@ from app.model.candidate import FinderOutput
 from app.model.common import Evidence, InputRef, Stated, Warning
 from app.model.page import PageModel
 
-from ._doc import Doc
+from ._doc import Doc, some
 from ._fields import read_fields
-from ._head import find_addressee, find_applicants, find_clause, find_fee, find_legal_basis, find_title, find_variants, prune_by_exclusion
+from ._head import clause_text, find_addressee, find_applicants, find_clause, find_fee, find_legal_basis, find_title, find_variants, prune_by_exclusion
 
 __all__ = ["understand"]
 
@@ -49,6 +49,13 @@ def understand(page_model: PageModel, finder_output: FinderOutput, options: Mapp
         )
 
 
+def _clause_text(doc: Doc):
+    try:   # the text of the clause is a courtesy of the consent: a slip here never costs the brief
+        return clause_text(doc)
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _run(pm: PageModel, fo: FinderOutput) -> Brief:
     doc = Doc(pm, fo)
     title, title_runs = find_title(doc)
@@ -67,7 +74,7 @@ def _run(pm: PageModel, fo: FinderOutput) -> Brief:
         input=InputRef(sha256=pm.source.sha256, format=pm.source.format),
         title=title, addressee=addressee, applicants=applicants, applicant_extras=read.extras,
         matter=read.matter, attachments=read.attachments,
-        declarations=Declarations(consents=read.consents, clause=clause),
+        declarations=Declarations(consents=read.consents, clause=clause, **some(clause_text=_clause_text(doc))),
         fee=find_fee(doc), legal_basis=find_legal_basis(doc), mandatory_attachments=_NOT_FOUND,
         dropped=read.dropped + clause_dropped + excluded, warnings=conflicts + read.warnings, dispositions=read.dispositions,
     )

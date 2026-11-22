@@ -18,7 +18,7 @@ from app import __version__, gate, interim, progress
 from app.find import find
 from app.mean import understand
 from app.model.ledger import LedgerError, assemble_ledger
-from app.compose import ComposeError, compose, dictionaries
+from app.compose import ComposeError, compose, dictionaries, fixes
 from app.config import Settings, compose_options, read_options
 from app.guard import ProblemError
 from app.guard.checks import KIND_LABEL, sniff_kinds
@@ -294,7 +294,11 @@ def _finish(model, finder, settings: Settings, notes: tuple[str, ...] = ()) -> P
         dropped = set(composed.required_dropped)
         warnings += [w.model_dump(mode="json", exclude_none=True) for w in (*finder.warnings, *brief.warnings)
                      if not (w.code == "REQUIRED_INFERRED" and w.field in dropped)]
+    # W11 CLERK-S: every remark that can be answered carries a ready `fix` (applied, choice or input; compose.fixes)
+    hints = fixes.brief_hints(warnings, brief)
+    hints.update({len(warnings) + i: r.fix for i, r in enumerate(composed.remarks) if r.fix})
     warnings += [{"code": r.code, "detail": r.detail, **({"field": r.field} if r.field else {})} for r in composed.remarks]
+    warnings = fixes.attach(form, warnings, hints, composed.paths, composed.brief_keys)
     meta: dict = {"origins": composed.origins, "brief_keys": composed.brief_keys}
     # A8 VB-4 (B16): where each field of the matter stands on the paper (page, box, quote), keyed by form id, as
     # meta.schema.json `evidence` 1.1 has it; the review page shows the snippet from here.

@@ -17,9 +17,13 @@ from __future__ import annotations
 import re
 import uuid
 from dataclasses import dataclass, replace
+from dataclasses import field as dc_field
+from typing import Any, Mapping
 
-from app.model.brief import Brief, BriefField
+from app import lexicon
+from app.model.brief import Addressee, Brief, BriefField
 from app.model.form import (
+    EMPTY_HTML,
     ConsentItem,
     Form,
     Option,
@@ -41,6 +45,7 @@ from app.model.form import (
 )
 
 from . import dictionaries
+from . import fixes
 from . import library as lib
 from . import required as required_rule
 from . import validators
@@ -62,6 +67,13 @@ CONCEPT_VALIDATORS = validators.CONCEPT_VALIDATORS
 INFERRED_SHAPES = ("DATEPICKER", "CHECKBOX", "INFO_SECTION")
 SINGLE_BOX_OPTION = "Tak"
 _NO_VALIDATION = ("TEXT_BLOCK", "INFO_SECTION", "CONSENT_SECTION")
+# W11 CLERK-S. Meaning paths of the two standard nodes a ready fix writes to (compose.fixes).
+ADDRESSEE_NODE = "dane/adresat/nazwa"
+CONSENT_NODE = "kontakt/zgoda"
+# The clause read by OCR is attached to the consent by default only when the mean word confidence of its page is
+# at least this (Tesseract's own number, 0 to 1); below it the official is offered the text and it is not written.
+CLAUSE_OCR_ATTACH = 0.85
+USUALLY_OPTIONAL = fixes._USUALLY_OPTIONAL
 
 
 @dataclass(frozen=True)
@@ -87,6 +99,8 @@ class Remark:
     code: str
     detail: str
     field: str | None = None                  # form id, when the remark is about one node
+    # W11 CLERK-S: the ready fix as a hint (places named by meaning); `compose.fixes.resolve` makes the final object
+    fix: Mapping[str, Any] | None = dc_field(default=None, compare=False, hash=False)
 
 
 @dataclass(frozen=True)
@@ -158,10 +172,16 @@ def _standard(brief: Brief, o: ComposeOptions, remarks: list[Remark]) -> tuple[S
 
 
 def _parties(brief: Brief, std: Standard, who: Who, o: ComposeOptions, transfer_title: str, remarks: list[Remark]) -> list[Sec]:
-    name = brief.addressee.name if brief.addressee.status == "stated" else None
+    a = brief.addressee
+    name = a.name if a.status == "stated" or (a.status == "ambiguous" and a.candidates and a.name) else None
     if name is None:
-        remarks.append(Remark("ADDRESSEE_MISSING", f"the brief names no addressee ({brief.addressee.status}); the field is left empty and editable"))
-    secs = [lib.addressee(brief.addressee.kind or "office", name)]
+        remarks.append(Remark("ADDRESSEE_MISSING", f"the brief names no addressee ({a.status}); the field is left empty and editable", fix={
+            "kind": "input", "rule": "addressee.not_on_paper", "target": ADDRESSEE_NODE,
+            "text": "Na druku nie znaleziono nazwy urzędu ani organu. Wpisz adresata wniosku.",
+            "input": {"label": "Nazwa urzędu lub organu", "props": ["defaultValue"], "fixed": {"readOnly": True}}}))
+    elif a.candidates:
+        remarks.append(_addressee_remark(a))
+    secs = [lib.addressee(a.kind or "office", name)]
     choice = lib.party(who)
     if choice is not None:
         secs.append(choice)
@@ -186,6 +206,59 @@ def _parties(brief: Brief, std: Standard, who: Who, o: ComposeOptions, transfer_
     return secs
 
 
+def _addressee_remark(a: Addressee) -> Remark:
+    """No addressee block on the paper, and the search of the whole paper found one office (written, the remark only
+    tells) or several (the most likely is written, the official picks by a click)."""
+    def option(c: Any, current: bool) -> dict[str, Any]:
+        return {"label": c.name, "value": c.name, "current": current, "props": {"defaultValue": c.name, "readOnly": True},
+                "source": fixes.paper(c.evidence)}
+
+    first = a.candidates[0]
+    if len(a.candidates) == 1:
+        return Remark("ADDRESSEE_MISSING", "no addressee block on the paper; the one office the paper names was written", fix={
+            "kind": "applied", "rule": "addressee.one_office", "target": ADDRESSEE_NODE, "value": first.name,
+            "text": f"Adresat odczytany z druku: {first.name}.", "source": fixes.paper(first.evidence)})
+    n = len(a.candidates)
+    return Remark("ADDRESSEE_MISSING", f"no addressee block on the paper; the paper names {n} offices, the most likely was written", fix={
+        "kind": "choice", "rule": "addressee.several_offices", "target": ADDRESSEE_NODE,
+        "text": f"Na druku znaleziono kilka nazw urzędów lub organów ({n}). Wskaż adresata wniosku.",
+        "options": [option(c, i == 0) for i, c in enumerate(a.candidates)],
+        "input": {"label": "Inny urząd lub organ", "props": ["defaultValue"], "fixed": {"readOnly": True}}})
+
+
+def _clause(brief: Brief, sec: Sec, remarks: list[Remark]) -> None:
+    """CLAUSE_LINK_MISSING with its fix. The clause printed on the paper is attached to the consent section (its
+    description); a clause read by OCR below CLAUSE_OCR_ATTACH is only offered. No clause on the paper: the consent
+    reads as in both exports of the partner, which name the clause without an address: nothing for the official."""
+    detail = "no https address of the information clause is known; the consent names the clause without a link"
+    ct = brief.declarations.clause_text
+    if ct is None:
+        remarks.append(Remark("CLAUSE_LINK_MISSING", detail, fix={
+            "kind": "applied", "rule": "clause.as_partner_exports", "target": CONSENT_NODE,
+            "text": "Na druku nie ma klauzuli informacyjnej: zgoda ma brzmienie z wzorcowych formularzy (bez odnośnika).",
+            "source": fixes.rule_source("partner-exports")}))
+        return
+    html = doc(*[p(t) for t in ct.paragraphs])
+    source = fixes.paper(ct.evidence[0]) if ct.evidence else fixes.rule_source("clause-runs")
+    if ct.origin != "ocr":
+        sec.html = html
+        remarks.append(Remark("CLAUSE_LINK_MISSING", "the clause printed on the paper is attached to the consent section as its description", fix={
+            "kind": "applied", "rule": "clause.text_from_paper", "target": CONSENT_NODE, "value": ct.paragraphs[0][:160],
+            "text": "Treść klauzuli informacyjnej przeniesiono z druku do sekcji zgody.", "source": source}))
+        return
+    attach = ct.conf >= CLAUSE_OCR_ATTACH
+    if attach:
+        sec.html = html
+    options = [{"label": "Treść klauzuli odczytana ze skanu", "value": "text", "current": attach, "props": {"description": html}, "source": source},
+               {"label": "Bez treści klauzuli", "value": "none", "current": not attach, "props": {"description": EMPTY_HTML},
+                "source": fixes.rule_source("partner-exports")}]
+    remarks.append(Remark("CLAUSE_LINK_MISSING", f"the clause was read by OCR (mean word confidence {ct.conf}); "
+                          f"its text is {'attached to' if attach else 'offered for'} the consent section", fix={
+        "kind": "choice", "rule": "clause.text_from_scan", "target": CONSENT_NODE,
+        "text": "Klauzulę informacyjną odczytano ze skanu. Porównaj jej treść z drukiem.",
+        "options": options if attach else options[::-1]}))
+
+
 def _contact(brief: Brief, std: Standard, remarks: list[Remark]) -> list[Sec]:
     secs = [lib.contact()]
     if brief.declarations.consents:
@@ -194,9 +267,10 @@ def _contact(brief: Brief, std: Standard, remarks: list[Remark]) -> list[Sec]:
                         [Comp("oswiadczenia", "CONSENT_SECTION", "", "oswiadczenia_tresc", consents=items, origin="paper")], origin="paper"))
     clause = brief.declarations.clause
     url = clause.value if clause.status == "stated" and (clause.value or "").startswith("https://") else None
+    consent = lib.consent(std.consent_section, url)
     if url is None:
-        remarks.append(Remark("CLAUSE_LINK_MISSING", "no https address of the information clause is known; the consent names the clause without a link"))
-    secs.append(lib.consent(std.consent_section, url))
+        _clause(brief, consent, remarks)
+    secs.append(consent)
     return secs
 
 
@@ -219,7 +293,10 @@ def _brief_comp(f: BriefField, section_title: str, policy: str, remarks: list[Re
         if why == required_rule.UNSTATED:
             unstated.append(f.key)     # counted, reported once for the form
         else:
-            remarks.append(Remark("REQUIRED_INFERRED", f"field {f.key}: REQUIRED is not written; {why}"))
+            remarks.append(Remark("REQUIRED_INFERRED", f"field {f.key}: REQUIRED is not written; {why}", fix={
+                "kind": "applied", "rule": "required.paper_optional", "target": f"brief:{f.key}", "value": "optional",
+                "text": f"Pole „{f.label[:80]}” jest nieobowiązkowe: tak wynika ze słów druku.",
+                "source": fixes.paper(f.evidence[0]) if f.evidence else fixes.rule_source("paper-words")}))
     validation = (("REQUIRED",) if must else ()) + ((named,) if named else ())
     options = tuple(f.options)
     if f.type == "CHECKBOX" and not options:
@@ -236,6 +313,35 @@ def _brief_comp(f: BriefField, section_title: str, policy: str, remarks: list[Re
                 search=True if f.type == "SELECT" and len(f.options) > 15 else None, **common)
 
 
+def _required_fix(brief: Brief, unstated: list[str]) -> dict[str, Any]:
+    """The fix of the one REQUIRED_INFERRED remark of the policy "paper" (no REQUIRED where the paper marks none).
+    The paper marks its required fields itself: the unmarked ones are optional by the paper's own convention, the
+    remark only tells. The paper marks nothing: only the official knows, so he gets a choice by one click; the form
+    keeps what it has (no REQUIRED) as the first option."""
+    fields = {f.key: f for m in brief.matter for f in m.fields if f.key}
+    # the paper's own word "obowiązkowe" or "wymagane" on a field: the paper has a convention of marking them
+    marked = [f for f in fields.values() if f.required and f.required_basis == "paper"
+              and required_rule.REQUIRED_WORD.search(f"{f.label} {f.hint or ''}")]
+    n = len(unstated)
+    if marked:
+        return {"kind": "applied", "rule": "required.paper_marks_its_own", "value": "optional",
+                "text": f"Druk sam oznacza pola obowiązkowe ({len(marked)}); pozostałych ({n}) nie oznacza, więc nie są obowiązkowe.",
+                "source": fixes.paper(marked[0].evidence[0]) if marked[0].evidence else fixes.rule_source("paper-words")}
+    soft = [k for k in unstated if k in fields and USUALLY_OPTIONAL.search(fields[k].label)]
+    hard = [k for k in unstated if k not in soft]
+    options = [{"label": "Zostaw nieobowiązkowe (druk tego nie oznacza)", "value": "optional", "current": True,
+                "fields": {k: {"REQUIRED": False} for k in unstated}, "source": fixes.rule_source("required-only-when-the-paper-says")}]
+    if soft and hard:
+        names = ", ".join(fields[k].label[:30] for k in soft[:4])
+        options.append({"label": f"Obowiązkowe ({len(hard)}), bez: {names}", "value": "required_but_usually_optional", "current": False,
+                        "fields": {**{k: {"REQUIRED": True} for k in hard}, **{k: {"REQUIRED": False} for k in soft}},
+                        "source": {"type": "dictionary", "name": "usually-optional"}})
+    options.append({"label": f"Wszystkie obowiązkowe ({n})", "value": "required", "current": False,
+                    "fields": {k: {"REQUIRED": True} for k in unstated}, "source": fixes.rule_source("unmarked-blank-is-required")})
+    return {"kind": "choice", "rule": "required.paper_is_silent", "options": options,
+            "text": f"Druk nie mówi, które pola są obowiązkowe (dotyczy {n}). Wybierz gotową odpowiedź."}
+
+
 def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark], dropped: list[str]) -> list[Page]:
     secs: list[Sec] = []
     unstated: list[str] = []
@@ -249,7 +355,7 @@ def _matter_pages(brief: Brief, o: ComposeOptions, remarks: list[Remark], droppe
         n = len(unstated)
         remarks.append(Remark("REQUIRED_INFERRED", f"{n} field{'s are' if n != 1 else ' is'} required only by our rule and the paper does not "
                                                    f"mark {'them' if n != 1 else 'it'}: REQUIRED is not written (required policy 'paper'); "
-                                                   f"first: {', '.join(unstated[:6])}"))
+                                                   f"first: {', '.join(unstated[:6])}", fix=_required_fix(brief, unstated)))
     uploads = [a for a in brief.attachments if a.covered_by is None]
     if uploads:
         secs.append(Sec("matter/zalaczniki", "Załączniki", None, [

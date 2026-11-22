@@ -23,6 +23,7 @@ from app.model.brief import BriefField
 POLICIES = ("inferred", "paper")
 OPTIONAL = lexicon.regex("habits", habit="optional")
 CONDITIONAL = lexicon.regex("habits", habit="conditional")
+REQUIRED_WORD = lexicon.regex("habits", habit="required")
 
 UNSTATED = "unstated"       # the reason of rule 2, counted and reported once
 

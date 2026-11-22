@@ -11,8 +11,11 @@ What is kept and where
 What never leaves
   No answer of this module holds a key. `GET /v1/model` gives at most the last four characters of a key of sixteen
   or more (enough to recognise which key is in use, useless to spend it), and only to a caller who may convert.
-  A full key is never returned: this service does not know who asks from inside a container (every client arrives
-  through the bridge address), so "only on this computer" cannot be checked here.
+  A full key is returned only when the operator starts the service with VISION_KEY_REVEAL=on (default off), and
+  then only to a caller who may convert: this service does not know who asks from inside a container (every client
+  arrives through the bridge address), so "only on this computer" cannot be checked here; it is the operator's
+  choice for a container bound to 127.0.0.1 on their own machine. VISION_PAGE_CONFIG=off removes the page settings
+  (address, model, key typed on the page) for a shared deployment.
 
 A key belongs to its address
   The key of the environment is sent only to the address of the environment. A request that names another address

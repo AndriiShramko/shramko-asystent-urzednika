@@ -78,9 +78,21 @@ class Cond(Contract):
         return [leaf for s in subs for leaf in s.leaves()]
 
 
+class OfficeCandidate(Contract):
+    """W11 CLERK-S: one office the paper names outside an addressee block (a header, a stamp line, the clause)."""
+
+    kind: Literal["office", "body"]
+    name: str = Field(min_length=1)
+    evidence: Evidence
+
+
 class Addressee(Stated):
     kind: Literal["office", "body"] | None = None
     name: str | None = None
+    # W11 CLERK-S: filled only when no addressee block was found and the whole paper was searched; the most likely
+    # first. One candidate: status stated, name written. Several: status ambiguous, the first is written, the
+    # official picks (remark ADDRESSEE_MISSING with a ready choice).
+    candidates: list[OfficeCandidate] = omit_empty()
 
 
 class ApplicantOption(Contract):
@@ -161,9 +173,19 @@ class Consent(Contract):
                               description="1.1: consent (default) or a declaration the applicant affirms.")
 
 
+class ClauseText(Contract):
+    """W11 CLERK-S: the information clause as the paper prints it, so that the consent of the form can carry it."""
+
+    paragraphs: list[str] = Field(min_length=1)
+    origin: Literal["native", "ocr", "flow"]
+    conf: Unit = Field(description="Lowest mean word confidence of a page the clause stands on; 1 for text that was not OCR.")
+    evidence: list[Evidence] = []
+
+
 class Declarations(Contract):
     consents: list[Consent] = []
     clause: Stated
+    clause_text: ClauseText | None = None
 
 
 class Disposition(Contract):
