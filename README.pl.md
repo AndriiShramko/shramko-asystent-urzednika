@@ -2,7 +2,11 @@
 
 Usługa REST w Dockerze dla zadania „Cyfryzacja formularzy” (Centralny Ośrodek Informatyki, HackNation 2026). Na wejściu jeden pusty formularz urzędowy (PDF, DOC, DOCX, ODS, XLSX, JPG, JPEG, PNG), na wyjściu konfiguracja JSON formularza elektronicznego w strukturze partnera („Generator Formularzy e-Usług”). We wdrożeniu współdzielonym dostęp chroni token JWT; uruchomiona sama na jednym komputerze usługa jest otwarta i mówi o tym w dzienniku. Obok formularza powstaje plik poboczny (sidecar) z dowodami: skąd wzięło się każde pole, co się stało z każdym pustym miejscem druku, co pominięto i czego usługa odmówiła zgadywać.
 
-Idea w jednym zdaniu: **kompilator z księgowym, a nie skaner ze sztuczną inteligencją.** Reguły i biblioteka standardowych sekcji partnera składają formularz, a usługa się z niego rozlicza. W czasie działania nie pracuje żaden model językowy i nie ma żadnego połączenia z siecią.
+Idea w jednym zdaniu: **kompilator z księgowym, a nie skaner ze sztuczną inteligencją.** Reguły i biblioteka standardowych sekcji partnera składają formularz, a usługa się z niego rozlicza. Uruchomiona poleceniami dla jury usługa nie używa żadnego modelu językowego i nie łączy się z siecią; opcjonalny krok z modelem o otwartych wagach na serwerze urzędu (dla słabo czytelnych stron skanów) włącza administrator, domyślnie jest wyłączony.
+
+**Wydanie:** [najnowsze wydanie](https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/latest) (7 plików JSON, prezentacja PDF, archiwum obrazu). **Gdzie widać każde kryterium oceny:** tabela na początku [README.md](README.md).
+
+![Widok urzędnika: uwagi prostym językiem nad oryginałem i e-formularzem; kliknięcie ramki na oryginale prowadzi do pola (wzorcowy druk COI „Wniosek o ustalenie numeru porządkowego”)](docs/img/clerk-view.png)
 
 ## Dla jury: trzy polecenia
 

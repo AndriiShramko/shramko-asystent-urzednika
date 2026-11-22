@@ -16,7 +16,7 @@
    - для терминала: папка `forms` с копией PDF набора 03 под именем `form.pdf`, пустая папка `out`.
 4. Заранее, до записи, откройте две вкладки и загрузите в них: вкладка 2 — набор 09 PDF (для блока «Słowniki»), вкладка 3 — набор 09 JPG (скан идёт до 1,5 минут, ждать в кадре нельзя).
 5. **Никогда не нажимайте «глазик» ключа модели во время записи.** В вашем контейнере глазик показывает ключ целиком (`VISION_KEY_REVEAL=on`), а фильм публичный: ключ должен быть виден только точками. Адрес сервера модели тоже не показывать. Если сомневаетесь — запишите сцену 8 без раскрытия блока «Model AI».
-6. Не снимать: набор 03 как JPEG и PNG (поля с бумаги не находятся), набор 07 как JPG (мусорное поле «Eeee…»), гербы и логотипы госорганов.
+6. Снимать набор 09 (PDF) и эталон ref01 (PDF): на них видно всё, что показывает сценарий.
 7. Жёлтая плашка «Dane demonstracyjne…» должна быть видна в сценах с заполнением: люди и номера выдуманы.
 
 ---
@@ -90,7 +90,7 @@
 *Всё это один образ Docker, на процессоре, без GPU. Команды для жюри работают без сети. Один и тот же файл даёт тот же JSON, байт в байт. Есть REST, командная строка и много файлов сразу.*
 
 **10 (2:27–2:45)**
-> Plik sprawdzamy po typie i nazwie, a trzymamy tylko tymczasowo. Biblioteki mają otwarte licencje bez copyleftu. Strona ma kontrast zgodny z WCAG. Urzędnik nie przepisuje druku. Sprawdza i zatwierdza.
+> Plik sprawdzamy po typie i nazwie, a trzymamy tylko tymczasowo. Wyłącznie open source, bez licencji wymagających upublicznienia kodu. Strona ma kontrast zgodny z WCAG. Urzędnik nie przepisuje druku. Sprawdza i zatwierdza.
 
 *Файл проверяем по типу и имени, а храним только временно. Библиотеки с открытыми лицензиями без копилефта. У страницы контраст по WCAG. Урзендник не переписывает бланк. Он проверяет и утверждает.*
 

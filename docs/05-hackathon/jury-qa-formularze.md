@@ -104,7 +104,7 @@ True only if: the offline run (command 1 of the README) passed on the submitted 
 
 ### 13. „Jakie licencje mają zależności i jak czytają Państwo pliki DOC bez LibreOffice?”
 
-> Bramka licencji przepuszcza tylko licencje bez copyleft i tworzy listę wszystkich zależności; odrzuciliśmy między innymi PyMuPDF (AGPL) i python-stdnum (LGPL). Stary format DOC czyta nasz własny czytnik binarnego tekstu Worda; LibreOffice nie ma w żadnym z naszych obrazów.
+> Bramka licencji przepuszcza w zależnościach Pythona tylko licencje bez copyleftu i tworzy ich listę; jedyny składnik LGPL w obrazie (libheif, tylko dla HEIC, spoza listy formatów zadania) działa jako osobny, niezmieniony program, więc żadna licencja nie wymaga upublicznienia naszego kodu (karta, rozdział 5); odrzuciliśmy między innymi PyMuPDF (AGPL) i python-stdnum (LGPL). Stary format DOC czyta nasz własny czytnik binarnego tekstu Worda; LibreOffice nie ma w żadnym z naszych obrazów.
 
 *(Проверка лицензий пропускает только лицензии без копилефта и строит список всех зависимостей; мы отказались, в частности, от PyMuPDF (AGPL) и python-stdnum (LGPL). Старый формат DOC читает наш собственный читатель двоичного текста Word; LibreOffice нет ни в одном из наших образов.)*
 

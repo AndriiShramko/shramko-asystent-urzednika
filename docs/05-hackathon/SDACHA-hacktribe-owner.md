@@ -55,10 +55,10 @@ Co dostaje urzędnik:
 - warunki pokazania sekcji w JSONata, walidatory PESEL, NIP, REGON, kodu pocztowego, e-mail, dowodu osobistego;
 - podgląd e-formularza, próbne wypełnienie fikcyjną osobą, sprawdzenie i wydruk na oryginalnym blankiecie;
 - wiele plików naraz przez REST (/v1/batches) albo jedną komendą dla całego folderu.
-[проверить после финальной сборки] Widok urzędnika: oryginał obok gotowego e-formularza, uwagi jako karty na dokumencie i poprawka jednym kliknięciem; osobny widok dla jury.
-[проверить после финальной сборки] Podpowiedzi adresu bez sieci z rejestru TERYT (miejscowość, ulica, gmina).
+Widok urzędnika: oryginał obok gotowego e-formularza, uwagi jako karty na dokumencie i poprawka jednym kliknięciem; osobny widok dla jury.
+Podpowiedzi adresu bez sieci z rejestru TERYT (miejscowość, ulica, gmina).
 
-Wdrożenie: CPU, bez GPU, obraz python:3.14-alpine przypięty skrótem, użytkownik bez uprawnień, plik tylko w pamięci i katalogu tymczasowym, konfigurowalny limit rozmiaru, JWT, licencje bez copyleftu. Polecenia dla jury działają z --network none.
+Wdrożenie: CPU, bez GPU, obraz python:3.14-alpine przypięty skrótem, użytkownik bez uprawnień, plik tylko w pamięci i katalogu tymczasowym, konfigurowalny limit rozmiaru, JWT, wyłącznie open source bez licencji wymagających upublicznienia kodu. Polecenia dla jury działają z --network none.
 
 Model pomocniczy, domyślnie wyłączony: dla słabych stron skanów administrator może wskazać własny serwer z modelem o otwartych wagach (np. Qwen3). Model nie pisze pól: wskazuje tylko numery linii, które nasz OCR już odczytał, a dalej działają te same reguły. Adres i klucz podaje się przy uruchomieniu kontenera albo na stronie w bloku „Model AI (opcjonalnie)” (klucz widać jako kropki). W obrazie nie ma żadnego klucza; bez modelu wynik budują same reguły, co do bajtu powtarzalnie.
 ```
@@ -86,10 +86,9 @@ Przed wydarzeniem (oznaczone w repozytorium jako materiał sprzed hackathonu): a
 Działa i jest zmierzone:
 - REST (/v1/forms/convert, /v1/batches, /v1/forms/report, /status), wiersz poleceń i strona /ui/ w jednym obrazie; dokładnie osiem formatów z karty zadania, z kontrolą zawartości pliku względem rozszerzenia i nazwy pliku.
 - Każdy wynik przechodzi schemat JSON i reguły partnera przed wysłaniem; wynik zawiera tylko title, tabs, flow, a raport z pochodzeniem pól jest osobnym plikiem.
-- Każde scalenie kodu przechodzi ponad 1000 testów i porównanie na 158 plikach (zadania i archiwum miasta): 0 awarii.
-- Niezależna kontrola po obrazie strony (sędzia wypisał miejsca do wypełnienia, nie widząc naszego wyniku; pomiar 21.11 wieczorem, przed nocnymi poprawkami): na 14 nieznanych formularzach z archiwum Bydgoszczy znaleźliśmy poprawnie 70 % miejsc z PDF i 69 % ze zdjęć; na zestawach zadania z PDF 81 %. W nocy stary DOC nauczył się czytać ramki tekstu: zestaw 08 DOC z 8 do 34 pól z papieru.
+- Każde scalenie kodu przechodzi ponad 1400 testów i porównanie na 158 plikach (zadania i archiwum miasta): 0 awarii.
 - Czas jednej konwersji przez REST (108 plików, obciążony laptop, 2 rdzenie): mediana poniżej 2 s dla PDF, DOC, DOCX, ODS i XLSX; skany 12–17 s, bo czyta je lokalny OCR. Szczyt pamięci 577 MiB.
-- Pliki JSON siedmiu ocenianych formularzy są w katalogu results/ repozytorium.
+- Pliki JSON siedmiu ocenianych formularzy: wszystkie 7 w wydaniu https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/latest (6 także w katalogu results/ repozytorium; zestaw 08 cytuje rachunek bankowy urzędu, więc jest tylko w wydaniu).
 
 Cel: urzędnik dostaje gotowy, sprawdzony szkic e-usługi obok oryginału i tylko zatwierdza, zamiast przepisywać druk pole po polu.
 ```
@@ -138,7 +137,7 @@ docker run --rm --platform linux/amd64 --network none --read-only --cap-drop ALL
 (Git Bash: dodaj MSYS_NO_PATHCONV=1 na początku; PowerShell: polecenie w README, sekcja „For the jury”.)
 
 Pliki konwertujcie po kolei: usługa pracuje na dwóch plikach naraz i na więcej odpowiada 429. Limit: 20 MiB i 60 stron na plik (zmienne środowiskowe w README).
-Wyniki dla siedmiu ocenianych formularzy: katalog results/ w repozytorium.
+Wyniki dla siedmiu ocenianych formularzy: wszystkie 7 w wydaniu https://github.com/AndriiShramko/shramko-asystent-urzednika/releases/latest (6 także w katalogu results/ repozytorium).
 Dane osób na stronie w próbnym wypełnieniu są fikcyjne; „skan kodu QR” jest symulacją.
 ```
 *Ключа в образе нет, поэтому про модель здесь ничего добавлять не нужно: команды для жюри работают на правилах.*
