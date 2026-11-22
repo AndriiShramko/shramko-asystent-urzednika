@@ -50,11 +50,35 @@ def test_jpe_is_read_as_jpeg_in_both_modes():
 
 # ---- names ------------------------------------------------------------------------------------------------------
 
+CLEAN = Settings(auth_mode="off", max_upload_bytes=200_000, name_policy="clean")
+
+
 def cleaned(raw, expected_name):
-    info = inspect_upload(raw, fx.pdf(), S)
+    """NAME_POLICY=clean (WP-F20f): the name is cleaned, not refused."""
+    info = inspect_upload(raw, fx.pdf(), CLEAN)
     assert info.name == expected_name and info.kind == "pdf"
-    assert info.warnings and info.warnings[0].startswith("Nazwa pliku została oczyszczona")   # WP-F20f: cleaned, not refused
+    assert info.warnings and info.warnings[0].startswith("Nazwa pliku została oczyszczona")
     return info
+
+
+@pytest.mark.parametrize("ch", list(";:><" + chr(92) + "/|'*%$"))
+def test_by_default_a_name_with_a_character_the_card_forbids_is_refused(ch):
+    """BL12: the task card's "Walidacja nazwy pliku" is the default (NAME_POLICY=refuse): 400 BAD_NAME in Polish."""
+    with pytest.raises(ProblemError) as e:
+        inspect_upload(f"a{ch}b.pdf", fx.pdf(), S)
+    assert e.value.code == "BAD_NAME" and "Zmień nazwę pliku" in str(e.value) and ch in str(e.value)
+
+
+def test_by_default_a_name_over_250_characters_is_refused_and_250_pass():
+    with pytest.raises(ProblemError) as e:
+        inspect_upload("a" * 247 + ".pdf", fx.pdf(), S)
+    assert e.value.code == "BAD_NAME" and "250" in str(e.value)
+    assert inspect_upload("a" * 246 + ".pdf", fx.pdf(), S).name == "a" * 246 + ".pdf"
+
+
+def test_by_default_control_characters_are_still_only_removed():
+    info = inspect_upload("a" + chr(0x202E) + "b.pdf", fx.pdf(), S)
+    assert info.name == "ab.pdf" and info.warnings
 
 
 def test_name_with_percent_is_cleaned():
@@ -69,7 +93,7 @@ def test_name_with_forbidden_or_control_character_is_cleaned(ch):
 def test_name_of_251_characters_is_cut_to_250():
     info = cleaned("a" * 247 + ".pdf", "a" * 246 + ".pdf")
     assert len(info.name) == 250
-    assert not inspect_upload("a" * 246 + ".pdf", fx.pdf(), S).warnings  # 250 characters: unchanged
+    assert not inspect_upload("a" * 246 + ".pdf", fx.pdf(), CLEAN).warnings  # 250 characters: unchanged
 
 
 def test_name_is_normalised_to_nfc():

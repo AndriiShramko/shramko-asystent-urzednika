@@ -212,7 +212,7 @@ def test_names_are_cleaned_not_refused(raw, expected, said):
 
 def test_a_cleaned_name_reaches_the_upload_info_and_the_sidecar():
     data = pdf_bytes(draw_form)
-    info = inspect_upload("wnio%sek;.pdf", data, S)
+    info = inspect_upload("wnio%sek;.pdf", data, Settings(auth_mode="off", max_upload_bytes=20_000_000, name_policy="clean"))
     assert info.name == "wniosek.pdf" and info.ext == "pdf" and info.warnings
     res = pipeline.run(data, info.name, S, info.warnings)
     notes = [w for w in res.sidecar["warnings"] if w["code"] == "INPUT_NOTE"]

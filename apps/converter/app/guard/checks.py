@@ -374,8 +374,25 @@ def _has_macros(kind: str, names: list[str]) -> bool:
     return False
 
 
+def refuse_bad_name(raw: str | None) -> None:
+    """The task card's validation of the name ("Walidacja nazwy pliku"): at most 250 characters and none of
+    ; : > < / \\ | ' * % $. A name breaking it is 400 BAD_NAME with the reason in Polish (NAME_POLICY=refuse, the
+    default). Control and direction characters are not in the card's list: they are still removed by `clean_name`."""
+    name = unicodedata.normalize("NFC", raw or "")
+    bad = sorted({ch for ch in name if ch in NAME_FORBIDDEN})
+    if bad:
+        shown = " ".join(bad)
+        raise ProblemError("BAD_NAME", f"Nazwa pliku nie może zawierać znaków ; : > < / \\ | ' * % $ (w tej nazwie: {shown}). "
+                                       "Zmień nazwę pliku i wyślij go ponownie.")
+    if len(name) > NAME_MAX:
+        raise ProblemError("BAD_NAME", f"Nazwa pliku ma {len(name)} znaków; dopuszczalne jest najwyżej {NAME_MAX}. "
+                                       "Skróć nazwę pliku i wyślij go ponownie.")
+
+
 def inspect_upload(raw_name: str | None, data: bytes, settings: Settings, declared_type: str | None = None) -> UploadInfo:
     """The whole guard for one upload that is already in memory. Raises ProblemError; never parses a body."""
+    if getattr(settings, "name_policy", "refuse") != "clean":
+        refuse_bad_name(raw_name)
     name, warns_name = clean_name(raw_name)
     warns: list[str] = list(warns_name)
     no_ext = "." not in name
