@@ -54,6 +54,7 @@ _COND_A = re.compile(r"^\W*(?:jeśli|jeżeli|w\s+przypadku)\s+(tak|nie|wybierzes
                      r"|odpowiedzi\s+(?:twierdzącej|przeczącej))\b", re.IGNORECASE)
 _COND_C = re.compile(r"(?:należy\s+)?wypełni[ćc]\s+(?:tylko\s+|wyłącznie\s+)?w\s+przypadku\s+|dotyczy\s+wyłącznie\s+",
                      re.IGNORECASE)
+_NUM_HEAD_LINE = re.compile(r"^\s*(?:\d{1,2}|[IVX]{1,4})\.\s+[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]")
 # 4-letter stems that name no option: "inny niż w poz. B.3", "kiedy jest", "zaznaczenia kratki"
 _STEM_STOP = {"inny", "inna", "inne", "jest", "kied", "tylk", "oraz", "prze", "któr", "zazn", "krat", "pozy", "dany",
               "dane", "osob", "wype", "nale", "jeże", "jeśl", "wnio"}
@@ -960,6 +961,11 @@ class _Reader:
         heads = sorted(min(doc.pos[r] for r in s.runs if r in doc.pos) for s in doc.fo.sections
                        if any(r in doc.pos for r in s.runs))   # where each section starts (a wrapped heading is one)
         owned = {r: cid for cid in self.field_of if cid in doc.cands for r in doc.cand_runs(doc.cands[cid])}
+        # a numbered line that reads as a heading ("2. Dane sportowca", "III. Oświadczenia") ends a block too, when
+        # the finder did not make it a section (a plain cell of a sheet); a numbered label of a field does not
+        num_lines = sorted(min(doc.pos[r] for r in rids if r in doc.pos) for rids, text in self._lines()
+                           if _NUM_HEAD_LINE.match(text) and len(text.split()) <= 10 and text.rstrip()[-1:] not in ":.,;"
+                           and any(r in doc.pos for r in rids) and not any(r in owned for r in rids))
 
         def stems(t: str) -> set[str]:
             return {w[:4] for w in re.findall(r"\w{4,}", t.casefold())} - _STEM_STOP
@@ -983,6 +989,7 @@ class _Reader:
                 continue
             at, page = min(ats), doc.page(rids[0])
             stop = next((h for h in heads if h > at), 10 ** 9)   # the next heading ends what a note governs
+            stop = min(stop, next((h for h in num_lines if h > at), 10 ** 9))
             a, cm = _COND_A.match(text), _COND_C.search(text)
             if a is not None:
                 # family A: the nearest choice above on the same page, no other field without a condition between
