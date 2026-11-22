@@ -7,6 +7,7 @@ import { INPUT_TYPES, nameOf, type ENode } from '../lib/fp/form'
 import { fullAddress, peselOf, type DemoRecord } from '../lib/fp/family'
 import { layoutMark, layoutText, standardPrints, type Attr, type Glyph, type Place } from '../lib/fp/places'
 import { FP } from '../lib/fp/text'
+import { canReadInk, measureInk, type PlaceInk } from '../lib/fp/ink'
 import type { EForm } from './eform'
 import type { Where } from './where'
 
@@ -53,25 +54,30 @@ function attrValue(ef: EForm, attr: Attr, record: DemoRecord | null): { text: st
 
 export interface Sheets { sheets: HTMLElement[]; extra: { name: string; value: string }[]; overflow: string[]; placed: number }
 
-function glyphEl(g: Glyph): HTMLElement {
+/** A glyph with the candidate it belongs to (the measured check of the print reads `data-cid`). */
+interface Put { g: Glyph; cid: string }
+
+function glyphEl({ g, cid }: Put): HTMLElement {
   const style = [`left:${g.left.toFixed(2)}pt`, `top:${g.top.toFixed(2)}pt`, `font-size:${g.size}pt`]
   if (g.width !== undefined) style.push(`width:${g.width.toFixed(2)}pt`)
   if (g.center) style.push('text-align:center')
-  return h('div', { class: 'fp-glyph', style: style.join(';') }, g.text)
+  return h('div', { class: 'fp-glyph', 'data-cid': cid, style: style.join(';') }, g.text)
 }
 
-/** The sheets of the print on the original, or null when the input has no page pictures. */
-export function buildSheets(ef: EForm, where: Where, record: DemoRecord | null): Sheets | null {
+/** The sheets of the print on the original, or null when the input has no page pictures. `ink` = the ink of the
+ * places measured on the page pictures (lib/fp/ink.ts); without it the values are placed by the boxes alone. A
+ * value that does not fit its place is cut there and printed whole on the extra page. */
+export function buildSheets(ef: EForm, where: Where, record: DemoRecord | null, ink?: Map<string, PlaceInk>): Sheets | null {
   const pv = where.preview()
   const j = where.joined()
   if (!pv || !j || !pv.pages.length) return null
-  const byPage = new Map<number, Glyph[]>()
-  const add = (page: number, g: Glyph[]): void => { byPage.set(page, [...(byPage.get(page) ?? []), ...g]) }
+  const byPage = new Map<number, Put[]>()
+  const add = (page: number, g: Glyph[], cid: string): void => { byPage.set(page, [...(byPage.get(page) ?? []), ...g.map((x) => ({ g: x, cid }))]) }
   const used = new Set<string>()
   const overflow: string[] = []
   let placed = 0
 
-  for (const [fid, { place }] of j.byField) {
+  for (const [fid, { cid, place }] of j.byField) {
     const n = ef.model.byId.get(fid)
     if (!n || !ef.isVisible(n) || !place.box) continue
     const v = ef.get(fid)
@@ -82,32 +88,33 @@ export function buildSheets(ef: EForm, where: Where, record: DemoRecord | null):
       for (const c of chosen) {
         const o = place.options.find((op) => norm(op.text) === norm(c)) ?? place.options.find((op) => norm(op.text).startsWith(norm(c)) || norm(c).startsWith(norm(op.text)))
         const mark: Place | undefined = o?.mark ? pv.places[o.mark] : undefined
-        const g = mark ? layoutMark(mark) : null
-        if (g && mark) { add(mark.page, [g]); any = true }
+        const g = mark ? layoutMark(mark, o?.mark ? ink?.get(o.mark) : undefined) : null
+        if (g && mark && o?.mark) { add(mark.page, [g], o.mark); any = true }
       }
       if (any) { used.add(fid); placed++ }
       continue
     }
     if (n.type === 'CHECKBOX' && !n.options.length) {
-      const g = layoutMark(place)
-      if (g) { add(place.page, [g]); used.add(fid); placed++ }
+      const g = layoutMark(place, ink?.get(cid))
+      if (g) { add(place.page, [g], cid); used.add(fid); placed++ }
       continue
     }
     let text = paperText(n, ef.textOf(fid))
     if (place.kind === 'comb' && place.cells && text.replace(/\s/g, '').length > place.cells) text = text.replace(/[.\-\s]/g, '')
-    const r = layoutText(place, text)
-    if (!r.fits) overflow.push(nameOf(n))
-    add(place.page, r.glyphs); used.add(fid); placed++
+    const r = layoutText(place, text, ink?.get(cid))
+    if (r.fits) used.add(fid)
+    else overflow.push(nameOf(n))
+    add(place.page, r.glyphs, cid); placed++
   }
 
   for (const s of j.standard) {
     if (!s.attr || !standardPrints(s.section) || !s.place.box) continue
     const { text, ids } = attrValue(ef, s.attr, record)
     if (!text) continue
-    const r = layoutText(s.place, text)
-    if (!r.fits) overflow.push(s.place.label ?? s.attr)
-    add(s.place.page, r.glyphs)
-    for (const id of ids) used.add(id)
+    const r = layoutText(s.place, text, ink?.get(s.cid))
+    if (r.fits) for (const id of ids) used.add(id)
+    else overflow.push(s.place.label ?? s.attr)
+    add(s.place.page, r.glyphs, s.cid)
     placed++
   }
 
@@ -173,8 +180,12 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
     extraNote.textContent = s && s.extra.length ? FP.noPlace(s.extra.length) : ''
   }
 
+  // the ink of the places, measured once on the page pictures after the preview arrived (a browser with canvas)
+  let ink: Map<string, PlaceInk> | undefined
+  let inkReady: Promise<void> = Promise.resolve()
+
   function showPreview(): void {
-    const s = buildSheets(ef, where, record())
+    const s = buildSheets(ef, where, record(), ink)
     clear(preview)
     fillNotes(s)
     if (s) preview.append(...s.sheets)
@@ -197,9 +208,13 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
     pvBtn.setAttribute('aria-expanded', String(open))
   })
   sheetBtn.addEventListener('click', () => {
-    const s = buildSheets(ef, where, record())
-    fillNotes(s)
-    if (s) doPrint(s.sheets)
+    const go = (): void => {
+      const s = buildSheets(ef, where, record(), ink)
+      fillNotes(s)
+      if (s) doPrint(s.sheets)
+    }
+    if (ink || !canReadInk()) go()
+    else void inkReady.then(go) // the pictures are still being measured: print as soon as the places are known
   })
   eBtn.addEventListener('click', () => doPrint([buildEformPrint(ef)]))
 
@@ -211,7 +226,11 @@ export function renderPrint(ef: EForm, where: Where, record: () => DemoRecord | 
     note.textContent = geometry ? '' : pv ? FP.noPageImage : FP.previewMissing
     if (!preview.hidden) showPreview()
   }
-  void where.ready.then(refresh)
+  void where.ready.then(() => {
+    refresh()
+    if (!canReadInk()) return
+    inkReady = measureInk(where.preview()).then((m) => { ink = m; if (!preview.hidden) showPreview() })
+  })
   ef.onChange(() => { if (!preview.hidden) showPreview() })
 
   const el = h('section', { id: 'fp-print-step', class: 'fp-step', 'aria-labelledby': 'h-print' },

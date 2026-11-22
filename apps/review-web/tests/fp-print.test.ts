@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { interpretResponse, type Converted } from '../src/lib/api'
 import { mountFill } from '../src/ui/fill'
 import { buildEformPrint, buildSheets, paperText } from '../src/ui/print'
-import { BASE } from '../src/lib/fp/places'
+import { BASE, GAP, LEADER_RISE } from '../src/lib/fp/places'
 import { canonical, multipartBody } from './helpers'
 import { fpForm, fpLedgerSidecar, fpPreview } from './fp-fixture'
 
@@ -34,7 +34,7 @@ describe('FP print on the original', () => {
     const nip = [...page.querySelectorAll<HTMLElement>('.fp-glyph')].find((g) => /^\d{10}$/.test(g.textContent ?? ''))!
     expect(parseFloat(nip.style.left)).toBe(260)
     const top = parseFloat(nip.style.top); const size = parseFloat(nip.style.fontSize)
-    expect(top + size * BASE).toBeCloseTo(437, 1) // baseline 1 pt above the leader's bottom (438)
+    expect(top + size * BASE).toBeCloseTo(438 - 8 * LEADER_RISE - GAP, 1) // baseline GAP above the dots of the leader (wave 11)
     expect(glyphAt(page, 'Tomasz Przykładowski')).toBeTruthy()
     expect(parseFloat(glyphAt(page, '12')!.style.left)).toBeCloseTo(55 + 3 + 'Nr domu'.length * 4.2 + 6, 1) // a low cell: after its label
     const x = glyphAt(page, 'X')!
