@@ -396,7 +396,7 @@ button.clerk-card-field:hover { border-color: var(--c-accent); }
 /* W11 CLERK-P end */
 
 /* W11 FLOW */
-.bar-run[hidden], .bar-fill[hidden], .bar[hidden], .queue[hidden], .q-dot[hidden], .q-state[hidden], .q-alive[hidden], .q-row .btn[hidden], #queue-cancel-all[hidden], #progress-alive[hidden] { display: none; }
+.bar-run[hidden], .bar-fill[hidden], .bar[hidden], .queue[hidden], .q-dot[hidden], .q-state[hidden], .q-alive[hidden], .q-row .btn[hidden], #queue-cancel-all[hidden], #progress-alive[hidden], #token-row[hidden] { display: none; }
 .bar-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: var(--c-bar); transition: width 0.3s linear; }
 .progress .bar { height: 0.75rem; }
 .q-state { display: flex; align-items: baseline; gap: 0.5rem; margin: 0.5rem 0 0; }

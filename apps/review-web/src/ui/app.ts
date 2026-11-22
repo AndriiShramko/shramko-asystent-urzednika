@@ -61,6 +61,7 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   // The fill-and-print block of each result: built once per conversion, kept across a language change.
   const fills = new Map<number, FillBlock>()
   let whenIdle: Array<() => void> = []
+  let tokenAsked = false
   // The badge has two sources (see badgeMode): what /status said last, and the engine of the last conversion.
   let statusMode: Mode | null = null
   let lastEngine: Engine | null = null
@@ -100,13 +101,16 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
   const manyHint = h('p', { class: 'muted', id: 'many-hint' })
   const zone = h('div', { class: 'drop', id: 'drop' },
     i18nEl('p', 'upload.drop'), pick, fileInput, manyHint, chosen)
+  // W11 FLOW: the access-token row is hidden when /status says the service asks for no token (`auth: off`), so the
+  // clerk does not take it for the model key; it comes back when the service refuses a request for its token.
+  const tokenRow = h('div', { class: 'field-row', id: 'token-row' },
+    i18nEl('label', 'upload.token.label', { for: 'token' }), token,
+    i18nEl('p', 'upload.token.hint', { id: 'token-hint', class: 'muted' }))
   const upload = h('section', { 'aria-labelledby': 'h-upload', class: 'panel' },
     i18nEl('h2', 'upload.heading', { id: 'h-upload' }),
     zone,
     formatsLine,
-    h('div', { class: 'field-row' },
-      i18nEl('label', 'upload.token.label', { for: 'token' }), token,
-      i18nEl('p', 'upload.token.hint', { id: 'token-hint', class: 'muted' })))
+    tokenRow)
 
   // ---- progress panel: file name and size, a moving bar without a percentage, elapsed seconds, the long state
   const progFile = h('p', { id: 'progress-file', class: 'progress-file' })
@@ -248,6 +252,7 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     item.endedAt = Date.now()
     item.outcome = out
     item.phase = out.kind === 'ok' ? 'done' : out.code === CANCELLED ? 'cancelled' : 'failed'
+    if (out.kind === 'error' && (out.code.startsWith('TOKEN_') || out.code === 'SCOPE')) { tokenAsked = true; tokenRow.hidden = false }
     accepted()
     if (!several) return
     // The badge follows the newest finished conversion; the first finished file is shown without being asked for.
@@ -412,6 +417,8 @@ export function mountApp(root: HTMLElement, deps: Partial<AppDeps> = {}): { refr
     if (known.length) formats = known // a failed /status later does not erase what the service said before
     const limit = (answer as { limits?: { job_timeout_s?: unknown } } | null)?.limits?.job_timeout_s
     if (typeof limit === 'number' && limit > 0 && Number.isFinite(limit)) jobLimitS = limit
+    const auth = (answer as { auth?: unknown } | null)?.auth
+    if (typeof auth === 'string') tokenRow.hidden = auth === 'off' && !token.value && !tokenAsked
     paintMode()
     paintFormats()
   }

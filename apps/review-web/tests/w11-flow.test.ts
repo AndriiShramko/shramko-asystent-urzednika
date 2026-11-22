@@ -298,3 +298,27 @@ describe('W11 FLOW: the page, several files', () => {
     expect(rows.map((r) => r.dataset.phase)).toEqual(['done', 'cancelled', 'done'])
   })
 })
+
+describe('W11 FLOW: the access-token row', () => {
+  it('is hidden when the service says it asks for no token, and comes back when a request is refused for the token', async () => {
+    mountApp(document.getElementById('app')!, {
+      store: null, status: async () => ({ auth: 'off' }),
+      convert: async () => ({ kind: 'error', code: 'TOKEN_MISSING', status: 401, detail: null, title: null })
+    })
+    await new Promise((r) => setTimeout(r, 0))
+    expect(document.getElementById('token-row')!.hidden).toBe(true)
+    choose([file()])
+    await new Promise((r) => setTimeout(r, 0))
+    expect(document.getElementById('token-row')!.hidden).toBe(false)
+  })
+
+  it('stays when the service asks for a token or says nothing', async () => {
+    mountApp(document.getElementById('app')!, { store: null, status: async () => ({ auth: 'jwt' }), convert: async () => okOutcome() })
+    await new Promise((r) => setTimeout(r, 0))
+    expect(document.getElementById('token-row')!.hidden).toBe(false)
+    document.body.innerHTML = '<div id="app"></div>'
+    mountApp(document.getElementById('app')!, { store: null, status: async () => null, convert: async () => okOutcome() })
+    await new Promise((r) => setTimeout(r, 0))
+    expect(document.getElementById('token-row')!.hidden).toBe(false)
+  })
+})
