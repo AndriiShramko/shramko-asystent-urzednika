@@ -74,5 +74,9 @@ export const FP = {
   changePerson: 'Zmień osobę',
   printNext: 'Formularz sprawdzony. Następny krok: wydruk.',
   fixNext: 'Uzupełnij brakujące pola (odnośniki powyżej prowadzą do nich) i sprawdź ponownie albo przejdź do wydruku.',
-  previewShown: 'Podgląd wydruku jest poniżej. Następny krok: drukuj na blankiecie.'
+  previewShown: 'Podgląd wydruku jest poniżej. Następny krok: drukuj na blankiecie.',
+
+  // BL13 PRINT-MAP: a field of the e-form whose place on the original the program did not point out
+  noPlaceStandard: 'To pole pochodzi z sekcji standardowej e-usług. Na tym oryginale program nie wskazał jego miejsca.',
+  noPlaceOther: 'Program nie wskazał miejsca tego pola na oryginale.'
 }
