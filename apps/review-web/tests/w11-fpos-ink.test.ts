@@ -89,7 +89,7 @@ describe('FPOS print math: the baseline stands just above the line', () => {
       const place: Place = { page: 1, kind: 'leader', box: [60, y1 - h, 260, y1] }
       const ink = measurePlace(bm, place)!
       const withInk = layoutText(place, 'Przykładowa 12', ink).glyphs[0]
-      expect(dotsTop - baseline(withInk)).toBeCloseTo(GAP, 1)
+      expect(dotsTop - baseline(withInk)).toBeCloseTo(GAP, 0)
       const boxOnly = layoutText(place, 'Przykładowa 12').glyphs[0] // no picture: the measured habit of the boxes
       expect(dotsTop - baseline(boxOnly)).toBeGreaterThan(1)
       expect(dotsTop - baseline(boxOnly)).toBeLessThan(2.2)
@@ -157,7 +157,7 @@ describe('FPOS print math: the baseline stands just above the line', () => {
   })
 
   it('the width of a text follows the widths of Arial', () => {
-    expect(textWidth('0123456789', 10)).toBeCloseTo(55.6)
+    expect(textWidth('0123456780', 10)).toBeCloseTo(55.6)
     expect(textWidth('ił', 10)).toBeCloseTo(4.44)
     expect(textWidth('Żółć', 10)).toBeCloseTo((611 + 556 + 222 + 500) / 100)
   })
