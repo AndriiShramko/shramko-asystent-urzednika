@@ -59,7 +59,13 @@ _STEM_STOP = {"inny", "inna", "inne", "jest", "kied", "tylk", "oraz", "prze", "k
               "dane", "osob", "wype", "nale", "jeże", "jeśl", "wnio"}
 # Attachments named in running text (audit T2): a list under "Załączniki ...:", "należy / można dołączyć X",
 # "w załączeniu X", "X załączyć do wniosku"; a row "N. X  TAK  NIE" of an attachments table.
-_ATT_LIST = re.compile(r"^(?:\d{1,2}\.\s*)?(?:załączniki\b[^:]{0,40}|do wniosku\s+(?:należy|można)\s+(?:dołączyć|załączyć))\s*:$", re.IGNORECASE)
+# WAVE-10 VJF-3: the filer's own words announce the list too: "Do wniosku o dokonanie podziału dołączam:",
+# "Załączam następujące dokumenty:", "Do zgłoszenia dołącza się:" (numbered items without lines to write on).
+_ATT_LIST = re.compile(r"^(?:\d{1,2}\.\s*)?(?:załączniki\b[^:]{0,40}|do wniosku\s+(?:należy|można)\s+(?:dołączyć|załączyć)"
+                       r"|(?:[^:]{0,60}\s)?(?:dołączam|załączam|przedkładam|(?:dołącza|załącza)\s+się)\b[^:]{0,40})\s*:$",
+                       re.IGNORECASE)
+# ... and open lines under such words ("Do zgłoszenia załączam: ....") are the filer's own attachments, not a text
+_ATT_OPEN = re.compile(r"\b(?:dołączam|załączam|(?:dołącza|załącza)\s+się)(?:\s+następujące\s+dokumenty)?\s*:?$", re.IGNORECASE)
 _ATT_ITEM = re.compile(r"^\s*(?:[-–•]|\d{1,2}[.)]|[a-z]\))\s*(?=\w)")
 _ATT_SAY = re.compile(r"\b(?:należy|można|trzeba)\s+(?:dołączyć|załączyć)\s+(?!:)(.+)|\bw\s+załączeniu\s+(.+)", re.IGNORECASE)
 _ATT_BEFORE = re.compile(r"(?:^|[(,;:–-]\s*)([^(),;:–-]{6,80}?)\s+(?:należy\s+)?załączyć\s+do\s+wniosku", re.IGNORECASE)
@@ -209,7 +215,8 @@ class _Reader:
             return self._left(c, "SIGNATURE_AND_DATE", label)
         if c.id in blank_of and blank_of[c.id][0] in self.field_of and self._option_blank(c, *blank_of[c.id]):
             return None
-        attach = any(_ATTACH.search(t) for t in chain)
+        attach = any(_ATTACH.search(t) for t in chain) or (
+            c.kind not in ("choice_group", "box") and bool(label) and bool(_ATT_OPEN.search(label)))
         if not label and c.kind == "choice_group" and chain and not attach:
             label, low = sentence_case(chain[0]), chain[0].casefold()   # the heading is the question
         if label and self._standard(c, raw, low, label, chain, before):
