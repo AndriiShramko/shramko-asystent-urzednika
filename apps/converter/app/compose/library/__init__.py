@@ -112,26 +112,26 @@ def party(who: Who) -> Sec | None:
     comps = []
     if who.asks_party:
         comps.append(Comp("w_czyim_imieniu", "RADIO", "Wybierz, w czyim imieniu wnioskujesz", "wybierz_w_czyim_imieniu_wnioskujesz",
-                          options=who.parties, ref=R_PARTY))
+                          options=who.parties, ref=R_PARTY, validation=("REQUIRED",)))
     if who.entity:
         comps.append(Comp("jako_kto", "RADIO", "Wybierz, jako kto wnioskujesz", "wybierz_jako_kto_wnioskujesz",
-                          options=(POA, REPRESENTATIVE), show=who.party(ENTITY), ref=R_CAPACITY))
+                          options=(POA, REPRESENTATIVE), show=who.party(ENTITY), ref=R_CAPACITY, validation=("REQUIRED",)))
     if who.other and who.statutory:
         comps.append(Comp("jako_kto_inna_osoba", "RADIO", "Wybierz, jako kto wnioskujesz w imieniu innej osoby",
                           "wybierz_jako_kto_wnioskujesz_inna_osoba", options=(POA, STATUTORY), show=who.party(OTHER),
-                          ref=R_CAPACITY_OTHER))
+                          ref=R_CAPACITY_OTHER, validation=("REQUIRED",)))
     return Sec("dane/podmiot_wniosku", "Podmiot wniosku", "podmiot_wniosku", comps) if comps else None
 
 
 def your_data(source: str, pesel: bool) -> Sec:
     """The person at the keyboard: identity from the register, read-only (D6)."""
-    comps = [Comp("imie", "TEXT_FIELD", "Imię", "imie", read_only=True, default=f"{source}.name", default_type=EXTERNAL),
-             Comp("nazwisko", "TEXT_FIELD", "Nazwisko", "nazwisko", read_only=True, default=f"{source}.surname", default_type=EXTERNAL)]
+    comps = [Comp("imie", "TEXT_FIELD", "Imię", "imie", read_only=True, default=f"{source}.name", default_type=EXTERNAL, validation=("REQUIRED",)),
+             Comp("nazwisko", "TEXT_FIELD", "Nazwisko", "nazwisko", read_only=True, default=f"{source}.surname", default_type=EXTERNAL, validation=("REQUIRED",))]
     if pesel:
         # D8: the field states PESEL, so it names the validator like every other PESEL of the form; the value comes
         # from the register and is read-only, the validator documents the kind of the value (VALIDATORS=off clears it).
         comps.append(Comp("numer_pesel", "TEXT_FIELD", "Numer PESEL", "numer_pesel", read_only=True, default="PESEL.pesel",
-                          default_type=EXTERNAL, validation=("PESEL",)))
+                          default_type=EXTERNAL, validation=("REQUIRED", "PESEL")))
     return Sec("dane/twoje_dane", "Twoje dane", "twoje_dane", comps)
 
 
@@ -152,21 +152,22 @@ def address(block: str, teryt: str, show: Pred | None = None) -> Sec:
         return {"default": f"MLPZ.{attribute}", "default_type": EXTERNAL} if block == "self" else {}
 
     return Sec(role, title, tech, [
-        Comp("kraj", "SELECT", "Kraj", f"kraj{sfx}", dictionary=KRAJE, multi_level=False, search=True, default=["Polska"], ref=ref),
-        Comp("miejscowosc_zagranica", "TEXT_FIELD", "Miejscowość", f"miejscowosc{sfx}_zagranica", show=abroad),
+        Comp("kraj", "SELECT", "Kraj", f"kraj{sfx}", dictionary=KRAJE, multi_level=False, search=True, default=["Polska"], ref=ref, validation=("REQUIRED",)),
+        Comp("miejscowosc_zagranica", "TEXT_FIELD", "Miejscowość", f"miejscowosc{sfx}_zagranica", show=abroad, validation=("REQUIRED",)),
         Comp("kod_pocztowy_zagranica", "TEXT_FIELD", "Kod pocztowy", f"kod_pocztowy{sfx}_zagranica", show=abroad),
         Comp("ulica_zagranica", "TEXT_FIELD", "Ulica", f"ulica{sfx}_zagranica", show=abroad),
         # As in all six uses of the exports: the title of the territorial select is the name of its dictionary.
         Comp("wojewodztwo", "SELECT", teryt, f"wojewodztwo{sfx}", dictionary=teryt, multi_level=True, search=True, default=[], show=poland),
-        Comp("kod_pocztowy", "TEXT_FIELD", "Kod pocztowy", f"kod_pocztowy{sfx}", show=poland, validation=("ZIP_CODE",), **pre("postCode")),
+        Comp("kod_pocztowy", "TEXT_FIELD", "Kod pocztowy", f"kod_pocztowy{sfx}", show=poland, validation=("REQUIRED", "ZIP_CODE"), **pre("postCode")),
         Comp("ulica", "TEXT_FIELD", "Ulica", f"ulica{sfx}", show=poland, **pre("street")),
-        Comp("numer_budynku", "TEXT_FIELD", "Numer budynku", f"numer_budynku{sfx}", **pre("building")),
+        Comp("numer_budynku", "TEXT_FIELD", "Numer budynku", f"numer_budynku{sfx}", validation=("REQUIRED",), **pre("building")),
         Comp("numer_lokalu", "TEXT_FIELD", "Numer lokalu", f"numer_lokalu{sfx}", **pre("apartment")),
     ], show=show)
 
 
 def entity_data(regon: bool, krs: bool, show: Pred | None = None) -> Sec:
-    comps = [Comp("nazwa", "TEXT_FIELD", "Nazwa", "nazwa"), Comp("nip", "TEXT_FIELD", "NIP", "nip", validation=("NIP",))]
+    comps = [Comp("nazwa", "TEXT_FIELD", "Nazwa", "nazwa", validation=("REQUIRED",)),
+             Comp("nip", "TEXT_FIELD", "NIP", "nip", validation=("REQUIRED", "NIP"))]
     if regon:
         comps.append(Comp("regon", "TEXT_FIELD", "REGON", "regon", validation=("REGON",)))
     if krs:
@@ -182,9 +183,10 @@ def representative_proof(show: Pred | None = None) -> Sec:
 
 
 def other_person(pesel: bool, show: Pred | None = None) -> Sec:
-    comps = [Comp("imie", "TEXT_FIELD", "Imię", "imie_inna_osoba"), Comp("nazwisko", "TEXT_FIELD", "Nazwisko", "nazwisko_inna_osoba")]
+    comps = [Comp("imie", "TEXT_FIELD", "Imię", "imie_inna_osoba", validation=("REQUIRED",)),
+             Comp("nazwisko", "TEXT_FIELD", "Nazwisko", "nazwisko_inna_osoba", validation=("REQUIRED",))]
     if pesel:
-        comps.append(Comp("numer_pesel", "TEXT_FIELD", "Numer PESEL", "numer_pesel_inna_osoba", validation=("PESEL",)))
+        comps.append(Comp("numer_pesel", "TEXT_FIELD", "Numer PESEL", "numer_pesel_inna_osoba", validation=("REQUIRED", "PESEL")))
     return Sec("dane/dane_innej_osoby", "Dane innej osoby", "dane_innej_osoby", comps, show=show)
 
 
