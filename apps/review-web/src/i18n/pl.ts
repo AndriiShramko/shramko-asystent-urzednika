@@ -461,7 +461,7 @@ export const pl = {
   'clerk.req.setRequired': "Ustaw to pole jako obowiązkowe|Ustaw te {n} pola jako obowiązkowe|Ustaw te {n} pól jako obowiązkowe",
   'clerk.fix.skip': "Pomiń to miejsce (nie będzie polem)",
   'clerk.fix.skipAll': "Pomiń wszystkie te miejsca (nie będą polami)",
-  'clerk.rest.what': "{n} miejsce w pliku nie ma opisu ani pola w e-formularzu.|{n} miejsca w pliku nie mają opisu ani pola w e-formularzu.|{n} miejsc w pliku nie ma opisu ani pola w e-formularzu.",
+  'clerk.rest.line': "Uwagi techniczne bez miejsca na oryginale: {n}. Szczegóły są w widoku dla jury.",
   'clerk.rest.why': "Program nie wie, czego dotyczą, więc nie zrobił z nich pól. Nie ma tu czego pokazać. Jeśli w e-formularzu czegoś brakuje, porównaj go z plikiem.",
   'clerk.rest.ok': "Rozumiem, pomiń to miejsce|Rozumiem, pomiń te {n} miejsca|Rozumiem, pomiń te {n} miejsc",
   'clerk.signature.note': "Podpisu i daty złożenia nie ma w e-formularzu, tak jak we wzorcowych formularzach COI: wnioskodawca podpisuje wniosek w e-usłudze na końcu, po podglądzie.",

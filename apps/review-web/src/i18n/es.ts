@@ -459,7 +459,7 @@ export const es: Dict = {
   'clerk.req.setRequired': "Hacer obligatorio este campo|Hacer obligatorios estos {n} campos|Hacer obligatorios estos {n} campos",
   'clerk.fix.skip': "Omitir este lugar (no será un campo)",
   'clerk.fix.skipAll': "Omitir todos estos lugares (no serán campos)",
-  'clerk.rest.what': "{n} lugar del archivo no tiene descripción ni campo en el formulario electrónico.|{n} lugares del archivo no tienen descripción ni campo en el formulario electrónico.|{n} lugares del archivo no tienen descripción ni campo en el formulario electrónico.",
+  'clerk.rest.line': "Notas técnicas sin lugar en el original: {n}. Los detalles están en la vista para el jurado.",
   'clerk.rest.why': "El programa no sabe a qué se refieren, así que no creó campos con ellos. Aquí no hay nada que mostrar. Si falta algo en el formulario electrónico, compáralo con el archivo.",
   'clerk.rest.ok': "Entendido, omitir este lugar|Entendido, omitir estos {n} lugares|Entendido, omitir estos {n} lugares",
   'clerk.signature.note': "La firma y la fecha de presentación no están en el formulario electrónico, igual que en los formularios de referencia del COI: el solicitante firma la solicitud en el servicio electrónico al final, tras la vista previa.",

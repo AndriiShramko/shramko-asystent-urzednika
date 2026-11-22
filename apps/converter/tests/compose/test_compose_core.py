@@ -171,8 +171,8 @@ def test_finish_style_switch_d5() -> None:
 def test_validators_switch_d8() -> None:
     on = {f.techName: f.validation for f in compose(brief(**_rich())).form.iter_fields()}
     assert on["plec"] == ["REQUIRED"] and on["adres_e_mail_hodowcy"] == ["EMAIL"] and on["pesel"] == ["PESEL"]
-    assert on["kod_pocztowy"] == ["ZIP_CODE"] and on["kod_pocztowy_zagranica"] == [] and on["nip"] == ["NIP"] and on["regon"] == ["REGON"]
-    assert on["adres_e_mail"] == ["EMAIL"] and on["numer_pesel_inna_osoba"] == ["PESEL"] and on["mapa_z_zaznaczonym_terenem"] == ["REQUIRED"]
+    assert on["kod_pocztowy"] == ["REQUIRED", "ZIP_CODE"] and on["kod_pocztowy_zagranica"] == [] and on["nip"] == ["REQUIRED", "NIP"] and on["regon"] == ["REGON"]
+    assert on["adres_e_mail"] == ["EMAIL"] and on["numer_pesel_inna_osoba"] == ["REQUIRED", "PESEL"] and on["mapa_z_zaznaczonym_terenem"] == ["REQUIRED"]
     off = compose(brief(**_rich()), ComposeOptions(validators=False))
     assert all(f.validation == [] for f in off.form.iter_fields())
 

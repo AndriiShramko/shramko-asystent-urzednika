@@ -93,9 +93,9 @@ describe('W11 the list of the clerk', () => {
     const { session } = await page([requiredChoice(), applied(), typeIn(), raw(), note(), ...[0, 1, 2, 3, 4].map(blank)])
     expect(session.applied).toHaveLength(1)
     expect(session.notes).toHaveLength(1)
-    expect(session.openCount()).toBe(8)
-    expect(q('#h-clerk-remarks').textContent).toBe('Do sprawdzenia (8)')
-    expect(q('#clerk-final-state').textContent).toBe('Do sprawdzenia: 8.')
+    expect(session.openCount()).toBe(7)
+    expect(q('#h-clerk-remarks').textContent).toBe('Do sprawdzenia (7)')
+    expect(q('#clerk-final-state').textContent).toBe('Do sprawdzenia: 7.')
     expect(session.remarks).toHaveLength(7) // choice, input, raw, three blanks, one card for the other two blanks
     expect(session.remarks[0].fix.kind).toBe('choice') // ready choices first
     expect(session.remarks[6].items).toHaveLength(2)
@@ -143,13 +143,13 @@ describe('W11 remarks on the document', () => {
 
   it('a remark without a place says so: the top of page 1 where it would be, or plainly that the paper has no such place', async () => {
     await page([{ code: 'TITLE_MISSING', detail: 'no title' }, { code: 'NO_MATTER', detail: 'nothing' }])
-    const [title, matter] = all('.clerk-card')
+    const [title] = all('.clerk-card')
+    const matter = q('#clerk-rest-line')
     expect(title.querySelector('.clerk-card-cap')!.textContent).toBe('Na oryginale tego nie ma. Zwykle jest tutaj, u góry pierwszej strony:')
     expect(title.querySelector('.clerk-crop')).not.toBeNull()
     expect(title.querySelector('.clerk-crop-mark')).toBeNull()
-    expect(matter.querySelector('.clerk-crop')).toBeNull()
-    // BL13 CLERK-T: a remark about the whole paper shows no empty paper box and no "cały formularz"
-    expect(matter.querySelector('.clerk-card-main')).toBeNull()
+    expect(all('.clerk-card')).toHaveLength(1)
+    expect(matter.textContent).toContain('Uwagi techniczne bez miejsca na oryginale: 1')
     expect(matter.textContent).not.toContain('cały formularz')
   })
 
@@ -216,6 +216,21 @@ describe('W11 fix by click', () => {
     expect(q<HTMLInputElement>('[id="fpf-f-nip"]').value).toBe('Urząd Gminy Przykładowo')
   })
 
+  it('FIX-UI: a field in a hidden section is renamed inside the card', async () => {
+    const { session } = await page([raw()])
+    const wrapper = q('[id="fpw-f-nip"]')
+    const sec = document.createElement('div'); sec.hidden = true
+    wrapper.parentElement!.insertBefore(sec, wrapper); sec.appendChild(wrapper)
+    const card = q('.clerk-card')
+    card.querySelector<HTMLElement>('[data-type-in]')!.click()
+    const name = card.querySelector<HTMLInputElement>('.clerk-edit-inline .clerk-edit-input')!
+    expect(name.value).toBe('NIP')
+    name.value = 'Numer NIP firmy'
+    card.querySelector<HTMLElement>('.clerk-edit-inline .btn-main')!.click()
+    expect(formAt(session.changedForm(), 0).title).toBe('Numer NIP firmy')
+    expect(session.openCount()).toBe(0)
+  })
+
   it('a remark without a fix is input too: the name of the field is corrected in place', async () => {
     const { session } = await page([raw()])
     const card = q('.clerk-card')
@@ -233,7 +248,7 @@ describe('W11 fix by click', () => {
 
   it('"Jest dobrze" closes a remark that needs no change; a card of many places closes them all', async () => {
     const { session } = await page([0, 1, 2, 3, 4].map(blank))
-    expect(session.openCount()).toBe(5)
+    expect(session.openCount()).toBe(4)
     all('.clerk-card')[3].querySelector<HTMLElement>('[data-done]')!.click()
     expect(session.openCount()).toBe(3)
     expect(session.changedForm()).toBeNull()

@@ -47,7 +47,7 @@ export const FP = {
   // step 5
   checkHeading: 'Sprawdzenie przed wydrukiem',
   checkButton: 'Sprawdź poprawność',
-  missing: (n: number, list: string): string => `Brakuje ${n} wymaganych pól: ${list}.`,
+  missing: (n: number, list: string): string => `Brakuje ${n} ${n === 1 ? "wymaganego pola" : "wymaganych pól"}: ${list}.`,
   allGood: 'Wszystkie wymagane pola są wypełnione, a numery przeszły kontrolę.',
   notReady: 'Przed wydrukiem popraw pola z listy.',
   goTo: 'Przejdź do pola',

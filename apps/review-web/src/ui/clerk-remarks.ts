@@ -365,13 +365,32 @@ function makeSession(sidecar: Sidecar | null): Session {
       return
     }
     // no pointer from the server: the name of the field is what the clerk can correct in place
-    ef.edit(f, (title) => {
+    const apply = (title: string | null): void => {
       if (title === null) return
       const ptr = pointerOfNode(patched ?? form, f)
       if (ptr) applySets([{ pointer: ptr + '/title', value: title }], null)
       record(r, title)
       session.resolve(r, title)
-    })
+    }
+    // FIX-UI: a field inside a hidden conditional section has no visible place for the input: it opens in the card
+    const wrapper = document.getElementById('fpw-' + f)
+    const card = host.querySelector<HTMLElement>(`.clerk-card[data-remark="${r.key}"]`)
+    if (wrapper?.closest('[hidden]') && card) {
+      card.querySelector('.clerk-edit-inline')?.remove()
+      const node = ef.model.byId.get(f)
+      const inp = h('input', { type: 'text', class: 'clerk-edit-input', value: node ? nameOf(node) : '' })
+      inp.setAttribute('aria-label', t('clerk.edit.name'))
+      const save = h('button', { type: 'button', class: 'btn btn-main' }, t('clerk.edit.save'))
+      const cancel = h('button', { type: 'button', class: 'btn' }, t('clerk.edit.cancel'))
+      const box = h('div', { class: 'clerk-edit clerk-edit-inline' }, inp, save, cancel)
+      save.addEventListener('click', () => { const v = inp.value.trim(); if (!v) { inp.focus(); return } ef?.patch(f, 'title', v); box.remove(); apply(v) })
+      cancel.addEventListener('click', () => box.remove())
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); save.click() } else if (e.key === 'Escape') cancel.click() })
+      card.append(box)
+      inp.focus()
+      return
+    }
+    ef.edit(f, apply)
   }
 
   function fixBox(r: Remark): HTMLElement {
@@ -483,20 +502,13 @@ function makeSession(sidecar: Sidecar | null): Session {
           fixBox(r))))
   }
 
-  /** BL13 CLERK-T: one card for all the remarks that have nothing to show and nothing to decide. */
-  function restCard(list: Remark[], n: number): HTMLElement {
+  /** FIX-UI: remarks with nothing to show or decide are one muted line, not a numbered card. */
+  function restLine(list: Remark[]): HTMLElement {
     const places = list.reduce((a, r) => a + r.items.length, 0)
-    const kinds = [...new Set(list.map((r) => remarkText(r)))]
-    // only blanks without a description: one plain sentence; a mix of kinds: the kinds listed under a general one
-    const blanks = list.every((r) => r.code === 'LABEL_NOT_FOUND')
-    const ok = h('button', { type: 'button', class: 'btn clerk-fix-btn', 'data-done': '1' }, blanks ? tn('clerk.rest.ok', places) : tn('clerk.rest.okMixed', places))
-    ok.addEventListener('click', () => { for (const r of list) { r.done = true; r.answer = null }; if (active && list.some((r) => r.key === active)) active = null; repaint(); session.onChange?.() })
-    return h('li', { class: 'clerk-card clerk-card-flat clerk-card-rest', 'data-remark': 'rest', 'data-fix': 'rest' },
-      h('p', { class: 'clerk-card-what' }, h('span', { class: 'clerk-num', 'aria-hidden': 'true' }, String(n)), ' ', blanks ? tn('clerk.rest.what', places) : tn('clerk.rest.mixed', places)),
-      !blanks ? h('ul', { class: 'clerk-rest-kinds' }, ...kinds.map((k) => h('li', {}, k))) : null,
-      h('p', { class: 'muted' }, blanks ? t('clerk.rest.why') : t('clerk.rest.whyMixed')),
-      h('div', { class: 'clerk-card-side' }, h('div', { class: 'clerk-fix' }, ok)))
+    return h('p', { class: 'muted clerk-rest-line', id: 'clerk-rest-line', 'data-rest': String(places) }, t('clerk.rest.line', { n: places }))
   }
+
+  let painted = 0
 
   function repaint(): void {
     clear(host)
@@ -504,7 +516,8 @@ function makeSession(sidecar: Sidecar | null): Session {
     // BL13 CLERK-T: remarks with nothing to show or to decide share one card at the end
     const rest = open0.filter((r) => empty(r))
     const open = open0.filter((r) => !rest.includes(r))
-    const places = open0.reduce((a, r) => a + r.items.length, 0)
+    const places = open.length
+    painted = places
     const done = remarks.length - open.length
     host.setAttribute('data-open', String(places))
     // the same numbers on the cards, on the original and on the e-form fields
@@ -521,9 +534,11 @@ function makeSession(sidecar: Sidecar | null): Session {
     }
     paper?.marks(marks)
     const sig = signatureNote()
-    if (!open0.length) {
+    if (!open.length) {
       if (sig) host.append(sig)
       host.append(h('h3', { id: 'h-clerk-remarks', class: 'clerk-allgood' }, done ? t('clerk.remarks.allDone') : t('clerk.remarks.none')))
+      if (rest.length) host.append(restLine(rest))
+      session.onChange?.()
       return
     }
     host.append(
@@ -532,14 +547,15 @@ function makeSession(sidecar: Sidecar | null): Session {
     if (sig) host.append(sig)
     const shown = showAll ? open : open.slice(0, CARDS_SHOWN)
     const items = shown.map((r) => card(r, numbered.get(r.key) ?? 0))
-    if (rest.length && shown.length === open.length) items.push(restCard(rest, open.length + 1))
     host.append(h('ol', { class: 'clerk-cards' }, ...items))
     if (open.length > shown.length) {
-      const more = h('button', { type: 'button', class: 'btn', id: 'clerk-remarks-more' }, t('clerk.remarks.more', { n: open.length - shown.length + (rest.length ? 1 : 0) }))
+      const more = h('button', { type: 'button', class: 'btn', id: 'clerk-remarks-more' }, t('clerk.remarks.more', { n: open.length - shown.length }))
       more.addEventListener('click', () => { showAll = true; repaint() })
       host.append(more)
     }
+    if (rest.length && shown.length === open.length) host.append(restLine(rest))
     host.append(h('p', { id: 'clerk-remarks-live', class: 'sr-only', 'aria-live': 'polite' }))
+    session.onChange?.()
   }
 
   /** BL13 CLERK-T: one plain line, visible without a click, when the paper's signature and date have no field. */
@@ -580,7 +596,7 @@ function makeSession(sidecar: Sidecar | null): Session {
     remarks,
     applied,
     notes,
-    openCount: () => visible().reduce((a, r) => a + r.items.length, 0),
+    openCount: () => painted,
     attach(e, p) {
       ef = e
       paper = p
