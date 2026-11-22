@@ -1,5 +1,7 @@
 # Demo script
 
+> Pre-event material for the parked counter product (UDIP requests, visitor and clerk), not built in this task. The demo and the jury answers of the forms converter that was built: [`jury-qa-formularze.md`](jury-qa-formularze.md) and the jury section of [`README.md`](../../README.md).
+
 One story, shown three times: live in the final (inside the 5-minute pitch), as a video of at most two minutes for the first judging stage, and as the animated mock on slide 4 of the deck until the product exists. All data is synthetic.
 
 ## The request used in the demo (synthetic, Polish)

@@ -1,5 +1,7 @@
 # Jury questions and the truth table
 
+> Pre-event material for the parked counter product (UDIP requests, visitor and clerk), not built in this task. The demo and the jury answers of the forms converter that was built: [`jury-qa-formularze.md`](jury-qa-formularze.md) and the jury section of [`README.md`](../../README.md).
+
 Two things live here: the list that says what in the demo is real, and where the prepared answers are. The lead agent keeps both true to the software at every milestone. A claim that the software does not show is removed from the pitch, not defended.
 
 ## What is live, simulated or planned
