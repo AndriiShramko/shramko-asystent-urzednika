@@ -62,12 +62,15 @@ _ATT_MAY = re.compile(r"\bmożna\b|\bewentualn|opcjonaln|w\s+przypadku|\bjeżeli
 # ("niewymagane", and "niejestwymagane" of a footnote, whose whitespace is removed).
 _NEGATION = re.compile(r"\bnie\b|niedotyczy|nie(?:jest|są|będzie|będą)?$")
 _NEGATION_REACH = 40
+_REQUIRED_WORDING = _habit("required_wording")      # "należy wypełnić", "musi zawierać"
 
 
 def _says_required(text: str) -> bool:
-    """The paper's own words mark this text required: a cue of the habit `required` that no negation precedes."""
+    """The paper's own words mark this text required: a cue of the habits `required` and `required_wording` that no
+    negation precedes. An asterisk is no cue: on these papers it marks a footnote ("niepotrzebne skreślić")."""
     low = text.casefold()
-    return any(not _NEGATION.search(low[max(0, m.start() - _NEGATION_REACH): m.start()]) for m in REQUIRED.finditer(low))
+    return any(not _NEGATION.search(low[max(0, m.start() - _NEGATION_REACH): m.start()])
+               for rx in (REQUIRED, _REQUIRED_WORDING) for m in rx.finditer(low))
 
 
 _OPTIONAL_WORDING, _CONDITIONAL = _habit("optional_wording"), _habit("conditional")

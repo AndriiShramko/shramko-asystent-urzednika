@@ -22,8 +22,9 @@ Owned paths: `apps/converter/app/mean/_fields.py`, `apps/converter/app/lexicon/h
 - [x] (e) required and optional cues read from the field's hint and the title of its own section (`_aside_says_required`,
       `_field` in `_fields.py`), tests `tests/mean/test_mean_c1_sources.py`;
       `bash tools/gate.sh py -m pytest apps/converter/tests/mean apps/converter/tests/validators/test_required.py -q` = 122 passed, 1 skipped
-- [ ] (e2) item 4 of the order: cues "należy wypełnić" (no word after it) and "musi zawierać" in a habit row `required_wording`,
-      read by `_says_required`; tests first (`tests/mean/test_mean_c1_wording.py`)
+- [x] (e2) item 4 of the order: cues "należy wypełnić" (no word after it) and "musi zawierać" in a habit row `required_wording`,
+      read by `_says_required`; tests `tests/mean/test_mean_c1_wording.py` (4 of 8 failed before the code);
+      mean tests and `test_required.py`: 130 passed, 1 skipped. The fast gate and the dump are NOT yet re-run on this code.
 - [x] (f) counts after: brief dump (28 fields changed, all "required, inferred" -> optional) and form counts over all
       70 inputs (`count_sets.py --diff`: no line, so no validator and no REQUIRED of a form changed; inputs equal) in "## Evidence"
 - [ ] (g) fast gate, chain compare, state `ready_to_merge`
@@ -65,10 +66,9 @@ tail of `tmp/chain.log`; then `git checkout eval/chain/summary.json`), write the
 line 3 to `ready_to_merge`. `main` has two newer commits (STATUS and results, documents only): `git merge --no-edit main` before
 the hand-over. The package is mergeable without (e2) and (h): they only add cues, and no field of any set holds the words of (e2)
 (0 of 689 fields have "należy wypełnić" or "musi zawierać" in label, hint or section title).
-(e2) is half done: its test file `apps/converter/tests/mean/test_mean_c1_wording.py` is written but NOT in git (4 of its 8
-cases fail until the code exists). Code of (e2): a row `{"habit": "required_wording", "pattern": "należy\\s*wypełnić(?!\\s*\\w)|musi\\s*zawierać"}`
-in `habits.json`, and `_says_required` in `_fields.py` iterating over `REQUIRED` and `_habit("required_wording")`; after it
-re-run the mean tests, the dump tool (expect no change) and the fast gate.
+(e2) is committed after that gate run (heartbeat 01:35): so RE-RUN on the head of the branch, in this order: the dump tool
+without set names (expect `diff tmp/c1-brief-all-after.tsv` = no line), the chain compare, the fast gate. If one of them is red
+and time is short, `git revert --no-edit <commit of e2>` returns the code that passed everything above.
 `field_of(label, title=..., footnote=...)` of `test_mean_c1_negation.py` builds a synthetic one-field paper for new tests.
 Before-dump of ALL sets on main's code: `tmp/c1-brief-all-before.tsv` = 689 fields, 670 required, 10 with basis paper
 (local, not in git: re-make it from a checkout of `main` with the same tool if needed). Measuring tool of this package:
