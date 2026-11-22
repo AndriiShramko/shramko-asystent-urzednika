@@ -38,6 +38,11 @@ KIND_LABEL = {
     "ole": "plik OLE innego typu",
 }
 ZIP_FORMATS = ("docx", "xlsx", "ods", "odt")
+# Where an Office package keeps an embedded object (a pasted Excel table or a chart in a DOCX): such a member may be a
+# ZIP by its format and is never read (the readers take only the main parts), so it is not "a nested archive"; its bytes
+# still count against the size and ratio limits. A macro-enabled one marks the file as having macros.
+EMBEDDINGS = ("word/embeddings/", "xl/embeddings/", "ppt/embeddings/")
+EMBEDDED_MACRO_EXT = (".xlsm", ".docm", ".pptm", ".xlsb", ".potm", ".dotm", ".xltm")
 MIME = {
     "pdf": {"application/pdf"},
     "docx": {"application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
@@ -231,7 +236,9 @@ def check_archive(data: bytes, settings: Settings, office_members: bool = False)
         try:
             with zf.open(info) as f:
                 head = f.read(4)
-                if head == b"PK\x03\x04" and not (office_members and n.rsplit(".", 1)[-1].lower() in ZIP_FORMATS):
+                member_ext = n.rsplit(".", 1)[-1].lower()
+                embedded = n.startswith(EMBEDDINGS)   # an object Word/Excel embedded; never read
+                if head == b"PK\x03\x04" and not embedded and not (office_members and member_ext in ZIP_FORMATS):
                     raise ProblemError("ARCHIVE_LIMIT", "Archiwum zawiera inne archiwum.")
                 count = len(head)
                 while True:
@@ -349,7 +356,8 @@ def _check_image(kind: str, data: bytes, settings: Settings) -> list[str]:
 
 def _has_macros(kind: str, names: list[str]) -> bool:
     if kind in ("docx", "xlsx"):
-        return any(n.lower().endswith("vbaproject.bin") for n in names)
+        return any(n.lower().endswith("vbaproject.bin")
+                   or (n.startswith(EMBEDDINGS) and n.lower().endswith(EMBEDDED_MACRO_EXT)) for n in names)
     if kind == "ods":
         return any(n.startswith(("Basic/", "Scripts/")) for n in names)
     return False
