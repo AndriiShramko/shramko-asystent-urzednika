@@ -14,10 +14,13 @@ names a form, an office or a set.
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 
 from app.model.brief import Brief, BriefField
 from app.model.common import Evidence
 from app.model.meta import Proposals, ProposedDictionary
+
+from .library import KRAJE, TERYT_4G
 
 CHOICE = ("RADIO", "CHECKBOX", "SELECT")
 MIN_SHARED = 3          # options of a list that two or more fields share
@@ -94,6 +97,67 @@ def proposals(brief: Brief, ids: dict[str, str]) -> list[ProposedDictionary]:
     return out
 
 
+# -- point I on the fields of the paper (A8 DX-2) ------------------------------------------------------------------
+# The partner's dictionaries ("Słowniki"): Kraje for a country; Województwo, Powiat, Gmina, Miejscowość, which the
+# exports carry as one multi-level TERYT dictionary (the library's TERYT_4G_DOWODOWY); Numery kierunkowe for a phone,
+# whose technical name no export shows, so it is named in the sidecar only (gate G9 admits known names, D9). A link
+# needs the whole label: a country word first and three words at most, a territorial word alone, no word of a
+# place-and-date line. A dictionary is bound only to a drop-down list (SELECT), so a linked text field becomes one.
+PREFIXES = "Numery kierunkowe"
+_COUNTRY = frozenset({"kraj", "państwo", "obywatelstwo"})
+_TERRITORY = frozenset({"województwo", "powiat", "gmina"})
+_LOCALITY = "miejscowość"
+_PHONE = frozenset({"telefon", "telefonu", "tel"})
+_NEVER = frozenset({"data", "dnia", "podpis", "nazwa", "kod", "numer", "nr", "ulica", "adres"})
+_TOKENS = re.compile(r"[^\W\d_]+")
+
+
+@dataclass(frozen=True)
+class Link:
+    dictionary: str
+    written: bool                  # False: named in the sidecar only, the form is not changed
+    multi_level: bool | None
+    why: str
+
+
+def link_of(f: BriefField) -> Link | None:
+    """The partner's dictionary a field of the paper takes by its label, or None (a wrong link is worse than none)."""
+    words = _TOKENS.findall(f.label.casefold())
+    if not words or f.options or f.type != "TEXT_FIELD":
+        return None
+    label = f.label.strip()
+    if f.concept is None and not (_NEVER & set(words)):
+        if words[0] in _COUNTRY and len(words) <= 3:
+            return Link(KRAJE, True, False, f"Etykieta „{label}” wskazuje kraj: słownik partnera {KRAJE} (lista "
+                                            "rozwijana) zamiast wpisywania nazwy państwa tekstem.")
+        if words == [_LOCALITY]:
+            # The partner's reference export 01 keeps the matter's "Miejscowość" a TEXT_FIELD without a dictionary:
+            # the form follows the partner, the sidecar names the dictionary that would fit.
+            return Link(TERYT_4G, False, None, f"Etykieta „{label}”: pasuje słownik partnera Miejscowość ({TERYT_4G}). "
+                                               "Nie zapisano go w formularzu: wzorcowy eksport partnera zostawia "
+                                               "„Miejscowość” w sprawie jako pole tekstowe.")
+        if len(words) == 1 and words[0] in _TERRITORY:
+            return Link(TERYT_4G, True, True, f"Etykieta „{label}” to jednostka podziału terytorialnego: słownik "
+                                              f"{TERYT_4G}, ten sam co w adresach sekcji standardowych partnera.")
+    if len(words) <= 6 and (f.concept == "phone" or _PHONE & set(words)):
+        return Link(PREFIXES, False, None, f"Pole telefonu „{label}”: pasuje słownik partnera {PREFIXES} (wybór prefiksu "
+                                           "kraju). Nie zapisano go w formularzu: eksporty partnera nie pokazują jego "
+                                           "nazwy technicznej (bramka G9).")
+    return None
+
+
+def links(brief: Brief, ids: dict[str, str]) -> list[dict]:
+    """One sidecar row per linked field of the paper: form id, label, dictionary, written or not, and why."""
+    out: list[dict] = []
+    for m in brief.matter:
+        for f in m.fields:
+            link = link_of(f)
+            if link is not None and f.key in ids:
+                out.append({"field": ids[f.key], "label": f.label.strip(), "dictionary": link.dictionary,
+                            "written": link.written, "why": link.why})
+    return out
+
+
 def sidecar_extras(brief: Brief, brief_keys: dict[str, str]) -> dict:
     """The keys this module adds to the sidecar's `meta` (none when there is nothing to say)."""
     ids = {key: fid for fid, key in brief_keys.items()}
@@ -101,4 +165,7 @@ def sidecar_extras(brief: Brief, brief_keys: dict[str, str]) -> dict:
     found = proposals(brief, ids)
     if found:
         extras["proposals"] = Proposals(dictionaries=found).model_dump(mode="json", exclude_none=True, exclude_defaults=True)
+    linked = links(brief, ids)
+    if linked:
+        extras["dictionary_links"] = linked
     return extras

@@ -40,6 +40,7 @@ from app.model.form import (
     textarea,
 )
 
+from . import dictionaries
 from . import library as lib
 from . import required as required_rule
 from . import validators
@@ -223,6 +224,12 @@ def _brief_comp(f: BriefField, section_title: str, policy: str, remarks: list[Re
         # a single yes-or-no box (brief 1.1): the partner's grammar wants options, so the box is one option "Tak"
         # under the question; no export shows a CHECKBOX, the shape is flagged INFERRED_SHAPE like every CHECKBOX
         options = (SINGLE_BOX_OPTION,)
+    link = dictionaries.link_of(f)
+    if link is not None and link.written:
+        # A8 DX-2 (point I): the label names a country or a territorial unit, so the field takes the partner's
+        # dictionary; a dictionary is bound only to a drop-down list. The sidecar row says why (meta.dictionary_links).
+        return Comp(title=f.label, html=doc(p(f.hint)) if f.hint else "", validation=("REQUIRED",) if must else (),
+                    dictionary=link.dictionary, multi_level=link.multi_level, search=True, **{**common, "type": "SELECT"})
     return Comp(title=f.label, html=doc(p(f.hint)) if f.hint else "", options=options, validation=validation,
                 search=True if f.type == "SELECT" and len(f.options) > 15 else None, **common)
 
